@@ -1,0 +1,83 @@
+// vim:ts=4:sw=4:et
+{
+    "border": "none",
+    "current_border_width": 0,
+    "floating": "auto_off",
+    "geometry": {
+       "height": 459,
+       "width": 734,
+       "x": 0,
+       "y": 0
+    },
+    "marks": [],
+    "name": "patrick@bookra: ~",
+    "percent": 0.5,
+    "swallows": [
+       {
+       // "class": "^Gnome\\-terminal$",
+       // "instance": "^gnome\\-terminal\\-server$",
+       // "title": "^patrick\\@bookra\\:\\ \\~$",
+       // "window_role": "^gnome\\-terminal\\-window\\-fbf4b145\\-536c\\-450c\\-a0a5\\-a370682eaaf5$"
+       }
+    ],
+    "type": "con"
+}
+
+{
+    // splitv split container with 2 children
+    "border": "none",
+    "floating": "auto_off",
+    "layout": "splitv",
+    "marks": [],
+    "percent": 0.5,
+    "type": "con",
+    "nodes": [
+        {
+            "border": "none",
+            "current_border_width": 0,
+            "floating": "auto_off",
+            "geometry": {
+               "height": 459,
+               "width": 734,
+               "x": 0,
+               "y": 0
+            },
+            "marks": [],
+            "name": "patrick@bookra: ~",
+            "percent": 0.5,
+            "swallows": [
+               {
+               // "class": "^Gnome\\-terminal$",
+               // "instance": "^gnome\\-terminal\\-server$",
+               // "title": "^patrick\\@bookra\\:\\ \\~$",
+               // "window_role": "^gnome\\-terminal\\-window\\-6ae433a3\\-d159\\-4d68\\-9f1b\\-4e49bd657dee$"
+               }
+            ],
+            "type": "con"
+        },
+        {
+            "border": "none",
+            "current_border_width": 0,
+            "floating": "auto_off",
+            "geometry": {
+               "height": 459,
+               "width": 734,
+               "x": 0,
+               "y": 0
+            },
+            "marks": [],
+            "name": "patrick@bookra: ~",
+            "percent": 0.5,
+            "swallows": [
+               {
+               // "class": "^Gnome\\-terminal$",
+               // "instance": "^gnome\\-terminal\\-server$",
+               // "title": "^patrick\\@bookra\\:\\ \\~$",
+               // "window_role": "^gnome\\-terminal\\-window\\-d3d91385\\-296b\\-4fee\\-a523\\-ef2429e2c417$"
+               }
+            ],
+            "type": "con"
+        }
+    ]
+}
+

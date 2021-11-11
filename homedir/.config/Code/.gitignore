@@ -1,0 +1,26 @@
+.org.chromium.Chromium.*
+Backups
+blob_storage
+Cache*
+Code Cache
+Crash Reports
+databases
+exthost Crash Reports
+GPUCache
+Local Storage
+logs
+Service Worker
+Session Storage
+User/globalStorage
+User/sync
+User/workspaceStorage
+code.lock
+Cookies
+Cookies-journal
+languagepacks.json
+machineid
+Network Persistent State
+QuotaManager
+QuotaManager-journal
+storage.json
+TransportSecurity

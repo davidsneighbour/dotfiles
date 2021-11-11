@@ -1,0 +1,48 @@
+{
+  "name": "dotfiles",
+  "version": "1.0.0",
+  "description": "Davidsneighbour's DotFiles",
+  "main": "index.js",
+  "scripts": {
+    "build:theme": "bash ./bin/themer.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/davidsneighbour/dotfiles.git"
+  },
+  "author": "Patrick Kollitsch <patrick@davids-neighbour.com>",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/davidsneighbour/dotfiles/issues"
+  },
+  "homepage": "https://github.com/davidsneighbour/dotfiles#readme",
+  "dependencies": {
+    "@dnb-org/all": "^3.2.20",
+    "@themer/atom-syntax": "2.1.4",
+    "@themer/atom-ui": "1.1.4",
+    "@themer/chrome": "1.2.2",
+    "@themer/colors-nova": "1.0.4",
+    "@themer/css": "1.0.1",
+    "@themer/firefox-addon": "^1.0.2",
+    "@themer/firefox-color": "^1.0.3",
+    "@themer/slack": "2.1.1",
+    "@themer/sublime-text": "2.1.1",
+    "@themer/vim": "3.3.1",
+    "@themer/visual-studio": "^1.0.1",
+    "@themer/vscode": "2.3.2",
+    "@themer/wallpaper-block-wave": "4.0.3",
+    "@themer/wallpaper-burst": "2.0.2",
+    "@themer/wallpaper-circuits": "1.0.2",
+    "@themer/wallpaper-diamonds": "2.0.2",
+    "@themer/wallpaper-dot-grid": "1.0.1",
+    "@themer/wallpaper-octagon": "4.0.2",
+    "@themer/wallpaper-shirts": "2.0.2",
+    "@themer/wallpaper-triangles": "3.0.2",
+    "@themer/wallpaper-trianglify": "2.0.2",
+    "@themer/xcode": "2.1.1",
+    "@themer/xresources": "1.0.3",
+    "themer": "3.3.8",
+    "themer-gnome-terminal": "^1.0.1",
+    "themer-i3": "^1.0.1"
+  }
+}

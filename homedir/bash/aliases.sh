@@ -1,0 +1,102 @@
+# reloads profile
+alias reload='. ~/.bash_profile'
+
+# go up multiple levels
+# (also see 'up' function)
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+alias ......='cd ../../../../..'
+alias cdhist='dirs -v'
+
+# datetime for filenames
+alias d='date +%Y%m%d%H%M'
+
+# re-set functions to colorize
+alias ls='ls -F --color=auto --block-size=M'
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+
+# various ls shortcuts
+alias ll='ls -ltr' 		# sort by name
+alias lu='ls -ltur' 	# sort by file/dir > name
+alias lal='ls -altr' 	# sort by last mod asc
+alias dir='ls -al'		# yeah, well...
+alias ldir='ll -d */'	# list directories only
+
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+# less with ignore-case, long-prompt and quit-if-one-screen
+alias less='less -iMF'
+
+alias h='history'
+
+# execute last command
+# 'r cc' runs the last command beginning with "cc"
+alias r='fc -s'
+
+alias igrep='grep -i'
+alias rgrep='grep -r'
+alias ftail='tail -f'
+
+# tailing
+alias syslog='tail -f -n 50 /var/log/syslog | ccze'
+
+# fast scp
+alias scp='scp -o StrictHostKeyChecking=no -c arcfour -o Compression=no'
+
+# ps with wide output so you can see full commands
+alias fullps='ps -auxwww'
+
+# shows all declared functions
+alias functions='declare -F'
+
+# autosys aliases. All start with "job".
+alias jobls='autorep -J'
+alias jobll='autorep -q -J'
+alias jobstart='sendevent -E FORCE_STARTJOB -J'
+alias jobhold='sendevent -E JOB_ON_HOLD -J'
+alias jobice='sendevent -E JOB_ON_ICE -J'
+alias jobkill='sendevent -E KILLJOB -J'
+alias joboffhold='sendevent -E JOB_OFF_ICE -J'
+alias joboffice='sendevent -E JOB_OFF_ICE -J'
+alias jobhist='jobrunhist -j'
+alias jobdepends='job_depends -c -J'
+alias jobsu='sendevent -E CHANGE_STATUS -s SUCCESS -J'
+alias jobterm='sendevent -E CHANGE_STATUS -s TERMINATED -J'
+alias countfiles='ls -1a | wc -l'
+alias tail='grc tail'
+
+# hugo
+alias hugoserver="hugo server --templateMetrics --templateMetricsHints --verbose --watch"
+alias hugoserver2="hugo server  --disableFastRender --i18n-warnings --navigateToChanged  --templateMetrics --templateMetricsHints --verbose --verboseLog --path-warnings --buildDrafts --buildExpired --buildFuture --watch"
+alias hugoserver3="hugo server --path-warnings --disableFastRender --templateMetrics --templateMetricsHints"
+
+alias subl='subl -a'
+# dotfiles edit this repository...
+# @todo probably good to do something self-referential here instead of hard coded?
+alias dotfiles='subl ~/.dotfiles'
+
+alias lasttag='git describe --tags $(git rev-list --tags --max-count=1)'
+
+# aliases for sourcerer.io app
+alias sourcerer-install='curl -s https://sourcerer.io/app/install | bash'
+alias sourcerer-add='sourcerer add --all '
+alias sourcerer-list='sourcerer-list'
+
+# One of @janmoesen’s ProTip™s
+for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do
+	alias "$method"="lwp-request -m '$method'"
+done
+
+# Enable aliases to be sudo’ed
+alias sudo='sudo '
+
+# Always use color output for `ls`
+alias ls="command ls ${colorflag}"
+export LS_COLORS='no=00:fi=00:di=01;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.gz=01;31:*.bz2=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.avi=01;35:*.fli=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.ogg=01;35:*.mp3=01;35:*.wav=01;35:'
+

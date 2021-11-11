@@ -1,0 +1,12 @@
+{
+    "workbench.tree.indent": 16,
+    "explorer.confirmDelete": false,
+    "markdown.preview.fontSize": 20,
+    "editor.suggestSelection": "first",
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    "explorer.confirmDragAndDrop": false,
+    "search.useGlobalIgnoreFiles": true,
+    "git.alwaysSignOff": true,
+    "git.autofetch": "all",
+    "git.autoStash": true
+}

@@ -1,0 +1,10 @@
+[submodule "homedir/.config/sublime-text-3/Packages/Dracula Color Scheme"]
+	path = homedir/.config/sublime-text-3/Packages/Dracula Color Scheme
+	url = git@github.com:dracula/sublime.git
+[submodule "homedir/.config/sublime-text-3/Packages/Agila Theme"]
+	path = homedir/.config/sublime-text-3/Packages/Agila Theme
+	url = git@github.com:arvi/Agila-Theme.git
+[submodule "dotbot"]
+	path = dotbot
+	url = https://github.com/anishathalye/dotbot
+	ignore = dirty

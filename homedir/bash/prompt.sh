@@ -1,0 +1,147 @@
+# http://tldp.org/HOWTO/Bash-Prompt-HOWTO/x329.html
+# https://wiki.archlinux.org/index.php/Bash/Prompt_customization
+# http://tldp.org/HOWTO/Bash-Prompt-HOWTO/
+
+
+# uncomment for a colored prompt, if the terminal has the capability; turned
+# off by default to not distract the user: the focus in a terminal window
+# should be on the output of commands, not on the prompt
+force_color_prompt=yes
+
+if [ -n "$force_color_prompt" ]; then
+    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+  # We have color support; assume it's compliant with Ecma-48
+  # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+  # a case would tend to support setf rather than setaf.)
+  color_prompt=yes
+    else
+  color_prompt=
+    fi
+fi
+
+if [ "$color_prompt" = yes ]; then
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+else
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+fi
+unset color_prompt force_color_prompt
+
+
+# available colours
+
+# Black       0;30     Dark Gray     1;30
+# Blue        0;34     Light Blue    1;34
+# Green       0;32     Light Green   1;32
+# Cyan        0;36     Light Cyan    1;36
+# Red         0;31     Light Red     1;31
+# Purple      0;35     Light Purple  1;35
+# Brown       0;33     Yellow        1;33
+# Light Gray  0;37     White         1;37
+
+# define some colours
+
+GREY=$'\033[1;30m'
+RED=$'\033[1;31m'
+GREEN=$'\033[1;32m'
+YELLOW=$'\033[1;33m'
+BLUE=$'\033[1;34m'
+MAGENTA=$'\033[1;35m'
+CYAN=$'\033[1;36m'
+WHITE=$'\033[1;37m'
+NONE=$'\033[m'
+
+# trims long paths down to 80 chars
+_get_path(){
+  local x=$(pwd | sed -e "s:$HOME:~:")
+  local len=${#x}
+  local max=80
+  if [ $len -gt $max ]
+  then
+      echo ...${x:((len-max+3))}
+  else
+      echo ${x}
+  fi
+}
+
+# prints a colour coded exit status
+_get_exit_status(){
+  local es=$?
+  if [ $es -eq 0 ]
+    then
+      echo -e "${GREEN}${es}"
+    else
+      echo -e "${RED}${es}"
+  fi
+}
+
+# change xterm title
+title() {
+ if [ $# -eq 0 ]
+   then
+      title=""
+   else
+      title="$* - "
+ fi
+}
+
+# colour the host red if it is production
+# all prod hostnames end with "prod"
+if [[ $HOSTNAME =~ prod$ ]]
+then
+  HOST_COLOR=$RED
+else
+  HOST_COLOR=$GREEN
+fi
+
+# colour the user red if it is production
+# all prod usernames end with "prod"
+if [[ $USER =~ prod$ ]]
+then
+  USER_COLOR=$RED
+else
+  USER_COLOR=$GREEN
+fi
+
+# executed just before prompt
+PROMPT_COMMAND='exitStatus=$(_get_exit_status);mydir=$(_get_path);'
+
+PS1='${title}\[${YELLOW}\]\u@\h\
+\[${NONE}\]:`tty`>${mydir}\007\n\
+\[${GREY}\][\[${BLUE}\]\t\[${GREY}\]]\
+\[${GREY}\][\[${USER_COLOR}\]\u\[${GREY}\]@\[${HOST_COLOR}\]\H\[${GREY}\]] \
+\[${WHITE}\]${mydir} \
+\[${GREY}\](\
+\[${YELLOW}\]+${SHLVL}\[${GREY}\]|\
+\[${YELLOW}\]%\j\[${GREY}\]|\
+\[${YELLOW}\]!\!\[${GREY}\]|\
+\[${YELLOW}\]${exitStatus}\[${GREY}\])\[${NONE}\]\n\
+\[${USER_COLOR}\]❯\[${NONE}\] '
+
+# continuation prompt
+PS2='\[${USER_COLOR}\]⇣\[${NONE}\] '
+
+# used by set -x for tracing
+PS4='\[${USER_COLOR}\]+\[${NONE}\] '
+
+# If this is an xterm set the title to user@host:dir
+case "$TERM" in
+xterm*|rxvt*)
+    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+    ;;
+*)
+    ;;
+esac
+
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    #alias dir='dir --color=auto'
+    #alias vdir='vdir --color=auto'
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+
+# colored GCC warnings and errors
+export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'

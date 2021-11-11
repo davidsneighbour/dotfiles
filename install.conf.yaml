@@ -1,0 +1,63 @@
+- defaults:
+    link:
+      create: true
+      relink: true
+      force: true
+
+- clean: ['~']
+
+- shell:
+  - [git submodule update --init --recursive, Installing submodules]
+  - [./bin/setup-system.sh, Installing required tools and IDEs]
+  #- sudo snap install --classic code
+  #- sudo snap install todoist
+  #####################################################################################
+  #- sudo apt install inkscape gimp build-essential atop htop i3 neofetch polybar feh dunst vim
+  #- sudo apt install default-jdk
+  #- sudo snap install android-studio
+  #- sudo snap install authy
+  #- sudo snap install bitcoin-core
+  #- sudo snap install chromium
+  #- sudo snap install flutter
+  #- sudo snap install go
+  #- sudo snap install libreoffice
+  #- sudo snap install phpstorm
+  #- sudo snap install ruby
+  #- sudo snap install slack
+
+- link:
+    ##################################################################
+    # file links
+    ##################################################################
+    ~/.bash_logout: homedir/.bash_logout
+    ~/.bash_profile: homedir/.bash_profile
+    ~/.bashrc: homedir/.bashrc
+    ~/.colordiff: homedir/.colordiff
+    ~/.dmrc: homedir/.dmrc
+    ~/.face.icon: homedir/.face.icon
+    ~/.fehbg: homedir/.fehbg
+    ~/.fixpackrc: homedir/.fixpackrc
+    ~/.gitconfig: homedir/.gitconfig
+    ~/.gitignore: homedir/.gitignore.template
+    ~/.gtk-bookmarks: homedir/.gtk-bookmarks
+    ~/.gtkrc-2.0.mine: homedir/.gtkrc-2.0.mine
+    ~/.npmrc: homedir/.npmrc
+    ~/.pam_environment: homedir/.pam_environment
+    ~/.profile: homedir/.profile
+    ~/.synergy.conf: homedir/.synergy.conf
+    ~/.vimrc: homedir/.vimrc
+    ~/.vuerc: homedir/.vuerc
+    ~/.xinputrc: homedir/.xinputrc
+    ~/.Xresources: homedir/.Xresources
+    ~/.xscreensaver: homedir/.xscreensaver
+    ##################################################################
+    # directory links
+    ##################################################################
+    ~/.fonts: homedir/.fonts
+    ~/.config/Code: homedir/.config/Code
+    ~/.config/sublime-text-3: homedir/.config/sublime-text-3
+
+- shell:
+  - bash ./homedir/.config/Code/extensions.sh
+  - npm install -g npm-check-updates
+  - cargo install git-cliff
