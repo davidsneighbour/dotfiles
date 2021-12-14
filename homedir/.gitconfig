@@ -96,7 +96,7 @@
   player = shortlog -sn
   sneak = commit --amend --no-edit
   commit = commit -S
-	co = checkout
+  	co = checkout
 	ci = commit
 	st = status
 	br = branch
@@ -243,6 +243,8 @@
 [url "git@heroku.com:"]
 	insteadOf = "heroku:"
 
+[commit]
+	gpgsign = true
 [pull]
 	rebase = true
 [init]
