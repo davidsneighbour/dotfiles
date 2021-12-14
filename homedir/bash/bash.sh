@@ -116,6 +116,8 @@ if [ -d "/usr/lib/dart/bin" ] ; then
     PATH="/usr/lib/dart/bin:$PATH"
 fi
 
+# don't add jrnl entries to bash history
+HISTIGNORE="$HISTIGNORE:jrnl *"
 
 export GOPATH=$HOME/go
 export EDITOR=/usr/bin/vim
