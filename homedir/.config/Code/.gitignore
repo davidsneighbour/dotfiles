@@ -24,3 +24,4 @@ QuotaManager
 QuotaManager-journal
 storage.json
 TransportSecurity
+watcherServiceParcelSharedProcess
