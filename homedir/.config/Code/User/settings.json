@@ -41,7 +41,6 @@
   "workbench.settings.useSplitJSON": true,
   "window.autoDetectColorScheme": true,
   "workbench.preferredDarkColorTheme": "One Dark Pro Darker",
-  "workbench.colorTheme": "Darcula",
   "window.menuBarVisibility": "visible",
   "explorer.incrementalNaming": "smart",
   "search.useGlobalIgnoreFiles": true,
@@ -113,5 +112,13 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.shellcheck": true
   },
-  "workbench.iconTheme": "Monokai Pro (Filter Machine) Icons"
+  "workbench.colorTheme": "Gruvbox Material Dark",
+  "gruvboxMaterial.colorfulSyntax": true,
+  "gruvboxMaterial.darkContrast": "hard",
+  "gruvboxMaterial.darkCursor": "red",
+  "gruvboxMaterial.darkSelection": "green",
+  "gruvboxMaterial.italicKeywords": true,
+  "gruvboxMaterial.lightContrast": "hard",
+  "gruvboxMaterial.lightCursor": "red",
+  "workbench.iconTheme": "material-icon-theme"
 }
