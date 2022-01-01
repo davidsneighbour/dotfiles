@@ -37,7 +37,6 @@
   "workbench.editor.highlightModifiedTabs": true,
   "workbench.editor.scrollToSwitchTabs": true,
   "workbench.settings.openDefaultKeybindings": true,
-  "workbench.settings.openDefaultSettings": true,
   "workbench.settings.useSplitJSON": true,
   "window.autoDetectColorScheme": true,
   "workbench.preferredDarkColorTheme": "One Dark Pro Darker",
@@ -112,7 +111,7 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.shellcheck": true
   },
-  "workbench.colorTheme": "Gruvbox Material Dark",
+  "workbench.colorTheme": "Darcula",
   "gruvboxMaterial.colorfulSyntax": true,
   "gruvboxMaterial.darkContrast": "hard",
   "gruvboxMaterial.darkCursor": "red",
@@ -126,5 +125,36 @@
   "tailwindCSS.emmetCompletions": true,
   "tailwindCSS.includeLanguages": {
     "markdown": "html"
+  },
+  "emojisense.languages": {
+    "markdown": true,
+    "scminput": true,
+    "git-commit": true,
+    "html": true,
+    "gohtml": true
+  },
+  "go.toolsManagement.autoUpdate": true,
+  "gitlens.currentLine.enabled": false,
+  "gitlens.hovers.currentLine.over": "line",
+  "gitlens.codeLens.enabled": false,
+  "diffEditor.ignoreTrimWhitespace": false,
+  "githubIssues.queries": [
+    {
+      "label": "My Issues",
+      "query": "default"
+    },
+    {
+      "label": "Created Issues",
+      "query": "author:${user} state:open repo:${owner}/${repository} sort:created-desc"
+    },
+    {
+      "label": "Recent Issues",
+      "query": "state:open repo:${owner}/${repository} sort:updated-desc"
+    }
+  ],
+  "go-template.languages": ["html", "toml", "json"],
+  "explorer.confirmDragAndDrop": false,
+  "[html]": {
+    "editor.defaultFormatter": "vscode.html-language-features"
   }
 }
