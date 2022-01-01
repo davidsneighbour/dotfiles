@@ -56,6 +56,7 @@
     ~/.fonts: homedir/.fonts
     ~/.config/Code: homedir/.config/Code
     ~/.config/sublime-text-3: homedir/.config/sublime-text-3
+    ~/.themes/: homedir/.themes
 
 - shell:
   - bash ./homedir/.config/Code/extensions.sh
