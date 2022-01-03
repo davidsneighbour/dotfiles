@@ -14,4 +14,3 @@ Name=Keybase
 Comment=Keybase Filesystem Service and GUI
 Type=Application
 Exec=env KEYBASE_AUTOSTART=1 run_keybase
-X-GNOME-Autostart-enabled=false

@@ -4,11 +4,11 @@
       relink: true
       force: true
 
-- clean: ['~']
+- clean: ["~"]
 
 - shell:
-  - [git submodule update --init --recursive, Installing submodules]
-  - [./bin/setup-system.sh, Installing required tools and IDEs]
+    - [git submodule update --init --recursive, Installing submodules]
+    - [./bin/setup-system.sh, Installing required tools and IDEs]
   #- sudo snap install --classic code
   #- sudo snap install todoist
   #####################################################################################
@@ -50,6 +50,8 @@
     ~/.xinputrc: homedir/.xinputrc
     ~/.Xresources: homedir/.Xresources
     ~/.xscreensaver: homedir/.xscreensaver
+    ~/.remarkignore: homedir/.remarkignore
+    ~/.selected_editor: homedir/.selected_editor
     ##################################################################
     # directory links
     ##################################################################
@@ -58,8 +60,8 @@
     ~/.config/sublime-text-3: homedir/.config/sublime-text-3
     ~/.themes: homedir/.themes
     ~/.icons: homedir/.icons
-
-- shell:
-  - bash ./homedir/.config/Code/extensions.sh
-  - npm install -g npm-check-updates
-  - cargo install git-cliff
+    ~/.synergy: homedir/.synergy
+# - shell:
+#     - bash ./homedir/.config/Code/extensions.sh
+#     - npm install -g npm-check-updates
+#     - cargo install git-cliff

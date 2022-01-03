@@ -156,5 +156,6 @@
   "explorer.confirmDragAndDrop": false,
   "[html]": {
     "editor.defaultFormatter": "vscode.html-language-features"
-  }
+  },
+  "redhat.telemetry.enabled": false
 }
