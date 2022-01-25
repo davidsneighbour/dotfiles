@@ -57,6 +57,7 @@
     # directory links
     ##################################################################
     ~/.conky: homedir/.conky
+    ~/.cargo: homedir/.cargo
     ~/.fonts: homedir/.fonts
     ~/.config/Code: homedir/.config/Code
     ~/.config/sublime-text-3: homedir/.config/sublime-text-3
