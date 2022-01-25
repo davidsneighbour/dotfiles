@@ -1,6 +1,6 @@
 [user]
-email = patrick@davids-neighbour.com
-name = Patrick Kollitsch
+	email = patrick@davids-neighbour.com
+	name = Patrick Kollitsch
 signingkey = 0EE9A4E93B5977C4635409E6F2A531BAD34835AD
 
 [commit]

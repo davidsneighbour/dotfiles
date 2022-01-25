@@ -1,10 +1,10 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 REQUIRED_TOOLS=(
-  npm
+  node
 )
 
-for tool in ${REQUIRED_TOOLS[@]}; do
+for tool in "${REQUIRED_TOOLS[@]}"; do
   if ! command -v "${tool}" >/dev/null; then
     echo "${tool} is required... "
     exit 1

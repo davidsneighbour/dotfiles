@@ -1,115 +1,98 @@
 #
 # Go up a specified number of directories
 #
-up(){
-    if [ -z $1 ]
-    then
-      cd ..
-      return
-    fi
-    local levels=$1
-    local result="."
-    while [ $levels -gt 0 ]
-    do
-        result=$result/..
-        ((levels--))
-    done
-    cd $result
+up() {
+  if [ -z "$1" ]; then
+    cd ..
+    return
+  fi
+  local levels=$1
+  local result="."
+  while [ "${levels}" -gt 0 ]; do
+    result=${result}/..
+    ((levels--))
+  done
+  cd "${result}" || exit
 }
-
 
 #
 # Make a directory and change to it
 #
-mkcd(){
+mkcd() {
   if [ $# -ne 1 ]; then
-         echo "Usage: mkcd <dir>"
-         return 1
+    echo "Usage: mkcd <dir>"
+    return 1
   else
-         mkdir -p $1 && cd $1
+    mkdir -p "$1" && cd "$1" || exit
   fi
 }
-
-
-#
-# fast find, using globstar
-#
-ff(){
-   ls -ltr **/$@
-}
-
 
 #
 # Prints out a long line. Useful for setting a visual flag in your terminal.
 #
-flag(){
-    echo -e  "\e[1;36m[==============="$@"===($(date +"%A, %B %e %Y, %H:%M"))===============]\e[m"
+flag() {
+  OUTPUT=${*}
+  echo -e "\e[1;36m[===============${OUTPUT}===($(date +"%Y-%m-%d %H:%M-%S"))===============]\e[m"
 }
-
 
 #
 # Backup file(s)
 #
-dbackup(){
-    if [ $# -lt 1 ]
-    then
-        echo Please supply a file to backup
-        return 1
-    fi
-    date=`date +%Y%m%d-%H%M`
-    for i in "$@"
-    do
-        echo Backed up $i to $i.$date
-        cp $i $i.$date
-    done
+dbackup() {
+  if [ $# -lt 1 ]; then
+    echo Please supply a file to backup
+    return 1
+  fi
+  date=$(date +%Y%m%d-%H%M)
+  for i in "$@"; do
+    echo Backed up "${i}" to "${i}"."${date}"
+    cp "${i}" "${i}"."${date}"
+  done
 }
-
 
 #
 # Extract an archive of any type
 #
-extract(){
-   if [ $# -lt 1 ]
-   then
-       echo Usage: extract file
-       return 1
-   fi
-   if [ -f $1 ] ; then
-       case $1 in
-           *.tar.bz2)   tar xvjf $1    ;;
-           *.tar.gz)    tar xvzf $1    ;;
-           *.bz2)       bunzip2 $1     ;;
-           *.rar)       unrar x $1     ;;
-           *.gz)        gunzip $1      ;;
-           *.tar)       tar xvf $1     ;;
-           *.tbz2)      tar xvjf $1    ;;
-           *.tgz)       tar xvzf $1    ;;
-           *.zip)       unzip $1       ;;
-           *.war|*.jar) unzip $1       ;;
-           *.Z)         uncompress $1  ;;
-           *.7z)        7z x $1        ;;
-           *)           echo "don't know how to extract '$1'..." ;;
-       esac
-   else
-       echo "'$1' is not a valid file!"
-   fi
+extract() {
+  if [ $# -lt 1 ]; then
+    echo Usage: extract file
+    return 1
+  fi
+  if [ -f "$1" ]; then
+    case $1 in
+    *.tar.bz2) tar xvjf "$1" ;;
+    *.tar.gz) tar xvzf "$1" ;;
+    *.bz2) bunzip2 "$1" ;;
+    *.rar) unrar x "$1" ;;
+    *.gz) gunzip "$1" ;;
+    *.tar) tar xvf "$1" ;;
+    *.tbz2) tar xvjf "$1" ;;
+    *.tgz) tar xvzf "$1" ;;
+    *.zip) unzip "$1" ;;
+    *.war | *.jar) unzip "$1" ;;
+    *.Z) uncompress "$1" ;;
+    *.7z) 7z x "$1" ;;
+    *) echo "don't know how to extract '$1'..." ;;
+    esac
+  else
+    echo "'$1' is not a valid file!"
+  fi
 }
-
 
 #
 # Creates an archive
 #
-roll(){
-  if [ "$#" -ne 0 ] ; then
+roll() {
+  if [ "$#" -ne 0 ]; then
     FILE="$1"
-    case "$FILE" in
-      *.tar.bz2|*.tbz2) shift && tar cvjf "$FILE" $* ;;
-      *.tar.gz|*.tgz)   shift && tar cvzf "$FILE" $* ;;
-      *.tar)            shift && tar cvf "$FILE" $* ;;
-      *.zip)            shift && zip "$FILE" $* ;;
-      *.rar)            shift && rar "$FILE" $* ;;
-      *.7z)             shift && 7zr a "$FILE" $* ;;
-      *)                echo "'$1' cannot be rolled via roll()" ;;
+    case "${FILE}" in
+    *.tar.bz2 | *.tbz2) shift && tar cvjf "${FILE}" "$*" ;;
+    *.tar.gz | *.tgz) shift && tar cvzf "${FILE}" "$*" ;;
+    *.tar) shift && tar cvf "${FILE}" "$*" ;;
+    *.zip) shift && zip "${FILE}" "$*" ;;
+    *.rar) shift && rar "${FILE}" "$*" ;;
+    *.7z) shift && 7zr a "${FILE}" "$*" ;;
+    *) echo "'$1' cannot be rolled via roll()" ;;
     esac
   else
     echo "usage: roll [file] [contents]"
@@ -119,21 +102,21 @@ roll(){
 # Create a data URI from a file
 datauri() {
 
-    local mimeType=""
+  local mimeType=""
 
-    if [ -f "$1" ]; then
-        mimeType=$(file -b --mime-type "$1")
-        #                └─ do not prepend the filename to the output
+  if [ -f "$1" ]; then
+    mimeType=$(file -b --mime-type "$1")
+    #                └─ do not prepend the filename to the output
 
-        if [[ $mimeType == text/* ]]; then
-            mimeType="$mimeType;charset=utf-8"
-        fi
-
-        printf "data:%s;base64,%s" \
-                    "$mimeType" \
-                    "$(openssl base64 -in "$1" | tr -d "\n")"
-    else
-        print_error "'$1' is not a file."
+    if [[ ${mimeType} == text/* ]]; then
+      mimeType="${mimeType};charset=utf-8"
     fi
+
+    printf "data:%s;base64,%s" \
+      "${mimeType}" \
+      "$(openssl base64 -in "$1" | tr -d "\n")"
+  else
+    print_error "'$1' is not a file."
+  fi
 
 }

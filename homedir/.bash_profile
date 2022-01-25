@@ -1,6 +1,5 @@
 #!/bin/bash
-# ~/.bash_profile: executed by the command interpreter for login shells.
-# This file is not read by bash(1), if ~/.bash_login exists.
+# executed by the command interpreter for login shells
 
 # the default umask is set in /etc/profile; for setting the umask
 # for ssh logins, install and configure the libpam-umask package.
@@ -10,7 +9,7 @@ umask 022
 if [ -n "${BASH_VERSION}" ]; then
   # include .bashrc if it exists
   if [ -f "${HOME}/.bashrc" ]; then
+    # shellcheck source=homedir/.bashrc
     source "${HOME}/.bashrc"
   fi
 fi
-source "${HOME}/.cargo/env"

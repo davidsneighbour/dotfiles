@@ -1,0 +1,24 @@
+#!/bin/bash
+
+REQUIRED_TOOLS=(
+  node
+  npm
+  hugo
+)
+
+for tool in "${REQUIRED_TOOLS[@]}"; do
+  if ! command -v "${tool}" >/dev/null; then
+    echo "${tool} is required... "
+    exit 1
+  fi
+done
+
+echo "#!/bin/bash
+# shellcheck disable=all
+" >homedir/bash/completions/npm
+npm completion >>homedir/bash/completions/npm
+
+echo "#!/bin/bash
+# shellcheck disable=all
+" >homedir/bash/completions/gohugo
+hugo gen autocomplete >>homedir/bash/completions/gohugo

@@ -1,11 +1,11 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 REQUIRED_TOOLS=(
-    curl
+  curl
 )
 
-for tool in ${REQUIRED_TOOLS[@]}; do
-  if ! command -v ${tool} >/dev/null; then
+for tool in "${REQUIRED_TOOLS[@]}"; do
+  if ! command -v "${tool}" >/dev/null; then
     echo "${tool} is required... "
     exit 1
   fi

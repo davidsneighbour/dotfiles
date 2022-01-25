@@ -1,3 +1,7 @@
+# shellcheck disable=SC2139
+# the above disables warnings for behaviour that we are ok with
+# see https://github.com/koalaman/shellcheck/wiki/SC2139
+
 # reloads profile
 alias reload='. ~/.bash_profile'
 
@@ -20,11 +24,11 @@ alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 
 # various ls shortcuts
-alias ll='ls -ltr' 		# sort by name
-alias lu='ls -ltur' 	# sort by file/dir > name
-alias lal='ls -altr' 	# sort by last mod asc
-alias dir='ls -al'		# yeah, well...
-alias ldir='ll -d */'	# list directories only
+alias ll='ls -ltr'    # sort by name
+alias lu='ls -ltur'   # sort by file/dir > name
+alias lal='ls -altr'  # sort by last mod asc
+alias dir='ls -al'    # yeah, well...
+alias ldir='ll -d */' # list directories only
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -71,15 +75,11 @@ alias jobterm='sendevent -E CHANGE_STATUS -s TERMINATED -J'
 alias countfiles='ls -1a | wc -l'
 alias tail='grc tail'
 
-# hugo
-alias hugoserver="hugo server --templateMetrics --templateMetricsHints --verbose --watch"
-alias hugoserver2="hugo server  --disableFastRender --i18n-warnings --navigateToChanged  --templateMetrics --templateMetricsHints --verbose --verboseLog --path-warnings --buildDrafts --buildExpired --buildFuture --watch"
-alias hugoserver3="hugo server --path-warnings --disableFastRender --templateMetrics --templateMetricsHints"
-
 alias subl='subl -a'
+
 # dotfiles edit this repository...
-# @todo probably good to do something self-referential here instead of hard coded?
-alias dotfiles="code ${DOTFILES_PATH}"
+# shellcheck disable=SC2154 # we know the variable is initialised
+alias dotfiles='code ${DOTFILES_PATH:?}/workspace.code-workspace'
 
 alias lasttag='git describe --tags $(git rev-list --tags --max-count=1)'
 
@@ -90,14 +90,14 @@ alias sourcerer-list='sourcerer-list'
 
 # setting up http methods
 for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do
-	# shellcheck disable=SC2139
-	alias "$method"="lwp-request -m '$method'"
+  alias "${method}"="lwp-request -m '${method}'"
 done
 
 # Enable aliases to be sudo’ed
 alias sudo='sudo '
 
 # Always use color output for `ls`
+# shellcheck disable=SC2154 # we know the variable is initialised
 alias ls="command ls ${colorflag}"
 export LS_COLORS='no=00:fi=00:di=01;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.gz=01;31:*.bz2=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.avi=01;35:*.fli=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.ogg=01;35:*.mp3=01;35:*.wav=01;35:'
 

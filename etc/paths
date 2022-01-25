@@ -1,0 +1,10 @@
+"${HOME}"/.bin
+"${HOME}"/.bin/local/bin
+"${HOME}"/.config/composer/vendor/bin
+"${HOME}"/.local/bin
+"${HOME}"/.local/npm/bin
+"${HOME}"/.local/share/umake/bin
+"${HOME}"/.npm-global/bin
+"${HOME}"/.rbenv/bin
+/usr/lib/dart/bin
+/usr/local/heroku/bin
