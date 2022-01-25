@@ -612,15 +612,15 @@ button.osd {
   background-clip: padding-box;
   border: none;
   box-shadow: none; }
-  
+
   button.osd.image-button {
     min-width: 30px; }
-    
+
     button.osd.image-button:only-child {
       margin: 4px;
       border-radius: 50%;
       box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); }
-  
+
   button.osd:hover {
     color: white;
     border-color: black;
@@ -629,7 +629,7 @@ button.osd {
     background-clip: padding-box;
     border: none;
     box-shadow: none; }
-  
+
   button.osd:active,
   button.osd:checked {
     color: white;
@@ -707,48 +707,48 @@ button.suggested-action {
   transition-property: outline, outline-width, outline-offset, outline-color;
   transition-duration: 300ms;
   animation-timing-function: ease-in-out; }
-  
+
   button.suggested-action {
     outline: 0 solid transparent;
     outline-offset: 4px; }
-  
+
   button.suggested-action:focus:focus-visible {
     outline-color: rgba(255, 255, 255, 0.3);
     outline-width: 2px;
     outline-offset: -2px; }
-  
+
   button.suggested-action.flat {
     border-color: transparent;
     background-color: transparent;
     background-image: none;
     box-shadow: none;
     color: #ec0101; }
-  
+
   button.suggested-action:hover {
     color: white;
     border-color: #a00101;
     background-image: linear-gradient(to top, #d80101 20%, #dd0101 90%);
     box-shadow: inset 0 1px rgba(255, 255, 255, 0.05), inset 0 -1px 0px rgba(160, 1, 1, 0.75), 0 1px 2px rgba(0, 0, 0, 0.27); }
-  
+
   button.suggested-action:active,
   button.suggested-action:checked {
     color: white;
     border-color: #a00101;
     background-image: image(#be0101);
     box-shadow: none; }
-  
+
   button.suggested-action.flat:disabled {
     border-color: transparent;
     background-color: transparent;
     background-image: none;
     box-shadow: none;
     color: rgba(236, 1, 1, 0.8); }
-  
+
   button.suggested-action:disabled {
     color: #888a8d;
     border-color: #13151a;
     background-image: image(#242731); }
-    
+
     button.suggested-action:disabled:active,
     button.suggested-action:disabled:checked {
       color: #e09b9c;
@@ -792,48 +792,48 @@ button.destructive-action {
   transition-property: outline, outline-width, outline-offset, outline-color;
   transition-duration: 300ms;
   animation-timing-function: ease-in-out; }
-  
+
   button.destructive-action {
     outline: 0 solid transparent;
     outline-offset: 4px; }
-  
+
   button.destructive-action:focus:focus-visible {
     outline-color: rgba(255, 255, 255, 0.3);
     outline-width: 2px;
     outline-offset: -2px; }
-  
+
   button.destructive-action.flat {
     border-color: transparent;
     background-color: transparent;
     background-image: none;
     box-shadow: none;
     color: #a61414; }
-  
+
   button.destructive-action:hover {
     color: white;
     border-color: #620c0c;
     background-image: linear-gradient(to top, #941111 20%, #991212 90%);
     box-shadow: inset 0 1px rgba(255, 255, 255, 0.05), inset 0 -1px 0px rgba(98, 12, 12, 0.75), 0 1px 2px rgba(0, 0, 0, 0.27); }
-  
+
   button.destructive-action:active,
   button.destructive-action:checked {
     color: white;
     border-color: #620c0c;
     background-image: image(#7d0f0f);
     box-shadow: none; }
-  
+
   button.destructive-action.flat:disabled {
     border-color: transparent;
     background-color: transparent;
     background-image: none;
     box-shadow: none;
     color: rgba(166, 20, 20, 0.8); }
-  
+
   button.destructive-action:disabled {
     color: #888a8d;
     border-color: #13151a;
     background-image: image(#242731); }
-    
+
     button.destructive-action:disabled:active,
     button.destructive-action:disabled:checked {
       color: #c9a1a1;
@@ -2415,10 +2415,10 @@ radio {
 check {
   border-radius: 3px;
   -gtk-icon-size: 14px; }
-  
+
   check:checked {
     -gtk-icon-source: -gtk-scaled(-gtk-recolor(url("assets/check-symbolic.symbolic.png")), -gtk-recolor(url("assets/check@2-symbolic.symbolic.png"))); }
-  
+
   check:indeterminate {
     -gtk-icon-source: -gtk-scaled(-gtk-recolor(url("assets/dash-symbolic.symbolic.png")), -gtk-recolor(url("assets/dash@2-symbolic.symbolic.png"))); }
 

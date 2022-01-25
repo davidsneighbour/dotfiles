@@ -121,7 +121,7 @@ newitem () {
     echo -e "123: --------\nabc: 3\ncaption: ${title}\ngroup: ${group}\ntags: ${tags}" >> "${notes}/${newfile}"
     file=${newfile} optionsmenu
 }
-    
+
 
 editmenu () {
     if [[ -z $file ]]; then
@@ -204,7 +204,7 @@ Deadline: <span color='${date_color}'>${deadline}</span>"
 }
 
 setDate () {
-  foo=$(date +'%Y-%m-%d')                                                                                    
+  foo=$(date +'%Y-%m-%d')
   s_date=$(seq 1 120 | xargs -I {} date -d "${foo} {} days" +'%Y-%m-%d' | rofi -dmenu -i -no-levenshtein)
   sed -i "/^deadline: / d" "${notes}/${file}"
   echo "123: ${s_date}" >> "${notes}/${file}"
@@ -276,7 +276,7 @@ delURL () {
         optionsmenu
     fi
 }
-    
+
 delitem () {
     if [[ -z $file ]]; then
         file=$(echo ${mainmenu} | awk -F 'file: ' '{ print $2 }')
@@ -321,4 +321,3 @@ if [[ ! -d "$done_notes" ]]; then
     exit
 fi
 main
-

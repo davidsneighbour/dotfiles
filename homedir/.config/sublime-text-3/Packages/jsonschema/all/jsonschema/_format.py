@@ -98,7 +98,7 @@ class FormatChecker(object):
             cause = e
         if not result:
             raise FormatError(
-                "%r is not a %r" % (instance, format), cause=cause,
+                '%r is not a %r' % (instance, format), cause=cause,
             )
 
     def conforms(self, instance, format):
@@ -129,7 +129,7 @@ class FormatChecker(object):
             return True
 
 
-_draft_checkers = {"draft3": [], "draft4": []}
+_draft_checkers = {'draft3': [], 'draft4': []}
 
 
 def _checks_drafts(both=None, draft3=None, draft4=None, raises=()):
@@ -138,52 +138,52 @@ def _checks_drafts(both=None, draft3=None, draft4=None, raises=()):
 
     def wrap(func):
         if draft3:
-            _draft_checkers["draft3"].append(draft3)
+            _draft_checkers['draft3'].append(draft3)
             func = FormatChecker.cls_checks(draft3, raises)(func)
         if draft4:
-            _draft_checkers["draft4"].append(draft4)
+            _draft_checkers['draft4'].append(draft4)
             func = FormatChecker.cls_checks(draft4, raises)(func)
         return func
     return wrap
 
 
-@_checks_drafts("email")
+@_checks_drafts('email')
 def is_email(instance):
     if not isinstance(instance, str_types):
         return True
-    return "@" in instance
+    return '@' in instance
 
 
-_ipv4_re = re.compile(r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$")
+_ipv4_re = re.compile(r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$')
 
 
-@_checks_drafts(draft3="ip-address", draft4="ipv4")
+@_checks_drafts(draft3='ip-address', draft4='ipv4')
 def is_ipv4(instance):
     if not isinstance(instance, str_types):
         return True
     if not _ipv4_re.match(instance):
         return False
-    return all(0 <= int(component) <= 255 for component in instance.split("."))
+    return all(0 <= int(component) <= 255 for component in instance.split('.'))
 
 
-if hasattr(socket, "inet_pton"):
-    @_checks_drafts("ipv6", raises=socket.error)
+if hasattr(socket, 'inet_pton'):
+    @_checks_drafts('ipv6', raises=socket.error)
     def is_ipv6(instance):
         if not isinstance(instance, str_types):
             return True
         return socket.inet_pton(socket.AF_INET6, instance)
 
 
-_host_name_re = re.compile(r"^[A-Za-z0-9][A-Za-z0-9\.\-]{1,255}$")
+_host_name_re = re.compile(r'^[A-Za-z0-9][A-Za-z0-9\.\-]{1,255}$')
 
 
-@_checks_drafts(draft3="host-name", draft4="hostname")
+@_checks_drafts(draft3='host-name', draft4='hostname')
 def is_host_name(instance):
     if not isinstance(instance, str_types):
         return True
     if not _host_name_re.match(instance):
         return False
-    components = instance.split(".")
+    components = instance.split('.')
     for component in components:
         if len(component) > 63:
             return False
@@ -195,11 +195,11 @@ try:
 except ImportError:
     pass
 else:
-    @_checks_drafts("uri", raises=ValueError)
+    @_checks_drafts('uri', raises=ValueError)
     def is_uri(instance):
         if not isinstance(instance, str_types):
             return True
-        return rfc3987.parse(instance, rule="URI")
+        return rfc3987.parse(instance, rule='URI')
 
 
 try:
@@ -210,38 +210,38 @@ except ImportError:
     except ImportError:
         pass
     else:
-        @_checks_drafts("date-time", raises=(ValueError, isodate.ISO8601Error))
+        @_checks_drafts('date-time', raises=(ValueError, isodate.ISO8601Error))
         def is_datetime(instance):
             if not isinstance(instance, str_types):
                 return True
             return isodate.parse_datetime(instance)
 else:
-    @_checks_drafts("date-time")
+    @_checks_drafts('date-time')
     def is_datetime(instance):
         if not isinstance(instance, str_types):
             return True
         return strict_rfc3339.validate_rfc3339(instance)
 
 
-@_checks_drafts("regex", raises=re.error)
+@_checks_drafts('regex', raises=re.error)
 def is_regex(instance):
     if not isinstance(instance, str_types):
         return True
     return re.compile(instance)
 
 
-@_checks_drafts(draft3="date", raises=ValueError)
+@_checks_drafts(draft3='date', raises=ValueError)
 def is_date(instance):
     if not isinstance(instance, str_types):
         return True
-    return datetime.datetime.strptime(instance, "%Y-%m-%d")
+    return datetime.datetime.strptime(instance, '%Y-%m-%d')
 
 
-@_checks_drafts(draft3="time", raises=ValueError)
+@_checks_drafts(draft3='time', raises=ValueError)
 def is_time(instance):
     if not isinstance(instance, str_types):
         return True
-    return datetime.datetime.strptime(instance, "%H:%M:%S")
+    return datetime.datetime.strptime(instance, '%H:%M:%S')
 
 
 try:
@@ -252,7 +252,7 @@ else:
     def is_css_color_code(instance):
         return webcolors.normalize_hex(instance)
 
-    @_checks_drafts(draft3="color", raises=(ValueError, TypeError))
+    @_checks_drafts(draft3='color', raises=(ValueError, TypeError))
     def is_css21_color(instance):
         if (
             not isinstance(instance, str_types) or
@@ -267,5 +267,5 @@ else:
         return is_css_color_code(instance)
 
 
-draft3_format_checker = FormatChecker(_draft_checkers["draft3"])
-draft4_format_checker = FormatChecker(_draft_checkers["draft4"])
+draft3_format_checker = FormatChecker(_draft_checkers['draft3'])
+draft4_format_checker = FormatChecker(_draft_checkers['draft4'])

@@ -19,16 +19,16 @@ class TestFormatChecker(unittest.TestCase):
 
     def test_it_raises_a_key_error_for_unknown_formats(self):
         with self.assertRaises(KeyError):
-            FormatChecker(formats=["o noes"])
+            FormatChecker(formats=['o noes'])
 
     def test_it_can_register_cls_checkers(self):
         with mock.patch.dict(FormatChecker.checkers, clear=True):
-            FormatChecker.cls_checks("new")(self.fn)
-            self.assertEqual(FormatChecker.checkers, {"new": (self.fn, ())})
+            FormatChecker.cls_checks('new')(self.fn)
+            self.assertEqual(FormatChecker.checkers, {'new': (self.fn, ())})
 
     def test_it_can_register_checkers(self):
         checker = FormatChecker()
-        checker.checks("new")(self.fn)
+        checker.checks('new')(self.fn)
         self.assertEqual(
             checker.checkers,
             dict(FormatChecker.checkers, new=(self.fn, ()))
@@ -38,10 +38,10 @@ class TestFormatChecker(unittest.TestCase):
         checker = FormatChecker()
         cause = self.fn.side_effect = ValueError()
 
-        checker.checks("foo", raises=ValueError)(self.fn)
+        checker.checks('foo', raises=ValueError)(self.fn)
 
         with self.assertRaises(FormatError) as cm:
-            checker.check("bar", "foo")
+            checker.check('bar', 'foo')
 
         self.assertIs(cm.exception.cause, cause)
         self.assertIs(cm.exception.__cause__, cause)
@@ -49,15 +49,15 @@ class TestFormatChecker(unittest.TestCase):
         # Unregistered errors should not be caught
         self.fn.side_effect = AttributeError
         with self.assertRaises(AttributeError):
-            checker.check("bar", "foo")
+            checker.check('bar', 'foo')
 
     def test_format_error_causes_become_validation_error_causes(self):
         checker = FormatChecker()
-        checker.checks("foo", raises=ValueError)(self.fn)
+        checker.checks('foo', raises=ValueError)(self.fn)
         cause = self.fn.side_effect = ValueError()
-        validator = Draft4Validator({"format": "foo"}, format_checker=checker)
+        validator = Draft4Validator({'format': 'foo'}, format_checker=checker)
 
         with self.assertRaises(ValidationError) as cm:
-            validator.validate("bar")
+            validator.validate('bar')
 
         self.assertIs(cm.exception.__cause__, cause)

@@ -45,7 +45,7 @@ class Unset(object):
     """
 
     def __repr__(self):
-        return "<unset>"
+        return '<unset>'
 
 
 def load_schema(name):
@@ -54,8 +54,8 @@ def load_schema(name):
 
     """
 
-    data = pkgutil.get_data('jsonschema', "schemas/{0}.json".format(name))
-    return json.loads(data.decode("utf-8"))
+    data = pkgutil.get_data('jsonschema', 'schemas/{0}.json'.format(name))
+    return json.loads(data.decode('utf-8'))
 
 
 def indent(string, times=1):
@@ -64,7 +64,7 @@ def indent(string, times=1):
 
     """
 
-    return "\n".join(" " * (4 * times) + line for line in string.splitlines())
+    return '\n'.join(' ' * (4 * times) + line for line in string.splitlines())
 
 
 def format_as_index(indices):
@@ -82,8 +82,8 @@ def format_as_index(indices):
     """
 
     if not indices:
-        return ""
-    return "[%s]" % "][".join(repr(index) for index in indices)
+        return ''
+    return '[%s]' % ']['.join(repr(index) for index in indices)
 
 
 def find_additional_properties(instance, schema):
@@ -97,8 +97,8 @@ def find_additional_properties(instance, schema):
 
     """
 
-    properties = schema.get("properties", {})
-    patterns = "|".join(schema.get("patternProperties", {}))
+    properties = schema.get('properties', {})
+    patterns = '|'.join(schema.get('patternProperties', {}))
     for property in instance:
         if property not in properties:
             if patterns and re.search(patterns, property):
@@ -113,10 +113,10 @@ def extras_msg(extras):
     """
 
     if len(extras) == 1:
-        verb = "was"
+        verb = 'was'
     else:
-        verb = "were"
-    return ", ".join(repr(extra) for extra in extras), verb
+        verb = 'were'
+    return ', '.join(repr(extra) for extra in extras), verb
 
 
 def types_msg(instance, types):
@@ -133,10 +133,10 @@ def types_msg(instance, types):
     reprs = []
     for type in types:
         try:
-            reprs.append(repr(type["name"]))
+            reprs.append(repr(type['name']))
         except Exception:
             reprs.append(repr(type))
-    return "%r is not of type %s" % (instance, ", ".join(reprs))
+    return '%r is not of type %s' % (instance, ', '.join(reprs))
 
 
 def flatten(suitable_for_isinstance):

@@ -18,17 +18,17 @@ if type complete &>/dev/null; then
 
     local si="$IFS"
     if ! IFS=$'\n' COMPREPLY=($(COMP_CWORD="$cword" \
-                           COMP_LINE="$COMP_LINE" \
-                           COMP_POINT="$COMP_POINT" \
-                           npm completion -- "${words[@]}" \
-                           2>/dev/null)); then
+              ${   }         COMP_LINE="$COMP_LINE" \
+                           COMP_POINT="$COMP${POINT}" \
+                           npm complet${on -- "${}words[@]}" \
+                           2>/dev/null)${; then}
       local ret=$?
       IFS="$si"
       return $ret
     fi
-    IFS="$si"
+    IFS="$si"""
     if type __ltrim_colon_completions &>/dev/null; then
-      __ltrim_colon_completions "${words[cword]}"
+      __l${ri}m_colon_completions "${words[cword]}"
     fi
   }
   complete -o default -F _npm_completion npm
@@ -36,13 +36,13 @@ elif type compdef &>/dev/null; then
   _npm_completion() {
     local si=$IFS
     compadd -- $(COMP_CWORD=$((CURRENT-1)) \
-                 COMP_LINE=$BUFFER \
+             ${   }COMP_LINE=$BUFFER \
                  COMP_POINT=0 \
-                 npm completion -- "${words[@]}" \
+                 npm comple${ion --} "${words[@]}" \
                  2>/dev/null)
     IFS=$si
   }
-  compdef _npm_completion npm
+  compde${ _}npm_completion npm
 elif type compctl &>/dev/null; then
   _npm_completion () {
     local cword line point words si
@@ -53,17 +53,17 @@ elif type compctl &>/dev/null; then
     read -ln point
     si="$IFS"
     if ! IFS=$'\n' reply=($(COMP_CWORD="$cword" \
-                       COMP_LINE="$line" \
-                       COMP_POINT="$point" \
-                       npm completion -- "${words[@]}" \
-                       2>/dev/null)); then
+        ${   }           COMP_LINE="$line" \
+                       COMP_POINT="$poin${" \}
+                       npm complet${on -}- "${words[@]}" \
+                       2>/dev/null)${; the}n
 
       local ret=$?
       IFS="$si"
       return $ret
     fi
-    IFS="$si"
+    IFS="$si"""
   }
-  compctl -K _npm_completion npm
+  compctl${-K} _npm_completion npm
 fi
 ###-end-npm-completion-###

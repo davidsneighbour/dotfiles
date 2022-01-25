@@ -19,16 +19,16 @@ class TestBestMatch(unittest.TestCase):
     def test_shallower_errors_are_better_matches(self):
         validator = Draft4Validator(
             {
-                "properties": {
-                    "foo": {
-                        "minProperties": 2,
-                        "properties": {"bar": {"type": "object"}},
+                'properties': {
+                    'foo': {
+                        'minProperties': 2,
+                        'properties': {'bar': {'type': 'object'}},
                     },
                 },
             },
         )
-        best = self.best_match(validator.iter_errors({"foo": {"bar": []}}))
-        self.assertEqual(best.validator, "minProperties")
+        best = self.best_match(validator.iter_errors({'foo': {'bar': []}}))
+        self.assertEqual(best.validator, 'minProperties')
 
     def test_oneOf_and_anyOf_are_weak_matches(self):
         """
@@ -39,13 +39,13 @@ class TestBestMatch(unittest.TestCase):
 
         validator = Draft4Validator(
             {
-                "minProperties": 2,
-                "anyOf": [{"type": "string"}, {"type": "number"}],
-                "oneOf": [{"type": "string"}, {"type": "number"}],
+                'minProperties': 2,
+                'anyOf': [{'type': 'string'}, {'type': 'number'}],
+                'oneOf': [{'type': 'string'}, {'type': 'number'}],
             }
         )
         best = self.best_match(validator.iter_errors({}))
-        self.assertEqual(best.validator, "minProperties")
+        self.assertEqual(best.validator, 'minProperties')
 
     def test_if_the_most_relevant_error_is_anyOf_it_is_traversed(self):
         """
@@ -60,18 +60,18 @@ class TestBestMatch(unittest.TestCase):
 
         validator = Draft4Validator(
             {
-                "properties": {
-                    "foo": {
-                        "anyOf": [
-                            {"type": "string"},
-                            {"properties": {"bar": {"type": "array"}}},
+                'properties': {
+                    'foo': {
+                        'anyOf': [
+                            {'type': 'string'},
+                            {'properties': {'bar': {'type': 'array'}}},
                         ],
                     },
                 },
             },
         )
-        best = self.best_match(validator.iter_errors({"foo": {"bar": 12}}))
-        self.assertEqual(best.validator_value, "array")
+        best = self.best_match(validator.iter_errors({'foo': {'bar': 12}}))
+        self.assertEqual(best.validator_value, 'array')
 
     def test_if_the_most_relevant_error_is_oneOf_it_is_traversed(self):
         """
@@ -86,18 +86,18 @@ class TestBestMatch(unittest.TestCase):
 
         validator = Draft4Validator(
             {
-                "properties": {
-                    "foo": {
-                        "oneOf": [
-                            {"type": "string"},
-                            {"properties": {"bar": {"type": "array"}}},
+                'properties': {
+                    'foo': {
+                        'oneOf': [
+                            {'type': 'string'},
+                            {'properties': {'bar': {'type': 'array'}}},
                         ],
                     },
                 },
             },
         )
-        best = self.best_match(validator.iter_errors({"foo": {"bar": 12}}))
-        self.assertEqual(best.validator_value, "array")
+        best = self.best_match(validator.iter_errors({'foo': {'bar': 12}}))
+        self.assertEqual(best.validator_value, 'array')
 
     def test_if_the_most_relevant_error_is_allOf_it_is_traversed(self):
         """
@@ -108,32 +108,32 @@ class TestBestMatch(unittest.TestCase):
 
         validator = Draft4Validator(
             {
-                "properties": {
-                    "foo": {
-                        "allOf": [
-                            {"type": "string"},
-                            {"properties": {"bar": {"type": "array"}}},
+                'properties': {
+                    'foo': {
+                        'allOf': [
+                            {'type': 'string'},
+                            {'properties': {'bar': {'type': 'array'}}},
                         ],
                     },
                 },
             },
         )
-        best = self.best_match(validator.iter_errors({"foo": {"bar": 12}}))
-        self.assertEqual(best.validator_value, "string")
+        best = self.best_match(validator.iter_errors({'foo': {'bar': 12}}))
+        self.assertEqual(best.validator_value, 'string')
 
     def test_nested_context_for_oneOf(self):
         validator = Draft4Validator(
             {
-                "properties": {
-                    "foo": {
-                        "oneOf": [
-                            {"type": "string"},
+                'properties': {
+                    'foo': {
+                        'oneOf': [
+                            {'type': 'string'},
                             {
-                                "oneOf": [
-                                    {"type": "string"},
+                                'oneOf': [
+                                    {'type': 'string'},
                                     {
-                                        "properties": {
-                                            "bar": {"type": "array"},
+                                        'properties': {
+                                            'bar': {'type': 'array'},
                                         },
                                     },
                                 ],
@@ -143,15 +143,15 @@ class TestBestMatch(unittest.TestCase):
                 },
             },
         )
-        best = self.best_match(validator.iter_errors({"foo": {"bar": 12}}))
-        self.assertEqual(best.validator_value, "array")
+        best = self.best_match(validator.iter_errors({'foo': {'bar': 12}}))
+        self.assertEqual(best.validator_value, 'array')
 
     def test_one_error(self):
-        validator = Draft4Validator({"minProperties": 2})
+        validator = Draft4Validator({'minProperties': 2})
         error, = validator.iter_errors({})
         self.assertEqual(
             exceptions.best_match(validator.iter_errors({})).validator,
-            "minProperties",
+            'minProperties',
         )
 
     def test_no_errors(self):
@@ -161,8 +161,8 @@ class TestBestMatch(unittest.TestCase):
 
 class TestByRelevance(unittest.TestCase):
     def test_short_paths_are_better_matches(self):
-        shallow = exceptions.ValidationError("Oh no!", path=["baz"])
-        deep = exceptions.ValidationError("Oh yes!", path=["foo", "bar"])
+        shallow = exceptions.ValidationError('Oh no!', path=['baz'])
+        deep = exceptions.ValidationError('Oh yes!', path=['foo', 'bar'])
         match = max([shallow, deep], key=exceptions.relevance)
         self.assertIs(match, shallow)
 
@@ -170,26 +170,26 @@ class TestByRelevance(unittest.TestCase):
         self.assertIs(match, shallow)
 
     def test_global_errors_are_even_better_matches(self):
-        shallow = exceptions.ValidationError("Oh no!", path=[])
-        deep = exceptions.ValidationError("Oh yes!", path=["foo"])
+        shallow = exceptions.ValidationError('Oh no!', path=[])
+        deep = exceptions.ValidationError('Oh yes!', path=['foo'])
 
         errors = sorted([shallow, deep], key=exceptions.relevance)
         self.assertEqual(
             [list(error.path) for error in errors],
-            [["foo"], []],
+            [['foo'], []],
         )
 
         errors = sorted([deep, shallow], key=exceptions.relevance)
         self.assertEqual(
             [list(error.path) for error in errors],
-            [["foo"], []],
+            [['foo'], []],
         )
 
     def test_weak_validators_are_lower_priority(self):
-        weak = exceptions.ValidationError("Oh no!", path=[], validator="a")
-        normal = exceptions.ValidationError("Oh yes!", path=[], validator="b")
+        weak = exceptions.ValidationError('Oh no!', path=[], validator='a')
+        normal = exceptions.ValidationError('Oh yes!', path=[], validator='b')
 
-        best_match = exceptions.by_relevance(weak="a")
+        best_match = exceptions.by_relevance(weak='a')
 
         match = max([weak, normal], key=best_match)
         self.assertIs(match, normal)
@@ -198,11 +198,11 @@ class TestByRelevance(unittest.TestCase):
         self.assertIs(match, normal)
 
     def test_strong_validators_are_higher_priority(self):
-        weak = exceptions.ValidationError("Oh no!", path=[], validator="a")
-        normal = exceptions.ValidationError("Oh yes!", path=[], validator="b")
-        strong = exceptions.ValidationError("Oh fine!", path=[], validator="c")
+        weak = exceptions.ValidationError('Oh no!', path=[], validator='a')
+        normal = exceptions.ValidationError('Oh yes!', path=[], validator='b')
+        strong = exceptions.ValidationError('Oh fine!', path=[], validator='c')
 
-        best_match = exceptions.by_relevance(weak="a", strong="c")
+        best_match = exceptions.by_relevance(weak='a', strong='c')
 
         match = max([weak, normal, strong], key=best_match)
         self.assertIs(match, strong)
@@ -218,55 +218,55 @@ class TestErrorTree(unittest.TestCase):
         self.assertEqual(tree.total_errors, 8)
 
     def test_it_contains_an_item_if_the_item_had_an_error(self):
-        errors = [exceptions.ValidationError("a message", path=["bar"])]
+        errors = [exceptions.ValidationError('a message', path=['bar'])]
         tree = exceptions.ErrorTree(errors)
-        self.assertIn("bar", tree)
+        self.assertIn('bar', tree)
 
     def test_it_does_not_contain_an_item_if_the_item_had_no_error(self):
-        errors = [exceptions.ValidationError("a message", path=["bar"])]
+        errors = [exceptions.ValidationError('a message', path=['bar'])]
         tree = exceptions.ErrorTree(errors)
-        self.assertNotIn("foo", tree)
+        self.assertNotIn('foo', tree)
 
     def test_validators_that_failed_appear_in_errors_dict(self):
-        error = exceptions.ValidationError("a message", validator="foo")
+        error = exceptions.ValidationError('a message', validator='foo')
         tree = exceptions.ErrorTree([error])
-        self.assertEqual(tree.errors, {"foo": error})
+        self.assertEqual(tree.errors, {'foo': error})
 
     def test_it_creates_a_child_tree_for_each_nested_path(self):
         errors = [
-            exceptions.ValidationError("a bar message", path=["bar"]),
-            exceptions.ValidationError("a bar -> 0 message", path=["bar", 0]),
+            exceptions.ValidationError('a bar message', path=['bar']),
+            exceptions.ValidationError('a bar -> 0 message', path=['bar', 0]),
         ]
         tree = exceptions.ErrorTree(errors)
-        self.assertIn(0, tree["bar"])
-        self.assertNotIn(1, tree["bar"])
+        self.assertIn(0, tree['bar'])
+        self.assertNotIn(1, tree['bar'])
 
     def test_children_have_their_errors_dicts_built(self):
         e1, e2 = (
-            exceptions.ValidationError("1", validator="foo", path=["bar", 0]),
-            exceptions.ValidationError("2", validator="quux", path=["bar", 0]),
+            exceptions.ValidationError('1', validator='foo', path=['bar', 0]),
+            exceptions.ValidationError('2', validator='quux', path=['bar', 0]),
         )
         tree = exceptions.ErrorTree([e1, e2])
-        self.assertEqual(tree["bar"][0].errors, {"foo": e1, "quux": e2})
+        self.assertEqual(tree['bar'][0].errors, {'foo': e1, 'quux': e2})
 
     def test_regression_multiple_errors_with_instance(self):
         e1, e2 = (
             exceptions.ValidationError(
-                "1",
-                validator="foo",
-                path=["bar", "bar2"],
-                instance="i1"),
+                '1',
+                validator='foo',
+                path=['bar', 'bar2'],
+                instance='i1'),
             exceptions.ValidationError(
-                "2",
-                validator="quux",
-                path=["foobar", 2],
-                instance="i2"),
+                '2',
+                validator='quux',
+                path=['foobar', 2],
+                instance='i2'),
         )
         # Will raise an exception if the bug is still there.
         exceptions.ErrorTree([e1, e2])
 
     def test_it_does_not_contain_subtrees_that_are_not_in_the_instance(self):
-        error = exceptions.ValidationError("123", validator="foo", instance=[])
+        error = exceptions.ValidationError('123', validator='foo', instance=[])
         tree = exceptions.ErrorTree([error])
 
         with self.assertRaises(IndexError):
@@ -281,20 +281,20 @@ class TestErrorTree(unittest.TestCase):
         """
 
         error = exceptions.ValidationError(
-            "a message", validator="foo", instance={}, path=["foo"],
+            'a message', validator='foo', instance={}, path=['foo'],
         )
         tree = exceptions.ErrorTree([error])
-        self.assertIsInstance(tree["foo"], exceptions.ErrorTree)
+        self.assertIsInstance(tree['foo'], exceptions.ErrorTree)
 
 
 class TestErrorInitReprStr(unittest.TestCase):
     def make_error(self, **kwargs):
         defaults = dict(
-            message=u"hello",
-            validator=u"type",
-            validator_value=u"string",
+            message=u'hello',
+            validator=u'type',
+            validator_value=u'string',
             instance=5,
-            schema={u"type": u"string"},
+            schema={u'type': u'string'},
         )
         defaults.update(kwargs)
         return exceptions.ValidationError(**defaults)
@@ -302,10 +302,10 @@ class TestErrorInitReprStr(unittest.TestCase):
     def assertShows(self, expected, **kwargs):
         if PY3:
             expected = expected.replace("u'", "'")
-        expected = textwrap.dedent(expected).rstrip("\n")
+        expected = textwrap.dedent(expected).rstrip('\n')
 
         error = self.make_error(**kwargs)
-        message_line, _, rest = str(error).partition("\n")
+        message_line, _, rest = str(error).partition('\n')
         self.assertEqual(message_line, error.message)
         self.assertEqual(rest, expected)
 
@@ -315,26 +315,26 @@ class TestErrorInitReprStr(unittest.TestCase):
 
     def test_repr(self):
         self.assertEqual(
-            repr(exceptions.ValidationError(message="Hello!")),
-            "<ValidationError: %r>" % "Hello!",
+            repr(exceptions.ValidationError(message='Hello!')),
+            '<ValidationError: %r>' % 'Hello!',
         )
 
     def test_unset_error(self):
-        error = exceptions.ValidationError("message")
-        self.assertEqual(str(error), "message")
+        error = exceptions.ValidationError('message')
+        self.assertEqual(str(error), 'message')
 
         kwargs = {
-            "validator": "type",
-            "validator_value": "string",
-            "instance": 5,
-            "schema": {"type": "string"},
+            'validator': 'type',
+            'validator_value': 'string',
+            'instance': 5,
+            'schema': {'type': 'string'},
         }
         # Just the message should show if any of the attributes are unset
         for attr in kwargs:
             k = dict(kwargs)
             del k[attr]
-            error = exceptions.ValidationError("message", **k)
-            self.assertEqual(str(error), "message")
+            error = exceptions.ValidationError('message', **k)
+            self.assertEqual(str(error), 'message')
 
     def test_empty_paths(self):
         self.assertShows(
@@ -359,7 +359,7 @@ class TestErrorInitReprStr(unittest.TestCase):
                 5
             """,
             path=[0],
-            schema_path=["items"],
+            schema_path=['items'],
         )
 
     def test_multiple_item_paths(self):
@@ -371,12 +371,12 @@ class TestErrorInitReprStr(unittest.TestCase):
             On instance[0][u'a']:
                 5
             """,
-            path=[0, u"a"],
-            schema_path=[u"items", 0, 1],
+            path=[0, u'a'],
+            schema_path=[u'items', 0, 1],
         )
 
     def test_uses_pprint(self):
-        with mock.patch("pprint.pformat") as pformat:
+        with mock.patch('pprint.pformat') as pformat:
             str(self.make_error())
             self.assertEqual(pformat.call_count, 2)  # schema + instance
 
@@ -390,11 +390,11 @@ class TestErrorInitReprStr(unittest.TestCase):
 
         instance = mock.MagicMock()
         error = exceptions.ValidationError(
-            "a message",
-            validator="foo",
+            'a message',
+            validator='foo',
             instance=instance,
-            validator_value="some",
-            schema="schema",
+            validator_value='some',
+            schema='schema',
         )
         str(error)
         self.assertFalse(instance.__eq__.called)

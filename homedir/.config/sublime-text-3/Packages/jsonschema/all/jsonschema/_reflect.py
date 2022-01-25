@@ -82,7 +82,7 @@ def _importAndCheckStack(importName):
     except ImportError:
         excType, excValue, excTraceback = sys.exc_info()
         while excTraceback:
-            execName = excTraceback.tb_frame.f_globals["__name__"]
+            execName = excTraceback.tb_frame.f_globals['__name__']
             # in Python 2 execName is None when an ImportError is encountered,
             # where in Python 3 execName is equal to the importName.
             if execName is None or execName == importName:
@@ -131,7 +131,7 @@ def namedAny(name):
     if '' in names:
         raise InvalidName(
             "name must be a string giving a '.'-separated list of Python "
-            "identifiers, not %r" % (name,))
+            'identifiers, not %r' % (name,))
 
     topLevelPackage = None
     moduleNames = names[:]
@@ -144,7 +144,7 @@ def namedAny(name):
                 moduleNames.pop()
         else:
             if len(names) == 1:
-                raise ModuleNotFound("No module named %r" % (name,))
+                raise ModuleNotFound('No module named %r' % (name,))
             else:
                 raise ObjectNotFound('%r does not name an object' % (name,))
 

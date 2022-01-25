@@ -7,7 +7,7 @@ from jsonschema import _utils
 from jsonschema.compat import PY3, iteritems
 
 
-WEAK_MATCHES = frozenset(["anyOf", "oneOf"])
+WEAK_MATCHES = frozenset(['anyOf', 'oneOf'])
 STRONG_MATCHES = frozenset()
 
 _unset = _utils.Unset()
@@ -54,7 +54,7 @@ class _Error(Exception):
             error.parent = self
 
     def __repr__(self):
-        return "<%s: %r>" % (self.__class__.__name__, self.message)
+        return '<%s: %r>' % (self.__class__.__name__, self.message)
 
     def __unicode__(self):
         essential_for_verbose = (
@@ -85,7 +85,7 @@ class _Error(Exception):
         __str__ = __unicode__
     else:
         def __str__(self):
-            return unicode(self).encode("utf-8")
+            return unicode(self).encode('utf-8')
 
     @classmethod
     def create_from(cls, other):
@@ -118,8 +118,8 @@ class _Error(Exception):
 
     def _contents(self):
         attrs = (
-            "message", "cause", "context", "validator", "validator_value",
-            "path", "schema_path", "instance", "schema", "parent",
+            'message', 'cause', 'context', 'validator', 'validator_value',
+            'path', 'schema_path', 'instance', 'schema', 'parent',
         )
         return dict((attr, getattr(self, attr)) for attr in attrs)
 
@@ -158,7 +158,7 @@ class UnknownType(Exception):
         __str__ = __unicode__
     else:
         def __str__(self):
-            return unicode(self).encode("utf-8")
+            return unicode(self).encode('utf-8')
 
 
 class FormatError(Exception):
@@ -174,7 +174,7 @@ class FormatError(Exception):
         __str__ = __unicode__
     else:
         def __str__(self):
-            return self.message.encode("utf-8")
+            return self.message.encode('utf-8')
 
 
 class ErrorTree(object):
@@ -240,7 +240,7 @@ class ErrorTree(object):
         return self.total_errors
 
     def __repr__(self):
-        return "<%s (%s total errors)>" % (self.__class__.__name__, len(self))
+        return '<%s (%s total errors)>' % (self.__class__.__name__, len(self))
 
     @property
     def total_errors(self):

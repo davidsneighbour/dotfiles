@@ -1,5 +1,3 @@
-#!/bin/sh
-
 # see https://gist.github.com/amenk/d68f1fe54b156952ced621f771ff48ba
 # see https://stackoverflow.com/questions/39161770/symfony-based-autocomplete-breaks-scp-autocomplete
 
@@ -7,40 +5,37 @@
 ROBO=robo
 #ROBO=irobo
 
-function __robo_list_cmds ()
-{
-      $ROBO list --raw | awk '{print $1}' | sort
+function __robo_list_cmds() {
+  ${ROBO} list --raw | awk '{print $1}' | sort
 }
 
-function __robo_list_opts ()
-{
-    $ROBO list --no-ansi | sed -e '1,/Options:/d' -e '/^$/,$d' -e 's/^ *//' -e 's/ .*//' | sort
+function __robo_list_opts() {
+  ${ROBO} list --no-ansi | sed -e '1,/Options:/d' -e '/^$/,$d' -e 's/^ *//' -e 's/ .*//' | sort
 }
 
-_stem () {
-    local lcur lprev
-    lcur="$cur"
-    stem="$lcur"
-    for (( i = cword - 1; i >= 0; i -= 1 )); do
-        lprev="${words[i]}"
-        [[ "$lcur" == ":" ]] && [[ "$lprev" == ":" ]] && break
-        [[ "$lcur" != ":" ]] && [[ "$lprev" != ":" ]] && break
-        stem="$lprev$stem"
-        lcur="$lprev"
-    done
+_stem() {
+  local lcur lprev
+  lcur="${cur}"
+  stem="${lcur}"
+  for ((i = cword - 1; i >= 0; i -= 1)); do
+    lprev="${words[i]}"
+    [[ "${lcur}" == ":" ]] && [[ "${lprev}" == ":" ]] && break
+    [[ "${lcur}" != ":" ]] && [[ "${lprev}" != ":" ]] && break
+    stem="${lprev}${stem}"
+    lcur="${lprev}"
+  done
 }
 
-_robo () {
-    local cur prev words cword
-    _init_completion || return
-    local stem options
-    options=($(__robo_list_opts) $(__robo_list_cmds))
-    COMPREPLY=()
-    _stem
-    COMPREPLY=($(compgen -W '${options[@]}' -- "$stem"))
-    [[ "$stem" =~ : ]] && stem=${stem%:*}: && COMPREPLY=(${COMPREPLY[@]#"$stem"})
-    return 0
+_robo() {
+  local cur prev words cword
+  _init_completion || return
+  local stem options
+  options=($(__robo_list_opts) $(__robo_list_cmds))
+  COMPREPLY=()
+  _stem
+  COMPREPLY=($(compgen -W '${options[@]}' -- "${stem}"))
+  [[ "${stem}" =~ : ]] && stem=${stem%:*}: && COMPREPLY=(${COMPREPLY[@]#"${stem}"})
+  return 0
 }
 
-
-complete -o default -F _robo $ROBO
+complete -o default -F _robo "$ROBO"

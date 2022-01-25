@@ -45,8 +45,8 @@ def validates(version):
 
     def _validates(cls):
         validators[version] = cls
-        if u"id" in cls.META_SCHEMA:
-            meta_schemas[cls.META_SCHEMA[u"id"]] = cls
+        if u'id' in cls.META_SCHEMA:
+            meta_schemas[cls.META_SCHEMA[u'id']] = cls
         return cls
     return _validates
 
@@ -54,9 +54,9 @@ def validates(version):
 def create(meta_schema, validators=(), version=None, default_types=None):  # noqa: C901, E501
     if default_types is None:
         default_types = {
-            u"array": list, u"boolean": bool, u"integer": int_types,
-            u"null": type(None), u"number": numbers.Number, u"object": dict,
-            u"string": str_types,
+            u'array': list, u'boolean': bool, u'integer': int_types,
+            u'null': type(None), u'number': numbers.Number, u'object': dict,
+            u'string': str_types,
         }
 
     class Validator(object):
@@ -86,13 +86,13 @@ def create(meta_schema, validators=(), version=None, default_types=None):  # noq
             if _schema is None:
                 _schema = self.schema
 
-            scope = _schema.get(u"id")
+            scope = _schema.get(u'id')
             if scope:
                 self.resolver.push_scope(scope)
             try:
-                ref = _schema.get(u"$ref")
+                ref = _schema.get(u'$ref')
                 if ref is not None:
-                    validators = [(u"$ref", ref)]
+                    validators = [(u'$ref', ref)]
                 else:
                     validators = iteritems(_schema)
 
@@ -110,7 +110,7 @@ def create(meta_schema, validators=(), version=None, default_types=None):  # noq
                             instance=instance,
                             schema=_schema,
                         )
-                        if k != u"$ref":
+                        if k != u'$ref':
                             error.schema_path.appendleft(k)
                         yield error
             finally:
@@ -150,7 +150,7 @@ def create(meta_schema, validators=(), version=None, default_types=None):  # noq
 
     if version is not None:
         Validator = validates(version)(Validator)
-        Validator.__name__ = version.title().replace(" ", "") + "Validator"
+        Validator.__name__ = version.title().replace(' ', '') + 'Validator'
 
     return Validator
 
@@ -167,65 +167,65 @@ def extend(validator, validators, version=None):
 
 
 Draft3Validator = create(
-    meta_schema=_utils.load_schema("draft3"),
+    meta_schema=_utils.load_schema('draft3'),
     validators={
-        u"$ref": _validators.ref,
-        u"additionalItems": _validators.additionalItems,
-        u"additionalProperties": _validators.additionalProperties,
-        u"dependencies": _validators.dependencies,
-        u"disallow": _validators.disallow_draft3,
-        u"divisibleBy": _validators.multipleOf,
-        u"enum": _validators.enum,
-        u"extends": _validators.extends_draft3,
-        u"format": _validators.format,
-        u"items": _validators.items,
-        u"maxItems": _validators.maxItems,
-        u"maxLength": _validators.maxLength,
-        u"maximum": _validators.maximum,
-        u"minItems": _validators.minItems,
-        u"minLength": _validators.minLength,
-        u"minimum": _validators.minimum,
-        u"multipleOf": _validators.multipleOf,
-        u"pattern": _validators.pattern,
-        u"patternProperties": _validators.patternProperties,
-        u"properties": _validators.properties_draft3,
-        u"type": _validators.type_draft3,
-        u"uniqueItems": _validators.uniqueItems,
+        u'$ref': _validators.ref,
+        u'additionalItems': _validators.additionalItems,
+        u'additionalProperties': _validators.additionalProperties,
+        u'dependencies': _validators.dependencies,
+        u'disallow': _validators.disallow_draft3,
+        u'divisibleBy': _validators.multipleOf,
+        u'enum': _validators.enum,
+        u'extends': _validators.extends_draft3,
+        u'format': _validators.format,
+        u'items': _validators.items,
+        u'maxItems': _validators.maxItems,
+        u'maxLength': _validators.maxLength,
+        u'maximum': _validators.maximum,
+        u'minItems': _validators.minItems,
+        u'minLength': _validators.minLength,
+        u'minimum': _validators.minimum,
+        u'multipleOf': _validators.multipleOf,
+        u'pattern': _validators.pattern,
+        u'patternProperties': _validators.patternProperties,
+        u'properties': _validators.properties_draft3,
+        u'type': _validators.type_draft3,
+        u'uniqueItems': _validators.uniqueItems,
     },
-    version="draft3",
+    version='draft3',
 )
 
 Draft4Validator = create(
-    meta_schema=_utils.load_schema("draft4"),
+    meta_schema=_utils.load_schema('draft4'),
     validators={
-        u"$ref": _validators.ref,
-        u"additionalItems": _validators.additionalItems,
-        u"additionalProperties": _validators.additionalProperties,
-        u"allOf": _validators.allOf_draft4,
-        u"anyOf": _validators.anyOf_draft4,
-        u"dependencies": _validators.dependencies,
-        u"enum": _validators.enum,
-        u"format": _validators.format,
-        u"items": _validators.items,
-        u"maxItems": _validators.maxItems,
-        u"maxLength": _validators.maxLength,
-        u"maxProperties": _validators.maxProperties_draft4,
-        u"maximum": _validators.maximum,
-        u"minItems": _validators.minItems,
-        u"minLength": _validators.minLength,
-        u"minProperties": _validators.minProperties_draft4,
-        u"minimum": _validators.minimum,
-        u"multipleOf": _validators.multipleOf,
-        u"not": _validators.not_draft4,
-        u"oneOf": _validators.oneOf_draft4,
-        u"pattern": _validators.pattern,
-        u"patternProperties": _validators.patternProperties,
-        u"properties": _validators.properties_draft4,
-        u"required": _validators.required_draft4,
-        u"type": _validators.type_draft4,
-        u"uniqueItems": _validators.uniqueItems,
+        u'$ref': _validators.ref,
+        u'additionalItems': _validators.additionalItems,
+        u'additionalProperties': _validators.additionalProperties,
+        u'allOf': _validators.allOf_draft4,
+        u'anyOf': _validators.anyOf_draft4,
+        u'dependencies': _validators.dependencies,
+        u'enum': _validators.enum,
+        u'format': _validators.format,
+        u'items': _validators.items,
+        u'maxItems': _validators.maxItems,
+        u'maxLength': _validators.maxLength,
+        u'maxProperties': _validators.maxProperties_draft4,
+        u'maximum': _validators.maximum,
+        u'minItems': _validators.minItems,
+        u'minLength': _validators.minLength,
+        u'minProperties': _validators.minProperties_draft4,
+        u'minimum': _validators.minimum,
+        u'multipleOf': _validators.multipleOf,
+        u'not': _validators.not_draft4,
+        u'oneOf': _validators.oneOf_draft4,
+        u'pattern': _validators.pattern,
+        u'patternProperties': _validators.patternProperties,
+        u'properties': _validators.properties_draft4,
+        u'required': _validators.required_draft4,
+        u'type': _validators.type_draft4,
+        u'uniqueItems': _validators.uniqueItems,
     },
-    version="draft4",
+    version='draft4',
 )
 
 
@@ -315,7 +315,7 @@ class RefResolver(object):
 
         """
 
-        return cls(schema.get(u"id", u""), schema, *args, **kwargs)
+        return cls(schema.get(u'id', u''), schema, *args, **kwargs)
 
     def push_scope(self, scope):
         self._scopes_stack.append(
@@ -327,9 +327,9 @@ class RefResolver(object):
             self._scopes_stack.pop()
         except IndexError:
             raise RefResolutionError(
-                "Failed to pop the scope from an empty stack. "
-                "`pop_scope()` should only be called once for every "
-                "`push_scope()`"
+                'Failed to pop the scope from an empty stack. '
+                '`pop_scope()` should only be called once for every '
+                '`push_scope()`'
             )
 
     @property
@@ -402,11 +402,11 @@ class RefResolver(object):
 
         """
 
-        fragment = fragment.lstrip(u"/")
-        parts = unquote(fragment).split(u"/") if fragment else []
+        fragment = fragment.lstrip(u'/')
+        parts = unquote(fragment).split(u'/') if fragment else []
 
         for part in parts:
-            part = part.replace(u"~1", u"/").replace(u"~0", u"~")
+            part = part.replace(u'~1', u'/').replace(u'~0', u'~')
 
             if isinstance(document, Sequence):
                 # Array indexes should be turned into integers
@@ -418,7 +418,7 @@ class RefResolver(object):
                 document = document[part]
             except (TypeError, LookupError):
                 raise RefResolutionError(
-                    "Unresolvable JSON pointer: %r" % fragment
+                    'Unresolvable JSON pointer: %r' % fragment
                 )
 
         return document
@@ -459,9 +459,9 @@ class RefResolver(object):
         if scheme in self.handlers:
             result = self.handlers[scheme](uri)
         elif (
-            scheme in [u"http", u"https"] and
+            scheme in [u'http', u'https'] and
             requests and
-            getattr(requests.Response, "json", None) is not None
+            getattr(requests.Response, 'json', None) is not None
         ):
             # Requests has support for detecting the correct encoding of
             # json over http
@@ -471,7 +471,7 @@ class RefResolver(object):
                 result = requests.get(uri).json
         else:
             # Otherwise, pass off to urllib and assume utf-8
-            result = json.loads(urlopen(uri).read().decode("utf-8"))
+            result = json.loads(urlopen(uri).read().decode('utf-8'))
 
         if self.cache_remote:
             self.store[uri] = result
@@ -481,7 +481,7 @@ class RefResolver(object):
 def validator_for(schema, default=_unset):
     if default is _unset:
         default = Draft4Validator
-    return meta_schemas.get(schema.get(u"$schema", u""), default)
+    return meta_schemas.get(schema.get(u'$schema', u''), default)
 
 
 def validate(instance, schema, cls=None, *args, **kwargs):

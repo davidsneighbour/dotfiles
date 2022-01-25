@@ -9,7 +9,7 @@
 # general settings and paths
 ################################################################################
 
-set $mod Mod4 
+set $mod Mod4
 
 # snap directory
 set $snapd "/var/lib/snapd/desktop/applications"
