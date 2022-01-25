@@ -52,9 +52,11 @@
     ~/.xscreensaver: homedir/.xscreensaver
     ~/.remarkignore: homedir/.remarkignore
     ~/.selected_editor: homedir/.selected_editor
+    ~/.env: .env
     ##################################################################
     # directory links
     ##################################################################
+    ~/.conky: homedir/.conky
     ~/.fonts: homedir/.fonts
     ~/.config/Code: homedir/.config/Code
     ~/.config/sublime-text-3: homedir/.config/sublime-text-3
