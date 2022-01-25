@@ -16,7 +16,7 @@
   "editor.cursorSmoothCaretAnimation": true,
   "editor.fontLigatures": true,
   "[jsonc]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "vscode.json-language-features"
   },
   "editor.formatOnPaste": true,
   "editor.formatOnSave": true,
@@ -69,7 +69,7 @@
   },
   "oneDarkPro.vivid": true,
   "[json]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "vscode.json-language-features"
   },
   "terminal.integrated.persistentSessionReviveProcess": "never",
   "screencastMode.onlyKeyboardShortcuts": true,
@@ -77,10 +77,9 @@
   "screencastMode.mouseIndicatorSize": 40,
   "screencastMode.keyboardShortcutsFormat": "commandAndKeys",
   "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "vscode.typescript-language-features"
   },
   "editor.guides.bracketPairs": true,
-  "editor.linkedEditing": true,
   "explorer.confirmDelete": false,
   "prettier.requireConfig": true,
   "files.insertFinalNewline": true,
@@ -131,7 +130,9 @@
     "scminput": true,
     "git-commit": true,
     "html": true,
-    "gohtml": true
+    "gohtml": true,
+    "plaintext": true,
+    "json": true
   },
   "go.toolsManagement.autoUpdate": true,
   "gitlens.currentLine.enabled": false,
@@ -157,5 +158,24 @@
   "[html]": {
     "editor.defaultFormatter": "vscode.html-language-features"
   },
-  "redhat.telemetry.enabled": false
+  "redhat.telemetry.enabled": false,
+  "better-comments.highlightPlainText": true,
+  "quokka.automaticRestart": true,
+  "quokka.automaticStartRegex": "*.(js|ts)",
+  "color-highlight.markerType": "dot-before",
+  "stylelint.snippet": [
+    "css",
+    "less",
+    "postcss",
+    "scss"
+  ],
+  "stylelint.validate": [
+    "css",
+    "less",
+    "postcss",
+    "scss"
+  ],
+  // disable vscode internal validation for SCSS (stylelint)
+  "scss.validate": false,
+  "editor.linkedEditing": true
 }
