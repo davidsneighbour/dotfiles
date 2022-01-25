@@ -1,7 +1,7 @@
-GIT_AUTHOR_NAME="Patrick Kollitsch"
-GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"
-GIT_AUTHOR_EMAIL="patrick@davids-neighbour.com"
-GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
+export GIT_AUTHOR_NAME="Patrick Kollitsch"
+export GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"
+export GIT_AUTHOR_EMAIL="patrick@davids-neighbour.com"
+export GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
 
 git config --global user.name "$GIT_AUTHOR_NAME"
 git config --global user.email "$GIT_AUTHOR_EMAIL"
@@ -34,3 +34,6 @@ export COLOR_CYAN='\e[0;36m'
 export COLOR_LIGHT_CYAN='\e[1;36m'
 export COLOR_LIGHT_GRAY='\e[0;37m'
 export COLOR_WHITE='\e[1;37m'
+
+export VISUAL=/usr/bin/subl
+export EDITOR=/usr/bin/subl
