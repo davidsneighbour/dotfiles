@@ -105,7 +105,10 @@
     "**/zshenv": true,
     "**/*.zsh-theme": true
   },
-  "shellcheck.ignoreFileSchemes": ["git", "gitfs"],
+  "shellcheck.ignoreFileSchemes": [
+    "git",
+    "gitfs"
+  ],
   "shellcheck.useWorkspaceRootAsCwd": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.shellcheck": true
@@ -153,7 +156,11 @@
       "query": "state:open repo:${owner}/${repository} sort:updated-desc"
     }
   ],
-  "go-template.languages": ["html", "toml", "json"],
+  "go-template.languages": [
+    "html",
+    "toml",
+    "json"
+  ],
   "explorer.confirmDragAndDrop": false,
   "[html]": {
     "editor.defaultFormatter": "vscode.html-language-features"
@@ -177,5 +184,7 @@
   ],
   // disable vscode internal validation for SCSS (stylelint)
   "scss.validate": false,
-  "editor.linkedEditing": true
+  "editor.linkedEditing": true,
+  "shellformat.useEditorConfig": true,
+  "shellformat.flag": "-i 2 -ci -sr -kp -fn"
 }
