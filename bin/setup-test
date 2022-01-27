@@ -2,6 +2,7 @@
 
 REQUIRED_TOOLS=(
   curl
+  delta
   hugo
   node
   npm
