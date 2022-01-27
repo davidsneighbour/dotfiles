@@ -58,7 +58,14 @@
     ~/.conky: homedir/.conky
     ~/.cargo: homedir/.cargo
     ~/.fonts: homedir/.fonts
+    ~/.config/autostart: homedir/.config/autostart
     ~/.config/Code: homedir/.config/Code
+    ~/.config/dunst: homedir/.config/dunst
+    ~/.config/filezilla: homedir/.config/filezilla
+    ~/.config/i3: homedir/.config/i3
+    ~/.config/neofetch: homedir/.config/neofetch
+    ~/.config/polybar: homedir/.config/polybar
+    ~/.config/rofi: homedir/.config/rofi
     ~/.config/sublime-text-3: homedir/.config/sublime-text-3
     ~/.themes: homedir/.themes
     ~/.icons: homedir/.icons
