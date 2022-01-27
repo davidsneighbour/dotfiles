@@ -1,4 +1,23 @@
-#
+#!/bin/bash
+
+# glone GITPATH
+# clone $GITPATH to a folder structure that recreates the link structure
+# inside the home directory.
+# TODO: make this work with all git links, not only git@ links (currently)
+function glone() {
+  REPO1=$1
+  # REPOTYPE=$(cut -d'@' -f1 <<<"$REPO1")
+  REPOHASH0=$(cut -d':' -f1 <<<"${REPO1}")
+  PATH0=$(cut -d'@' -f2 <<<"${REPOHASH0}")
+  REPOHASH1=$(cut -d':' -f2 <<<"${REPO1}")
+  PATH1=$(cut -d'/' -f1 <<<"${REPOHASH1}")
+  PATH2=$(cut -d'/' -f2 <<<"${REPOHASH1}")
+  PATH2=${PATH2::-4}
+  REPOPATH="${HOME}"/"${PATH0}"/"${PATH1}"/"${PATH2}"1
+  mkdir -p "${REPOPATH}"
+  git clone "${REPO1}" "${REPOPATH}"
+}
+
 # Go up a specified number of directories
 #
 up() {
