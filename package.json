@@ -44,7 +44,8 @@
     "themer-i3": "^1.0.1"
   },
   "devDependencies": {
-    "trim": ">=1.0.1"
+    "trim": ">=1.0.1",
+    "mem": ">=9.0.2"
   },
   "scripts": {
     "build:theme": "bash ./bin/themer.sh",
