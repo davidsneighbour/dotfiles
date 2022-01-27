@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.7](/github.com/davidsneighbour/dotfiles/compare/v1.0.6...v1.0.7) (2022-01-27)
+
+
+### Features
+
+* add glone bash function ([338fb40](/github.com/davidsneighbour/dotfiles/commit/338fb4060ee1970288c4705e434f7a11fb3ac6fd))
+
 ### [1.0.6](/github.com/davidsneighbour/dotfiles/compare/v1.0.5...v1.0.6) (2022-01-25)
 
 ### [1.0.5](/github.com/davidsneighbour/dotfiles/compare/v1.0.4...v1.0.5) (2022-01-25)
