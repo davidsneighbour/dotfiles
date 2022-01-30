@@ -67,6 +67,7 @@
     ~/.config/polybar: homedir/.config/polybar
     ~/.config/rofi: homedir/.config/rofi
     ~/.config/sublime-text-3: homedir/.config/sublime-text-3
+    ~/.config/tabtab: homedir/.config/tabtab
     ~/.themes: homedir/.themes
     ~/.icons: homedir/.icons
     ~/.synergy: homedir/.synergy
