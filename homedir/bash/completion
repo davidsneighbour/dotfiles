@@ -96,7 +96,7 @@ SSH_COMPLETE=("$(cut -f1 -d' ' ~/.ssh/known_hosts |\
                  grep -e '[[:alpha:]]')")
 complete -o default -W "${SSH_COMPLETE[*]}" ssh
 
-for FILE in "${DOTFILES_PATH}"/homedir/bash/completions/{hugo,npm,robo}; do
+for FILE in "${DOTFILES_PATH}"/homedir/bash/completions/{hugo,netlify,npm,robo}; do
   # this routine ranges through a folder of files that we don't explicitly know (@davidsneighbour)
   # see https://github.com/koalaman/shellcheck/wiki/SC1090
   # shellcheck source-path=SOURCEDIR/completions

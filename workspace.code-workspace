@@ -6,15 +6,5 @@
 		{
 			"path": "../scratch"
 		}
-	],
-	"settings": {
-		"files.autoSave": "afterDelay",
-		"editor.fontSize": 15,
-		"editor.fontFamily": "'Fira Code', 'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
-		"editor.tabSize": 1,
-		"editor.cursorStyle": "block-outline",
-		"editor.formatOnPaste": true,
-		"editor.formatOnSave": true,
-		"diffEditor.codeLens": true
-	}
+	]
 }

@@ -3,7 +3,7 @@ Conky configuration
 ]]
 
 conky.config = {
-    alignment = 'top_right',
+    alignment = 'middle_right',
     background = true,
     border_width = 1,
     cpu_avg_samples = 2,
@@ -17,9 +17,10 @@ conky.config = {
     draw_shades = false,
     extra_newline = false,
     font = 'DejaVu Sans Mono:size=12',
-    gap_x = 60,
-    gap_y = 60,
-    minimum_height = 5,
+    gap_x = 0,
+    gap_y = 30,
+
+    minimum_height = 100,
     minimum_width = 5,
     net_avg_samples = 2,
     no_buffers = true,
@@ -35,18 +36,14 @@ conky.config = {
     show_graph_range = false,
     show_graph_scale = false,
     stippled_borders = 0,
-    update_interval = 1.0,
+    update_interval = 10.0,
     uppercase = false,
     use_spacer = 'none',
     use_xft = true,
 }
 
 conky.text = [[
-${color grey}Info:$color ${scroll 32 $sysname $nodename $kernel $machine}
-$hr
 ${color grey}Uptime:$color $uptime
-${color grey}Frequency (in MHz):$color $freq
-${color grey}Frequency (in GHz):$color $freq_g
 ${color grey}RAM Usage:$color $mem/$memmax - $memperc% ${membar 4}
 ${color grey}Swap Usage:$color $swap/$swapmax - $swapperc% ${swapbar 4}
 ${color grey}CPU Usage:$color $cpu% ${cpubar 4}
