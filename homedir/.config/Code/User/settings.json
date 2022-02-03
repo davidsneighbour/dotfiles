@@ -187,5 +187,6 @@
   "editor.linkedEditing": true,
   "shellformat.useEditorConfig": true,
   "shellformat.flag": "-i 2 -ci -sr -kp -fn",
-  "terminal.integrated.defaultProfile.linux": "bash"
+  "terminal.integrated.defaultProfile.linux": "bash",
+  "workbench.startupEditor": "none"
 }
