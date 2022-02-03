@@ -95,6 +95,9 @@ default = tracking
 autocorrect = 1
 
 [alias]
+# merge all commits of a branch into one single commit
+squash-all = "!f(){ git reset $(git commit-tree HEAD^{tree} -m \"${1:-chore: initial commit}\");};f"
+
 hist = log --graph --pretty=format:'%Cred%h%Creset %C(cyan)%an%Creset - %C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
 player = shortlog -sn
 sneak = commit --amend --no-edit
