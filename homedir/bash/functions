@@ -13,7 +13,7 @@ function glone() {
   PATH1=$(cut -d'/' -f1 <<<"${REPOHASH1}")
   PATH2=$(cut -d'/' -f2 <<<"${REPOHASH1}")
   PATH2=${PATH2::-4}
-  REPOPATH="${HOME}"/"${PATH0}"/"${PATH1}"/"${PATH2}"1
+  REPOPATH="${HOME}"/"${PATH0}"/"${PATH1}"/"${PATH2}"
   mkdir -p "${REPOPATH}"
   git clone "${REPO1}" "${REPOPATH}"
 }
