@@ -8,9 +8,9 @@
   "repository": "github.com/davidsneighbour/dotfiles",
   "bugs": "https://github.com/davidsneighbour/dotfiles/issues",
   "dependencies": {
-    "@dnb-org/remark-config": "^3.5.2",
-    "@dnb-org/standard-version-config": "^3.5.1",
-    "@dnb-org/textlint-config": "^3.5.2",
+    "@dnb-org/remark-config": "^3.5.7",
+    "@dnb-org/standard-version-config": "^3.5.6",
+    "@dnb-org/textlint-config": "^3.5.7",
     "@themerdev/atom-syntax": "^2.1.4",
     "@themerdev/atom-ui": "^1.1.4",
     "@themerdev/chrome": "^1.2.2",
@@ -42,11 +42,6 @@
     "themer": "3.3.9",
     "themer-gnome-terminal": "^1.0.1",
     "themer-i3": "^1.0.1"
-  },
-  "devDependencies": {
-    "trim": ">=1.0.1",
-    "mem": ">=9.0.2",
-    "simple-get": ">=4.0.1"
   },
   "scripts": {
     "build:theme": "bash ./bin/themer.sh",
