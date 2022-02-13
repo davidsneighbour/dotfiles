@@ -64,8 +64,8 @@
   "oneDarkPro.editorTheme": "One Dark Pro Flat",
   "workbench.editor.enablePreview": false,
   "workbench.colorCustomizations": {
-    "editorCursor.foreground": "#33ff00",
-    "terminalCursor.foreground": "#33ff00"
+    "editorCursor.foreground": "#fe5e78",
+    "terminalCursor.foreground": "#fe5e78"
   },
   "oneDarkPro.vivid": true,
   "[json]": {
@@ -73,7 +73,7 @@
   },
   "terminal.integrated.persistentSessionReviveProcess": "never",
   "screencastMode.onlyKeyboardShortcuts": true,
-  "screencastMode.mouseIndicatorColor": "#33ff00",
+  "screencastMode.mouseIndicatorColor": "#fe5e78",
   "screencastMode.mouseIndicatorSize": 40,
   "screencastMode.keyboardShortcutsFormat": "commandAndKeys",
   "[javascript]": {
@@ -113,7 +113,7 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.shellcheck": true
   },
-  "workbench.colorTheme": "Darcula",
+  "workbench.colorTheme": "Horizon DNB",
   "gruvboxMaterial.colorfulSyntax": true,
   "gruvboxMaterial.darkContrast": "hard",
   "gruvboxMaterial.darkCursor": "red",
@@ -188,5 +188,13 @@
   "shellformat.useEditorConfig": true,
   "shellformat.flag": "-i 2 -ci -sr -kp -fn",
   "terminal.integrated.defaultProfile.linux": "bash",
-  "workbench.startupEditor": "none"
+  "workbench.startupEditor": "none",
+  "[dockerfile]": {
+    "editor.defaultFormatter": "ms-azuretools.vscode-docker"
+  },
+  "stylelint.reportNeedlessDisables": true,
+  "stylelint.reportInvalidScopeDisables": true,
+  "cypressHelper.includeAnnotationForCommands": true,
+  "intelephense.telemetry.enabled": false,
+  "rest-client.enableTelemetry": false
 }
