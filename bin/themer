@@ -1,0 +1,39 @@
+#!/bin/bash
+
+REQUIRED_TOOLS=(
+  node
+)
+
+for tool in "${REQUIRED_TOOLS[@]}"; do
+  if ! command -v "${tool}" >/dev/null; then
+    echo "${tool} is required... "
+    exit 1
+  fi
+done
+
+echo "Create Theme"
+node ./node_modules/themer/bin/themer.js -c @themerdev/colors-nova \
+  -t @themerdev/vim \
+  -t @themerdev/sublime-text \
+  -t @themerdev/atom-syntax \
+  -t @themerdev/atom-ui \
+  -t @themerdev/chrome \
+  -t @themerdev/css \
+  -t @themerdev/firefox-addon \
+  -t @themerdev/firefox-color \
+  -t themer-gnome-terminal \
+  -t themer-i3 \
+  -t @themerdev/slack \
+  -t @themerdev/xresources \
+  -t @themerdev/wallpaper-block-wave \
+  -t @themerdev/wallpaper-burst \
+  -t @themerdev/wallpaper-circuits \
+  -t @themerdev/wallpaper-diamonds \
+  -t @themerdev/wallpaper-dot-grid \
+  -t @themerdev/wallpaper-octagon \
+  -t @themerdev/wallpaper-shirts \
+  -t @themerdev/wallpaper-triangles \
+  -t @themerdev/wallpaper-trianglify \
+  -o themer
+
+echo "Completed in ${SECONDS}s"

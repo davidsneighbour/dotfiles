@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "../../../../gitlab.com/wonderland-gmbh/wonderland-engine-website"
+		},
+		{
+			"path": "../../../../gitlab.com/wonderland-gmbh/hugo-module-tnd-env"
+		},
+		{
+			"path": "../../../../gitlab.com/wonderland-gmbh/hugo-module-tnd-search"
+		},
+		{
+			"path": "../../../gohugoio/gohugoioTheme"
+		}
+	],
+	"settings": {}
+}

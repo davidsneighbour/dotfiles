@@ -1,0 +1,8 @@
+[MIME Cache]
+application/x-ipynb+json=jupyter-notebook.desktop;
+x-scheme-handler/joplin=appimagekit-joplin.desktop;
+x-scheme-handler/mailto=shift-application.desktop;
+x-scheme-handler/sgnl=signal-desktop.desktop;
+x-scheme-handler/signalcaptcha=signal-desktop.desktop;
+x-scheme-handler/tg=appimagekit_28c7af9d909c0e118479cb48d57a1e6b-Telegram_Desktop.desktop;
+x-scheme-handler/vsls=vsls-launcher.desktop;

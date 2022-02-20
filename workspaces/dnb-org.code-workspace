@@ -1,0 +1,21 @@
+{
+  "folders": [
+    {
+      "name": "kollitsch.de",
+      "path": "../../kollitsch.de"
+    },
+    {
+      "name": "dnb-org",
+      "path": "../../../dnb-org"
+    },
+    {
+      "name": "dotfiles",
+      "path": ".."
+    }
+  ],
+  "settings": {
+    "discord.enabled": true,
+    "[markdown]": {},
+    "terminal.integrated.enableShellIntegration": true
+  }
+}

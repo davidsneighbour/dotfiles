@@ -1,0 +1,23 @@
+#!/bin/bash
+
+REQUIRED_TOOLS=(
+  curl
+  delta
+  hugo
+  node
+  npm
+)
+
+DIRTY=false
+for tool in "${REQUIRED_TOOLS[@]}"; do
+  if ! command -v "${tool}" >/dev/null; then
+    echo "${tool} failed... "
+    DIRTY=true
+  else
+    echo "${tool} ok... "
+  fi
+done
+
+if [[ "${DIRTY}" == false ]]; then
+  echo "all good to go..."
+fi

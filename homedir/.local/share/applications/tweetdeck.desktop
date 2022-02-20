@@ -1,0 +1,8 @@
+[Desktop Entry]
+Version=1.0
+Terminal=false
+Type=Application
+Name=Tweetdeck
+Exec=/home/patrick/.bin/Tweetdeck-linux-x64/Tweetdeck
+Icon=/home/patrick/.bin/Tweetdeck-linux-x64/logo.png
+NoDisplay=true

@@ -1,0 +1,264 @@
+#!/bin/bash
+
+# glone GITPATH
+# clone $GITPATH to a folder structure that recreates the link structure
+# inside the home directory.
+# TODO: make this work with all git links, not only git@ links (currently)
+function glone() {
+  REPO1=$1
+  # REPOTYPE=$(cut -d'@' -f1 <<<"$REPO1")
+  REPOHASH0=$(cut -d':' -f1 <<<"${REPO1}")
+  PATH0=$(cut -d'@' -f2 <<<"${REPOHASH0}")
+  REPOHASH1=$(cut -d':' -f2 <<<"${REPO1}")
+  PATH1=$(cut -d'/' -f1 <<<"${REPOHASH1}")
+  PATH2=$(cut -d'/' -f2 <<<"${REPOHASH1}")
+  PATH2=${PATH2::-4}
+  REPOPATH="${HOME}"/"${PATH0}"/"${PATH1}"/"${PATH2}"
+  mkdir -p "${REPOPATH}"
+  git clone "${REPO1}" "${REPOPATH}"
+}
+
+# hugoserver
+function hugoserver() {
+
+  # if [ blah is false ]; then
+  #   return 1
+  # fi
+
+  REQUIRED_TOOLS=(
+    hugo
+    npm
+    export
+    trap
+  )
+
+  for TOOL in "${REQUIRED_TOOLS[@]}"; do
+    if ! command -v "${TOOL}" >/dev/null; then
+      echo "${TOOL} is required... "
+      exit 1
+    fi
+  done
+
+  for FILE in bin/lib/*; do
+    set -a
+    # this routine ranges through a folder of files that we don't explicitly know (@davidsneighbour)
+    # see https://github.com/koalaman/shellcheck/wiki/SC1090
+    # shellcheck source=/dev/null
+    source "${FILE}"
+    set +a
+  done
+
+  # SCRIPTPATH="$(
+  #   cd "$(dirname "$0")" >/dev/null 2>&1 || exit
+  #   pwd -P
+  # )"
+  CURPATH="$(pwd -P)"
+
+  trap "{ echo 'Terminated with Ctrl+C'; }" SIGINT
+
+  FILE=${CURPATH}/.env
+  if [ -f "${FILE}" ]; then
+    echo "exporting .env"
+    set -a
+    # this routine ranges through a folder of files that we don't explicitly know (@davidsneighbour)
+    # see https://github.com/koalaman/shellcheck/wiki/SC1090
+    # shellcheck source=/dev/null
+    source "${FILE}"
+    set +a
+  fi
+
+  # cleanup hugo logging
+  npm run clean:hugo
+
+  # update modules
+  hugo mod get -u ./...
+
+  # create replacements
+  NOT_FIRST_LINE=false
+  HUGO_MODULE_REPLACEMENTS=""
+  REPLACEMENTS="${CURPATH}"/bin/etc/replacements
+  if test -f "${REPLACEMENTS}"; then
+    while read -ra __; do
+      if ${NOT_FIRST_LINE}; then
+        HUGO_MODULE_REPLACEMENTS="${HUGO_MODULE_REPLACEMENTS},${__[0]} -> ${__[1]}"
+      else
+        HUGO_MODULE_REPLACEMENTS="${__[0]} -> ${__[1]}"
+        NOT_FIRST_LINE=true
+      fi
+    done <"${REPLACEMENTS}"
+    export HUGO_MODULE_REPLACEMENTS="${HUGO_MODULE_REPLACEMENTS}"
+  fi
+
+  # starting hugo server
+  # shellcheck disable=2154
+  env HUGO_MODULE_REPLACEMENTS="${HUGO_MODULE_REPLACEMENTS}" \
+    hugo server \
+    --gc \
+    --environment development \
+    --disableFastRender \
+    --i18n-warnings \
+    --navigateToChanged \
+    --templateMetrics \
+    --templateMetricsHints \
+    --path-warnings \
+    --poll 1s \
+    --cleanDestinationDir \
+    --renderToDisk \
+    --buildFuture \
+    --watch \
+    --enableGitInfo \
+    --forceSyncStatic \
+    --log true --logFile hugo.log \
+    --verbose \
+    --verboseLog \
+    --port "${PORT}" \
+    --baseURL http://"${IP}"/ \
+    --bind "${IP}"
+
+  # TODO --buildDrafts --buildExpired on request
+  # TODO check --source dev
+
+}
+
+# Go up a specified number of directories
+#
+up() {
+  if [ -z "$1" ]; then
+    cd ..
+    return
+  fi
+  local levels=$1
+  local result="."
+  while [ "${levels}" -gt 0 ]; do
+    result=${result}/..
+    ((levels--))
+  done
+  cd "${result}" || exit
+}
+
+#
+# Make a directory and change to it
+#
+mkcd() {
+  if [ $# -ne 1 ]; then
+    echo "Usage: mkcd <dir>"
+    return 1
+  else
+    mkdir -p "$1" && cd "$1" || exit
+  fi
+}
+
+#
+# Prints out a long line. Useful for setting a visual flag in your terminal.
+#
+flag() {
+  OUTPUT=${*}
+  echo -e "\e[1;36m[===============${OUTPUT}===($(date +"%Y-%m-%d %H:%M-%S"))===============]\e[m"
+}
+
+#
+# Backup file(s)
+#
+dbackup() {
+  if [ $# -lt 1 ]; then
+    echo Please supply a file to backup
+    return 1
+  fi
+  date=$(date +%Y%m%d-%H%M)
+  for i in "$@"; do
+    echo Backed up "${i}" to "${i}"."${date}"
+    cp "${i}" "${i}"."${date}"
+  done
+}
+
+#
+# Extract an archive of any type
+#
+extract() {
+  if [ $# -lt 1 ]; then
+    echo Usage: extract file
+    return 1
+  fi
+  if [ -f "$1" ]; then
+    case $1 in
+    *.tar.bz2) tar xvjf "$1" ;;
+    *.tar.gz) tar xvzf "$1" ;;
+    *.bz2) bunzip2 "$1" ;;
+    *.rar) unrar x "$1" ;;
+    *.gz) gunzip "$1" ;;
+    *.tar) tar xvf "$1" ;;
+    *.tbz2) tar xvjf "$1" ;;
+    *.tgz) tar xvzf "$1" ;;
+    *.zip) unzip "$1" ;;
+    *.war | *.jar) unzip "$1" ;;
+    *.Z) uncompress "$1" ;;
+    *.7z) 7z x "$1" ;;
+    *) echo "don't know how to extract '$1'..." ;;
+    esac
+  else
+    echo "'$1' is not a valid file!"
+  fi
+}
+
+#
+# Creates an archive
+#
+roll() {
+  if [ "$#" -ne 0 ]; then
+    FILE="$1"
+    case "${FILE}" in
+    *.tar.bz2 | *.tbz2) shift && tar cvjf "${FILE}" "$*" ;;
+    *.tar.gz | *.tgz) shift && tar cvzf "${FILE}" "$*" ;;
+    *.tar) shift && tar cvf "${FILE}" "$*" ;;
+    *.zip) shift && zip "${FILE}" "$*" ;;
+    *.rar) shift && rar "${FILE}" "$*" ;;
+    *.7z) shift && 7zr a "${FILE}" "$*" ;;
+    *) echo "'$1' cannot be rolled via roll()" ;;
+    esac
+  else
+    echo "usage: roll [file] [contents]"
+  fi
+}
+
+# Create a data URI from a file
+datauri() {
+
+  local mimeType=""
+
+  if [ -f "$1" ]; then
+    mimeType=$(file -b --mime-type "$1")
+    #                └─ do not prepend the filename to the output
+
+    if [[ ${mimeType} == text/* ]]; then
+      mimeType="${mimeType};charset=utf-8"
+    fi
+
+    printf "data:%s;base64,%s" \
+      "${mimeType}" \
+      "$(openssl base64 -in "$1" | tr -d "\n")"
+  else
+    print_error "'$1' is not a file."
+  fi
+
+}
+
+startcode() {
+
+  # shellcheck disable=SC2154
+  select opt in "${options[@]}" "Stop the script"; do
+    case ${opt} in
+    "${HOME}"/github.com/davidsneighbour/dotfiles/workspaces/*.code-workspace)
+      echo "Starting VSCode with ${opt}."
+      code "${opt}"
+      break
+      ;;
+    "Stop the script")
+      break
+      ;;
+    *)
+      echo "This is not a valid selection"
+      ;;
+    esac
+  done
+
+}

@@ -1,0 +1,14 @@
+[Desktop Entry]
+Name=Shift
+Icon=/home/patrick/.local/share/icons/hicolor/1024x1024/apps/shift.png
+Version=7.1.13-stable
+GenericName=Shift
+X-GNOME-FullName=Shift
+Comment=Shift
+Encoding=UTF-8
+Type=Application
+Terminal=false
+Exec=/home/patrick/Downloads/shift-linux-v7.1.13-stable/Shift-linux-x64/resources/../Shift -mailto %u
+Categories=Network;
+MimeType=x-scheme-handler/mailto;
+StartupWMClass=shift

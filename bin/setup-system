@@ -1,0 +1,46 @@
+#!/bin/bash
+
+REQUIRED_TOOLS=(
+  curl
+  snap
+  apt
+)
+
+for tool in "${REQUIRED_TOOLS[@]}"; do
+  if ! command -v "${tool}" >/dev/null; then
+    echo "${tool} is required... "
+    exit 1
+  fi
+done
+
+# echo "Enter the sudo password, please"
+# read -r -s PASSWORD
+
+echo "Installing programs via APT"
+sudo apt install inkscape build-essential atop htop i3 neofetch polybar feh dunst vim default-jdk
+
+echo "Installing programs via Snap"
+sudo snap install --classic code
+sudo snap install todoist
+sudo snap install android-studio
+sudo snap install authy
+sudo snap install bitcoin-core
+sudo snap install chromium
+sudo snap install flutter
+sudo snap install go
+sudo snap install libreoffice
+sudo snap install phpstorm
+sudo snap install ruby
+sudo snap install slack
+
+echo "Installing Node and NPM"
+curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
+nvm install node
+
+echo "Installing global NPM packages"
+npm -g install svgo cypress fixpack jshint lerna-wizard lerna lighthouse netlify-cli npm-check-updates svgo typescript
+
+echo "Installing Rust and Cargo"
+curl https://sh.rustup.rs -sSf | sh
+
+echo "Completed in ${SECONDS}s"

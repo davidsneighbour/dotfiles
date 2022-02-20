@@ -1,0 +1,217 @@
+{
+  "js/ts.implicitProjectConfig.checkJs": true,
+  "files.autoSave": "onFocusChange",
+  "telemetry.telemetryLevel": "crash",
+  "git.autofetch": "all",
+  "editor.fontFamily": "'Fira Code', 'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
+  "editor.wordWrap": "on",
+  "editor.accessibilitySupport": "off",
+  "editor.autoClosingBrackets": "always",
+  "editor.autoClosingDelete": "always",
+  "editor.autoClosingQuotes": "always",
+  "editor.bracketPairColorization.enabled": true,
+  "editor.lineNumbers": "on",
+  "editor.tabSize": 2,
+  "editor.cursorBlinking": "expand",
+  "editor.cursorSmoothCaretAnimation": true,
+  "editor.fontLigatures": true,
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "editor.formatOnType": true,
+  "diffEditor.codeLens": true,
+  "editor.minimap.renderCharacters": false,
+  "editor.minimap.size": "fit",
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": true,
+    "strings": true
+  },
+  "files.trimFinalNewlines": true,
+  "files.trimTrailingWhitespace": true,
+  "workbench.commandPalette.history": 100,
+  "workbench.enableExperiments": false,
+  "workbench.editor.closeOnFileDelete": true,
+  "workbench.editor.highlightModifiedTabs": true,
+  "workbench.editor.scrollToSwitchTabs": true,
+  "workbench.settings.openDefaultKeybindings": true,
+  "workbench.settings.useSplitJSON": true,
+  "window.autoDetectColorScheme": true,
+  "workbench.preferredDarkColorTheme": "One Dark Pro Darker",
+  "window.menuBarVisibility": "visible",
+  "explorer.incrementalNaming": "smart",
+  "search.useGlobalIgnoreFiles": true,
+  "debug.console.fontFamily": "'Fira Code'",
+  "terminal.integrated.cursorBlinking": true,
+  "terminal.integrated.copyOnSelection": true,
+  "problems.showCurrentInStatus": true,
+  "update.mode": "start",
+  "css.lint.boxModel": "warning",
+  "scss.lint.boxModel": "warning",
+  "git.allowForcePush": true,
+  "git.allowNoVerifyCommit": true,
+  "git.alwaysSignOff": true,
+  "git.autoStash": true,
+  "git.defaultCloneDirectory": "/home/patrick/Projects",
+  "html.format.endWithNewline": true,
+  "html.format.indentHandlebars": true,
+  "html.format.templating": true,
+  "html.format.wrapAttributes": "aligned-multiple",
+  "oneDarkPro.bold": true,
+  "merge-conflict.autoNavigateNextConflict.enabled": true,
+  "oneDarkPro.editorTheme": "One Dark Pro Flat",
+  "workbench.editor.enablePreview": false,
+  "workbench.colorCustomizations": {
+    "editorCursor.foreground": "#fe5e78",
+    "terminalCursor.foreground": "#fe5e78"
+  },
+  "oneDarkPro.vivid": true,
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "terminal.integrated.persistentSessionReviveProcess": "never",
+  "screencastMode.onlyKeyboardShortcuts": true,
+  "screencastMode.mouseIndicatorColor": "#fe5e78",
+  "screencastMode.mouseIndicatorSize": 40,
+  "screencastMode.keyboardShortcutsFormat": "commandAndKeys",
+  "[javascript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "editor.guides.bracketPairs": true,
+  "explorer.confirmDelete": false,
+  "prettier.requireConfig": true,
+  "files.insertFinalNewline": true,
+  // shellcheck configuration
+  "shellcheck.enable": true,
+  "shellcheck.enableQuickFix": true,
+  "shellcheck.run": "onSave", // also: "onSave"
+  "shellcheck.executablePath": "",
+  "shellcheck.customArgs": [],
+  "shellcheck.ignorePatterns": {
+    "**/*.xonshrc": true,
+    "**/*.xsh": true,
+    "**/*.zsh": true,
+    "**/*.zshrc": true,
+    "**/zshrc": true,
+    "**/*.zprofile": true,
+    "**/zprofile": true,
+    "**/*.zlogin": true,
+    "**/zlogin": true,
+    "**/*.zlogout": true,
+    "**/zlogout": true,
+    "**/*.zshenv": true,
+    "**/zshenv": true,
+    "**/*.zsh-theme": true
+  },
+  "shellcheck.ignoreFileSchemes": [
+    "git",
+    "gitfs"
+  ],
+  "shellcheck.useWorkspaceRootAsCwd": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.shellcheck": true
+  },
+  "workbench.colorTheme": "Horizon DNB",
+  "gruvboxMaterial.colorfulSyntax": true,
+  "gruvboxMaterial.darkContrast": "hard",
+  "gruvboxMaterial.darkCursor": "red",
+  "gruvboxMaterial.darkSelection": "green",
+  "gruvboxMaterial.italicKeywords": true,
+  "gruvboxMaterial.lightContrast": "hard",
+  "gruvboxMaterial.lightCursor": "red",
+  "workbench.iconTheme": "material-icon-theme",
+  "material-icon-theme.hidesExplorerArrows": true,
+  "material-icon-theme.showUpdateMessage": true,
+  "tailwindCSS.emmetCompletions": true,
+  "tailwindCSS.includeLanguages": {
+    "markdown": "html"
+  },
+  "emojisense.languages": {
+    "markdown": true,
+    "scminput": true,
+    "git-commit": true,
+    "html": true,
+    "gohtml": true,
+    "plaintext": true,
+    "json": true
+  },
+  "go.toolsManagement.autoUpdate": true,
+  "gitlens.currentLine.enabled": false,
+  "gitlens.hovers.currentLine.over": "line",
+  "gitlens.codeLens.enabled": false,
+  "diffEditor.ignoreTrimWhitespace": false,
+  "githubIssues.queries": [
+    {
+      "label": "My Issues",
+      "query": "default"
+    },
+    {
+      "label": "Created Issues",
+      "query": "author:${user} state:open repo:${owner}/${repository} sort:created-desc"
+    },
+    {
+      "label": "Recent Issues",
+      "query": "state:open repo:${owner}/${repository} sort:updated-desc"
+    }
+  ],
+  "go-template.languages": [
+    "html",
+    "toml",
+    "json"
+  ],
+  "explorer.confirmDragAndDrop": false,
+  "[html]": {
+    "editor.defaultFormatter": "vscode.html-language-features"
+  },
+  "redhat.telemetry.enabled": false,
+  "better-comments.highlightPlainText": true,
+  "quokka.automaticRestart": true,
+  "quokka.automaticStartRegex": "*.(js|ts)",
+  "color-highlight.markerType": "dot-before",
+  "stylelint.snippet": [
+    "css",
+    "less",
+    "postcss",
+    "scss"
+  ],
+  "stylelint.validate": [
+    "css",
+    "less",
+    "postcss",
+    "scss"
+  ],
+  // disable vscode internal validation for SCSS (stylelint)
+  "scss.validate": false,
+  "editor.linkedEditing": true,
+  "shellformat.useEditorConfig": true,
+  "shellformat.flag": "-i 2 -ci -sr -kp -fn",
+  "terminal.integrated.defaultProfile.linux": "bash",
+  "workbench.startupEditor": "none",
+  "[dockerfile]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+  "stylelint.reportNeedlessDisables": true,
+  "stylelint.reportInvalidScopeDisables": true,
+  "cypressHelper.includeAnnotationForCommands": true,
+  "intelephense.telemetry.enabled": false,
+  "rest-client.enableTelemetry": false,
+  "terminal.explorerKind": "external",
+  "cSpell.userWords": [
+    "Browserslist",
+    "browserslistrc",
+    "davidsneighbour",
+    "gomod",
+    "instantsearch",
+    "Kollitsch",
+    "neighbour"
+  ],
+  "editor.inlineSuggest.enabled": true,
+  "github.copilot.enable": {
+    "*": true,
+    "yaml": false,
+    "plaintext": false,
+    "markdown": true
+  }
+}
