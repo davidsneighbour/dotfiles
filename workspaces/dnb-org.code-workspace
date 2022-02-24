@@ -16,6 +16,15 @@
   "settings": {
     "discord.enabled": true,
     "[markdown]": {},
-    "terminal.integrated.enableShellIntegration": true
+    "terminal.integrated.enableShellIntegration": true,
+    "cSpell.customDictionaries": {
+      "custom-dictionary-workspace": {
+        "name": "custom-dictionary-workspace",
+        "path": "${workspaceFolder:kollitsch.de}/.cspell/custom-dictionary-workspace.txt",
+        "addWords": true,
+        "scope": "workspace"
+      }
+    },
+    "cSpell.allowCompoundWords": true
   }
 }
