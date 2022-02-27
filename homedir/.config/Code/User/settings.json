@@ -39,7 +39,6 @@
   "workbench.settings.openDefaultKeybindings": true,
   "workbench.settings.useSplitJSON": true,
   "window.autoDetectColorScheme": true,
-  "workbench.preferredDarkColorTheme": "One Dark Pro Darker",
   "window.menuBarVisibility": "visible",
   "explorer.incrementalNaming": "smart",
   "search.useGlobalIgnoreFiles": true,
@@ -48,8 +47,6 @@
   "terminal.integrated.copyOnSelection": true,
   "problems.showCurrentInStatus": true,
   "update.mode": "start",
-  "css.lint.boxModel": "warning",
-  "scss.lint.boxModel": "warning",
   "git.allowForcePush": true,
   "git.allowNoVerifyCommit": true,
   "git.alwaysSignOff": true,
@@ -111,9 +108,9 @@
   ],
   "shellcheck.useWorkspaceRootAsCwd": true,
   "editor.codeActionsOnSave": {
-    "source.fixAll.shellcheck": true
+    "source.fixAll.shellcheck": true,
+    "source.fixAll.stylelint": true
   },
-  "workbench.colorTheme": "Horizon DNB",
   "gruvboxMaterial.colorfulSyntax": true,
   "gruvboxMaterial.darkContrast": "hard",
   "gruvboxMaterial.darkCursor": "red",
@@ -170,6 +167,12 @@
   "quokka.automaticRestart": true,
   "quokka.automaticStartRegex": "*.(js|ts)",
   "color-highlight.markerType": "dot-before",
+  // disable vscode internal validation for css (stylelint)
+  "css.validate": false,
+  // disable vscode internal validation for less (stylelint)
+  "less.validate": false,
+  // disable vscode internal validation for scss (stylelint)
+  "scss.validate": false,
   "stylelint.snippet": [
     "css",
     "less",
@@ -182,8 +185,6 @@
     "postcss",
     "scss"
   ],
-  // disable vscode internal validation for SCSS (stylelint)
-  "scss.validate": false,
   "editor.linkedEditing": true,
   "shellformat.useEditorConfig": true,
   "shellformat.flag": "-i 2 -ci -sr -kp -fn",
@@ -205,7 +206,10 @@
     "gomod",
     "instantsearch",
     "Kollitsch",
-    "neighbour"
+    "neighbour",
+    "sharebutton",
+    "sharebuttons",
+    "stylelint"
   ],
   "editor.inlineSuggest.enabled": true,
   "github.copilot.enable": {
@@ -213,5 +217,8 @@
     "yaml": false,
     "plaintext": false,
     "markdown": true
-  }
+  },
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "git.confirmSync": false,
+  "workbench.colorTheme": "Horizon DNB"
 }
