@@ -7,23 +7,24 @@
 - clean: ["~"]
 
 - shell:
-    - [git submodule update --init --recursive, Installing submodules]
-    - [bin/setup-system, Installing required tools and IDEs]
-  #- sudo snap install --classic code
-  #- sudo snap install todoist
-  #####################################################################################
-  #- sudo apt install inkscape gimp build-essential atop htop i3 neofetch polybar feh dunst vim
-  #- sudo apt install default-jdk
-  #- sudo snap install android-studio
-  #- sudo snap install authy
-  #- sudo snap install bitcoin-core
-  #- sudo snap install chromium
-  #- sudo snap install flutter
-  #- sudo snap install go
-  #- sudo snap install libreoffice
-  #- sudo snap install phpstorm
-  #- sudo snap install ruby
-  #- sudo snap install slack
+    - ["mkdir -p ~/.config", "creating config folder (if it doesn't exist yet)"]
+#    - [git submodule update --init --recursive, Installing submodules]
+#    - [bin/setup-system, Installing required tools and IDEs]
+#- sudo snap install --classic code
+#- sudo snap install todoist
+#####################################################################################
+#- sudo apt install inkscape gimp build-essential atop htop i3 neofetch polybar feh dunst vim
+#- sudo apt install default-jdk
+#- sudo snap install android-studio
+#- sudo snap install authy
+#- sudo snap install bitcoin-core
+#- sudo snap install chromium
+#- sudo snap install flutter
+#- sudo snap install go
+#- sudo snap install libreoffice
+#- sudo snap install phpstorm
+#- sudo snap install ruby
+#- sudo snap install slack
 
 - link:
     ##################################################################
