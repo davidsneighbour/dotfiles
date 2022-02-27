@@ -71,7 +71,9 @@ export PATH
 # don't add jrnl entries to bash history
 HISTIGNORE="${HISTIGNORE}:jrnl *"
 
-export GOPATH=${HOME}/go
+export GOPATH=${HOME}/.go
+export PERL5LIB=${HOME}/.perl5
+export PERLLIB=${HOME}/.perl5
 export EDITOR=/usr/bin/vim
 
 export PAGER='less -i'
