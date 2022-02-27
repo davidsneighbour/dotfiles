@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"path": "../../samui-samui.de"
+		},
+		{
+			"path": "../../../dnb-org/dnb-hugo-functions"
+		},
+		{
+			"path": "../../../dnb-org/dnb-hugo-shortcodes"
+		},
+		{
+			"path": "../../../dnb-org/dnb-hugo-youtube"
+		},
+		{
+			"path": "../../../dnb-org/dnb-hugo-debug"
+		}
+	],
+	"settings": {}
+}

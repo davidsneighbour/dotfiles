@@ -5,12 +5,20 @@
       "path": "../../kollitsch.de"
     },
     {
-      "name": "dnb-hugo-functions",
-      "path": "../../../dnb-org/dnb-hugo-functions"
-    },
-    {
       "name": "dotfiles",
       "path": ".."
+    },
+    {
+      "name": "dnb-hugo-head",
+      "path": "../../../dnb-org/dnb-hugo-head"
+    },
+    {
+      "name": "dnb-hugo-icons",
+      "path": "../../../dnb-org/dnb-hugo-icons"
+    },
+    {
+      "name": "dnb-hugo-social",
+      "path": "../../../dnb-org/dnb-hugo-social"
     }
   ],
   "settings": {
