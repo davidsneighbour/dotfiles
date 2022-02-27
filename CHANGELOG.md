@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 2022.0.16 (2022-02-27)
+
+
+### Features
+
+* fix workspaces script ([0d0399f](/github.com/davidsneighbour/dotfiles/commit/0d0399f3703530f4a1b8134a134e4e49fe1571da))
+
 ### [2022.0.15](/github.com/davidsneighbour/dotfiles/compare/v2022.0.14...v2022.0.15) (2022-02-20)
 
 ### [2022.0.14](/github.com/davidsneighbour/dotfiles/compare/v2022.0.13...v2022.0.14) (2022-02-20)
