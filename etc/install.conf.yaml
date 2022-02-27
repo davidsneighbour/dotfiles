@@ -34,6 +34,7 @@
     ~/.bashrc: homedir/.bashrc
     ~/.colordiff: homedir/.colordiff
     ~/.dmrc: homedir/.dmrc
+    ~/.env: .env
     ~/.face.icon: homedir/.face.icon
     ~/.fehbg: homedir/.fehbg
     ~/.fixpackrc: homedir/.fixpackrc
@@ -41,20 +42,23 @@
     ~/.gitignore: homedir/.gitignore.template
     ~/.gtk-bookmarks: homedir/.gtk-bookmarks
     ~/.gtkrc-2.0.mine: homedir/.gtkrc-2.0.mine
+    ~/.inputrc: homedir/.inputrc
     ~/.npmrc: .npmrc
     ~/.pam_environment: homedir/.pam_environment
+    ~/.remarkignore: homedir/.remarkignore
+    ~/.remarkrc.js: homedir/.remarkrc.js
+    ~/.selected_editor: homedir/.selected_editor
     ~/.synergy.conf: homedir/.synergy.conf
+    ~/.textlintrc.js: homedir/.textlintrc.js
     ~/.vimrc: homedir/.vimrc
     ~/.vuerc: homedir/.vuerc
     ~/.xinputrc: homedir/.xinputrc
     ~/.Xresources: homedir/.Xresources
     ~/.xscreensaver: homedir/.xscreensaver
-    ~/.remarkignore: homedir/.remarkignore
-    ~/.selected_editor: homedir/.selected_editor
-    ~/.env: .env
     ##################################################################
     # directory links
     ##################################################################
+    ~/.dotfiles": ""
     ~/.conky: homedir/.conky
     ~/.cargo: homedir/.cargo
     ~/.fonts: homedir/.fonts
@@ -72,7 +76,7 @@
     ~/.themes: homedir/.themes
     ~/.icons: homedir/.icons
     ~/.synergy: homedir/.synergy
-    ~/.wallpaper.jpg: homedir/wallpapers/wallpaper-003.jpg
+    ~/.wallpaper.jpg: homedir/wallpapers/wallpaper-002.jpg
 # - shell:
 #     - bash ./homedir/.config/Code/extensions.sh
 #     - npm install -g npm-check-updates
