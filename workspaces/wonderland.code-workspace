@@ -5,5 +5,13 @@
       "name": "Website"
     }
   ],
-  "settings": {}
+  "settings": {
+    "cSpell.words": [
+      "lastmod",
+      "linktitle",
+      "publishdate",
+      "searchbox",
+      "searchresults"
+    ]
+  }
 }

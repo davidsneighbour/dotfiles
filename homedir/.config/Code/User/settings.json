@@ -220,5 +220,12 @@
   },
   "javascript.updateImportsOnFileMove.enabled": "always",
   "git.confirmSync": false,
-  "workbench.colorTheme": "Horizon DNB"
+  "workbench.colorTheme": "Horizon DNB",
+  "discord.detailsIdling": "Doing something more important",
+  "terminal.integrated.shellIntegration.enabled": true,
+  "terminal.integrated.shellIntegration.showWelcome": false,
+  "codesnap.realLineNumbers": true,
+  "codesnap.roundedCorners": false,
+  "codesnap.showWindowControls": false,
+  "codesnap.transparentBackground": true
 }
