@@ -12,7 +12,7 @@ for tool in "${REQUIRED_TOOLS[@]}"; do
 done
 
 echo "Create Theme"
-node ./node_modules/themer/bin/themer.js -c @themerdev/colors-nova \
+node ./node_modules/themer/bin/themer.js -c themer/colors.js \
   -t @themerdev/vim \
   -t @themerdev/sublime-text \
   -t @themerdev/atom-syntax \
@@ -25,6 +25,7 @@ node ./node_modules/themer/bin/themer.js -c @themerdev/colors-nova \
   -t themer-i3 \
   -t @themerdev/slack \
   -t @themerdev/xresources \
+  -t @themerdev/vscode \
   -t @themerdev/wallpaper-block-wave \
   -t @themerdev/wallpaper-burst \
   -t @themerdev/wallpaper-circuits \
