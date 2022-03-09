@@ -1,7 +1,7 @@
 {
   "folders": [
     {
-      "name": "kollitsch.de",
+      "name": "Kollitsch.de",
       "path": "../../kollitsch.de"
     },
     {
@@ -24,6 +24,15 @@
     },
     {
       "path": "../../../dnb-org/dnb-hugo-social"
+    },
+    {
+      "path": "../../../dnb-org/dnb-hugo-giscus"
+    },
+    {
+      "path": "../../../dnb-org/dnb-hugo-assets-unsplash"
+    },
+    {
+      "path": "../../../dnb-org/dnb-hugo-netlification"
     }
   ],
   "settings": {

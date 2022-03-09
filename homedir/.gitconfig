@@ -214,7 +214,14 @@ dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
 # List contributors with number of commits
 contributors = shortlog --summary --numbered
 
+################################################################################
+# Stashing
+################################################################################
+stash-untracked = "!f() { git stash; git stash -u; git stash pop stash@{1}; }; f"
+
+################################################################################
 # URL shorthands
+################################################################################
 [url "git@github.com:"]
 insteadOf = "gh:"
 pushInsteadOf = "github:"
@@ -247,6 +254,9 @@ path = ~/.gitconfig.work
 [interactive]
 diffFilter = delta --color-only --features=interactive
 
+################################################################################
+# Delta configuration
+################################################################################
 [delta]
 features = side-by-side line-numbers decorations
 syntax-theme = Dracula

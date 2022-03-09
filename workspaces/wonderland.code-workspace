@@ -3,6 +3,12 @@
     {
       "path": "../../../../gitlab.com/wonderland-gmbh/wonderland-engine-website",
       "name": "Website"
+    },
+    {
+      "path": "../../../../gitlab.com/wonderland-gmbh/hugo-module-tnd-env"
+    },
+    {
+      "path": "../../../../gitlab.com/wonderland-gmbh/hugo-module-tnd-search"
     }
   ],
   "settings": {
@@ -12,6 +18,10 @@
       "publishdate",
       "searchbox",
       "searchresults"
-    ]
+    ],
+    "frontMatter.content.pageFolders": [],
+    "files.associations": {
+    	"automation/*.js": "plaintext"
+  	}
   }
 }

@@ -86,24 +86,24 @@ function hugoserver() {
         NOT_FIRST_LINE=true
       fi
     done <"${REPLACEMENTS}"
-    export HUGO_MODULE_REPLACEMENTS="${HUGO_MODULE_REPLACEMENTS}"
+    [[ -n "${HUGO_MODULE_REPLACEMENTS}" ]] && export HUGO_MODULE_REPLACEMENTS="${HUGO_MODULE_REPLACEMENTS}" || echo "No replacements found"
   fi
 
   # starting hugo server
-  # shellcheck disable=2154
-  env HUGO_MODULE_REPLACEMENTS="${HUGO_MODULE_REPLACEMENTS}" \
-    hugo server \
+  hugo server \
     --gc \
     --environment development \
     --disableFastRender \
-    --i18n-warnings \
+    --printUnusedTemplates \
+    --printI18nWarnings \
     --navigateToChanged \
     --templateMetrics \
     --templateMetricsHints \
-    --path-warnings \
+    --printPathWarnings \
     --poll 1s \
+    --minify \
     --cleanDestinationDir \
-    --renderToDisk \
+    --renderStaticToDisk \
     --buildFuture \
     --watch \
     --enableGitInfo \
@@ -111,6 +111,7 @@ function hugoserver() {
     --log true --logFile hugo.log \
     --verbose \
     --verboseLog \
+    --debug \
     --port "${PORT}" \
     --baseURL http://"${IP}"/ \
     --bind "${IP}"
@@ -273,4 +274,25 @@ gitclean() {
   git repack -a -d -l
   git prune
   git gc --aggressive
+}
+
+g-rebase-branch() {
+  git branch --show-current | xargs git merge-base "$1" | xargs git rebase -i
+}
+
+g-one-commit() {
+  local last_commit_message
+  last_commit_message=$(git show -s --format=%s)
+  local BRANCH
+
+  if [ -z "$1" ]; then
+    echo "no branch, using main"
+    BRANCH="main"
+  else
+    BRANCH="$1"
+  fi
+
+  git branch --show-current | xargs git merge-base "${BRANCH}" | xargs git reset --soft
+  git add -A
+  git commit -m "${last_commit_message}" --amend
 }

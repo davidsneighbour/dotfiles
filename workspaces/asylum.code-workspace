@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "../../../dnb-org/dnb-hugo-asylum"
+		},
+		{
+			"path": "../../../dnb-org/dnb-hugo-head"
+		},
+		{
+			"path": "../../../dnb-org/dnb-hugo-starter"
+		}
+	],
+	"settings": {}
+}
