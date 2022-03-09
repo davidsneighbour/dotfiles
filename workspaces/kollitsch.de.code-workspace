@@ -24,6 +24,9 @@
     },
     {
       "path": "../../../dnb-org/dnb-hugo-social"
+    },
+    {
+      "path": "../../../dnb-org/dnb-hugo-giscus"
     }
   ],
   "settings": {
