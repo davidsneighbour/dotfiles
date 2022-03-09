@@ -74,6 +74,7 @@
     ~/.config/sublime-text-3: homedir/.config/sublime-text-3
     ~/.config/tabtab: homedir/.config/tabtab
     ~/.local/share/applications: homedir/.local/share/applications
+    ~/.ssh: homedir/.ssh
     ~/.themes: homedir/.themes
     ~/.icons: homedir/.icons
     ~/.synergy: homedir/.synergy
