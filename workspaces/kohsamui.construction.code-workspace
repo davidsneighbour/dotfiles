@@ -4,7 +4,16 @@
 			"path": "../../kohsamui.construction"
 		},
 		{
-			"path": "../../../dnb-org"
+			"path": "../../sailing-in-samui.com"
+		},
+		{
+			"path": "../../../dnb-org/dnb-hugo-head"
+		},
+		{
+			"path": "../../../dnb-org/dnb-hugo-netlification"
+		},
+		{
+			"path": "../../../dnb-org/configurations"
 		}
 	],
 	"settings": {}
