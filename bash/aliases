@@ -83,11 +83,6 @@ alias dotfiles='code ${DOTFILES_PATH:?}/workspace.code-workspace'
 
 alias lasttag='git describe --tags $(git rev-list --tags --max-count=1)'
 
-# aliases for sourcerer.io app
-alias sourcerer-install='curl -s https://sourcerer.io/app/install | bash'
-alias sourcerer-add='sourcerer add --all '
-alias sourcerer-list='sourcerer-list'
-
 # setting up http methods
 for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do
   alias "${method}"="lwp-request -m '${method}'"
