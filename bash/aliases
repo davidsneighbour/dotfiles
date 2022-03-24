@@ -79,7 +79,7 @@ alias subl='subl -a'
 
 # dotfiles edit this repository...
 # shellcheck disable=SC2154 # we know the variable is initialised
-alias dotfiles='code ${DOTFILES_PATH:?}/workspace.code-workspace'
+alias dotfiles='code ${DOTFILES_PATH:?}/workspaces/dotfiles.code-workspace'
 
 alias lasttag='git describe --tags $(git rev-list --tags --max-count=1)'
 
