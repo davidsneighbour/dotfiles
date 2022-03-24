@@ -68,6 +68,7 @@
     ~/.config/dunst: homedir/.config/dunst
     ~/.config/filezilla: homedir/.config/filezilla
     ~/.config/i3: homedir/.config/i3
+    ~/.config/jrnl: homedir/.config/jrnl
     ~/.config/neofetch: homedir/.config/neofetch
     ~/.config/polybar: homedir/.config/polybar
     ~/.config/rofi: homedir/.config/rofi
