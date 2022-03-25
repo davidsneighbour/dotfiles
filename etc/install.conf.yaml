@@ -42,6 +42,7 @@
     ~/.fixpackrc: homedir/.fixpackrc
     ~/.gitconfig: homedir/.gitconfig
     ~/.gitignore: homedir/.gitignore.template
+    ~/.git-templates: homedir/.git-templates
     ~/.gtk-bookmarks: homedir/.gtk-bookmarks
     ~/.gtkrc-2.0.mine: homedir/.gtkrc-2.0.mine
     ~/.hidden: homedir/.hidden
