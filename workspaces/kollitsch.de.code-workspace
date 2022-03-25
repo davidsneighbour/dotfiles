@@ -5,34 +5,56 @@
       "path": "../../kollitsch.de"
     },
     {
+      "name": "dnb-hugo-dark-skies",
+      "path": "../../../dnb-org/dnb-hugo-dark-skies"
+    },
+    {
+      "name": "dnb-hugo-functions",
       "path": "../../../dnb-org/dnb-hugo-functions"
     },
     {
+      "name": "dnb-hugo-functions.wiki",
       "path": "../../../dnb-org/dnb-hugo-functions.wiki"
     },
     {
+      "name": "dnb-hugo-head",
       "path": "../../../dnb-org/dnb-hugo-head"
     },
     {
-      "path": "../../../dnb-org/dnb-hugo-templates"
-    },
-    {
+      "name": "configurations",
       "path": "../../../dnb-org/configurations"
     },
     {
+      "name": "dnb-hugo-pictures",
       "path": "../../../dnb-org/dnb-hugo-pictures"
     },
     {
+      "name": "dnb-hugo-social",
       "path": "../../../dnb-org/dnb-hugo-social"
     },
     {
+      "name": "dnb-hugo-giscus",
       "path": "../../../dnb-org/dnb-hugo-giscus"
     },
     {
+      "name": "dnb-hugo-assets-unsplash",
       "path": "../../../dnb-org/dnb-hugo-assets-unsplash"
     },
     {
+      "name": "dnb-hugo-netlification",
       "path": "../../../dnb-org/dnb-hugo-netlification"
+    },
+    {
+      "name": "dnb-hugo-github",
+      "path": "../../../dnb-org/dnb-hugo-github"
+    },
+    {
+      "name": "dnb-hugo-templates",
+      "path": "../../../dnb-org/dnb-hugo-templates"
+    },
+    {
+      "name": ".github",
+      "path": "../../../dnb-org/.github"
     }
   ],
   "settings": {
