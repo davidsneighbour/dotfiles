@@ -48,7 +48,6 @@
     ~/.gtkrc-2.0.mine: homedir/.gtkrc-2.0.mine
     ~/.hidden: homedir/.hidden
     ~/.inputrc: homedir/.inputrc
-    ~/.joplin: homedir/.joplin
     ~/.npmrc: .npmrc
     ~/.pam_environment: homedir/.pam_environment
     ~/.remarkignore: homedir/.remarkignore
