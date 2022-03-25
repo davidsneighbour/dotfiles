@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2022.0.17](/github.com/davidsneighbour/dotfiles/compare/v2022.0.16...v2022.0.17) (2022-03-25)
+
+
+### Features
+
+* add git helper functions ([944c838](/github.com/davidsneighbour/dotfiles/commit/944c838bba32555aca9ce8af522fd91c91877a60))
+* add git helper functions ([5838066](/github.com/davidsneighbour/dotfiles/commit/5838066a95d0cda931ff3c83f1cbee1be0df4f6d))
+
+
+### Bug Fixes
+
+* proper startup for dotfiles command ([e479265](/github.com/davidsneighbour/dotfiles/commit/e479265c4c1f7c6c88dbf3e6a3aa44adf6734f2f))
+* remove sourcerer aliases, project discontinued ([a099a58](/github.com/davidsneighbour/dotfiles/commit/a099a58b0340b984f6e1be5f27a9e5a21ada6c8f))
+* sort entries in startcode ([ab3e7da](/github.com/davidsneighbour/dotfiles/commit/ab3e7daae40812283da8bf9970a51bbc88800c78))
+
 ### 2022.0.16 (2022-02-27)
 
 
