@@ -205,6 +205,7 @@
     "davidsneighbour",
     "gomod",
     "instantsearch",
+    "kollitsch",
     "Kollitsch",
     "neighbour",
     "sharebutton",
@@ -245,5 +246,7 @@
   "discord.smallImage": "{app_name}",
   "discord.suppressNotifications": false,
   "discord.swapBigAndSmallImage": false,
-  "discord.workspaceExcludePatterns": []
+  "discord.workspaceExcludePatterns": [],
+  "cSpell.diagnosticLevel": "Hint",
+  "cSpell.language": "en-GB,de"
 }
