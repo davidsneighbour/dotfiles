@@ -1,13 +1,16 @@
 - defaults:
-    link:
-      create: true
-      relink: true
-      force: true
+      link:
+          create: true
+          relink: true
+          force: true
 
 - clean: ["~"]
 
 - shell:
-    - ["mkdir -p ~/.config", "creating config folder (if it doesn't exist yet)"]
+      - [
+            "mkdir -p ~/.config",
+            "creating config folder (if it doesn't exist yet)",
+        ]
 #    - [git submodule update --init --recursive, Installing submodules]
 #    - [bin/setup-system, Installing required tools and IDEs]
 #- sudo snap install --classic code
@@ -27,59 +30,60 @@
 #- sudo snap install slack
 
 - link:
-    ##################################################################
-    # file links
-    ##################################################################
-    ~/.bash_logout: homedir/.bash_logout
-    ~/.bash_profile: homedir/.bash_profile
-    ~/.bashrc: homedir/.bashrc
-    ~/.colordiff: homedir/.colordiff
-    ~/.dmrc: homedir/.dmrc
-    ~/.env: .env
-    ~/.face.icon: homedir/.face.icon
-    ~/.fehbg: homedir/.fehbg
-    ~/.fixpackrc: homedir/.fixpackrc
-    ~/.gitconfig: homedir/.gitconfig
-    ~/.gitignore: homedir/.gitignore.template
-    ~/.gtk-bookmarks: homedir/.gtk-bookmarks
-    ~/.gtkrc-2.0.mine: homedir/.gtkrc-2.0.mine
-    ~/.inputrc: homedir/.inputrc
-    ~/.npmrc: .npmrc
-    ~/.pam_environment: homedir/.pam_environment
-    ~/.remarkignore: homedir/.remarkignore
-    ~/.remarkrc.js: homedir/.remarkrc.js
-    ~/.selected_editor: homedir/.selected_editor
-    ~/.synergy.conf: homedir/.synergy.conf
-    ~/.textlintrc.js: homedir/.textlintrc.js
-    ~/.vimrc: homedir/.vimrc
-    ~/.vuerc: homedir/.vuerc
-    ~/.xinputrc: homedir/.xinputrc
-    ~/.Xresources: homedir/.Xresources
-    ~/.xscreensaver: homedir/.xscreensaver
-    ##################################################################
-    # directory links
-    ##################################################################
-    ~/.dotfiles": ""
-    ~/.conky: homedir/.conky
-    ~/.cargo: homedir/.cargo
-    ~/.fonts: homedir/.fonts
-    ~/.config/autostart: homedir/.config/autostart
-    ~/.config/Code: homedir/.config/Code
-    ~/.config/dunst: homedir/.config/dunst
-    ~/.config/filezilla: homedir/.config/filezilla
-    ~/.config/i3: homedir/.config/i3
-    ~/.config/jrnl: homedir/.config/jrnl
-    ~/.config/neofetch: homedir/.config/neofetch
-    ~/.config/polybar: homedir/.config/polybar
-    ~/.config/rofi: homedir/.config/rofi
-    ~/.config/sublime-text-3: homedir/.config/sublime-text-3
-    ~/.config/tabtab: homedir/.config/tabtab
-    ~/.local/share/applications: homedir/.local/share/applications
-    ~/.ssh: homedir/.ssh
-    ~/.themes: homedir/.themes
-    ~/.icons: homedir/.icons
-    ~/.synergy: homedir/.synergy
-    ~/.wallpaper.jpg: homedir/wallpapers/wallpaper-002.jpg
+      ##################################################################
+      # file links
+      ##################################################################
+      ~/.bash_logout: homedir/.bash_logout
+      ~/.bash_profile: homedir/.bash_profile
+      ~/.bashrc: homedir/.bashrc
+      ~/.colordiff: homedir/.colordiff
+      ~/.dmrc: homedir/.dmrc
+      ~/.env: .env
+      ~/.face.icon: homedir/.face.icon
+      ~/.fehbg: homedir/.fehbg
+      ~/.fixpackrc: homedir/.fixpackrc
+      ~/.gitconfig: homedir/.gitconfig
+      ~/.gitignore: homedir/.gitignore.template
+      ~/.gtk-bookmarks: homedir/.gtk-bookmarks
+      ~/.gtkrc-2.0.mine: homedir/.gtkrc-2.0.mine
+      ~/.inputrc: homedir/.inputrc
+      ~/.npmrc: .npmrc
+      ~/.pam_environment: homedir/.pam_environment
+      ~/.remarkignore: homedir/.remarkignore
+      ~/.remarkrc.js: homedir/.remarkrc.js
+      ~/.selected_editor: homedir/.selected_editor
+      ~/.synergy.conf: homedir/.synergy.conf
+      ~/.textlintrc.js: homedir/.textlintrc.js
+      ~/.vimrc: homedir/.vimrc
+      ~/.vuerc: homedir/.vuerc
+      ~/.xinputrc: homedir/.xinputrc
+      ~/.Xresources: homedir/.Xresources
+      ~/.xscreensaver: homedir/.xscreensaver
+      ##################################################################
+      # directory links
+      ##################################################################
+      ~/.dotfiles": ""
+      ~/.conky: homedir/.conky
+      ~/.cargo: homedir/.cargo
+      ~/.fonts: homedir/.fonts
+      ~/.config/autostart: homedir/.config/autostart
+      ~/.config/Code: homedir/.config/Code
+      ~/.config/dunst: homedir/.config/dunst
+      ~/.config/filezilla: homedir/.config/filezilla
+      ~/.config/i3: homedir/.config/i3
+      ~/.config/jrnl: homedir/.config/jrnl
+      ~/.config/neofetch: homedir/.config/neofetch
+      ~/.config/polybar: homedir/.config/polybar
+      ~/.config/rofi: homedir/.config/rofi
+      ~/.config/sublime-text-3: homedir/.config/sublime-text-3
+      ~/.config/tabtab: homedir/.config/tabtab
+      ~/.local/share/applications: homedir/.local/share/applications
+      ~/.shutter: homedir/.shutter
+      ~/.ssh: homedir/.ssh
+      ~/.themes: homedir/.themes
+      ~/.icons: homedir/.icons
+      ~/.synergy: homedir/.synergy
+      ~/.wallpaper.jpg: homedir/wallpapers/wallpaper-002.jpg
 # - shell:
 #     - bash ./homedir/.config/Code/extensions.sh
 #     - npm install -g npm-check-updates
