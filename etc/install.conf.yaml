@@ -38,6 +38,7 @@
       ~/.bashrc: homedir/.bashrc
       ~/.colordiff: homedir/.colordiff
       ~/.dmrc: homedir/.dmrc
+      ~/.editorconfig: homedir/.editorconfig
       ~/.env: .env
       ~/.face.icon: homedir/.face.icon
       ~/.fehbg: homedir/.fehbg
