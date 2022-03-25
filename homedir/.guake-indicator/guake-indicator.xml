@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+  <HostGroup>
+    <Host label="yes">
+      <menu_name>SSH Hosts</menu_name>
+    </Host>
+    <Host>
+      <menu_name>SSH on localhost</menu_name>
+      <tab_name>LocalHost</tab_name>
+      <command_after_login>ssh -l patrick localhost</command_after_login>
+      <dont_show_guake>no</dont_show_guake>
+      <lfcr>no</lfcr>
+      <guakeindicatorscript>no</guakeindicatorscript>
+    </Host>
+  </HostGroup>
+  <HostGroup name="Mysql Servers" label="yes"/>
+  <HostGroup name="MYSQL">
+    <Host label="yes">
+      <menu_name>Local Mysql Servers</menu_name>
+    </Host>
+    <Host>
+      <menu_name>Mysql on localhost</menu_name>
+      <tab_name>Mysql</tab_name>
+      <command_after_login>ssh -t -l patrick localhost mysql -u root --pass --host localhost -A mysql</command_after_login>
+      <dont_show_guake>no</dont_show_guake>
+      <lfcr>no</lfcr>
+      <guakeindicatorscript>no</guakeindicatorscript>
+    </Host>
+    <Host>
+      <menu_name>Mysql on 127.0.0.1</menu_name>
+      <tab_name>Mysql on 127.0.0.1</tab_name>
+      <command_after_login>ssh -t -l patrick 127.0.0.1 mysql -u root --pass --host 127.0.0.1 -A mysql</command_after_login>
+      <dont_show_guake>no</dont_show_guake>
+      <lfcr>no</lfcr>
+      <guakeindicatorscript>no</guakeindicatorscript>
+    </Host>
+    <Host label="yes">
+      <menu_name>Remote Mysql Servers</menu_name>
+    </Host>
+    <Host>
+      <menu_name>Mysql on 192.168.1.1</menu_name>
+      <tab_name>Mysql on 192.168.1.1</tab_name>
+      <command_after_login>ssh -t -l patrick 192.168.1.1 mysql -u root --pass --host 192.168.1.1 -A mysql</command_after_login>
+      <dont_show_guake>no</dont_show_guake>
+      <lfcr>no</lfcr>
+      <guakeindicatorscript>no</guakeindicatorscript>
+    </Host>
+  </HostGroup>
+  <HostGroup name="Localhost tasks" label="yes"/>
+  <HostGroup name="MISC">
+    <Host>
+      <menu_name>tmp folder</menu_name>
+      <tab_name>tmp folder</tab_name>
+      <command_after_login>cd /tmp</command_after_login>
+      <dont_show_guake>no</dont_show_guake>
+      <lfcr>no</lfcr>
+      <guakeindicatorscript>no</guakeindicatorscript>
+    </Host>
+    <Host>
+      <menu_name>top</menu_name>
+      <tab_name>top</tab_name>
+      <command_after_login>top</command_after_login>
+      <dont_show_guake>no</dont_show_guake>
+      <lfcr>no</lfcr>
+      <guakeindicatorscript>no</guakeindicatorscript>
+    </Host>
+    <Host>
+      <menu_name>ping www.google.com</menu_name>
+      <tab_name>Ping google</tab_name>
+      <command_after_login>ping www.google.com</command_after_login>
+      <dont_show_guake>no</dont_show_guake>
+      <lfcr>no</lfcr>
+      <guakeindicatorscript>no</guakeindicatorscript>
+    </Host>
+  </HostGroup>
+</Configuration>

@@ -43,6 +43,7 @@
     ~/.gitconfig: homedir/.gitconfig
     ~/.gitignore: homedir/.gitignore.template
     ~/.git-templates: homedir/.git-templates
+    ~/.guake-indicator: homedir/.guake-indicator
     ~/.gtk-bookmarks: homedir/.gtk-bookmarks
     ~/.gtkrc-2.0.mine: homedir/.gtkrc-2.0.mine
     ~/.hidden: homedir/.hidden
