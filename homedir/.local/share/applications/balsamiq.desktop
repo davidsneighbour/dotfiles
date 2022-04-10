@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Balsamiq
+Exec=wine /opt/balsamiq/balsamiq.exe
+Terminal=false
+Type=Application
+Icon=/opt/balsamiq/icons/mockups_ico_512.png
+StartupWMClass=Balsamiq
