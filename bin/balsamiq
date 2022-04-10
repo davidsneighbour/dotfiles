@@ -19,6 +19,14 @@ mv ./tmp/Balsamiq_Mockups_3/Balsamiq\ Mockups\ 3.exe ./tmp/Balsamiq_Mockups_3/ba
 sudo rm -rf /opt/balsamiq
 sudo mv ./tmp/Balsamiq_Mockups_3 /opt/balsamiq
 
+echo "[Desktop Entry]
+Name=Balsamiq
+Exec=wine /opt/balsamiq/balsamiq.exe
+Terminal=false
+Type=Application
+Icon=/opt/balsamiq/icons/mockups_ico_512.png
+StartupWMClass=Balsamiq" >~/.local/share/applications/balsamiq.desktop
+
 # running balsamiq once, so that it can be intialised
 wine /opt/balsamiq/balsamiq.exe
 
