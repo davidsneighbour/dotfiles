@@ -63,7 +63,7 @@
     ##################################################################
     # directory links
     ##################################################################
-    ~/.dotfiles": ""
+    ~/.dotfiles: ""
     ~/.conky: homedir/.conky
     ~/.cargo: homedir/.cargo
     ~/.fonts: homedir/.fonts
