@@ -5,10 +5,10 @@
       "name": "Website"
     },
     {
-      "path": "../../../../gitlab.com/wonderland-gmbh/hugo-module-tnd-env"
+      "path": "../../../../gitlab.com/wonderland-gmbh/wonderland-engine"
     },
     {
-      "path": "../../../../gitlab.com/wonderland-gmbh/hugo-module-tnd-search"
+      "path": "../../../dnb-org/dnb-hugo-auditor"
     }
   ],
   "settings": {
@@ -21,7 +21,7 @@
     ],
     "frontMatter.content.pageFolders": [],
     "files.associations": {
-    	"automation/*.js": "plaintext"
-  	}
+      "automation/*.js": "plaintext"
+    }
   }
 }
