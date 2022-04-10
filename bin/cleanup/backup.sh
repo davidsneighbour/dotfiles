@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-code --list-extensions | xargs -L 1 echo code --install-extension > homedir/.config/Code/extensions.sh
+code --list-extensions | xargs -L 1 echo code --install-extension >home/.config/Code/extensions.sh
