@@ -58,10 +58,10 @@
   "oneDarkPro.bold": true,
   "merge-conflict.autoNavigateNextConflict.enabled": true,
   "oneDarkPro.editorTheme": "One Dark Pro Flat",
-  "workbench.editor.enablePreview": false,
   "workbench.colorCustomizations": {
     "editorCursor.foreground": "#fe5e78",
-    "terminalCursor.foreground": "#fe5e78"
+    "terminalCursor.foreground": "#fe5e78",
+    "editor-ruler.foreground": "#fe5e78"
   },
   "oneDarkPro.vivid": true,
   "[json]": {
@@ -203,7 +203,9 @@
     "Browserslist",
     "browserslistrc",
     "davidsneighbour",
+    "Giscus",
     "gomod",
+    "hmac",
     "instantsearch",
     "kollitsch",
     "Kollitsch",
@@ -215,7 +217,7 @@
   "editor.inlineSuggest.enabled": true,
   "github.copilot.enable": {
     "*": true,
-    "yaml": false,
+    "yaml": true,
     "plaintext": true,
     "markdown": true
   },
@@ -248,5 +250,30 @@
   "discord.swapBigAndSmallImage": false,
   "discord.workspaceExcludePatterns": [],
   "cSpell.diagnosticLevel": "Hint",
-  "cSpell.language": "en-GB,de"
+  "cSpell.language": "en-GB,de",
+  "github.copilot.advanced": {},
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "[shellscript]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+  "typescript.validate.enable": false,
+  "editor.rename.enablePreview": false,
+  "workbench.editor.enablePreview": false,
+  "search.useReplacePreview": false,
+  "workbench.colorTheme": "Horizon DNB",
+  "terminal.integrated.automationProfile.linux": {
+    "color": "terminal.ansiCyan",
+    "icon": "server-environment",
+    "name": "npm-server",
+    "path": ""
+  },
+  "git.enableSmartCommit": true,
+  "editor.rulers": [
+    80,
+    100
+  ],
+  "editor.minimap.enabled": false,
+  "[ignore]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
 }

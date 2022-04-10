@@ -4,6 +4,7 @@ blob_storage
 Cache*
 Code Cache
 Crash Reports
+Crashpad
 databases
 exthost Crash Reports
 GPUCache
@@ -13,6 +14,8 @@ Service Worker
 Session Storage
 User/globalStorage
 User/sync
+User/History
+Workspaces
 User/workspaceStorage
 code.lock
 Cookies
