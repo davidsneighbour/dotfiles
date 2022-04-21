@@ -67,7 +67,6 @@
   "[json]": {
     "editor.defaultFormatter": "vscode.json-language-features"
   },
-  "terminal.integrated.persistentSessionReviveProcess": "never",
   "screencastMode.onlyKeyboardShortcuts": true,
   "screencastMode.mouseIndicatorColor": "#fe5e78",
   "screencastMode.mouseIndicatorSize": 40,
@@ -84,7 +83,9 @@
   "shellcheck.enableQuickFix": true,
   "shellcheck.run": "onSave", // also: "onSave"
   "shellcheck.executablePath": "",
-  "shellcheck.customArgs": [],
+  "shellcheck.customArgs": [
+    "--include=add-default-case,avoid-nullary-conditions,check-unassigned-uppercase,deprecate-which,quote-safe-variables,require-variable-braces"
+  ],
   "shellcheck.ignorePatterns": {
     "**/*.xonshrc": true,
     "**/*.xsh": true,
@@ -165,7 +166,6 @@
   "better-comments.highlightPlainText": true,
   "quokka.automaticRestart": true,
   "quokka.automaticStartRegex": "*.(js|ts)",
-  "color-highlight.markerType": "dot-before",
   // disable vscode internal validation for css (stylelint)
   "css.validate": false,
   // disable vscode internal validation for less (stylelint)
@@ -187,7 +187,6 @@
   "editor.linkedEditing": true,
   "shellformat.useEditorConfig": true,
   "shellformat.flag": "-i 2 -ci -sr -kp -fn",
-  "terminal.integrated.defaultProfile.linux": "bash",
   "workbench.startupEditor": "none",
   "[dockerfile]": {
     "editor.defaultFormatter": "foxundermoon.shell-format"
@@ -197,7 +196,6 @@
   "cypressHelper.includeAnnotationForCommands": true,
   "intelephense.telemetry.enabled": false,
   "rest-client.enableTelemetry": false,
-  "terminal.explorerKind": "external",
   "cSpell.userWords": [
     "algoliasearch",
     "Browserslist",
@@ -223,9 +221,6 @@
   },
   "javascript.updateImportsOnFileMove.enabled": "always",
   "git.confirmSync": false,
-  "workbench.colorTheme": "Horizon DNB",
-  "terminal.integrated.shellIntegration.enabled": true,
-  "terminal.integrated.shellIntegration.showWelcome": false,
   "codesnap.realLineNumbers": true,
   "codesnap.roundedCorners": false,
   "codesnap.showWindowControls": false,
@@ -260,7 +255,6 @@
   "editor.rename.enablePreview": false,
   "workbench.editor.enablePreview": false,
   "search.useReplacePreview": false,
-  "workbench.colorTheme": "Horizon DNB",
   "terminal.integrated.automationProfile.linux": {
     "color": "terminal.ansiCyan",
     "icon": "server-environment",
@@ -275,5 +269,29 @@
   "editor.minimap.enabled": false,
   "[ignore]": {
     "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+  "[toml]": {
+    "editor.defaultFormatter": "tamasfe.even-better-toml"
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "yzhang.markdown-all-in-one"
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[dotenv]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+  "workbench.colorTheme": "Horizon DNB",
+  "color-highlight.markRuler": false,
+  "shellcheck.disableVersionCheck": true,
+  "shellcheck.exclude": [
+    "SC2039"
+  ],
+  "[scss]": {
+    "editor.defaultFormatter": "stylelint.vscode-stylelint"
   },
 }
