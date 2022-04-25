@@ -16,20 +16,18 @@ done
 # echo "Enter the sudo password, please"
 # read -r -s PASSWORD
 
-echo "Installing programs via APT"
-sudo apt install inkscape build-essential atop htop i3 neofetch polybar feh dunst vim default-jdk golang
+echo "Setup programs via APT"
+sudo apt purge libreoffice
+sudo apt install curl inkscape build-essential atop htop i3 neofetch polybar feh dunst vim default-jdk golang git
 
-echo "Installing programs via Snap"
+echo "Setup programs via Snap"
 sudo snap install --classic code
 sudo snap install todoist
-sudo snap install android-studio
 sudo snap install authy
 sudo snap install bitcoin-core
-sudo snap install chromium
-sudo snap install flutter
 sudo snap install libreoffice
-sudo snap install phpstorm
-sudo snap install ruby
+sudo snap install phpstorm --classic
+sudo snap install ruby --classic
 sudo snap install slack
 
 echo "Installing Node and NPM"
@@ -46,5 +44,19 @@ echo "Installing Github CLI"
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key C99B11DEB97541F0
 sudo apt-add-repository -u https://cli.github.com/packages
 sudo apt install gh
+
+# NOTE: These instructions only work for 64 bit Debian-based
+# Linux distributions such as Ubuntu, Mint etc.
+
+# 1. Install our official public software signing key
+wget -O- https://updates.signal.org/desktop/apt/keys.asc | gpg --dearmor > signal-desktop-keyring.gpg
+cat signal-desktop-keyring.gpg | sudo tee -a /usr/share/keyrings/signal-desktop-keyring.gpg > /dev/null
+
+# 2. Add our repository to your list of repositories
+echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt xenial main' |\
+  sudo tee -a /etc/apt/sources.list.d/signal-xenial.list
+
+# 3. Update your package database and install signal
+sudo apt update && sudo apt install signal-desktop
 
 echo "Completed in ${SECONDS}s"

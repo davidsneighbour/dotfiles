@@ -276,13 +276,15 @@ gitclean() {
   git gc --aggressive
 }
 
-g-rebase-branch() {
+g_rebase_branch() {
   git branch --show-current | xargs git merge-base "$1" | xargs git rebase -i
 }
 
-g-one-commit() {
+g_one_commit() {
+  # shellcheck disable=SC2039
   local last_commit_message
   last_commit_message=$(git show -s --format=%s)
+  # shellcheck disable=SC2039
   local BRANCH
 
   if [ -z "$1" ]; then
@@ -298,7 +300,7 @@ g-one-commit() {
 }
 
 # for repo in $repos; do (g_repo_transfer "$repo" "$1" "$2"); done
-g-repo-transfer() {
+g_repo_transfer() {
   curl -vL \
     -u "$2:${GITHUB_SECRET}" \
     -H "Content-Type: application/json" \
@@ -306,4 +308,17 @@ g-repo-transfer() {
     -X POST https://api.github.com/repos/"$2"/"$1"/transfer \
     -d '{"new_owner":"'"$3"'"}' |
     jq .
+}
+
+g_porcellain_sub() {
+
+  # iterate over subdirectories
+  for dir in *; do
+    cd "${dir}" || return
+    if [ -d .git ]; then
+      git status -s
+    fi
+    cd ..
+  done
+
 }

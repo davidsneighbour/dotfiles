@@ -294,4 +294,7 @@
   "[scss]": {
     "editor.defaultFormatter": "stylelint.vscode-stylelint"
   },
+  "[gohtml]": {
+    "editor.defaultFormatter": "remimarsal.prettier-now"
+  },
 }
