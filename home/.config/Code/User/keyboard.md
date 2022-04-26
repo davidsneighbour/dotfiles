@@ -25,16 +25,4 @@ CTRL + , = settings
 CTRL + \ = side by side editor
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 https://docs.emmet.io/cheat-sheet/

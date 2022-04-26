@@ -3,7 +3,7 @@
   "files.autoSave": "onFocusChange",
   "telemetry.telemetryLevel": "crash",
   "git.autofetch": "all",
-  "editor.fontFamily": "'Fira Code', 'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
+  "editor.fontFamily": "'Fira Code'",
   "editor.wordWrap": "on",
   "editor.accessibilitySupport": "off",
   "editor.autoClosingBrackets": "always",
@@ -29,6 +29,7 @@
     "comments": true,
     "strings": true
   },
+  "html.autoClosingTags": true,
   "files.trimFinalNewlines": true,
   "files.trimTrailingWhitespace": true,
   "workbench.commandPalette.history": 100,
@@ -118,7 +119,6 @@
   "gruvboxMaterial.italicKeywords": true,
   "gruvboxMaterial.lightContrast": "hard",
   "gruvboxMaterial.lightCursor": "red",
-  "workbench.iconTheme": "material-icon-theme",
   "material-icon-theme.hidesExplorerArrows": true,
   "material-icon-theme.showUpdateMessage": true,
   "tailwindCSS.emmetCompletions": true,
@@ -188,9 +188,6 @@
   "shellformat.useEditorConfig": true,
   "shellformat.flag": "-i 2 -ci -sr -kp -fn",
   "workbench.startupEditor": "none",
-  "[dockerfile]": {
-    "editor.defaultFormatter": "foxundermoon.shell-format"
-  },
   "stylelint.reportNeedlessDisables": true,
   "stylelint.reportInvalidScopeDisables": true,
   "cypressHelper.includeAnnotationForCommands": true,
@@ -248,9 +245,6 @@
   "cSpell.language": "en-GB,de",
   "github.copilot.advanced": {},
   "typescript.updateImportsOnFileMove.enabled": "always",
-  "[shellscript]": {
-    "editor.defaultFormatter": "foxundermoon.shell-format"
-  },
   "typescript.validate.enable": false,
   "editor.rename.enablePreview": false,
   "workbench.editor.enablePreview": false,
@@ -267,34 +261,15 @@
     100
   ],
   "editor.minimap.enabled": false,
-  "[ignore]": {
-    "editor.defaultFormatter": "foxundermoon.shell-format"
-  },
-  "[toml]": {
-    "editor.defaultFormatter": "tamasfe.even-better-toml"
-  },
-  "[markdown]": {
-    "editor.defaultFormatter": "yzhang.markdown-all-in-one"
-  },
   "[yaml]": {
     "editor.defaultFormatter": "redhat.vscode-yaml"
   },
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "[dotenv]": {
-    "editor.defaultFormatter": "foxundermoon.shell-format"
-  },
-  "workbench.colorTheme": "Horizon DNB",
   "color-highlight.markRuler": false,
-  "shellcheck.disableVersionCheck": true,
+  "shellcheck.disableVersionCheck": false,
   "shellcheck.exclude": [
     "SC2039"
   ],
-  "[scss]": {
-    "editor.defaultFormatter": "stylelint.vscode-stylelint"
-  },
-  "[gohtml]": {
-    "editor.defaultFormatter": "remimarsal.prettier-now"
-  },
 }
