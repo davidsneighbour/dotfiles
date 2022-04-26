@@ -1,7 +1,7 @@
 [user]
 	email = patrick@davids-neighbour.com
 	name = Patrick Kollitsch
-signingkey = 40BCAA0B2E3817F4
+  signingkey = 40BCAA0B2E3817F4
 
 [apply]
 # Detect whitespace errors when applying a patch
@@ -214,6 +214,9 @@ dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
 # List contributors with number of commits
 contributors = shortlog --summary --numbered
 
+# show last commit with signature
+last = log --show-signature -1
+
 ################################################################################
 # Stashing
 ################################################################################
@@ -282,3 +285,5 @@ line-numbers-left-style = cyan
 line-numbers-right-style = cyan
 line-numbers-minus-style = 124
 line-numbers-plus-style = 28
+[gpg]
+	program = gpg
