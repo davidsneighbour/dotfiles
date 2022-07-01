@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
 Name=Enpass
-Exec= /opt/enpass/Enpass -minimize
+Exec=/snap/bin/enpass -minimize
 Icon=enpass.png
 Comment=The best password manager
 X-GNOME-Autostart-Delay=12

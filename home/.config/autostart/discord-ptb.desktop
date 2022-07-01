@@ -1,9 +1,9 @@
 [Desktop Entry]
 Type=Application
-Exec=discord
+Exec=/usr/share/discord-ptb/DiscordPTB
 Hidden=false
 NoDisplay=false
-Name=Discord
-Icon=/usr/share/discord/discord.png
+Name=DiscordPTB
+Icon=/usr/share/discord-ptb/discord.png
 Comment=Text and voice chat for gamers.
 X-GNOME-Autostart-enabled=true
