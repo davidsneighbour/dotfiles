@@ -65,6 +65,8 @@ if [ -d "${HOME}"/.npm ]; then
   export NODE_PATH="${NODE_PATH}":"${HOME}"/.npm/lib/node_modules
 fi
 
+PATH=/opt/firefox/firefox:$PATH
+
 # aaaaan export...
 export PATH
 

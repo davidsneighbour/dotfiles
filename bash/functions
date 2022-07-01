@@ -322,3 +322,11 @@ g_porcellain_sub() {
   done
 
 }
+
+g_ignore() {
+  curl -sL https://www.toptal.com/developers/gitignore/api/$@;
+}
+
+g_ignore_list(){
+  curl -sL https://www.toptal.com/developers/gitignore/api/list;
+}
