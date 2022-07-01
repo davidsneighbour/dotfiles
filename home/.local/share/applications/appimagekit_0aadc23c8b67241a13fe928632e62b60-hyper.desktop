@@ -1,0 +1,22 @@
+[Desktop Entry]
+Name=Hyper (3.2.3)
+Exec=/home/patrick/.bin/Hyper-3.2.3_e103a8d2e540973112cf1947cc4428bf.AppImage --no-sandbox %U
+Terminal=false
+Type=Application
+Icon=appimagekit_0aadc23c8b67241a13fe928632e62b60_hyper
+StartupWMClass=Hyper
+X-AppImage-Version=3.2.3
+Comment=A terminal built on web technologies
+MimeType=x-scheme-handler/ssh;
+Categories=TerminalEmulator;
+TryExec=/home/patrick/.bin/Hyper-3.2.3_e103a8d2e540973112cf1947cc4428bf.AppImage
+X-AppImage-Old-Icon=hyper
+X-AppImage-Old-Name=Hyper
+X-AppImage-Identifier=0aadc23c8b67241a13fe928632e62b60
+Actions=Remove;
+X-AppImageLauncher-Version=2.2.0 (git commit 0f91801), built on 2022-04-22 02:10:10 UTC
+
+[Desktop Action Remove]
+Name=Remove AppImage from system
+Icon=AppImageLauncher
+Exec=/usr/lib/x86_64-linux-gnu/appimagelauncher/remove "/home/patrick/.bin/Hyper-3.2.3_e103a8d2e540973112cf1947cc4428bf.AppImage"

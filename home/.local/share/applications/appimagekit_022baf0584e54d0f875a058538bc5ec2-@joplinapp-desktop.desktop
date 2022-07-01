@@ -1,0 +1,22 @@
+[Desktop Entry]
+Name=Joplin (2.7.15)
+Exec=/home/patrick/.bin/Joplin_87e7a8488e8f7c91c18759ff4a5addea.AppImage --no-sandbox %U
+Terminal=false
+Type=Application
+Icon=appimagekit_022baf0584e54d0f875a058538bc5ec2_joplin
+StartupWMClass=Joplin
+X-AppImage-Version=2.7.15
+MimeType=x-scheme-handler/joplin;
+Comment=Joplin for Desktop
+Categories=Office;
+TryExec=/home/patrick/.bin/Joplin_87e7a8488e8f7c91c18759ff4a5addea.AppImage
+X-AppImage-Old-Icon=joplin
+X-AppImage-Old-Name=Joplin
+X-AppImage-Identifier=022baf0584e54d0f875a058538bc5ec2
+Actions=Remove;
+X-AppImageLauncher-Version=2.2.0 (git commit 0f91801), built on 2022-04-22 02:10:10 UTC
+
+[Desktop Action Remove]
+Name=Remove AppImage from system
+Icon=AppImageLauncher
+Exec=/usr/lib/x86_64-linux-gnu/appimagelauncher/remove "/home/patrick/.bin/Joplin_87e7a8488e8f7c91c18759ff4a5addea.AppImage"
