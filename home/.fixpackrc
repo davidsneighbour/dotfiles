@@ -1,19 +1,32 @@
 {
   "sortToTop": [
     "name",
+    "description",
     "version",
     "license",
-    "description",
-    "author",
-    "maintainer",
-    "homepage",
+    "private",
     "repository",
+    "author",
     "bugs",
+    "homepage",
+    "keywords",
     "dependencies",
     "devDependencies",
-    "overrides",
+    "publishConfig",
     "scripts",
-    "private"
+    "main",
+    "browser",
+    "files",
+    "bin",
+    "directories",
+    "man",
+    "config",
+    "peerDependencies",
+    "optionalDependencies",
+    "bundledDependencies",
+    "engines",
+    "os",
+    "cpu"
   ],
   // will error if these not present
   "required": [
