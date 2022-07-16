@@ -1,0 +1,30 @@
+.org.chromium.Chromium.*
+Backups/
+Cache/
+CachedConfigurations/
+CachedData/
+CachedExtensionVSIXs/
+CachedExtensions/
+Code Cache/
+Cookies
+Cookies-journal
+Crashpad/
+Dictionaries/
+GPUCache/
+Local Storage/
+Network Persistent State
+Preferences
+QuotaManager
+QuotaManager-journal
+Service Worker/
+Session Storage/
+TransportSecurity
+User/globalStorage
+User/History
+User/workspaceStorage
+Workspaces
+blob_storage/
+code.lock
+databases/
+languagepacks.json
+machineid
