@@ -25,6 +25,7 @@
 #- sudo snap install phpstorm
 #- sudo snap install ruby
 #- sudo snap install slack
+#- sudo snap install deno
 
 - link:
     ##################################################################

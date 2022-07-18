@@ -1,16 +1,16 @@
 #!/bin/bash
 
 REQUIRED_TOOLS=(
-  curl
-  snap
-  apt
+    curl
+    snap
+    apt
 )
 
 for tool in "${REQUIRED_TOOLS[@]}"; do
-  if ! command -v "${tool}" >/dev/null; then
-    echo "${tool} is required... "
-    exit 1
-  fi
+    if ! command -v "${tool}" >/dev/null; then
+        echo "${tool} is required... "
+        exit 1
+    fi
 done
 
 # echo "Enter the sudo password, please"
@@ -21,7 +21,7 @@ sudo apt purge libreoffice
 sudo apt install curl inkscape build-essential atop htop i3 neofetch polybar feh dunst vim default-jdk golang git shutter
 
 echo "Setup programs via Snap"
-sudo snap install --classic code
+sudo snap install code --classic
 sudo snap install todoist
 sudo snap install authy
 sudo snap install bitcoin-core
@@ -29,34 +29,43 @@ sudo snap install libreoffice
 sudo snap install phpstorm --classic
 sudo snap install ruby --classic
 sudo snap install slack
+sudo snap install deno
 
 echo "Installing Node and NPM"
 curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
 nvm install node
 
 echo "Installing global NPM packages"
-npm -g install svgo cypress fixpack jshint lerna-wizard lerna lighthouse netlify-cli npm-check-updates svgo typescript @dnb-org/remark-config @dnb-org/textlint-config
+npm -g install \
+  svgo cypress fixpack jshint \
+  lerna-wizard lerna lighthouse \
+  netlify-cli npm-check-updates \
+  svgo typescript \
+  @davidsneighbour/remark-config \
+  @davidsneighbour/textlint-config
 
 echo "Installing Rust and Cargo"
 curl https://sh.rustup.rs -sSf | sh
 
+# TODO: add repos without updating and then update once (using --no-update)
+
 echo "Installing Github CLI"
+sudo add-apt-repository ppa:git-core/ppa --yes > /dev/null 2>&1
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key C99B11DEB97541F0
-sudo apt-add-repository -u https://cli.github.com/packages
+sudo apt-add-repository -u https://cli.github.com/packages --yes > /dev/null 2>&1
 sudo apt install gh
 
-# NOTE: These instructions only work for 64 bit Debian-based
-# Linux distributions such as Ubuntu, Mint etc.
-
-# 1. Install our official public software signing key
+# Signal
+echo "Installing Signal"
 wget -O- https://updates.signal.org/desktop/apt/keys.asc | gpg --dearmor >signal-desktop-keyring.gpg
 cat signal-desktop-keyring.gpg | sudo tee -a /usr/share/keyrings/signal-desktop-keyring.gpg >/dev/null
-
-# 2. Add our repository to your list of repositories
 echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt xenial main' |
-  sudo tee -a /etc/apt/sources.list.d/signal-xenial.list
-
-# 3. Update your package database and install signal
+sudo tee -a /etc/apt/sources.list.d/signal-xenial.list
 sudo apt update && sudo apt install signal-desktop
+
+# AppImageLauncher
+echo "Installing AppImageLauncher"
+sudo add-apt-repository ppa:appimagelauncher-team/stable --yes > /dev/null 2>&1
+sudo apt install appimagelauncher
 
 echo "Completed in ${SECONDS}s"

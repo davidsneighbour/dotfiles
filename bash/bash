@@ -66,6 +66,7 @@ if [ -d "${HOME}"/.npm ]; then
 fi
 
 PATH=/opt/firefox/firefox:$PATH
+PATH="/home/patrick/snap/deno/86/.deno/bin:$PATH"
 
 # aaaaan export...
 export PATH

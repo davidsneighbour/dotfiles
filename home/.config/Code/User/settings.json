@@ -300,11 +300,13 @@
   "codesnap.backgroundColor": "#484848",
   "codesnap.boxShadow": "",
   "[shellscript]": {
-    "editor.defaultFormatter": "shakram02.bash-beautify"
+    "editor.defaultFormatter": "foxundermoon.shell-format"
   },
   "shellcheck.run": "onSave",
   "shellcheck.useWorkspaceRootAsCwd": true,
   "shellcheck.exclude": [
     "[\"1096\"]"
-  ]
+  ],
+  "shellformat.flag": "-i >4",
+  "todo-tree.general.statusBar": "total"
 }
