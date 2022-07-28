@@ -340,3 +340,12 @@ getMyIP() {
       done< <(LANG=C /sbin/ifconfig)
     printf ${1+-v} $1 "%s${_nl:0:$[${#1}>0?0:1]}" $_myip
 }
+
+weather() {
+  if [ $# -eq 0 ] # If no argument has been passed to this function
+    then
+      curl wttr.in
+    else
+      curl wttr.in/"$1" # Append location
+  fi
+}
