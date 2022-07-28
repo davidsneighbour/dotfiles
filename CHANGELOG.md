@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2022.0.23](/github.com/davidsneighbour/dotfiles/compare/v2022.0.22...v2022.0.23) (2022-07-28)
+
+
+### Features
+
+* add cal and weather feature ([b26d59c](/github.com/davidsneighbour/dotfiles/commit/b26d59cbeb8f17ca4d1324a99421a3fddeae4a7b))
+* alias updates ([aa92ed6](/github.com/davidsneighbour/dotfiles/commit/aa92ed605d32ba930f6bffbf6120413cec94b360))
+
 ### [2022.0.22](/github.com/davidsneighbour/dotfiles/compare/v2022.0.21...v2022.0.22) (2022-04-26)
 
 ### [2022.0.21](/github.com/davidsneighbour/dotfiles/compare/v2022.0.20...v2022.0.21) (2022-04-25)
