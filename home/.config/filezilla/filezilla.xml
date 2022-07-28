@@ -139,24 +139,23 @@
 		<Setting name="Remote filelist colwidths">422 75 80 159 80 80</Setting>
 		<Setting name="Splitter positions (v2)">97 -236 484458735 238 237 500000000</Setting>
 		<Setting name="Site Manager position">0 427 217 1124 635 </Setting>
-		<Setting name="Sitemanager last selected">0/Renate come2samui.com/come4holiday.com</Setting>
+		<Setting name="Sitemanager last selected">0/Charlie Dwyer/asia-pacific-superyachts.com</Setting>
 		<Setting name="Tab data" sensitive="1">
 			<Tabs>
 				<Tab connected="1" selected="1">
-					<Host>come4holiday.com</Host>
-					<Port>21</Port>
-					<Protocol>0</Protocol>
+					<Host>asia-pacific-superyachts.com</Host>
+					<Port>22</Port>
+					<Protocol>1</Protocol>
 					<Type>0</Type>
-					<User>w019bbbb</User>
-					<Pass encoding="base64">OTdyczZxZ0x2OVlNbk1Xeg==</Pass>
+					<User>gordonfe</User>
+					<Pass encoding="base64" />
 					<Logontype>1</Logontype>
-					<PasvMode>MODE_DEFAULT</PasvMode>
-					<MaximumMultipleConnections>4</MaximumMultipleConnections>
+					<MaximumMultipleConnections>1</MaximumMultipleConnections>
 					<EncodingType>Auto</EncodingType>
 					<BypassProxy>0</BypassProxy>
-					<Name>come4holiday.com</Name>
-					<Site>0/Renate come2samui.com/come4holiday.com</Site>
-					<RemotePath>1 0 13 come2samui_wp 10 wp-content 6 themes 5 homey</RemotePath>
+					<Name>asia-pacific-superyachts.com</Name>
+					<Site>0/Charlie Dwyer/asia-pacific-superyachts.com</Site>
+					<RemotePath>1 0 3 usr 3 www 5 users 8 gordonfe 28 asia-pacific-superyachts.com 7 content 7 updraft</RemotePath>
 					<LocalPath>/home/patrick/</LocalPath>
 				</Tab>
 			</Tabs>

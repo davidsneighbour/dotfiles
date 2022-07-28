@@ -25,7 +25,9 @@
       "other": "on",
       "strings": "on"
     },
-    "files.trimTrailingWhitespace": false
+    "files.trimTrailingWhitespace": false,
+    "editor.formatOnSave": false,
+    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
   },
   "[scss]": {
     "editor.defaultFormatter": "vscode.css-language-features"
@@ -53,9 +55,8 @@
   "editor.cursorSmoothCaretAnimation": true,
   "editor.cursorStyle": "underline",
   "editor.find.addExtraSpaceOnTop": false,
-  "editor.fontFamily": "'Fira Code', 'Droid Sans Mono', 'monospace', monospace",
-  "editor.fontLigatures": "'ss01', 'ss02', 'ss03', 'ss04', 'ss05', 'ss06', 'zero', 'onum'",
-  "editor.fontSize": 15,
+  "editor.fontFamily": "'JetBrains Mono', 'Fira Code', 'Droid Sans Mono', monospace",
+  "editor.fontLigatures": true,
   "editor.fontWeight": "400",
   "editor.formatOnPaste": true,
   "editor.formatOnSave": true,
@@ -275,7 +276,7 @@
     "statusBar.debuggingBackground": "#263238",
     "statusBar.noFolderBackground": "#212121"
   },
-  "workbench.colorTheme": "Better Solarized Light",
+  "workbench.colorTheme": "Quiet Light",
   "workbench.editor.autoLockGroups": {
     "default": true
   },
@@ -308,5 +309,8 @@
     "[\"1096\"]"
   ],
   "shellformat.flag": "-i >4",
-  "todo-tree.general.statusBar": "total"
+  "todo-tree.general.statusBar": "total",
+  "editor.codeLensFontFamily": "\"JetBrains Mono\", 'Fira Code', 'Droid Sans Mono', 'monospace', monospace",
+  "editor.fontSize": 15,
+  "editor.lineHeight": 1.4
 }
