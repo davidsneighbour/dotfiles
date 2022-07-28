@@ -43,7 +43,7 @@
     ~/.fixpackrc: home/.fixpackrc
     ~/.gitconfig: home/.gitconfig
     ~/.gitignore: home/.gitignore.template
-    ~/.git-templates: home/.git-templates
+    ~/.git-template: home/.git-template
     ~/.guake-indicator: home/.guake-indicator
     ~/.gtk-bookmarks: home/.gtk-bookmarks
     ~/.gtkrc-2.0.mine: home/.gtkrc-2.0.mine

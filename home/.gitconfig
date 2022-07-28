@@ -252,6 +252,7 @@ gpgsign = true
 rebase = true
 [init]
 defaultBranch = main
+	templateDir = /home/patrick/.git-template
 
 [includeIf "gitdir:~/work/"]
 path = ~/.gitconfig.work
