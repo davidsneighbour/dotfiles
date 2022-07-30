@@ -138,25 +138,24 @@
 		<Setting name="Local filelist colwidths">597 80 100 120</Setting>
 		<Setting name="Remote filelist colwidths">422 75 80 159 80 80</Setting>
 		<Setting name="Splitter positions (v2)">97 -236 484458735 238 237 500000000</Setting>
+		<Setting name="Sitemanager last selected">0/ChorChang/chor-chang.com</Setting>
 		<Setting name="Site Manager position">0 427 217 1124 635 </Setting>
-		<Setting name="Sitemanager last selected">0/Charlie Dwyer/asia-pacific-superyachts.com</Setting>
 		<Setting name="Tab data" sensitive="1">
 			<Tabs>
 				<Tab connected="1" selected="1">
-					<Host>asia-pacific-superyachts.com</Host>
+					<Host>aggamon.dreamhost.com</Host>
 					<Port>22</Port>
 					<Protocol>1</Protocol>
 					<Type>0</Type>
-					<User>gordonfe</User>
-					<Pass encoding="base64" />
+					<User>chorchang</User>
+					<Pass encoding="base64">ckp5SlJZVEU4RVVldkJpWTVKSGYzUUxkOXE=</Pass>
 					<Logontype>1</Logontype>
-					<MaximumMultipleConnections>1</MaximumMultipleConnections>
 					<EncodingType>Auto</EncodingType>
 					<BypassProxy>0</BypassProxy>
-					<Name>asia-pacific-superyachts.com</Name>
-					<Site>0/Charlie Dwyer/asia-pacific-superyachts.com</Site>
-					<RemotePath>1 0 3 usr 3 www 5 users 8 gordonfe 28 asia-pacific-superyachts.com 7 content 7 updraft</RemotePath>
-					<LocalPath>/home/patrick/</LocalPath>
+					<Name>chor-chang.com</Name>
+					<Site>0/ChorChang/chor-chang.com</Site>
+					<RemotePath>1 0 4 home 9 chorchang 14 chor-chang.com 10 wp-content 6 themes 33 chor-chang-samui-villa-resort.com</RemotePath>
+					<LocalPath>/home/patrick/github.com/davidsneighbour/chor-chang.com/wp-content/themes/chor-chang-samui-villa-resort.com/</LocalPath>
 				</Tab>
 			</Tabs>
 		</Setting>
