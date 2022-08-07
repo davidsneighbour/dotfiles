@@ -7,10 +7,11 @@ IFS=$'\n\t'
 # setup wine
 sudo dpkg --add-architecture i386
 CODENAME=$(lsb_release -cs)
-sudo apt-add-repository -r "https://dl.winehq.org/wine-builds/ubuntu/"
-sudo apt-add-repository "deb https://dl.winehq.org/wine-builds/ubuntu/ ${CODENAME} main"
+sudo apt-add-repository -r "https://dl.winehq.org/wine-builds/ubuntu/" --no-update
+wget -O- https://dl.winehq.org/wine-builds/winehq.key | sudo gpg --dearmor | sudo tee /usr/share/keyrings/winehq.gpg
+echo deb [signed-by=/usr/share/keyrings/winehq.gpg] http://dl.winehq.org/wine-builds/ubuntu/ $(lsb_release -cs) main | sudo tee /etc/apt/sources.list.d/winehq.list
 sudo apt update && sudo apt upgrade
-sudo apt install --install-recommends winehq-stable
+sudo apt install --install-recommends wine-stable
 
 # extract balsamiq
 mkdir -p ./tmp
