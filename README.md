@@ -11,7 +11,7 @@ See the note above. If you are still here, then you probably are interested in h
 
 - I use GNU Bash. I don't use any fancy new and better shell, just `/bin/bash`. I use it because it is the most widely used shell and it is the default shell on my system. I use it because all my linting tools and subscripts are written or configured for bash. I do not require to re-invent the wheel. (The last sentence is something I pray to myself once a day or more often.)
 
-- If a functionality is available within Bash itself, I will use _this_ functionality, not an additional program or package that needs to be installed and might not be available on other systems.
+- If functionality is available within Bash itself, I will use _this_ functionality, not an additional program or package that needs to be installed and might not be available on other systems.
 
 - Speed is subjective. 1 second is not slow. 5 seconds is not slow. I will not optimise my scripts to save nanoseconds and will enjoy the time spent waiting for my scripts to finish.
 
@@ -19,9 +19,9 @@ See the note above. If you are still here, then you probably are interested in h
 
 ## Setup as local dotfile installation and update
 
-You do not need to set this up as a local dotfile installation if you do not with to use this repo for your Bash sessions. Don't do this is what I am saying. This is only for myself to install everything quickly on a new system.
+You do not need to set this up as a local dotfile installation if you do not wish to use this repo for your Bash sessions. Don't do this is what I am saying. This is only for me to install everything quickly on a new system.
 
-Clone with with submodules:
+Clone with submodules:
 
 ```shell
 git clone --recurse-submodules git@github.com:davidsneighbour/dotfiles.git

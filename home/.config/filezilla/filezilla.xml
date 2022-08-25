@@ -138,24 +138,24 @@
 		<Setting name="Local filelist colwidths">597 80 100 120</Setting>
 		<Setting name="Remote filelist colwidths">422 75 80 159 80 80</Setting>
 		<Setting name="Splitter positions (v2)">97 -236 484458735 238 237 500000000</Setting>
-		<Setting name="Sitemanager last selected">0/ChorChang/chor-chang.com</Setting>
 		<Setting name="Site Manager position">0 427 217 1124 635 </Setting>
+		<Setting name="Sitemanager last selected">0/Herbert/New site</Setting>
 		<Setting name="Tab data" sensitive="1">
 			<Tabs>
 				<Tab connected="1" selected="1">
-					<Host>aggamon.dreamhost.com</Host>
+					<Host>ds12496.dreamservers.com</Host>
 					<Port>22</Port>
 					<Protocol>1</Protocol>
 					<Type>0</Type>
-					<User>chorchang</User>
-					<Pass encoding="base64">ckp5SlJZVEU4RVVldkJpWTVKSGYzUUxkOXE=</Pass>
+					<User>hdvisathailand</User>
+					<Pass encoding="base64" />
 					<Logontype>1</Logontype>
 					<EncodingType>Auto</EncodingType>
 					<BypassProxy>0</BypassProxy>
-					<Name>chor-chang.com</Name>
-					<Site>0/ChorChang/chor-chang.com</Site>
-					<RemotePath>1 0 4 home 9 chorchang 14 chor-chang.com 10 wp-content 6 themes 33 chor-chang-samui-villa-resort.com</RemotePath>
-					<LocalPath>/home/patrick/github.com/davidsneighbour/chor-chang.com/wp-content/themes/chor-chang-samui-villa-resort.com/</LocalPath>
+					<Name>New site</Name>
+					<Site>0/Herbert/New site</Site>
+					<RemotePath>1 0 4 home 14 hdvisathailand 19 hdvisa-thailand.com 6 public 5 hdmap</RemotePath>
+					<LocalPath>/home/patrick/github.com/davidsneighbour/hdvisa-thailand.com/public/hdmap/</LocalPath>
 				</Tab>
 			</Tabs>
 		</Setting>

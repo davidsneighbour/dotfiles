@@ -110,3 +110,5 @@ alias vlc-play="dbus-send --type=method_call --dest=org.mpris.MediaPlayer2.vlc /
 alias vlc-stop="dbus-send --type=method_call --dest=org.mpris.MediaPlayer2.vlc /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Stop"
 
 alias cal="ncal"
+
+alias get-books="rsync -rztv media:/home/patrick/Downloads/Books/ /home/patrick/Books"

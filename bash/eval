@@ -21,3 +21,6 @@ if [ -f "${FILE}" ]; then
   source "${FILE}"
   set +a
 fi
+
+# manual vscode terminal setup
+[[ "$TERM_PROGRAM" == "vscode" ]] && . "$(code --locate-shell-integration-path bash)"
