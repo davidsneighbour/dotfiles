@@ -1,7 +1,0 @@
-#!/bin/bash
-
-if [ "$(hostname)" = "main" ]; then
-  synergys -c /home/synergy/synergy-server.conf -l /home/synergy/synergy-"$(hostname)".log --no-tray --daemon
-else
-  synergyc --no-tray --daemon 192.168.1.201
-fi
