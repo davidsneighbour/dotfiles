@@ -55,7 +55,6 @@
     ~/.remarkignore: home/.remarkignore
     ~/.remarkrc.js: home/.remarkrc.js
     ~/.selected_editor: home/.selected_editor
-    ~/.synergy.conf: home/.synergy.conf
     ~/.textlintrc.js: home/.textlintrc.js
     ~/.vimrc: home/.vimrc
     ~/.vuerc: home/.vuerc
@@ -85,7 +84,6 @@
     ~/.ssh: home/.ssh
     ~/.themes: home/.themes
     ~/.icons: home/.icons
-    ~/.synergy: home/.synergy
     ~/.wallpaper.jpg: home/wallpapers/wallpaper-002.jpg
 # - shell:
 #     - bash ./home/.config/Code/extensions.sh

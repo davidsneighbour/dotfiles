@@ -290,7 +290,6 @@ assign [instance="global_terminal"] 11
 ################################################################################
 # background programs
 ################################################################################
-exec --no-startup-id /usr/bin/synergy &
 exec --no-startup-id /usr/bin/rescuetime &
 exec --no-startup-id /opt/enpass/Enpass -minimize &
 exec --no-startup-id shutter --min_at_startup &
