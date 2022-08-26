@@ -14,8 +14,8 @@
 #- sudo snap install --classic code
 #- sudo snap install todoist
 #####################################################################################
-#- sudo apt install inkscape gimp build-essential atop htop i3 neofetch polybar feh dunst vim
-#- sudo apt install default-jdk
+    #- sudo apt purge libreoffice
+    - sudo ./bin/setup-system.sh
 #- sudo snap install android-studio
 #- sudo snap install authy
 #- sudo snap install bitcoin-core

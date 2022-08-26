@@ -114,7 +114,7 @@
     "*.js": "$(capture).js.map, $(capture).*.js",
     "*.ts": "$(capture).js, $(capture).*.ts, $(capture).ts.map",
     ".env": "*.env, .env.*, .envrc, env.d.ts",
-    ".gitignore": ".gitattributes, .gitmodules, .gitmessage, .mailmap, .git-blame*",
+    ".gitignore": ".gitattributes, .gitmodules, .gitmessage, .mailmap, .git-blame*, .remarkignore, .textlintignore",
     "README.md": "SECURITY*, LICENSE*, CITATION.cff",
     "composer.json": ".php*.cache, composer.lock, phpunit.xml*, psalm*.xml",
     "dockerfile": ".dockerignore, docker-compose.*, dockerfile*",

@@ -1,6 +1,7 @@
 email=
 init.author.email=
 init.author.name=
-init.license=MIT
+init-license=MIT
+init-version=0.0.1
 sign-git-tag=true
 fund=false

@@ -18,7 +18,9 @@ done
 
 echo "Setup programs via APT"
 sudo apt purge libreoffice
-sudo apt install curl inkscape build-essential atop htop i3 neofetch polybar feh dunst vim default-jdk golang git shutter
+sudo apt install sudo apt install inkscape gimp build-essential atop htop i3 neofetch polybar \
+        feh dunst vim default-jdk libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev \
+        librsvg2-dev curl golang git shutter
 
 echo "Setup programs via Snap"
 sudo snap install code --classic
