@@ -1,6 +1,21 @@
 {
   "recommendations": [
+    "rescuetime.rescuetime",
+    "znck.grammarly",
+    "mrmlnc.vscode-apache",
+    "aaron-bond.better-comments",
+    "mikestead.dotenv",
+    "editorconfig.editorconfig",
     "nico-castell.linux-desktop-file",
-    "dlasagno.rasi"
+    "yzhang.markdown-all-in-one",
+    "davidanson.vscode-markdownlint",
+    "esbenp.prettier-vscode",
+    "dlasagno.rasi",
+    "foxundermoon.shell-format",
+    "timonwong.shellcheck",
+    "remisa.shellman",
+    "mkhl.shfmt",
+    "gruntfuggly.todo-tree",
+    "redhat.vscode-yaml"
   ]
 }
