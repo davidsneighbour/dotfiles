@@ -296,7 +296,7 @@ g_one_commit() {
 
   git branch --show-current | xargs git merge-base "${BRANCH}" | xargs git reset --soft
   git add -A
-  git commit -m "${last_commit_message}" --amend
+  git commit -m "${last_commit_message}" --amend --reset-author
 }
 
 # for repo in $repos; do (g_repo_transfer "$repo" "$1" "$2"); done
