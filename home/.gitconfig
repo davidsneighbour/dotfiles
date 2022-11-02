@@ -289,3 +289,5 @@ line-numbers-minus-style = 124
 line-numbers-plus-style = 28
 [gpg]
 	program = gpg
+[protocol "keybase"]
+	allow = always
