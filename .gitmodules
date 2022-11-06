@@ -1,9 +1,3 @@
-[submodule "home/.config/sublime-text-3/Packages/Dracula Color Scheme"]
-	path = home/.config/sublime-text-3/Packages/Dracula Color Scheme
-	url = git@github.com:dracula/sublime.git
-[submodule "home/.config/sublime-text-3/Packages/Agila Theme"]
-	path = home/.config/sublime-text-3/Packages/Agila Theme
-	url = git@github.com:arvi/Agila-Theme.git
 [submodule "dotbot"]
 	path = dotbot
 	url = https://github.com/anishathalye/dotbot
