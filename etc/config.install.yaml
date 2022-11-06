@@ -82,7 +82,6 @@
     ~/.local/share/applications: home/.local/share/applications
     ~/.shutter: home/.shutter
     ~/.ssh: home/.ssh
-    ~/.themes: home/.themes
     ~/.icons: home/.icons
     ~/.wallpaper.jpg: home/wallpapers/wallpaper-002.jpg
 # - shell:
