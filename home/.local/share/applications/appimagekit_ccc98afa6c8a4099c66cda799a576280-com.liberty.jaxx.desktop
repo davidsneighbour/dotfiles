@@ -1,0 +1,20 @@
+[Desktop Entry]
+Name=Jaxx Liberty
+Exec=/home/patrick/.bin/Jaxx.Liberty-3.0.0_4af384772c30134745e2dbf53ec5cef8.AppImage
+Terminal=false
+Type=Application
+Icon=appimagekit_ccc98afa6c8a4099c66cda799a576280_com.liberty.jaxx
+StartupWMClass=Jaxx Liberty
+X-AppImage-Version=3.0.0
+Comment=Blockchain platform
+Categories=Utility;
+TryExec=/home/patrick/.bin/Jaxx.Liberty-3.0.0_4af384772c30134745e2dbf53ec5cef8.AppImage
+X-AppImage-Old-Icon=com.liberty.jaxx
+X-AppImage-Identifier=ccc98afa6c8a4099c66cda799a576280
+Actions=Remove;
+X-AppImageLauncher-Version=2.2.0 (git commit 0f91801), built on 2022-04-22 02:10:10 UTC
+
+[Desktop Action Remove]
+Name=Remove AppImage from system
+Icon=AppImageLauncher
+Exec=/usr/lib/x86_64-linux-gnu/appimagelauncher/remove "/home/patrick/.bin/Jaxx.Liberty-3.0.0_4af384772c30134745e2dbf53ec5cef8.AppImage"

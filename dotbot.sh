@@ -6,14 +6,14 @@ DOTBOT_CONFIG="etc/config.update.yaml"
 if [[ $# -gt 0 ]]
 then
 
-  if [ ${1} = "install" ]
+  if [ "${1}" = "install" ]
   then
     DOTBOT_CONFIG="etc/config.install.yaml"
   fi
 
 fi
 
-echo $DOTBOT_CONFIG
+echo "${DOTBOT_CONFIG}"
 
 DOTBOT_DIR="dotbot"
 DOTBOT_BIN="bin/dotbot"

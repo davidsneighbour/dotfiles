@@ -1,5 +1,0 @@
-#!/bin/bash
-
-# if thunderbird is running stop it
-# rsync Documents/Emails to Backup Drive
-# if thunderbird was running start it
