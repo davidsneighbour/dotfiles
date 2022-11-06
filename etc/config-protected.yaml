@@ -1,8 +1,5 @@
 ################################################################################
-# New setup configuration for dotbot
-#
-# @see https://github.com/anishathalye/dotbot for more info
+# Setup configuration for the protected repository
 ################################################################################
 - link:
-    ~/.env: filesystem/.env
-
+    ~/.env: protected/.env

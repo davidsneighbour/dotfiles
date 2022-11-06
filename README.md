@@ -1,9 +1,9 @@
-![David's Neighbour's Dotfiles](.github/github-header.png)
+![Dotfiles](.github/github-header.png)
 
 | ❗ | While this repo is public and licensed under MIT you probably do NOT want to just clone it and use it as a template for your own project. Feel free to look around and take inspiration as I did with plenty of dotfile repository before me. This is my personal setup and it works for me. If you have questions or suggestions (or find me adding my own private keys to this repo, ehem) feel free to contact me or peruse the issues section. |
 | --- | --- |
 
-# David's Neighbour's Dot Files
+# Dotfiles
 
 ## Introduction
 
