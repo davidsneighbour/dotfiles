@@ -2,15 +2,17 @@
 
 set -e
 
-DOTBOT_CONFIG="etc/config.update.yaml"
+DOTBOT_CONFIG="etc/config.yaml"
 if [[ $# -gt 0 ]]
 then
-
   if [ "${1}" = "install" ]
   then
     DOTBOT_CONFIG="etc/config.install.yaml"
   fi
-
+  if [ "${1}" = "protected" ]
+  then
+    DOTBOT_CONFIG="etc/config.protected.yaml"
+  fi
 fi
 
 echo "${DOTBOT_CONFIG}"
@@ -23,5 +25,4 @@ cd "${BASEDIR}"
 git -C "${DOTBOT_DIR}" submodule sync --quiet --recursive
 git submodule update --init --recursive "${DOTBOT_DIR}"
 
-#"${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${DOTBOT_CONFIG}" "${@}"
 "${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${DOTBOT_CONFIG}"

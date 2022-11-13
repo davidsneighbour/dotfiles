@@ -1,8 +1,27 @@
 ################################################################################
-# New setup configuration for dotbot
+# Setup configuration for Dotbot
 #
 # @see https://github.com/anishathalye/dotbot for more info
 ################################################################################
-- link:
-    ~/.env: filesystem/.env
+- defaults:
+    link:
+      create: true
+      relink: true
+      force: true
 
+- clean: ["~"]
+
+- shell:
+    - ["mkdir -p ~/.config", "creating config folder (if it doesn't exist yet)"]
+
+- link:
+    ############################################################################
+    # file links
+    ############################################################################
+    ~/.bash_logout: home/.bash_logout
+    ~/.bash_profile: home/.bash_profile
+    ~/.bashrc: home/.bashrc
+    ############################################################################
+    # protected links default files
+    ############################################################################
+    ~/.env: filesystem/.env
