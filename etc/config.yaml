@@ -21,6 +21,11 @@
     ~/.bash_logout: home/.bash_logout
     ~/.bash_profile: home/.bash_profile
     ~/.bashrc: home/.bashrc
+    ##################################################################
+    # directory links
+    ##################################################################
+    ~/snap/joplin-desktop/current/.config/joplin-desktop/plugins: filesystem/snap/joplin-desktop/current/.config/joplin-desktop/plugins
+    ~/snap/joplin-desktop/current/.config/joplin-desktop/settings.json: filesystem/snap/joplin-desktop/current/.config/joplin-desktop/settings.json
     ############################################################################
     # protected links default files
     ############################################################################

@@ -1,5 +1,13 @@
 ################################################################################
 # Setup configuration for the protected repository
 ################################################################################
+- defaults:
+    link:
+      create: true
+      relink: true
+      force: true
+
+- clean: ["~"]
+
 - link:
     ~/.env: protected/.env
