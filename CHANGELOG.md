@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2022.0.24](/github.com/davidsneighbour/dotfiles/compare/v2022.0.23...v2022.0.24) (2022-11-13)
+
+
+### Features
+
+* add proper setup configuration and protected config ([930654d](/github.com/davidsneighbour/dotfiles/commit/930654d5d45513d496c6716a1b58ac6ddac39a39))
+
+
+### Bug Fixes
+
+* remove synergy start script ([86e848f](/github.com/davidsneighbour/dotfiles/commit/86e848fecab64fda54886be71ce69c92b6684811))
+* reset commit author on commit rebases ([8c5ba4c](/github.com/davidsneighbour/dotfiles/commit/8c5ba4c954c576b97cc95f597153ad975bf00410))
+
 ### [2022.0.23](/github.com/davidsneighbour/dotfiles/compare/v2022.0.22...v2022.0.23) (2022-07-28)
 
 
