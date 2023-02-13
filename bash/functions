@@ -349,3 +349,15 @@ weather() {
       curl wttr.in/"$1" # Append location
   fi
 }
+
+# ✅ globs          – `trash file-*-.txt`
+# ✅ directories    – `trash directory`
+# ✅ multiple files - `trash file-1 dir-1 file-2`
+# see https://www.stefanjudis.com/snippets/a-native-shell-alternative-to-the-trash-cli/
+function trash() {
+  echo "🗑️  Moving files to trash..."
+  for var in "$@"
+  do
+    mv "$var" "$HOME/.trash"
+  done
+}

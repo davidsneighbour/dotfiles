@@ -1,9 +1,8 @@
-# shellcheck disable=SC2139
-# the above disables warnings for behaviour that we are ok with
-# see https://github.com/koalaman/shellcheck/wiki/SC2139
-
-# reloads profile
+# reload the profile
 alias reload='. ~/.bash_profile'
+
+# dotfiles is an alias to git with the proper paths for the dotfiles repository
+alias dotfiles='git --git-dir=$HOME/github.com/davidsneighbour/dotfiles/.git --work-tree=$HOME/github.com/davidsneighbour/dotfiles/'
 
 # go up multiple levels
 # (also see 'up' function)
@@ -17,7 +16,7 @@ alias cdhist='dirs -v'
 # datetime for filenames
 alias d='date +%Y%m%d%H%M'
 
-# re-set functions to colorize
+# re-set some functions to colorize
 alias ls='ls -F --color=auto --block-size=M'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
@@ -30,9 +29,9 @@ alias lal='ls -altr'  # sort by last mod asc
 alias dir='ls -al'    # yeah, well...
 alias ldir='ll -d */' # list directories only
 
-# Add an "alert" alias for long running commands.  Use like so:
-#   sleep 10; alert
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+# Add an alert for long running commands.
+# Usage: `sleep 10; alert`
+alias alert='notify-send --urgency=critical -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 # less with ignore-case, long-prompt and quit-if-one-screen
 alias less='less -iMF'
@@ -77,10 +76,6 @@ alias tail='grc tail'
 
 alias subl='subl -a'
 
-# dotfiles edit this repository...
-# shellcheck disable=SC2154 # we know the variable is initialised
-alias dotfiles='code ${DOTFILES_PATH:?}/workspaces/dotfiles.code-workspace'
-
 alias lasttag='git describe --tags $(git rev-list --tags --max-count=1)'
 
 # setting up http methods
@@ -112,3 +107,5 @@ alias vlc-stop="dbus-send --type=method_call --dest=org.mpris.MediaPlayer2.vlc /
 alias cal="ncal"
 
 alias get-books="rsync -rztv media:/home/patrick/Downloads/Books/ /home/patrick/Books"
+
+alias rector="~/github.com/getbooka/booka/vendor/bin/rector process"

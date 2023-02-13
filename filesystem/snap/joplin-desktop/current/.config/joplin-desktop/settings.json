@@ -33,9 +33,20 @@
 	"dateFormat": "YYYY-MM-DD",
 	"themeAutoDetect": true,
 	"newNoteFocus": "title",
-	"theme": 1,
+	"theme": 2,
 	"showTrayIcon": true,
 	"startMinimized": true,
 	"clipperServer.autoStart": true,
-	"editor.codeView": true
+	"editor.codeView": true,
+	"spellChecker.languages": [
+		"en-US"
+	],
+	"notes.sortOrder.reverse": false,
+	"notes.perFieldReverse": {
+		"user_updated_time": true,
+		"user_created_time": true,
+		"title": false,
+		"order": false
+	},
+	"notes.sortOrder.field": "title"
 }

@@ -18,9 +18,9 @@
     ############################################################################
     # file links
     ############################################################################
-    ~/.bash_logout: home/.bash_logout
-    ~/.bash_profile: home/.bash_profile
-    ~/.bashrc: home/.bashrc
+    ~/.bash_logout: filesystem/.bash_logout
+    ~/.bash_profile: filesystem/.bash_profile
+    ~/.bashrc: filesystem/.bashrc
     ##################################################################
     # directory links
     ##################################################################
