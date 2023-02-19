@@ -1,0 +1,29 @@
+Backups
+blob_storage
+Cache
+CachedData
+CachedExtensions
+CachedExtensionVSIXs
+Code Cache
+Crashpad
+databases
+Dictionaries
+Local Storage
+GPUCache
+logs
+Service Worker
+Session Storage
+WebStorage
+code.lock
+Cookies
+Cookies-journal
+Network Persistent State
+Preferences
+TransportSecurity
+languagepacks.json
+machineid
+
+User/History/
+User/globalStorage/
+User/workspaceStorage/
+User/sync
