@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2022.0.25](/github.com/davidsneighbour/dotfiles/compare/v2022.0.24...v2022.0.25) (2023-02-19)
+
+
+### Bug Fixes
+
+* better image formats for headers/social ([f02f818](/github.com/davidsneighbour/dotfiles/commit/f02f818c0213fbc11e691d17a6a58317bf81ae72))
+
 ### [2022.0.24](/github.com/davidsneighbour/dotfiles/compare/v2022.0.23...v2022.0.24) (2022-11-13)
 
 
