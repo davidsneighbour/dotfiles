@@ -24,6 +24,7 @@
     ##################################################################
     # directory links
     ##################################################################
+    ~/.config/Code: filesystem/.config/Code
     ~/snap/joplin-desktop/current/.config/joplin-desktop/plugins: filesystem/snap/joplin-desktop/current/.config/joplin-desktop/plugins
     ~/snap/joplin-desktop/current/.config/joplin-desktop/settings.json: filesystem/snap/joplin-desktop/current/.config/joplin-desktop/settings.json
     ############################################################################
