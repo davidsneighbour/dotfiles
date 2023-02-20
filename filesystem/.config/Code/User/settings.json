@@ -1,3 +1,25 @@
 {
-    "editor.inlineSuggest.enabled": true
+    "editor.inlineSuggest.enabled": true,
+    "workbench.colorTheme": "Default Dark+ Experimental",
+    "workbench.startupEditor": "none",
+    "git.confirmSync": false,
+    "redhat.telemetry.enabled": false,
+    "vale.doNotShowWarningForFileToBeSavedBeforeLinting": true,
+    "files.autoSave": "onFocusChange",
+    "files.trimTrailingWhitespace": true,
+    "codeium.enableConfig": {
+        "*": true,
+        "ignore": true
+    },
+    "sonarlint.rules": {
+        "php:S1808": {
+            "level": "off"
+        },
+        "php:S125": {
+            "level": "off"
+        }
+    },
+    "sonarlint.disableTelemetry": true,
+    "telemetry.telemetryLevel": "crash",
+    "intelephense.telemetry.enabled": false
 }

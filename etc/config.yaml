@@ -18,16 +18,19 @@
     ############################################################################
     # file links
     ############################################################################
+    ~/.barriers.conf: filesystem/.barriers.conf
     ~/.bash_logout: filesystem/.bash_logout
     ~/.bash_profile: filesystem/.bash_profile
     ~/.bashrc: filesystem/.bashrc
+    ~/.czrc: filesystem/.czrc
+    ~/.gitconfig: filesystem/.gitconfig
+    ~/.gitignore: filesystem/.gitignore
+    ~/.hidden: filesystem/.hidden
+    ~/.profile: filesystem/.profile
     ##################################################################
     # directory links
     ##################################################################
     ~/.config/Code: filesystem/.config/Code
+    ~/.fonts: filesystem/.fonts
     ~/snap/joplin-desktop/current/.config/joplin-desktop/plugins: filesystem/snap/joplin-desktop/current/.config/joplin-desktop/plugins
     ~/snap/joplin-desktop/current/.config/joplin-desktop/settings.json: filesystem/snap/joplin-desktop/current/.config/joplin-desktop/settings.json
-    ############################################################################
-    # protected links default files
-    ############################################################################
-    ~/.env: filesystem/.env
