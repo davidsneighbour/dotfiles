@@ -11,3 +11,5 @@
 
 - link:
     ~/.env: protected/.env
+    ~/.npmrc: protected/.npmrc
+    ~/.sentryclirc: protected/.sentryclirc
