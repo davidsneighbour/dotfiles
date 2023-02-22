@@ -13,3 +13,5 @@
     ~/.env: protected/.env
     ~/.npmrc: protected/.npmrc
     ~/.sentryclirc: protected/.sentryclirc
+    ~/.config/filezilla/sitemanager.xml: protected/filezilla/sitemanager.xml
+    ~/.config/filezilla/trustedcerts.xml: protected/filezilla/trustedcerts.xml
