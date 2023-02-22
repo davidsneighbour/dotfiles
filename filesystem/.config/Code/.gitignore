@@ -27,3 +27,5 @@ User/History/
 User/globalStorage/
 User/workspaceStorage/
 User/sync
+
+.org.chromium.*
