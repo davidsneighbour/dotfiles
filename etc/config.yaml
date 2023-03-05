@@ -13,6 +13,7 @@
 
 - shell:
     - ["mkdir -p ~/.config", "creating config folder (if it doesn't exist yet)"]
+    - ["rm -f ~/.bash_history ~/.lesshst ~/.viminfo ~/.sudo_as_admin_successful"]
 
 - link:
     ############################################################################
@@ -32,6 +33,5 @@
     ##################################################################
     ~/.config/Code: filesystem/.config/Code
     ~/.config/filezilla: filesystem/.config/filezilla
-    ~/.fonts: filesystem/.fonts
     ~/snap/joplin-desktop/current/.config/joplin-desktop/plugins: filesystem/snap/joplin-desktop/current/.config/joplin-desktop/plugins
     ~/snap/joplin-desktop/current/.config/joplin-desktop/settings.json: filesystem/snap/joplin-desktop/current/.config/joplin-desktop/settings.json
