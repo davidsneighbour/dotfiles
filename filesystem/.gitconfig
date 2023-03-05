@@ -1,7 +1,7 @@
 [user]
 	email = patrick@davids-neighbour.com
 	name = Patrick Kollitsch
-	signingkey = ACEBC62556C98B07
+signingkey = ACEBC62556C98B07
 
 [apply]
 # Detect whitespace errors when applying a patch
@@ -87,7 +87,7 @@ untracked = cyan
 default = tracking
 # allows to `git push` a new branch to remote without adding it first
 autoSetupRemote = true
-	autoSetupRemote = true
+autoSetupRemote = true
 
 [help]
 # automatically correct and execute mistyped commands
@@ -219,11 +219,17 @@ contributors = shortlog --summary --numbered
 # show last commit with signature
 last = log --show-signature -1
 
-################################################################################
 # Stashing
-################################################################################
 stash-untracked = "!f() { git stash; git stash -u; git stash pop stash@{1}; }; f"
-	ignore = "!gi() { curl -sL https://www.toptal.com/developers/gitignore/api/$@ ;}; gi"
+ignore = "!gi() { curl -sL https://www.toptal.com/developers/gitignore/api/$@ ;}; gi"
+
+# Rebasing - https://notes.zander.wtf/notes/git-rebasing/
+mainbranch = "!git remote show origin | sed -n '/HEAD branch/s/.*: //p'"
+sync = "!git pull origin $(git mainbranch) --rebase"
+update = "!git pull origin $(git rev-parse --abbrev-ref HEAD) --rebase"
+squash = "!git rebase -v -i $(git mainbranch)"
+publish = push origin HEAD --force-with-lease
+pub = publish
 
 ################################################################################
 # URL shorthands
@@ -248,12 +254,12 @@ insteadOf = "gist:"
 insteadOf = "heroku:"
 
 [commit]
-	gpgsign = true
+gpgsign = true
 [pull]
 rebase = true
 [init]
 defaultBranch = main
-	templatedir = ~/.git-templates
+templatedir = ~/.git-templates
 
 [includeIf "gitdir:~/work/"]
 path = ~/.gitconfig.work
@@ -289,6 +295,6 @@ line-numbers-right-style = cyan
 line-numbers-minus-style = 124
 line-numbers-plus-style = 28
 [gpg]
-	program = gpg
+program = gpg
 [protocol "keybase"]
-	allow = always
+allow = always
