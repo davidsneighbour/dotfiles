@@ -142,7 +142,7 @@
 		<Setting name="Splitter positions (v2)">97 -110 484458735 238 237 500000000</Setting>
 		<Setting name="Tab data" sensitive="1">
 			<Tabs>
-				<Tab connected="1" selected="1">
+				<Tab selected="1">
 					<Host>aggamon.dreamhost.com</Host>
 					<Port>22</Port>
 					<Protocol>1</Protocol>
