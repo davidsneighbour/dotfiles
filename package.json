@@ -37,7 +37,7 @@
     "@themerdev/wallpaper-trianglify": "^2.0.2",
     "@themerdev/xcode": "^2.1.1",
     "@themerdev/xresources": "^1.0.3",
-    "themer": "^4.0.0",
+    "themer": "^5.0.1",
     "themer-gnome-terminal": "^1.0.1",
     "themer-i3": "^1.0.1"
   },
