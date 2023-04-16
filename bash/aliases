@@ -109,3 +109,7 @@ alias cal="ncal"
 alias get-books="rsync -rztv media:/home/patrick/Downloads/Books/ /home/patrick/Books"
 
 alias rector="~/github.com/getbooka/booka/vendor/bin/rector process"
+
+# npm install -g @socketsecurity/cli
+alias npm="socket npm"
+alias npx="socket npx"

@@ -4,6 +4,7 @@ Cache
 CachedData
 CachedExtensions
 CachedExtensionVSIXs
+CachedProfilesData
 Code Cache
 Crashpad
 databases
@@ -13,6 +14,7 @@ GPUCache
 logs
 Service Worker
 Session Storage
+VideoDecodeStats
 WebStorage
 code.lock
 Cookies
@@ -22,6 +24,7 @@ Preferences
 TransportSecurity
 languagepacks.json
 machineid
+shared_proto_db
 
 User/History/
 User/globalStorage/

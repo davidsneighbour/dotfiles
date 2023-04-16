@@ -34,9 +34,10 @@
     "terminal.integrated.tabs.enabled": false,
     "github.copilot.enable": {
         "*": true,
-        "yaml": false,
+        "yaml": true,
         "plaintext": true,
-        "markdown": true
+        "markdown": true,
+        "scminput": false
     },
     "[javascript]": {
         "editor.defaultFormatter": "vscode.typescript-language-features"
@@ -50,13 +51,14 @@
     "[markdown]": {
         "editor.formatOnSave": true,
         "editor.formatOnPaste": true,
-        "editor.wordWrap": "wordWrapColumn"
+        "editor.wordWrap": "wordWrapColumn",
+        "editor.defaultFormatter": "unifiedjs.vscode-remark"
     },
     "editor.codeActionsOnSave": {
         "source.fixAll.markdownlint": true
     },
     "[typescript]": {
-        "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+        "editor.defaultFormatter": "vscode.typescript-language-features"
     },
     "[jsonc]": {
         "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
@@ -83,7 +85,7 @@
     "*.ex": "$(capture).html.eex, $(capture).html.heex, $(capture).html.leex",
     "*.go": "$(capture)_test.go",
     "*.java": "$(capture).class",
-    "*.js": "$(capture).js.map, $(capture).*.js, $(capture)_*.js",
+    "*.js": "$(capture).js.map, $(capture).*.js, $(capture)_*.js, $(capture).d.ts",
     "*.jsx": "$(capture).js, $(capture).*.jsx, $(capture)_*.js, $(capture)_*.jsx",
     "*.master": "$(capture).*.cs, $(capture).*.vb",
     "*.mjs": "$(capture).mjs.map, $(capture).*.mjs, $(capture)_*.mjs",
@@ -135,7 +137,7 @@
     "README.md": "SECURITY.md, LICENSE*, CITATION.cff"
 },
 "[shellscript]": {
-    "editor.defaultFormatter": "mkhl.shfmt"
+    "editor.defaultFormatter": "foxundermoon.shell-format"
 },
 "terminal.integrated.fontFamily": "JetBrainsMonoNL Nerd Font Mono",
 "intelephense.environment.phpVersion": "8.1",
@@ -164,6 +166,15 @@
     "content/**/*.md"
 ],
 "editor.wordWrap": "wordWrapColumn",
-"editor.wordWrapColumn": 120
+"editor.wordWrapColumn": 120,
+"typescript.updateImportsOnFileMove.enabled": "always",
+"application.shellEnvironmentResolutionTimeout": 30,
+"git.autofetch": true,
+"[scss]": {
+    "editor.defaultFormatter": "vscode.css-language-features"
+},
+"[go]": {
+    "editor.defaultFormatter": "golang.go"
+}
 
 }

@@ -1,8 +1,10 @@
 .uuid
-notes.md
+notes*
 .env
 !workspaces/*.code-workspace
 .npmrc
+themer/*
+gen/*
 
 # Created by https://www.toptal.com/developers/gitignore/api/node,intellij+all,phpstorm+all,macos
 # Edit at https://www.toptal.com/developers/gitignore?templates=node,intellij+all,phpstorm+all,macos
