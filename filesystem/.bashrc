@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# enables debugging
+#set -x
+
 # set -eE -o functrace
 
 # failure() {
