@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2022.0.26](/github.com/davidsneighbour/dotfiles/compare/v2022.0.25...v2022.0.26) (2023-04-25)
+
+
+### Bug Fixes
+
+* remove erroneous alias function ([cd6b97d](/github.com/davidsneighbour/dotfiles/commit/cd6b97d368b2312ca67e1dfcb1d48408a0b01ad6))
+
 ### [2022.0.25](/github.com/davidsneighbour/dotfiles/compare/v2022.0.24...v2022.0.25) (2023-02-19)
 
 
