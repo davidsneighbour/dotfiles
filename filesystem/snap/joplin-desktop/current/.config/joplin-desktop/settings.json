@@ -44,9 +44,9 @@
 	"notes.sortOrder.reverse": false,
 	"notes.perFieldReverse": {
 		"user_updated_time": true,
-		"user_created_time": true,
+		"user_created_time": false,
 		"title": false,
 		"order": false
 	},
-	"notes.sortOrder.field": "title"
+	"notes.sortOrder.field": "user_created_time"
 }
