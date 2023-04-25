@@ -10,7 +10,7 @@
   "dependencies": {
     "@davidsneighbour/standard-version-config": "^5.0.16",
     "fs-extra": "^11.1.1",
-    "themer": "^6.4.0"
+    "themer": "^6.4.1"
   },
   "scripts": {
     "release": "standard-version --release-as patch -a -t \"v\" --releaseCommitMessageFormat \"chore(release): v{{currentTag}}\" && git push --follow-tags origin main",
