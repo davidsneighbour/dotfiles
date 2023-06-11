@@ -1,21 +1,21 @@
 {
   "name": "@davidsneighbour/dotfiles",
-  "version": "2022.0.26",
-  "license": "GPL-3.0-or-later",
   "description": "David's Neighbour's .dotfiles",
+  "version": "2023.0.0",
   "author": "Patrick Kollitsch <patrick@davids-neighbour.com>",
-  "homepage": "https://github.com/davidsneighbour/dotfiles#readme",
-  "repository": "github.com/davidsneighbour/dotfiles",
   "bugs": "https://github.com/davidsneighbour/dotfiles/issues",
   "dependencies": {
     "@davidsneighbour/standard-version-config": "^5.0.16",
     "fs-extra": "^11.1.1",
     "themer": "^6.4.1"
   },
+  "homepage": "https://github.com/davidsneighbour/dotfiles#readme",
+  "license": "GPL-3.0-or-later",
+  "main": "index.js",
+  "repository": "github.com/davidsneighbour/dotfiles",
   "scripts": {
     "release": "standard-version --release-as patch -a -t \"v\" --releaseCommitMessageFormat \"chore(release): v{{currentTag}}\" && git push --follow-tags origin main",
     "release:major": "standard-version --release-as major -a -t \"v\" --releaseCommitMessageFormat \"chore(release): v{{currentTag}}\" && git push --follow-tags origin main",
     "release:minor": "standard-version --release-as minor -a -t \"v\" --releaseCommitMessageFormat \"chore(release): v{{currentTag}}\" && git push --follow-tags origin main"
-  },
-  "main": "index.js"
+  }
 }
