@@ -1,0 +1,2 @@
+# m h dom mon dow command
+0 0 * * * /home/patrick/github.com/davidsneighbour/dotfiles/bin/cronjobs/update-npm.sh  >> /home/patrick/cron.log 2>&1
