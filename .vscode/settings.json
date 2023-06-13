@@ -1,11 +1,5 @@
 {
   "explorer.fileNesting.patterns": {
     "README.md": "SECURITY*, LICENSE*, CITATION.cff, OS_INSTALL_FIRST_STEPS.md"
-  },
-  "cSpell.words": [
-    "davidsneighbour",
-    "Dotbot",
-    "dotfile",
-    "dotfiles"
-  ]
+  }
 }
