@@ -1,7 +1,7 @@
 [user]
 	email = patrick@davids-neighbour.com
 	name = Patrick Kollitsch
-signingkey = ACEBC62556C98B07
+	signingkey = B1CE8C054D2341AD
 
 [apply]
 # Detect whitespace errors when applying a patch
@@ -254,7 +254,7 @@ insteadOf = "gist:"
 insteadOf = "heroku:"
 
 [commit]
-gpgsign = true
+	gpgsign = true
 [pull]
 rebase = true
 [init]
