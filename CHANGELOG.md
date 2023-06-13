@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2023.0.1](/github.com/davidsneighbour/dotfiles/compare/v2023.0.0...v2023.0.1) (2023-06-13)
+
+
+### Features
+
+* add cronjobs setup ([0f4933d](/github.com/davidsneighbour/dotfiles/commit/0f4933d86074b94f775f69909429cee3e2295bb1))
+* add script to clone all repositories of a user|org from github ([9dc883a](/github.com/davidsneighbour/dotfiles/commit/9dc883a36c93399915ddfeadeeb3729b599f9440))
+
+
+### Bug Fixes
+
+* remove doubles of editor exports ([c34f6c4](/github.com/davidsneighbour/dotfiles/commit/c34f6c41267dabfcae5168d431fc139325fd2817))
+
 ## [2023.0.0](/github.com/davidsneighbour/dotfiles/compare/v2022.0.26...v2023.0.0) (2023-06-11)
 
 ### [2022.0.26](/github.com/davidsneighbour/dotfiles/compare/v2022.0.25...v2022.0.26) (2023-04-25)
