@@ -77,7 +77,6 @@ HISTIGNORE="${HISTIGNORE}:jrnl *"
 export GOPATH=${HOME}/.go
 export PERL5LIB=${HOME}/.perl5
 export PERLLIB=${HOME}/.perl5
-export EDITOR=/usr/bin/vim
 
 export PAGER='less -i'
 
@@ -112,9 +111,6 @@ export CDPATH=".:..:../..:~/:~/dev/"
 
 # file containing hosts
 export HOSTFILE=~/.bash_hosts
-
-#export VISUAL=subl
-export EDITOR=vim
 
 # see https://wiki.archlinux.org/index.php/GTK+#Suppress_warning_about_accessibility_bus
 export NO_AT_BRIDGE=1
