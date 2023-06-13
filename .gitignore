@@ -6,6 +6,7 @@ notes*
 themer/*
 gen/*
 protected
+scratch
 
 # Created by https://www.toptal.com/developers/gitignore/api/node,intellij+all,phpstorm+all,macos
 # Edit at https://www.toptal.com/developers/gitignore?templates=node,intellij+all,phpstorm+all,macos
