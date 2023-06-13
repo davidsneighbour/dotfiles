@@ -12,8 +12,7 @@
 			<xrc file="storj.xrc" date="1581159552" />
 		</Resources>
 		<Language id="en_US" date="">
-			<Font font="Ubuntu 11" width="851" height="17" />
-			<Dialog name="Settings" width="571" />
+			<Font font="Ubuntu 11" width="704" height="14" />
 		</Language>
 	</Layout>
 </FileZilla3>
