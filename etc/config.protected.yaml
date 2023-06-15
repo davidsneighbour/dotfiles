@@ -14,5 +14,6 @@
     ~/.npmrc: protected/.npmrc
     ~/.sentryclirc: protected/.sentryclirc
     ~/.fonts: protected/.fonts
+    ~/.ssh: protected/.ssh
     ~/.config/filezilla/sitemanager.xml: protected/filezilla/sitemanager.xml
     ~/.config/filezilla/trustedcerts.xml: protected/filezilla/trustedcerts.xml
