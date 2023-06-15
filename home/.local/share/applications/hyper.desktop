@@ -1,9 +1,0 @@
-[Desktop Entry]
-Version=0.13.23
-Type=Application
-Name=Hyper
-Comment=Hyper Shell
-TryExec=~/.bin/hyper.AppImage
-Exec=~/.bin/hyper.AppImage
-Icon=~/.bin/hyper.AppImage.icon
-Actions=Editor

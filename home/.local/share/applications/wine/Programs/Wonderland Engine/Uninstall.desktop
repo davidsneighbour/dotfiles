@@ -1,8 +1,0 @@
-[Desktop Entry]
-Name=Uninstall
-Exec=env WINEPREFIX="/home/patrick/.wine" wine-stable C:\\\\windows\\\\command\\\\start.exe /Unix /home/patrick/.wine/dosdevices/c:/ProgramData/Microsoft/Windows/Start\\ Menu/Programs/Wonderland\\ Engine/Uninstall.lnk
-Type=Application
-StartupNotify=true
-Path=/home/patrick/.wine/dosdevices/c:/Program Files/Wonderland/WonderlandEngine
-Icon=058F_Uninstall.0
-StartupWMClass=uninstall.exe
