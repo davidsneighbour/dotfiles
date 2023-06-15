@@ -41,10 +41,5 @@ Run consecutive updates:
 
 ```shell
 ./dotbot.sh
+./dotbot.sh protected
 ```
-
-## TODO
-
-- configure https://github.com/DrDynamic/dotbot-git
-- configure https://github.com/DrDynamic/dotbot-sudo
-- configure https://github.com/DrDynamic/dotbot-snap
