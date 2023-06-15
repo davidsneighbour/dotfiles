@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Exec=/snap/bin/telegram-desktop -startintray
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name[en_US]=Telegram
+Name=Telegram
+Comment[en_US]=Start Telegram secure chat
+Comment=Start Telegram secure chat

@@ -6,5 +6,5 @@ NoDisplay=false
 X-GNOME-Autostart-enabled=true
 Name[en_US]=RescueTime
 Name=RescueTime
-Comment[en_US]=
-Comment=
+Comment[en_US]=Tracking time spent
+Comment=Tracking time spent
