@@ -54,7 +54,7 @@
         "editor.formatOnSave": true,
         "editor.formatOnPaste": true,
         "editor.wordWrap": "wordWrapColumn",
-        "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+        "editor.defaultFormatter": "unifiedjs.vscode-remark"
     },
     "editor.codeActionsOnSave": {
         "source.fixAll.markdownlint": true
@@ -197,5 +197,8 @@
     "[css]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
-    "git.openRepositoryInParentFolders": "never"
+    "git.openRepositoryInParentFolders": "never",
+    "files.associations": {
+        ".fixpackrc": "jsonc"
+    }
 }
