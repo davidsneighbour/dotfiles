@@ -1,2 +1,2 @@
-const defaultRemarkConfig = require("@dnb-org/remark-config");
+const defaultRemarkConfig = require("@davidsneighbour/remark-config");
 module.exports = defaultRemarkConfig;
