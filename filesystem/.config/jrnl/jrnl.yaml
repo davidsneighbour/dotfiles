@@ -5,14 +5,14 @@ colors:
   title: GREEN
 default_hour: 9
 default_minute: 0
-editor: ""
+editor: ''
 encrypt: false
 highlight: true
-indent_character: "|"
+indent_character: '|'
 journals:
   default: /home/patrick/Documents/Dropbox/Journal/journal.txt
 linewrap: 79
-tagsymbols: "@"
+tagsymbols: '@'
 template: false
-timeformat: "%Y-%m-%d %H:%M"
-version: v2.8.3
+timeformat: '%Y-%m-%d %H:%M'
+version: v4.0.1

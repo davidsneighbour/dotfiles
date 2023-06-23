@@ -114,3 +114,5 @@ export HOSTFILE=~/.bash_hosts
 
 # see https://wiki.archlinux.org/index.php/GTK+#Suppress_warning_about_accessibility_bus
 export NO_AT_BRIDGE=1
+
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
