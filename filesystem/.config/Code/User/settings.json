@@ -3,7 +3,6 @@
     "editor.fontLigatures": true,
     "editor.smoothScrolling": true,
     "editor.inlineSuggest.enabled": true,
-    "workbench.colorTheme": "Default Light+ Experimental",
     "workbench.startupEditor": "none",
     "git.confirmSync": false,
     "redhat.telemetry.enabled": false,
@@ -199,6 +198,8 @@
     },
     "git.openRepositoryInParentFolders": "never",
     "files.associations": {
-        ".fixpackrc": "jsonc"
-    }
+        ".fixpackrc": "jsonc",
+        "*.json5": "jsonc"
+    },
+    "go.toolsManagement.autoUpdate": true
 }
