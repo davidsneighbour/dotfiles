@@ -13,6 +13,7 @@ DawnCache
 Dictionaries
 Local Storage
 GPUCache
+IndexedDB
 logs
 Service Worker
 Session Storage
