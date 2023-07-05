@@ -55,6 +55,7 @@
     ~/.config/polybar: filesystem/.config/polybar
     ~/.config/rofi: filesystem/.config/rofi
     ~/.config/tabtab: filesystem/.config/tabtab
+    ~/.config/transmission: filesystem/.config/transmission
     ~/.icons: filesystem/.icons
     ~/.wallpapers: filesystem/.wallpapers
     ~/snap/joplin-desktop/current/.config/joplin-desktop/plugins: filesystem/snap/joplin-desktop/current/.config/joplin-desktop/plugins
