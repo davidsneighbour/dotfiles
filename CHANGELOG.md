@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2023.0.3](/github.com/davidsneighbour/dotfiles/compare/v2023.0.1...v2023.0.3) (2023-07-05)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @davidsneighbour/standard-version-config to v5.2.12 ([#19](null/github.com/davidsneighbour/dotfiles/issues/19)) ([b98fd90](/github.com/davidsneighbour/dotfiles/commit/b98fd90407878306b355998c088303bac2015f27))
+
 ### [2023.0.2](/github.com/davidsneighbour/dotfiles/compare/v2023.0.1...v2023.0.2) (2023-07-05)
 
 ### [2023.0.1](/github.com/davidsneighbour/dotfiles/compare/v2023.0.0...v2023.0.1) (2023-06-13)
