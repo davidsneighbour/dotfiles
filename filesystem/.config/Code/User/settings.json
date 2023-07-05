@@ -145,7 +145,7 @@
     "intelephense.environment.shortOpenTag": false,
     "intelephense.diagnostics.run": "onSave",
     "[php]": {
-        "editor.defaultFormatter": "valeryanm.vscode-phpsab"
+        "editor.defaultFormatter": "bmewburn.vscode-intelephense-client"
     },
     "[json]": {
         "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
