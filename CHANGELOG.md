@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2023.0.2](/github.com/davidsneighbour/dotfiles/compare/v2023.0.1...v2023.0.2) (2023-07-05)
+
 ### [2023.0.1](/github.com/davidsneighbour/dotfiles/compare/v2023.0.0...v2023.0.1) (2023-06-13)
 
 
