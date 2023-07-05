@@ -5,10 +5,10 @@
   "author": "Patrick Kollitsch <patrick@davids-neighbour.com>",
   "bugs": "https://github.com/davidsneighbour/dotfiles/issues",
   "dependencies": {
-    "@davidsneighbour/standard-version-config": "^5.0.16",
+    "@davidsneighbour/standard-version-config": "^5.2.12",
     "fs-extra": "^11.1.1",
     "remark": "^14.0.3",
-    "themer": "^6.4.1"
+    "themer": "^6.5.2"
   },
   "homepage": "https://github.com/davidsneighbour/dotfiles#readme",
   "license": "GPL-3.0-or-later",
