@@ -7,6 +7,7 @@
 		"private",
 		"repository",
 		"author",
+		"maintainer",
 		"bugs",
 		"homepage",
 		"keywords",
