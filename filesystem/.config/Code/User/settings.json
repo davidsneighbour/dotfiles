@@ -215,5 +215,7 @@
     "editor.defaultFormatter": "vscode.html-language-features",
     "editor.suggest.insertMode": "replace"
   },
-  "javascript.updateImportsOnFileMove.enabled": "never"
+  "javascript.updateImportsOnFileMove.enabled": "never",
+  "html.format.indentInnerHtml": true,
+  "html.format.indentHandlebars": true
 }
