@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [2023.0.5](/github.com/davidsneighbour/dotfiles/compare/v2023.0.4...v2023.0.5) (2023-07-18)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @davidsneighbour/standard-version-config to v5.2.24 ([#24](null/github.com/davidsneighbour/dotfiles/issues/24)) ([832d6f3](/github.com/davidsneighbour/dotfiles/commit/832d6f3817feffa214fd7e893229e4a404cbfec6))
+* proper npm setup for cronjob ([f99eede](/github.com/davidsneighbour/dotfiles/commit/f99eede637c5094a99dc01486f2a7ab8f2a78420))
+
 ## [2023.0.4](/github.com/davidsneighbour/dotfiles/compare/v2023.0.3...v2023.0.4) (2023-07-05)
 
 ### [2023.0.3](/github.com/davidsneighbour/dotfiles/compare/v2023.0.1...v2023.0.3) (2023-07-05)
