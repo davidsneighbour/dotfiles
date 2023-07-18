@@ -46,7 +46,6 @@
 		<Setting name="Size decimal places">1</Setting>
 		<Setting name="TCP Keepalive Interval">15</Setting>
 		<Setting name="Cache TTL">600</Setting>
-		<Setting name="Number of Transfers">2</Setting>
 		<Setting name="Ascii Binary mode">0</Setting>
 		<Setting name="Auto Ascii files">am|asp|bat|c|cfm|cgi|conf|cpp|css|dhtml|diz|h|hpp|htm|html|in|inc|java|js|jsp|lua|m4|mak|md5|nfo|nsi|pas|patch|pem|php|phtml|pl|po|py|qmail|sh|sha1|sha256|sha512|shtml|sql|svg|tcl|tpl|txt|vbs|xhtml|xml|xrc</Setting>
 		<Setting name="Auto Ascii no extension">1</Setting>
@@ -89,7 +88,6 @@
 		<Setting name="Comparison mode">1</Setting>
 		<Setting name="Comparison threshold">1</Setting>
 		<Setting name="Icon theme">flatzilla</Setting>
-		<Setting name="Icon scale">125</Setting>
 		<Setting name="Timestamp in message log">0</Setting>
 		<Setting name="Local filelist shown columns">1111</Setting>
 		<Setting name="Remote filelist shown columns">111111</Setting>
@@ -137,27 +135,29 @@
 		<Setting name="Local filelist colwidths">597 80 100 120</Setting>
 		<Setting name="Remote filelist colwidths">422 75 80 159 80 80</Setting>
 		<Setting name="Persistent Choices">1</Setting>
-		<Setting name="Splitter positions (v2)">97 -110 484458735 238 237 500000000</Setting>
+		<Setting name="Site Manager position">0 425 215 1124 635 </Setting>
+		<Setting name="Sitemanager last selected">0/Scott Walker/nabsengineering.com</Setting>
+		<Setting name="Icon scale">100</Setting>
+		<Setting name="Number of Transfers">4</Setting>
+		<Setting name="Splitter positions (v2)">97 -308 484458735 238 237 500000000</Setting>
 		<Setting name="Tab data" sensitive="1">
 			<Tabs>
-				<Tab selected="1">
-					<Host>aggamon.dreamhost.com</Host>
+				<Tab connected="1" selected="1">
+					<Host>grady.dreamhost.com</Host>
 					<Port>22</Port>
 					<Protocol>1</Protocol>
 					<Type>0</Type>
-					<User>chorchang</User>
-					<Pass encoding="base64">ckp5SlJZVEU4RVVldkJpWTVKSGYzUUxkOXE=</Pass>
+					<User>nabsengineering</User>
+					<Pass encoding="base64">V3pEZ01LNVlCZmV6cWI0UUhZemQ=</Pass>
 					<Logontype>1</Logontype>
 					<EncodingType>Auto</EncodingType>
 					<BypassProxy>0</BypassProxy>
-					<Name>chor-chang.com</Name>
-					<Site>0/ChorChang/chor-chang.com</Site>
-					<RemotePath>1 0 4 home 9 chorchang 14 chor-chang.com 7 plugins</RemotePath>
-					<LocalPath>/home/patrick/Downloads/Hotelia/hotelia/plugins/rev_slider/revslider_5.4.3/revslider/</LocalPath>
+					<Name>nabsengineering.com</Name>
+					<Site>0/Scott Walker/nabsengineering.com</Site>
+					<RemotePath>1 0 4 home 15 nabsengineering 19 nabsengineering.com</RemotePath>
+					<LocalPath>/home/patrick/Downloads/nabs/backup_2022-09-13-0817_NABS_Engineering_a559edd000f4-uploads/</LocalPath>
 				</Tab>
 			</Tabs>
 		</Setting>
-		<Setting name="Site Manager position">0 423 215 1124 635 </Setting>
-		<Setting name="Sitemanager last selected">0/Scott Walker/oldnabs</Setting>
 	</Settings>
 </FileZilla3>
