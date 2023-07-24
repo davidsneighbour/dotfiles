@@ -5,7 +5,7 @@
   "author": "Patrick Kollitsch <patrick@davids-neighbour.com>",
   "bugs": "https://github.com/davidsneighbour/dotfiles/issues",
   "dependencies": {
-    "@davidsneighbour/standard-version-config": "^5.2.24",
+    "@davidsneighbour/standard-version-config": "^5.2.25",
     "fs-extra": "^11.1.1",
     "remark": "^14.0.3",
     "themer": "^6.5.2"
@@ -17,8 +17,6 @@
   "scripts": {
     "release": "commit-and-tag-version --release-as patch -a -t \"v\" --releaseCommitMessageFormat \"chore(release): v{{currentTag}}\" && git push --follow-tags origin main",
     "release:major": "commit-and-tag-version --release-as major -a -t \"v\" --releaseCommitMessageFormat \"chore(release): v{{currentTag}}\" && git push --follow-tags origin main",
-    "release:minor": "commit-and-tag-version --release-as minor -a -t \"v\" --releaseCommitMessageFormat \"chore(release): v{{currentTag}}\" && git push --follow-tags origin main",
-    "preinstall": "nvm use",
-    "prebuild": "nvm use"
+    "release:minor": "commit-and-tag-version --release-as minor -a -t \"v\" --releaseCommitMessageFormat \"chore(release): v{{currentTag}}\" && git push --follow-tags origin main"
   }
 }
