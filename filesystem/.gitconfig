@@ -298,3 +298,7 @@ line-numbers-plus-style = 28
 program = gpg
 [protocol "keybase"]
 allow = always
+[url "https://github.com/"]
+	insteadOf = git@github.com:
+[url "https://"]
+	insteadOf = git://
