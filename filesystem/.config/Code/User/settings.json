@@ -148,7 +148,7 @@
     "editor.defaultFormatter": "bmewburn.vscode-intelephense-client"
   },
   "[json]": {
-    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+    "editor.defaultFormatter": "vscode.json-language-features"
   },
   "terminal.integrated.persistentSessionReviveProcess": "never",
   "[toml]": {
@@ -199,7 +199,8 @@
   "git.openRepositoryInParentFolders": "never",
   "files.associations": {
     ".fixpackrc": "jsonc",
-    "*.json5": "jsonc"
+    "*.json5": "jsonc",
+    "*.xml": "GoTemplate"
   },
   "go.toolsManagement.autoUpdate": true,
   "excalidraw.theme": "dark",
@@ -208,14 +209,20 @@
   "terminal.integrated.automationProfile.linux": {},
   "terminal.integrated.cursorBlinking": true,
   "terminal.integrated.persistentSessionScrollback": 1000,
-  "go-template.languages": [
-    "html"
-  ],
   "[html]": {
     "editor.defaultFormatter": "vscode.html-language-features",
     "editor.suggest.insertMode": "replace"
   },
   "javascript.updateImportsOnFileMove.enabled": "never",
   "html.format.indentInnerHtml": true,
-  "html.format.indentHandlebars": true
+  "html.format.indentHandlebars": true,
+  "search.useReplacePreview": false,
+  "go-template.patterns": [
+    "**/themes/wonderland/layouts/**.*"
+  ],
+  "tailwindCSS.emmetCompletions": true,
+  "tailwindCSS.includeLanguages": {
+    "gohtml": "html"
+  },
+  "inlineChat.showDiff": false
 }

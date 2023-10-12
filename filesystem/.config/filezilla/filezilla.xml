@@ -136,26 +136,26 @@
 		<Setting name="Remote filelist colwidths">422 75 80 159 80 80</Setting>
 		<Setting name="Persistent Choices">1</Setting>
 		<Setting name="Site Manager position">0 425 215 1124 635 </Setting>
-		<Setting name="Sitemanager last selected">0/Scott Walker/nabsengineering.com</Setting>
 		<Setting name="Icon scale">100</Setting>
 		<Setting name="Number of Transfers">4</Setting>
 		<Setting name="Splitter positions (v2)">97 -308 484458735 238 237 500000000</Setting>
+		<Setting name="Sitemanager last selected">0/Herbert/inkohsamui</Setting>
 		<Setting name="Tab data" sensitive="1">
 			<Tabs>
-				<Tab connected="1" selected="1">
-					<Host>grady.dreamhost.com</Host>
+				<Tab selected="1">
+					<Host>inkohsamui.com</Host>
 					<Port>22</Port>
 					<Protocol>1</Protocol>
 					<Type>0</Type>
-					<User>nabsengineering</User>
-					<Pass encoding="base64">V3pEZ01LNVlCZmV6cWI0UUhZemQ=</Pass>
+					<User>inkohsamui</User>
+					<Pass encoding="base64">ZEtWVGpsOGJvVmxfaG9DRw==</Pass>
 					<Logontype>1</Logontype>
 					<EncodingType>Auto</EncodingType>
 					<BypassProxy>0</BypassProxy>
-					<Name>nabsengineering.com</Name>
-					<Site>0/Scott Walker/nabsengineering.com</Site>
-					<RemotePath>1 0 4 home 15 nabsengineering 19 nabsengineering.com</RemotePath>
-					<LocalPath>/home/patrick/Downloads/nabs/backup_2022-09-13-0817_NABS_Engineering_a559edd000f4-uploads/</LocalPath>
+					<Name>inkohsamui</Name>
+					<Site></Site>
+					<RemotePath></RemotePath>
+					<LocalPath>/home/patrick/</LocalPath>
 				</Tab>
 			</Tabs>
 		</Setting>
