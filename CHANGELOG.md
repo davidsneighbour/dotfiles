@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [2023.0.7](/github.com/davidsneighbour/dotfiles/compare/v2023.0.6...v2023.0.7) (2023-10-12)
+
+
+### Features
+
+* add git function that checks status on git status ([12ea13d](/github.com/davidsneighbour/dotfiles/commit/12ea13d170c54f6ff3896ced2bf76158434dd7b6))
+
 ## [2023.0.6](/github.com/davidsneighbour/dotfiles/compare/v2023.0.5...v2023.0.6) (2023-10-12)
 
 

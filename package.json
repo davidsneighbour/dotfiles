@@ -1,7 +1,7 @@
 {
   "name": "@davidsneighbour/dotfiles",
   "description": "David's Neighbour's .dotfiles",
-  "version": "2023.0.6",
+  "version": "2023.0.7",
   "author": "Patrick Kollitsch <patrick@davids-neighbour.com>",
   "bugs": "https://github.com/davidsneighbour/dotfiles/issues",
   "dependencies": {
