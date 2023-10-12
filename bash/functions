@@ -361,3 +361,16 @@ function trash() {
     mv "$var" "$HOME/.trash"
   done
 }
+
+# a wrapper for git that executes a hook script for status
+git()
+{
+    if [[ $# -ge 1 && "$1" == "status" ]]
+    then
+      FILE=.git/hooks/status
+      if [ -f "$FILE" ]; then
+          bash $FILE
+      fi
+    fi
+    command git "$@"
+}
