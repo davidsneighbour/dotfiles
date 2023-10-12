@@ -5,9 +5,9 @@
   "author": "Patrick Kollitsch <patrick@davids-neighbour.com>",
   "bugs": "https://github.com/davidsneighbour/dotfiles/issues",
   "dependencies": {
-    "@davidsneighbour/standard-version-config": "^5.2.25",
+    "@davidsneighbour/standard-version-config": "^5.5.2",
     "fs-extra": "^11.1.1",
-    "remark": "^14.0.3",
+    "remark": "^15.0.1",
     "themer": "^6.5.2"
   },
   "homepage": "https://github.com/davidsneighbour/dotfiles#readme",
