@@ -2,6 +2,36 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [2023.0.6](/github.com/davidsneighbour/dotfiles/compare/v2023.0.5...v2023.0.6) (2023-10-12)
+
+
+### Features
+
+* add nvm version setup ([e3f3b05](/github.com/davidsneighbour/dotfiles/commit/e3f3b05db99d1e3e470be5c34f79509cb3a7bd40))
+
+
+### Bug Fixes
+
+* **deps:** update dependency @davidsneighbour/standard-version-config to v5.2.25 ([#25](null/github.com/davidsneighbour/dotfiles/issues/25)) ([b57869d](/github.com/davidsneighbour/dotfiles/commit/b57869dc2d550f44f04b8a91eee27dd41700b182))
+* **deps:** update dependency @davidsneighbour/standard-version-config to v5.2.26 ([#26](null/github.com/davidsneighbour/dotfiles/issues/26)) ([0f958df](/github.com/davidsneighbour/dotfiles/commit/0f958dfd1ab818e8e9e0487ee19258329681e4ef))
+* **deps:** update dependency @davidsneighbour/standard-version-config to v5.2.27 ([#27](null/github.com/davidsneighbour/dotfiles/issues/27)) ([d72bd41](/github.com/davidsneighbour/dotfiles/commit/d72bd41a380f47ff1d7227baf0494a61072a32a8))
+* **deps:** update dependency @davidsneighbour/standard-version-config to v5.2.28 ([#29](null/github.com/davidsneighbour/dotfiles/issues/29)) ([cfeb897](/github.com/davidsneighbour/dotfiles/commit/cfeb897b0cdb7ddefd0b7a57d259132a648a52b2))
+* **deps:** update dependency @davidsneighbour/standard-version-config to v5.2.29 ([#30](null/github.com/davidsneighbour/dotfiles/issues/30)) ([73005e8](/github.com/davidsneighbour/dotfiles/commit/73005e8352fe53d9d1f111375f5465b7fc74d88e))
+* **deps:** update dependency @davidsneighbour/standard-version-config to v5.2.30 ([#32](null/github.com/davidsneighbour/dotfiles/issues/32)) ([227119d](/github.com/davidsneighbour/dotfiles/commit/227119da43fa4d771e9c236f5fcc5331cc16f856))
+* **deps:** update dependency @davidsneighbour/standard-version-config to v5.2.32 ([#33](null/github.com/davidsneighbour/dotfiles/issues/33)) ([162f28c](/github.com/davidsneighbour/dotfiles/commit/162f28ce9a157b8392fe8d6613b63f11994aa5a5))
+* **deps:** update dependency @davidsneighbour/standard-version-config to v5.2.33 ([#34](null/github.com/davidsneighbour/dotfiles/issues/34)) ([b019dac](/github.com/davidsneighbour/dotfiles/commit/b019dac44f62c18c7fd5cb0f159232edd36e4d2b))
+* **deps:** update dependency @davidsneighbour/standard-version-config to v5.2.34 ([#35](null/github.com/davidsneighbour/dotfiles/issues/35)) ([9f988c9](/github.com/davidsneighbour/dotfiles/commit/9f988c981a27126ad812a46cd18841a93d13085c))
+* **deps:** update dependency @davidsneighbour/standard-version-config to v5.2.37 ([#36](null/github.com/davidsneighbour/dotfiles/issues/36)) ([098c8d5](/github.com/davidsneighbour/dotfiles/commit/098c8d594addccb5f1fa6a7d970bc0957bd7c165))
+* **deps:** update dependency @davidsneighbour/standard-version-config to v5.2.38 ([#38](null/github.com/davidsneighbour/dotfiles/issues/38)) ([b6084af](/github.com/davidsneighbour/dotfiles/commit/b6084af3cfbb45d70e25963578cb36f241ce722a))
+* **deps:** update dependency @davidsneighbour/standard-version-config to v5.2.39 ([#39](null/github.com/davidsneighbour/dotfiles/issues/39)) ([ffebbb8](/github.com/davidsneighbour/dotfiles/commit/ffebbb8b22993b88e0bb6306f39aa00eb831e053))
+* **deps:** update dependency @davidsneighbour/standard-version-config to v5.2.40 ([#40](null/github.com/davidsneighbour/dotfiles/issues/40)) ([132fae5](/github.com/davidsneighbour/dotfiles/commit/132fae520c86ec15c040ac5cdc7830640363901b))
+* **deps:** update dependency @davidsneighbour/standard-version-config to v5.2.41 ([#41](null/github.com/davidsneighbour/dotfiles/issues/41)) ([fdb41bf](/github.com/davidsneighbour/dotfiles/commit/fdb41bf394d2849f0f09152ffcc4bcdd12500745))
+* **deps:** update dependency @davidsneighbour/standard-version-config to v5.2.43 ([#42](null/github.com/davidsneighbour/dotfiles/issues/42)) ([f3b628d](/github.com/davidsneighbour/dotfiles/commit/f3b628d8c5b3cbf87c55ab62774537d8d3604226))
+* **deps:** update dependency @davidsneighbour/standard-version-config to v5.2.44 ([#43](null/github.com/davidsneighbour/dotfiles/issues/43)) ([e39e7ec](/github.com/davidsneighbour/dotfiles/commit/e39e7ecbabec9c1391d23a41d52cd0ddf340a30b))
+* **deps:** update dependency @davidsneighbour/standard-version-config to v5.5.2 ([#44](null/github.com/davidsneighbour/dotfiles/issues/44)) ([0901ae8](/github.com/davidsneighbour/dotfiles/commit/0901ae80e383816e8485e0f38563b2045182467a))
+* update all available nvm versions ([b264d0d](/github.com/davidsneighbour/dotfiles/commit/b264d0d7acdab38120c3d66333c9c41881d6ae05))
+* update packages and package update script ([8e2b0ae](/github.com/davidsneighbour/dotfiles/commit/8e2b0aefb0feec13ca1c06a6d3dd36fda5f684b9))
+
 ## [2023.0.5](/github.com/davidsneighbour/dotfiles/compare/v2023.0.4...v2023.0.5) (2023-07-18)
 
 
