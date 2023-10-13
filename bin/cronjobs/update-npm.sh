@@ -1,4 +1,5 @@
 #!/bin/bash
+# see https://kollitsch.dev/blog/2023/update-npm-packages-in-all-available-nvm-environments/ for details
 
 echo "##########################################################################"
 echo "starting update-npm.sh"
@@ -36,4 +37,4 @@ echo "done with update-npm.sh"
 echo `date`
 echo "##########################################################################"
 
-npm use
+nvm use
