@@ -1,6 +1,6 @@
 {
-  "editor.fontFamily": "JetBrains Mono",
-  "editor.fontLigatures": true,
+  "editor.fontFamily": "Monaspace Krypton",
+  "editor.fontLigatures": "'ss01', 'ss02', 'ss03', 'ss04', 'ss05', 'ss06', 'ss07', 'ss08', 'calt', 'dlig'",
   "editor.smoothScrolling": true,
   "editor.inlineSuggest.enabled": true,
   "workbench.startupEditor": "none",
@@ -33,10 +33,10 @@
   "terminal.integrated.tabs.enabled": false,
   "github.copilot.enable": {
     "*": true,
-    "yaml": true,
     "plaintext": true,
     "markdown": true,
-    "scminput": false
+    "scminput": false,
+    "yaml": true
   },
   "[javascript]": {
     "editor.defaultFormatter": "vscode.typescript-language-features"
@@ -140,7 +140,7 @@
   "[shellscript]": {
     "editor.defaultFormatter": "foxundermoon.shell-format"
   },
-  "terminal.integrated.fontFamily": "JetBrainsMonoNL Nerd Font Mono",
+  "terminal.integrated.fontFamily": "Monaspace Neon",
   "intelephense.environment.phpVersion": "8.1",
   "intelephense.environment.shortOpenTag": false,
   "intelephense.diagnostics.run": "onSave",
@@ -177,15 +177,6 @@
   "[go]": {
     "editor.defaultFormatter": "golang.go"
   },
-  "stylelint.reportDescriptionlessDisables": true,
-  "stylelint.reportInvalidScopeDisables": true,
-  "stylelint.reportNeedlessDisables": true,
-  "stylelint.snippet": [
-    "css",
-    "less",
-    "postcss",
-    "scss"
-  ],
   "stylelint.validate": [
     "css",
     "less",
@@ -218,11 +209,17 @@
   "html.format.indentHandlebars": true,
   "search.useReplacePreview": false,
   "go-template.patterns": [
-    "**/themes/wonderland/layouts/**.*"
+    "**/layouts/**.*"
   ],
   "tailwindCSS.emmetCompletions": true,
   "tailwindCSS.includeLanguages": {
     "gohtml": "html"
   },
-  "inlineChat.showDiff": false
+  "headwind.prependCustomClasses": true,
+  "inlineChat.showDiff": false,
+  "window.titleBarStyle": "custom",
+  "editor.fontSize": 15,
+  "editor.fontWeight": "300",
+  "terminal.integrated.fontWeight": "200",
+  "terminal.integrated.fontWeightBold": "400"
 }

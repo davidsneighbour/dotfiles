@@ -324,29 +324,28 @@ g_porcellain_sub() {
 }
 
 g_ignore() {
-  curl -sL https://www.toptal.com/developers/gitignore/api/$@;
+  curl -sL https://www.toptal.com/developers/gitignore/api/$@
 }
 
-g_ignore_list(){
-  curl -sL https://www.toptal.com/developers/gitignore/api/list;
+g_ignore_list() {
+  curl -sL https://www.toptal.com/developers/gitignore/api/list
 }
 
 getMyIP() {
-    local _ip _myip _line _nl=$'\n'
-    while IFS=$': \t' read -a _line ;do
-        [ -z "${_line%inet}" ] &&
-           _ip=${_line[${#_line[1]}>4?1:2]} &&
-           [ "${_ip#127.0.0.1}" ] && _myip=$_ip
-      done< <(LANG=C /sbin/ifconfig)
-    printf ${1+-v} $1 "%s${_nl:0:$[${#1}>0?0:1]}" $_myip
+  local _ip _myip _line _nl=$'\n'
+  while IFS=$': \t' read -a _line; do
+    [ -z "${_line%inet}" ] &&
+      _ip=${_line[${#_line[1]} > 4 ? 1 : 2]} &&
+      [ "${_ip#127.0.0.1}" ] && _myip=$_ip
+  done < <(LANG=C /sbin/ifconfig)
+  printf ${1+-v} $1 "%s${_nl:0:$((${#1} > 0 ? 0 : 1))}" $_myip
 }
 
 weather() {
-  if [ $# -eq 0 ] # If no argument has been passed to this function
-    then
-      curl wttr.in
-    else
-      curl wttr.in/"$1" # Append location
+  if [ $# -eq 0 ]; then # If no argument has been passed to this function
+    curl wttr.in
+  else
+    curl wttr.in/"$1" # Append location
   fi
 }
 
@@ -356,21 +355,34 @@ weather() {
 # see https://www.stefanjudis.com/snippets/a-native-shell-alternative-to-the-trash-cli/
 function trash() {
   echo "🗑️  Moving files to trash..."
-  for var in "$@"
-  do
+  for var in "$@"; do
     mv "$var" "$HOME/.trash"
   done
 }
 
 # a wrapper for git that executes a hook script for status
-git()
-{
-    if [[ $# -ge 1 && "$1" == "status" ]]
-    then
-      FILE=.git/hooks/status
-      if [ -f "$FILE" ]; then
-          bash $FILE
-      fi
-    fi
+git() {
+
+  if [[ $# -eq 0 ]]; then
+    command git
+    return
+  fi
+
+  FILE=.git/hooks/status
+  case "$1" in
+  status)
+    [[ -x $FILE ]] && bash $FILE
     command git "$@"
+    ;;
+  stash)
+    if [[ $# -eq 1 ]]; then
+      command git stash --include-untracked "${@:2}"
+    else
+      command git "$@"
+    fi
+    ;;
+  *)
+    command git "$@"
+    ;;
+  esac
 }

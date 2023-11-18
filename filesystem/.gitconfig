@@ -8,7 +8,7 @@
 whitespace = fix
 
 [credential]
-helper = cache --timeout=3600
+	helper = store
 
 [core]
 autocrlf = input
@@ -231,28 +231,6 @@ squash = "!git rebase -v -i $(git mainbranch)"
 publish = push origin HEAD --force-with-lease
 pub = publish
 
-################################################################################
-# URL shorthands
-################################################################################
-[url "git@github.com:"]
-insteadOf = "gh:"
-pushInsteadOf = "github:"
-pushInsteadOf = "git://github.com/"
-
-[url "git://github.com/"]
-insteadOf = "github:"
-
-[url "git@gist.github.com:"]
-insteadOf = "gst:"
-pushInsteadOf = "gist:"
-pushInsteadOf = "git://gist.github.com/"
-
-[url "git://gist.github.com/"]
-insteadOf = "gist:"
-
-[url "git@heroku.com:"]
-insteadOf = "heroku:"
-
 [commit]
 	gpgsign = true
 [pull]
@@ -298,7 +276,11 @@ line-numbers-plus-style = 28
 program = gpg
 [protocol "keybase"]
 allow = always
-[url "https://github.com/"]
-	insteadOf = git@github.com:
-[url "https://"]
-	insteadOf = git://
+
+################################################################################
+# URL shorthands
+################################################################################
+# [url "git@github.com:"]
+# insteadOf = "gh:"
+# pushInsteadOf = "github:"
+# pushInsteadOf = "git://github.com/"
