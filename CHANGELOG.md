@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [2023.0.11](/github.com/davidsneighbour/dotfiles/compare/v2023.0.10...v2023.0.11) (2023-11-19)
+
+
+### Bug Fixes
+
+* cleanup binaries ([00da053](/github.com/davidsneighbour/dotfiles/commit/00da053cd69f8bf62e061925bd9f2fa8fd214c1c))
+* update bash completions ([52d3d81](/github.com/davidsneighbour/dotfiles/commit/52d3d81b8dbfd94981a04da28b18c072e6011d96))
+
 ## [2023.0.10](/github.com/davidsneighbour/dotfiles/compare/v2023.0.8...v2023.0.10) (2023-11-19)
 
 
