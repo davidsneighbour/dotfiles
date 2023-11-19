@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [2023.0.10](/github.com/davidsneighbour/dotfiles/compare/v2023.0.8...v2023.0.10) (2023-11-19)
+
+
+### Bug Fixes
+
+* nvm use instead of npm use ([9d60afe](/github.com/davidsneighbour/dotfiles/commit/9d60afe5daefafd671a5b4a2e4aed748fa4ab819))
+* refactor cronjobs and add file space cronjob ([ee46790](/github.com/davidsneighbour/dotfiles/commit/ee46790336c14aa57fb7711049b5112f662f9a04))
+
 ## [2023.0.9](/github.com/davidsneighbour/dotfiles/compare/v2023.0.8...v2023.0.9) (2023-11-08)
 
 
