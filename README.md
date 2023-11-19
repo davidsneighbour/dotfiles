@@ -42,5 +42,5 @@ Run consecutive updates:
 ```shell
 ./dotbot.sh
 ./dotbot.sh protected
-git pull --recurse-submodules
+git submodule update --recursive --remote --merge --force
 ```
