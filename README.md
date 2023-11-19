@@ -42,4 +42,5 @@ Run consecutive updates:
 ```shell
 ./dotbot.sh
 ./dotbot.sh protected
+git pull --recurse-submodules
 ```
