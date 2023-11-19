@@ -3,38 +3,48 @@
 
 echo "##########################################################################"
 echo "starting update-npm.sh"
-echo `date`
+# shellcheck disable=SC2005
+echo "$(date)"
 echo "##########################################################################"
 
 # exit if any command fails
 set -e
 
 # Load nvm
-export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+NVM_DIR=""
+if [ -z "${XDG_CONFIG_HOME-}" ]; then
+  NVM_DIR="${HOME}/.nvm"
+else
+  NVM_DIR="${XDG_CONFIG_HOME}/nvm"
+fi
+
+export NVM_DIR
+# shellcheck source=/dev/null
+[ -s "${NVM_DIR}/nvm.sh" ] && \. "${NVM_DIR}/nvm.sh"
 
 for DIRNAME in /home/patrick/.nvm/versions/node/*/; do
 
-    DIR=$(basename "$DIRNAME")
-    nvm use $DIR
+  DIR=$(basename "${DIRNAME}")
+  nvm use "${DIR}"
 
-    #   if [[ $DIR == 'references' ]]; then
-    #     continue
-    #   fi
+  #   if [[ $DIR == 'references' ]]; then
+  #     continue
+  #   fi
 
-    # update global npm packages
-    npm --no-fund --no-audit --quiet -g install svgo cypress fixpack jshint \
-        lerna-wizard lerna lighthouse netlify-cli \
-        npm-check-updates svgo typescript \
-        @davidsneighbour/remark-config \
-        @socketsecurity/cli \
-        bun
+  # update global npm packages
+  npm --no-fund --no-audit --quiet -g install svgo cypress fixpack jshint \
+    lerna-wizard lerna lighthouse netlify-cli \
+    npm-check-updates typescript \
+    @davidsneighbour/remark-config \
+    @socketsecurity/cli \
+    bun
 
 done
 
 echo "##########################################################################"
 echo "done with update-npm.sh"
-echo `date`
+# shellcheck disable=SC2005
+echo "$(date)"
 echo "##########################################################################"
 
 nvm use
