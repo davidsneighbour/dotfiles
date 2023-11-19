@@ -22,5 +22,5 @@ chmod +x bash/completions/npm
 echo "#!/bin/bash
 # shellcheck disable=all
 " >bash/completions/gohugo
-hugo gen autocomplete >>bash/completions/gohugo
-chmod +x bash/completions/npm
+hugo completion bash >>bash/completions/gohugo
+chmod +x bash/completions/gohugo
