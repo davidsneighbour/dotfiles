@@ -35,9 +35,8 @@ for DIRNAME in /home/patrick/.nvm/versions/node/*/; do
   npm --no-fund --no-audit --quiet -g install svgo cypress fixpack jshint \
     lerna-wizard lerna lighthouse netlify-cli \
     npm-check-updates typescript \
-    @davidsneighbour/remark-config \
-    @socketsecurity/cli \
-    bun
+    bun better-commits @davidsneighbour/remark-config @socketsecurity/cli \
+    http-server npm pa11y playwright sassdoc
 
 done
 
