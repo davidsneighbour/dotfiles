@@ -25,6 +25,7 @@
     ~/.bash_logout: filesystem/.bash_logout
     ~/.bash_profile: filesystem/.bash_profile
     ~/.bashrc: filesystem/.bashrc
+    ~/.better-commits.json: filesystem/.better-commits.json
     ~/.cargo/.crates.toml: filesystem/.cargo/.crates.toml
     ~/.cargo/env: filesystem/.cargo/env
     ~/.config/user-dirs.dirs: filesystem/.config/user-dirs.dirs
