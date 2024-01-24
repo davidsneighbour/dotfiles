@@ -1,5 +1,5 @@
 #!/bin/bash
-# see https://kollitsch.dev/blog/2023/update-npm-packages-in-all-available-nvm-environments/ for details
+# see https://kollitsch.dev/blog/2023/update-npm-packages-in-all-available-nvm-environments/
 
 echo "##########################################################################"
 echo "starting update-npm.sh"
@@ -32,9 +32,9 @@ for DIRNAME in /home/patrick/.nvm/versions/node/*/; do
   #   fi
 
   # update global npm packages
+  # `npm ls -g` to list globally installed packages
   npm --no-fund --no-audit --quiet -g install svgo cypress fixpack jshint \
-    lerna-wizard lerna lighthouse netlify-cli \
-    npm-check-updates typescript \
+    lerna-wizard lerna lighthouse netlify-cli npm-check-updates typescript \
     bun better-commits @davidsneighbour/remark-config @socketsecurity/cli \
     http-server npm pa11y playwright sassdoc
 
