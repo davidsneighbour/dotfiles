@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [2024.0.0](/github.com/davidsneighbour/dotfiles/compare/v2023.0.11...v2024.0.0) (2024-01-24)
+
+
+### Features
+
+* **cronjobs:** backup script ([297e4ef](/github.com/davidsneighbour/dotfiles/commit/297e4ef15b270a564b63605ab457a6b59330ef92))
+
+
+### Bug Fixes
+
+* update globally installed npm packages ([93e6bc5](/github.com/davidsneighbour/dotfiles/commit/93e6bc5e550430597555039781fee31dffde31c6))
+* update globally installed npm packages ([f9171ea](/github.com/davidsneighbour/dotfiles/commit/f9171ea438135bb951533a78373e17a5e25786ca))
+
 ## [2023.0.11](/github.com/davidsneighbour/dotfiles/compare/v2023.0.10...v2023.0.11) (2023-11-19)
 
 
