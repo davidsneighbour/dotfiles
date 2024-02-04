@@ -1,11 +1,11 @@
 {
   "name": "@davidsneighbour/dotfiles",
   "description": "David's Neighbour's .dotfiles",
-  "version": "2024.0.0",
+  "version": "2024.0.1",
   "author": "Patrick Kollitsch <patrick@davids-neighbour.com>",
   "bugs": "https://github.com/davidsneighbour/dotfiles/issues",
   "dependencies": {
-    "@davidsneighbour/standard-version-config": "5.8.7",
+    "@davidsneighbour/standard-version-config": "5.8.11",
     "fs-extra": "11.2.0",
     "remark": "15.0.1",
     "themer": "6.5.3"
