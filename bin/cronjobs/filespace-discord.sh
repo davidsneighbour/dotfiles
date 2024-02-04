@@ -15,7 +15,7 @@ fi
 CURRENT=$(df / | grep / | awk '{ print $5}' | sed 's/%//g')
 
 # The threshold where the alert will be sent.
-THRESHOLD=50
+THRESHOLD=75
 
 if [ "${CURRENT}" -gt "${THRESHOLD}" ]; then
 

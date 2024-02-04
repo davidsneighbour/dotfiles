@@ -56,7 +56,7 @@
     "editor.defaultFormatter": "unifiedjs.vscode-remark"
   },
   "editor.codeActionsOnSave": {
-    "source.fixAll.markdownlint": true
+    "source.fixAll.markdownlint": "explicit"
   },
   "[typescript]": {
     "editor.defaultFormatter": "vscode.typescript-language-features"
@@ -221,5 +221,8 @@
   "editor.fontSize": 15,
   "editor.fontWeight": "300",
   "terminal.integrated.fontWeight": "200",
-  "terminal.integrated.fontWeightBold": "400"
+  "terminal.integrated.fontWeightBold": "400",
+  "accessibility.voice.keywordActivation": "chatInContext",
+  "files.autoSaveWhenNoErrors": true,
+  "files.autoSaveWorkspaceFilesOnly": true
 }
