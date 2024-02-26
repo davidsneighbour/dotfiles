@@ -395,27 +395,15 @@ udeps() {
     fi
   done
 
-  set -e
-
   echo "Updating dependencies..."
-
-  # 1) Pull the latest changes from Git
-  git pull >/dev/null 2>&1
+  git pull >/dev/null
   echo "Git pull completed."
-
-  # 2) Update Hugo modules
-  hugo mod get -u ./... >/dev/null 2>&1
+  hugo mod get -u ./...
   echo "Hugo modules updated."
-
-  # 3) Update npm packages
-  npm-check-updates -u >/dev/null 2>&1
+  npm-check-updates -u
   echo "NPM packages updated."
-
-  # 4) Add updated package files and Go module files to git
-  git add package* go.* >/dev/null 2>&1
+  git add package* go.*
   echo "Files added to git."
-
-  # 5) Commit the changes
-  git commit -m "chore(deps): update dependencies" >/dev/null 2>&1
+  git commit -m "chore(deps): update dependencies"
   echo "Dependencies updated and committed successfully."
 }
