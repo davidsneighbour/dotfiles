@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# glone GITPATH
-# clone $GITPATH to a folder structure that recreates the link structure
-# inside the home directory.
-# TODO: make this work with all git links, not only git@ links (currently)
 function glone() {
   REPO1=$1
   # REPOTYPE=$(cut -d'@' -f1 <<<"$REPO1")
@@ -18,7 +14,6 @@ function glone() {
   git clone "${REPO1}" "${REPOPATH}"
 }
 
-# hugoserver
 function hugoserver() {
 
   # if [ blah is false ]; then
@@ -121,8 +116,6 @@ function hugoserver() {
 
 }
 
-# Go up a specified number of directories
-#
 up() {
   if [ -z "$1" ]; then
     cd ..
@@ -137,9 +130,6 @@ up() {
   cd "${result}" || exit
 }
 
-#
-# Make a directory and change to it
-#
 mkcd() {
   if [ $# -ne 1 ]; then
     echo "Usage: mkcd <dir>"
@@ -149,17 +139,11 @@ mkcd() {
   fi
 }
 
-#
-# Prints out a long line. Useful for setting a visual flag in your terminal.
-#
 flag() {
   OUTPUT=${*}
   echo -e "\e[1;36m[===============${OUTPUT}===($(date +"%Y-%m-%d %H:%M-%S"))===============]\e[m"
 }
 
-#
-# Backup file(s)
-#
 dbackup() {
   if [ $# -lt 1 ]; then
     echo Please supply a file to backup
@@ -172,9 +156,6 @@ dbackup() {
   done
 }
 
-#
-# Extract an archive of any type
-#
 extract() {
   if [ $# -lt 1 ]; then
     echo Usage: extract file
@@ -201,9 +182,6 @@ extract() {
   fi
 }
 
-#
-# Creates an archive
-#
 roll() {
   if [ "$#" -ne 0 ]; then
     FILE="$1"
@@ -221,7 +199,6 @@ roll() {
   fi
 }
 
-# Create a data URI from a file
 datauri() {
 
   local mimeType=""
@@ -360,7 +337,6 @@ function trash() {
   done
 }
 
-# a wrapper for git that executes a hook script for status
 git() {
 
   if [[ $# -eq 0 ]]; then
@@ -395,15 +371,56 @@ udeps() {
     fi
   done
 
-  echo "Updating dependencies..."
+  echo -e "\033[0;32mUpdating dependencies...\033[0m"
+  echo -e "\033[0;32mPulling latest changes from git...\033[0m"
   git pull >/dev/null
-  echo "Git pull completed."
+  echo -e "\033[0;32mHugo modules updating...\033[0m"
   hugo mod get -u ./...
-  echo "Hugo modules updated."
+  echo -e "\033[0;32mNPM packages updating...\033[0m"
   npm-check-updates -u
-  echo "NPM packages updated."
   git add package* go.*
-  echo "Files added to git."
   git commit -m "chore(deps): update dependencies"
-  echo "Dependencies updated and committed successfully."
+  git push origin
+  echo -e "\033[0;32mDependencies updated and committed successfully.\033[0m"
+}
+
+summarize_functions() {
+  local filePath="$1"
+  if [[ ! -f "$filePath" ]]; then
+    echo "File does not exist: $filePath"
+    return 1
+  fi
+
+  local functionName=""
+  local description=""
+  local inFunction=false
+  local descriptionCollected=false
+
+  while IFS='' read -r line || [[ -n "$line" ]]; do
+    if [[ "$inFunction" == false && "$line" =~ ^function\ +([a-zA-Z0-9_]+)\(\) ]]; then
+      # Starting a new function, output the previous one if it exists
+      if [[ -n "$functionName" ]]; then
+        echo -e "\033[1;36m$functionName\033[0m: ${description:-No description.}"
+      fi
+      functionName="${BASH_REMATCH[1]}"
+      inFunction=true
+      description=""
+      descriptionCollected=false
+    elif [[ "$inFunction" == true && "$descriptionCollected" == false && "$line" =~ ^[[:space:]]*#\s*(.*) ]]; then
+      # Collecting the first comment as the description
+      description="${BASH_REMATCH[1]}"
+      descriptionCollected=true
+    elif [[ "$line" =~ ^\} ]]; then
+      # End of function, output it
+      echo -e "\033[1;36m$functionName\033[0m: ${description:-No description.}"
+      inFunction=false
+      functionName=""
+      description=""
+    fi
+  done <"$filePath"
+
+  # Handle the last function if the file doesn't end with a closing brace
+  if [[ -n "$functionName" ]]; then
+    echo -e "\033[1;36m$functionName\033[0m: ${description:-No description.}"
+  fi
 }
