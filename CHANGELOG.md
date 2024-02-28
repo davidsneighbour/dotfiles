@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [2024.0.2](/github.com/davidsneighbour/dotfiles/compare/v2024.0.1...v2024.0.2) (2024-02-28)
+
+
+### Features
+
+* add deps update function ([0785181](/github.com/davidsneighbour/dotfiles/commit/07851815b4e2755fe5e1ca153c7cc8cbfdac8edd))
+* dependencies update script ([d551941](/github.com/davidsneighbour/dotfiles/commit/d55194190e14d6874e752d15289e024b1b4ae436))
+
 ## [2024.0.1](/github.com/davidsneighbour/dotfiles/compare/v2024.0.0...v2024.0.1) (2024-02-04)
 
 ## [2024.0.0](/github.com/davidsneighbour/dotfiles/compare/v2023.0.11...v2024.0.0) (2024-01-24)
