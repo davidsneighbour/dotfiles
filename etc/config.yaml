@@ -1,0 +1,63 @@
+################################################################################
+# Setup configuration for Dotbot
+#
+# @see https://github.com/anishathalye/dotbot for more info
+################################################################################
+- defaults:
+    link:
+      create: true
+      relink: true
+      force: true
+
+- clean: ["~"]
+
+- shell:
+    - ["mkdir -p ~/.config", "creating config folder (if it doesn't exist yet)"]
+    - [
+        "rm -f ~/.bash_history ~/.lesshst ~/.viminfo ~/.sudo_as_admin_successful",
+      ]
+
+- link:
+    ############################################################################
+    # file links
+    ############################################################################
+    ~/.barriers.conf: filesystem/.barriers.conf
+    ~/.bash_logout: filesystem/.bash_logout
+    ~/.bash_profile: filesystem/.bash_profile
+    ~/.bashrc: filesystem/.bashrc
+    ~/.better-commits.json: filesystem/.better-commits.json
+    ~/.cargo/.crates.toml: filesystem/.cargo/.crates.toml
+    ~/.cargo/env: filesystem/.cargo/env
+    ~/.config/user-dirs.dirs: filesystem/.config/user-dirs.dirs
+    ~/.czrc: filesystem/.czrc
+    ~/.face.icon: filesystem/.face.icon
+    ~/.editorconfig: filesystem/.editorconfig
+    ~/.fehbg: filesystem/.fehbg
+    ~/.fixpackrc: filesystem/.fixpackrc
+    ~/.gitconfig: filesystem/.gitconfig
+    ~/.gitignore: filesystem/.gitignore.template
+    ~/.git-templates: filesystem/.git-templates
+    ~/.hidden: filesystem/.hidden
+    ~/.pam_environment: filesystem/.pam_environment
+    ~/.profile: filesystem/.profile
+    ~/.remarkrc.js: filesystem/.remarkrc.js
+    ~/.remarkignore: filesystem/.remarkignore
+    ##################################################################
+    # directory links
+    ##################################################################
+    ~/.config/autostart: filesystem/.config/autostart
+    ~/.config/Code: filesystem/.config/Code
+    ~/.config/filezilla: filesystem/.config/filezilla
+    ~/.config/gh: filesystem/.config/gh
+    ~/.config/gtk-3.0: filesystem/.config/gtk-3.0
+    ~/.config/i3: filesystem/.config/i3
+    ~/.config/jrnl: filesystem/.config/jrnl
+    ~/.config/neofetch: filesystem/.config/neofetch
+    ~/.config/polybar: filesystem/.config/polybar
+    ~/.config/rofi: filesystem/.config/rofi
+    ~/.config/tabtab: filesystem/.config/tabtab
+    ~/.config/transmission: filesystem/.config/transmission
+    ~/.icons: filesystem/.icons
+    ~/.wallpapers: filesystem/.wallpapers
+    ~/snap/joplin-desktop/current/.config/joplin-desktop/plugins: filesystem/snap/joplin-desktop/current/.config/joplin-desktop/plugins
+    ~/snap/joplin-desktop/current/.config/joplin-desktop/settings.json: filesystem/snap/joplin-desktop/current/.config/joplin-desktop/settings.json

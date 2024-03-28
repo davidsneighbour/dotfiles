@@ -1,0 +1,83 @@
+#!/bin/bash
+
+REQUIRED_TOOLS=(
+  curl
+  snap
+  apt
+)
+
+for tool in "${REQUIRED_TOOLS[@]}"; do
+  if ! command -v "${tool}" >/dev/null; then
+    echo "${tool} is required... "
+    exit 1
+  fi
+done
+
+# echo "Enter the sudo password, please"
+# read -r -s PASSWORD
+
+echo "Setup programs via APT"
+sudo apt purge libreoffice
+sudo apt install inkscape gimp build-essential atop htop i3 neofetch polybar \
+  feh dunst vim default-jdk libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev \
+  librsvg2-dev curl golang git shutter
+
+echo "Setup programs via Snap"
+sudo snap install todoist
+sudo snap install authy
+sudo snap install bitcoin-core
+sudo snap install libreoffice
+sudo snap install phpstorm --classic
+sudo snap install ruby --classic
+
+echo "Installing Node and NPM"
+curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
+nvm install node
+
+echo "Installing global NPM packages"
+npm -g install \
+  svgo cypress fixpack jshint \
+  lerna-wizard lerna lighthouse \
+  netlify-cli npm-check-updates \
+  svgo typescript \
+  @davidsneighbour/remark-config
+
+echo "Installing Rust and Cargo"
+curl https://sh.rustup.rs -sSf | sh
+
+# TODO: add repos without updating and then update once (using --no-update)
+
+# echo "Installing Github CLI"
+# sudo add-apt-repository ppa:git-core/ppa --yes > /dev/null 2>&1
+# sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key C99B11DEB97541F0
+# sudo apt-add-repository -u https://cli.github.com/packages --yes > /dev/null 2>&1
+# sudo apt install gh
+
+# # Signal
+# echo "Installing Signal"
+# wget -O- https://updates.signal.org/desktop/apt/keys.asc | gpg --dearmor >signal-desktop-keyring.gpg
+# cat signal-desktop-keyring.gpg | sudo tee -a /usr/share/keyrings/signal-desktop-keyring.gpg >/dev/null
+# echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt xenial main' |
+# sudo tee -a /etc/apt/sources.list.d/signal-xenial.list
+# sudo apt update && sudo apt install signal-desktop
+
+# # AppImageLauncher
+# echo "Installing AppImageLauncher"
+# sudo add-apt-repository ppa:appimagelauncher-team/stable --yes > /dev/null 2>&1
+# sudo apt install appimagelauncher
+
+echo "Completed in ${SECONDS}s"
+
+# curl -sS https://download.spotify.com/debian/pubkey_7A3A762FAFD4A51F.gpg | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/spotify.gpg
+# echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
+
+# sudo apt-get update && sudo apt-get install spotify-client
+
+# cargo install typos-cli
+
+wget https://github.com/errata-ai/vale/releases/download/v2.15.4/vale_2.15.4_Linux_64-bit.tar.gz
+mkdir bin && tar -xvzf vale_2.15.4_Linux_64-bit.tar.gz -C bin
+export PATH=./bin:"$PATH"
+npm install -g aicommits
+
+npm i -g npkill

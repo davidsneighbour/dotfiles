@@ -1,0 +1,26 @@
+#!/bin/bash
+
+REQUIRED_TOOLS=(
+  export
+)
+
+for tool in "${REQUIRED_TOOLS[@]}"; do
+  if ! command -v "${tool}" >/dev/null; then
+    echo "${tool} is required... "
+    exit 1
+  fi
+done
+
+FILE=${HOME}/.env
+if [ -f "${FILE}" ]; then
+  #echo "exporting .env"
+  set -a
+  # this routine ranges through a folder of files that we don't explicitly know (@davidsneighbour)
+  # see https://github.com/koalaman/shellcheck/wiki/SC1090
+  # shellcheck source=/dev/null
+  source "${FILE}"
+  set +a
+fi
+
+# manual vscode terminal setup
+[[ "$TERM_PROGRAM" == "vscode" ]] && . "$(code --locate-shell-integration-path bash)"

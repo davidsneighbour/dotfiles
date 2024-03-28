@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Exec=/snap/bin/joplin-desktop
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name[en_US]=Joplin
+Name=Joplin
+Comment[en_US]=Notes
+Comment=Notes

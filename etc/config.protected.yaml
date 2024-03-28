@@ -1,0 +1,20 @@
+################################################################################
+# Setup configuration for the protected repository
+################################################################################
+- defaults:
+    link:
+      create: true
+      relink: true
+      force: true
+
+- clean: ["~"]
+
+- link:
+    ~/.env: protected/.env
+    ~/.npmrc: protected/.npmrc
+    ~/.sentryclirc: protected/.sentryclirc
+    ~/.fonts: protected/.fonts
+    ~/.ssh: protected/.ssh
+    ~/.config/filezilla/filezilla.xml: protected/filezilla/filezilla.xml
+    ~/.config/filezilla/sitemanager.xml: protected/filezilla/sitemanager.xml
+    ~/.config/filezilla/trustedcerts.xml: protected/filezilla/trustedcerts.xml

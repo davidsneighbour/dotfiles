@@ -1,0 +1,470 @@
+#!/bin/bash
+
+function glone() {
+  REPO1=$1
+  # REPOTYPE=$(cut -d'@' -f1 <<<"$REPO1")
+  REPOHASH0=$(cut -d':' -f1 <<<"${REPO1}")
+  PATH0=$(cut -d'@' -f2 <<<"${REPOHASH0}")
+  REPOHASH1=$(cut -d':' -f2 <<<"${REPO1}")
+  PATH1=$(cut -d'/' -f1 <<<"${REPOHASH1}")
+  PATH2=$(cut -d'/' -f2 <<<"${REPOHASH1}")
+  PATH2=${PATH2::-4}
+  REPOPATH="${HOME}"/"${PATH0}"/"${PATH1}"/"${PATH2}"
+  mkdir -p "${REPOPATH}"
+  git clone "${REPO1}" "${REPOPATH}"
+}
+
+function hugoserver() {
+
+  # if [ blah is false ]; then
+  #   return 1
+  # fi
+
+  REQUIRED_TOOLS=(
+    hugo
+    npm
+    export
+    trap
+  )
+
+  for TOOL in "${REQUIRED_TOOLS[@]}"; do
+    if ! command -v "${TOOL}" >/dev/null; then
+      echo "${TOOL} is required... "
+      exit 1
+    fi
+  done
+
+  for FILE in bin/lib/*; do
+    set -a
+    # this routine ranges through a folder of files that we don't explicitly know (@davidsneighbour)
+    # see https://github.com/koalaman/shellcheck/wiki/SC1090
+    # shellcheck source=/dev/null
+    source "${FILE}"
+    set +a
+  done
+
+  # SCRIPTPATH="$(
+  #   cd "$(dirname "$0")" >/dev/null 2>&1 || exit
+  #   pwd -P
+  # )"
+  CURPATH="$(pwd -P)"
+
+  trap "{ echo 'Terminated with Ctrl+C'; }" SIGINT
+
+  FILE=${CURPATH}/.env
+  if [ -f "${FILE}" ]; then
+    echo "exporting .env"
+    set -a
+    # this routine ranges through a folder of files that we don't explicitly know (@davidsneighbour)
+    # see https://github.com/koalaman/shellcheck/wiki/SC1090
+    # shellcheck source=/dev/null
+    source "${FILE}"
+    set +a
+  fi
+
+  # cleanup hugo logging
+  npm run clean:hugo
+
+  # update modules
+  hugo mod get -u ./...
+
+  # create replacements
+  NOT_FIRST_LINE=false
+  HUGO_MODULE_REPLACEMENTS=""
+  REPLACEMENTS="${CURPATH}"/bin/etc/replacements
+  if test -f "${REPLACEMENTS}"; then
+    while read -ra __; do
+      if ${NOT_FIRST_LINE}; then
+        HUGO_MODULE_REPLACEMENTS="${HUGO_MODULE_REPLACEMENTS},${__[0]} -> ${__[1]}"
+      else
+        HUGO_MODULE_REPLACEMENTS="${__[0]} -> ${__[1]}"
+        NOT_FIRST_LINE=true
+      fi
+    done <"${REPLACEMENTS}"
+    [[ -n "${HUGO_MODULE_REPLACEMENTS}" ]] && export HUGO_MODULE_REPLACEMENTS="${HUGO_MODULE_REPLACEMENTS}" || echo "No replacements found"
+  fi
+
+  # starting hugo server
+  hugo server \
+    --gc \
+    --environment development \
+    --disableFastRender \
+    --printUnusedTemplates \
+    --printI18nWarnings \
+    --navigateToChanged \
+    --templateMetrics \
+    --templateMetricsHints \
+    --printPathWarnings \
+    --poll 1s \
+    --minify \
+    --cleanDestinationDir \
+    --renderStaticToDisk \
+    --buildFuture \
+    --watch \
+    --enableGitInfo \
+    --forceSyncStatic \
+    --log true --logFile hugo.log \
+    --verbose \
+    --verboseLog \
+    --debug \
+    --port "${PORT}" \
+    --baseURL http://"${IP}"/ \
+    --bind "${IP}"
+
+  # TODO --buildDrafts --buildExpired on request
+  # TODO check --source dev
+
+}
+
+up() {
+  if [ -z "$1" ]; then
+    cd ..
+    return
+  fi
+  local levels=$1
+  local result="."
+  while [ "${levels}" -gt 0 ]; do
+    result=${result}/..
+    ((levels--))
+  done
+  cd "${result}" || exit
+}
+
+mkcd() {
+  if [ $# -ne 1 ]; then
+    echo "Usage: mkcd <dir>"
+    return 1
+  else
+    mkdir -p "$1" && cd "$1" || exit
+  fi
+}
+
+flag() {
+  OUTPUT=${*}
+  echo -e "\e[1;36m[===============${OUTPUT}===($(date +"%Y-%m-%d %H:%M-%S"))===============]\e[m"
+}
+
+dbackup() {
+  if [ $# -lt 1 ]; then
+    echo Please supply a file to backup
+    return 1
+  fi
+  date=$(date +%Y%m%d-%H%M)
+  for i in "$@"; do
+    echo Backed up "${i}" to "${i}"."${date}"
+    cp "${i}" "${i}"."${date}"
+  done
+}
+
+extract() {
+  if [ $# -lt 1 ]; then
+    echo Usage: extract file
+    return 1
+  fi
+  if [ -f "$1" ]; then
+    case $1 in
+    *.tar.bz2) tar xvjf "$1" ;;
+    *.tar.gz) tar xvzf "$1" ;;
+    *.bz2) bunzip2 "$1" ;;
+    *.rar) unrar x "$1" ;;
+    *.gz) gunzip "$1" ;;
+    *.tar) tar xvf "$1" ;;
+    *.tbz2) tar xvjf "$1" ;;
+    *.tgz) tar xvzf "$1" ;;
+    *.zip) unzip "$1" ;;
+    *.war | *.jar) unzip "$1" ;;
+    *.Z) uncompress "$1" ;;
+    *.7z) 7z x "$1" ;;
+    *) echo "don't know how to extract '$1'..." ;;
+    esac
+  else
+    echo "'$1' is not a valid file!"
+  fi
+}
+
+roll() {
+  if [ "$#" -ne 0 ]; then
+    FILE="$1"
+    case "${FILE}" in
+    *.tar.bz2 | *.tbz2) shift && tar cvjf "${FILE}" "$*" ;;
+    *.tar.gz | *.tgz) shift && tar cvzf "${FILE}" "$*" ;;
+    *.tar) shift && tar cvf "${FILE}" "$*" ;;
+    *.zip) shift && zip "${FILE}" "$*" ;;
+    *.rar) shift && rar "${FILE}" "$*" ;;
+    *.7z) shift && 7zr a "${FILE}" "$*" ;;
+    *) echo "'$1' cannot be rolled via roll()" ;;
+    esac
+  else
+    echo "usage: roll [file] [contents]"
+  fi
+}
+
+datauri() {
+
+  local mimeType=""
+
+  if [ -f "$1" ]; then
+    mimeType=$(file -b --mime-type "$1")
+    #                └─ do not prepend the filename to the output
+
+    if [[ ${mimeType} == text/* ]]; then
+      mimeType="${mimeType};charset=utf-8"
+    fi
+
+    printf "data:%s;base64,%s" \
+      "${mimeType}" \
+      "$(openssl base64 -in "$1" | tr -d "\n")"
+  else
+    print_error "'$1' is not a file."
+  fi
+
+}
+
+startcode() {
+
+  unset options i
+  while IFS= read -r -d $'\0' f; do
+    options[i++]="${f}"
+  done < <(find "${HOME}"/github.com/davidsneighbour/dotfiles/workspaces/ -maxdepth 1 -type f -name "*.code-workspace" -print0 | sort -z)
+
+  # shellcheck disable=SC2154
+  select opt in "${options[@]}" "Stop the script"; do
+    case ${opt} in
+    *.code-workspace)
+      echo "Starting VSCode with ${opt}."
+      code "${opt}"
+      break
+      ;;
+    "Stop the script")
+      break
+      ;;
+    *)
+      echo "This is not a valid selection"
+      ;;
+    esac
+  done
+
+}
+
+gitclean() {
+  git reflog expire -"${exp}"ire=0 --all
+  git repack -a -d -l
+  git prune
+  git gc --aggressive
+}
+
+g_rebase_branch() {
+  git branch --show-current | xargs git merge-base "$1" | xargs git rebase -i
+}
+
+g_one_commit() {
+  # shellcheck disable=SC2039
+  local last_commit_message
+  last_commit_message=$(git show -s --format=%s)
+  # shellcheck disable=SC2039
+  local BRANCH
+
+  if [ -z "$1" ]; then
+    echo "no branch, using main"
+    BRANCH="main"
+  else
+    BRANCH="$1"
+  fi
+
+  git branch --show-current | xargs git merge-base "${BRANCH}" | xargs git reset --soft
+  git add -A
+  git commit -m "${last_commit_message}" --amend --reset-author
+}
+
+# for repo in $repos; do (g_repo_transfer "$repo" "$1" "$2"); done
+g_repo_transfer() {
+  curl -vL \
+    -u "$2:${GITHUB_SECRET}" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/vnd.github.v3+json" \
+    -X POST https://api.github.com/repos/"$2"/"$1"/transfer \
+    -d '{"new_owner":"'"$3"'"}' |
+    jq .
+}
+
+g_porcellain_sub() {
+
+  # iterate over subdirectories
+  for dir in *; do
+    cd "${dir}" || return
+    if [ -d .git ]; then
+      git status -s
+    fi
+    cd ..
+  done
+
+}
+
+g_ignore() {
+  curl -sL https://www.toptal.com/developers/gitignore/api/$@
+}
+
+g_ignore_list() {
+  curl -sL https://www.toptal.com/developers/gitignore/api/list
+}
+
+getMyIP() {
+  local _ip _myip _line _nl=$'\n'
+  while IFS=$': \t' read -a _line; do
+    [ -z "${_line%inet}" ] &&
+      _ip=${_line[${#_line[1]} > 4 ? 1 : 2]} &&
+      [ "${_ip#127.0.0.1}" ] && _myip=$_ip
+  done < <(LANG=C /sbin/ifconfig)
+  printf ${1+-v} $1 "%s${_nl:0:$((${#1} > 0 ? 0 : 1))}" $_myip
+}
+
+weather() {
+  if [ $# -eq 0 ]; then # If no argument has been passed to this function
+    curl wttr.in
+  else
+    curl wttr.in/"$1" # Append location
+  fi
+}
+
+# ✅ globs          – `trash file-*-.txt`
+# ✅ directories    – `trash directory`
+# ✅ multiple files - `trash file-1 dir-1 file-2`
+# see https://www.stefanjudis.com/snippets/a-native-shell-alternative-to-the-trash-cli/
+function trash() {
+  echo "🗑️  Moving files to trash..."
+  for var in "$@"; do
+    mv "$var" "$HOME/.trash"
+  done
+}
+
+udeps() {
+  for cmd in git hugo npm-check-updates; do
+    if ! command -v "$cmd" &>/dev/null; then
+      echo "Error: ${cmd} is not installed." >&2
+      return 1
+    fi
+  done
+
+  echo -e "\033[0;32mUpdating dependencies...\033[0m"
+  echo -e "\033[0;32mPulling latest changes from git...\033[0m"
+  git pull >/dev/null
+  echo -e "\033[0;32mHugo modules updating...\033[0m"
+  hugo mod get -u ./...
+  echo -e "\033[0;32mNPM packages updating...\033[0m"
+  npm-check-updates -u
+  git add package* go.*
+  git commit -m "chore(deps): update dependencies"
+  git push origin
+  echo -e "\033[0;32mDependencies updated and committed successfully.\033[0m"
+}
+
+summarize_functions() {
+  local filePath="$1"
+  if [[ ! -f "$filePath" ]]; then
+    echo "File does not exist: $filePath"
+    return 1
+  fi
+
+  local functionName=""
+  local description=""
+  local inFunction=false
+  local descriptionCollected=false
+
+  while IFS='' read -r line || [[ -n "$line" ]]; do
+    if [[ "$inFunction" == false && "$line" =~ ^function\ +([a-zA-Z0-9_]+)\(\) ]]; then
+      # Starting a new function, output the previous one if it exists
+      if [[ -n "$functionName" ]]; then
+        echo -e "\033[1;36m$functionName\033[0m: ${description:-No description.}"
+      fi
+      functionName="${BASH_REMATCH[1]}"
+      inFunction=true
+      description=""
+      descriptionCollected=false
+    elif [[ "$inFunction" == true && "$descriptionCollected" == false && "$line" =~ ^[[:space:]]*#\s*(.*) ]]; then
+      # Collecting the first comment as the description
+      description="${BASH_REMATCH[1]}"
+      descriptionCollected=true
+    elif [[ "$line" =~ ^\} ]]; then
+      # End of function, output it
+      echo -e "\033[1;36m$functionName\033[0m: ${description:-No description.}"
+      inFunction=false
+      functionName=""
+      description=""
+    fi
+  done <"$filePath"
+
+  # Handle the last function if the file doesn't end with a closing brace
+  if [[ -n "$functionName" ]]; then
+    echo -e "\033[1;36m$functionName\033[0m: ${description:-No description.}"
+  fi
+}
+
+g_clear_inbox() {
+
+  # have GITHUB_NOTIFICATIONS_TOKEN in ~/.env
+  # must be a personal access token with notifications scope, NOT the new token format
+  # https://docs.github.com/en/rest/activity/notifications?apiVersion=2022-11-287
+
+  FILE=${HOME}/.env
+  if [ -f "${FILE}" ]; then
+    # shellcheck disable=SC1090
+    source "${FILE}"
+  fi
+
+  now=$(date -u +%FT%TZ)
+  # Check if the GITHUB_NOTIFICATIONS_TOKEN is set
+  if [ -n "${GITHUB_NOTIFICATIONS_TOKEN}" ]; then
+    curl -X PUT \
+      -H "Authorization: Bearer ${GITHUB_NOTIFICATIONS_TOKEN}" \
+      -H "Accept: application/vnd.github.v3+json" \
+      -d "{\"last_read_at\": \"${now}\"}" \
+      https://api.github.com/notifications
+  else
+    echo "Error: GITHUB_NOTIFICATIONS_TOKEN is not set in .env."
+  fi
+}
+
+# shellcheck disable=SC2032
+git() {
+  if [[ $# -eq 0 ]]; then
+    command git
+    return
+  fi
+
+  FILE=.git/hooks/status
+  case "$1" in
+  status)
+    [[ -x $FILE ]] && bash $FILE
+    command git "$@"
+    ;;
+  stash)
+    if [[ $# -eq 1 || ("$2" == "-m" && $# -ge 3) ]]; then
+      # Prepare arguments for git stash command
+      local stash_args=()
+      if [[ "$2" == "-m" ]]; then
+        # Include -m and the message if provided
+        stash_args=("--include-untracked" "$2" "$3")
+        # Capture any additional message parts if present
+        for ((i = 4; i <= $#; i++)); do
+          stash_args+=("${!i}")
+        done
+      else
+        stash_args=("--include-untracked")
+      fi
+
+      # Attempt to stash changes and capture the output
+      output=$(command git stash "${stash_args[@]}" 2>&1)
+      echo "$output"
+      if echo "$output" | grep -q "No local changes to save"; then
+        echo -e "\nCurrent stashes"
+        command git stash list
+      fi
+    else
+      command git "$@"
+    fi
+    ;;
+  *)
+    command git "$@"
+    ;;
+  esac
+}
