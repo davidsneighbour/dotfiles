@@ -24,7 +24,7 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Install a python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v5
       with:
         python-version: 3.x
 
@@ -417,7 +417,7 @@ jobs:
       if: steps.cached_libyaml.outputs.cache-hit != 'true'
 
     - name: Install python ${{ matrix.spec }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v5
       with:
         architecture: ${{ matrix.python_arch }}
         python-version: ${{ matrix.spec }}
