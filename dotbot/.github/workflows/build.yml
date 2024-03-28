@@ -42,7 +42,7 @@ jobs:
         run: |
           python -m tox
           python -m tox -e coverage_report
-      - uses: codecov/codecov-action@v3
+      - uses: codecov/codecov-action@v4
   fmt:
     name: Format
     runs-on: ubuntu-22.04
