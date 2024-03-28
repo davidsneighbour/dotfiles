@@ -61,7 +61,7 @@ jobs:
         python packaging/build/smoketest.py
 
     - name: Upload sdist artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: dist
         path: dist/*.tar.gz
@@ -177,7 +177,7 @@ jobs:
         python3 -m cibuildwheel --platform auto --output-dir dist .
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: dist
         path: dist/*.whl
@@ -293,7 +293,7 @@ jobs:
         python3 -m cibuildwheel --platform auto --output-dir dist .
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: dist
         path: dist/*.whl
@@ -444,7 +444,7 @@ jobs:
         python tests/lib/test_all.py
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: dist
         path: dist/*.whl
