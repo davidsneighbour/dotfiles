@@ -80,7 +80,7 @@ jobs:
     steps:
     - name: Check cached libyaml state
       id: cached_libyaml
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: libyaml
         key: libyaml_${{matrix.cfg.platform}}_${{matrix.cfg.arch}}_${{env.LIBYAML_REF}}
@@ -142,7 +142,7 @@ jobs:
 
     - name: Fetch cached libyaml
       id: cached_libyaml
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: libyaml
         key: libyaml_${{matrix.platform}}_${{matrix.arch}}_${{env.LIBYAML_REF}}
@@ -199,7 +199,7 @@ jobs:
     steps:
     - name: Check cached libyaml state
       id: cached_libyaml
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: libyaml
         key: libyaml_macos_${{matrix.arch}}_${{env.LIBYAML_REF}}
@@ -269,7 +269,7 @@ jobs:
 
     - name: Get cached libyaml state
       id: cached_libyaml
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: libyaml
         key: libyaml_macos_${{ matrix.arch || 'x86_64' }}_${{env.LIBYAML_REF}}
@@ -312,7 +312,7 @@ jobs:
     steps:
     - name: Get cached libyaml state
       id: cached_libyaml
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: libyaml
         key: libyaml_${{matrix.platform}}_${{matrix.arch}}_${{env.LIBYAML_REF}}
@@ -407,7 +407,7 @@ jobs:
 
     - name: Get cached libyaml state
       id: cached_libyaml
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: libyaml
         key: libyaml_${{matrix.platform}}_${{matrix.build_arch}}_${{env.LIBYAML_REF}}
