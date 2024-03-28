@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Exec=/usr/bin/signal-desktop --start-in-tray --no-sandbox
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name[en_US]=Signal
+Name=Signal
+Comment[en_US]=Signal secure chat
+Comment=Signal secure chat

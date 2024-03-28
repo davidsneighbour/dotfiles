@@ -1,0 +1,40 @@
+Backups
+blob_storage
+Cache
+CachedConfigurations
+CachedData
+CachedExtensions
+CachedExtensionVSIXs
+CachedProfilesData
+Code Cache
+Crashpad
+databases
+DawnCache
+Dictionaries
+Local Storage
+GPUCache
+IndexedDB
+logs
+Service Worker
+Session Storage
+Trust Tokens
+Trust Tokens-journal
+VideoDecodeStats
+WebStorage
+code.lock
+Cookies
+Cookies-journal
+Network Persistent State
+Preferences
+TransportSecurity
+languagepacks.json
+machineid
+shared_proto_db
+
+User/History/
+User/globalStorage/
+User/profiles/
+User/workspaceStorage/
+User/sync
+
+.org.chromium.*
