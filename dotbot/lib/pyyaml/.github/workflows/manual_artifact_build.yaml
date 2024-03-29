@@ -86,7 +86,7 @@ jobs:
         key: libyaml_${{matrix.cfg.platform}}_${{matrix.cfg.arch}}_${{env.LIBYAML_REF}}
 
     - name: configure docker foreign arch support
-      uses: docker/setup-qemu-action@v1
+      uses: docker/setup-qemu-action@v3
       if: matrix.cfg.arch != 'x86_64' && steps.cached_libyaml.outputs.cache-hit != 'true'
 
     - name: Checkout pyyaml
@@ -152,7 +152,7 @@ jobs:
       if: steps.cached_libyaml.outputs.cache-hit != 'true'
 
     - name: configure docker foreign arch support
-      uses: docker/setup-qemu-action@v1
+      uses: docker/setup-qemu-action@v3
       if: matrix.arch != 'x86_64'
 
     - name: Build/Test/Package
