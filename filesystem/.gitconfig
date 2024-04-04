@@ -295,3 +295,5 @@ context = 10
 recurse = true
 [log]
 date = iso
+[pull]
+	rebase = true
