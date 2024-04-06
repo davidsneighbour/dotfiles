@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [2024.0.8](/github.com/davidsneighbour/dotfiles/compare/v2024.0.7...v2024.0.8) (2024-04-06)
+
+
+### Features
+
+* add cargo installer script ([003012b](/github.com/davidsneighbour/dotfiles/commit/003012bda75867e75c15126c1e1792f7d78dd348))
+* add libs to bashrc system ([9c3afa8](/github.com/davidsneighbour/dotfiles/commit/9c3afa854c92b39e5f5f9f9ab040436e7b4e1c3c))
+
+
+### Bug Fixes
+
+* update default nvm setup and default files ([37ec758](/github.com/davidsneighbour/dotfiles/commit/37ec758afdc4e4afb939273920f24ffac22ebd61))
+
 ## [2024.0.7](/github.com/davidsneighbour/dotfiles/compare/v2024.0.5...v2024.0.7) (2024-04-04)
 
 
