@@ -37,7 +37,8 @@
     "plaintext": true,
     "markdown": true,
     "scminput": false,
-    "yaml": true
+    "yaml": true,
+    "html": "true"
   },
   "[javascript]": {
     "editor.defaultFormatter": "vscode.typescript-language-features"
@@ -250,5 +251,8 @@
     "[x]",
     "@todo",
     "@fixme"
-  ]
+  ],
+  "editor.minimap.scale": 2,
+  "editor.minimap.maxColumn": 80,
+  "editor.minimap.sectionHeaderFontSize": 12
 }

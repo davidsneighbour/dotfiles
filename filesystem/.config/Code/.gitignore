@@ -17,6 +17,8 @@ IndexedDB
 logs
 Service Worker
 Session Storage
+Shared Dictionary
+SharedStorage
 Trust Tokens
 Trust Tokens-journal
 VideoDecodeStats
