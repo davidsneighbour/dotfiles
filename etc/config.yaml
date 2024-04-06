@@ -42,6 +42,7 @@
     ~/.profile: filesystem/.profile
     ~/.remarkrc.js: filesystem/.remarkrc.js
     ~/.remarkignore: filesystem/.remarkignore
+    ~/.nvm/default-packages: filesystem/.nvm/default-packages
     ##################################################################
     # directory links
     ##################################################################
