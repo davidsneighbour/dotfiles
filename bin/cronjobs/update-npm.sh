@@ -7,6 +7,8 @@ echo "starting update-npm.sh"
 echo "$(date)"
 echo "##########################################################################"
 
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+
 # exit if any command fails
 set -e
 
@@ -33,11 +35,7 @@ for DIRNAME in /home/patrick/.nvm/versions/node/*/; do
 
   # update global npm packages
   # `npm ls -g` to list globally installed packages
-  /home/patrick/.nvm/versions/node/"${DIR}"/bin/npm --no-fund --no-audit --quiet -g \
-    install svgo cypress fixpack jshint \
-    lerna-wizard lerna lighthouse netlify-cli npm-check-updates typescript \
-    bun better-commits @davidsneighbour/remark-config @socketsecurity/cli \
-    http-server npm pa11y playwright sassdoc
+nvm install --reinstall-packages-from=default --latest-npm 'lts/*'
 
 done
 
