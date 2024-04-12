@@ -1,0 +1,10 @@
+#!/bin/bash
+
+function mkcd() {
+  if [ $# -ne 1 ]; then
+    echo "Usage: mkcd <dir>"
+    return 1
+  else
+    mkdir -p "$1" && cd "$1" || exit
+  fi
+}

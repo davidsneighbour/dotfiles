@@ -1,0 +1,38 @@
+#!/bin/bash
+
+
+function git_auto_update() {
+  # Use the current directory if no argument is provided, otherwise use the provided directory
+  local repo_dir="${1:-$(pwd)}"
+
+  if [[ -d "${repo_dir}" ]]; then
+    cd "${repo_dir}" || {
+      echo "Failed to enter directory ${repo_dir}"
+      return 1
+    }
+
+    # Check if the directory is a git repository
+    if git rev-parse --git-dir >/dev/null 2>&1; then
+      # Fetch changes from the default remote repository without merging them
+      git fetch
+
+      # Check if the local branch is behind the remote branch
+      local status=$(git status)
+      if [[ ${status} == *"Your branch is behind"* ]]; then
+        echo "Pulling updates for $(basename "${repo_dir}")..."
+        git pull
+      else
+        echo "No updates found for $(basename "${repo_dir}")."
+      fi
+
+      echo "Status of $(basename "${repo_dir}"):"
+      git status
+    else
+      echo "The directory ${repo_dir} is not a Git repository."
+      return 1
+    fi
+  else
+    echo "Directory ${repo_dir} does not exist."
+    return 1
+  fi
+}

@@ -1,0 +1,20 @@
+#!/bin/bash
+
+function g_one_commit() {
+  # shellcheck disable=SC2039
+  local last_commit_message
+  last_commit_message=$(git show -s --format=%s)
+  # shellcheck disable=SC2039
+  local BRANCH
+
+  if [ -z "$1" ]; then
+    echo "no branch, using main"
+    BRANCH="main"
+  else
+    BRANCH="$1"
+  fi
+
+  git branch --show-current | xargs git merge-base "${BRANCH}" | xargs git reset --soft
+  git add -A
+  git commit -m "${last_commit_message}" --amend --reset-author
+}

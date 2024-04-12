@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# display git branches and their upstream branches
+function git_branches() {
+  local remote_color="\e[32m"
+  local no_remote_color="\e[31m"
+  local reset_color="\e[0m"
+
+  printf "%-30s %-30s\n" "Branch" "Upstream"
+  printf "%-30s %-30s\n" "------" "--------"
+
+  git branch --format='%(refname:short) %(upstream)' | while read -r branch; do
+    branch_name=$(echo "${branch}" | awk '{print $1}')
+    upstream=$(echo "${branch}" | awk '{print $2}')
+
+    if [ -z "${upstream}" ]; then
+      printf "${no_remote_color}%-30s${reset_color} %-30s\n" "${branch_name}" "${upstream}"
+    else
+      printf "${remote_color}%-30s${reset_color} %-30s\n" "${branch_name}" "${upstream}"
+    fi
+  done
+}

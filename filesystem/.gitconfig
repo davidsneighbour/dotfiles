@@ -64,7 +64,7 @@ untracked = cyan
 # makes `git push` or `git push <remote>` only push the current branch to
 # the tracked branch (regardless of its remote name).
 # @see http://longair.net/blog/?p=572
-default = tracking
+	default = upstream
 # allows to `git push` a new branch to remote without adding it first
 autoSetupRemote = true
 followtags = true

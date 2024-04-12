@@ -23,4 +23,4 @@ if [ -f "${FILE}" ]; then
 fi
 
 # manual vscode terminal setup
-[[ "$TERM_PROGRAM" == "vscode" ]] && . "$(code --locate-shell-integration-path bash)"
+#[[ "$TERM_PROGRAM" == "vscode" ]] && . "$(code --locate-shell-integration-path bash)"

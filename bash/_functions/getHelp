@@ -1,0 +1,30 @@
+#!/bin/bash
+
+FUNCTION=getHelp
+
+# Print a help message
+# doHelp uses lines starting with ## to create the output
+# the tags {@param ...} and {@code ...} colorize words
+
+# Sample:
+##
+## {@param INDEXDIR}
+## \\t Directory where indexer.Indexer stores the index named as configured in
+## \\t {@code zpsc-config.xml}.
+
+function getHelp() {
+  grep '^##' "${FUNCTION}" |
+    sed -e 's/^##[[:space:]]*//' |
+    while read line; do
+      if (echo "${line}" | grep -q '{@param [^}]*}'); then
+        # color parameter and echo evaulated value
+        eval echo -e $(echo ${line} | sed \
+          -e 's/^\(.*\){@param \([^}]*\)}\(.*\)$/\
+            \"\1\\\\E[32;40m\2\\\\E[37;40m\\t(value: \"$\2\")\3\"/')
+      else
+        # other color commands
+        echo -e $(echo ${line} | sed \
+          -e 's/{@code \([^}]*\)}/\\E[36;40m\1\\E[37;40m/g')
+      fi
+    done
+}

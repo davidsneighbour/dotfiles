@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# define a function to execute the command in each subdirectory
+# Define a function to execute the command in each subdirectory
+function mexec() {
+  local THE_COMMAND="$@"
+
+  # Check if no command is provided
+  if [ $# -eq 0 ]; then
+    echo "Usage: $0 <command> [arguments]"
+    echo "Example: $0 ls -al"
+    return 1
+  fi
+
+  # Find all subdirectories in the current directory
+  find . -mindepth 1 -maxdepth 1 -type d -print0 |
+    while IFS= read -r -d '' dir; do
+      (
+        # Change directory and execute the command interactively
+        cd "$dir" || exit 1
+        echo "Executing '$THE_COMMAND' in $dir"
+        bash -c "$THE_COMMAND"
+      )
+    done
+}

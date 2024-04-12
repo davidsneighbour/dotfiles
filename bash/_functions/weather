@@ -1,0 +1,9 @@
+#!/bin/bash
+
+function weather() {
+  if [ $# -eq 0 ]; then # If no argument has been passed to this function
+    curl wttr.in
+  else
+    curl wttr.in/"$1" # Append location
+  fi
+}

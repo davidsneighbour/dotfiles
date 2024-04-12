@@ -1,0 +1,41 @@
+#!/bin/bash
+function summarize_functions() {
+  local filePath="$1"
+  if [[ ! -f "$filePath" ]]; then
+    echo "File does not exist: $filePath"
+    return 1
+  fi
+
+  local functionName=""
+  local description=""
+  local inFunction=false
+  local descriptionCollected=false
+
+  while IFS='' read -r line || [[ -n "$line" ]]; do
+    if [[ "$inFunction" == false && "$line" =~ ^function\ +([a-zA-Z0-9_]+)\(\) ]]; then
+      # Starting a new function, output the previous one if it exists
+      if [[ -n "$functionName" ]]; then
+        echo -e "\033[1;36m$functionName\033[0m: ${description:-No description.}"
+      fi
+      functionName="${BASH_REMATCH[1]}"
+      inFunction=true
+      description=""
+      descriptionCollected=false
+    elif [[ "$inFunction" == true && "$descriptionCollected" == false && "$line" =~ ^[[:space:]]*#\s*(.*) ]]; then
+      # Collecting the first comment as the description
+      description="${BASH_REMATCH[1]}"
+      descriptionCollected=true
+    elif [[ "$line" =~ ^\} ]]; then
+      # End of function, output it
+      echo -e "\033[1;36m$functionName\033[0m: ${description:-No description.}"
+      inFunction=false
+      functionName=""
+      description=""
+    fi
+  done <"$filePath"
+
+  # Handle the last function if the file doesn't end with a closing brace
+  if [[ -n "$functionName" ]]; then
+    echo -e "\033[1;36m$functionName\033[0m: ${description:-No description.}"
+  fi
+}

@@ -1,0 +1,8 @@
+#!/bin/bash
+
+function gitclean() {
+  git reflog expire -"${exp}"ire=0 --all
+  git repack -a -d -l
+  git prune
+  git gc --aggressive
+}

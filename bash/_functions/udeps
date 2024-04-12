@@ -1,0 +1,22 @@
+#!/bin/bash
+
+function udeps() {
+  for cmd in git hugo npm-check-updates; do
+    if ! command -v "$cmd" &>/dev/null; then
+      echo "Error: ${cmd} is not installed." >&2
+      return 1
+    fi
+  done
+
+  echo -e "\033[0;32mUpdating dependencies...\033[0m"
+  echo -e "\033[0;32mPulling latest changes from git...\033[0m"
+  git pull >/dev/null
+  echo -e "\033[0;32mHugo modules updating...\033[0m"
+  hugo mod get -u ./...
+  echo -e "\033[0;32mNPM packages updating...\033[0m"
+  npm-check-updates -u
+  git add package* go.*
+  git commit -m "chore(deps): update dependencies"
+  git push origin
+  echo -e "\033[0;32mDependencies updated and committed successfully.\033[0m"
+}
