@@ -1,0 +1,144 @@
+#!/bin/bash
+
+
+# github_installer --repoUrl "errata-ai/vale" --tarballFormat "https://github.com/%s/archive/%s.tar.gz" --postExtractionCommand "sudo cp vale /usr/bin/"
+function github_installer() {
+
+  # Function to log messages to a file
+  function log_message() {
+    local log_file="$1"
+    local message="$2"
+    echo "$(date +'%Y-%m-%d %H:%M:%S') - $message" >>"$log_file"
+  }
+
+  # Check if required tools are installed
+  function check_dependencies() {
+    command -v curl >/dev/null 2>&1 || {
+      echo >&2 "curl is required but not installed. Aborting."
+      return 1
+    }
+    command -v wget >/dev/null 2>&1 || {
+      echo >&2 "wget is required but not installed. Aborting."
+      return 1
+    }
+  }
+
+  # Validate GitHub repository URL format
+  function validate_repo_url() {
+    local repo_url="$1"
+    if [[ ! "$repo_url" =~ ^[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+$ ]]; then
+      echo "Invalid GitHub repository URL format. It should be in the format 'owner/repository'."
+      return 1
+    fi
+  }
+
+  # Function to install the latest release from a GitHub repository
+  function install_latest_github_release() {
+    local -r repo_url="$1"
+    local -r tarball_path_format="$2"
+    local -r post_extraction_command="$3"
+    local log_file="/tmp/install_latest_release.log"
+
+    # Log start of installation
+    log_message "$log_file" "Starting installation of latest release from $repo_url"
+
+    # Check dependencies
+    check_dependencies || return 1
+
+    # Validate GitHub repository URL format
+    validate_repo_url "$repo_url" || return 1
+
+    # Function to retrieve the latest release version from GitHub
+    function get_latest_version() {
+      local repo_url="$1"
+      local latest_version
+
+      # Fetch the release info from GitHub API
+      local release_info=$(curl -s "https://api.github.com/repos/${repo_url}/releases/latest")
+
+      # Extract the latest version from the release info
+      latest_version=$(echo "$release_info" | grep -o '"tag_name": "[^"]*' | sed 's/"tag_name": "//')
+
+      echo "$latest_version"
+    }
+
+    # Function to download and install the latest release
+    function install_latest_release() {
+      local -r repo_url="$1"
+      local -r tarball_path_format="$2"
+      local -r post_extraction_command="$3"
+
+      local latest_version=$(get_latest_version "$repo_url")
+
+      if [ -z "$latest_version" ]; then
+        log_message "$log_file" "Failed to retrieve latest version."
+        return 1
+      fi
+
+      # Construct the URL for the tarball
+      local tarball_url=$(printf "$tarball_path_format" "$repo_url" "$latest_version")
+
+      # Download the latest release tarball
+      wget "$tarball_url" -O "/tmp/${latest_version}.tar.gz" >>"$log_file" 2>&1
+
+      # Extract the tarball
+      local extracted_dir=$(tar -tzf "/tmp/${latest_version}.tar.gz" | head -1 | cut -f1 -d"/")
+      tar -xf "/tmp/${latest_version}.tar.gz" -C /tmp >>"$log_file" 2>&1
+
+      # Navigate to the extracted directory if it exists
+      if [ -d "/tmp/$extracted_dir" ]; then
+        cd "/tmp/$extracted_dir" || {
+          log_message "$log_file" "Failed to change directory to /tmp/$extracted_dir"
+          return 1
+        }
+      else
+        log_message "$log_file" "Directory /tmp/$extracted_dir not found."
+        return 1
+      fi
+
+      # Execute the post-extraction command
+      eval "$post_extraction_command" >>"$log_file" 2>&1
+
+      # Cleanup downloaded files
+      rm "/tmp/${latest_version}.tar.gz"
+      rm -rf "/tmp/$extracted_dir"
+
+      log_message "$log_file" "Installation complete."
+    }
+
+    # Install the latest release
+    install_latest_release "$repo_url" "$tarball_path_format" "$post_extraction_command"
+  }
+
+  # Parse command line arguments
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+    --repoUrl)
+      repo_url="$2"
+      shift 2
+      ;;
+    --tarballFormat)
+      tarball_path_format="$2"
+      shift 2
+      ;;
+    --postExtractionCommand)
+      post_extraction_command="$2"
+      shift 2
+      ;;
+    *)
+      echo "Unknown option: $1"
+      exit 1
+      ;;
+    esac
+  done
+
+  # Check required parameters
+  if [[ -z "$repo_url" || -z "$tarball_path_format" || -z "$post_extraction_command" ]]; then
+    echo "Usage: $0 --repoUrl <GitHub repository URL> --tarballFormat <tarball path format> --postExtractionCommand <post extraction command>"
+    exit 1
+  fi
+
+  # Install the latest release
+  install_latest_github_release "$repo_url" "$tarball_path_format" "$post_extraction_command"
+
+}

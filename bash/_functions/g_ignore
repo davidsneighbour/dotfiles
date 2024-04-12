@@ -1,0 +1,9 @@
+#!/bin/bash
+
+function g_ignore() {
+  curl -sL https://www.toptal.com/developers/gitignore/api/$@
+}
+
+function g_ignore_list() {
+  curl -sL https://www.toptal.com/developers/gitignore/api/list
+}

@@ -1,4 +1,4 @@
-shopt -s extglob #it's a needable for the bash completion support
+shopt -s extglob # required for bash completion support
 set +o nounset
 
 # enable programmable completion features (you don't need to enable
@@ -51,7 +51,8 @@ complete -A job -P '%' fg jobs disown
 complete -A directory mkdir rmdir
 complete -A directory -o default cd
 
-complete -f -o default -X '*.+(zip|ZIP)' zip #there is completion for the some tools that works with filenames
+# completion for the some tools that work with filenames
+complete -f -o default -X '*.+(zip|ZIP)' zip
 complete -f -o default -X '!*.+(zip|ZIP)' unzip
 complete -f -o default -X '*.+(z|Z)' compress
 complete -f -o default -X '!*.+(z|Z)' uncompress
@@ -75,17 +76,15 @@ complete -f -o default -X '!*.+(ogg|OGG)' ogg123
 
 complete -f -o default -X '!*.pl' perl perl5
 
+_ssh() {
+  local cur prev opts
+  COMPREPLY=()
+  cur="${COMP_WORDS[COMP_CWORD]}"
+  prev="${COMP_WORDS[COMP_CWORD-1]}"
+  opts=$(grep '^Host' ~/.ssh/config ~/.ssh/config.d/* 2>/dev/null | grep -v '[?*]' | cut -d ' ' -f 2-)
 
-_ssh()
-{
-    local cur prev opts
-    COMPREPLY=()
-    cur="${COMP_WORDS[COMP_CWORD]}"
-    prev="${COMP_WORDS[COMP_CWORD-1]}"
-    opts=$(grep '^Host' ~/.ssh/config ~/.ssh/config.d/* 2>/dev/null | grep -v '[?*]' | cut -d ' ' -f 2-)
-
-    COMPREPLY=( $(compgen -W "${{opt}s}" -- "${cur}") )
-    return 0
+  COMPREPLY=( $(compgen -W "${{opt}s}" -- "${cur}") )
+  return 0
 }
 complete -F _ssh ssh
 
@@ -96,7 +95,7 @@ SSH_COMPLETE=("$(cut -f1 -d' ' ~/.ssh/known_hosts |\
                  grep -e '[[:alpha:]]')")
 complete -o default -W "${SSH_COMPLETE[*]}" ssh
 
-for FILE in "${DOTFILES_PATH}"/home/bash/completions/{hugo,netlify,npm,robo}; do
+for FILE in "${DOTFILES_PATH}"/bash/_completions/{hugo,netlify,npm,robo}; do
   # this routine ranges through a folder of files that we don't explicitly know (@davidsneighbour)
   # see https://github.com/koalaman/shellcheck/wiki/SC1090
   # shellcheck source-path=SOURCEDIR/completions

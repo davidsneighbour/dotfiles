@@ -43,7 +43,6 @@
   "[javascript]": {
     "editor.defaultFormatter": "vscode.typescript-language-features"
   },
-  "editor.formatOnSave": true,
   "eslint.experimental.useFlatConfig": true,
   "eslint.format.enable": true,
   "editor.rulers": [
@@ -236,9 +235,9 @@
   "markdown.validate.enabled": true,
   "markdown.extension.toc.unorderedList.marker": "*",
   "prettier.bracketSameLine": true,
-  "prettier.configPath": ".prettierrc.js",
-  "editor.formatOnPaste": true,
-  "editor.formatOnType": true,
+  "prettier.configPath": ".prettierrc.mjs",
+  "editor.formatOnPaste": false,
+  "editor.formatOnType": false,
   "todo-tree.general.showActivityBarBadge": true,
   "todo-tree.general.periodicRefreshInterval": 5,
   "todo-tree.general.tags": [
@@ -254,5 +253,7 @@
   ],
   "editor.minimap.scale": 2,
   "editor.minimap.maxColumn": 80,
-  "editor.minimap.sectionHeaderFontSize": 12
+  "editor.minimap.sectionHeaderFontSize": 12,
+  "editor.formatOnSave": true,
+  "shellformat.useEditorConfig": true
 }

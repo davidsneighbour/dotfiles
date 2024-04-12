@@ -26,7 +26,7 @@ unset FILE
 
 # @todo do not make DOTFILES_PATH an .env variable
 # shellcheck source=/dev/null
-for FILE in "${DOTFILES_PATH}"/bash/{eval,options,bash,functions,exports,aliases,completion,prompt}; do
+for FILE in "${DOTFILES_PATH}"/bash/{eval,options,bash,functions,exports,aliases,completions,prompt}; do
   # this routine ranges through a folder of filenames that we don't explicitly know (@davidsneighbour)
   # shellcheck source=/dev/null
   [ -r "${FILE}" ] && source "${FILE}"
@@ -58,4 +58,4 @@ for FILE in /home/patrick/github.com/davidsneighbour/dotfiles/bin/lib/*; do
   source "${FILE}"
   set +a
 done
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
