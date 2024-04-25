@@ -3,3 +3,5 @@ resume
 torrents
 stats.json
 dht.dat
+bandwidth-groups.json
+*.tmp.*
