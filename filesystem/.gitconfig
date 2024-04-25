@@ -1,7 +1,7 @@
 [user]
 	email = patrick@davids-neighbour.com
 	name = Patrick Kollitsch
-signingkey = B1CE8C054D2341AD
+	signingkey = 3F549359A1CA269A
 
 [apply]
 whitespace = fix
@@ -212,7 +212,7 @@ publish = push origin HEAD --force-with-lease
 pub = publish
 
 [commit]
-gpgsign = true
+	gpgsign = true
 verbose = true
 
 [init]
