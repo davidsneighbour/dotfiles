@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [2024.0.9](/github.com/davidsneighbour/dotfiles/compare/v2024.0.8...v2024.0.9) (2024-04-25)
+
 ## [2024.0.8](/github.com/davidsneighbour/dotfiles/compare/v2024.0.7...v2024.0.8) (2024-04-06)
 
 
