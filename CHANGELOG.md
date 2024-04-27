@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [2024.0.10](/github.com/davidsneighbour/dotfiles/compare/v2024.0.8...v2024.0.10) (2024-04-27)
+
+
+### Features
+
+* add repo-setup script ([8a883ac](/github.com/davidsneighbour/dotfiles/commit/8a883ac0784aa0d3a4f33d1b23fea59d9a4a5033))
+
 ## [2024.0.9](/github.com/davidsneighbour/dotfiles/compare/v2024.0.8...v2024.0.9) (2024-04-25)
 
 ## [2024.0.8](/github.com/davidsneighbour/dotfiles/compare/v2024.0.7...v2024.0.8) (2024-04-06)
