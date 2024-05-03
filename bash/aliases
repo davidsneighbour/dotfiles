@@ -109,5 +109,5 @@ alias get-books="rsync -rztv media:/home/patrick/Downloads/Books/ /home/patrick/
 alias rector="~/github.com/getbooka/booka/vendor/bin/rector process"
 
 # npm install -g @socketsecurity/cli
-alias npm="socket npm"
-alias npx="socket npx"
+# alias npm="socket npm"
+# alias npx="socket npx"
