@@ -11,7 +11,7 @@
     "themer": "6.5.3"
   },
   "devDependencies": {
-    "semver": ">=7.5.2"
+    "semver": ">=7.6.2"
   },
   "homepage": "https://github.com/davidsneighbour/dotfiles#readme",
   "license": "GPL-3.0-or-later",
