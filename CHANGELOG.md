@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [2024.0.11](/github.com/davidsneighbour/dotfiles/compare/v2024.0.8...v2024.0.11) (2024-05-12)
+
+
+### Features
+
+* add repo-setup script ([8a883ac](/github.com/davidsneighbour/dotfiles/commit/8a883ac0784aa0d3a4f33d1b23fea59d9a4a5033))
+
+
+### Bug Fixes
+
+* remove socket from usage ([f7afc81](/github.com/davidsneighbour/dotfiles/commit/f7afc81b0359137d6f615501587631771fd042c3))
+
 ## [2024.0.10](/github.com/davidsneighbour/dotfiles/compare/v2024.0.8...v2024.0.10) (2024-04-27)
 
 
