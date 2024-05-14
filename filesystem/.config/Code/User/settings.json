@@ -1,7 +1,7 @@
 {
   // https://github.com/githubnext/monaspace
   "editor.fontFamily": "'Monaspace Krypton', monospace",
-  "editor.fontLigatures": "'calt', 'liga', 'dlig', 'ss01', 'ss02', 'ss03', 'ss04', 'ss05', 'ss06', 'ss07', 'ss08'",
+  "editor.fontLigatures": "'calt', 'ss01', 'ss02', 'ss03', 'ss04', 'ss05', 'ss06', 'ss07', 'ss08', 'liga'",
   "editor.smoothScrolling": true,
   "editor.inlineSuggest.enabled": true,
   "workbench.startupEditor": "none",
@@ -33,12 +33,10 @@
   "terminal.integrated.defaultProfile.linux": "bash",
   "terminal.integrated.tabs.enabled": false,
   "github.copilot.enable": {
-    "*": true,
-    "plaintext": true,
-    "markdown": true,
-    "scminput": false,
-    "yaml": true,
-    "html": "true"
+    "*": false,
+    "plaintext": false,
+    "markdown": false,
+    "scminput": false
   },
   "[javascript]": {
     "editor.defaultFormatter": "vscode.typescript-language-features"
@@ -255,5 +253,8 @@
   "editor.minimap.maxColumn": 80,
   "editor.minimap.sectionHeaderFontSize": 12,
   "editor.formatOnSave": true,
-  "shellformat.useEditorConfig": true
+  "shellformat.useEditorConfig": true,
+  "scm.workingSets.enabled": true,
+  "yaml.validate": false,
+  "editor.unicodeHighlight.ambiguousCharacters": false
 }
