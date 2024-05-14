@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [2024.0.13](/github.com/davidsneighbour/dotfiles/compare/v2024.0.8...v2024.0.13) (2024-05-14)
+
+
+### Features
+
+* add repo-setup script ([8a883ac](/github.com/davidsneighbour/dotfiles/commit/8a883ac0784aa0d3a4f33d1b23fea59d9a4a5033))
+* **bash:** add load_env function ([7278d00](/github.com/davidsneighbour/dotfiles/commit/7278d00897a7c7c005a9e22cfa909ddc7f053014))
+
+
+### Bug Fixes
+
+* **bash:** update code function to load file if it's a parameter ([753a6e6](/github.com/davidsneighbour/dotfiles/commit/753a6e6483cf1185efb6c20f74401b2caf0b9709))
+* **bash:** update git_branches function ([82a448f](/github.com/davidsneighbour/dotfiles/commit/82a448f800d17d3c6309c3eed1a9179bf3fd6a1b))
+* **bash:** update GREP_COLOR variable and add Deno to path ([0f7abee](/github.com/davidsneighbour/dotfiles/commit/0f7abeee65e335336f470aef9bf9ba287fd90cf5))
+* remove socket from usage ([f7afc81](/github.com/davidsneighbour/dotfiles/commit/f7afc81b0359137d6f615501587631771fd042c3))
+
 ## [2024.0.12](/github.com/davidsneighbour/dotfiles/compare/v2024.0.11...v2024.0.12) (2024-05-12)
 
 ## [2024.0.11](/github.com/davidsneighbour/dotfiles/compare/v2024.0.8...v2024.0.11) (2024-05-12)
