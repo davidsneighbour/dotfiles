@@ -226,11 +226,6 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 ################################################################################
-# window configurations
-################################################################################
-for_window [class="Shutter"] floating enable
-
-################################################################################
 # assign programs to workspaces
 ################################################################################
 
@@ -292,7 +287,6 @@ assign [instance="global_terminal"] 11
 ################################################################################
 exec --no-startup-id /usr/bin/rescuetime &
 exec --no-startup-id /opt/enpass/Enpass -minimize &
-exec --no-startup-id shutter --min_at_startup &
 
 ################################################################################
 # startup programs
