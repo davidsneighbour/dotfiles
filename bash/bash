@@ -104,7 +104,7 @@ export WHITE=$'\033[1;37m'
 export NONE=$'\033[m'
 
 # random grep colour
-export GREP_COLOR="1;3$((RANDOM % 6 + 1))"
+export GREP_COLORS="mt=1;32$((RANDOM % 6 + 1))"
 
 # path for directories
 export CDPATH=".:..:../..:~/:~/dev/"
@@ -116,3 +116,6 @@ export HOSTFILE=~/.bash_hosts
 export NO_AT_BRIDGE=1
 
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+
+export DENO_INSTALL="/home/patrick/.deno"
+export PATH="${DENO_INSTALL}/bin:${PATH}"
