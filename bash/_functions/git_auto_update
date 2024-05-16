@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# @todo review and refactor
 
 function git_auto_update() {
   # Use the current directory if no argument is provided, otherwise use the provided directory
