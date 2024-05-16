@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# @todo review and refactor
 
 # for repo in $repos; do (g_repo_transfer "$repo" "$1" "$2"); done
 function g_repo_transfer() {

@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# @todo review and refactor
 
 # github_installer --repoUrl "errata-ai/vale" --tarballFormat "https://github.com/%s/archive/%s.tar.gz" --postExtractionCommand "sudo cp vale /usr/bin/"
 function github_installer() {

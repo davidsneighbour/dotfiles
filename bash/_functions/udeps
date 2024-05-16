@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# @todo review and refactor
+
 function udeps() {
   for cmd in git hugo npm-check-updates; do
     if ! command -v "$cmd" &>/dev/null; then

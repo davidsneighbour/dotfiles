@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# @todo review and refactor
+
 function startcode() {
 
   unset options i

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# @todo review and refactor
+
 # define a function to execute the command in each subdirectory
 # Define a function to execute the command in each subdirectory
 function mexec() {
