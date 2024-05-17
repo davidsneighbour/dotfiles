@@ -1,6 +1,6 @@
 [Desktop Entry]
 Type=Application
-Exec=/snap/bin/joplin-desktop
+Exec=/home/patrick/.joplin/Joplin.AppImage --no-sandbox %u
 Hidden=false
 NoDisplay=false
 X-GNOME-Autostart-enabled=true

@@ -1,6 +1,6 @@
 [Desktop Entry]
 Type=Application
-Exec=/usr/bin/transmission-gtk -m
+Exec=/usr/bin/transmission-qt -m
 Hidden=false
 NoDisplay=false
 X-GNOME-Autostart-enabled=true
