@@ -1,4 +1,33 @@
 Changelog
+## [2024.0.15](/github.com/davidsneighbour/dotfiles/compare/v2024.0.14...v2024.0.15) (2024-05-17)
+
+
+### Documentation
+
+* **fix:** remove non-working image attributes ([f2bebfc](/github.com/davidsneighbour/dotfiles/commit/f2bebfcea8647fd002bedeecdfcf88d9fb42d2c3))
+* **fix:** use blockquote highlights instead of table hack for notices ([f67a6fc](/github.com/davidsneighbour/dotfiles/commit/f67a6fcc7bb1007e00a4254d0eb44864cf8697b3))
+* **update:** move note about setup into caution blockquote ([f824d14](/github.com/davidsneighbour/dotfiles/commit/f824d14c9eb1ffad258d794e616dbf01bcc2bdf9))
+* **update:** new repo images and smaller typos ([c8b4936](/github.com/davidsneighbour/dotfiles/commit/c8b493689cdbcc3f9632c2876addf5523e5f452e))
+* **update:** smaller fixes to structure and README.md ([7be0ec2](/github.com/davidsneighbour/dotfiles/commit/7be0ec2e88898b943e63e5b3734eb9353881b81c))
+
+
+### Bug Fixes
+
+* **git:** add release artifacts to gitignore ([20dbe59](/github.com/davidsneighbour/dotfiles/commit/20dbe598ad7c9d188c7d679ddb70f830e828da24))
+* proper paths to autostart programs ([55b116b](/github.com/davidsneighbour/dotfiles/commit/55b116bbe76fe273e2195cb193789367027e3d4a))
+
+
+### Refactors
+
+* fix some linting complaints ([f83b934](/github.com/davidsneighbour/dotfiles/commit/f83b93422280d22f65679f588de3b35fae475622))
+
+
+### Chore
+
+* **cleanup:** remove balsamiq setup and files 💀 ([63b8416](/github.com/davidsneighbour/dotfiles/commit/63b84166b3f984ccb9499cecda575e18c472cb40))
+* **cleanup:** remove unused binaries ([c63956c](/github.com/davidsneighbour/dotfiles/commit/c63956c5f9a224bdef0b667c2782d109f4c2b438))
+* update Transmission settings ([2c864f7](/github.com/davidsneighbour/dotfiles/commit/2c864f71e83469ae4b0b2fb18deb3a79f77265f5))
+
 ## [2024.0.14](/github.com/davidsneighbour/dotfiles/compare/v2024.0.13...v2024.0.14) (2024-05-17)
 
 
