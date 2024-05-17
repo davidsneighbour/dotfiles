@@ -7,7 +7,7 @@
 
 See the note above. If you are still here, then you probably are interested in how I optimize my daily work with my system and these files are the result of that. I try to abide by some rules and principles to make my life easier:
 
-- I use GNU Bash. I don't use any fancy new and better shell, just `/bin/bash`. I use it because it is the most widely used shell and it is the default shell on my system. I use it because all my linting tools and subscripts are written or configured for bash. I am not required to reinvent the wheel. (The last sentence is something I repeat to myself once a day or more often.)
+- I use [GNU Bash](https://www.gnu.org/software/bash/) (on my system currently v5.2+). I don't use any fancy new and better shell, just `/bin/bash`. I use it because it is the most widely used shell and it is the default shell on my system. I use it because all my linting tools and subscripts are written or configured for bash. I am not required to reinvent the wheel. (The last sentence is something I repeat to myself once a day or more often.)
 
 - If functionality is available within Bash itself, I will use _this_ functionality, not an additional program or package that needs to be installed and might not be available on other systems.
 
@@ -17,7 +17,8 @@ See the note above. If you are still here, then you probably are interested in h
 
 ## Setup
 
-You do not need to set this up as a local dotfile installation if you do not wish to use this repo for your Bash sessions. Don't do this is what I am saying. This is only for me to install everything quickly on a new system.
+> [!CAUTION]
+> Again: You do not want to directly set up this repository on your own system. Clone it to learn, then create your own .dotfiles setup.
 
 Clone with submodules:
 
