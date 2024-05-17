@@ -1,0 +1,59 @@
+#!/bin/bash
+
+set -e
+
+REQUIRED_TOOLS=(
+  git
+  sed
+  node
+  curl
+)
+
+# check if all requirements are met
+for TOOL in "${REQUIRED_TOOLS[@]}"; do
+  if ! command -v "${TOOL}" >/dev/null; then
+    echo "${TOOL} is required... "
+    exit 1
+  fi
+done
+
+VERSION=$(node -pe 'require("./package.json")["version"]')
+
+FILE=.env
+if [ -f "$FILE" ]; then
+  echo "exporting .env"
+  set -a # export all variables created next
+  # this routine ranges through a folder of files that we don't explicitly know (@davidsneighbour)
+  # see https://github.com/koalaman/shellcheck/wiki/SC1090
+  # shellcheck source=/dev/null
+  source "${FILE}"
+  set +a # stop exporting
+else
+  echo "no .env file found"
+  exit 0
+fi
+
+# push everything up
+git push origin main --follow-tags
+git push origin --tags
+
+# create a release on GitHub
+CHANGES=$(jq -Rs . <changes.md)
+GITHUB_REPO=https://github.com/${GITHUB_REPOSLUG}
+TAGNAME=v${VERSION}
+URL="$GITHUB_REPO"/"releases/edit/v""$VERSION"
+response=$(curl -s -o response.json -w "%{http_code}" \
+  -X POST \
+  -H "Accept: application/vnd.github+json" \
+  -H "Authorization: token ${GITHUB_SECRET}" \
+  https://api.github.com/repos/"${GITHUB_REPOSLUG}"/releases \
+  -d "{ \
+      \"tag_name\":\"${TAGNAME}\", \
+      \"name\":\"${TAGNAME}\", \
+      \"body\":${CHANGES}, \
+      \"generate_release_notes\":false \
+  }")
+
+echo "Release created."
+code changes.md
+xdg-open "${URL}" &>/dev/null
