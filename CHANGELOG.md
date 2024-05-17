@@ -1,6 +1,39 @@
-# Changelog
+Changelog
+## [2024.0.14](/github.com/davidsneighbour/dotfiles/compare/v2024.0.13...v2024.0.14) (2024-05-17)
 
-All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
+
+### Documentation
+
+* **add:** add missing CITATION.cff file ([1ff463a](/github.com/davidsneighbour/dotfiles/commit/1ff463ae8601f1b7dbcb40dadc3ae8a59b7a517f))
+
+
+### Bug Fixes
+
+* add postrelease hook to npm scripts ([fa68cdd](/github.com/davidsneighbour/dotfiles/commit/fa68cddffcebfc0c4a50f56c495353d04f95de4f))
+* remove unused install parameter from dotbot.sh ([5595a84](/github.com/davidsneighbour/dotfiles/commit/5595a8402afab6b08c3e97a20445acf75f650c00))
+
+
+### Refactors
+
+* add todo note to bash functions ([cef5da8](/github.com/davidsneighbour/dotfiles/commit/cef5da8f13e8b3cdfebe1fb3aea59024d17fa500))
+
+
+### Chore
+
+* **cleanup:** remove unused pre-commit configuration ([51c8f92](/github.com/davidsneighbour/dotfiles/commit/51c8f92aa63e23be322ffc1d094ef0eef0caf1f2))
+* **deps:** Bump @davidsneighbour/release-config ([#94](null/github.com/davidsneighbour/dotfiles/issues/94)) ([cf0946e](/github.com/davidsneighbour/dotfiles/commit/cf0946e08c7b52ad964aa150f1347c329f7cef4c))
+* **deps:** update dependencies ([0a67585](/github.com/davidsneighbour/dotfiles/commit/0a67585a0b44666db917c108e4b6dbc04088f9a4))
+
+
+### Configuration
+
+* **autostart:** remove keybase autostart ([283f22b](/github.com/davidsneighbour/dotfiles/commit/283f22b108c8ba4825747e85a5522cced2cb2c41))
+* **feat:** add release configuration ([3d11c9b](/github.com/davidsneighbour/dotfiles/commit/3d11c9b5c201c7742eb26b2f27ce45e84e5dffa7))
+
+
+### Build System
+
+* **feat:** add release hook scripts ([b3ff61a](/github.com/davidsneighbour/dotfiles/commit/b3ff61a2143baffeec8f03c0cd3645160a8f6133))
 
 ## [2024.0.13](/github.com/davidsneighbour/dotfiles/compare/v2024.0.8...v2024.0.13) (2024-05-14)
 
