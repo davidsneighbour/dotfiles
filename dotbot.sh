@@ -3,14 +3,8 @@
 set -e
 
 DOTBOT_CONFIG="etc/config.yaml"
-if [[ $# -gt 0 ]]
-then
-  if [ "${1}" = "install" ]
-  then
-    DOTBOT_CONFIG="etc/config.install.yaml"
-  fi
-  if [ "${1}" = "protected" ]
-  then
+if [[ $# -gt 0 ]]; then
+  if [ "${1}" = "protected" ]; then
     DOTBOT_CONFIG="etc/config.protected.yaml"
   fi
 fi
