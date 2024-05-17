@@ -3,7 +3,7 @@
 > [!CAUTION]
 > While this repo is public and licensed under MIT you probably do NOT want to just clone it and use it as a template for your own project. Feel free to look around and take inspiration as I did with plenty of dotfile repository before me. This is my personal setup and it works for me. If you have questions or suggestions (or find me adding my own private keys to this repo) feel free to contact me or peruse the issues section.
 
-# Introduction
+## Introduction
 
 See the note above. If you are still here, then you probably are interested in how I optimize my daily work with my system and these files are the result of that. I try to abide by some rules and principles to make my life easier:
 
@@ -15,7 +15,7 @@ See the note above. If you are still here, then you probably are interested in h
 
 - I will document most of the features within the scripts themselves. I will not document the features in the README.md file or only mention them in a drive-by.
 
-# Setup as local dotfile installation and update
+## Setup
 
 You do not need to set this up as a local dotfile installation if you do not wish to use this repo for your Bash sessions. Don't do this is what I am saying. This is only for me to install everything quickly on a new system.
 
@@ -36,6 +36,8 @@ Run initial setup:
 ```shell
 ./dotbot.sh install
 ```
+
+## Update
 
 Run consecutive updates:
 
