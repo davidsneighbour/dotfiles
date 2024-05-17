@@ -43,6 +43,7 @@ Run initial setup:
 Run consecutive updates:
 
 ```shell
+git pull
 ./dotbot.sh
 ./dotbot.sh protected
 git submodule update --recursive --remote --merge --force
