@@ -1,4 +1,4 @@
-<img src=".github/header.jpg" style="width:100%;height:auto;"/>
+![The Dotfiles of @davidsneighbour](.github/header.jpg){:height="auto" width="100%"}
 
 | ❗ | While this repo is public and licensed under MIT you probably do NOT want to just clone it and use it as a template for your own project. Feel free to look around and take inspiration as I did with plenty of dotfile repository before me. This is my personal setup and it works for me. If you have questions or suggestions (or find me adding my own private keys to this repo) feel free to contact me or peruse the issues section. |
 | --- | --- |
@@ -7,7 +7,7 @@
 
 See the note above. If you are still here, then you probably are interested in how I optimize my daily work with my system and these files are the result of that. I try to abide by some rules and principles to make my life easier:
 
-- I use GNU Bash. I don't use any fancy new and better shell, just `/bin/bash`. I use it because it is the most widely used shell and it is the default shell on my system. I use it because all my linting tools and subscripts are written or configured for bash. I do not require to re-invent the wheel. (The last sentence is something I pray to myself once a day or more often.)
+- I use GNU Bash. I don't use any fancy new and better shell, just `/bin/bash`. I use it because it is the most widely used shell and it is the default shell on my system. I use it because all my linting tools and subscripts are written or configured for bash. I am not required to reinvent the wheel. (The last sentence is something I repeat to myself once a day or more often.)
 
 - If functionality is available within Bash itself, I will use _this_ functionality, not an additional program or package that needs to be installed and might not be available on other systems.
 
