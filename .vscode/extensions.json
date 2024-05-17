@@ -1,8 +1,40 @@
 {
-  "recommendations": [
-    "hogashi.crontab-syntax-highlight",
-    "mousavian.ssh-config-syntax-highlighter",
-    "nico-castell.linux-desktop-file",
-    "dlasagno.rasi"
-  ]
+    "recommendations": [
+        "github.copilot",
+        "mrmlnc.vscode-apache",
+        "github.copilot-chat",
+        "naumovs.color-highlight",
+        "hogashi.crontab-syntax-highlight",
+        "oouo-diogo-perdigao.docthis",
+        "mikestead.dotenv",
+        "editorconfig.editorconfig",
+        "dbaeumer.vscode-eslint",
+        "tamasfe.even-better-toml",
+        "github.vscode-github-actions",
+        "znck.grammarly",
+        "nhoizey.gremlins",
+        "nico-castell.linux-desktop-file",
+        "yzhang.markdown-all-in-one",
+        "davidanson.vscode-markdownlint",
+        "christian-kohler.npm-intellisense",
+        "esbenp.prettier-vscode",
+        "rvest.vs-code-prettier-eslint",
+        "yoavbls.pretty-ts-errors",
+        "dlasagno.rasi",
+        "unifiedjs.vscode-remark",
+        "rescuetime.rescuetime",
+        "foxundermoon.shell-format",
+        "timonwong.shellcheck",
+        "remisa.shellman",
+        "mkhl.shfmt",
+        "snappify.snappify",
+        "mousavian.ssh-config-syntax-highlighter",
+        "wayou.vscode-todo-highlight",
+        "gruntfuggly.todo-tree",
+        "be5invis.toml",
+        "chrischinchilla.vale-vscode",
+        "google.wireit",
+        "redhat.vscode-xml",
+        "redhat.vscode-yaml"
+    ]
 }
