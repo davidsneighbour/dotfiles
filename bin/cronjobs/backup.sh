@@ -6,9 +6,9 @@ if [ "$(id -u)" -ne 0 ]; then
   exit 1
 fi
 
-su patrick -c 'notify-send -u critical \
-  "Backup" \
-  "starting at $(date)"'
+su patrick -c "notify-send -u critical \
+  \"Backup\" \
+  \"starting at $(date)\""
 
 # Paths to backup
 backup_files="/home /etc /root /boot /opt"
@@ -49,6 +49,6 @@ date
 # File sizes
 ls -lh "${dest}/"
 
-su patrick -c 'notify-send -u critical \
-  "Backup" \
-  "starting at $(date)"'
+su patrick -c "notify-send -u critical \
+  \"Backup\" \
+  \"starting at $(date)\""

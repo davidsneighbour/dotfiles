@@ -12,7 +12,7 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 # exit if any command fails
 set -e
 
-# Load nvm
+# load nvm
 NVM_DIR=""
 if [ -z "${XDG_CONFIG_HOME-}" ]; then
   NVM_DIR="${HOME}/.nvm"
@@ -35,7 +35,7 @@ for DIRNAME in /home/patrick/.nvm/versions/node/*/; do
 
   # update global npm packages
   # `npm ls -g` to list globally installed packages
-nvm install --reinstall-packages-from=default --latest-npm 'lts/*'
+  nvm install --reinstall-packages-from=default --latest-npm 'lts/*'
 
 done
 
