@@ -1,4 +1,11 @@
 Changelog
+## [2024.1.0](/github.com/davidsneighbour/dotfiles/compare/v2024.0.15...v2024.1.0) (2024-05-17)
+
+
+### Chore
+
+* **cleanup:** remove unused and cleanup scripts ([1c1c518](/github.com/davidsneighbour/dotfiles/commit/1c1c518597d52f6224519a51d3e43254cf0997bd))
+
 ## [2024.0.15](/github.com/davidsneighbour/dotfiles/compare/v2024.0.14...v2024.0.15) (2024-05-17)
 
 
