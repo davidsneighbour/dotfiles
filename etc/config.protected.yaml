@@ -11,6 +11,7 @@
 
 - link:
     ~/.env: protected/.env
+    ~/.gmailctl: protected/.gmailctl
     ~/.npmrc: protected/.npmrc
     ~/.sentryclirc: protected/.sentryclirc
     ~/.fonts: protected/.fonts
