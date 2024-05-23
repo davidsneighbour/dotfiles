@@ -13,5 +13,3 @@ if [ -n "${BASH_VERSION}" ]; then
     source "${HOME}/.bashrc"
   fi
 fi
-
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
