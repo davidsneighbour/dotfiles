@@ -59,3 +59,6 @@ for FILE in /home/patrick/github.com/davidsneighbour/dotfiles/bin/lib/*; do
   set +a
 done
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
+
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+. "$HOME/.cargo/env"
