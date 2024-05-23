@@ -1,4 +1,40 @@
 Changelog
+## [2024.1.1](/github.com/davidsneighbour/dotfiles/compare/v2024.1.0...v2024.1.1) (2024-05-23)
+
+
+### Documentation
+
+* **fix:** pull updates before running dotbot on updates ([e94238c](/github.com/davidsneighbour/dotfiles/commit/e94238c38abacdc1c265a516cf735cb8e4b522cd))
+* **fix:** remove redundant file ([d7d5f03](/github.com/davidsneighbour/dotfiles/commit/d7d5f039995783ab35084549f48e16bf4ac83970))
+* **fix:** update license year ([5ed916f](/github.com/davidsneighbour/dotfiles/commit/5ed916fc4af9e77e380b6720bec58b76ec5c533d))
+
+
+### Features
+
+* add gmailctl config to protected ([14a9f30](/github.com/davidsneighbour/dotfiles/commit/14a9f30266978f5fc0dc55f61c5488b09e43e90f))
+* add install dev environment script ([17fab6f](/github.com/davidsneighbour/dotfiles/commit/17fab6f5012084c3ab388ceafece36bce6ef8f16))
+* add script to create localwp starter script with local tempdir ([5f7ee29](/github.com/davidsneighbour/dotfiles/commit/5f7ee294d3f9a2b6658a393d88a39bb915ee82c6))
+
+
+### Bug Fixes
+
+* add cargo to bash ([d66e1e9](/github.com/davidsneighbour/dotfiles/commit/d66e1e95075e1cadefaf8e8cde798ddc09d256f2))
+* proper version number ([b4edd31](/github.com/davidsneighbour/dotfiles/commit/b4edd316e1ca61fffabc02055ea4daaab43ee041)), closes [#97](/github.com/davidsneighbour/dotfiles/issues/97)
+* rename create_local_desktop function ([ef7919b](/github.com/davidsneighbour/dotfiles/commit/ef7919be51a59a03bc1ef013fa08bea1f488a125))
+
+
+### Chore
+
+* **cleanup:** remove unused bash function ([311964e](/github.com/davidsneighbour/dotfiles/commit/311964eff1d2e876e4e2001728aed5d3f4cf3244))
+* **config:** update workspace configuration ([212e747](/github.com/davidsneighbour/dotfiles/commit/212e74788c0cb03ed02aa52b0426fd13343dcf70))
+* **deps:** update dependencies ([fc1b307](/github.com/davidsneighbour/dotfiles/commit/fc1b307d6ddd3fcc1d88eaa94a4a068c24d7ded1))
+* **deps:** update dependencies ([d94e3e1](/github.com/davidsneighbour/dotfiles/commit/d94e3e1699590d3d39947c242116ca43af0e1c18))
+
+
+### Configuration
+
+* **vscode:** update configuration ([ebf8219](/github.com/davidsneighbour/dotfiles/commit/ebf8219b026ea56d5023df58b6526e4004afea52))
+
 ## [2024.1.0](/github.com/davidsneighbour/dotfiles/compare/v2024.0.15...v2024.1.0) (2024-05-17)
 
 
