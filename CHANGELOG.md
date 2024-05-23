@@ -1,4 +1,11 @@
 Changelog
+## [2024.2.0](/github.com/davidsneighbour/dotfiles/compare/v2024.1.1...v2024.2.0) (2024-05-23)
+
+
+### Features
+
+* use commit-and-tag-version as authority on release numbers ([37ff53a](/github.com/davidsneighbour/dotfiles/commit/37ff53a058b654adb64e76b534e5bf86e1779e22))
+
 ## [2024.1.1](/github.com/davidsneighbour/dotfiles/compare/v2024.1.0...v2024.1.1) (2024-05-23)
 
 
