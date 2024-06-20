@@ -14,7 +14,7 @@
     "@davidsneighbour/tools": "2024.3.23",
     "fs-extra": "11.2.0",
     "shelljs": "0.8.5",
-    "themer": "6.5.3",
+    "themer": "6.7.0",
     "toml": "3.0.0"
   },
   "devDependencies": {
