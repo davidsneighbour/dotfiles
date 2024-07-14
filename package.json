@@ -9,7 +9,7 @@
   "homepage": "https://github.com/davidsneighbour/dotfiles#readme",
   "dependencies": {
     "@clack/prompts": "0.7.0",
-    "@davidsneighbour/release-config": "2024.3.23",
+    "@davidsneighbour/release-config": "2024.3.24",
     "@davidsneighbour/remark-config": "2024.3.23",
     "@davidsneighbour/tools": "2024.3.23",
     "fs-extra": "11.2.0",
