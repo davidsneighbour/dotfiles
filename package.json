@@ -18,7 +18,7 @@
     "toml": "3.0.0"
   },
   "devDependencies": {
-    "semver": ">=7.6.2"
+    "semver": ">=7.6.3"
   },
   "scripts": {
     "release": "commit-and-tag-version -a -t \"v\" --releaseCommitMessageFormat \"chore(release): v{{currentTag}}\" && ./bin/repo/release/postrelease"
