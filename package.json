@@ -10,7 +10,7 @@
   "dependencies": {
     "@clack/prompts": "0.7.0",
     "@davidsneighbour/release-config": "2024.3.23",
-    "@davidsneighbour/remark-config": "2024.3.23",
+    "@davidsneighbour/remark-config": "2024.3.25",
     "@davidsneighbour/tools": "2024.3.23",
     "fs-extra": "11.2.0",
     "shelljs": "0.8.5",
