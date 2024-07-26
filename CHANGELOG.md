@@ -1,4 +1,29 @@
 Changelog
+## [2024.2.1](https://github.com/davidsneighbour/dotfiles/compare/v2024.2.0...v2024.2.1) (2024-07-26)
+
+
+### Bug Fixes
+
+* rename g_clear_inbox function to github_clear_inbox ([42093ce](https://github.com/davidsneighbour/dotfiles/commit/42093ce84de19b8cfd6d7fc3c77c1c225167bfa2))
+
+
+### Chore
+
+* **assets:** add original image for repo logo ([256c21b](https://github.com/davidsneighbour/dotfiles/commit/256c21bd900f32bfb84a5ecef66fdb9034ab6dc5))
+* **config:** ignore bun.lockb ([e3ce74c](https://github.com/davidsneighbour/dotfiles/commit/e3ce74cd57956953f95961d77d9c87d63dcee9dc))
+* **config:** update default packages for nvm/npm ([99f6333](https://github.com/davidsneighbour/dotfiles/commit/99f63334342ff51ecd686e82ff89e45423843ba1))
+* **deps:** Bump @davidsneighbour/release-config from 2024.3.13 to 2024.3.19 ([#102](https://github.com/davidsneighbour/dotfiles/issues/102)) ([9f67e25](https://github.com/davidsneighbour/dotfiles/commit/9f67e2581fbda85e5afe5e9376f5de29e8412196))
+* **deps:** Bump @davidsneighbour/remark-config from 2024.3.13 to 2024.3.19 ([#101](https://github.com/davidsneighbour/dotfiles/issues/101)) ([99adb03](https://github.com/davidsneighbour/dotfiles/commit/99adb0358c5e4ef6601b772ea3cd1aaac729a3e0))
+* **deps:** Bump @davidsneighbour/tools from 2024.3.13 to 2024.3.19 ([#103](https://github.com/davidsneighbour/dotfiles/issues/103)) ([e01c710](https://github.com/davidsneighbour/dotfiles/commit/e01c7109d26ef17aea0466908420305d70fb369f))
+* **deps:** Bump themer from 6.5.3 to 6.7.0 ([#112](https://github.com/davidsneighbour/dotfiles/issues/112)) ([a27bdc3](https://github.com/davidsneighbour/dotfiles/commit/a27bdc35d73f8a93fa016d952ad098fb8f1cb4a9))
+* **deps:** bump ws from 8.17.0 to 8.17.1 ([#110](https://github.com/davidsneighbour/dotfiles/issues/110)) ([069573e](https://github.com/davidsneighbour/dotfiles/commit/069573edf69fc6d2519d9ceb677d8d3191cf7be4))
+* **deps:** update dependencies ([05102fd](https://github.com/davidsneighbour/dotfiles/commit/05102fd8b6ea71519eac228ae0e30b12c70ede4f))
+* **deps:** update dependencies ([b7b7001](https://github.com/davidsneighbour/dotfiles/commit/b7b7001f7e23428ad74a364b0ef3cf767cb6e5a6))
+* **deps:** update dependencies ([9d6f8f0](https://github.com/davidsneighbour/dotfiles/commit/9d6f8f02fe1b234c07be3abc111d95cb48ca84f2))
+* **filesystem:** recent transactional changes ([15feb88](https://github.com/davidsneighbour/dotfiles/commit/15feb88b3fa533b0f942ab0f5e833f1e3f7c6c8d))
+* **fix:** fix package.json ([921fab0](https://github.com/davidsneighbour/dotfiles/commit/921fab078281323dbb17b21115d113ed1c406fdd))
+* **submodule:** update dotbot submodule ([aa9979c](https://github.com/davidsneighbour/dotfiles/commit/aa9979c4d6cfc85a382176afd423102b894cc7f7))
+
 ## [2024.2.0](/github.com/davidsneighbour/dotfiles/compare/v2024.1.1...v2024.2.0) (2024-05-23)
 
 
