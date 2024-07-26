@@ -13,7 +13,7 @@ if type complete &>/dev/null; then
     IFS=$'\n' COMPREPLY=($(COMP_CWORD="$cword" \
                            COMP_LINE="$COMP_LINE" \
                            COMP_POINT="$COMP_POINT" \
-                           /home/patrick/.config/nvm/versions/node/v16.8.0/lib/node_modules/netlify-cli/src/lib/completion/script.js completion -- "${words[@]}" \
+                           /home/patrick/.nvm/versions/node/v22.1.0/lib/node_modules/netlify-cli/dist/lib/completion/script.js completion -- "${words[@]}" \
                            2>/dev/null)) || return $?
     IFS="$si"
     if type __ltrim_colon_completions &>/dev/null; then

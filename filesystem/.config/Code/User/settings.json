@@ -33,7 +33,7 @@
   "terminal.integrated.defaultProfile.linux": "bash",
   "terminal.integrated.tabs.enabled": false,
   "github.copilot.enable": {
-    "*": false,
+    "*": true,
     "plaintext": false,
     "markdown": false,
     "scminput": false
@@ -231,7 +231,7 @@
   "headwind.prependCustomClasses": true,
   "inlineChat.showDiff": false,
   "window.titleBarStyle": "custom",
-  "editor.fontSize": 15,
+  "editor.fontSize": 14,
   "editor.fontWeight": "300",
   "terminal.integrated.fontWeight": "200",
   "terminal.integrated.fontWeightBold": "400",
@@ -267,5 +267,60 @@
   "shellformat.useEditorConfig": true,
   "scm.workingSets.enabled": true,
   "yaml.validate": false,
-  "editor.unicodeHighlight.ambiguousCharacters": false
+  "editor.unicodeHighlight.ambiguousCharacters": false,
+  "github.copilot.editor.enableAutoCompletions": true,
+  "git.fetchOnPull": true,
+  "frontMatter.dashboard.openOnStart": true,
+  "better-comments.highlightPlainText": true,
+  "better-comments.tags": [
+
+    {
+      "tag": "!",
+      "color": "#FF2D00",
+      "strikethrough": false,
+      "underline": false,
+      "backgroundColor": "transparent",
+      "bold": true,
+      "italic": false
+    },
+    {
+      "tag": "?",
+      "color": "#3498DB",
+      "strikethrough": false,
+      "underline": false,
+      "backgroundColor": "transparent",
+      "bold": false,
+      "italic": false
+    },
+    {
+      "tag": "//",
+      "color": "#474747",
+      "strikethrough": true,
+      "underline": false,
+      "backgroundColor": "transparent",
+      "bold": false,
+      "italic": false
+    },
+    {
+      "tag": "todo",
+      "color": "#FF8C00",
+      "strikethrough": false,
+      "underline": false,
+      "backgroundColor": "transparent",
+      "bold": false,
+      "italic": false
+    },
+    {
+      "tag": "*",
+      "color": "#98C379",
+      "strikethrough": false,
+      "underline": false,
+      "backgroundColor": "transparent",
+      "bold": false,
+      "italic": false
+    }
+  ],
+  "todohighlight.defaultStyle": {
+
+  }
 }

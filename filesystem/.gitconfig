@@ -1,7 +1,7 @@
 [user]
 	email = patrick@davids-neighbour.com
 	name = Patrick Kollitsch
-	signingkey = 3F549359A1CA269A
+signingkey = 3F549359A1CA269A
 
 [apply]
 whitespace = fix
@@ -64,7 +64,7 @@ untracked = cyan
 # makes `git push` or `git push <remote>` only push the current branch to
 # the tracked branch (regardless of its remote name).
 # @see http://longair.net/blog/?p=572
-	default = upstream
+default = upstream
 # allows to `git push` a new branch to remote without adding it first
 autoSetupRemote = true
 followtags = true
@@ -202,6 +202,7 @@ last = log --show-signature -1
 # Stashing
 stash-untracked = "!f() { git stash; git stash -u; git stash pop stash@{1}; }; f"
 ignore = "!gi() { curl -sL https://www.toptal.com/developers/gitignore/api/$@ ;}; gi"
+stash-pu = stash -p -u
 
 # Rebasing - https://notes.zander.wtf/notes/git-rebasing/
 mainbranch = "!git remote show origin | sed -n '/HEAD branch/s/.*: //p'"
@@ -212,7 +213,7 @@ publish = push origin HEAD --force-with-lease
 pub = publish
 
 [commit]
-	gpgsign = true
+gpgsign = true
 verbose = true
 
 [init]
@@ -296,4 +297,4 @@ recurse = true
 [log]
 date = iso
 [pull]
-	rebase = true
+rebase = true
