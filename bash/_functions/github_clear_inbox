@@ -2,7 +2,7 @@
 
 # @todo review and refactor
 
-function g_clear_inbox() {
+function github_clear_inbox() {
 
   # have GITHUB_NOTIFICATIONS_TOKEN in ~/.env
   # must be a personal access token with notifications scope, NOT the new token format
