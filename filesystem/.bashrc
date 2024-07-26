@@ -46,7 +46,7 @@ export NVM_DIR="${HOME}/.nvm"
 [ -s "${NVM_DIR}/bash_completion" ] && \. "${NVM_DIR}/bash_completion" # This loads nvm bash_completion
 
 # hack to disable error messages about max listeners
-export NODE_OPTIONS="--require ${DOTFILES_PATH}/bin/helpers/set_max_listeners.js ${NODE_OPTIONS}"
+export NODE_OPTIONS="--require ${DOTFILES_PATH}/bin/helpers/set_max_listeners.cjs ${NODE_OPTIONS}"
 
 eval "$(zoxide init bash)"
 
