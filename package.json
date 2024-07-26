@@ -9,16 +9,16 @@
   "homepage": "https://github.com/davidsneighbour/dotfiles#readme",
   "dependencies": {
     "@clack/prompts": "0.7.0",
-    "@davidsneighbour/release-config": "2024.3.23",
-    "@davidsneighbour/remark-config": "2024.3.23",
-    "@davidsneighbour/tools": "2024.3.23",
+    "@davidsneighbour/release-config": "2024.3.25",
+    "@davidsneighbour/remark-config": "2024.3.25",
+    "@davidsneighbour/tools": "2024.3.25",
     "fs-extra": "11.2.0",
     "shelljs": "0.8.5",
-    "themer": "6.5.3",
+    "themer": "6.7.0",
     "toml": "3.0.0"
   },
   "devDependencies": {
-    "semver": ">=7.6.2"
+    "semver": ">=7.6.3"
   },
   "scripts": {
     "release": "commit-and-tag-version -a -t \"v\" --releaseCommitMessageFormat \"chore(release): v{{currentTag}}\" && ./bin/repo/release/postrelease"
