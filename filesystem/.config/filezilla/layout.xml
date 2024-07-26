@@ -1,19 +1,19 @@
 <?xml version="1.0"?>
-<FileZilla3 version="3.58.0" platform="*nix">
-	<Layout Builddate="2023-12-28" Buildtime="17:18:33">
+<FileZilla3 version="3.66.5" platform="*nix">
+	<Layout Builddate="2024-04-01" Buildtime="05:48:35">
 		<Resources>
 			<xrc file="sitemanager.xrc" date="1548412674" />
 			<xrc file="inputdialog.xrc" date="1548412674" />
 			<xrc file="certificate.xrc" date="1581159552" />
 			<xrc file="settings.xrc" date="1581159552" />
-			<xrc file="dialogs.xrc" date="1703783913" />
-			<xrc file="netconfwizard.xrc" date="1703783913" />
+			<xrc file="dialogs.xrc" date="1711950515" />
+			<xrc file="netconfwizard.xrc" date="1711950515" />
 			<xrc file="update.xrc" date="1548412674" />
 			<xrc file="storj.xrc" date="1581159552" />
 		</Resources>
-		<Language id="en_US" date="">
-			<Font font="Ubuntu 11" width="704" height="14" />
-			<Dialog name="Settings" width="472" />
+		<Language id="en_US" date="1711950515">
+			<Font font="Ubuntu Sans 11" width="752" height="17" />
+			<Dialog name="Settings" width="507" />
 		</Language>
 	</Layout>
 </FileZilla3>
