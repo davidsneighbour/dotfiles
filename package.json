@@ -11,7 +11,7 @@
     "@clack/prompts": "0.7.0",
     "@davidsneighbour/release-config": "2024.3.25",
     "@davidsneighbour/remark-config": "2024.3.25",
-    "@davidsneighbour/tools": "2024.3.25",
+    "@davidsneighbour/tools": "2024.3.31",
     "fs-extra": "11.2.0",
     "shelljs": "0.8.5",
     "themer": "6.7.0",
