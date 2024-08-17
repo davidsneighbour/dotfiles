@@ -9,19 +9,28 @@
   "homepage": "https://github.com/davidsneighbour/dotfiles#readme",
   "dependencies": {
     "@clack/prompts": "0.7.0",
-    "@davidsneighbour/release-config": "2024.3.25",
-    "@davidsneighbour/remark-config": "2024.3.25",
-    "@davidsneighbour/tools": "2024.3.25",
+    "@davidsneighbour/commitlint-config": "2024.3.32",
+    "@davidsneighbour/eslint-config": "2024.3.32",
+    "@davidsneighbour/release-config": "2024.3.32",
+    "@davidsneighbour/remark-config": "2024.3.32",
+    "@davidsneighbour/tools": "2024.3.32",
     "fs-extra": "11.2.0",
     "shelljs": "0.8.5",
+    "simple-git-hooks": "2.11.1",
     "themer": "6.7.0",
     "toml": "3.0.0"
   },
   "devDependencies": {
-    "semver": ">=7.6.3"
+    "lint-staged": "15.2.9",
+    "semver": "7.6.3"
   },
   "scripts": {
-    "release": "commit-and-tag-version -a -t \"v\" --releaseCommitMessageFormat \"chore(release): v{{currentTag}}\" && ./bin/repo/release/postrelease"
+    "release": "commit-and-tag-version -a -t \"v\" --releaseCommitMessageFormat \"chore(release): v{{currentTag}}\" && ./bin/repo/release/postrelease",
+    "lint:hook:commit": "lint-staged"
   },
-  "main": "index.js"
+  "main": "index.js",
+  "simple-git-hooks": {
+    "pre-commit": "npm run lint:hook:commit",
+    "commit-msg": "npx commitlint -e \"$@\""
+  }
 }
