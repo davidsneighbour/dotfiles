@@ -1,10 +1,10 @@
 [Desktop Entry]
 Type=Application
-Exec=/usr/bin/discord --tray --start-minimized
+Exec=/usr/bin/discord --start-minimized
 Hidden=false
 NoDisplay=false
 X-GNOME-Autostart-enabled=true
 Name[en_US]=Discord
 Name=Discord
-Comment[en_US]=Discord text and video chat
+Comment[en_US]=Discord text and video chat --tray 
 Comment=Discord text and video chat
