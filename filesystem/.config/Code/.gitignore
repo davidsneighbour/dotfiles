@@ -10,6 +10,8 @@ Code Cache
 Crashpad
 databases
 DawnCache
+DawnGraphiteCache
+DawnWebGPUCache
 Dictionaries
 Local Storage
 GPUCache
