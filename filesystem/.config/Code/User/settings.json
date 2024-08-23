@@ -31,7 +31,6 @@
   "telemetry.telemetryLevel": "crash",
   "intelephense.telemetry.enabled": false,
   "terminal.integrated.defaultProfile.linux": "bash",
-  "terminal.integrated.tabs.enabled": false,
   "github.copilot.enable": {
     "*": true,
     "plaintext": false,
@@ -236,7 +235,6 @@
   "terminal.integrated.fontWeight": "200",
   "terminal.integrated.fontWeightBold": "400",
   "accessibility.voice.keywordActivation": "chatInContext",
-  "files.autoSaveWhenNoErrors": true,
   "files.autoSaveWorkspaceFilesOnly": true,
   "markdownlint.run": "onSave",
   "html.format.wrapLineLength": 100,
@@ -322,5 +320,8 @@
   ],
   "todohighlight.defaultStyle": {
 
-  }
+  },
+  "terminal.integrated.enableImages": true,
+  "terminal.integrated.scrollback": 5000,
+  "workbench.experimental.enableNewProfilesUI": true,
 }
