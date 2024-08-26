@@ -12,7 +12,7 @@
     "@davidsneighbour/commitlint-config": "2024.3.32",
     "@davidsneighbour/eslint-config": "2024.3.38",
     "@davidsneighbour/release-config": "2024.3.32",
-    "@davidsneighbour/remark-config": "2024.3.32",
+    "@davidsneighbour/remark-config": "2024.3.38",
     "@davidsneighbour/tools": "2024.3.37",
     "fs-extra": "11.2.0",
     "shelljs": "0.8.5",
