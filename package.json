@@ -9,7 +9,7 @@
   "homepage": "https://github.com/davidsneighbour/dotfiles#readme",
   "dependencies": {
     "@clack/prompts": "0.7.0",
-    "@davidsneighbour/commitlint-config": "2024.3.38",
+    "@davidsneighbour/commitlint-config": "2024.3.39",
     "@davidsneighbour/eslint-config": "2024.3.38",
     "@davidsneighbour/release-config": "2024.3.39",
     "@davidsneighbour/remark-config": "2024.3.38",
