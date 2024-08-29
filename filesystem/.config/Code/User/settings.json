@@ -324,4 +324,7 @@
   "terminal.integrated.enableImages": true,
   "terminal.integrated.scrollback": 5000,
   "workbench.experimental.enableNewProfilesUI": true,
+  "editor.largeFileOptimizations": false,
+  "frontMatter.content.autoUpdateDate": true,
+  "frontMatter.content.fmHighlight": false
 }
