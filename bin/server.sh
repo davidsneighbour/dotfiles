@@ -7,7 +7,7 @@ docker run -d \
   --restart always \
   \
   -e WEBUI_AUTH=false \
-  -e WEBUI_AUTH="Alan" \
+  -e WEBUI_NAME="Alan" \
   -e ENABLE_COMMUNITY_SHARING=false \
   \
   ghcr.io/open-webui/open-webui:ollama
