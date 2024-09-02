@@ -10,7 +10,7 @@
     "@davidsneighbour/tools": "^2024.3.40"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "server": "./bin/server.sh"
   },
   "main": "index.js"
 }
