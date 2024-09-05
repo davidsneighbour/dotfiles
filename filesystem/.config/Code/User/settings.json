@@ -167,10 +167,10 @@
   },
   "grammarly.config.documentDialect": "british",
   "grammarly.config.documentDomain": "creative",
-  "grammarly.config.suggestions.ConjunctionAtStartOfSentence": true,
-  "grammarly.config.suggestions.OxfordComma": true,
-  "grammarly.config.suggestions.UnnecessaryEllipses": true,
-  "grammarly.config.suggestions.StylisticFragments": true,
+  "grammarly.config.suggestions.conjunctionAtStartOfSentence": true,
+  "grammarly.config.suggestions.oxfordComma": true,
+  "grammarly.config.suggestions.unnecessaryEllipses": true,
+  "grammarly.config.suggestions.stylisticFragments": true,
   "grammarly.files.include": [
     "**/readme.md",
     "**/README.md",
@@ -271,7 +271,6 @@
   "frontMatter.dashboard.openOnStart": true,
   "better-comments.highlightPlainText": true,
   "better-comments.tags": [
-
     {
       "tag": "!",
       "color": "#FF2D00",
@@ -318,13 +317,12 @@
       "italic": false
     }
   ],
-  "todohighlight.defaultStyle": {
-
-  },
+  "todohighlight.defaultStyle": {},
   "terminal.integrated.enableImages": true,
   "terminal.integrated.scrollback": 5000,
   "workbench.experimental.enableNewProfilesUI": true,
   "editor.largeFileOptimizations": false,
   "frontMatter.content.autoUpdateDate": true,
-  "frontMatter.content.fmHighlight": false
+  "frontMatter.content.fmHighlight": false,
+  "window.newWindowProfile": "Default"
 }
