@@ -3,5 +3,6 @@
     "terminal.integrated.tabs.enabled": false,
     "files.insertFinalNewline": true,
     "explorer.fileNesting.enabled": true,
-    "frontMatter.content.autoUpdateDate": true
+    "frontMatter.content.autoUpdateDate": true,
+    "workbench.startupEditor": "none"
 }
