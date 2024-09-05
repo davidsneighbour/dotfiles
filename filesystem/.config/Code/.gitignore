@@ -1,3 +1,4 @@
+.org.chromium.*
 Backups
 blob_storage
 Cache
@@ -7,38 +8,35 @@ CachedExtensions
 CachedExtensionVSIXs
 CachedProfilesData
 Code Cache
+code.lock
+Cookies
+Cookies-journal
 Crashpad
 databases
 DawnCache
 DawnGraphiteCache
 DawnWebGPUCache
 Dictionaries
-Local Storage
 GPUCache
 IndexedDB
+languagepacks.json
+Local Storage
 logs
+machineid
+Network Persistent State
+Preferences
 Service Worker
 Session Storage
 Shared Dictionary
+shared_proto_db
 SharedStorage
+TransportSecurity
 Trust Tokens
 Trust Tokens-journal
+User/globalStorage/
+User/History/
+User/profiles/**/globalStorage
+User/sync
+User/workspaceStorage/
 VideoDecodeStats
 WebStorage
-code.lock
-Cookies
-Cookies-journal
-Network Persistent State
-Preferences
-TransportSecurity
-languagepacks.json
-machineid
-shared_proto_db
-
-User/History/
-User/globalStorage/
-User/profiles/
-User/workspaceStorage/
-User/sync
-
-.org.chromium.*
