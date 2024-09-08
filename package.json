@@ -11,7 +11,7 @@
     "@clack/prompts": "0.7.0",
     "@davidsneighbour/commitlint-config": "2024.3.43",
     "@davidsneighbour/eslint-config": "2024.3.43",
-    "@davidsneighbour/release-config": "2024.3.43",
+    "@davidsneighbour/release-config": "2024.3.44",
     "@davidsneighbour/remark-config": "2024.3.43",
     "@davidsneighbour/tools": "2024.3.43",
     "fs-extra": "11.2.0",
