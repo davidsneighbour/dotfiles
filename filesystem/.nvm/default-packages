@@ -21,3 +21,5 @@ playwright
 sassdoc
 svgo
 typescript
+@bramus/caniuse-cli
+biome
