@@ -104,9 +104,16 @@ fi
 # executed just before prompt
 PROMPT_COMMAND='exitStatus=$(_get_exit_status);mydir=$(_get_path);'
 
+get_git_branch() {
+  git status &>/dev/null && git branch --show-current
+}
+
 # shellcheck disable=SC2154
 PS1='${title}\[${GREY}\][\[${BLUE}\]\t\[${GREY}\]]\
 \[${GREY}\][\[${USER_COLOR}\]\u\[${GREY}\]@\[${HOST_COLOR}\]\H\[${GREY}\]]\
+\[${GREY}\][\
+\[${YELLOW}\]$(get_git_branch)\
+\[${GREY}\]]\
 \[${NONE}\]\[${WHITE}\]${mydir}\
 \[${GREY}\](\
 \[${YELLOW}\]+${SHLVL}\[${GREY}\]|\
