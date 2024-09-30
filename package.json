@@ -21,6 +21,7 @@
     "toml": "3.0.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.9.2",
     "lint-staged": "15.2.10",
     "semver": "7.6.3"
   },
