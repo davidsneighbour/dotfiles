@@ -1,4 +1,65 @@
 Changelog
+## [2024.3.0](https://github.com/davidsneighbour/dotfiles/compare/v2024.2.1...v2024.3.0) (2024-10-01)
+
+
+### Features
+
+* add lsd and lsd configuration ([fe26130](https://github.com/davidsneighbour/dotfiles/commit/fe26130fb3ae7e7a71696ed08f7781999eeda12e))
+* **bash:** add caniuse CLI ([3f4d51c](https://github.com/davidsneighbour/dotfiles/commit/3f4d51c36aed24e180d75a4e0eb054b08c084ca6))
+
+
+### Theme
+
+* **fix:** update Dracula theme ([144c687](https://github.com/davidsneighbour/dotfiles/commit/144c6879c2791a835afffe6c923926db88b164dd))
+
+
+### Bug Fixes
+
+* add Dracula icon theme ([59fc55c](https://github.com/davidsneighbour/dotfiles/commit/59fc55ceeeca03dfa55a67067d81cb2e0b6a77ce))
+* **bash:** adding current branch name to prompt ([4feb115](https://github.com/davidsneighbour/dotfiles/commit/4feb11524f5a7548d94f9e019357e1cd367608b9))
+* move npm setup to commonjs file ([ff0c669](https://github.com/davidsneighbour/dotfiles/commit/ff0c6691978c53ed0351c8518e74bbce92d10bf6))
+
+
+### Chore
+
+* **config:** add various configuration ([1aabd4c](https://github.com/davidsneighbour/dotfiles/commit/1aabd4c98d1231f6ad5c2aaa63e97c98925a51e8))
+* **config:** update git configuration ([85a79f9](https://github.com/davidsneighbour/dotfiles/commit/85a79f973f55174e46efe39ade43ae081f630c34))
+* **config:** update workspace configuration ([6a14e63](https://github.com/davidsneighbour/dotfiles/commit/6a14e6341bd9d81fc9871297536d5e1f37dd9aca))
+* **config:** update workspace configuration ([16f8079](https://github.com/davidsneighbour/dotfiles/commit/16f80793bb3441c857a18b9204e73742dba22b3c))
+* **deps-dev:** bump lint-staged from 15.2.9 to 15.2.10 ([#161](https://github.com/davidsneighbour/dotfiles/issues/161)) ([ce35b41](https://github.com/davidsneighbour/dotfiles/commit/ce35b411298c975bfccd713d98df2ba4a7ddaf2d))
+* **deps:** bump @davidsneighbour/commitlint-config from 2024.3.32 to 2024.3.38 ([#149](https://github.com/davidsneighbour/dotfiles/issues/149)) ([b34ce93](https://github.com/davidsneighbour/dotfiles/commit/b34ce93e3543c004269db511fabc5082cb9923f5))
+* **deps:** bump @davidsneighbour/commitlint-config from 2024.3.38 to 2024.3.39 ([#157](https://github.com/davidsneighbour/dotfiles/issues/157)) ([82d0bcd](https://github.com/davidsneighbour/dotfiles/commit/82d0bcd8f6d00e822d5acc51d45e84f05a073fc1))
+* **deps:** bump @davidsneighbour/commitlint-config from 2024.3.39 to 2024.3.43 ([#173](https://github.com/davidsneighbour/dotfiles/issues/173)) ([7086ab7](https://github.com/davidsneighbour/dotfiles/commit/7086ab7c8ccbb293a0c73c3ce57300401bd6d0d4))
+* **deps:** bump @davidsneighbour/eslint-config from 2024.3.32 to 2024.3.37 ([#143](https://github.com/davidsneighbour/dotfiles/issues/143)) ([252c9f2](https://github.com/davidsneighbour/dotfiles/commit/252c9f251e247bab0df8d26f75c6b418f4b45018))
+* **deps:** bump @davidsneighbour/eslint-config from 2024.3.37 to 2024.3.38 ([#148](https://github.com/davidsneighbour/dotfiles/issues/148)) ([251656c](https://github.com/davidsneighbour/dotfiles/commit/251656c6db525ab5f6d36322cc3a7ccad1874b8d))
+* **deps:** bump @davidsneighbour/eslint-config from 2024.3.38 to 2024.3.39 ([#155](https://github.com/davidsneighbour/dotfiles/issues/155)) ([c3667d0](https://github.com/davidsneighbour/dotfiles/commit/c3667d05571db174b1a02212404972ca7aa1e230))
+* **deps:** bump @davidsneighbour/eslint-config from 2024.3.39 to 2024.3.43 ([#171](https://github.com/davidsneighbour/dotfiles/issues/171)) ([ab8f11e](https://github.com/davidsneighbour/dotfiles/commit/ab8f11eac34dfc4283e327da1665809159266ecc))
+* **deps:** bump @davidsneighbour/release-config from 2024.3.32 to 2024.3.38 ([#150](https://github.com/davidsneighbour/dotfiles/issues/150)) ([920bf4f](https://github.com/davidsneighbour/dotfiles/commit/920bf4f9089cd26623350f5d4af0f402e3a3a13e))
+* **deps:** bump @davidsneighbour/release-config from 2024.3.38 to 2024.3.39 ([#153](https://github.com/davidsneighbour/dotfiles/issues/153)) ([ca7d18e](https://github.com/davidsneighbour/dotfiles/commit/ca7d18e2d7d6208640e38c54164c877b3ffafa5a))
+* **deps:** bump @davidsneighbour/release-config from 2024.3.39 to 2024.3.43 ([#172](https://github.com/davidsneighbour/dotfiles/issues/172)) ([6d38d22](https://github.com/davidsneighbour/dotfiles/commit/6d38d229e85c2a24cd58fe07d0618079776a744e))
+* **deps:** bump @davidsneighbour/remark-config from 2024.3.32 to 2024.3.38 ([#151](https://github.com/davidsneighbour/dotfiles/issues/151)) ([9d8473a](https://github.com/davidsneighbour/dotfiles/commit/9d8473ad84477012fc8b11d8b12b6606f35186f3))
+* **deps:** bump @davidsneighbour/remark-config from 2024.3.38 to 2024.3.39 ([#154](https://github.com/davidsneighbour/dotfiles/issues/154)) ([9c15632](https://github.com/davidsneighbour/dotfiles/commit/9c15632fc5e7ce9a2ccc0a9edf4f0f1ae1a13864))
+* **deps:** bump @davidsneighbour/remark-config from 2024.3.39 to 2024.3.43 ([#169](https://github.com/davidsneighbour/dotfiles/issues/169)) ([ee87203](https://github.com/davidsneighbour/dotfiles/commit/ee872036cb8622c25f23e9a73397bf68ede76aee))
+* **deps:** bump @davidsneighbour/tools from 2024.3.32 to 2024.3.37 ([#142](https://github.com/davidsneighbour/dotfiles/issues/142)) ([785594e](https://github.com/davidsneighbour/dotfiles/commit/785594e3f33b6d20a339718040e9615602a4b2d9))
+* **deps:** bump @davidsneighbour/tools from 2024.3.37 to 2024.3.39 ([#156](https://github.com/davidsneighbour/dotfiles/issues/156)) ([ea0d0a0](https://github.com/davidsneighbour/dotfiles/commit/ea0d0a0edc3005e90a4b6c5419f534acbad877f3))
+* **deps:** bump @davidsneighbour/tools from 2024.3.39 to 2024.3.43 ([#170](https://github.com/davidsneighbour/dotfiles/issues/170)) ([32aab14](https://github.com/davidsneighbour/dotfiles/commit/32aab14fa65582fb06b9feff4fb434a568bd56c7))
+* **deps:** bump micromatch from 4.0.7 to 4.0.8 ([#147](https://github.com/davidsneighbour/dotfiles/issues/147)) ([a513df1](https://github.com/davidsneighbour/dotfiles/commit/a513df14a0422bd629f6f237ef2dfc4fb08a44c9))
+* **deps:** update dependencies ([48b5c4b](https://github.com/davidsneighbour/dotfiles/commit/48b5c4b53d3bab99b0f87a1b85fc5e636ced8a1a))
+* **deps:** update dependencies ([0cb22b9](https://github.com/davidsneighbour/dotfiles/commit/0cb22b9ebb51c2d0109edd12bdbac3e5941229f8))
+* **deps:** update dependencies ([1001297](https://github.com/davidsneighbour/dotfiles/commit/1001297f15b6a5d7c664183a1ca27076780a8a2b))
+* fixes to broken pull ([7559a93](https://github.com/davidsneighbour/dotfiles/commit/7559a93d02217b509124c6f6b2c39acabf224326))
+
+
+### Configuration
+
+* add biome to devdependencies ([807ebd7](https://github.com/davidsneighbour/dotfiles/commit/807ebd7dfdf3868b216728a31c9d5e1bfa317fac))
+* **autostart:** fix discord autostart setup ([6ea49f2](https://github.com/davidsneighbour/dotfiles/commit/6ea49f293b1988e0f693cbcecaa73f89e3dade2f))
+* **bash:** add wp-cli bash completions ([b54ea9e](https://github.com/davidsneighbour/dotfiles/commit/b54ea9e278b4ae0c7f45a8d1349b0c9881ebadb2))
+* **gh:** update gh configuration ([a17d02a](https://github.com/davidsneighbour/dotfiles/commit/a17d02a1f2021559de90fd123217b07adf168a5c))
+* **theme:** add Dracula GTK theme ([68623ea](https://github.com/davidsneighbour/dotfiles/commit/68623ea8d39f3d4d7ccfe93288437eb95ff2799e))
+* **vscode:** update configuration ([32ca5d5](https://github.com/davidsneighbour/dotfiles/commit/32ca5d554ac198439d85a981766bdae4ba780f04))
+* **vscode:** update settings and add profiles ([27f33b9](https://github.com/davidsneighbour/dotfiles/commit/27f33b9d21faa9170ffab6a162f32f3d36e3c46d))
+
 ## [2024.2.1](https://github.com/davidsneighbour/dotfiles/compare/v2024.2.0...v2024.2.1) (2024-07-26)
 
 
