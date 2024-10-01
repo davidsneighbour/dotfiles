@@ -45,7 +45,7 @@
     # directory links
     ##################################################################
     ~/.config/autostart: filesystem/.config/autostart
-    ~/.config/assets: filesystem/.config/assets
+    ~/.config/assets: filesystem/.themes/Dracula/assets
     ~/.config/Code: filesystem/.config/Code
     ~/.config/filezilla: filesystem/.config/filezilla
     ~/.config/gh: filesystem/.config/gh
