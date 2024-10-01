@@ -13,9 +13,7 @@
 
 - shell:
     - ["mkdir -p ~/.config", "creating config folder (if it doesn't exist yet)"]
-    - [
-        "rm -f ~/.bash_history ~/.lesshst ~/.viminfo ~/.sudo_as_admin_successful",
-      ]
+    - "rm -f ~/.bash_history ~/.lesshst ~/.viminfo ~/.sudo_as_admin_successful"
 
 - link:
     ############################################################################
@@ -47,10 +45,12 @@
     # directory links
     ##################################################################
     ~/.config/autostart: filesystem/.config/autostart
+    ~/.config/assets: filesystem/.config/assets
     ~/.config/Code: filesystem/.config/Code
     ~/.config/filezilla: filesystem/.config/filezilla
     ~/.config/gh: filesystem/.config/gh
     ~/.config/gtk-3.0: filesystem/.config/gtk-3.0
+    ~/.config/gtk-4.0: filesystem/.config/gtk-4.0
     ~/.config/i3: filesystem/.config/i3
     ~/.config/lsd: filesystem/.config/lsd
     ~/.config/jrnl: filesystem/.config/jrnl
@@ -60,6 +60,12 @@
     ~/.config/tabtab: filesystem/.config/tabtab
     ~/.config/transmission: filesystem/.config/transmission
     ~/.icons: filesystem/.icons
+    ~/.themes: filesystem/.themes
     ~/.wallpapers: filesystem/.wallpapers
     ~/snap/joplin-desktop/current/.config/joplin-desktop/plugins: filesystem/snap/joplin-desktop/current/.config/joplin-desktop/plugins
     ~/snap/joplin-desktop/current/.config/joplin-desktop/settings.json: filesystem/snap/joplin-desktop/current/.config/joplin-desktop/settings.json
+
+- shell:
+    - "gsettings set org.gnome.desktop.interface gtk-theme \"Dracula\""
+    - "gsettings set org.gnome.desktop.wm.preferences theme \"Dracula\""
+    - "gsettings set org.gnome.desktop.interface icon-theme \"Dracula\""
