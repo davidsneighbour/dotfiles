@@ -324,5 +324,19 @@
   "editor.largeFileOptimizations": false,
   "frontMatter.content.autoUpdateDate": true,
   "frontMatter.content.fmHighlight": false,
-  "window.newWindowProfile": "Default"
+  "window.newWindowProfile": "Default",
+  "cSpell.userWords": [
+    "ananke",
+    "automerge",
+    "caniuse",
+    "davidsneighbour",
+    "gohugo",
+    "Kollitsch",
+    "Philibert",
+    "thenewdynamic",
+    "wireit"
+  ],
+  "go.survey.prompt": false,
+  "npm.packageManager": "npm",
+  "workbench.colorTheme": "Dracula Pro (Van Helsing)"
 }
