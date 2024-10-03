@@ -1,6 +1,6 @@
 [Desktop Entry]
 Type=Application
-Exec=/home/patrick/.joplin/Joplin.AppImage --no-sandbox %u
+Exec=APPIMAGELAUNCHER_DISABLE=1 &&/home/patrick/.joplin/Joplin.AppImage --no-sandbox %u
 Hidden=false
 NoDisplay=false
 X-GNOME-Autostart-enabled=true
