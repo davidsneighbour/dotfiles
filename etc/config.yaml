@@ -56,6 +56,7 @@
     ~/.config/jrnl: filesystem/.config/jrnl
     ~/.config/neofetch: filesystem/.config/neofetch
     ~/.config/polybar: filesystem/.config/polybar
+    ~/.config/qt5ct: filesystem/.config/qt5ct
     ~/.config/rofi: filesystem/.config/rofi
     ~/.config/tabtab: filesystem/.config/tabtab
     ~/.config/transmission: filesystem/.config/transmission
@@ -68,4 +69,4 @@
 - shell:
     - "gsettings set org.gnome.desktop.interface gtk-theme \"Dracula\""
     - "gsettings set org.gnome.desktop.wm.preferences theme \"Dracula\""
-    - "gsettings set org.gnome.desktop.interface icon-theme \"Dracula\""
+#    - "gsettings set org.gnome.desktop.interface icon-theme \"Dracula\""
