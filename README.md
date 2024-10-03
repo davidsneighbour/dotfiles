@@ -19,6 +19,8 @@ See the note above. If you are still here, then you probably are interested in h
 
 > [!CAUTION]
 > Again: You do not want to directly set up this repository on your own system. Clone it to learn, then create your own .dotfiles setup.
+>
+### Manual setup
 
 Clone with submodules:
 
@@ -36,6 +38,12 @@ Run initial setup:
 
 ```shell
 ./dotbot.sh install
+```
+
+### Automatic setup script (TBD)
+
+```bash
+wget -qO- <https://github.com/davidsneighbour/dotfiles/blob/main/install.sh> | bash
 ```
 
 ## Update
