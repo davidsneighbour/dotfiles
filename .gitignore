@@ -10,6 +10,7 @@ scratch
 changes.md
 response.json
 bun.lockb
+filesystem/.themes/Dracula-Pro
 
 # Created by https://www.toptal.com/developers/gitignore/api/node,intellij+all,phpstorm+all,macos
 # Edit at https://www.toptal.com/developers/gitignore?templates=node,intellij+all,phpstorm+all,macos
