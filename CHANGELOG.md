@@ -1,4 +1,31 @@
 Changelog
+## [2024.3.1](https://github.com/davidsneighbour/dotfiles/compare/v2024.3.0...v2024.3.1) (2024-10-03)
+
+
+### Theme
+
+* add qt5ct theme ([a88ad44](https://github.com/davidsneighbour/dotfiles/commit/a88ad448b87d69a532103b0cd97b80103efb5fb7))
+* **fix:** remove unused build files ([960ce60](https://github.com/davidsneighbour/dotfiles/commit/960ce603e22969420c254f747b91c59d4ebc9012))
+
+
+### Bug Fixes
+
+* some refactoring and adding qt5 env variable ([0715679](https://github.com/davidsneighbour/dotfiles/commit/0715679e7711d844923097d589355c676a33cd92))
+
+
+### Chore
+
+* **deps:** update dependencies ([f3b0ba6](https://github.com/davidsneighbour/dotfiles/commit/f3b0ba608fd73585637ab1ad19c60e504feabf2c))
+* plenty of smaller changes ([344472a](https://github.com/davidsneighbour/dotfiles/commit/344472a47620f1765322c57a4fd8e3525b036f69))
+
+
+### Configuration
+
+* **autostart:** do not start appimagelauncher for joplin ([81fb020](https://github.com/davidsneighbour/dotfiles/commit/81fb020febe7fec1e5f42b9dbb17052ed3a13fef))
+* **dotbot:** add filepaths ([255d12f](https://github.com/davidsneighbour/dotfiles/commit/255d12ffb3cf8b8fa8d229f6be3e53716506fee6))
+* **vscode:** update user profiles ([789280d](https://github.com/davidsneighbour/dotfiles/commit/789280d04d0cfba7f2322cca719d29262727ff2d))
+* **vscode:** update workspace setup and configuration ([4731614](https://github.com/davidsneighbour/dotfiles/commit/473161456611f692f514b2f36e8fe373f6f57ccb))
+
 ## [2024.3.0](https://github.com/davidsneighbour/dotfiles/compare/v2024.2.1...v2024.3.0) (2024-10-01)
 
 
