@@ -1,4 +1,6 @@
 Changelog
+## [2024.3.2](https://github.com/davidsneighbour/dotfiles/compare/v2024.3.1...v2024.3.2) (2024-10-03)
+
 ## [2024.3.1](https://github.com/davidsneighbour/dotfiles/compare/v2024.3.0...v2024.3.1) (2024-10-03)
 
 
