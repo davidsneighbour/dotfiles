@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# @todo review and refactor
-
 function github_clear_inbox() {
 
   # have GITHUB_NOTIFICATIONS_TOKEN in ~/.env

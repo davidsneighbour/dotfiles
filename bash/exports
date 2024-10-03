@@ -33,3 +33,5 @@ export COLOR_WHITE='\e[1;37m'
 
 export VISUAL=/usr/bin/vim.basic
 export EDITOR=/usr/bin/vim.basic
+
+export QT_QPA_PLATFORMTHEME=qt5ct
