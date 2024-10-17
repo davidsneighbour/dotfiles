@@ -1,7 +1,7 @@
 [user]
-email = patrick@davids-neighbour.com
-name = Patrick Kollitsch
-signingkey = 3F549359A1CA269A
+	email = patrick@davids-neighbour.com
+	name = Patrick Kollitsch
+	signingkey = 09BAD1289A5260478E6BA54D5A5360B005AD68C7
 
 [apply]
 whitespace = fix
