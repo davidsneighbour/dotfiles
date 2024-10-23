@@ -10,7 +10,7 @@
   "dependencies": {
     "@clack/prompts": "0.7.0",
     "@davidsneighbour/commitlint-config": "2024.4.5",
-    "@davidsneighbour/eslint-config": "2024.4.5",
+    "@davidsneighbour/eslint-config": "2024.4.6",
     "@davidsneighbour/release-config": "2024.4.5",
     "@davidsneighbour/remark-config": "2024.4.5",
     "@davidsneighbour/tools": "2024.4.5",
