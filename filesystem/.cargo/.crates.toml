@@ -1,2 +1,3 @@
 [v1]
+"lychee 0.16.1 (registry+https://github.com/rust-lang/crates.io-index)" = ["lychee"]
 "typos-cli 1.15.0 (registry+https://github.com/rust-lang/crates.io-index)" = ["typos"]
