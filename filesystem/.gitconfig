@@ -1,7 +1,7 @@
 [user]
 	email = patrick@davids-neighbour.com
 	name = Patrick Kollitsch
-	signingkey = 09BAD1289A5260478E6BA54D5A5360B005AD68C7
+	signingkey = 1D10C1627D5AFC3CC48AA18401A2661D61A772CA
 
 [apply]
 whitespace = fix
@@ -11,7 +11,6 @@ helper = store
 
 [core]
 autocrlf = input
-editor = subl -n -w
 filemode = false
 excludesfile = ~/.gitignore
 attributesfile = ~/.gitattributes
@@ -302,3 +301,7 @@ rebase = true
 sort = -committerdate
 [maintenance]
 repo = /home/patrick/github.com/davidsneighbour/kollitsch.dev
+[safe]
+	directory = /home/patrick/github.com/theNewDynamic/gohugo-theme-ananke
+[pack]
+	usePathWalk = true
