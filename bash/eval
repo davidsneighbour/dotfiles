@@ -22,5 +22,8 @@ if [ -f "${FILE}" ]; then
   set +a
 fi
 
-# manual vscode terminal setup
-#[[ "$TERM_PROGRAM" == "vscode" ]] && . "$(code --locate-shell-integration-path bash)"
+# WSL2 GPG TTY
+if grep -qE "(Microsoft|WSL)" /proc/version; then
+    GPG_TTY=$(tty)
+    export GPG_TTY
+fi
