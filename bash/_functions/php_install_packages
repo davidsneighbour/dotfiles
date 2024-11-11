@@ -1,0 +1,45 @@
+#!/bin/bash
+
+# Function to install PHP packages for specified versions with configurable options
+install_php_packages() {
+
+    # Check for help flag
+    if [[ "$1" == "--help" || "$1" == "-h" ]]; then
+        echo "Usage: install_php_packages [versions] [packages]"
+        echo
+        echo "Options:"
+        echo "  versions   Comma-separated list of PHP versions (default: 8.2,8.3)"
+        echo "  packages   Comma-separated list of PHP packages (default: bz2,cli,curl,gd,intl,mbstring,mcrypt,mysql,xdebug,imagick,xml,zip)"
+        echo
+        echo "Example:"
+        echo "  install_php_packages \"8.1,8.2\" \"cli,curl,xml\""
+        exit 0
+    fi
+
+    # Default versions and packages
+    local versions=("8.2" "8.3")
+    local packages=("bz2" "cli" "curl" "gd" "intl" "mbstring" "mcrypt" "mysql" "xdebug" "imagick" "xml" "zip")
+
+    # Override default versions if provided
+    if [ -n "$1" ]; then
+        IFS=',' read -r -a versions <<< "$1"
+    fi
+
+    # Override default packages if provided
+    if [ -n "$2" ]; then
+        IFS=',' read -r -a packages <<< "$2"
+    fi
+
+    # Collect all packages for a single install command
+    local package_list=()
+    for version in "${versions[@]}"; do
+        package_list+=("php${version}" "php${version}-cli")
+        for package in "${packages[@]}"; do
+            package_list+=("php${version}-${package}")
+        done
+    done
+
+    # Execute single install command
+    echo "Installing all selected PHP packages: ${package_list[*]}"
+    sudo apt install -y "${package_list[@]}"
+}
