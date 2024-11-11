@@ -1,18 +1,17 @@
+# git env variables
 export GIT_AUTHOR_NAME="Patrick Kollitsch"
 export GIT_COMMITTER_NAME="${GIT_AUTHOR_NAME}"
 export GIT_AUTHOR_EMAIL="patrick@davids-neighbour.com"
 export GIT_COMMITTER_EMAIL="${GIT_AUTHOR_EMAIL}"
-
 git config --global user.name "${GIT_AUTHOR_NAME}"
 git config --global user.email "${GIT_AUTHOR_EMAIL}"
 
+# set color prompt variables
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-
 export TERM=xterm-color
 export GREP_OPTIONS='--color=auto' GREP_COLOR='1;32'
 export CLICOLOR=1
 export LSCOLORS=ExFxCxDxBxegedabagacad
-
 export COLOR_NC='\e[0m' # No Color
 export COLOR_BLACK='\e[0;30m'
 export COLOR_GRAY='\e[1;30m'
@@ -31,7 +30,10 @@ export COLOR_LIGHT_CYAN='\e[1;36m'
 export COLOR_LIGHT_GRAY='\e[0;37m'
 export COLOR_WHITE='\e[1;37m'
 
+# set default editor
 export VISUAL=/usr/bin/vim.basic
 export EDITOR=/usr/bin/vim.basic
 
-export QT_QPA_PLATFORMTHEME=qt5ct
+# homebrew settings
+export HOMEBREW_NO_ENV_HINTS=1
+export HOMEBREW_NO_ANALYTICS=1

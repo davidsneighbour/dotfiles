@@ -116,3 +116,5 @@ alias rector="~/github.com/getbooka/booka/vendor/bin/rector process"
 # npm install -g @socketsecurity/cli
 # alias npm="socket npm"
 # alias npx="socket npx"
+
+alias check-network="sudo arp-scan --localnet --numeric --quiet --ignoredups"
