@@ -1,4 +1,48 @@
 Changelog
+## [2024.4.0](https://github.com/davidsneighbour/dotfiles/compare/v2024.3.2...v2024.4.0) (2024-11-11)
+
+
+### Documentation
+
+* setup argon neo 5 notes ([32f263a](https://github.com/davidsneighbour/dotfiles/commit/32f263ab1091307623c7205f9b83aa14978c1923))
+
+
+### Features
+
+* add setup scripts ([5800803](https://github.com/davidsneighbour/dotfiles/commit/580080337da3bc8c1342cd725e9fc7866b1b9b73))
+* **func:** install php packages ([462a6ef](https://github.com/davidsneighbour/dotfiles/commit/462a6ef7628cd47d80f4b76418840e0356e601cc))
+
+
+### Theme
+
+* add new wallpaper ([4a97aa0](https://github.com/davidsneighbour/dotfiles/commit/4a97aa072918b07430e40e7fb5999f11820b0353))
+
+
+### Bug Fixes
+
+* autostart link fix ([9d5b2a6](https://github.com/davidsneighbour/dotfiles/commit/9d5b2a6653267e619d1a3cc2c36e60755dfa7b7a))
+* update bash functions ([ab32017](https://github.com/davidsneighbour/dotfiles/commit/ab32017983909cd8bc4fb02aa2d488c4947ff2a5))
+
+
+### Chore
+
+* **config:** update workspace configuration ([6042d2e](https://github.com/davidsneighbour/dotfiles/commit/6042d2e88bba472af0a285b4683ab88866526aad))
+* **deps:** update dependencies ([050de64](https://github.com/davidsneighbour/dotfiles/commit/050de6426375dc355ddc98536fc2d9623409748a))
+* **deps:** update dependencies ([d58a656](https://github.com/davidsneighbour/dotfiles/commit/d58a6565542c15a44023db4c83c37f463dca86f6))
+
+
+### Configuration
+
+* **cargo:** update configuration ([88ba7c1](https://github.com/davidsneighbour/dotfiles/commit/88ba7c1cdbe29e23a985c6b205791fc830b376d3))
+* **fix:** update key for Gargulus ([1b9d417](https://github.com/davidsneighbour/dotfiles/commit/1b9d4176d0c2eb7513a75a23daae11c0fa1cfceb))
+* **git:** update git configuration ([21b376c](https://github.com/davidsneighbour/dotfiles/commit/21b376c3581f190a82c0c6563f747323bf39d44e))
+* **jrnl:** update jrnl configuration ([05b1f72](https://github.com/davidsneighbour/dotfiles/commit/05b1f721843273b3e1f1fea9301b88ab4d035304))
+
+
+### Build System
+
+* **deps:** update dependencies ([c19e5ff](https://github.com/davidsneighbour/dotfiles/commit/c19e5ff5e8e6c9505acd5745826d7adfbac267fc))
+
 ## [2024.3.2](https://github.com/davidsneighbour/dotfiles/compare/v2024.3.1...v2024.3.2) (2024-10-03)
 
 ## [2024.3.1](https://github.com/davidsneighbour/dotfiles/compare/v2024.3.0...v2024.3.1) (2024-10-03)
