@@ -1,6 +1,6 @@
 [Desktop Entry]
 Type=Application
-Exec=APPIMAGELAUNCHER_DISABLE=1 &&/home/patrick/.joplin/Joplin.AppImage --no-sandbox %u
+Exec=sh -c 'sleep 15 && APPIMAGELAUNCHER_DISABLE=1 /home/patrick/.joplin/Joplin.AppImage --no-sandbox'
 Hidden=false
 NoDisplay=false
 X-GNOME-Autostart-enabled=true
