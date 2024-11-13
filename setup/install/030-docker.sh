@@ -15,3 +15,4 @@ sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin dock
 sudo groupadd docker
 sudo usermod -aG docker $USER
 sudo systemctl disable docker.service && sudo systemctl disable containerd.service
+sudo service docker stop
