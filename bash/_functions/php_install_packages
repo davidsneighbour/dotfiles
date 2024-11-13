@@ -8,7 +8,7 @@ install_php_packages() {
         echo "Usage: install_php_packages [versions] [packages]"
         echo
         echo "Options:"
-        echo "  versions   Comma-separated list of PHP versions (default: 8.2,8.3)"
+        echo "  versions   Comma-separated list of PHP versions (default: 8.2,8.3,8.4)"
         echo "  packages   Comma-separated list of PHP packages (default: bz2,cli,curl,gd,intl,mbstring,mcrypt,mysql,xdebug,imagick,xml,zip)"
         echo
         echo "Example:"
@@ -17,8 +17,8 @@ install_php_packages() {
     fi
 
     # Default versions and packages
-    local versions=("8.2" "8.3")
-    local packages=("bz2" "cli" "curl" "gd" "intl" "mbstring" "mcrypt" "mysql" "xdebug" "imagick" "xml" "zip")
+    local versions=("8.2" "8.3" "8.4")
+    local packages=("bz2" "cli" "common" "curl" "gd" "imagick" "intl" "mbstring" "mcrypt" "mysql" "opcache" "readline" "xdebug" "xml" "zip")
 
     # Override default versions if provided
     if [ -n "$1" ]; then
@@ -37,6 +37,14 @@ install_php_packages() {
         for package in "${packages[@]}"; do
             package_list+=("php${version}-${package}")
         done
+    done
+
+    # Initialize the package list with the base package name
+    package_list+=("libapache2-mod-php")
+
+    # Append each versioned package to the list
+    for version in "${versions[@]}"; do
+      package_list+=("libapache2-mod-php$version")
     done
 
     # Execute single install command
