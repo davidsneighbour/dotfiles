@@ -15,3 +15,12 @@ npm run build --silent
 echo "Setup Dracula theme on Vim..."
 mkdir -p ~/.vim/pack/themes/start
 git clone https://github.com/dracula/vim.git ~/.vim/pack/themes/start/dracula 2>/dev/null || true
+
+# Sublime Text
+echo "Setup Dracula theme on Sublime Text..."
+mkdir -p ~/.config/sublime-text/Packages
+git clone https://github.com/dracula/sublime.git "${HOME}/.config/sublime-text/Packages/Dracula Color Scheme" \
+  2>/dev/null || true
+
+# TODO
+# https://draculatheme.com/gnome-terminal
