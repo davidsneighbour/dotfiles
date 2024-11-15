@@ -24,3 +24,7 @@ git clone https://github.com/dracula/sublime.git "${HOME}/.config/sublime-text/P
 
 # TODO
 # https://draculatheme.com/gnome-terminal
+# https://draculatheme.com/jetbrains
+# https://draculatheme.com/gtk
+# https://draculatheme.com/qbittorrent
+# https://draculatheme.com/telegram
