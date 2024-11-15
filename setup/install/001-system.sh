@@ -13,3 +13,6 @@ sudo apt install apt-transport-https arp-scan bsdmainutils build-essential \
 sudo apt upgrade -y
 sudo apt autoremove -y
 sudo apt autoclean -y
+
+mkdir -p ~/github.com/davidsneighbour ~/gitlab.com/davidsneighbour
+mkdir -p ~/.config
