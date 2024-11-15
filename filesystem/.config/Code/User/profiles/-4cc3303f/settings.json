@@ -1,6 +1,5 @@
 {
     "editor.inlineSuggest.enabled": true,
-    "workbench.colorTheme": "Default Dark+ Experimental",
     "github.copilot.enable": {
         "*": true,
         "yaml": false,
@@ -17,4 +16,6 @@
         "editorRuler.foreground": "#ff408033"
     },
     "editor.wordWrapColumn": 120,
+    "explorer.confirmDelete": false,
+    "workbench.colorTheme": "Dracula Theme",
 }
