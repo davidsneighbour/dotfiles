@@ -13,4 +13,4 @@
 
 - shell:
     - "rm -f ~/.bash_history ~/.lesshst ~/.viminfo ~/.sudo_as_admin_successful"
-    - "rm -f ~/.wget-hsts ~/.ncu-cache.json"
+    - "rm -f ~/.wget-hsts ~/.ncu-cache.json ~/.lesshst"
