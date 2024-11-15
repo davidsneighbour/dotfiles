@@ -55,6 +55,7 @@
     ~/.config/polybar: filesystem/.config/polybar
     ~/.config/qt5ct: filesystem/.config/qt5ct
     ~/.config/rofi: filesystem/.config/rofi
+    ~/.config/sublime-text: filesystem/.config/sublime-text
     ~/.config/tabtab: filesystem/.config/tabtab
     ~/.config/transmission: filesystem/.config/transmission
     ~/.icons: filesystem/.icons
