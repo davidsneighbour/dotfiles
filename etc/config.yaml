@@ -48,6 +48,7 @@
     ~/.config/assets: filesystem/.themes/Dracula/assets
     ~/.config/Code: filesystem/.config/Code
     ~/.config/filezilla: filesystem/.config/filezilla
+    ~/.config/fontconfig: filesystem/.config/fontconfig
     ~/.config/gh: filesystem/.config/gh
     ~/.config/gtk-3.0: filesystem/.config/gtk-3.0
     ~/.config/gtk-4.0: filesystem/.config/gtk-4.0
