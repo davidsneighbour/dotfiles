@@ -42,6 +42,7 @@
     ##################################################################
     ~/.config/autostart: filesystem/.config/autostart
     ~/.config/assets: filesystem/.themes/Dracula/assets
+    ~/.config/BetterDiscord: filesystem/.config/BetterDiscord
     ~/.config/Code: filesystem/.config/Code
     ~/.config/filezilla: filesystem/.config/filezilla
     ~/.config/fontconfig: filesystem/.config/fontconfig
