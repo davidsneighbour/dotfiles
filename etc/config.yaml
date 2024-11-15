@@ -11,10 +11,6 @@
 
 - clean: ["~"]
 
-- shell:
-    - ["mkdir -p ~/.config", "creating config folder (if it doesn't exist yet)"]
-    - "rm -f ~/.bash_history ~/.lesshst ~/.viminfo ~/.sudo_as_admin_successful"
-
 - link:
     ############################################################################
     # file links

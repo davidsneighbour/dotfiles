@@ -7,6 +7,9 @@ if [[ $# -gt 0 ]]; then
   if [ "${1}" = "protected" ]; then
     DOTBOT_CONFIG="etc/config.protected.yaml"
   fi
+  if [ "${1}" = "clean" ]; then
+    DOTBOT_CONFIG="etc/config.clean.yaml"
+  fi
 fi
 
 echo "${DOTBOT_CONFIG}"
