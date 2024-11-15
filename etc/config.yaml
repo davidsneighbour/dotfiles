@@ -60,6 +60,7 @@
     ~/.icons: filesystem/.icons
     ~/.themes: filesystem/.themes
     ~/.vscode: filesystem/.vscode
+    ~/.vim: filesystem/.vim
     ~/.wallpapers: filesystem/.wallpapers
     # @todo: check if that is still the right location
     ~/snap/joplin-desktop/current/.config/joplin-desktop/plugins: filesystem/snap/joplin-desktop/current/.config/joplin-desktop/plugins
