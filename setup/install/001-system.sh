@@ -7,9 +7,9 @@ sudo apt install apt-transport-https arp-scan bsdmainutils build-essential \
   gnome-tweaks gnupg2 gparted grc inkscape libavcodec-dev libavcodec-extra \
   libayatana-appindicator3-dev libfuse2 libnss3-tools net-tools pdftk \
   plocate python-is-python3 python3 python3-gpg python3-pip \
-  python3-virtualenv qt5ct shutter shc texlive-extra-utils \
+  python3-virtualenv qt5ct shutter shc texlive-extra-utils testdisk \
   software-properties-common rename polybar gnome-shell-extension-manager \
-  barrier ubuntu-restricted-extras vim wget zoxide -y
+  barrier ubuntu-restricted-extras vim wget zoxide smartctl -y
 sudo apt upgrade -y
 sudo apt autoremove -y
 sudo apt autoclean -y
