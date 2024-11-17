@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# https://github.com/TiagoDanin/Awesome-Polybar
+# https://github.com/polybar/polybar/wiki/Configuration
+# https://github.com/polybar/polybar-scripts
+# https://github.com/adi1090x/polybar-themes/tree/master
+
 trap 'echo "Polybar terminated unexpectedly"; exit 1' SIGTERM SIGINT
 
 # some setup
