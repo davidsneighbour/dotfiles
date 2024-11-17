@@ -1,0 +1,9 @@
+{
+  "packages": [
+    "../configurations/packages/commitlint-config",
+    "../configurations/packages/eslint-config",
+    "../configurations/packages/release-config",
+    "../configurations/packages/remark-config",
+    "../configurations/packages/tools"
+  ]
+}
