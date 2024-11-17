@@ -1,4 +1,41 @@
 Changelog
+## [2024.5.0](https://github.com/davidsneighbour/dotfiles/compare/v2024.4.0...v2024.5.0) (2024-11-17)
+
+
+### Features
+
+* add/modify setup scripts ([b9599ed](https://github.com/davidsneighbour/dotfiles/commit/b9599ed753f1502fbc44da5314e758dbff74e7e0))
+
+
+### Bug Fixes
+
+* add eza as ls alias ([5cabc44](https://github.com/davidsneighbour/dotfiles/commit/5cabc44c1be4338d664bfdf11adef9065cdee175))
+* add php8.4 and php modules to php packages script ([7b48143](https://github.com/davidsneighbour/dotfiles/commit/7b481437dfea36bc6c1dc55e09ea59efb585c714))
+
+
+### Chore
+
+* **config:** remove workspace file ([a19a194](https://github.com/davidsneighbour/dotfiles/commit/a19a1940b19b48dab071c8f09f0e726fc1ee1a11))
+* **deps:** update dependencies ([b9a3ddf](https://github.com/davidsneighbour/dotfiles/commit/b9a3ddf4b4a3f3ee22019d759adc85242344093b))
+
+
+### Configuration
+
+* **fonts:** add font config for proper emoji display in browsers (et alii) ([b4889ca](https://github.com/davidsneighbour/dotfiles/commit/b4889ca8edd5a8606ad33c5585bd11208d8c6f46))
+* **github:** set dependabot to once monthly runs (first friday) ([9a3a898](https://github.com/davidsneighbour/dotfiles/commit/9a3a8986bda3b1df9f754f33041d410dcc56fbd5))
+* **polybar:** update polybar configuration (wip) ([bda43af](https://github.com/davidsneighbour/dotfiles/commit/bda43af73db022d615dc0a5c85776e0226eec044))
+* **setup:** update symlinks ([e856481](https://github.com/davidsneighbour/dotfiles/commit/e856481489196cd133b0a7ff7cecd7f8c1def262))
+* **various:** sublime text, polybar and vscode configurations ([e462746](https://github.com/davidsneighbour/dotfiles/commit/e4627467ada06794c02e9ec683b579639dbe25a2))
+* **vscode:** set up vscode theme configuration setup ([0ba38f6](https://github.com/davidsneighbour/dotfiles/commit/0ba38f6265ea13523ec9f4ebf1c411fdc6e066eb))
+* **vscode:** update user profiles ([b6e9b6f](https://github.com/davidsneighbour/dotfiles/commit/b6e9b6f5818ffa6efc21e33457b3204dd9697a4a))
+* **workspace:** ignore local vscode extensions for now ([d1ff325](https://github.com/davidsneighbour/dotfiles/commit/d1ff3252e523b6d37fda103233c90430e516f587))
+
+
+### Build System
+
+* **deps:** bump @eslint/plugin-kit from 0.2.2 to 0.2.3 ([#228](https://github.com/davidsneighbour/dotfiles/issues/228)) ([23802a9](https://github.com/davidsneighbour/dotfiles/commit/23802a9689cdb2bf4ec953153fd4dbb17987a9fd))
+* **deps:** bump cross-spawn from 7.0.3 to 7.0.5 ([#229](https://github.com/davidsneighbour/dotfiles/issues/229)) ([01ea036](https://github.com/davidsneighbour/dotfiles/commit/01ea0366638270d36fb02a23e3f2ff6c12584c4f))
+
 ## [2024.4.0](https://github.com/davidsneighbour/dotfiles/compare/v2024.3.2...v2024.4.0) (2024-11-11)
 
 
