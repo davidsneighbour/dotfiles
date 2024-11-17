@@ -29,7 +29,6 @@ git clone https://github.com/dracula/sublime.git "${HOME}/.config/sublime-text/P
 # https://draculatheme.com/qbittorrent
 # https://draculatheme.com/telegram
 # https://draculatheme.com/highlightjs
-# https://draculatheme.com/rofi
 # https://draculatheme.com/arduino-ide
 # https://draculatheme.com/libreoffice
 # https://draculatheme.com/grub

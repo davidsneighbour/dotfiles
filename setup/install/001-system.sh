@@ -8,7 +8,7 @@ sudo apt install apt-transport-https arp-scan barrier bsdmainutils \
   gparted gpg grc inkscape libavcodec-dev libavcodec-extra \
   libayatana-appindicator3-dev libfuse2 libnss3-tools net-tools pdftk plocate \
   polybar python-is-python3 python3 python3-gpg python3-pip python3-virtualenv \
-  qt5ct rename shutter shc smartctl software-properties-common \
+  qt5ct rename shutter shc smartctl software-properties-common rofi \
   texlive-extra-utils testdisk ubuntu-restricted-extras vim wget zoxide -y
 sudo apt upgrade -y
 sudo apt autoremove -y
