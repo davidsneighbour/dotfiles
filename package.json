@@ -27,11 +27,17 @@
   },
   "scripts": {
     "release": "commit-and-tag-version -a -t \"v\" --releaseCommitMessageFormat \"chore(release): v{{currentTag}}\" && ./bin/repo/release/postrelease",
-    "lint:hook:commit": "lint-staged"
+    "lint:hook:commit": "lint-staged",
+    "link:prepare": "wireit"
   },
   "main": "index.js",
   "simple-git-hooks": {
     "pre-commit": "npm run lint:hook:commit",
     "commit-msg": "npx commitlint -e \"$@\""
+  },
+  "wireit": {
+    "link:prepare": {
+      "command": "npx link"
+    }
   }
 }
