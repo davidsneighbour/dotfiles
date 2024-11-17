@@ -35,7 +35,7 @@ Trust Tokens
 Trust Tokens-journal
 User/globalStorage/
 User/History/
-User/profiles/**/globalStorage
+User/profiles/
 User/sync
 User/workspaceStorage/
 VideoDecodeStats
