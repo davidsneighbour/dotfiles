@@ -8,7 +8,7 @@
   "bugs": "https://github.com/davidsneighbour/dotfiles/issues",
   "homepage": "https://github.com/davidsneighbour/dotfiles#readme",
   "dependencies": {
-    "@clack/prompts": "0.8.1",
+    "@clack/prompts": "0.8.2",
     "@davidsneighbour/commitlint-config": "2024.4.8",
     "@davidsneighbour/eslint-config": "2024.4.8",
     "@davidsneighbour/release-config": "2024.4.8",
