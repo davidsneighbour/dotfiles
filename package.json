@@ -6,10 +6,10 @@
   "author": "Patrick Kollitsch <patrick@davids-neighbour.com>",
   "keywords": [],
   "dependencies": {
-    "@davidsneighbour/tools": "^2024.3.40"
+    "@davidsneighbour/tools": "^2024.4.9"
   },
   "scripts": {
-    "server": "./bin/server.sh",
+    "server": "./server.sh",
     "release": "wireit",
     "update": "docker pull ghcr.io/open-webui/open-webui:ollama"
   },
