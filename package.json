@@ -10,7 +10,8 @@
     "@davidsneighbour/tools": "^2024.3.40"
   },
   "scripts": {
-    "server": "./bin/server.sh"
+    "server": "./bin/server.sh",
+    "update": "docker pull ghcr.io/open-webui/open-webui:ollama"
   },
   "main": "index.js"
 }
