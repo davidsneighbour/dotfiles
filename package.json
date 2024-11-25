@@ -1,21 +1,18 @@
 {
   "name": "@davidsneighbour/alan",
   "description": "",
-  "version": "0.0.2",
+  "version": "0.0.0",
   "license": "MIT",
   "author": "Patrick Kollitsch <patrick@davids-neighbour.com>",
   "keywords": [],
-  "dependencies": {
-    "@davidsneighbour/tools": "^2024.4.9"
+  "devDependencies": {
+    "@davidsneighbour/release-config": "2024.4.9",
+    "@davidsneighbour/tools": "2024.4.9"
   },
   "scripts": {
-    "server": "./server.sh",
     "release": "wireit",
+    "server": "./server.sh",
     "update": "docker pull ghcr.io/open-webui/open-webui:ollama"
-  },
-  "main": "index.js",
-  "devDependencies": {
-    "@davidsneighbour/release-config": "^2024.4.9"
   },
   "wireit": {
     "release": {
