@@ -6,12 +6,20 @@
   "author": "Patrick Kollitsch <patrick@davids-neighbour.com>",
   "keywords": [],
   "dependencies": {
-    "@davidsneighbour/release-config": "^2024.3.40",
     "@davidsneighbour/tools": "^2024.3.40"
   },
   "scripts": {
     "server": "./bin/server.sh",
+    "release": "wireit",
     "update": "docker pull ghcr.io/open-webui/open-webui:ollama"
   },
-  "main": "index.js"
+  "main": "index.js",
+  "devDependencies": {
+    "@davidsneighbour/release-config": "^2024.4.9"
+  },
+  "wireit": {
+    "release": {
+      "command": "commit-and-tag-version --sign -a -t \"v\" --releaseCommitMessageFormat \"chore(release): v{{currentTag}}\" -- --no-verify && ./bin/repo/release/postrelease"
+    }
+  }
 }
