@@ -16,6 +16,7 @@
     ~/.sentryclirc: protected/.sentryclirc
     ~/.fonts: protected/.fonts
     ~/.ssh: protected/.ssh
+    ~/JoplinBackup: protected/JoplinBackup
     ~/.config/filezilla/filezilla.xml: protected/filezilla/filezilla.xml
     ~/.config/filezilla/sitemanager.xml: protected/filezilla/sitemanager.xml
     ~/.config/filezilla/trustedcerts.xml: protected/filezilla/trustedcerts.xml
