@@ -1,4 +1,35 @@
 Changelog
+## [2024.6.0](https://github.com/davidsneighbour/dotfiles/compare/v2024.5.0...v2024.6.0) (2024-11-29)
+
+
+### Features
+
+* add global setup script ([025bad8](https://github.com/davidsneighbour/dotfiles/commit/025bad8dafc48cc0435be290f2bef0e8d3ac1912))
+* keycombination manager ([5931be0](https://github.com/davidsneighbour/dotfiles/commit/5931be08a138241f1cbdec2654f114905a498532))
+* set wallpaper ([ffd5ce3](https://github.com/davidsneighbour/dotfiles/commit/ffd5ce3578b63d2456e983a43fc55766447e0fc4))
+
+
+### Bug Fixes
+
+* update scripts and configs ([cc0b484](https://github.com/davidsneighbour/dotfiles/commit/cc0b48429b7319cfd856e0af2857d3a924a0db3e))
+* update setup scripts ([4220aa6](https://github.com/davidsneighbour/dotfiles/commit/4220aa69c3e96dcfbbc9b3c13c9e1026376bc197))
+
+
+### Chore
+
+* add configs ([4f413b5](https://github.com/davidsneighbour/dotfiles/commit/4f413b5f0001331a0708d1eb6f45907ed61bf999))
+* **config:** setup local links to dev packages ([2628753](https://github.com/davidsneighbour/dotfiles/commit/2628753940748cb3a71fcf2dd00513fc8b4a1a8f))
+* **config:** update startup scripts ([6a75a49](https://github.com/davidsneighbour/dotfiles/commit/6a75a491b5a9158a7f0844f073f8bc64826cadae))
+* **config:** update workspace configuration ([bda1d98](https://github.com/davidsneighbour/dotfiles/commit/bda1d9892cc2ff989bb5b217fb82d070b09fa93a))
+
+
+### Configuration
+
+* **extensions:** add tilingshell config ([3398424](https://github.com/davidsneighbour/dotfiles/commit/33984245c1c5306ee68639d2ebc14a0749c37131))
+* **joplin:** update joplin setup ([3f56908](https://github.com/davidsneighbour/dotfiles/commit/3f56908b173bf1b80fa511fd14462e40c29e8ef2))
+* update dotbot configs ([7c8fc76](https://github.com/davidsneighbour/dotfiles/commit/7c8fc763732c24f54ff80e7dc8662422e0487183))
+* **vscode:** clean out profiles directories ([177c0a8](https://github.com/davidsneighbour/dotfiles/commit/177c0a8ab58bfaed31142e818f25dc952ccd961c))
+
 ## [2024.5.0](https://github.com/davidsneighbour/dotfiles/compare/v2024.4.0...v2024.5.0) (2024-11-17)
 
 
