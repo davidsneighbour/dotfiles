@@ -5,3 +5,6 @@ url = keybase://private/davidsneighbour/protected
 	path = dotbot
 	url = https://github.com/anishathalye/dotbot
 	ignore = dirty
+[submodule "bin"]
+	path = bin
+	url = git@github.com:davidsneighbour/binaries.git
