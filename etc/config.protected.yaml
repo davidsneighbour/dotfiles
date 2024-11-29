@@ -12,11 +12,13 @@
 - link:
     ~/.env: protected/.env
     ~/.gmailctl: protected/.gmailctl
+    ~/.gnupg: protected/.gnupg
     ~/.npmrc: protected/.npmrc
     ~/.sentryclirc: protected/.sentryclirc
     ~/.fonts: protected/.fonts
     ~/.ssh: protected/.ssh
     ~/JoplinBackup: protected/JoplinBackup
+    ~/.config/Cryptomator: protected/Cryptomator
     ~/.config/filezilla/filezilla.xml: protected/filezilla/filezilla.xml
     ~/.config/filezilla/sitemanager.xml: protected/filezilla/sitemanager.xml
     ~/.config/filezilla/trustedcerts.xml: protected/filezilla/trustedcerts.xml

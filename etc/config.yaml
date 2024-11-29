@@ -24,6 +24,7 @@
     ~/.cargo/env: filesystem/.cargo/env
     ~/.config/user-dirs.dirs: filesystem/.config/user-dirs.dirs
     ~/.czrc: filesystem/.czrc
+    ~/.dir_colors: filesystem/.dir_colors
     ~/.face.icon: filesystem/.face.icon
     ~/.editorconfig: filesystem/.editorconfig
     ~/.fehbg: filesystem/.fehbg
@@ -51,15 +52,18 @@
     ~/.config/gtk-3.0: filesystem/.config/gtk-3.0
     ~/.config/gtk-4.0: filesystem/.config/gtk-4.0
     ~/.config/i3: filesystem/.config/i3
+    ~/.config/inkscape: filesystem/.config/inkscape
     ~/.config/lsd: filesystem/.config/lsd
     ~/.config/jrnl: filesystem/.config/jrnl
     ~/.config/neofetch: filesystem/.config/neofetch
     ~/.config/polybar: filesystem/.config/polybar
     ~/.config/qt5ct: filesystem/.config/qt5ct
     ~/.config/rofi: filesystem/.config/rofi
+    ~/.config/sublime-merge: filesystem/.config/sublime-merge
     ~/.config/sublime-text: filesystem/.config/sublime-text
     ~/.config/tabtab: filesystem/.config/tabtab
     ~/.config/transmission: filesystem/.config/transmission
+    ~/.gnome: filesystem/.gnome
     ~/.icons: filesystem/.icons
     ~/.themes: filesystem/.themes
     ~/.vscode: filesystem/.vscode
