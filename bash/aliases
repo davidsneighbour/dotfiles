@@ -118,3 +118,8 @@ alias rector="~/github.com/getbooka/booka/vendor/bin/rector process"
 # alias npx="socket npx"
 
 alias check-network="sudo arp-scan --localnet --numeric --quiet --ignoredups"
+
+# Raspberry Pi control
+export PI_SERVER="raspberrypi.local"
+alias pi-shutdown='ssh $PI_SERVER -t "sudo /usr/sbin/shutdown now -h"'
+alias pi-reboot='ssh $PI_SERVER -t "sudo /usr/sbin/shutdown now -r"'
