@@ -2,6 +2,10 @@
 
 # @todo review and refactor
 
+function hugos() {
+  hugo server  -F -O -N -D
+}
+
 function hugoserver() {
 
   # if [ blah is false ]; then
