@@ -8,12 +8,12 @@
   "bugs": "https://github.com/davidsneighbour/dotfiles/issues",
   "homepage": "https://github.com/davidsneighbour/dotfiles#readme",
   "dependencies": {
-    "@clack/prompts": "0.8.1",
-    "@davidsneighbour/commitlint-config": "2024.4.8",
-    "@davidsneighbour/eslint-config": "2024.4.8",
-    "@davidsneighbour/release-config": "2024.4.8",
-    "@davidsneighbour/remark-config": "2024.4.8",
-    "@davidsneighbour/tools": "2024.4.8",
+    "@clack/prompts": "0.8.2",
+    "@davidsneighbour/commitlint-config": "2024.4.9",
+    "@davidsneighbour/eslint-config": "2024.4.9",
+    "@davidsneighbour/release-config": "2024.4.9",
+    "@davidsneighbour/remark-config": "2024.4.9",
+    "@davidsneighbour/tools": "2024.4.9",
     "fs-extra": "11.2.0",
     "shelljs": "0.8.5",
     "simple-git-hooks": "2.11.1",
@@ -28,7 +28,8 @@
   "scripts": {
     "release": "commit-and-tag-version -a -t \"v\" --releaseCommitMessageFormat \"chore(release): v{{currentTag}}\" && ./bin/repo/release/postrelease",
     "lint:hook:commit": "lint-staged",
-    "link:prepare": "wireit"
+    "link:prepare": "wireit",
+    "setup": "./dotbot.sh clean && ./dotbot.sh && ./dotbot.sh protected"
   },
   "main": "index.js",
   "simple-git-hooks": {
