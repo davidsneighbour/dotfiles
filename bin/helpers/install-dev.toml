@@ -1,7 +1,0 @@
-[[tool]]
-label = "Rust and Cargo (install)"
-exec = "curl https://sh.rustup.rs -sSf | sh -s -- -y"
-
-[[tool]]
-label = "Bun (install/update)"
-exec = "curl -fsSL https://bun.sh/install | bash"
