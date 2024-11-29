@@ -1,0 +1,9 @@
+[/]
+enable-autotiling=true
+enable-blur-selected-tilepreview=true
+enable-blur-snap-assistant=true
+inner-gaps=uint32 0
+outer-gaps=uint32 0
+selected-layouts=[['3574003', '39802339'], ['Layout 1', 'Layout 1']]
+snap-assistant-threshold=25
+top-edge-maximize=true
