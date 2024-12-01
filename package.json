@@ -13,7 +13,7 @@
     "@davidsneighbour/eslint-config": "2024.4.9",
     "@davidsneighbour/release-config": "2024.4.9",
     "@davidsneighbour/remark-config": "2024.4.9",
-    "@davidsneighbour/tools": "2024.4.9",
+    "@davidsneighbour/tools": "2024.4.10",
     "fs-extra": "11.2.0",
     "shelljs": "0.8.5",
     "simple-git-hooks": "2.11.1",
