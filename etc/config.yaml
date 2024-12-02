@@ -74,3 +74,9 @@
     - "gsettings set org.gnome.desktop.interface gtk-theme \"Dracula\""
     - "gsettings set org.gnome.desktop.wm.preferences theme \"Dracula\""
 #    - "gsettings set org.gnome.desktop.interface icon-theme \"Dracula\""
+
+- crontab:
+  - cron: 0 0 * * *
+    command: /home/patrick/github.com/davidsneighbour/dotfiles/bin/cronjobs/update-npm.sh >> /home/patrick/cron.log 2>&1
+  - cron: 30 */4 * * *
+    command: /home/patrick/github.com/davidsneighbour/dotfiles/bin/cronjobs/filespace-discord.sh >> /home/patrick/cron.log 2>&1
