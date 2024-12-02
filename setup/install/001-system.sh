@@ -8,7 +8,7 @@ sudo apt install ack apt-transport-https arp-scan barrier bsdmainutils kitty \
   gparted gpg grc inkscape libavcodec-dev libavcodec-extra dconf-editor \
   libayatana-appindicator3-dev libfuse2 fuse3 libnss3-tools net-tools pdftk \
   plocate polybar python-is-python3 python3 python3-gpg python3-pip \
-  python3-virtualenv qt5ct rename shutter shc smartmontools \
+  python3-virtualenv qt5ct rename shutter shc smartmontools python3-venv \
   software-properties-common rofi texlive-extra-utils testdisk \
   ubuntu-restricted-extras vim wget zoxide fzf w3m w3m-img chafa -y
 sudo apt upgrade -y
