@@ -13,7 +13,7 @@ DOTFILES_PATH="${CURDIR}/../"
 # exec 2>/tmp/bashrc_debug.log
 
 # history setup
-export HISTCONTROL=ignoreboth:erasedups # don't put duplicate lines or lines starting with space in the history and remove doubles
+export HISTCONTROL=ignoreboth:erasedups # remove duplicate lines or lines starting with space from history
 export HISTFILESIZE=                    # unlimited history size
 export HISTSIZE=
 shopt -s histappend              # append to the history file, don't overwrite it
