@@ -50,14 +50,6 @@ export NODE_OPTIONS="--require ${DOTFILES_PATH}/bin/helpers/set_max_listeners.cj
 
 eval "$(zoxide init bash)"
 
-for FILE in /home/patrick/github.com/davidsneighbour/dotfiles/bin/lib/*; do
-  set -a
-  # this routine ranges through a folder of files that we don't explicitly know (@davidsneighbour)
-  # see https://github.com/koalaman/shellcheck/wiki/SC1090
-  # shellcheck source=/dev/null
-  source "${FILE}"
-  set +a
-done
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
 
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
