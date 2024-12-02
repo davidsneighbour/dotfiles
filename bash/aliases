@@ -1,9 +1,6 @@
 # reload the profile
 alias reload='. ~/.bash_profile'
 
-# dotfiles is an alias to git with the proper paths for the dotfiles repository
-alias dotfiles='git --git-dir=$HOME/github.com/davidsneighbour/dotfiles/.git --work-tree=$HOME/github.com/davidsneighbour/dotfiles/'
-
 # go up multiple levels
 # (also see 'up' function)
 alias ..='cd ..'
@@ -123,3 +120,8 @@ alias check-network="sudo arp-scan --localnet --numeric --quiet --ignoredups"
 export PI_SERVER="raspberrypi.local"
 alias pi-shutdown='ssh $PI_SERVER -t "sudo /usr/sbin/shutdown now -h"'
 alias pi-reboot='ssh $PI_SERVER -t "sudo /usr/sbin/shutdown now -r"'
+
+# Python aliases
+alias py-activate="python -m venv .env && \
+  source .env/bin/activate && \
+  echo 'run \"deactivate\" to exit the virtual environment'"
