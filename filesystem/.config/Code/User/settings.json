@@ -343,5 +343,6 @@
   "[ignore]": {
     "editor.defaultFormatter": "foxundermoon.shell-format"
   },
-  "markdownlint.focusMode": false
+  "markdownlint.focusMode": false,
+  "window.customTitleBarVisibility": "auto"
 }
