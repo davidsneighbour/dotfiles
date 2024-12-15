@@ -9,11 +9,11 @@
   "homepage": "https://github.com/davidsneighbour/dotfiles#readme",
   "dependencies": {
     "@clack/prompts": "0.8.2",
-    "@davidsneighbour/commitlint-config": "2024.4.9",
-    "@davidsneighbour/eslint-config": "2024.4.9",
-    "@davidsneighbour/release-config": "2024.4.9",
-    "@davidsneighbour/remark-config": "2024.4.9",
-    "@davidsneighbour/tools": "2024.4.9",
+    "@davidsneighbour/commitlint-config": "2024.4.12",
+    "@davidsneighbour/eslint-config": "2024.4.12",
+    "@davidsneighbour/release-config": "2024.4.12",
+    "@davidsneighbour/remark-config": "2024.4.12",
+    "@davidsneighbour/tools": "2024.4.12",
     "fs-extra": "11.2.0",
     "shelljs": "0.8.5",
     "simple-git-hooks": "2.11.1",
@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
-    "lint-staged": "15.2.10",
+    "lint-staged": "15.2.11",
     "semver": "7.6.3"
   },
   "scripts": {
