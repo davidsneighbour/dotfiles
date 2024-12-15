@@ -6,8 +6,8 @@
   "author": "Patrick Kollitsch <patrick@davids-neighbour.com>",
   "keywords": [],
   "devDependencies": {
-    "@davidsneighbour/release-config": "2024.4.9",
-    "@davidsneighbour/tools": "2024.4.9"
+    "@davidsneighbour/release-config": "2024.4.12",
+    "@davidsneighbour/tools": "2024.4.12"
   },
   "scripts": {
     "release": "wireit",
