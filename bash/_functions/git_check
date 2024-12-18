@@ -1,0 +1,31 @@
+function git_check() {
+    if [[ "$1" == "--help" ]]; then
+        echo "Usage: ${FUNCNAME[0]}"
+        echo
+        echo "Recursively scans the current directory for Git repositories,"
+        echo "checks if they are clean, and lists changes in dirty repositories."
+        return 0
+    fi
+    scan_directories() {
+        local base_dir="$1"
+
+        for dir in "${base_dir}"/*; do
+            if [[ -d "${dir}" ]]; then
+                if [[ -d "${dir}/.git" ]]; then
+                    cd "${dir}" || continue
+                    # Check if the repository is clean
+                    if ! git diff --quiet || ! git diff --cached --quiet; then
+                        echo "Dirty Git repository found: ${dir}"
+                        echo "Changes:"
+                        git status --short
+                        echo "---------------------------------"
+                    fi
+                    cd - > /dev/null || continue
+                fi
+                scan_directories "${dir}"
+            fi
+        done
+    }
+    scan_directories "$(pwd)"
+}
+
