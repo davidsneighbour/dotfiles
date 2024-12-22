@@ -17,7 +17,7 @@
     "fs-extra": "11.2.0",
     "shelljs": "0.8.5",
     "simple-git-hooks": "2.11.1",
-    "themer": "6.7.0",
+    "themer": "6.7.1",
     "toml": "3.0.0"
   },
   "devDependencies": {
