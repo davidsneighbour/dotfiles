@@ -1,4 +1,31 @@
 Changelog
+## [2025.1.0](https://github.com/davidsneighbour/dotfiles/compare/v2024.6.0...v2025.1.0) (2025-01-05)
+
+
+### Features
+
+* initiate binaries submodule ([3729e76](https://github.com/davidsneighbour/dotfiles/commit/3729e762a6b7e6cf4efac173e61099b4614aff32))
+
+
+### Bug Fixes
+
+* add venv package to apt setup ([a3fb28d](https://github.com/davidsneighbour/dotfiles/commit/a3fb28d9938da8c180419c62b2ac7f698888f70f))
+* lib loader fix ([2f95a8c](https://github.com/davidsneighbour/dotfiles/commit/2f95a8cf3176874083f2644654bc3766bfdcb71e))
+* remove unused parts and fix issues in bash scripts ([0bb2b19](https://github.com/davidsneighbour/dotfiles/commit/0bb2b19406d9097061b7585196720f45da803057))
+* update dotbot configuration ([cc69770](https://github.com/davidsneighbour/dotfiles/commit/cc697700976d9818b35139147280b6c48bc747ec))
+* update pishutdown service script ([3b30101](https://github.com/davidsneighbour/dotfiles/commit/3b301018db46b79589949939829b2ea804369837))
+
+
+### Configuration
+
+* **vscode:** update configuration ([c419f54](https://github.com/davidsneighbour/dotfiles/commit/c419f546093a72c8a1d2f70f42b3150794451459))
+
+
+### Build System
+
+* **deps:** add markdownlint configuration ([6d337b6](https://github.com/davidsneighbour/dotfiles/commit/6d337b6478ab44af904cbf39433187d7506ac60e))
+* **deps:** update dependencies ([a6f5009](https://github.com/davidsneighbour/dotfiles/commit/a6f5009dfa289f00be5175c0b226869786615ad8))
+
 ## [2024.6.0](https://github.com/davidsneighbour/dotfiles/compare/v2024.5.0...v2024.6.0) (2024-11-29)
 
 

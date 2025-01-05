@@ -1,7 +1,30 @@
 #!/bin/bash
 
+# Exit on errors, unset variables, and pipe failures
+set -euo pipefail
+
 export_keybindings() {
+    if [[ "$1" == "--help" ]]; then
+        echo "Usage: ${FUNCNAME[0]} <filename>"
+        echo "Export GNOME keybindings to the specified file."
+        echo
+        echo "Arguments:"
+        echo "  <filename>    The file where keybindings will be saved."
+        echo
+        echo "Notice:"
+        echo "  It is recommended to use the keybindingsmanager script instead:"
+        echo "  ./$(basename "$0") --export <filename>"
+        echo
+        echo "Part of DNB's dotfiles: https://github.com/davidsneighbour/dotfiles/"
+        return 0
+    fi
+
     local filename="$1"
+    if [[ -z "$filename" ]]; then
+        echo "Error: No filename specified. Use --help for usage information." >&2
+        return 1
+    fi
+
     echo "Exporting keybindings to $filename"
 
     local gsettings_folders=(
@@ -13,33 +36,19 @@ export_keybindings() {
     custom_bindings=$(dconf list /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/ | tr -d '/')
 
     {
-        # Export main keybindings
         for folder in "${gsettings_folders[@]}"; do
             gsettings list-recursively "$folder" | while read -r line; do
                 if [[ "$line" =~ ^([^[:space:]]+)[[:space:]]+([^[:space:]]+)[[:space:]]+(.+)$ ]]; then
-                    local path="${BASH_REMATCH[1]}"
-                    local name="${BASH_REMATCH[2]}"
-                    local value="${BASH_REMATCH[3]}"
-                    if [[ "$value" =~ ^\[ ]]; then
-                        echo -e "$path\t$name\t$value"
-                    fi
+                    echo -e "${BASH_REMATCH[1]}\t${BASH_REMATCH[2]}\t${BASH_REMATCH[3]}"
                 else
-                    echo "Could not parse line: $line" >&2
-                    exit 1
+                    echo "Warning: Could not parse line: $line" >&2
                 fi
             done
         done
 
-        # Export custom keybindings
         for custom in $custom_bindings; do
             local folder="/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/${custom}/"
-            local name
-            name=$(dconf read "${folder}name")
-            local command
-            command=$(dconf read "${folder}command")
-            local binding
-            binding=$(dconf read "${folder}binding")
-            echo -e "custom\t$name\t$command\t$binding"
+            echo -e "custom\t$(dconf read "${folder}name")\t$(dconf read "${folder}command")\t$(dconf read "${folder}binding")"
         done
     } > "$filename"
 
@@ -47,15 +56,39 @@ export_keybindings() {
 }
 
 import_keybindings() {
+    if [[ "$1" == "--help" ]]; then
+        echo "Usage: ${FUNCNAME[0]} <filename>"
+        echo "Import GNOME keybindings from the specified file."
+        echo
+        echo "Arguments:"
+        echo "  <filename>    The file containing keybindings to import."
+        echo
+        echo "Notice:"
+        echo "  It is recommended to use the keybindingsmanager script instead:"
+        echo "  ./$(basename "$0") --import <filename>"
+        echo
+        echo "Part of DNB's dotfiles: https://github.com/davidsneighbour/dotfiles/"
+        return 0
+    fi
+
     local filename="$1"
+    if [[ -z "$filename" ]]; then
+        echo "Error: No filename specified. Use --help for usage information." >&2
+        return 1
+    fi
+
     echo "Importing keybindings from $filename"
+
+    if [[ ! -f "$filename" ]]; then
+        echo "Error: File $filename does not exist." >&2
+        return 1
+    fi
 
     local custom_count=0
     local custom_list=""
 
     while IFS=$'\t' read -r type name_or_path command_or_name binding_or_value; do
         if [[ "$type" == "custom" ]]; then
-            echo "Installing custom keybinding: $name_or_path"
             local folder="/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom${custom_count}/"
             dconf write "${folder}name" "$name_or_path"
             dconf write "${folder}command" "$command_or_name"
@@ -63,28 +96,30 @@ import_keybindings() {
             custom_list+="'${folder}',"
             custom_count=$((custom_count + 1))
         else
-            echo "Importing $name_or_path $command_or_name"
             gsettings set "$type" "$name_or_path" "$command_or_name"
         fi
     done < "$filename"
 
     if [[ $custom_count -gt 0 ]]; then
-        custom_list="[${custom_list%,}]"
-        echo "Importing list of custom keybindings."
-        dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings "$custom_list"
+        dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings "[${custom_list%,}]"
     fi
 
     echo "Keybindings imported successfully."
 }
 
 keybindingsmanager() {
-
-  show_help() {
-      echo "Import and export keybindings"
-      echo " -e, --export <filename>     Export keybindings to a file"
-      echo " -i, --import <filename>     Import keybindings from a file"
-      echo " -h, --help                  Show this help message"
-  }
+    if [[ "$1" == "--help" || -z "$1" ]]; then
+        echo "Usage: ${FUNCNAME[0]} [OPTIONS]"
+        echo "Options:"
+        echo "  -e, --export <filename>     Export keybindings to the specified file"
+        echo "  -i, --import <filename>     Import keybindings from the specified file"
+        echo "  -h, --help                  Show this help message"
+        echo
+        echo "This script provides a convenient way to manage GNOME keybindings."
+        echo
+        echo "Part of DNB's dotfiles: https://github.com/davidsneighbour/dotfiles/"
+        return 0
+    fi
 
     local action=""
     local filename=""
@@ -102,25 +137,19 @@ keybindingsmanager() {
                 shift 2
                 ;;
             -h|--help)
-                show_help
-                exit 0
+                ${FUNCNAME[0]} --help
+                return 0
                 ;;
             *)
-                echo "Unknown argument: $1" >&2
-                show_help
-                exit 1
+                echo "Error: Unknown argument $1. Use --help for usage information." >&2
+                return 1
                 ;;
         esac
     done
 
-    if [[ -z "$action" ]]; then
-        echo "No action specified. Use -h for help." >&2
-        exit 1
-    fi
-
     if [[ -z "$filename" ]]; then
-        echo "No filename specified. Use -h for help." >&2
-        exit 1
+        echo "Error: No filename specified. Use --help for usage information." >&2
+        return 1
     fi
 
     if [[ "$action" == "export" ]]; then
@@ -128,7 +157,7 @@ keybindingsmanager() {
     elif [[ "$action" == "import" ]]; then
         import_keybindings "$filename"
     else
-        echo "Unknown action: $action" >&2
-        exit 1
+        echo "Error: Unknown action $action. Use --help for usage information." >&2
+        return 1
     fi
 }
