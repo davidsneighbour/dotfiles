@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
-    "lint-staged": "15.2.11",
+    "lint-staged": "15.3.0",
     "semver": "7.6.3"
   },
   "scripts": {
