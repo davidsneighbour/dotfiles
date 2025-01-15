@@ -14,7 +14,7 @@
     "@davidsneighbour/markdownlint-config": "^2024.4.12",
     "@davidsneighbour/release-config": "2024.4.12",
     "@davidsneighbour/remark-config": "2024.4.12",
-    "@davidsneighbour/tools": "2024.4.12",
+    "@davidsneighbour/tools": "2025.0.1",
     "fs-extra": "11.3.0",
     "shelljs": "0.8.5",
     "simple-git-hooks": "2.11.1",
