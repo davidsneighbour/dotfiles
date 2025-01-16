@@ -5,6 +5,11 @@
 
 # set -eE -o functrace
 
+# VSCode workaround
+# shellcheck source=/dev/null
+TERM_PROGRAM="${TERM_PROGRAM:-}"
+[[ "${TERM_PROGRAM}" == "vscode" ]] && . "$(/usr/bin/code --locate-shell-integration-path bash)"
+
 # failure() {
 #   local lineno=$1
 #   local msg=$2
