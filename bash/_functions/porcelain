@@ -1,0 +1,121 @@
+#!/bin/bash
+
+# Function to initialize the script environment
+function git_status_checker_init() {
+  # Exit immediately if a pipeline command fails
+  set -euo pipefail
+
+  # Handle script interruptions gracefully
+  trap "gum style --foreground 196 'Script interrupted. Exiting...'; exit 1" SIGINT SIGTERM
+}
+
+# Function to check for .git directories recursively
+function git_porcelain_check() {
+  # Log file for storing script output
+  LOG_DIR="$HOME/.logs"
+  mkdir -p "$LOG_DIR"
+  LOG_FILE="$LOG_DIR/git_status_checker.log"
+  exec > >(tee -a "$LOG_FILE") 2>&1
+
+  local dir="${1:-$(pwd)}"
+
+  gum style --foreground 51 --bold "==== Checking directory: $(realpath --no-symlinks -- "$dir") ===="
+
+  declare -A visited_dirs
+
+  # Recursive function to scan directories
+  local check_git_directories
+  check_git_directories() {
+    local current_dir="$1"
+    local parent_git_dir="$2"
+
+    # Resolve the real path of the current directory
+    local resolved_dir
+    resolved_dir=$(realpath --no-symlinks -- "$current_dir" 2>/dev/null || echo "")
+
+    # If realpath fails, skip the directory
+    if [[ -z "$resolved_dir" ]]; then
+      gum style --foreground 202 "Skipping directory: $current_dir (unresolvable realpath)"
+      return
+    fi
+
+    # If the current directory is a symlink, note it and stop further traversal
+    if [[ -L "$current_dir" ]]; then
+      gum style --foreground 202 "Skipping symlink: $resolved_dir"
+      return
+    fi
+
+    # Check if the directory has already been visited
+    if [[ -n "${visited_dirs[$resolved_dir]:-}" ]]; then
+      gum style --foreground 240 "Already visited: $resolved_dir"
+      return
+    fi
+
+    # Mark the directory as visited
+    visited_dirs[$resolved_dir]='1'
+
+    # Display progress for the current directory
+    gum spin --title="Checking $resolved_dir" --spinner=dot &
+    local spinner_pid=$!
+
+    # If the current directory has a .git folder
+    if [[ -d "$current_dir/.git" ]]; then
+      kill $spinner_pid
+      wait $spinner_pid 2>/dev/null
+      gum style --foreground 46 --bold "\nRepository found: $resolved_dir"
+
+      # Perform porcelain check
+      git -C "$current_dir" status --porcelain | while read -r line; do
+        gum style --foreground 226 "  Changed: $line"
+      done
+
+      # If this is a sub-repo, indicate it
+      if [[ -n "$parent_git_dir" ]]; then
+        local resolved_parent
+        resolved_parent=$(realpath --no-symlinks -- "$parent_git_dir" 2>/dev/null || echo "")
+        gum style --foreground 244 "  Note: This is a sub-repository of $resolved_parent"
+      fi
+    else
+      kill $spinner_pid
+      wait $spinner_pid 2>/dev/null
+    fi
+
+    # Iterate through subdirectories, skipping "off-limit" directories
+    for sub_dir in "$current_dir"/*; do
+      if [[ -d "$sub_dir" ]]; then
+        case "$(basename "$sub_dir")" in
+          node_modules|.git|vendor)
+            gum style --foreground 202 "Skipping off-limit directory: $sub_dir"
+            continue
+            ;;
+        esac
+        check_git_directories "$sub_dir" "$current_dir"
+      fi
+    done
+  }
+
+  # Start the recursive check
+  check_git_directories "$dir" ""
+
+  gum style --foreground 51 --bold "\n==== Summary saved to $LOG_FILE ===="
+}
+
+# Parse command-line arguments
+function git_porcelain_check_command() {
+  local dir="$(pwd)"
+
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --dir)
+        dir="$2"
+        shift 2
+        ;;
+      *)
+        gum style --foreground 196 "Unknown argument: $1"
+        return 1
+        ;;
+    esac
+  done
+
+  git_porcelain_check "$dir"
+}
