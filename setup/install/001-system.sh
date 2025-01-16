@@ -17,3 +17,5 @@ sudo apt autoclean -y
 
 mkdir -p ~/github.com/davidsneighbour ~/gitlab.com/davidsneighbour
 mkdir -p ~/.config
+
+cd ~/github.com/davidsneighbour/dotfiles && keybindingsmanager -i etc/keycombinations.csv
