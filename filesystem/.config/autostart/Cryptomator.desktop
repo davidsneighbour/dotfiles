@@ -3,6 +3,6 @@ Type=Application
 Exec=cryptomator
 Hidden=false
 NoDisplay=false
-X-GNOME-Autostart-enabled=true
+X-GNOME-Autostart-enabled=false
 Name=Cryptomator
 Comment=Created with org.cryptomator.linux.autostart.FreedesktopAutoStartService
