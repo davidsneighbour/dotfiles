@@ -125,3 +125,6 @@ alias pi-reboot='ssh $PI_SERVER -t "sudo /usr/sbin/shutdown now -r"'
 alias py-activate="python -m venv .env && \
   source .env/bin/activate && \
   echo 'run \"deactivate\" to exit the virtual environment'"
+
+# actionable functions
+alias runall='function _runall() { for dir in */; do (cd \"\$dir\" && \"\$@\" &); done; wait; }; _runall'

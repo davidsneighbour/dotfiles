@@ -1,48 +1,69 @@
-#!/bin/bash
+# #!/bin/bash
 
-# @todo review and refactor
+# # Custom git function to extend default git behavior while preserving original functionality
+# function git() {
+#   # Debugging helper
+#   log_debug() {
+#     # shellcheck disable=SC2154
+#     [[ "${DEBUG}" == "true" ]] && echo "[DEBUG] $1"
+#   }
 
-# shellcheck disable=SC2032
-function git() {
-  if [[ $# -eq 0 ]]; then
-    command git
-    return
-  fi
+#   # Path to track whether the `git-cz` message has been shown
+#   GITCZ_NOTICE_FILE=~/.gitcz_notice
 
-  FILE=.git/hooks/status
-  case "$1" in
-  status)
-    [[ -x $FILE ]] && bash $FILE
-    command git "$@"
-    ;;
-  stash)
-    if [[ $# -eq 1 || ("$2" == "-m" && $# -ge 3) ]]; then
-      # Prepare arguments for git stash command
-      local stash_args=()
-      if [[ "$2" == "-m" ]]; then
-        # Include -m and the message if provided
-        stash_args=("--include-untracked" "$2" "$3")
-        # Capture any additional message parts if present
-        for ((i = 4; i <= $#; i++)); do
-          stash_args+=("${!i}")
-        done
-      else
-        stash_args=("--include-untracked")
-      fi
+#   # Check if git-cz is available and handle the notice
+#   if [[ -z "${GIT_CZ_AVAILABLE}" ]]; then
+#     if command -v git-cz &>/dev/null; then
+#       GIT_CZ_AVAILABLE=true
+#     else
+#       GIT_CZ_AVAILABLE=false
+#       # Show the message only if it hasn't been shown before
+#       if [[ ! -f ${GITCZ_NOTICE_FILE} ]]; then
+#         echo "Notice: git-cz is not configured or installed. Falling back to default git commit."
+#         touch "${GITCZ_NOTICE_FILE}" # Create the file to prevent future notices
+#       fi
+#     fi
+#   fi
 
-      # Attempt to stash changes and capture the output
-      output=$(command git stash "${stash_args[@]}" 2>&1)
-      echo "$output"
-      if echo "$output" | grep -q "No local changes to save"; then
-        echo -e "\nCurrent stashes"
-        command git stash list
-      fi
-    else
-      command git "$@"
-    fi
-    ;;
-  *)
-    command git "$@"
-    ;;
-  esac
-}
+#   # Debug: Log input arguments
+#   log_debug "Running custom git function with args: $*"
+
+#   # If no arguments are passed, call the original git command
+#   if [[ $# -eq 0 ]]; then
+#     command git
+#     return
+#   fi
+
+#   # Define the path to the custom status hook file
+#   FILE=.git/hooks/status
+
+#   # Use a case statement to handle specific git subcommands
+#   # shellcheck disable=SC2249
+#   case "$1" in
+#   status)
+#     [[ -x ${FILE} ]] && bash "${FILE}" # Run custom status hook, if executable
+#     ;;
+#   stash)
+#     local stash_args=("--include-untracked")
+#     if [[ "$2" == "-m" ]]; then
+#       stash_args+=("$2" "$3" "${@:4}")
+#     fi
+#     output=$(command git stash "${stash_args[@]}" 2>&1)
+#     echo "${output}"
+#     if echo "${output}" | grep -q "No local changes to save"; then
+#       echo -e "\nCurrent stashes:"
+#       command git stash list
+#     fi
+#     return
+#     ;;
+#   commit)
+#     if [[ "${GIT_CZ_AVAILABLE}" == "true" && $# -eq 1 ]]; then
+#       git-cz
+#       return
+#     fi
+#     ;;
+#   esac
+
+#   # Default: Call the original git command
+#   command git "$@"
+# }

@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Exit on errors, unset variables, and pipe failures
-set -euo pipefail
-
 export_keybindings() {
     if [[ "$1" == "--help" ]]; then
         echo "Usage: ${FUNCNAME[0]} <filename>"
