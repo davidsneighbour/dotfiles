@@ -10,7 +10,7 @@ rofi -location 2 -yoffset -2 -bw 2 -show run
 **/
 
 configuration {
-	modi: "window,windowcd,drun,combi,keys,run,ssh";
+	modi: "window,windowcd,drun,combi,keys,run,ssh,filebrowser";
 /*	width: 50;*/
 /*	lines: 15;*/
 /*	columns: 1;*/
@@ -153,6 +153,24 @@ configuration {
 /*	me-select-entry: "MousePrimary";*/
 /*	me-accept-entry: "MouseDPrimary";*/
 /*	me-accept-custom: "Control+MouseDPrimary";*/
+
+
+   recursivebrowser {
+      /** Directory the file browser starts in. */
+      directory: "~/";
+      /** return 1 on cancel. */
+      cancel-returns-1: true;
+      /** filter entries using regex */
+      filter-regex: "(.*cache.*|.*.o|node_modules)";
+      /** command */
+      command: "xdg-open";
+   }
+
+/* kb-entry-history-up or 'kb-entry-history-down keys. (Control-Up, Control-Down`).*/
+	entry  {
+        max-history: 30;
+    }
+
 }
 
 @import "dracula1"
