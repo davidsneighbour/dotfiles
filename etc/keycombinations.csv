@@ -194,4 +194,4 @@ org.gnome.settings-daemon.plugins.media-keys	volume-up-static	['XF86AudioRaiseVo
 org.gnome.settings-daemon.plugins.media-keys	www	['']
 org.gnome.settings-daemon.plugins.media-keys	www-static	['XF86WWW']
 custom	'Launcher'	'rofi -show run'	'<Super>r'
-custom	'Launcher for VSCode'	'/home/patrick/github.com/davidsneighbour/dotfiles/filesystem/.config/rofi/workspaces.sh --createworkspace --projectsdirs github.com/davidsneighbour,github.com/theNewDynamic,gitlab.com/wonderland-gmbh'	'<Super>w'
+custom	'Launcher for VSCode'	'/home/patrick/github.com/davidsneighbour/dotfiles/filesystem/.config/rofi/workspaces.sh --createworkspace --hideemptyprojects --workspacedirs github.com/davidsneighbour/dotfiles/workspaces --projectsdirs github.com/davidsneighbour,github.com/theNewDynamic,gitlab.com/wonderland-gmbh'	'<Super>w'
