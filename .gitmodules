@@ -1,13 +1,10 @@
-[submodule "protected"]
-path = protected
-url = keybase://private/davidsneighbour/protected
-[submodule "dotbot"]
-	path = dotbot
-	url = https://github.com/anishathalye/dotbot
-	ignore = dirty
 [submodule "bin"]
-	path = bin
-	url = git@github.com:davidsneighbour/binaries.git
-[submodule "plugins/crontab-dotbot"]
-	path = plugins/crontab-dotbot
-	url = https://github.com/fundor333/crontab-dotbot.git
+path = bin
+url = git@github.com:davidsneighbour/binaries.git
+[submodule "dotbot"]
+path = dotbot
+url = git@github.com:anishathalye/dotbot
+ignore = dirty
+[submodule "dotbot-plugins/crontab-dotbot"]
+path = dotbot-plugins/crontab-dotbot
+url = git@github.com:fundor333/crontab-dotbot.git
