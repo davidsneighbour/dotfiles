@@ -5,6 +5,3 @@ url = git@github.com:davidsneighbour/binaries.git
 path = dotbot
 url = git@github.com:anishathalye/dotbot
 ignore = dirty
-[submodule "dotbot-plugins/crontab-dotbot"]
-path = dotbot-plugins/crontab-dotbot
-url = git@github.com:fundor333/crontab-dotbot.git
