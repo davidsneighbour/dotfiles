@@ -1,3 +1,9 @@
 {
-	"theme": "Merge Dark.sublime-theme"
+	"theme": "Merge Dark.sublime-theme",
+	"added_words":
+	[
+		"lockfile",
+		"deps",
+		"Kollitsch",
+	],
 }

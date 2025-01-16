@@ -10,3 +10,4 @@ Type=Application
 Categories=FileTools;FileTransfer;GTK;Utility;
 StartupNotify=true
 Terminal=false
+X-GNOME-Autostart-enabled=false
