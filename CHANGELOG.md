@@ -1,4 +1,63 @@
 Changelog
+## [2025.2.0](https://github.com/davidsneighbour/dotfiles/compare/v2025.1.0...v2025.2.0) (2025-01-25)
+
+
+### Content
+
+* update wallpapers ([6432c79](https://github.com/davidsneighbour/dotfiles/commit/6432c798f5303516be4b357264d375fc28e801c7))
+
+
+### Features
+
+* plugins loader (WIP) ([2e07a73](https://github.com/davidsneighbour/dotfiles/commit/2e07a7350c852895974c342e271c30c6a1c1d739))
+* update rofi workspaces configuration ([215cd2b](https://github.com/davidsneighbour/dotfiles/commit/215cd2bebee6bff6d1b098cbe6e5f2014ef1abf1))
+* vscode backup script (WIP) ([85e98fb](https://github.com/davidsneighbour/dotfiles/commit/85e98fb8213c961b7e5ee3289e634894c592745e))
+
+
+### Bug Fixes
+
+* add atuin setup to .profiles file ([165810c](https://github.com/davidsneighbour/dotfiles/commit/165810cbf6dd7844cd572cbf95f886596155640b))
+* add atuin setup to bash ([5219571](https://github.com/davidsneighbour/dotfiles/commit/521957143136a41413fc826a40ed04567f70ecdb))
+* add vscode snippet to bash initialization ([0db0ce0](https://github.com/davidsneighbour/dotfiles/commit/0db0ce0ae6b96cc63063bf19fb4dbff647e45088))
+* make polybar script location independent, move logs to ~/.logs ([37b0441](https://github.com/davidsneighbour/dotfiles/commit/37b044144bb156a58df0baef948db97402c86a41))
+* set latest node version in nvmrc ([bfb32ad](https://github.com/davidsneighbour/dotfiles/commit/bfb32ad187ac12cf3b826aae7e3876faf178f16c))
+* update autostart files, disable unused programs ([204d54c](https://github.com/davidsneighbour/dotfiles/commit/204d54c2a30a648e5e27ef37deb061cbdced315f))
+* update bash setup configurations ([474cceb](https://github.com/davidsneighbour/dotfiles/commit/474cceb7a64c22d87a7b04f819902f6a96800577))
+* update configurations ([c07ff5c](https://github.com/davidsneighbour/dotfiles/commit/c07ff5cb6aff84fa0430c188f302eb38ac2f09d2))
+* update configurations ([302275a](https://github.com/davidsneighbour/dotfiles/commit/302275acd8b587c45594dc9d10e3b65192632f1b))
+* update keycombination setup ([8a14b2c](https://github.com/davidsneighbour/dotfiles/commit/8a14b2ca9c693c16b68bbe9a0c92491b7a6c84b0))
+* update keycombinations ([6e83eb3](https://github.com/davidsneighbour/dotfiles/commit/6e83eb37990583f9e115f6852fca99ec4a463002))
+* update secretlint config ([8a31397](https://github.com/davidsneighbour/dotfiles/commit/8a31397ae0f5f08a169792441712840c1870417f))
+* update setup configurations ([2cbc9ef](https://github.com/davidsneighbour/dotfiles/commit/2cbc9efe2d22f861092ef45dfa580b096927bbac))
+* update setup scripts ([1ed5dba](https://github.com/davidsneighbour/dotfiles/commit/1ed5dba8ccb0606b12045798481d83034ecf0418))
+* update workspaces ([b480375](https://github.com/davidsneighbour/dotfiles/commit/b48037533f93aa91ae83c54b9f7ddc06f594aad7))
+
+
+### Chore
+
+* **git:** add 'plugins/dotfiles-plugin-bash-rofi-scripts/' from commit 'c97abb5a14063772eacadd75b26ad0fed7d24e2d' ([753025c](https://github.com/davidsneighbour/dotfiles/commit/753025cd5d2b24061e61de337bf8f9ec70f266c8))
+* **git:** move dotbot submodule(s) to dotbot-plugins directory ([c79d39e](https://github.com/davidsneighbour/dotfiles/commit/c79d39ea7bbf6eb00fceb239eb299a7b8db3f08f))
+* **git:** re-add dotbot crontab plugin ([0fae4ec](https://github.com/davidsneighbour/dotfiles/commit/0fae4ec0e7c61aefc5053b378e13d9af6b83ff3b))
+* **git:** remove crontab submodule ([c28f5de](https://github.com/davidsneighbour/dotfiles/commit/c28f5de29275a90ea090ed2b54762edd682376d8))
+* **git:** update bin submodule ([4f15f64](https://github.com/davidsneighbour/dotfiles/commit/4f15f64ae34784721661cb2c3e8374f764ff51d0))
+* **git:** update ignored files ([c3c2318](https://github.com/davidsneighbour/dotfiles/commit/c3c2318d371b63cfa75157db240688a20cf6dd7b))
+* **git:** update submodules ([66fbec8](https://github.com/davidsneighbour/dotfiles/commit/66fbec83b88ae3cdca116f083bf215cfab8be8d4))
+* initial commit ([c97abb5](https://github.com/davidsneighbour/dotfiles/commit/c97abb5a14063772eacadd75b26ad0fed7d24e2d))
+* **setup:** update workspace configuration ([e88ab99](https://github.com/davidsneighbour/dotfiles/commit/e88ab995cda3208f24a6ec98b633b45e18d852f2))
+
+
+### Build System
+
+* **deps:** bump @davidsneighbour/commitlint-config ([#253](https://github.com/davidsneighbour/dotfiles/issues/253)) ([3a9a70f](https://github.com/davidsneighbour/dotfiles/commit/3a9a70f2e4b348a6694a30e01ed3770061bc28f5))
+* **deps:** bump @davidsneighbour/eslint-config ([#255](https://github.com/davidsneighbour/dotfiles/issues/255)) ([10a3446](https://github.com/davidsneighbour/dotfiles/commit/10a34463471dfba0deb400c53bae7c21471910fc))
+* **deps:** bump @davidsneighbour/markdownlint-config ([#254](https://github.com/davidsneighbour/dotfiles/issues/254)) ([0a0314d](https://github.com/davidsneighbour/dotfiles/commit/0a0314d3fe7dfc07f5ff894b26f5f0f7bdd1c6fa))
+* **deps:** bump @davidsneighbour/release-config ([#257](https://github.com/davidsneighbour/dotfiles/issues/257)) ([7bc3b12](https://github.com/davidsneighbour/dotfiles/commit/7bc3b121c11d44cdeb4c1303ac77f250bf313dbc))
+* **deps:** bump @davidsneighbour/remark-config ([#256](https://github.com/davidsneighbour/dotfiles/issues/256)) ([1e85194](https://github.com/davidsneighbour/dotfiles/commit/1e85194ed977df6941db1c5beecd86947cc4a0fa))
+* **deps:** bump @davidsneighbour/tools from 2024.4.12 to 2025.0.1 ([#252](https://github.com/davidsneighbour/dotfiles/issues/252)) ([5341304](https://github.com/davidsneighbour/dotfiles/commit/534130451d14154c216db9a5c4d84930679d3aad))
+* **deps:** bump fs-extra from 11.2.0 to 11.3.0 ([#258](https://github.com/davidsneighbour/dotfiles/issues/258)) ([f4da613](https://github.com/davidsneighbour/dotfiles/commit/f4da6136effe1b001a02221b00113a2e52063210))
+* **deps:** update dependencies ([edc9511](https://github.com/davidsneighbour/dotfiles/commit/edc9511926f37155d6b845b605a6cde17cbab7e4))
+* **deps:** update dependencies ([fa28747](https://github.com/davidsneighbour/dotfiles/commit/fa287470401f9713f220da5367cf86c3befbbf84))
+
 ## [2025.1.0](https://github.com/davidsneighbour/dotfiles/compare/v2024.6.0...v2025.1.0) (2025-01-05)
 
 
