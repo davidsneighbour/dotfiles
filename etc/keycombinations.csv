@@ -100,7 +100,7 @@ org.gnome.settings-daemon.plugins.media-keys	calculator	['']
 org.gnome.settings-daemon.plugins.media-keys	calculator-static	['XF86Calculator']
 org.gnome.settings-daemon.plugins.media-keys	control-center	['']
 org.gnome.settings-daemon.plugins.media-keys	control-center-static	['XF86Tools']
-org.gnome.settings-daemon.plugins.media-keys	custom-keybindings	['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/']
+org.gnome.settings-daemon.plugins.media-keys	custom-keybindings	['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/']
 org.gnome.settings-daemon.plugins.media-keys	decrease-text-size	['']
 org.gnome.settings-daemon.plugins.media-keys	eject	['']
 org.gnome.settings-daemon.plugins.media-keys	eject-static	['XF86Eject']
@@ -195,3 +195,5 @@ org.gnome.settings-daemon.plugins.media-keys	www	['']
 org.gnome.settings-daemon.plugins.media-keys	www-static	['XF86WWW']
 custom	'Launcher'	'rofi -show run'	'<Super>r'
 custom	'Launcher for VSCode'	'/home/patrick/github.com/davidsneighbour/dotfiles/filesystem/.config/rofi/workspaces.sh --createworkspace --hideemptyprojects --workspacedirs github.com/davidsneighbour/dotfiles/workspaces --projectsdirs github.com/davidsneighbour,github.com/theNewDynamic,gitlab.com/wonderland-gmbh'	'<Super>w'
+custom	'Launcher for VSCode (new instance)'	'/home/patrick/github.com/davidsneighbour/dotfiles/filesystem/.config/rofi/workspaces.sh --createworkspace --hideemptyprojects --workspacedirs github.com/davidsneighbour/dotfiles/workspaces --projectsdirs github.com/davidsneighbour,github.com/theNewDynamic,gitlab.com/wonderland-gmbh --newwindow'	'<Super>q'
+custom	'Spotify with Release Radar'	'spotify --uri=https://open.spotify.com/playlist/37i9dQZEVXbrbvLYgbhTlJ?si=11352375c30d4932'	'<Super>s'
