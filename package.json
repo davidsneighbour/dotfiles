@@ -25,6 +25,7 @@
     "toml": "3.0.0"
   },
   "scripts": {
+    "ghskyline": "wireit",
     "link:prepare": "wireit",
     "lint:hook:commit": "lint-staged",
     "release": "commit-and-tag-version -a -t \"v\" --releaseCommitMessageFormat \"chore(release): v{{currentTag}}\" && ./bin/repo/release/postrelease",
@@ -33,6 +34,19 @@
   "wireit": {
     "link:prepare": {
       "command": "npx link"
+    },
+    "ghskyline:2024": {
+      "command": "gh skyline --output assets/gh-stl/davidsneighbour-2024-github-skyline.stl --year 2024"
+    },
+    "ghskyline:2025": {
+      "command": "gh skyline --output assets/gh-stl/davidsneighbour-2025-github-skyline.stl"
+    },
+    "ghskyline": {
+      "command": "git add assets/gh-stl/ && git commit -m \"chore(update): update gh-skyline files\"",
+      "dependencies": [
+        "ghskyline:2024",
+        "ghskyline:2025"
+      ]
     }
   },
   "main": "index.js",
