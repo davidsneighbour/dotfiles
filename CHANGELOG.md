@@ -1,4 +1,16 @@
 Changelog
+## [2025.2.1](https://github.com/davidsneighbour/dotfiles/compare/v2025.2.0...v2025.2.1) (2025-01-25)
+
+
+### Bug Fixes
+
+* update brew packages and update scripts ([44fc63a](https://github.com/davidsneighbour/dotfiles/commit/44fc63a38e9630be2262d1da126abfde11328af2))
+
+
+### Chore
+
+* **update:** update gh-skyline files ([1429e79](https://github.com/davidsneighbour/dotfiles/commit/1429e79223660de17725f3293fcd6a2276d3041d))
+
 ## [2025.2.0](https://github.com/davidsneighbour/dotfiles/compare/v2025.1.0...v2025.2.0) (2025-01-25)
 
 
