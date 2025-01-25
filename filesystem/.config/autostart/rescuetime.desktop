@@ -1,10 +1,13 @@
 [Desktop Entry]
 Type=Application
 Exec=/usr/bin/rescuetime
-Hidden=false
+Hidden=true
 NoDisplay=false
 X-GNOME-Autostart-enabled=true
 Name[en_US]=RescueTime
 Name=RescueTime
 Comment[en_US]=Tracking time spent
 Comment=Tracking time spent
+Icon=
+Terminal=false
+X-GNOME-Autostart-Delay=60

@@ -1,8 +1,11 @@
 [Desktop Entry]
 Type=Application
 Exec=cryptomator
-Hidden=false
+Hidden=true
 NoDisplay=false
 X-GNOME-Autostart-enabled=false
 Name=Cryptomator
 Comment=Created with org.cryptomator.linux.autostart.FreedesktopAutoStartService
+Icon=
+Terminal=false
+X-GNOME-Autostart-Delay=60

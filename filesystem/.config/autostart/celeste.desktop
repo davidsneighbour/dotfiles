@@ -11,3 +11,5 @@ Categories=FileTools;FileTransfer;GTK;Utility;
 StartupNotify=true
 Terminal=false
 X-GNOME-Autostart-enabled=false
+Hidden=true
+X-GNOME-Autostart-Delay=60
