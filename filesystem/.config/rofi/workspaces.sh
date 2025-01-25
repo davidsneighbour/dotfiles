@@ -14,6 +14,7 @@ CREATE_WORKSPACE="false"  # Whether to create a workspace file if none exists
 CACHE_FILE="${HOME}/.cache/rofi_workspaces_cache"  # Cache file to store last selected items
 CACHE_SIZE=5  # Number of items to keep in the cache
 HIDE_EMPTY_PROJECTS="false"  # Hide project directories with no .code-workspace files
+NEW_WINDOW="false"  # Whether to open a new Visual Studio Code window
 
 # Ensure required directories exist
 if [[ ! -d "${WORKINGDIR}" ]]; then
@@ -102,6 +103,10 @@ while [[ $# -gt 0 ]]; do
       HIDE_EMPTY_PROJECTS="true"
       shift
       ;;
+    --newwindow)
+      NEW_WINDOW="true"
+      shift
+      ;;
     --help)
       echo "Usage: ${FUNCNAME[0]} [OPTIONS]"
       echo "Generates a rofi menu for opening projects or workspace files."
@@ -116,6 +121,7 @@ while [[ $# -gt 0 ]]; do
       echo "  --sortorder ORDER     Set the sorting order (ASC or DESC, default: ${SORT_ORDER})"
       echo "  --createworkspace     Enable creation of workspace files if none exist (default: ${CREATE_WORKSPACE})"
       echo "  --hideemptyprojects   Hide project directories without .code-workspace files (default: ${HIDE_EMPTY_PROJECTS})"
+      echo "  --newwindow           Open workspace in a new Visual Studio Code window."
       echo "  --clearcache          Clear the cache file. Must be used alone."
       echo "  --help                Display this help message"
       exit 0
@@ -126,6 +132,12 @@ while [[ $# -gt 0 ]]; do
       ;;
   esac
 done
+
+# Determine the Visual Studio Code command based on the --newwindow flag
+CODE_COMMAND="code"
+if [[ "${NEW_WINDOW}" == "false" ]]; then
+  CODE_COMMAND="code -r"
+fi
 
 # List all directories in the projects directories
 PROJECT_DIRS=()
@@ -225,14 +237,14 @@ fi
 
 if [[ -n "${SELECTED_WORKSPACE_FILE}" ]]; then
   # Open the selected workspace file
-  code "${SELECTED_WORKSPACE_FILE}"
+  ${CODE_COMMAND} "${SELECTED_WORKSPACE_FILE}"
 elif [[ -n "${SELECTED_PROJECT_DIR}" ]]; then
   # Check if a workspace file exists in the selected directory
   WORKSPACE_FILE=$(find "${SELECTED_PROJECT_DIR}" -mindepth 1 -maxdepth 1 -type f -name "${FILE_PATTERN}" | head -n 1)
 
   if [[ -n "${WORKSPACE_FILE}" ]]; then
     # Open the workspace file if it exists
-    code "${WORKSPACE_FILE}"
+    ${CODE_COMMAND} "${WORKSPACE_FILE}"
   else
     if [[ "${CREATE_WORKSPACE}" == "true" ]]; then
       # Create a workspace file if it doesn't exist
@@ -255,10 +267,10 @@ EOL
       fi
 
       echo "Created new workspace file: ${NEW_WORKSPACE_FILE}"
-      code "${NEW_WORKSPACE_FILE}"
+      ${CODE_COMMAND} "${NEW_WORKSPACE_FILE}"
     else
       # Open the project directory if no workspace file is found
-      code "${SELECTED_PROJECT_DIR}"
+      ${CODE_COMMAND} "${SELECTED_PROJECT_DIR}"
     fi
   fi
 else
