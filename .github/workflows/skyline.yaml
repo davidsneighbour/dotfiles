@@ -39,7 +39,8 @@ jobs:
           YEAR=$(date --date="$(date +%Y-%m-02) -1 month" +%Y)
           MONTH_NAME=$(date --date="$(date +%Y-%m-02)" +%B)
           FILENAME="assets/gh-stl/davidsneighbour-${YEAR}-github-skyline.stl"
-          gh skyline --output $FILENAME --year $YEAR
+          REPO_OWNER=$(gh repo view --json owner --jq '.owner.login')
+          gh skyline --user $REPO_OWNER --output $FILENAME --year $YEAR
           echo "FILENAME=$FILENAME" >> $GITHUB_ENV
           echo "YEAR=$YEAR" >> $GITHUB_ENV
           echo "MONTH_NAME=$MONTH_NAME" >> $GITHUB_ENV
