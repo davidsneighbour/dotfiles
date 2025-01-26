@@ -12,6 +12,10 @@ const removeIgnoredFiles = async (/** @type {any[]} */ files) => {
   return filteredFiles.join(' ')
 }
 
+/**
+ * @filename: .lintstagedrc.mjs
+ * @type {import('lint-staged').Configuration}
+ */
 export default {
   // '*.{json,jsonc}': ['biome check --staged'],
   'package-lock.json': [
