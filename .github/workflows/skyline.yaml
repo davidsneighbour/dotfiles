@@ -43,7 +43,6 @@ jobs:
           gh skyline --user $REPO_OWNER --output $FILENAME --year $YEAR
           echo "FILENAME=$FILENAME" >> $GITHUB_ENV
           echo "YEAR=$YEAR" >> $GITHUB_ENV
-          echo "MONTH_NAME=$MONTH_NAME" >> $GITHUB_ENV
 
       - name: Set up Git user from repo
         env:
@@ -59,5 +58,5 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Provides authentication for GitHub CLI commands
         run: |
           git add $FILENAME
-          git commit -m "chore(git): add skyline stats for $MONTH_NAME $YEAR"
+          git commit -m "chore(assets): update skyline stats for $YEAR"
           git push
