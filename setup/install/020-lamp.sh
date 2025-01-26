@@ -12,3 +12,11 @@ sudo systemctl disable mysql
 sudo service apache2 start && sudo service mysql start
 sudo service mysql stop && sudo service apache2 stop
 sudo service apache2 status
+
+
+gh release --repo composer/composer download --pattern composer.phar
+gh attestation verify --repo composer/composer composer.phar
+mkdir -p ~/.bin/local/bin/
+mv composer.phar ~/.bin/local/bin/composer
+chmod +x ~/.bin/local/bin/composer
+composer --version
