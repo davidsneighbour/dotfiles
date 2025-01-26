@@ -19,16 +19,22 @@ jobs:
           node-version: 18
 
       - name: Install GitHub CLI
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Provides authentication for GitHub CLI
         run: |
           sudo apt update
           sudo apt install -y gh
 
       - name: Install gh-skyline extension
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Provides authentication for installing extensions
         run: |
           gh extension install github/gh-skyline
 
       - name: Calculate year and run command
         id: skyline
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Provides authentication for GitHub CLI commands
         run: |
           YEAR=$(date --date="$(date +%Y-%m-02) -1 month" +%Y)
           MONTH_NAME=$(date --date="$(date +%Y-%m-02)" +%B)
