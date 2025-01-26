@@ -1,0 +1,52 @@
+name: Generate GitHub Skyline
+
+on:
+  schedule:
+    - cron: '0 0 2 * *' # Runs at midnight on the 2nd day of every month
+  workflow_dispatch: # Allows manual triggering of the workflow
+
+jobs:
+  generate-skyline:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install GitHub CLI
+        run: |
+          sudo apt update
+          sudo apt install -y gh
+
+      - name: Install gh-skyline extension
+        run: |
+          gh extension install github/gh-skyline
+
+      - name: Calculate year and run command
+        id: skyline
+        run: |
+          YEAR=$(date --date="$(date +%Y-%m-02) -1 month" +%Y)
+          MONTH_NAME=$(date --date="$(date +%Y-%m-02)" +%B)
+          FILENAME="assets/gh-stl/davidsneighbour-${YEAR}-github-skyline.stl"
+          gh skyline --output $FILENAME --year $YEAR
+          echo "FILENAME=$FILENAME" >> $GITHUB_ENV
+          echo "YEAR=$YEAR" >> $GITHUB_ENV
+          echo "MONTH_NAME=$MONTH_NAME" >> $GITHUB_ENV
+
+      - name: Set up Git user from repo
+        run: |
+          REPO_OWNER=$(gh repo view --json owner --jq '.owner.login')
+          USER_EMAIL="${REPO_OWNER}@users.noreply.github.com"
+          git config user.name "$REPO_OWNER"
+          git config user.email "$USER_EMAIL"
+
+      - name: Commit and push changes
+        run: |
+          git add $FILENAME
+          git commit -m "chore(git): add skyline stats for $MONTH_NAME $YEAR"
+          git push
