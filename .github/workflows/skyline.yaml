@@ -46,6 +46,8 @@ jobs:
           echo "MONTH_NAME=$MONTH_NAME" >> $GITHUB_ENV
 
       - name: Set up Git user from repo
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Provides authentication for GitHub CLI commands
         run: |
           REPO_OWNER=$(gh repo view --json owner --jq '.owner.login')
           USER_EMAIL="${REPO_OWNER}@users.noreply.github.com"
@@ -53,6 +55,8 @@ jobs:
           git config user.email "$USER_EMAIL"
 
       - name: Commit and push changes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Provides authentication for GitHub CLI commands
         run: |
           git add $FILENAME
           git commit -m "chore(git): add skyline stats for $MONTH_NAME $YEAR"
