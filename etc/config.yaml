@@ -65,6 +65,7 @@
     ~/.config/transmission: filesystem/.config/transmission
     ~/.gnome: filesystem/.gnome
     ~/.icons: filesystem/.icons
+    ~/.logs: logs
     ~/.themes: filesystem/.themes
     ~/.vscode: filesystem/.vscode
     ~/.vim: filesystem/.vim
