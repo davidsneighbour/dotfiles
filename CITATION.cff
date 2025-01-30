@@ -1,10 +1,27 @@
 cff-version: 1.2.0
-message: "If you use code or cite this website, please cite it as below."
+title: Dotfiles by @davidsneighbour
+message: >-
+  If you use code or cite this website, please cite it as
+  below.
+type: software
 authors:
-  - family-names: "Kollitsch"
-    given-names: "Patrick"
-    orcid: "https://orcid.org/0000-0001-6250-2135"
-title: "Dotfiles by @davidsneighbour"
+  - family-names: Kollitsch
+    given-names: Patrick
+    orcid: 'https://orcid.org/0000-0001-6250-2135'
+repository-code: 'https://github.com/davidsneighbour/dotfiles'
+url: 'https://github.com/davidsneighbour/dotfiles/#readme'
+abstract: >-
+  This is @davidsneighbour's dotfiles repository, where I
+  keep personalized configurations, scripts, and setup
+  tweaks to streamline my development environment across all
+  my systems.
+keywords:
+  - dotfiles
+  - bash
+  - node
+  - npm
+  - configuration
+license: MIT
+commit: 0caabf781083
 version: 2025.3.1
-date-released: 2025-01-30
-url: "https://github.com/davidsneighbour/dotfiles"
+date-released: '2025-01-30'
