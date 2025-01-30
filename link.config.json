@@ -2,6 +2,7 @@
   "packages": [
     "../configurations/packages/commitlint-config",
     "../configurations/packages/eslint-config",
+    "../configurations/packages/markdownlint-config",
     "../configurations/packages/release-config",
     "../configurations/packages/remark-config",
     "../configurations/packages/tools"
