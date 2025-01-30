@@ -1,119 +1,119 @@
 #!/bin/bash
 
 set_wallpaper() {
-    # Default wallpaper directory
-    local WALLPAPER_DIR="${HOME}/.wallpapers"
+  # Default wallpaper directory
+  local WALLPAPER_DIR="${HOME}/.wallpapers"
 
-    # Parse arguments
-    while [[ $# -gt 0 ]]; do
-        case "$1" in
-            --help)
-                echo "Usage: $0 [--help] [--wallpaper-dir <directory>]"
-                echo "Sets a GNOME wallpaper using fzf for selection."
-                echo "Options:"
-                echo "  --help             Show this help message"
-                echo "  --wallpaper-dir    Specify the directory containing wallpapers (default: ${HOME}/.wallpapers)"
-                return 0
-                ;;
-            --wallpaper-dir)
-                if [[ -n "$2" ]]; then
-                    WALLPAPER_DIR="$2"
-                    shift 2
-                else
-                    echo "Error: --wallpaper-dir requires a directory path."
-                    return 1
-                fi
-                ;;
-            *)
-                echo "Unknown option: $1"
-                echo "Use --help for usage information."
-                return 1
-                ;;
-        esac
-    done
-
-    # Check if the directory exists
-    if [ ! -d "${WALLPAPER_DIR}" ]; then
-        echo "Directory ${WALLPAPER_DIR} does not exist or is not accessible. Please create it and add wallpapers."
+  # Parse arguments
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+    --help)
+      echo "Usage: $0 [--help] [--wallpaper-dir <directory>]"
+      echo "Sets a GNOME wallpaper using fzf for selection."
+      echo "Options:"
+      echo "  --help             Show this help message"
+      echo "  --wallpaper-dir    Specify the directory containing wallpapers (default: ${HOME}/.wallpapers)"
+      return 0
+      ;;
+    --wallpaper-dir)
+      if [[ -n "$2" ]]; then
+        WALLPAPER_DIR="$2"
+        shift 2
+      else
+        echo "Error: --wallpaper-dir requires a directory path."
         return 1
-    fi
-
-    # Debugging: Print the resolved symlink target
-    echo "Resolving ${WALLPAPER_DIR}..."
-    local RESOLVED_DIR
-    RESOLVED_DIR=$(readlink -f "${WALLPAPER_DIR}")
-    echo "Resolved directory: ${RESOLVED_DIR}"
-
-    # Check for required tools
-    if ! command -v fzf &> /dev/null; then
-        echo "fzf is not installed. Install it with 'sudo apt install fzf' and try again."
-        return 1
-    fi
-
-    # Find wallpapers (case-insensitive matching, following symlinks)
-    local WALLPAPERS
-    WALLPAPERS=$(find -L "${WALLPAPER_DIR}" -type f \( -iname "*.jpg" -o -iname "*.png" \))
-
-    # If no wallpapers are found, exit with a message
-    if [ -z "${WALLPAPERS}" ]; then
-        echo "No valid image files (*.jpg, *.png) found in ${WALLPAPER_DIR}."
-        return 1
-    fi
-
-    # Select a wallpaper using fzf with w3m for previews
-    local SELECTED_WALLPAPER
-    SELECTED_WALLPAPER=$(find -L "${WALLPAPER_DIR}" -type f \( -iname "*.jpg" -o -iname "*.png" \) | \
-        fzf --preview="chafa --size=50x20 {}")
-
-    # Check if a wallpaper was selected
-    if [ -z "${SELECTED_WALLPAPER}" ]; then
-        echo "No wallpaper selected."
-        return 1
-    fi
-
-    # Prompt for picture-options
-    echo "Choose how the wallpaper should be displayed:"
-    echo "1) none - No background image."
-    echo "2) wallpaper - Tiled wallpaper."
-    echo "3) centered - Centered image with background color filling extra space."
-    echo "4) scaled - Scaled to fit the screen, keeping the aspect ratio."
-    echo "5) stretched - Stretched to cover the screen, ignoring the aspect ratio."
-    echo "6) zoom - Scaled to fill the screen, keeping the aspect ratio. Parts may be cropped. (Default)"
-    echo "7) spanned - Spans across all monitors in a multi-monitor setup."
-    echo -n "Enter your choice [4]: "
-    read -r PICTURE_OPTION_CHOICE
-
-    # Map choice to option
-    local PICTURE_OPTION="zoom" # Default
-    case "$PICTURE_OPTION_CHOICE" in
-        1) PICTURE_OPTION="none" ;;
-        2) PICTURE_OPTION="wallpaper" ;;
-        3) PICTURE_OPTION="centered" ;;
-        4) PICTURE_OPTION="scaled" ;;
-        5) PICTURE_OPTION="stretched" ;;
-        6 | "") PICTURE_OPTION="zoom" ;; # Default option
-        7) PICTURE_OPTION="spanned" ;;
-        *) echo "Invalid choice. Defaulting to 'zoom'." ;;
+      fi
+      ;;
+    *)
+      echo "Unknown option: $1"
+      echo "Use --help for usage information."
+      return 1
+      ;;
     esac
+  done
 
-    # Debug: Display the selected wallpaper
-    echo "Setting wallpaper to: file://${SELECTED_WALLPAPER}"
-    echo "Picture option: ${PICTURE_OPTION}"
+  # Check if the directory exists
+  if [ ! -d "${WALLPAPER_DIR}" ]; then
+    echo "Directory ${WALLPAPER_DIR} does not exist or is not accessible. Please create it and add wallpapers."
+    return 1
+  fi
 
-    # Set both light and dark wallpapers
-    gsettings set org.gnome.desktop.background picture-uri "file://$(realpath "${SELECTED_WALLPAPER}")"
-    gsettings set org.gnome.desktop.background picture-uri-dark "file://$(realpath "${SELECTED_WALLPAPER}")"
+  # Debugging: Print the resolved symlink target
+  echo "Resolving ${WALLPAPER_DIR}..."
+  local RESOLVED_DIR
+  RESOLVED_DIR=$(readlink -f "${WALLPAPER_DIR}")
+  echo "Resolved directory: ${RESOLVED_DIR}"
 
-    # Set the picture-options value
-    gsettings set org.gnome.desktop.background picture-options "${PICTURE_OPTION}"
+  # Check for required tools
+  if ! command -v fzf &>/dev/null; then
+    echo "fzf is not installed. Install it with 'sudo apt install fzf' and try again."
+    return 1
+  fi
 
-    # Confirm the change
-    local CURRENT_LIGHT
-    local CURRENT_DARK
-    CURRENT_LIGHT=$(gsettings get org.gnome.desktop.background picture-uri)
-    CURRENT_DARK=$(gsettings get org.gnome.desktop.background picture-uri-dark)
-    echo "Light mode wallpaper set to: ${CURRENT_LIGHT}"
-    echo "Dark mode wallpaper set to: ${CURRENT_DARK}"
+  # Find wallpapers (case-insensitive matching, following symlinks)
+  local WALLPAPERS
+  WALLPAPERS=$(find -L "${WALLPAPER_DIR}" -type f \( -iname "*.jpg" -o -iname "*.png" \))
 
-    return 0
+  # If no wallpapers are found, exit with a message
+  if [ -z "${WALLPAPERS}" ]; then
+    echo "No valid image files (*.jpg, *.png) found in ${WALLPAPER_DIR}."
+    return 1
+  fi
+
+  # Select a wallpaper using fzf with w3m for previews
+  local SELECTED_WALLPAPER
+  SELECTED_WALLPAPER=$(find -L "${WALLPAPER_DIR}" -type f \( -iname "*.jpg" -o -iname "*.png" \) |
+    fzf --preview="chafa --size=50x20 {}")
+
+  # Check if a wallpaper was selected
+  if [ -z "${SELECTED_WALLPAPER}" ]; then
+    echo "No wallpaper selected."
+    return 1
+  fi
+
+  # Prompt for picture-options
+  echo "Choose how the wallpaper should be displayed:"
+  echo "1) none - No background image."
+  echo "2) wallpaper - Tiled wallpaper."
+  echo "3) centered - Centered image with background color filling extra space."
+  echo "4) scaled - Scaled to fit the screen, keeping the aspect ratio."
+  echo "5) stretched - Stretched to cover the screen, ignoring the aspect ratio."
+  echo "6) zoom - Scaled to fill the screen, keeping the aspect ratio. Parts may be cropped. (Default)"
+  echo "7) spanned - Spans across all monitors in a multi-monitor setup."
+  echo -n "Enter your choice [6]: "
+  read -r PICTURE_OPTION_CHOICE
+
+  # Map choice to option
+  local PICTURE_OPTION="zoom" # Default
+  case "$PICTURE_OPTION_CHOICE" in
+  1) PICTURE_OPTION="none" ;;
+  2) PICTURE_OPTION="wallpaper" ;;
+  3) PICTURE_OPTION="centered" ;;
+  4) PICTURE_OPTION="scaled" ;;
+  5) PICTURE_OPTION="stretched" ;;
+  6 | "") PICTURE_OPTION="zoom" ;; # Default option
+  7) PICTURE_OPTION="spanned" ;;
+  *) echo "Invalid choice. Defaulting to 'zoom'." ;;
+  esac
+
+  # Debug: Display the selected wallpaper
+  echo "Setting wallpaper to: file://${SELECTED_WALLPAPER}"
+  echo "Picture option: ${PICTURE_OPTION}"
+
+  # Set both light and dark wallpapers
+  gsettings set org.gnome.desktop.background picture-uri "file://$(realpath "${SELECTED_WALLPAPER}")"
+  gsettings set org.gnome.desktop.background picture-uri-dark "file://$(realpath "${SELECTED_WALLPAPER}")"
+
+  # Set the picture-options value
+  gsettings set org.gnome.desktop.background picture-options "${PICTURE_OPTION}"
+
+  # Confirm the change
+  local CURRENT_LIGHT
+  local CURRENT_DARK
+  CURRENT_LIGHT=$(gsettings get org.gnome.desktop.background picture-uri)
+  CURRENT_DARK=$(gsettings get org.gnome.desktop.background picture-uri-dark)
+  echo "Light mode wallpaper set to: ${CURRENT_LIGHT}"
+  echo "Dark mode wallpaper set to: ${CURRENT_DARK}"
+
+  return 0
 }

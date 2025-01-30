@@ -15,7 +15,6 @@
     "gruntfuggly.todo-tree",
     "hogashi.crontab-syntax-highlight",
     "mikestead.dotenv",
-    "mkhl.shfmt",
     "mousavian.ssh-config-syntax-highlighter",
     "mrmlnc.vscode-apache",
     "naumovs.color-highlight",
@@ -36,5 +35,6 @@
     "yzhang.markdown-all-in-one",
     "znck.grammarly",
     "mechatroner.rainbow-csv",
+    "mkhl.shfmt",
   ]
 }
