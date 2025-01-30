@@ -1,4 +1,45 @@
 Changelog
+## [2025.3.0](https://github.com/davidsneighbour/dotfiles/compare/v2025.2.1...v2025.3.0) (2025-01-30)
+
+
+### Features
+
+* add gnome extensions setup and fix composer install ([039a064](https://github.com/davidsneighbour/dotfiles/commit/039a06474d4afabb570ad636c98a6b15e5b79f6a))
+* move gh-skyline creation into a workflow ([9b86f1e](https://github.com/davidsneighbour/dotfiles/commit/9b86f1e400315504b5ce09f50e185e5b31171579))
+
+
+### Bug Fixes
+
+* add bat to brew package setup ([7349f4d](https://github.com/davidsneighbour/dotfiles/commit/7349f4d67b6b5d6784de4ca9b2352ab19c879485))
+* add check if something is to be commited for workflow ([1b5a932](https://github.com/davidsneighbour/dotfiles/commit/1b5a9329f73950058215886fb0fd4979e5e8b503))
+* add DOTFILES_GUM with checks for gum ([f0efa08](https://github.com/davidsneighbour/dotfiles/commit/f0efa08153fdfcef5182fa4380011b3c5eaaaf8a))
+* add ghtoken to workflow ([55babdd](https://github.com/davidsneighbour/dotfiles/commit/55babdd4f9b728dc2afb3f9dcab6e7788cbcd299))
+* add logs directory to dotbot setup ([d6d54c7](https://github.com/davidsneighbour/dotfiles/commit/d6d54c78290baeeb8c14227794bcd618adefd2f7))
+* add shfmt to apt package setup ([61d5844](https://github.com/davidsneighbour/dotfiles/commit/61d5844f23430f9ebe366a51803cef76786276ea))
+* recent smaller changes ([a8e33f1](https://github.com/davidsneighbour/dotfiles/commit/a8e33f180bf9dc2475e618cbf47797894e75e5eb))
+* rename git commit message for skyline commits ([b7fcfa1](https://github.com/davidsneighbour/dotfiles/commit/b7fcfa1e6885c90783bbb67aecf4e3b767815b8c))
+* use repo owner to run skyline command ([b992ba3](https://github.com/davidsneighbour/dotfiles/commit/b992ba386b736414d5579cf5f94c3584431d444a))
+* use repo owner to run skyline command ([bd81e4d](https://github.com/davidsneighbour/dotfiles/commit/bd81e4d16d38541f88db74af9bd117acbb599ae6))
+
+
+### Chore
+
+* **assets:** update skyline stats for 2024 ([95feed9](https://github.com/davidsneighbour/dotfiles/commit/95feed9546e103c525a5daaa7652a49223041c13))
+* **config:** ignore todocter directory ([767b867](https://github.com/davidsneighbour/dotfiles/commit/767b86758ed960a513d8e540ca9a2bd681d8fa85))
+* **fix:** update packages file to module format ([eea9f49](https://github.com/davidsneighbour/dotfiles/commit/eea9f490268bd791f57bbe42cf1f6f6bb7d77e41))
+* **git:** add skyline stats for January 2024 ([0511fd2](https://github.com/davidsneighbour/dotfiles/commit/0511fd222379645620c4020b1e4e400041ce1cc6))
+* **git:** add skyline stats for January 2024 ([5d4e75b](https://github.com/davidsneighbour/dotfiles/commit/5d4e75bb7b5202fd532c1356b74ea4ca8d6042d6))
+
+
+### Build System
+
+* **deps:** update dependencies ([6a61c7d](https://github.com/davidsneighbour/dotfiles/commit/6a61c7dc9402f0e4ae12973e9be1cb40883c3a22))
+
+
+### CI
+
+* **fix:** update lint-staged configuration ([28de24d](https://github.com/davidsneighbour/dotfiles/commit/28de24d9138d367033036d5a9675addf663a5bfe))
+
 ## [2025.2.1](https://github.com/davidsneighbour/dotfiles/compare/v2025.2.0...v2025.2.1) (2025-01-25)
 
 
