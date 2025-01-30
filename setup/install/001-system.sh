@@ -10,7 +10,7 @@ sudo apt install ack apt-transport-https arp-scan barrier bsdmainutils kitty \
   plocate polybar python-is-python3 python3 python3-gpg python3-pip \
   python3-virtualenv qt5ct rename shutter shc smartmontools python3-venv \
   software-properties-common rofi texlive-extra-utils testdisk \
-  ubuntu-restricted-extras vim wget zoxide fzf w3m w3m-img chafa -y
+  ubuntu-restricted-extras vim wget zoxide fzf w3m w3m-img chafa shfmt -y
 sudo apt upgrade -y
 sudo apt autoremove -y
 sudo apt autoclean -y
