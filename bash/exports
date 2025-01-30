@@ -40,3 +40,9 @@ export HOMEBREW_NO_ANALYTICS=1
 
 # dotfiles setup system
 export DOTFILES_SETUPDIR="${HOME}/github.com/davidsneighbour/dotfiles/setup"
+if command -v gum >/dev/null 2>&1; then
+	DOTFILES_GUM=true
+else
+	DOTFILES_GUM=false
+fi
+export DOTFILES_GUM
