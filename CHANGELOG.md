@@ -1,4 +1,11 @@
 Changelog
+## [2025.3.1](https://github.com/davidsneighbour/dotfiles/compare/v2025.3.0...v2025.3.1) (2025-01-30)
+
+
+### Bug Fixes
+
+* proper path to dotbot-plugins ([d599df2](https://github.com/davidsneighbour/dotfiles/commit/d599df287226ade5ad12c88a6f086d8525465f26))
+
 ## [2025.3.0](https://github.com/davidsneighbour/dotfiles/compare/v2025.2.1...v2025.3.0) (2025-01-30)
 
 
