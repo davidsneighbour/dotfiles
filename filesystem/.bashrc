@@ -5,9 +5,33 @@
 
 # set -eE -o functrace
 
+auto_source() {
+  # Call with either a single directory path:
+  #   auto_source "/path/to/completions"
+  # Or a single file path:
+  #   auto_source "/path/to/completions.sh"
+  # Or multiple paths:
+  #   auto_source "/path/to/one" "/path/to/two"
+  # Or pass an array:
+  #   auto_source "${ARRAY_OF_PATHS[@]}"
+  #
+  for ITEM in "$@"; do
+    if [ -d "${ITEM}" ]; then
+      for FILE in "${ITEM}"/*; do
+        # shellcheck disable=SC1090
+        [ -r "${FILE}" ] && [ -f "${FILE}" ] && source "${FILE}"
+      done
+    elif [ -r "${ITEM}" ] && [ -f "${ITEM}" ]; then
+      # shellcheck disable=SC1090
+      source "${ITEM}"
+    fi
+  done
+}
+
 # VSCode workaround
 # shellcheck source=/dev/null
 TERM_PROGRAM="${TERM_PROGRAM:-}"
+# shellcheck disable=SC1090
 [[ "${TERM_PROGRAM}" == "vscode" ]] && . "$(/usr/bin/code --locate-shell-integration-path bash)"
 
 # failure() {
@@ -30,7 +54,7 @@ fi
 unset FILE
 
 # @todo do not make DOTFILES_PATH an .env variable
-# shellcheck source=/dev/null
+# shellcheck source=/home/patrick/github.com/dotfiles
 for FILE in "${DOTFILES_PATH}"/bash/{eval,options,bash,functions,exports,aliases,completions,prompt}; do
   # this routine ranges through a folder of filenames that we don't explicitly know (@davidsneighbour)
   # shellcheck source=/dev/null

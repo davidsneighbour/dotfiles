@@ -1,0 +1,41 @@
+#!/usr/bin/env bats
+
+# We assume you have the updated auto_source function in a file named "auto_source.sh"
+# Adjust paths to match your project structure.
+
+setup() {
+  # Prepare a folder with a test script
+  mkdir -p single_folder
+  echo 'export SINGLE_TEST="sourced_single_folder"' > single_folder/test_single_folder.sh
+
+  # Prepare a single file
+  echo 'export SINGLE_FILE_TEST="sourced_single_file"' > single_test.sh
+
+  # Prepare multiple directories
+  mkdir -p multiple_folder1 multiple_folder2
+  echo 'export MULTIPLE_TEST1="sourced_multi1"' > multiple_folder1/test_multi1.sh
+  echo 'export MULTIPLE_TEST2="sourced_multi2"' > multiple_folder2/test_multi2.sh
+}
+
+teardown() {
+  rm -rf single_folder single_test.sh multiple_folder1 multiple_folder2
+}
+
+@test "auto_source with a single directory" {
+  source ./auto_source.sh
+  auto_source "single_folder"
+  [ "${SINGLE_TEST}" = "sourced_single_folder" ]
+}
+
+@test "auto_source with a single file" {
+  source ./auto_source.sh
+  auto_source "single_test.sh"
+  [ "${SINGLE_FILE_TEST}" = "sourced_single_file" ]
+}
+
+@test "auto_source with multiple directories" {
+  source ./auto_source.sh
+  auto_source "multiple_folder1" "multiple_folder2"
+  [ "${MULTIPLE_TEST1}" = "sourced_multi1" ]
+  [ "${MULTIPLE_TEST2}" = "sourced_multi2" ]
+}
