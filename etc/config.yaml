@@ -62,7 +62,6 @@
     ~/.config/sublime-merge: filesystem/.config/sublime-merge
     ~/.config/sublime-text: filesystem/.config/sublime-text
     ~/.config/tabtab: filesystem/.config/tabtab
-    ~/.config/transmission: filesystem/.config/transmission
     ~/.gnome: filesystem/.gnome
     ~/.icons: filesystem/.icons
     ~/.logs: logs
