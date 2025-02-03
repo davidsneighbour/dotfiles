@@ -77,9 +77,9 @@
 
 - crontab:
   - cron: 0 0 * * *
-    command: /home/patrick/github.com/davidsneighbour/dotfiles/bin/cronjobs/update-npm.sh >> /home/patrick/cron.log 2>&1
+    command: /home/patrick/github.com/davidsneighbour/dotfiles/bin/cronjobs/update-npm.sh >> /home/patrick/.logs/cron.log 2>&1
   - cron: 30 */4 * * *
-    command: /home/patrick/github.com/davidsneighbour/dotfiles/bin/cronjobs/filespace-discord.sh >> /home/patrick/cron.log 2>&1
+    command: /home/patrick/github.com/davidsneighbour/dotfiles/bin/cronjobs/filespace-discord.sh >> /home/patrick/.logs/cron.log 2>&1
   - cron: 0 18 * * *
-    command: /bin/bash -c "cd ~/github.com/davidsneighbour/dotfiles && keybindingsmanager -e etc/keycombinations.csv" >> ~/keybindings_export.log 2>&1
+    command: /bin/bash -c "cd /home/patrick/github.com/davidsneighbour/dotfiles && keybindingsmanager -e etc/keycombinations.csv" >> /home/patrick/.logs/keybindings_export.log 2>&1
 
