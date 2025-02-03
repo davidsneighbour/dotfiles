@@ -1,7 +1,8 @@
 #!/bin/bash
 
 sudo apt update
-sudo apt remove --purge totem libreoffice sssd vlc -y
+sudo apt remove --purge totem libreoffice sssd vlc kitty -y
+sudo apt autoremove -y
 sudo apt install ack apt-transport-https arp-scan barrier bsdmainutils kitty \
   build-essential ca-certificates chrome-gnome-shell curl dconf-cli flameshot \
   gimp git gnome-shell-extension-manager gnome-terminal gnome-tweaks gnupg2 \
@@ -12,10 +13,8 @@ sudo apt install ack apt-transport-https arp-scan barrier bsdmainutils kitty \
   software-properties-common rofi texlive-extra-utils testdisk \
   ubuntu-restricted-extras vim wget zoxide fzf w3m w3m-img chafa shfmt -y
 sudo apt upgrade -y
-sudo apt autoremove -y
 sudo apt autoclean -y
 
-mkdir -p ~/github.com/davidsneighbour ~/gitlab.com/davidsneighbour
-mkdir -p ~/.config
+mkdir -p ~/github.com/davidsneighbour ~/gitlab.com/davidsneighbour ~/.config
 
 cd ~/github.com/davidsneighbour/dotfiles && keybindingsmanager -i etc/keycombinations.csv
