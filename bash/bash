@@ -129,3 +129,10 @@ export DENO_INSTALL="/home/patrick/.deno"
 export PATH="${DENO_INSTALL}/bin:${PATH}"
 
 source ${CURDIR}/../bin/lib/b/_get_lib.sh
+
+# starship setup
+# see https://starship.rs/config
+# export STARSHIP_CONFIG=~/example/non/default/path/starship.toml
+export STARSHIP_CACHE=~/.cache/starship
+export STARSHIP_CONFIG=~/.config/starship.toml
+eval "$(starship init bash)"

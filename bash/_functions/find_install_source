@@ -1,0 +1,149 @@
+#!/bin/bash
+
+# set -euo pipefail
+
+# Global verbosity level
+verbosity=0
+available_managers=()
+
+find_install_source() {
+    local programs=()
+
+    # Parse arguments
+    while [[ "$#" -gt 0 ]]; do
+        case "$1" in
+            -v) verbosity=1 ;;
+            -vv) verbosity=2 ;;
+            -vvv) verbosity=3 ;;
+            --help)
+                print_help
+                return 0
+                ;;
+            -*) echo "Error: Unknown option $1. Use --help for usage." >&2; return 1 ;;
+            *) programs+=("$1") ;;
+        esac
+        shift
+    done
+
+    if [[ ${#programs[@]} -eq 0 ]]; then
+        echo "No programs specified. Showing help:"
+        echo
+        print_help
+        return 1
+    fi
+
+    check_available_package_managers
+
+    for program in "${programs[@]}"; do
+        echo "Checking installation for: $program"
+
+        if check_package_managers "$program"; then
+            echo "------------------------------------"
+            continue
+        fi
+
+        if command -v "$program" &>/dev/null; then
+            echo "$program is installed manually or outside known package managers."
+        else
+            echo "$program is not installed or could not be identified."
+        fi
+
+        echo "------------------------------------"
+    done
+}
+
+check_available_package_managers() {
+    declare -A package_commands=(
+        ["Flatpak"]="flatpak"
+        ["Snap"]="snap"
+        ["Homebrew"]="brew"
+        ["APT"]="apt"
+        ["DPKG"]="dpkg"
+        ["RPM"]="rpm"
+        ["DNF"]="dnf"
+        ["Pacman"]="pacman"
+        ["NodeJS"]="node"
+        ["NPM"]="npm"
+        ["NVM"]="nvm"
+    )
+
+    echo "Checking available package managers..."
+    for manager in "${!package_commands[@]}"; do
+        if command -v "${package_commands[$manager]}" &>/dev/null; then
+            available_managers+=("$manager")
+            [[ $verbosity -ge 2 ]] && echo "✔ $manager is available"
+        else
+            [[ $verbosity -ge 1 ]] && echo "✖ $manager is not available"
+        fi
+    done
+}
+
+check_package_managers() {
+    local program="$1"
+
+    declare -A package_managers=(
+        ["Flatpak"]="flatpak list --columns=application | grep -i -m 1 '${program}' || true"
+        ["Snap"]="snap list | awk 'NR>1 {print \$1}' | grep -i -m 1 '${program}' || true"
+        ["Homebrew"]="brew list --formula | grep -i -m 1 '${program}' || true"
+        ["APT"]="apt list --installed 2>/dev/null | grep -i -m 1 '${program}' || true"
+        ["DPKG"]="dpkg -l | awk '{print \$2}' | grep -i -m 1 '${program}' || true"
+        ["RPM"]="rpm -qa | grep -i -m 1 '${program}' || true"
+        ["DNF"]="dnf list installed | awk '{print \$1}' | grep -i -m 1 '${program}' || true"
+        ["Pacman"]="pacman -Q | awk '{print \$1}' | grep -i -m 1 '${program}' || true"
+        ["NPM"]="npm list -g --depth=0 | grep -i -m 1 '${program}' || true"
+    )
+
+    for manager in "${available_managers[@]}"; do
+        if [[ "$manager" == "NVM" ]]; then
+            check_nvm "$program" && return 0
+            continue
+        fi
+
+        local cmd="${package_managers[$manager]:-}"
+        [[ -z "$cmd" ]] && continue
+
+        [[ $verbosity -ge 2 ]] && echo "Executing: $cmd" >&2
+        local result
+        result=$(eval "$cmd" 2>/dev/null || true)
+
+        if [[ -n "$result" ]]; then
+            echo "$program is installed via $manager."
+            [[ $verbosity -ge 1 ]] && echo "Detected package(s):" && echo "$result"
+            return 0
+        fi
+    done
+
+    return 1
+}
+
+check_nvm() {
+    local program="$1"
+
+    if [[ -s "$HOME/.nvm/nvm.sh" ]]; then
+        local result
+        result=$(bash -c "source $HOME/.nvm/nvm.sh && npm list -g --depth=0 | grep -i -m 1 '$program'" 2>/dev/null || true)
+
+        if [[ -n "$result" ]]; then
+            echo "$program is installed via NVM."
+            [[ $verbosity -ge 1 ]] && echo "Detected package(s):" && echo "$result"
+            return 0
+        fi
+    fi
+
+    return 1
+}
+
+print_help() {
+    echo "Usage: ${FUNCNAME[1]} [-v[v[v]]] <program1> [program2 ...]"
+    echo "Finds the installation source of one or more programs across various package managers."
+    echo
+    echo "Verbosity levels:"
+    echo "  -v   Show detected package name(s)."
+    echo "  -vv  Show executed command(s)."
+    echo "  -vvv Show raw package manager output."
+}
+
+# Example usage:
+# find_install_source -v node npm
+# find_install_source -vvv express vue-cli
+# find_install_source  # Now correctly shows the help message
