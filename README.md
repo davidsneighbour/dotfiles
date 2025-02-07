@@ -43,7 +43,11 @@ Run initial setup:
 ### Automatic setup script (TBD)
 
 ```bash
-wget -qO- <https://github.com/davidsneighbour/dotfiles/blob/main/install.sh> | bash
+wget -qO- <https://raw.githubusercontent.com/davidsneighbour/dotfiles/main/setup/install.sh> | bash
+```
+
+```bash
+bash <(curl -s "https://raw.githubusercontent.com/davidsneighbour/dotfiles/main/setup/install.sh")
 ```
 
 ## Update
