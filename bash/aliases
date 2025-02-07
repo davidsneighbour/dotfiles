@@ -3,6 +3,7 @@ alias reload='. ~/.bash_profile'
 
 # go up multiple levels
 # (also see 'up' function)
+alias cd='change_directory'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'

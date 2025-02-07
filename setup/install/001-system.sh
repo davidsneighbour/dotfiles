@@ -1,7 +1,7 @@
 #!/bin/bash
 
 sudo apt update
-sudo apt remove --purge totem libreoffice sssd vlc kitty -y
+sudo apt remove --purge totem libreoffice sssd vlc kitty xterm -y
 sudo apt autoremove -y
 sudo apt install ack apt-transport-https arp-scan barrier bsdmainutils kitty \
   build-essential ca-certificates chrome-gnome-shell curl dconf-cli flameshot \
@@ -11,7 +11,9 @@ sudo apt install ack apt-transport-https arp-scan barrier bsdmainutils kitty \
   plocate polybar python-is-python3 python3 python3-gpg python3-pip \
   python3-virtualenv qt5ct rename shutter shc smartmontools python3-venv \
   software-properties-common rofi texlive-extra-utils testdisk \
-  ubuntu-restricted-extras vim wget zoxide fzf w3m w3m-img chafa shfmt -y
+  ubuntu-restricted-extras vim wget zoxide fzf w3m w3m-img chafa shfmt \
+  gtk2-engines-murrine gtk2-engines-murrine libsass1 sassc -y
+sudo apt install gnome-shell-extension-manager gir1.2-gtop-2.0 lm-sensors
 sudo apt upgrade -y
 sudo apt autoclean -y
 

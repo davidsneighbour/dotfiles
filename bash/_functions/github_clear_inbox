@@ -2,9 +2,9 @@
 
 function github_clear_inbox() {
 
-  # have GITHUB_NOTIFICATIONS_TOKEN in ~/.env
-  # must be a personal access token with notifications scope, NOT the new token format
-  # https://docs.github.com/en/rest/activity/notifications?apiVersion=2022-11-287
+  # have GITHUB_CLASSIC_TOKEN in ~/.env
+  # must be a personal access token with `notifications` scope, NOT the new token format
+  # https://github.com/settings/tokens/new
 
   FILE=${HOME}/.env
   if [ -f "${FILE}" ]; then
@@ -13,14 +13,14 @@ function github_clear_inbox() {
   fi
 
   now=$(date -u +%FT%TZ)
-  # Check if the GITHUB_NOTIFICATIONS_TOKEN is set
-  if [ -n "${GITHUB_NOTIFICATIONS_TOKEN}" ]; then
+  # Check if the GITHUB_CLASSIC_TOKEN is set
+  if [ -n "${GITHUB_CLASSIC_TOKEN}" ]; then
     curl -X PUT \
-      -H "Authorization: Bearer ${GITHUB_NOTIFICATIONS_TOKEN}" \
+      -H "Authorization: Bearer ${GITHUB_CLASSIC_TOKEN}" \
       -H "Accept: application/vnd.github.v3+json" \
       -d "{\"last_read_at\": \"${now}\"}" \
       https://api.github.com/notifications
   else
-    echo "Error: GITHUB_NOTIFICATIONS_TOKEN is not set in .env."
+    echo "Error: GITHUB_CLASSIC_TOKEN is not set in .env."
   fi
 }

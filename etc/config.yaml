@@ -22,6 +22,7 @@
     ~/.better-commits.json: filesystem/.better-commits.json
     ~/.cargo/.crates.toml: filesystem/.cargo/.crates.toml
     ~/.cargo/env: filesystem/.cargo/env
+    ~/.config/starship.toml: filesystem/.config/starship.toml
     ~/.config/user-dirs.dirs: filesystem/.config/user-dirs.dirs
     ~/.czrc: filesystem/.czrc
     ~/.dir_colors: filesystem/.dir_colors
@@ -62,6 +63,7 @@
     ~/.config/sublime-merge: filesystem/.config/sublime-merge
     ~/.config/sublime-text: filesystem/.config/sublime-text
     ~/.config/tabtab: filesystem/.config/tabtab
+    ~/.config/wlogout: filesystem/.config/wlogout
     ~/.gnome: filesystem/.gnome
     ~/.icons: filesystem/.icons
     ~/.logs: logs
