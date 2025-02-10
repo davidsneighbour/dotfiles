@@ -136,7 +136,7 @@ go = checkout -B
 ack = grep --extended-regexp --break --heading --line-number
 
 # update submodules
-update = submodule update --recursive --remote
+# update = submodule update --recursive --remote
 
 # View abbreviated SHA, description, and history graph of the latest 20 commits
 l = log --pretty=oneline -n 20 --graph --abbrev-commit
@@ -214,6 +214,7 @@ pub = publish
 [commit]
 gpgsign = true
 verbose = true
+template = ~/.gitmessage
 
 [init]
 defaultBranch = main
