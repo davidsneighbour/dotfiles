@@ -30,6 +30,7 @@
     ~/.editorconfig: filesystem/.editorconfig
     ~/.fehbg: filesystem/.fehbg
     ~/.fixpackrc: filesystem/.fixpackrc
+    ~/.gitmessage: filesystem/.gitmessage
     ~/.gitconfig: filesystem/.gitconfig
     ~/.gitignore: filesystem/.gitignore.template
     ~/.git-templates: filesystem/.git-templates
