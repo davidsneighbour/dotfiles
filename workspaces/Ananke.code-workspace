@@ -1,15 +1,23 @@
 {
 	"folders": [
 		{
+			"name": "gohugo-theme-ananke",
 			"path": "../../../theNewDynamic/gohugo-theme-ananke"
 		},
 		{
+			"name": "gohugo-theme-ananke.wiki",
 			"path": "../../../theNewDynamic/gohugo-theme-ananke.wiki"
 		},
 		{
+			"name": "gohugo-theme-ananke-example",
 			"path": "../../gohugo-theme-ananke-example"
 		},
 		{
+			"name": "gohugo-theme-ananke-example2",
+			"path": "../../gohugo-theme-ananke-example2"
+		},
+		{
+			"name": "gohugo-theme-ananke-tests",
 			"path": "../../gohugo-theme-ananke-tests"
 		}
 	],
@@ -32,6 +40,7 @@
 			"titleBar.activeForeground": "#15202b",
 			"titleBar.inactiveBackground": "#42b88399",
 			"titleBar.inactiveForeground": "#15202b99"
-		}
+		},
+		"markdown.extension.toc.levels": "2..6"
 	}
 }
