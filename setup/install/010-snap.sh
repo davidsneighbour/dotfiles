@@ -1,7 +1,5 @@
 #!/bin/bash
 
-sudo snap remove firefox
-
 sudo snap refresh snap-store
 sudo snap refresh
 
