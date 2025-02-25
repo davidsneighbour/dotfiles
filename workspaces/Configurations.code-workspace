@@ -1,0 +1,14 @@
+{
+  "folders": [
+	{
+		"path": "../../configurations"
+	}
+],
+  "settings": {
+  },
+  "extensions": {
+    "recommendations": [
+      "davidanson.vscode-markdownlint"
+    ]
+  }
+}
