@@ -22,4 +22,4 @@ sassdoc
 svgo
 typescript
 @bramus/caniuse-cli
-biome
+@biomejs/biome
