@@ -7,3 +7,4 @@ Exec=flatpak run org.remmina.Remmina -i
 Terminal=false
 Type=Application
 Hidden=true
+NoDisplay=true

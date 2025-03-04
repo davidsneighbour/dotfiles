@@ -2,8 +2,8 @@
 Type=Application
 Exec=sh -c 'sleep 15 && APPIMAGELAUNCHER_DISABLE=1 /home/patrick/.joplin/Joplin.AppImage --no-sandbox'
 Hidden=false
-NoDisplay=false
-X-GNOME-Autostart-enabled=true
+NoDisplay=true
+X-GNOME-Autostart-enabled=false
 Name[en_US]=Joplin
 Name=Joplin
 Comment[en_US]=Notes

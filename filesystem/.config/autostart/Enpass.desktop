@@ -6,3 +6,4 @@ Icon=enpass.png
 Comment=The best password manager
 X-GNOME-Autostart-Delay=12
 X-GNOME-Autostart-enabled=true
+NoDisplay=true

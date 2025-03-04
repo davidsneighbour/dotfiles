@@ -2,7 +2,7 @@
 Type=Application
 Exec=/usr/bin/transmission-qt -m
 Hidden=false
-NoDisplay=false
+NoDisplay=true
 X-GNOME-Autostart-enabled=true
 Name[en_US]=Transmission
 Name=Transmission
