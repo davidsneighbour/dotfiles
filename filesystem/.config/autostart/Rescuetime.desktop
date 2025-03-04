@@ -2,7 +2,7 @@
 Type=Application
 Exec=/usr/bin/rescuetime
 Hidden=true
-NoDisplay=false
+NoDisplay=true
 X-GNOME-Autostart-enabled=true
 Name[en_US]=RescueTime
 Name=RescueTime

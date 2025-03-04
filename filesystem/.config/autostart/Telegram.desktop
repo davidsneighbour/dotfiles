@@ -2,7 +2,7 @@
 Type=Application
 Exec=/snap/bin/telegram-desktop -startintray
 Hidden=false
-NoDisplay=false
+NoDisplay=true
 X-GNOME-Autostart-enabled=true
 Name[en_US]=Telegram
 Name=Telegram

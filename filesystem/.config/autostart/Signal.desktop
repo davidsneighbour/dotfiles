@@ -2,7 +2,7 @@
 Type=Application
 Exec=/usr/bin/signal-desktop --start-in-tray --no-sandbox
 Hidden=false
-NoDisplay=false
+NoDisplay=true
 X-GNOME-Autostart-enabled=true
 Name[en_US]=Signal
 Name=Signal

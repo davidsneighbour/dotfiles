@@ -13,3 +13,4 @@ Terminal=false
 X-GNOME-Autostart-enabled=false
 Hidden=true
 X-GNOME-Autostart-Delay=60
+NoDisplay=true
