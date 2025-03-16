@@ -28,6 +28,7 @@ export default {
       //'biome check --staged'
     ]
   },
+  '*.yaml': ['yamllint -c .yamllint.yml'],
   // '*.{scss,css}': ['stylelint --fix', "prettier --write"],
   // '*.{png,jpeg,jpg,gif,svg}': [
   //   'imagemin-lint-staged' // @davidsneighbour/imagemin-lint-staged
