@@ -135,4 +135,22 @@ source ${CURDIR}/../bin/lib/b/_get_lib.sh
 # export STARSHIP_CONFIG=~/example/non/default/path/starship.toml
 export STARSHIP_CACHE=~/.cache/starship
 export STARSHIP_CONFIG=~/.config/starship.toml
-eval "$(starship init bash)"
+
+if command -v starship >/dev/null 2>&1; then
+    eval "$(starship init bash)"
+else
+    if [[ -n "${DNB_VERBOSE}" ]]; then
+        echo "Note: Starship is not installed. Skipping prompt setup."
+    fi
+fi
+
+# atuin setup
+# see https://docs.atuin.sh/guide/
+if command -v atuin >/dev/null 2>&1; then
+    . "$HOME/.atuin/bin/env"
+    eval "$(atuin init bash)"
+else
+    if [[ -n "${DNB_VERBOSE}" ]]; then
+        echo "Note: Atuin is not installed. Skipping history setup."
+    fi
+fi
