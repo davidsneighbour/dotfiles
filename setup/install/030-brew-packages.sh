@@ -1,3 +1,3 @@
 #!/bin/bash
 
-brew install typos-cli jsonnet gum eza bat yamllint
+brew install typos-cli jsonnet gum bat yamllint
