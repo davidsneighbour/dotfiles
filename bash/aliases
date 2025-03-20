@@ -20,7 +20,7 @@ alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 
-# various ls shortcuts
+############### various ls shortcuts
 # alias ls='eza'
 alias l='eza -l'
 alias la='eza -a'
