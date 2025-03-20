@@ -5,6 +5,9 @@
     },
     {
       "path": "../../hugo-modules"
+    },
+    {
+      "path": "../../../../gitlab.com/wonderland-gmbh/wonderland-engine-website.bak"
     }
   ],
   "settings": {
