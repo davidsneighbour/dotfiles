@@ -344,5 +344,6 @@
     "editor.defaultFormatter": "foxundermoon.shell-format"
   },
   "markdownlint.focusMode": false,
-  "window.customTitleBarVisibility": "auto"
+  "window.customTitleBarVisibility": "auto",
+  "geminicodeassist.project": ""
 }
