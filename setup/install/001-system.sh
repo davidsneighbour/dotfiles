@@ -1,11 +1,14 @@
 #!/bin/bash
 
+# add PPAs
 sudo add-apt-repository --yes --ppa ppa:libreoffice/ppa
 
 sudo apt update
+
 sudo apt remove --purge totem sssd vlc kitty xterm -y
 sudo apt autoremove -y
-sudo apt install ack apt-transport-https arp-scan barrier bsdmainutils kitty \
+
+sudo apt install ack apt-transport-https arp-scan barrier bsdmainutils \
   build-essential ca-certificates chrome-gnome-shell curl dconf-cli flameshot \
   gimp git gnome-shell-extension-manager gnome-terminal gnome-tweaks gnupg2 \
   gparted gpg grc inkscape libavcodec-dev libavcodec-extra dconf-editor \
@@ -14,8 +17,9 @@ sudo apt install ack apt-transport-https arp-scan barrier bsdmainutils kitty \
   python3-virtualenv qt5ct rename shutter shc smartmontools python3-venv \
   software-properties-common rofi texlive-extra-utils testdisk \
   ubuntu-restricted-extras vim wget zoxide fzf w3m w3m-img chafa shfmt \
-  gtk2-engines-murrine gtk2-engines-murrine libsass1 sassc libreoffice -y
-sudo apt install gnome-shell-extension-manager gir1.2-gtop-2.0 lm-sensors
+  gtk2-engines-murrine libsass1 sassc libreoffice \
+  gir1.2-gtop-2.0 lm-sensors wmctrl -y
+
 sudo apt upgrade -y
 sudo apt autoclean -y
 
