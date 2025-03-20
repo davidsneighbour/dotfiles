@@ -1,10 +1,10 @@
 {
 	"folders": [
 		{
-			"path": "."
+			"path": ".."
 		},
 		{
-			"path": "../configurations"
+			"path": "../../configurations"
 		}
 	],
 	"settings": {
@@ -28,6 +28,7 @@
 			"titleBar.inactiveBackground": "#21573299",
 			"titleBar.inactiveForeground": "#e7e7e799"
 		},
+		"favorites.sortDirection": "ASC",
 		//"peacock.color": "#215732"
 	}
 }
