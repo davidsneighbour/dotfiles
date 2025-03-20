@@ -1,0 +1,101 @@
+#!/bin/bash
+
+generate_keybindings_page() {
+    if [[ "$1" == "--help" ]]; then
+        echo "Usage: ${FUNCNAME[0]} --file <csvfile> --output <htmlfile>"
+        echo "Generate an HTML page from a CSV file with GNOME keybindings."
+        echo
+        echo "Arguments:"
+        echo "  --file <csvfile>     The CSV file containing the keybindings."
+        echo "  --output <htmlfile>  The file where the keybindings page will be saved."
+        echo
+        echo "Part of DNB's dotfiles: https://github.com/davidsneighbour/dotfiles/"
+        return 0
+    fi
+
+    local csv_file=""
+    local output_file=""
+
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --file)
+                csv_file="$2"
+                shift 2
+                ;;
+            --output)
+                output_file="$2"
+                shift 2
+                ;;
+            --help)
+                ${FUNCNAME[0]} --help
+                exit 0
+                ;;
+            *)
+                echo "Error: Unknown argument $1. Use --help for usage information." >&2
+                exit 1
+                ;;
+        esac
+    done
+
+    if [[ -z "$csv_file" || -z "$output_file" ]]; then
+        echo "Error: Both --file and --output parameters are required." >&2
+        exit 1
+    fi
+
+    if [[ ! -f "$csv_file" ]]; then
+        echo "Error: CSV file '$csv_file' does not exist." >&2
+        exit 1
+    fi
+
+    {
+        echo "<!DOCTYPE html>"
+        echo "<html lang='en'>"
+        echo "<head>"
+        echo "    <meta charset='UTF-8'>"
+        echo "    <meta name='viewport' content='width=device-width, initial-scale=1.0'>"
+        echo "    <title>GNOME Keybindings</title>"
+        echo "    <style>"
+        echo "        body { font-family: Arial, sans-serif; margin: 20px; }"
+        echo "        h2 { border-bottom: 2px solid #000; padding-bottom: 5px; }"
+        echo "        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }"
+        echo "        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }"
+        echo "        th { background-color: #f4f4f4; }"
+        echo "        kbd { background: #eee; border-radius: 3px; padding: 2px 4px; font-family: monospace; }"
+        echo "    </style>"
+        echo "</head>"
+        echo "<body>"
+        echo "    <h1>GNOME Keybindings</h1>"
+
+        local current_category=""
+
+        while IFS=$'\t' read -r category function keybinding; do
+            if [[ "$category" != "$current_category" ]]; then
+                if [[ -n "$current_category" ]]; then
+                    echo "    </table>"
+                fi
+                echo "    <h2>${category}</h2>"
+                echo "    <table>"
+                echo "        <tr><th>Function</th><th>Key Combination</th></tr>"
+                current_category="$category"
+            fi
+
+            # Clean up keybinding string: remove brackets and split into keys
+            keybinding=$(echo "$keybinding" | sed -E "s/^\['|'\]$//g; s/', '/ /g")
+
+            # Convert special keys
+            formatted_keys=""
+            for key in $keybinding; do
+                key=$(echo "$key" | sed -E "s/<(.*)>/\U\1/") # Remove <> and uppercase
+                formatted_keys+="<kbd>${key}</kbd> "
+            done
+
+            echo "        <tr><td>${function}</td><td>${formatted_keys}</td></tr>"
+        done < "$csv_file"
+
+        echo "    </table>"
+        echo "</body>"
+        echo "</html>"
+    } > "$output_file"
+
+    echo "Keybindings page generated successfully at $output_file."
+}

@@ -63,7 +63,8 @@ set_wallpaper() {
   # Select a wallpaper using fzf with w3m for previews
   local SELECTED_WALLPAPER
   SELECTED_WALLPAPER=$(find -L "${WALLPAPER_DIR}" -type f \( -iname "*.jpg" -o -iname "*.png" \) |
-    fzf --preview="chafa --size=50x20 {}")
+    fzf --preview="chafa --size=50x20 {}"
+  )
 
   # Check if a wallpaper was selected
   if [ -z "${SELECTED_WALLPAPER}" ]; then
