@@ -47,7 +47,6 @@
     ~/.config/autostart: filesystem/.config/autostart
     ~/.config/assets: filesystem/.themes/Dracula/assets
     ~/.config/BetterDiscord: filesystem/.config/BetterDiscord
-    ~/.config/Code: filesystem/.config/Code
     ~/.config/filezilla: filesystem/.config/filezilla
     ~/.config/fontconfig: filesystem/.config/fontconfig
     ~/.config/gh: filesystem/.config/gh
@@ -69,7 +68,6 @@
     ~/.icons: filesystem/.icons
     ~/.logs: logs
     ~/.themes: filesystem/.themes
-    ~/.vscode: filesystem/.vscode
     ~/.vim: filesystem/.vim
     ~/.wallpapers: filesystem/.wallpapers
 
