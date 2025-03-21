@@ -8,8 +8,8 @@ signingkey = 1D10C1627D5AFC3CC48AA18401A2661D61A772CA
 [apply]
 whitespace = fix
 
-[column]
-ui = auto
+# [column]
+# ui = auto
 
 [credential]
 helper = store
