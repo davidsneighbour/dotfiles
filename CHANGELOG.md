@@ -1,4 +1,65 @@
 Changelog
+## [2025.4.0](https://github.com/davidsneighbour/dotfiles/compare/v2025.3.1...v2025.4.0) (2025-03-21)
+
+
+### Features
+
+* add auto_source ([d000692](https://github.com/davidsneighbour/dotfiles/commit/d000692f850ddc44c7e598f2a1cb5cca827c3266))
+* add commit template ([597f046](https://github.com/davidsneighbour/dotfiles/commit/597f0464c30ed049a556d9e7a91c31d61b709640))
+* add eza to setup scripts ([65830c5](https://github.com/davidsneighbour/dotfiles/commit/65830c533882aa2bc8b82a6e2c6da0f516fdedd9))
+* add install script ([a94ed29](https://github.com/davidsneighbour/dotfiles/commit/a94ed29217bf65188a77ee82f3f7ac3aa7cd3fde))
+* add yamllint and configuration ([0d186f3](https://github.com/davidsneighbour/dotfiles/commit/0d186f3661b5874d196f5fdbe7321424f8f1bcfc))
+
+
+### Bug Fixes
+
+* add ananke workspace ([01852ae](https://github.com/davidsneighbour/dotfiles/commit/01852ae447a3b4b3d3b6fae794dbb9a2a47bad72))
+* add architecture tag to exa apt source ([315e679](https://github.com/davidsneighbour/dotfiles/commit/315e6799b301055c48f0a1072b05bfed71db7bcf))
+* add wonderland workspace ([eafe95d](https://github.com/davidsneighbour/dotfiles/commit/eafe95d4ab5f186d1fd29d60fd7f9f8fb0a125cb))
+* cleanup loading of starship and atuin ([a78cb85](https://github.com/davidsneighbour/dotfiles/commit/a78cb85570452c26021524ef8a137eb51e29bda6))
+* eza is installed via script, not brew ([b8a25d9](https://github.com/davidsneighbour/dotfiles/commit/b8a25d9713580d8f14da7153fe839600e64878a3))
+* move logs into ~/.logs directory ([ce6adc5](https://github.com/davidsneighbour/dotfiles/commit/ce6adc586ede0fcdf8554461e8195027826af41b))
+* move template files into etc directory ([0caabf7](https://github.com/davidsneighbour/dotfiles/commit/0caabf78108308e540c266a85da8c3fa75412233))
+* move transmission configuration to protected dotfiles ([41eff34](https://github.com/davidsneighbour/dotfiles/commit/41eff34550ba6ab87e8a127730a2a92da3e2a434))
+* proper biome package for default packages ([7f3dad1](https://github.com/davidsneighbour/dotfiles/commit/7f3dad1846c8b51fdbcd3daf53559f84a7e92ba5))
+* recent changes in bulk ([b74eac5](https://github.com/davidsneighbour/dotfiles/commit/b74eac51ca1b5bc64cb4505164c5bfcc4d93435e))
+* remove kitty from initial setup ([a82f21c](https://github.com/davidsneighbour/dotfiles/commit/a82f21cae4c9618e2a6d09e5bc02bea26273d693))
+* remove merged secret lint configuration ([4bec522](https://github.com/davidsneighbour/dotfiles/commit/4bec52257e761dae27650c248304fdf19cd34400))
+* remove snap libreoffice and fix apt libreoffice ([4d51b6b](https://github.com/davidsneighbour/dotfiles/commit/4d51b6bc9225085474c92f0fab437c56a4baea8b))
+* rework CITATION.cff ([367af4b](https://github.com/davidsneighbour/dotfiles/commit/367af4b6f1998079ed26f3dc39dacdec84780f78))
+* update autostart configurations ([3639d80](https://github.com/davidsneighbour/dotfiles/commit/3639d8070e504c4ba9d24c9803e4bb544cbfb29a))
+* update bash scripts ([31c57ae](https://github.com/davidsneighbour/dotfiles/commit/31c57aeace2598a8a79299b8c3cdda5ba6ade021))
+* update filesystem files ([f4eb941](https://github.com/davidsneighbour/dotfiles/commit/f4eb9419c671cbe56fda0eaa4ed77d847883f274))
+* update firefox setup script ([6bc88a1](https://github.com/davidsneighbour/dotfiles/commit/6bc88a1a7f4b30776bf89679fc4189fd2713340e))
+* update package link configuration ([bf19ed7](https://github.com/davidsneighbour/dotfiles/commit/bf19ed70e824b55db444b18da0d5a6cc00079e36))
+
+
+### Chore
+
+* **assets:** update skyline stats for 2025 ([2211a2d](https://github.com/davidsneighbour/dotfiles/commit/2211a2dbfc83e1fa8ee7c5b6bee91c61528a6906))
+* **assets:** update skyline stats for 2025 ([dd38c94](https://github.com/davidsneighbour/dotfiles/commit/dd38c94c63617b6ac45f27dd12deea989605cf06))
+* **config:** update workspaces ([67ab052](https://github.com/davidsneighbour/dotfiles/commit/67ab052ac845a7bb20496e55ca0307503c92c495))
+* **git:** update git submodules ([9162523](https://github.com/davidsneighbour/dotfiles/commit/9162523f09478f112fce18c80c41f4cbbe8e2ea3))
+
+
+### Configuration
+
+* update autostart setup ([ea2fca5](https://github.com/davidsneighbour/dotfiles/commit/ea2fca5836f4f086dc6246efa727a1fa6809902c))
+* update workspace files ([b1ad067](https://github.com/davidsneighbour/dotfiles/commit/b1ad0677b52db27ef706ce6514c9ae0c7fbdc9bf))
+* update workspaces ([0b6ed94](https://github.com/davidsneighbour/dotfiles/commit/0b6ed946d4f86a859a1d9456e104aec9c1fc0d40))
+
+
+### Build System
+
+* **deps:** update dependencies ([39075a6](https://github.com/davidsneighbour/dotfiles/commit/39075a65bf414c35ff1c283a7da2f6f728c824bf))
+* **deps:** update dependencies ([e03dff0](https://github.com/davidsneighbour/dotfiles/commit/e03dff0e807dc98d2df99c732ecaf0d2fe20cec1))
+
+
+### CI
+
+* **fix:** setup gitlab ci ([d23d70d](https://github.com/davidsneighbour/dotfiles/commit/d23d70d80ee3ada9cd216d9a50dcd56cfc33e326))
+* **setup:** add .gitlab-ci.yml configuration ([e40f0ea](https://github.com/davidsneighbour/dotfiles/commit/e40f0ea85d617176325c40a0895a89a26e764c15))
+
 ## [2025.3.1](https://github.com/davidsneighbour/dotfiles/compare/v2025.3.0...v2025.3.1) (2025-01-30)
 
 
