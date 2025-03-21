@@ -1,4 +1,11 @@
 Changelog
+## [2025.4.1](https://github.com/davidsneighbour/dotfiles/compare/v2025.4.0...v2025.4.1) (2025-03-21)
+
+
+### Bug Fixes
+
+* remove vscode state files from repository ([d2babff](https://github.com/davidsneighbour/dotfiles/commit/d2babffebb5e9eab00ad6eb4b7d076a7a60fe72e))
+
 ## [2025.4.0](https://github.com/davidsneighbour/dotfiles/compare/v2025.3.1...v2025.4.0) (2025-03-21)
 
 
