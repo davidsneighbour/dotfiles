@@ -10,17 +10,20 @@
   "dependencies": {
     "@biomejs/biome": "1.9.4",
     "@clack/prompts": "0.10.0",
-    "@davidsneighbour/commitlint-config": "2025.0.2",
-    "@davidsneighbour/eslint-config": "2025.0.2",
-    "@davidsneighbour/markdownlint-config": "2025.0.2",
-    "@davidsneighbour/release-config": "2025.0.2",
-    "@davidsneighbour/remark-config": "2025.0.2",
-    "@davidsneighbour/tools": "2025.0.2",
+    "@davidsneighbour/commitlint-config": "2025.1.1",
+    "@davidsneighbour/eslint-config": "2025.1.1",
+    "@davidsneighbour/markdownlint-config": "2025.1.1",
+    "@davidsneighbour/release-config": "2025.1.1",
+    "@davidsneighbour/remark-config": "2025.1.1",
+    "@davidsneighbour/tools": "2025.1.1",
+    "@secretlint/secretlint-rule-preset-recommend": "^9.2.0",
+    "exa": "^0.0.0",
     "fs-extra": "11.3.0",
-    "lint-staged": "15.4.3",
+    "lint-staged": "15.5.0",
+    "secretlint": "^9.2.0",
     "semver": "7.7.1",
     "shelljs": "0.8.5",
-    "simple-git-hooks": "2.11.1",
+    "simple-git-hooks": "2.12.1",
     "themer": "6.8.0",
     "toml": "3.0.0"
   },
@@ -28,11 +31,15 @@
     "link:prepare": "wireit",
     "lint:hook:commit": "lint-staged",
     "release": "commit-and-tag-version -a -t \"v\" --releaseCommitMessageFormat \"chore(release): v{{currentTag}}\" && ./bin/repo/release/postrelease",
-    "setup": "./dotbot.sh clean && ./dotbot.sh && ./dotbot.sh protected"
+    "setup": "./dotbot.sh clean && ./dotbot.sh && ./dotbot.sh protected",
+    "lint:reproduce": "wireit"
   },
   "wireit": {
     "link:prepare": {
       "command": "npx link"
+    },
+    "lint:reproduce": {
+      "command": "npx reproduce @davidsneighbour/tools"
     }
   },
   "main": "index.js",
