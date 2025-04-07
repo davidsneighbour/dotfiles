@@ -1,11 +1,16 @@
 {
   "folders": [
-	{
-		"path": "../../configurations"
-	}
-],
-  "settings": {
-  },
+    {
+      "path": "../../configurations"
+    },
+    {
+      "path": "../../dnb-vale-config"
+    },
+    {
+      "path": "../../renovate-config"
+    }
+  ],
+  "settings": {},
   "extensions": {
     "recommendations": [
       "davidanson.vscode-markdownlint"
