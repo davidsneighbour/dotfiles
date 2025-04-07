@@ -1,0 +1,26 @@
+_bootstrap_class_lookup_completions() {
+  local cur prev cache_dir cache_file version
+  COMPREPLY=()
+  cur="${COMP_WORDS[COMP_CWORD]}"
+  prev="${COMP_WORDS[COMP_CWORD-1]}"
+  cache_dir="${HOME}/.cache/bootstrap-css"
+  version_file="${cache_dir}/.version"
+  version="5.3.3"  # fallback version
+
+  # read pinned version if it exists
+  if [[ -f "${version_file}" ]]; then
+    version="$(< "${version_file}")"
+  fi
+
+  cache_file="${cache_dir}/bootstrap-${version}.min.css"
+
+  # autocomplete only for the second argument (after command)
+  if [[ ${COMP_CWORD} -eq 1 && -f "${cache_file}" ]]; then
+    local matches
+    matches=$(grep -oE '\.([a-zA-Z0-9_-]+)[\s,{]' "${cache_file}" | \
+      sed 's/[\s,{]$//' | sed 's/^\.//' | sort -u)
+    COMPREPLY=( $(compgen -W "${matches}" -- "${cur}") )
+  fi
+}
+
+complete -F _bootstrap_class_lookup_completions bootstrap_class_lookup
