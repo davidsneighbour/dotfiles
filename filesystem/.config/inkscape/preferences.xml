@@ -152,7 +152,9 @@
          style="fill:red;"
          end="0"
          start="0"
-         usecurrent="1" />
+         usecurrent="1"
+         rx="10.9096965789795"
+         ry="8.64926528930664" />
       <eventcontext
          id="star"
          magnitude="5"
@@ -302,7 +304,7 @@
        id="lpetool"
        mode="drag"
        style="fill:#ff0000;fill-opacity:1;fill-rule:nonzero;stroke:none;"
-       unit="px"
+       unit="mm"
        show_bbox="1" />
     <eventcontext
        id="text"
@@ -596,8 +598,10 @@
        path=""
        ask="1"
        ask_svg="1"
-       link="link"
-       scale="optimizeSpeed" />
+       link="embed"
+       scale="auto"
+       forcexdpi="0"
+       import_mode_svg="include" />
     <group
        id="debug"
        redirect="0" />
@@ -929,7 +933,7 @@
      org.inkscape.output.png.inkscape.png_antialias="2" />
   <group
      id="desktop"
-     style="fill:#aa0000;font-size:53.33333333px;-inkscape-font-specification:'sans-serif Bold Italic';font-family:sans-serif;font-weight:bold;font-style:italic">
+     style="fill:#000000;font-size:192px;-inkscape-font-specification:'Noto Sans Yi';font-family:'Noto Sans Yi'">
     <group
        width="1452"
        height="1012"
@@ -1054,7 +1058,7 @@
   <group
      id="theme"
      defaultPreferDarkTheme="0"
-     defaultIconTheme="Yaru-bark-dark"
+     defaultIconTheme="Papirus-Dark"
      defaultGtkTheme="Dracula"
      narrowSpinButton="1"
      preferDarkTheme="1"
