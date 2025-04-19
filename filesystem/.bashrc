@@ -29,10 +29,10 @@ auto_source() {
 }
 
 # VSCode workaround
-# shellcheck source=/dev/null
-TERM_PROGRAM="${TERM_PROGRAM:-}"
-# shellcheck disable=SC1090
-[[ "${TERM_PROGRAM}" == "vscode" ]] && . "$(/usr/bin/code --locate-shell-integration-path bash)"
+# # shellcheck source=/dev/null
+# TERM_PROGRAM="${TERM_PROGRAM:-}"
+# # shellcheck disable=SC1090
+# [[ "${TERM_PROGRAM}" == "vscode" ]] && . "$(/usr/bin/code --locate-shell-integration-path bash)"
 
 # failure() {
 #   local lineno=$1
