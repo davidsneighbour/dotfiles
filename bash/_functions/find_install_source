@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# set -euo pipefail
-
 # Global verbosity level
 verbosity=0
 available_managers=()
