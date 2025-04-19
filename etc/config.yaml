@@ -83,4 +83,8 @@
     command: /home/patrick/github.com/davidsneighbour/dotfiles/bin/cronjobs/filespace-discord.sh >> /home/patrick/.logs/cron.log 2>&1
   - cron: 0 18 * * *
     command: /bin/bash -c "cd /home/patrick/github.com/davidsneighbour/dotfiles && keybindingsmanager -e etc/keycombinations.csv" >> /home/patrick/.logs/keybindings_export.log 2>&1
+  - cron: 0 6,12,18 * * *
+    command: /home/patrick/github.com/davidsneighbour/lighthousing/cronjob.sh >> ~/.logs/lighthouse-cron.log 2>&1
+  - cron: "@reboot"
+    command: /home/patrick/github.com/davidsneighbour/lighthousing/cronjob.sh >> ~/.logs/lighthouse-cron.log 2>&1
 
