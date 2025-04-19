@@ -1,0 +1,58 @@
+# insert_first_line
+# Adds a string as the first line to each file in a directory (recursively).
+# Can be used as a Bash function in .bashrc or similar.
+#
+# Example usage:
+#   insert_first_line --string='{{/* @todo refactor */}}'
+#   insert_first_line --string='// LICENSE MIT' --dir=src/
+
+insert_first_line() {
+  local dir="."
+  local string=""
+
+  for arg in "$@"; do
+    case "${arg}" in
+      --dir=*)
+        dir="${arg#*=}"
+        ;;
+      --string=*)
+        string="${arg#*=}"
+        ;;
+      --help)
+        echo "Usage: insert_first_line --string='your line' [--dir=target_directory]"
+        echo ""
+        echo "Parameters:"
+        echo "  --string     Required. Line to insert at the top of each file."
+        echo "  --dir        Directory to scan recursively. Defaults to current directory."
+        echo "  --help       Show this help message."
+        return 0
+        ;;
+      *)
+        echo "❌ Unknown option: ${arg}"
+        insert_first_line --help
+        return 1
+        ;;
+    esac
+  done
+
+  if [[ -z "${string}" ]]; then
+    echo "❌ Error: --string is required."
+    insert_first_line --help
+    return 1
+  fi
+
+  if [[ ! -d "${dir}" ]]; then
+    echo "❌ Error: Directory '${dir}' does not exist."
+    return 1
+  fi
+
+  while IFS= read -r -d '' file; do
+    if [[ -f "${file}" ]]; then
+      local tmp_file
+      tmp_file="$(mktemp)"
+      printf '%s\n' "${string}" > "${tmp_file}"
+      cat "${file}" >> "${tmp_file}"
+      mv "${tmp_file}" "${file}"
+    fi
+  done < <(find "${dir}" -type f -print0)
+}
