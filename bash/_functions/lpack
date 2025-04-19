@@ -1,0 +1,58 @@
+#!/bin/bash
+
+lpack() {
+  local datetime
+  datetime="$(date +'%Y%m%d-%H%M%S')"
+  local dirbase
+  dirbase="$(basename "$PWD")"
+  local output="${dirbase}-${datetime}.zip"
+  local verbose=false
+
+  for arg in "$@"; do
+    case "${arg}" in
+      --output=*)
+        output="${arg#*=}"
+        ;;
+      --verbose)
+        verbose=true
+        ;;
+      --help)
+        echo "Usage: lpack [--output=filename] [--verbose]"
+        echo ""
+        echo "Options:"
+        echo "  --output=filename   Name of the zip file to create (default: <dirname>-YYYYMMDD-HHMMSS.zip)"
+        echo "  --verbose           Enable verbose output"
+        echo "  --help              Show this help message"
+        return 0
+        ;;
+      *)
+        echo "❌ Unknown option: ${arg}"
+        lpack --help
+        return 1
+        ;;
+    esac
+  done
+
+  local logdir="${HOME}/.logs"
+  mkdir -p "${logdir}"
+  local logfile="${logdir}/setup-log-${datetime}.log"
+
+  if [[ "${verbose}" == true ]]; then
+    echo "ℹ️ Packing project into ${output}..." | tee -a "${logfile}"
+  else
+    echo "ℹ️ Packing project into ${output}..." >> "${logfile}"
+  fi
+
+  if ! zip -r "${output}" . \
+    -x "node_modules/*" \
+    "dist/*" \
+    ".git/*" \
+    "*.DS_Store" \
+    "*.log" \
+    "${output}" >> "${logfile}" 2>&1; then
+    echo "❌ Failed to create archive" | tee -a "${logfile}" >&2
+    return 1
+  fi
+
+  echo "✅ Done: ${output} created." | tee -a "${logfile}"
+}
