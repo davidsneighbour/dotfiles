@@ -1,0 +1,12 @@
+scratch_files() {
+  ## scratch_files - Find all scratch.md and scratch/*.md files recursively with relative path and size
+  ## Usage: scratch_files
+  ## Description: Recursively searches from current directory, ignores node_modules, lists matching files with size
+  ## Options: none
+
+  find . \
+    -path '*/node_modules' -prune -o \
+    -type f \( -name 'scratch.md' -o -path '*/scratch/*.md' \) \
+    -print0 |
+    xargs -0 ls -lah --time-style=long-iso 2>/dev/null
+}
