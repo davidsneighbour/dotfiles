@@ -35,6 +35,7 @@
     ~/.gitignore: filesystem/.gitignore.template
     ~/.git-templates: filesystem/.git-templates
     ~/.hidden: filesystem/.hidden
+    ~/.nvmrc: filesystem/.nvmrc
     ~/.pam_environment: filesystem/.pam_environment
     ~/.profile: filesystem/.profile
     ~/.remarkrc.js: filesystem/.remarkrc.js
