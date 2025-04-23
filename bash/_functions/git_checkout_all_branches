@@ -1,0 +1,74 @@
+#!/bin/bash
+
+git_checkout_all_remote_branches() {
+  ## git_checkout_all_remote_branches - Create local branches for all remote branches
+  ## Usage: git_checkout_all_remote_branches [--dry-run] [--confirm] [--help]
+  ## Description:
+  ##   Fetches all remotes and creates local tracking branches for all remote branches
+  ##   (except HEAD). Only creates branches that do not already exist locally.
+  ## Options:
+  ##   --dry-run   Show which branches would be created without making changes
+  ##   --confirm   Ask before creating each branch
+  ##   --help      Show this help message
+
+  local dry_run=false
+  local confirm=false
+  local total_remote=0
+  local total_local=0
+  local created_count=0
+
+  for arg in "$@"; do
+    case "${arg}" in
+      --dry-run) dry_run=true ;;
+      --confirm) confirm=true ;;
+      --help)
+        _log "git_checkout_all_remote_branches - Create local branches for all remote branches" info
+        _log "Usage: git_checkout_all_remote_branches [--dry-run] [--confirm] [--help]" info
+        _log "" info
+        _log "Options:" info
+        _log "  --dry-run   Show which branches would be created without making changes" info
+        _log "  --confirm   Ask before creating each branch" info
+        _log "  --help      Show this help message" info
+        return 0
+        ;;
+      *) _log "Unknown option: ${arg}" error; return 1 ;;
+    esac
+  done
+
+  git fetch --all --prune || {
+    _log "Failed to fetch remotes" error
+    return 1
+  }
+
+  while IFS= read -r remote_branch; do
+    remote_branch="$(echo "${remote_branch}" | sed 's/^ *//')"  # trim leading whitespace
+    local branch_name="${remote_branch#origin/}"
+    ((total_remote++))
+
+    [[ "${branch_name}" == "HEAD" ]] && continue
+
+    if git show-ref --quiet "refs/heads/${branch_name}"; then
+      ((total_local++))
+      continue
+    fi
+
+    if [[ "${dry_run}" == true ]]; then
+      _log "Would create local branch: ${branch_name} tracking origin/${branch_name}" dry
+    else
+      if [[ "${confirm}" == true ]]; then
+        read -rp "Create branch ${branch_name}? [y/N]: " user_confirm
+        [[ "${user_confirm}" != [yY] ]] && continue
+      fi
+      if git branch --track "${branch_name}" "origin/${branch_name}"; then
+        _log "Created ${branch_name}" success
+        ((created_count++))
+      else
+        _log "Failed to create ${branch_name}" error
+      fi
+    fi
+  done < <(git branch -r | grep -v 'HEAD')
+
+  _log "Remote branches found: ${total_remote}" success
+  _log "Local branches already existed: ${total_local}" info
+  _log "New local branches created: ${created_count}" success
+}
