@@ -1,3 +1,4 @@
+---
 ################################################################################
 # Setup configuration for Dotbot
 #
@@ -12,69 +13,69 @@
 - clean: ["~"]
 
 - link:
-    ############################################################################
-    # file links
-    ############################################################################
-    ~/.barriers.conf: filesystem/.barriers.conf
-    ~/.bash_logout: filesystem/.bash_logout
-    ~/.bash_profile: filesystem/.bash_profile
-    ~/.bashrc: filesystem/.bashrc
-    ~/.better-commits.json: filesystem/.better-commits.json
-    ~/.cargo/.crates.toml: filesystem/.cargo/.crates.toml
-    ~/.cargo/env: filesystem/.cargo/env
-    ~/.config/starship.toml: filesystem/.config/starship.toml
-    ~/.config/user-dirs.dirs: filesystem/.config/user-dirs.dirs
-    ~/.czrc: filesystem/.czrc
-    ~/.dir_colors: filesystem/.dir_colors
-    ~/.face.icon: filesystem/.face.icon
-    ~/.editorconfig: filesystem/.editorconfig
-    ~/.fehbg: filesystem/.fehbg
-    ~/.fixpackrc: filesystem/.fixpackrc
-    ~/.gitmessage: filesystem/.gitmessage
-    ~/.gitconfig: filesystem/.gitconfig
-    ~/.gitignore: filesystem/.gitignore.template
-    ~/.git-templates: filesystem/.git-templates
-    ~/.hidden: filesystem/.hidden
-    ~/.nvmrc: filesystem/.nvmrc
-    ~/.pam_environment: filesystem/.pam_environment
-    ~/.profile: filesystem/.profile
-    ~/.remarkrc.js: filesystem/.remarkrc.js
-    ~/.remarkignore: filesystem/.remarkignore
-    ~/.Xresources: filesystem/.Xresources
-    ~/.nvm/default-packages: filesystem/.nvm/default-packages
-    ##################################################################
-    # directory links
-    ##################################################################
-    ~/.config/autostart: filesystem/.config/autostart
-    ~/.config/assets: filesystem/.themes/Dracula/assets
-    ~/.config/BetterDiscord: filesystem/.config/BetterDiscord
-    ~/.config/filezilla: filesystem/.config/filezilla
-    ~/.config/fontconfig: filesystem/.config/fontconfig
-    ~/.config/gh: filesystem/.config/gh
-    ~/.config/gtk-3.0: filesystem/.config/gtk-3.0
-    ~/.config/gtk-4.0: filesystem/.config/gtk-4.0
-    ~/.config/i3: filesystem/.config/i3
-    ~/.config/inkscape: filesystem/.config/inkscape
-    ~/.config/lsd: filesystem/.config/lsd
-    ~/.config/jrnl: filesystem/.config/jrnl
-    ~/.config/neofetch: filesystem/.config/neofetch
-    ~/.config/polybar: filesystem/.config/polybar
-    ~/.config/qt5ct: filesystem/.config/qt5ct
-    ~/.config/rofi: filesystem/.config/rofi
-    ~/.config/sublime-merge: filesystem/.config/sublime-merge
-    ~/.config/sublime-text: filesystem/.config/sublime-text
-    ~/.config/tabtab: filesystem/.config/tabtab
-    ~/.config/wlogout: filesystem/.config/wlogout
-    ~/.gnome: filesystem/.gnome
-    ~/.icons: filesystem/.icons
-    ~/.logs: logs
-    ~/.themes: filesystem/.themes
-    ~/.vim: filesystem/.vim
-    ~/.wallpapers: filesystem/.wallpapers
+  ############################################################################
+  # file links
+  ############################################################################
+  ~/.barriers.conf: filesystem/.barriers.conf
+  ~/.bash_logout: filesystem/.bash_logout
+  ~/.bash_profile: filesystem/.bash_profile
+  ~/.bashrc: filesystem/.bashrc
+  ~/.better-commits.json: filesystem/.better-commits.json
+  ~/.cargo/.crates.toml: filesystem/.cargo/.crates.toml
+  ~/.cargo/env: filesystem/.cargo/env
+  ~/.config/starship.toml: filesystem/.config/starship.toml
+  ~/.config/user-dirs.dirs: filesystem/.config/user-dirs.dirs
+  ~/.czrc: filesystem/.czrc
+  ~/.dir_colors: filesystem/.dir_colors
+  ~/.face.icon: filesystem/.face.icon
+  ~/.editorconfig: filesystem/.editorconfig
+  ~/.fehbg: filesystem/.fehbg
+  ~/.fixpackrc: filesystem/.fixpackrc
+  ~/.gitmessage: filesystem/.gitmessage
+  ~/.gitconfig: filesystem/.gitconfig
+  ~/.gitignore: filesystem/.gitignore.template
+  ~/.git-templates: filesystem/.git-templates
+  ~/.hidden: filesystem/.hidden
+  ~/.nvmrc: filesystem/.nvmrc
+  ~/.pam_environment: filesystem/.pam_environment
+  ~/.profile: filesystem/.profile
+  ~/.remarkrc.js: filesystem/.remarkrc.js
+  ~/.remarkignore: filesystem/.remarkignore
+  ~/.Xresources: filesystem/.Xresources
+  ~/.nvm/default-packages: filesystem/.nvm/default-packages
+  ##################################################################
+  # directory links
+  ##################################################################
+  ~/.config/autostart: filesystem/.config/autostart
+  ~/.config/assets: filesystem/.themes/Dracula/assets
+  ~/.config/BetterDiscord: filesystem/.config/BetterDiscord
+  ~/.config/filezilla: filesystem/.config/filezilla
+  ~/.config/fontconfig: filesystem/.config/fontconfig
+  ~/.config/gh: filesystem/.config/gh
+  ~/.config/gtk-3.0: filesystem/.config/gtk-3.0
+  ~/.config/gtk-4.0: filesystem/.config/gtk-4.0
+  ~/.config/i3: filesystem/.config/i3
+  ~/.config/inkscape: filesystem/.config/inkscape
+  ~/.config/lsd: filesystem/.config/lsd
+  ~/.config/jrnl: filesystem/.config/jrnl
+  ~/.config/neofetch: filesystem/.config/neofetch
+  ~/.config/polybar: filesystem/.config/polybar
+  ~/.config/qt5ct: filesystem/.config/qt5ct
+  ~/.config/rofi: filesystem/.config/rofi
+  ~/.config/sublime-merge: filesystem/.config/sublime-merge
+  ~/.config/sublime-text: filesystem/.config/sublime-text
+  ~/.config/tabtab: filesystem/.config/tabtab
+  ~/.config/wlogout: filesystem/.config/wlogout
+  ~/.gnome: filesystem/.gnome
+  ~/.icons: filesystem/.icons
+  ~/.logs: logs
+  ~/.themes: filesystem/.themes
+  ~/.vim: filesystem/.vim
+  ~/.wallpapers: filesystem/.wallpapers
 
 - shell:
-    - "gsettings set org.gnome.desktop.interface gtk-theme \"Dracula\""
-    - "gsettings set org.gnome.desktop.wm.preferences theme \"Dracula\""
+  - "gsettings set org.gnome.desktop.interface gtk-theme \"Dracula\""
+  - "gsettings set org.gnome.desktop.wm.preferences theme \"Dracula\""
 #    - "gsettings set org.gnome.desktop.interface icon-theme \"Dracula\""
 
 - crontab:
@@ -88,4 +89,3 @@
     command: /home/patrick/github.com/davidsneighbour/lighthousing/cronjob.sh >> ~/.logs/lighthouse-cron.log 2>&1
   - cron: "@reboot"
     command: /home/patrick/github.com/davidsneighbour/lighthousing/cronjob.sh >> ~/.logs/lighthouse-cron.log 2>&1
-
