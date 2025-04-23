@@ -1,0 +1,11 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Start MCP GitHub Server",
+      "type": "shell",
+      "command": "./.vscode/start-mcp.sh",
+      "problemMatcher": []
+    }
+  ]
+}
