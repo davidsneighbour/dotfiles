@@ -5,6 +5,9 @@
 		},
 		{
 			"path": "../../configurations"
+		},
+		{
+			"path": "../../alan"
 		}
 	],
 	"settings": {
