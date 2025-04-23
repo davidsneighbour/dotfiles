@@ -1,0 +1,157 @@
+## _log - Unified logger for reusable Bash functions
+## Usage: _log [--help] [--json] "message" [level]
+## Options:
+##   --help      Display this help and exit
+##   --json      Output in JSON mode
+## Arguments:
+##   message     Message to log
+##   level       Log level: error, warn, info (default), success, dry, skip
+## Environment Variables:
+##   LOG_LEVEL     Minimum level to log. Default: info
+##   LOGFILES_PATH Directory for log files. Default: ${HOME}/.logs
+##   __LOGFILE     Full path to log file (overrides LOGFILES_PATH)
+##   LOG_MAX_SIZE  Max logfile size in bytes before rotation. Default: 1048576
+
+## _log - Unified logger for reusable Bash functions
+## Usage: _log [--help] [--json] "message" [level]
+_log() {
+  # help
+  if [[ $# -eq 0 || "$1" == '--help' ]]; then
+    cat <<EOF
+${FUNCNAME[0]} - Unified logger for reusable Bash functions
+
+Usage:
+  ${FUNCNAME[0]} [--help] [--json] "message" [level]
+
+Options:
+  --help      Display this help and exit
+  --json      Output in JSON mode
+
+Arguments:
+  message     Message to log
+  level       Log level: error, warn, info (default), success, dry, skip
+
+Environment Variables:
+  LOG_LEVEL     Minimum level to log. Default: info
+  LOGFILES_PATH Directory for log files. Default: \${HOME}/.logs
+  __LOGFILE     Full path to log file (overrides LOGFILES_PATH)
+  LOG_MAX_SIZE  Max logfile size in bytes before rotation. Default: 1048576
+EOF
+    return 0
+  fi
+
+  # parse json flag
+  local json_mode=false
+  if [[ "$1" == '--json' ]]; then
+    json_mode=true
+    shift
+  fi
+
+  # message + level
+  local msg="$1"
+  local level="${2:-info}"
+
+  # priority filtering
+  local -A priorities=(
+    [error]=0 [warn]=1 [info]=2 [success]=2 [dry]=3 [skip]=4
+  )
+  local threshold="${priorities[${LOG_LEVEL:-info}]:-2}"
+  if (( priorities[${level}:-info] > threshold )); then
+    return 0
+  fi
+
+  # logfile path & rotation
+  local logfile="${__LOGFILE:-${LOGFILES_PATH:-${HOME}/.logs}/bash.log}"
+  mkdir -p "$(dirname "${logfile}")"
+  local max_size="${LOG_MAX_SIZE:-1048576}"
+  if [[ -f "${logfile}" && $(stat -c '%s' "${logfile}") -gt max_size ]]; then
+    mv "${logfile}" "${logfile}.1"
+    : > "${logfile}"
+  fi
+
+  # timestamp
+  local timestamp
+  timestamp="$(date '+%Y-%m-%d %H:%M:%S')"
+
+  # updated icons
+  local -A icons=(
+    [error]='⛔'
+    [warn]='⚠️ '
+    [info]='💡'
+    [success]='🎉'
+    [dry]='☂️ '
+    [skip]='⏭️ '
+    [default]='🔹'
+  )
+  local icon_raw="${icons[${level}]:-${icons[default]}}"
+
+  # split console vs logfile icon
+  local icon_console="${icon_raw}"
+  local icon_log="${icon_raw% }"
+
+  # colors for console
+  local -A colors=(
+    [error]='\033[31m'   # red
+    [warn]='\033[33m'    # yellow
+    [info]='\033[36m'    # cyan
+    [success]='\033[32m' # green
+    [dry]='\033[90m'     # bright black
+    [skip]='\033[35m'    # magenta
+  )
+  local reset='\033[0m'
+
+  if [[ "${json_mode}" == true ]]; then
+    # JSON mode
+    local json_line
+    json_line="$(printf '{"timestamp":"%s","level":"%s","message":"%s"}' \
+      "${timestamp}" "${level}" "${msg}")"
+    echo "${json_line}"
+    echo "${json_line}" >> "${logfile}"
+  else
+    # console: colored timestamp + [icon level], reset, then message
+    echo -e "${colors[${level}]:-}${timestamp} [${icon_console} ${level}]${reset} ${msg}"
+    # logfile: plain text
+    echo "${timestamp} [${icon_log} ${level}] ${msg}" >> "${logfile}"
+  fi
+}
+
+## log_show_variants - Display sample log lines for each level
+## Usage: log_show_variants [--help] [--json]
+log_show_variants() {
+  if [[ $# -gt 0 && "$1" == '--help' ]]; then
+    cat <<EOF
+${FUNCNAME[0]} - Display sample log lines for each level
+
+Usage:
+  ${FUNCNAME[0]} [--help] [--json]
+
+Options:
+  --help    Display this help and exit
+  --json    Show samples in JSON mode
+EOF
+    return 0
+  fi
+
+  local json_mode=false
+  if [[ $# -gt 0 && "$1" == '--json' ]]; then
+    json_mode=true
+  fi
+
+  local old_level="${LOG_LEVEL:-}"
+  export LOG_LEVEL=skip
+
+  local levels=(error warn info success dry skip)
+  for lvl in "${levels[@]}"; do
+    if [[ "${json_mode}" == true ]]; then
+      _log --json "Sample ${lvl^^} message" "${lvl}"
+    else
+      _log "Sample ${lvl^^} message" "${lvl}"
+    fi
+  done
+
+  if [[ -z "${old_level}" ]]; then
+    unset LOG_LEVEL
+  else
+    export LOG_LEVEL="${old_level}"
+  fi
+}
