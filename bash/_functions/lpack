@@ -1,12 +1,27 @@
 #!/bin/bash
 
 lpack() {
+  ## lpack - Create a zip archive of the current directory with advanced ignore logic
+  ## Usage: lpack [--output=filename] [--verbose] [--include-gitignored] [--extra-ignore=<file>]
+  ## Description: Archives the current directory, respects .gitignore by default, includes hidden files and symlinks
+  ## Options:
+  ##   --output=filename         Name of the zip file to create (default: <dirname>-YYYYMMDD-HHMMSS.zip)
+  ##   --verbose                 Enable verbose output
+  ##   --include-gitignored      Include files listed in .gitignore (default is to exclude)
+  ##   --extra-ignore=<file>     Additional ignore file (.gitignore format) to exclude paths
+  ##   --help                    Show this help message
+
   local datetime
   datetime="$(date +'%Y%m%d-%H%M%S')"
   local dirbase
   dirbase="$(basename "$PWD")"
   local output="${dirbase}-${datetime}.zip"
   local verbose=false
+  local include_gitignored=false
+  local extra_ignore=""
+  local logdir="${HOME}/.logs"
+  mkdir -p "${logdir}"
+  local logfile="${logdir}/setup-log-${datetime}.log"
 
   for arg in "$@"; do
     case "${arg}" in
@@ -16,13 +31,14 @@ lpack() {
       --verbose)
         verbose=true
         ;;
+      --include-gitignored)
+        include_gitignored=true
+        ;;
+      --extra-ignore=*)
+        extra_ignore="${arg#*=}"
+        ;;
       --help)
-        echo "Usage: lpack [--output=filename] [--verbose]"
-        echo ""
-        echo "Options:"
-        echo "  --output=filename   Name of the zip file to create (default: <dirname>-YYYYMMDD-HHMMSS.zip)"
-        echo "  --verbose           Enable verbose output"
-        echo "  --help              Show this help message"
+        grep '^  ##' "${BASH_SOURCE[0]}" | sed 's/^  ## //'
         return 0
         ;;
       *)
@@ -33,23 +49,33 @@ lpack() {
     esac
   done
 
-  local logdir="${HOME}/.logs"
-  mkdir -p "${logdir}"
-  local logfile="${logdir}/setup-log-${datetime}.log"
-
   if [[ "${verbose}" == true ]]; then
     echo "ℹ️ Packing project into ${output}..." | tee -a "${logfile}"
   else
     echo "ℹ️ Packing project into ${output}..." >> "${logfile}"
   fi
 
-  if ! zip -r "${output}" . \
-    -x "node_modules/*" \
-    "dist/*" \
-    ".git/*" \
-    "*.DS_Store" \
-    "*.log" \
-    "${output}" >> "${logfile}" 2>&1; then
+  local tmpfile
+  tmpfile="$(mktemp)"
+
+  if [[ "${include_gitignored}" == false ]]; then
+    git ls-files -z -c -o --exclude-standard > "${tmpfile}"
+  else
+    find . -print0 > "${tmpfile}"
+  fi
+
+  if [[ -n "${extra_ignore}" && -f "${extra_ignore}" ]]; then
+    # Use rsync to filter based on extra ignore rules
+    rsync -av --delete --exclude-from="${extra_ignore}" --files-from="${tmpfile}" ./ ./__lpack_temp__ >> "${logfile}" 2>&1
+    cd ./__lpack_temp__ || return 1
+    zip -r "../${output}" . >> "${logfile}" 2>&1
+    cd .. && rm -rf ./__lpack_temp__ "${tmpfile}"
+  else
+    tr '\0' '\n' < "${tmpfile}" | zip -r --names-stdin "${output}" >> "${logfile}" 2>&1
+    rm -f "${tmpfile}"
+  fi
+
+  if [[ $? -ne 0 ]]; then
     echo "❌ Failed to create archive" | tee -a "${logfile}" >&2
     return 1
   fi
