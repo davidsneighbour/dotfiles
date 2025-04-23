@@ -1,4 +1,6 @@
 Changelog
+## [2025.6.1](https://github.com/davidsneighbour/dotfiles/compare/v2025.6.0...v2025.6.1) (2025-04-23)
+
 ## [2025.6.0](https://github.com/davidsneighbour/dotfiles/compare/v2025.3.1...v2025.6.0) (2025-04-23)
 
 
