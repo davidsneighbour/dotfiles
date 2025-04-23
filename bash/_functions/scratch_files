@@ -8,5 +8,5 @@ scratch_files() {
     -path '*/node_modules' -prune -o \
     -type f \( -name 'scratch.md' -o -path '*/scratch/*.md' \) \
     -print0 |
-    xargs -0 ls -lah --time-style=long-iso 2>/dev/null
+    xargs -0 -r ls -lah --time-style=long-iso 2>/dev/null
 }
