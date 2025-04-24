@@ -1,7 +1,7 @@
 #!/bin/bash
 
 docker run -d \
-  -p 3000:8080 \
+  --network=host \
   -v ollama:/root/.ollama \
   --add-host=host.docker.internal:host-gateway \
   -v /home/patrick/github.com/davidsneighbour/alan/brain:/app/backend/data \
@@ -11,5 +11,6 @@ docker run -d \
   -e WEBUI_AUTH=false \
   -e WEBUI_NAME="Alan" \
   -e ENABLE_COMMUNITY_SHARING=false \
+  -e OLLAMA_BASE_URL=http://127.0.0.1:11434 \
   \
-  ghcr.io/open-webui/open-webui:ollama
+  ghcr.io/open-webui/open-webui:main
