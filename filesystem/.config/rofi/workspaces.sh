@@ -1,281 +1,280 @@
 #!/bin/bash
 
-set -euo pipefail  # Robust script options
+set -euo pipefail  # Exit on error, undefined var, or pipe failure
 
-# Default configurations
-WORKINGDIR="${HOME}/.config/rofi/"  # Directory containing rofi configuration
-PROJECTS_DIRS=("${HOME}/github.com/davidsneighbour")  # Array of base directories for projects
-WORKSPACE_FILES_DIRS=()  # Directories containing individual .code-workspace files
-FILE_PATTERN="*.code-workspace"  # File pattern to search for
-ROFI_CONFIG="${WORKINGDIR}/config.rasi"  # Rofi configuration file
-PROMPT="Select Project"  # Rofi prompt text
-SORT_ORDER="ASC"  # Sorting order for the rofi menu (default: ASC)
-CREATE_WORKSPACE="false"  # Whether to create a workspace file if none exists
-CACHE_FILE="${HOME}/.cache/rofi_workspaces_cache"  # Cache file to store last selected items
-CACHE_SIZE=5  # Number of items to keep in the cache
-HIDE_EMPTY_PROJECTS="false"  # Hide project directories with no .code-workspace files
-NEW_WINDOW="false"  # Whether to open a new Visual Studio Code window
+# Manual logging
+LOGFILE="${HOME}/.logs/rofi.log"
+mkdir -p "$(dirname "$LOGFILE")"
+log() {
+  local level=$1; shift
+  printf "[%s][rofi][%s] %s\n" \
+    "$(date +'%Y-%m-%d %H:%M:%S')" "$level" "$*" \
+    >> "$LOGFILE"
+}
 
-# Ensure required directories exist
-if [[ ! -d "${WORKINGDIR}" ]]; then
-  echo "Error: Working directory '${WORKINGDIR}' does not exist." >&2
+log info "Starting rofi project selector"
+log debug "PATH=${PATH}"
+
+# Ensure 'code' CLI is available
+if ! command -v code &>/dev/null; then
+  log error "'code' not found in PATH"
   exit 1
 fi
 
-# Sanitize project directories
+# Default configurations
+WORKINGDIR="${HOME}/.config/rofi/"
+PROJECTS_DIRS=("${HOME}/github.com/davidsneighbour")
+WORKSPACE_FILES_DIRS=()
+FILE_PATTERN="*.code-workspace"
+ROFI_CONFIG="${WORKINGDIR}/config.rasi"
+PROMPT="Select Project"
+SORT_ORDER="ASC"
+CREATE_WORKSPACE="false"
+CACHE_FILE="${HOME}/.cache/rofi_workspaces_cache"
+CACHE_SIZE=5
+HIDE_EMPTY_PROJECTS="false"
+NEW_WINDOW="false"
+
+# Helpers
 sanitize_project_dirs() {
   local dirs=()
-  for dir in "$@"; do
-    if [[ -d "${dir}" ]]; then
-      dirs+=("${dir}")
-    elif [[ -d "${HOME}/${dir}" ]]; then
-      dirs+=("${HOME}/${dir}")
+  for d in "$@"; do
+    if [[ -d "$d" ]]; then
+      dirs+=("$d")
+    elif [[ -d "${HOME}/$d" ]]; then
+      dirs+=("${HOME}/$d")
     else
-      echo "Warning: Skipping invalid project directory '${dir}'" >&2
+      log warn "Skipping invalid project directory '$d'"
     fi
   done
   printf '%s\n' "${dirs[@]}"
 }
 
-# Update cache with the selected project
 update_cache() {
-  local selected="$1"
-  if [[ -f "${CACHE_FILE}" ]]; then
-    # Remove selected project if already in cache
-    grep -v -x "${selected}" "${CACHE_FILE}" > "${CACHE_FILE}.tmp" || true
-    mv "${CACHE_FILE}.tmp" "${CACHE_FILE}"
+  local sel=$1
+  log debug "Updating cache with '$sel'"
+  mkdir -p "$(dirname "$CACHE_FILE")"
+  if [[ -f "$CACHE_FILE" ]]; then
+    grep -v -x "$sel" "$CACHE_FILE" > "${CACHE_FILE}.tmp" || true
+    mv "${CACHE_FILE}.tmp" "$CACHE_FILE"
   fi
-  # Add to the top of the cache
-  echo "${selected}" >> "${CACHE_FILE}"
-  # Trim cache size
-  tail -n "${CACHE_SIZE}" "${CACHE_FILE}" > "${CACHE_FILE}.tmp"
-  mv "${CACHE_FILE}.tmp" "${CACHE_FILE}"
+  echo "$sel" >> "$CACHE_FILE"
+  tail -n "$CACHE_SIZE" "$CACHE_FILE" > "${CACHE_FILE}.tmp"
+  mv "${CACHE_FILE}.tmp" "$CACHE_FILE"
 }
 
-# Parse arguments
+# Parse --clearcache first
 if [[ "$*" == *--clearcache* ]]; then
   if [[ "$#" -ne 1 ]]; then
-    echo "Error: --clearcache must be used alone without any other parameters." >&2
+    log error "--clearcache must be used alone"
     exit 1
   fi
-  rm -f "${CACHE_FILE}"
-  echo "Cache cleared."
+  rm -f "$CACHE_FILE"
+  log info "Cache cleared"
   exit 0
 fi
 
+# Argument parsing
 while [[ $# -gt 0 ]]; do
-  case "$1" in
+  case $1 in
     --workingdir)
-      WORKINGDIR="$2"
-      shift 2
-      ;;
+      WORKINGDIR="$2"; shift 2 ;;
     --projectsdirs)
-      IFS=',' read -r -a raw_dirs <<< "$2"
-      mapfile -t PROJECTS_DIRS < <(sanitize_project_dirs "${raw_dirs[@]}")
-      shift 2
-      ;;
+      IFS=',' read -r -a raw <<< "$2"
+      mapfile -t PROJECTS_DIRS < <(sanitize_project_dirs "${raw[@]}")
+      shift 2 ;;
     --workspacedirs)
-      IFS=',' read -r -a raw_dirs <<< "$2"
-      mapfile -t WORKSPACE_FILES_DIRS < <(sanitize_project_dirs "${raw_dirs[@]}")
-      shift 2
-      ;;
+      IFS=',' read -r -a raw <<< "$2"
+      mapfile -t WORKSPACE_FILES_DIRS < <(sanitize_project_dirs "${raw[@]}")
+      shift 2 ;;
     --filepattern)
-      FILE_PATTERN="$2"
-      shift 2
-      ;;
+      FILE_PATTERN="$2"; shift 2 ;;
     --config)
-      ROFI_CONFIG="$2"
-      shift 2
-      ;;
+      ROFI_CONFIG="$2"; shift 2 ;;
     --prompt)
-      PROMPT="$2"
-      shift 2
-      ;;
+      PROMPT="$2"; shift 2 ;;
     --sortorder)
-      SORT_ORDER="$2"
-      shift 2
-      ;;
+      SORT_ORDER="$2"; shift 2 ;;
     --createworkspace)
-      CREATE_WORKSPACE="true"
-      shift
-      ;;
+      CREATE_WORKSPACE="true"; shift ;;
     --hideemptyprojects)
-      HIDE_EMPTY_PROJECTS="true"
-      shift
-      ;;
+      HIDE_EMPTY_PROJECTS="true"; shift ;;
     --newwindow)
-      NEW_WINDOW="true"
-      shift
-      ;;
+      NEW_WINDOW="true"; shift ;;
     --help)
-      echo "Usage: ${FUNCNAME[0]} [OPTIONS]"
-      echo "Generates a rofi menu for opening projects or workspace files."
-      echo
-      echo "Options:"
-      echo "  --workingdir DIR      Set the rofi working directory (default: ${WORKINGDIR})"
-      echo "  --projectsdirs DIRS   Set the projects directories as a comma-separated list (default: ${PROJECTS_DIRS[*]})"
-      echo "  --workspacedirs DIRS  Set directories containing individual .code-workspace files (default: none)"
-      echo "  --filepattern PATTERN Set the workspace file pattern (default: ${FILE_PATTERN})"
-      echo "  --config FILE         Set the rofi configuration file (default: ${ROFI_CONFIG})"
-      echo "  --prompt TEXT         Set the rofi prompt text (default: '${PROMPT}')"
-      echo "  --sortorder ORDER     Set the sorting order (ASC or DESC, default: ${SORT_ORDER})"
-      echo "  --createworkspace     Enable creation of workspace files if none exist (default: ${CREATE_WORKSPACE})"
-      echo "  --hideemptyprojects   Hide project directories without .code-workspace files (default: ${HIDE_EMPTY_PROJECTS})"
-      echo "  --newwindow           Open workspace in a new Visual Studio Code window."
-      echo "  --clearcache          Clear the cache file. Must be used alone."
-      echo "  --help                Display this help message"
-      exit 0
-      ;;
+      cat <<EOF
+Usage: $(basename "$0") [OPTIONS]
+Options:
+  --clearcache             Clear the selection cache (alone)
+  --workingdir DIR         Rofi config dir (default: $WORKINGDIR)
+  --projectsdirs DIRS      Comma-separated project base dirs
+  --workspacedirs DIRS     Comma-separated workspace-file dirs
+  --filepattern PATTERN    Glob for .code-workspace (default: $FILE_PATTERN)
+  --config FILE            Rofi config (default: $ROFI_CONFIG)
+  --prompt TEXT            Prompt text (default: '$PROMPT')
+  --sortorder ASC|DESC     Sort order (default: $SORT_ORDER)
+  --createworkspace        Create .code-workspace if missing
+  --hideemptyprojects      Skip projects without .code-workspace
+  --newwindow              Open in new VS Code window
+  --help                   Show this message
+EOF
+      exit 0 ;;
     *)
-      echo "Unknown option: $1" >&2
-      exit 1
-      ;;
+      log error "Unknown option: $1"
+      exit 1 ;;
   esac
 done
 
-# Determine the Visual Studio Code command based on the --newwindow flag
-CODE_COMMAND="code"
-if [[ "${NEW_WINDOW}" == "false" ]]; then
+log debug "Parsed options: WORKINGDIR=${WORKINGDIR}, SORT_ORDER=${SORT_ORDER}, CREATE_WORKSPACE=${CREATE_WORKSPACE}, HIDE_EMPTY_PROJECTS=${HIDE_EMPTY_PROJECTS}, NEW_WINDOW=${NEW_WINDOW}"
+
+# Determine VS Code command
+if [[ "$NEW_WINDOW" == "true" ]]; then
+  CODE_COMMAND="code"
+else
   CODE_COMMAND="code -r"
 fi
+log debug "Using CODE_COMMAND='$CODE_COMMAND'"
 
-# List all directories in the projects directories
+# Collect project directories
 PROJECT_DIRS=()
-for BASE_DIR in "${PROJECTS_DIRS[@]}"; do
-  mapfile -t FOUND_DIRS < <(find "${BASE_DIR}" -mindepth 1 -maxdepth 1 -type d 2>/dev/null)
-  PROJECT_DIRS+=("${FOUND_DIRS[@]}")
+for base in "${PROJECTS_DIRS[@]}"; do
+  mapfile -t tmp < <(find "$base" -mindepth 1 -maxdepth 1 -type d 2>/dev/null)
+  PROJECT_DIRS+=("${tmp[@]}")
+done
+log info "Found ${#PROJECT_DIRS[@]} project directories"
+
+# Collect workspace files
+WORKSPACE_FILES=()
+for d in "${WORKSPACE_FILES_DIRS[@]}"; do
+  while IFS= read -r -d '' f; do
+    WORKSPACE_FILES+=("$f")
+  done < <(find "$d" -type f -name "$FILE_PATTERN" -print0)
+done
+log info "Found ${#WORKSPACE_FILES[@]} workspace files"
+
+# Map names to paths
+declare -A PROJECT_MAP WORKSPACE_MAP
+for d in "${PROJECT_DIRS[@]}"; do
+  PROJECT_MAP["$(basename "$d")"]="$d"
+done
+for f in "${WORKSPACE_FILES[@]}"; do
+  nm=$(basename "$f" .code-workspace)
+  [[ -z $nm ]] && nm=$(basename "$(dirname "$f")")
+  WORKSPACE_MAP["$nm"]="$f"
 done
 
-if [[ ${#PROJECT_DIRS[@]} -eq 0 && ${#WORKSPACE_FILES_DIRS[@]} -eq 0 ]]; then
-  echo "No projects or workspace files found in specified directories." >&2
-  exit 1
-fi
-
-# Generate menu options (folder names and workspace files)
-MENU_OPTIONS=()
-if [[ -f "${CACHE_FILE}" ]]; then
-  mapfile -t MENU_OPTIONS < "${CACHE_FILE}"
-fi
-
-# Add individual workspace files to the menu first
-WORKSPACE_ITEMS=()
-declare -A WORKSPACE_FILES_MAP
-for DIR in "${WORKSPACE_FILES_DIRS[@]}"; do
-  while IFS= read -r -d '' WORKSPACE_FILE; do
-    WORKSPACE_NAME=$(basename "${WORKSPACE_FILE}" .code-workspace)
-    if [[ -z "${WORKSPACE_NAME}" ]]; then
-      WORKSPACE_NAME=$(basename "$(dirname "${WORKSPACE_FILE}")")
-    fi
-    WORKSPACE_FILES_MAP["${WORKSPACE_NAME}"]="${WORKSPACE_FILE}"
-    if ! printf '%s\n' "${MENU_OPTIONS[@]}" | grep -qx "${WORKSPACE_NAME}"; then
-      WORKSPACE_ITEMS+=("${WORKSPACE_NAME}")
-    fi
-  done < <(find "${DIR}" -type f -name "${FILE_PATTERN}" -print0)
-done
-
-# Sort workspace items
-if [[ "${SORT_ORDER}" == "ASC" ]]; then
-  mapfile -t WORKSPACE_ITEMS < <(printf '%s\n' "${WORKSPACE_ITEMS[@]}" | sort)
-elif [[ "${SORT_ORDER}" == "DESC" ]]; then
-  mapfile -t WORKSPACE_ITEMS < <(printf '%s\n' "${WORKSPACE_ITEMS[@]}" | sort -r)
-fi
-
-# Add workspace items to the final menu options
-MENU_OPTIONS+=("${WORKSPACE_ITEMS[@]}")
-
-# Add project directories to the menu
-PROJECT_ITEMS=()
-for DIR in "${PROJECT_DIRS[@]}"; do
-  if [[ "${HIDE_EMPTY_PROJECTS}" == "true" ]]; then
-    WORKSPACE_FILE=$(find "${DIR}" -mindepth 1 -maxdepth 1 -type f -name "${FILE_PATTERN}" | head -n 1)
-    if [[ -z "${WORKSPACE_FILE}" ]]; then
-      continue
-    fi
-  fi
-  PROJECT_NAME=$(basename "${DIR}")
-  if ! printf '%s\n' "${MENU_OPTIONS[@]}" | grep -qx "${PROJECT_NAME}"; then
-    PROJECT_ITEMS+=("${PROJECT_NAME}")
-  fi
-done
-
-# Sort project directory items
-if [[ "${SORT_ORDER}" == "ASC" ]]; then
-  mapfile -t PROJECT_ITEMS < <(printf '%s\n' "${PROJECT_ITEMS[@]}" | sort)
-elif [[ "${SORT_ORDER}" == "DESC" ]]; then
-  mapfile -t PROJECT_ITEMS < <(printf '%s\n' "${PROJECT_ITEMS[@]}" | sort -r)
-fi
-
-# Add project items to the final menu options
-MENU_OPTIONS+=("${PROJECT_ITEMS[@]}")
-
-# Update prompt dynamically
-PROMPT="${PROMPT} (${#MENU_OPTIONS[@]} available)"
-
-# Display rofi menu
-SELECTED_PROJECT=$(printf '%s\n' "${MENU_OPTIONS[@]}" | rofi -dmenu -i -config "${ROFI_CONFIG}" -p "${PROMPT}")
-
-# Validate selection
-if [[ -z "${SELECTED_PROJECT}" ]]; then
-  echo "No project selected." >&2
-  exit 1
-fi
-
-# Determine the selected project directory or workspace file
-SELECTED_PROJECT_DIR=""
-SELECTED_WORKSPACE_FILE=""
-
-if [[ -n "${WORKSPACE_FILES_MAP[${SELECTED_PROJECT}]:-}" ]]; then
-  SELECTED_WORKSPACE_FILE="${WORKSPACE_FILES_MAP[${SELECTED_PROJECT}]}"
+# Load cache
+CACHED=()
+if [[ -f "$CACHE_FILE" ]]; then
+  mapfile -t CACHED < <(tac "$CACHE_FILE")
+  log debug "Loaded cache: ${CACHED[*]}"
 else
-  for DIR in "${PROJECT_DIRS[@]}"; do
-    if [[ "$(basename "${DIR}")" == "${SELECTED_PROJECT}" ]]; then
-      SELECTED_PROJECT_DIR="${DIR}"
-      break
-    fi
-  done
+  log debug "No cache file found"
 fi
 
-if [[ -n "${SELECTED_WORKSPACE_FILE}" ]]; then
-  # Open the selected workspace file
-  ${CODE_COMMAND} "${SELECTED_WORKSPACE_FILE}"
-elif [[ -n "${SELECTED_PROJECT_DIR}" ]]; then
-  # Check if a workspace file exists in the selected directory
-  WORKSPACE_FILE=$(find "${SELECTED_PROJECT_DIR}" -mindepth 1 -maxdepth 1 -type f -name "${FILE_PATTERN}" | head -n 1)
+# Build display entries with Pango markup
+declare -A DISPLAY_TO_TARGET DISPLAY_TO_NAME
+MENU_ENTRIES=()
 
-  if [[ -n "${WORKSPACE_FILE}" ]]; then
-    # Open the workspace file if it exists
-    ${CODE_COMMAND} "${WORKSPACE_FILE}"
+build_entry() {
+  local name=$1 type=$2 path=$3 short
+  if [[ "$type" == "workspace" ]]; then
+    short="workspace"
   else
-    if [[ "${CREATE_WORKSPACE}" == "true" ]]; then
-      # Create a workspace file if it doesn't exist
-      TEMPLATE_FILE="${WORKINGDIR}/workspace.code-workspace"
-      NEW_WORKSPACE_FILE="${SELECTED_PROJECT_DIR}/workspace.code-workspace"
+    short=${path/#$HOME\//~\/}
+  fi
+  printf "<span weight='bold'>%s</span> <span color='#888888' size='small'>(%s)</span>" \
+    "$name" "$short"
+}
 
-      if [[ -f "${TEMPLATE_FILE}" ]]; then
-        cp "${TEMPLATE_FILE}" "${NEW_WORKSPACE_FILE}"
-      else
-        # Fallback template if no template file is available
-        cat > "${NEW_WORKSPACE_FILE}" <<EOL
+# 1) cached first
+for name in "${CACHED[@]}"; do
+  if [[ -n "${WORKSPACE_MAP[$name]:-}" ]]; then
+    target=${WORKSPACE_MAP[$name]}; type="workspace"
+  elif [[ -n "${PROJECT_MAP[$name]:-}" ]]; then
+    target=${PROJECT_MAP[$name]}; type="project"
+  else
+    continue
+  fi
+  entry=$(build_entry "$name" "$type" "$target")
+  DISPLAY_TO_TARGET["$entry"]=$target
+  DISPLAY_TO_NAME["$entry"]=$name
+  MENU_ENTRIES+=("$entry")
+done
+
+# 2) remaining workspaces + projects
+NAMES=()
+for name in "${!WORKSPACE_MAP[@]}"; do
+  [[ " ${CACHED[*]} " == *" $name "* ]] && continue
+  NAMES+=("$name")
+done
+for name in "${!PROJECT_MAP[@]}"; do
+  [[ " ${CACHED[*]} " == *" $name "* ]] && continue
+  if [[ "$HIDE_EMPTY_PROJECTS" == "true" ]]; then
+    [[ -z $(find "${PROJECT_MAP[$name]}" -mindepth 1 -maxdepth 1 -type f -name "$FILE_PATTERN" | head -n1) ]] && continue
+  fi
+  NAMES+=("$name")
+done
+
+# sort names
+if [[ "$SORT_ORDER" == "ASC" ]]; then
+  IFS=$'\n' sorted=($(sort <<<"${NAMES[*]}")); unset IFS
+else
+  IFS=$'\n' sorted=($(sort -r <<<"${NAMES[*]}")); unset IFS
+fi
+
+for name in "${sorted[@]}"; do
+  if [[ -n "${WORKSPACE_MAP[$name]:-}" ]]; then
+    target=${WORKSPACE_MAP[$name]}; type="workspace"
+  else
+    target=${PROJECT_MAP[$name]}; type="project"
+  fi
+  entry=$(build_entry "$name" "$type" "$target")
+  DISPLAY_TO_TARGET["$entry"]=$target
+  DISPLAY_TO_NAME["$entry"]=$name
+  MENU_ENTRIES+=("$entry")
+done
+
+# Launch rofi with markup (config.rasi must have markup-rows: true)
+PROMPT="${PROMPT} (${#MENU_ENTRIES[@]} available)"
+log debug "Launching rofi"
+SELECTED=$(printf '%s\n' "${MENU_ENTRIES[@]}" \
+  | rofi -dmenu -i -markup-rows -config "${ROFI_CONFIG}" -p "${PROMPT}")
+if [[ -z "$SELECTED" ]]; then
+  log info "No selection, exiting"
+  exit 1
+fi
+
+# Resolve and log selection
+sel_name=${DISPLAY_TO_NAME[$SELECTED]}
+sel_target=${DISPLAY_TO_TARGET[$SELECTED]}
+log info "User selected '$sel_name' → '$sel_target'"
+update_cache "$sel_name"
+
+# Open in VS Code
+if [[ -d "$sel_target" ]]; then
+  wsf=$(find "$sel_target" -mindepth 1 -maxdepth 1 -type f -name "$FILE_PATTERN" | head -n1)
+  if [[ -n "$wsf" ]]; then
+    $CODE_COMMAND "$wsf"
+  elif [[ "$CREATE_WORKSPACE" == "true" ]]; then
+    tpl="${WORKINGDIR}/workspace.code-workspace"
+    new="${sel_target}/workspace.code-workspace"
+    if [[ -f "$tpl" ]]; then
+      cp "$tpl" "$new"
+    else
+      cat > "$new" <<EOL
 {
-  "folders": [
-    {
-      "path": "."
-    }
-  ]
+  "folders":[{"path":"."}]
 }
 EOL
-      fi
-
-      echo "Created new workspace file: ${NEW_WORKSPACE_FILE}"
-      ${CODE_COMMAND} "${NEW_WORKSPACE_FILE}"
-    else
-      # Open the project directory if no workspace file is found
-      ${CODE_COMMAND} "${SELECTED_PROJECT_DIR}"
     fi
+    log info "Created workspace: $new"
+    $CODE_COMMAND "$new"
+  else
+    $CODE_COMMAND "$sel_target"
   fi
 else
-  echo "Error: Could not determine the selection." >&2
-  exit 1
+  $CODE_COMMAND "$sel_target"
 fi
 
 exit 0
