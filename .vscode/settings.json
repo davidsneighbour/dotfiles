@@ -2,25 +2,25 @@
   "explorer.fileNesting.patterns": {
     "README.md": "SECURITY*, LICENSE*, CITATION.cff, OS_INSTALL_FIRST_STEPS.md"
   },
-  "frontMatter.content.pageFolders": [],
+  // https://code.visualstudio.com/api/references/theme-color
   "workbench.colorCustomizations": {
-    "activityBar.activeBackground": "#2f7c47",
-    "activityBar.background": "#2f7c47",
-    "activityBar.foreground": "#e7e7e7",
-    "activityBar.inactiveForeground": "#e7e7e799",
+    "activityBar.activeBackground": "#fbfb00",
+    "activityBar.background": "#fbfb00",
+    "activityBar.foreground": "#000000",
+    "activityBar.inactiveForeground": "#99999999",
     "activityBarBadge.background": "#422c74",
     "activityBarBadge.foreground": "#e7e7e7",
     "commandCenter.border": "#e7e7e799",
     "sash.hoverBorder": "#2f7c47",
-    "statusBar.background": "#215732",
-    "statusBar.foreground": "#e7e7e7",
-    "statusBarItem.hoverBackground": "#2f7c47",
-    "statusBarItem.remoteBackground": "#215732",
-    "statusBarItem.remoteForeground": "#e7e7e7",
-    "titleBar.activeBackground": "#215732",
-    "titleBar.activeForeground": "#e7e7e7",
-    "titleBar.inactiveBackground": "#21573299",
-    "titleBar.inactiveForeground": "#e7e7e799"
+    "statusBar.background": "#fbfb00",
+    "statusBar.foreground": "#000000",
+    "statusBarItem.hoverBackground": "#fbfb00",
+    "statusBarItem.remoteBackground": "#fbfb00",
+    "statusBarItem.remoteForeground": "#000000",
+    "titleBar.activeBackground": "#fbfb00",
+    "titleBar.activeForeground": "#000000",
+    "titleBar.inactiveBackground": "#fbfb0099",
+    "titleBar.inactiveForeground": "#00000099"
   },
-  "peacock.color": "#215732"
+  //"peacock.color": "#fbfb00"
 }
