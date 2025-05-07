@@ -5,10 +5,10 @@
 # @see https://github.com/anishathalye/dotbot for more info
 ################################################################################
 - defaults:
-    link:
-      create: true
-      relink: true
-      force: true
+      link:
+          create: true
+          relink: true
+          force: true
 
 - clean: ["~"]
 
@@ -38,7 +38,7 @@
   ~/.hidden: filesystem/.hidden
   ~/.nvmrc: filesystem/.nvmrc
   ~/.pam_environment: filesystem/.pam_environment
-  ~/.profile: filesystem/.profile
+  # ~/.profile: filesystem/.profile
   ~/.remarkrc.js: filesystem/.remarkrc.js
   ~/.remarkignore: filesystem/.remarkignore
   ~/.Xresources: filesystem/.Xresources
@@ -49,6 +49,7 @@
   ~/.config/autostart: filesystem/.config/autostart
   ~/.config/assets: filesystem/.themes/Dracula/assets
   ~/.config/BetterDiscord: filesystem/.config/BetterDiscord
+  ~/.config/fastfetch: filesystem/.config/fastfetch
   ~/.config/filezilla: filesystem/.config/filezilla
   ~/.config/fontconfig: filesystem/.config/fontconfig
   ~/.config/gh: filesystem/.config/gh
@@ -74,18 +75,18 @@
   ~/.wallpapers: filesystem/.wallpapers
 
 - shell:
-  - "gsettings set org.gnome.desktop.interface gtk-theme \"Dracula\""
-  - "gsettings set org.gnome.desktop.wm.preferences theme \"Dracula\""
+      - 'gsettings set org.gnome.desktop.interface gtk-theme "Dracula"'
+      - 'gsettings set org.gnome.desktop.wm.preferences theme "Dracula"'
 #    - "gsettings set org.gnome.desktop.interface icon-theme \"Dracula\""
 
 - crontab:
-  - cron: 0 0 * * *
-    command: /home/patrick/github.com/davidsneighbour/dotfiles/bin/cronjobs/update-npm.sh >> /home/patrick/.logs/cron.log 2>&1
-  - cron: 30 */4 * * *
-    command: /home/patrick/github.com/davidsneighbour/dotfiles/bin/cronjobs/filespace-discord.sh >> /home/patrick/.logs/cron.log 2>&1
-  - cron: 0 18 * * *
-    command: /bin/bash -c "cd /home/patrick/github.com/davidsneighbour/dotfiles && keybindingsmanager -e etc/keycombinations.csv" >> /home/patrick/.logs/keybindings_export.log 2>&1
-  - cron: 0 6,12,18 * * *
-    command: /home/patrick/github.com/davidsneighbour/lighthousing/cronjob.sh >> ~/.logs/lighthouse-cron.log 2>&1
-  - cron: "@reboot"
-    command: /home/patrick/github.com/davidsneighbour/lighthousing/cronjob.sh >> ~/.logs/lighthouse-cron.log 2>&1
+      - cron: 0 0 * * *
+        command: ${HOME}/github.com/davidsneighbour/dotfiles/bin/cronjobs/update-npm.sh >> ${HOME}/.logs/cron.log 2>&1
+      - cron: 30 */4 * * *
+        command: ${HOME}/github.com/davidsneighbour/dotfiles/bin/cronjobs/filespace-discord.sh >> ${HOME}/.logs/cron.log 2>&1
+      - cron: 0 18 * * *
+        command: /bin/bash -c "cd ${HOME}/github.com/davidsneighbour/dotfiles && keybindingsmanager -e etc/keycombinations.csv" >> ${HOME}/.logs/cron.log 2>&1
+      - cron: 0 6,12,18 * * *
+        command: ${HOME}/github.com/davidsneighbour/lighthousing/cronjob.sh >> ${HOME}/.logs/cron.log 2>&1
+      - cron: "@reboot"
+        command: ${HOME}/github.com/davidsneighbour/lighthousing/cronjob.sh >> ${HOME}/.logs/cron.log 2>&1
