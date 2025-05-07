@@ -1,0 +1,100 @@
+#!/bin/bash
+# shellcheck shell=bash
+# SC2250: enforce errexit and pipefail
+
+vscode_add_mcp() {
+  set -eo pipefail
+
+  local key=""
+  local value=""
+  local config_dir=".vscode"
+  local config_file="${config_dir}/mcp.json"
+
+  if [[ $# -eq 0 ]]; then
+    local git_url
+    if ! git_url=$(git config --get remote.origin.url 2>/dev/null); then
+      echo "Error: No input and no git remote origin URL found."
+      return 1
+    fi
+
+    git_url="${git_url/git@github.com:/https:\/\/github.com\/}"
+    git_url="${git_url%.git}"
+    value="${git_url/github.com/gitmcp.io}"
+  fi
+
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --key)
+        key=${2:-}
+        shift 2
+        ;;
+      --value)
+        value=${2:-}
+        shift 2
+        ;;
+      --help)
+        cat <<EOF
+Usage: vscode_add_mcp [--key <key>] [--value <value>] <url>
+
+Adds or updates an entry in .vscode/mcp.json with this structure:
+
+{
+  "servers": {
+    "<key>": {
+      "type": "sse",
+      "url": "<url>"
+    }
+  }
+}
+
+Examples:
+  vscode_add_mcp https://github.com/org/repo
+  vscode_add_mcp --key MyDoc --value https://github.com/org/repo
+  vscode_add_mcp               # auto-detects from current git repo
+
+EOF
+        return 0
+        ;;
+      *)
+        if [[ -z "${value}" ]]; then
+          value="$1"
+        else
+          echo "Unexpected argument: $1"
+          return 1
+        fi
+        shift
+        ;;
+    esac
+  done
+
+  if [[ -z "${value}" ]]; then
+    echo "Error: --value or URL is required."
+    return 1
+  fi
+
+  if [[ -z "${key}" ]]; then
+    key=$(basename "${value}" | sed 's/[^a-zA-Z0-9._ -]//g')' Docs'
+  fi
+
+  mkdir -p "${config_dir}"
+
+  local tmpfile
+  tmpfile=$(mktemp)
+
+  if [[ -f "${config_file}" ]]; then
+    jq --arg k "${key}" --arg v "${value}" '
+      .servers[$k] = { "type": "sse", "url": $v }
+    ' "${config_file}" > "${tmpfile}" || {
+      echo "Error: Failed to update ${config_file}"
+      rm -f "${tmpfile}"
+      return 1
+    }
+  else
+    jq -n --arg k "${key}" --arg v "${value}" '
+      { servers: { ($k): { type: "sse", url: $v } } }
+    ' > "${tmpfile}"
+  fi
+
+  mv "${tmpfile}" "${config_file}"
+  echo "✅ Updated ${config_file} with server '${key}'"
+}
