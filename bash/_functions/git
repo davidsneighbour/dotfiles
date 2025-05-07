@@ -67,3 +67,17 @@
 #   # Default: Call the original git command
 #   command git "$@"
 # }
+
+
+git() {
+  if [[ "$1" == "commit" ]]; then
+    if command -v cz >/dev/null 2>&1 && \
+       [[ -f .commitlintrc.cjs || -f .commitlintrc.js || -f .commitlintrc.mjs ]]; then
+      shift
+      cz "$@"
+      return
+    fi
+  fi
+
+  command git "$@"
+}

@@ -1,9 +1,17 @@
 #!/bin/bash
+# executed by the command interpreter for interactive non-login shells
 
 # enables debugging
 #set -x
 
 # set -eE -o functrace
+
+SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
+
+# load the library functions
+for FILE in "${SCRIPT_DIR}"/bash/_lib/*; do
+  [ -f "${FILE}" ] && source "${FILE}"
+done
 
 auto_source() {
   # Call with either a single directory path:
