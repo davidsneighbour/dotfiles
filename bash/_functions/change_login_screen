@@ -1,0 +1,106 @@
+change_gdm_background() {
+  local fn=${FUNCNAME[0]}
+  local default_img="/home/patrick/github.com/davidsneighbour/dotfiles/filesystem/login.jpg"
+  local gdm3Resource="/usr/share/gnome-shell/theme/Yaru/gnome-shell-theme.gresource"
+  local workDir="/tmp/gdm3-theme"
+  local gdm3xml="$(basename "$gdm3Resource").xml"
+  local arg imgFile oldBg newBg
+
+  # help
+  if [[ $1 == -h || $1 == --help ]]; then
+    cat <<-EOF
+Usage: $fn [--restore] <path/to/image>
+       $fn [--restore] <#hexcode>
+       $fn --restore
+
+If no argument is given, uses default image: $default_img
+EOF
+    return
+  fi
+
+  # restore
+  if [[ $1 == --restore ]]; then
+    if [[ -f "${gdm3Resource}~" ]]; then
+      sudo mv "${gdm3Resource}~" "$gdm3Resource" && sudo chmod 644 "$gdm3Resource"
+      echo 'GDM background restored.'
+      read -p 'Restart GDM to apply change? (y/N): ' -n1; echo
+      [[ $REPLY =~ ^[yY]$ ]] && sudo service gdm restart
+      return
+    else
+      echo 'No backup found.'
+      return 1
+    fi
+  fi
+
+  # default image
+  if [[ $# -eq 0 ]]; then
+    arg="$default_img"
+    echo "Using default image: $arg"
+  else
+    arg="$1"
+  fi
+
+  # ensure glib tool
+  if ! command -v glib-compile-resources &>/dev/null; then
+    echo 'glib-compile-resources not found; installing libglib2.0-dev-bin...'
+    sudo apt install -y libglib2.0-dev-bin || { echo 'Install failed'; return 1; }
+  fi
+
+  # prepare workspace
+  rm -rf "$workDir"
+  mkdir -p "$workDir/theme"
+  [[ -f "${gdm3Resource}~" ]] || sudo cp "$gdm3Resource" "${gdm3Resource}~"
+
+  # extract existing
+  for res in $(gresource list "${gdm3Resource}~"); do
+    local rel=${res#/org/gnome/shell/}
+    mkdir -p "$workDir/$(dirname "$rel")"
+    gresource extract "${gdm3Resource}~" "$res" > "$workDir/$rel"
+  done
+
+  # image vs color
+  if [[ $(file --mime-type -b "$arg" 2>/dev/null) == image/* ]]; then
+    imgFile=$(basename "$arg")
+    cp "$arg" "$workDir/theme/$imgFile"
+    oldBg="#lockDialogGroup \{.*?\}"
+    newBg="#lockDialogGroup {
+    background: url('resource:///org/gnome/shell/theme/$imgFile');
+    background-size: cover; }"
+  elif [[ $arg =~ ^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$ ]]; then
+    oldBg="#lockDialogGroup \{.*?\}"
+    newBg="#lockDialogGroup {
+    background: $arg;
+    background-size: cover; }"
+  else
+    echo "Invalid argument: '$arg'"
+    return 1
+  fi
+
+  # patch CSS
+  perl -i -0777 -pe "s/$oldBg/$newBg/s" "$workDir/theme/gdm3.css"
+
+  # rebuild XML
+  {
+    printf '<?xml version="1.0" encoding="UTF-8"?>\n'
+    printf '<gresources>\n  <gresource prefix="/org/gnome/shell/theme">\n'
+    for res in $(gresource list "${gdm3Resource}~"); do
+      printf '    <file>%s</file>\n' "${res#/org/gnome/shell/theme/}"
+    done
+    [[ -n $imgFile ]] && printf '    <file>%s</file>\n' "$imgFile"
+    printf '  </gresource>\n</gresources>\n'
+  } > "$workDir/theme/$gdm3xml"
+
+  # compile & install
+  glib-compile-resources --sourcedir="$workDir/theme" "$workDir/theme/$gdm3xml" ||
+    { echo 'Compile failed'; return 1; }
+  sudo mv "$workDir/theme/$(basename "$gdm3Resource")" "$gdm3Resource" &&
+    sudo chmod 644 "$gdm3Resource"
+
+  echo 'GDM background changed.'
+  read -p 'Restart GDM to apply change? (y/N): ' -n1; echo
+  [[ $REPLY =~ ^[yY]$ ]] && sudo service gdm restart
+
+  # cleanup
+  rm -rf "$workDir"
+  return 0
+}

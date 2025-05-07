@@ -1,0 +1,120 @@
+#!/bin/bash
+# vscode_setup - A bashrc-loadable function to bootstrap .vscode/mcp.json and copilot-instructions.md
+
+# Setup Instructions:
+# 1. Save this file to: ~/dotfiles/functions/vscode_setup.sh
+# 2. Add to your ~/.bashrc:
+#      source ~/dotfiles/functions/vscode_setup.sh
+# 3. Optionally create or extend a local .env file in your repo to set REPOSLUG:
+#      # Add this line to your .env file (do NOT overwrite the file):
+#      REPOSLUG="davidsneighbour/hugo-modules"
+# 4. Run: vscode_setup --template hugo --template markdown
+#    Or:  vscode_setup --slug davidsneighbour/hugo-modules
+
+
+vscode_setup() {
+  local basedir
+  basedir="$(pwd)"
+  local slug="${REPOSLUG:-}"
+  local templates=()
+  local config_dir="${basedir}/.vscode"
+  local config_file="${config_dir}/mcp.json"
+  local instructions_file="${basedir}/.github/copilot-instructions.md"
+  local ai_base="${HOME}/dotfiles/assets/ai-instructions"
+
+  # Load local .env if available
+  if [[ -f "${basedir}/.env" ]]; then
+    # shellcheck disable=SC1090
+    # shellcheck disable=SC1091
+    source "${basedir}/.env"
+    slug="${REPOSLUG:-${slug}}"
+  fi
+
+  # Parse CLI args
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --slug)
+        slug="$2"
+        shift 2
+        ;;
+      --template)
+        templates+=("$2")
+        shift 2
+        ;;
+      --help)
+        cat <<EOF
+Usage: vscode_setup [--slug <slug>] [--template <template>]...
+
+Sets up .vscode/mcp.json and .github/copilot-instructions.md in the current directory.
+
+Options:
+  --slug <slug>          Slug name to use (or set \$REPOSLUG or .env)
+  --template <template>  One or more template names to include if no AI file exists
+  --help                 Show this help
+
+EOF
+        return 0
+        ;;
+      *)
+        echo "Unknown argument: $1"
+        return 1
+        ;;
+    esac
+  done
+
+  if [[ -z "${slug}" ]]; then
+    echo "❌ Missing --slug or \$REPOSLUG"
+    return 1
+  fi
+
+  # Create .vscode/mcp.json
+  mkdir -p "${config_dir}"
+  local mcp_url="https://gitmcp.io/${slug}"
+  local mcp_key
+  mcp_key="$(basename "${slug}" | sed 's/[^a-zA-Z0-9._ -]//g') Docs"
+
+  if [[ -f "${config_file}" ]]; then
+    local tmpfile
+    tmpfile=$(mktemp)
+    jq --arg k "${mcp_key}" --arg v "${mcp_url}" '
+      .servers[$k] = { "type": "sse", "url": $v }
+    ' "${config_file}" > "${tmpfile}" && mv "${tmpfile}" "${config_file}"
+  else
+    jq -n --arg k "${mcp_key}" --arg v "${mcp_url}" '
+      { servers: { ($k): { type: "sse", url: $v } } }
+    ' > "${config_file}"
+  fi
+  echo "✅ Wrote ${config_file}"
+
+  # Create or append copilot-instructions.md
+  mkdir -p "${basedir}/.github"
+  local ai_file="${ai_base}/${slug}.md"
+
+  if [[ -f "${instructions_file}" ]]; then
+    echo "ℹ️  Found existing copilot-instructions.md — appending..."
+  else
+    echo "# GitHub Copilot Instructions for ${slug}" > "${instructions_file}"
+    echo "" >> "${instructions_file}"
+  fi
+
+  if [[ -f "${ai_file}" ]]; then
+    echo "➡️  Adding specific AI instructions for ${slug}"
+    echo "" >> "${instructions_file}"
+    cat "${ai_file}" >> "${instructions_file}"
+  elif [[ ${#templates[@]} -gt 0 ]]; then
+    echo "🧩 Adding templates: ${templates[*]}"
+    for tpl in "${templates[@]}"; do
+      local tpl_path="${ai_base}/templates/${tpl}.md"
+      if [[ -f "${tpl_path}" ]]; then
+        echo "" >> "${instructions_file}"
+        cat "${tpl_path}" >> "${instructions_file}"
+      else
+        echo "⚠️  Template not found: ${tpl_path}"
+      fi
+    done
+  else
+    echo "⚠️  No AI instructions or templates provided."
+  fi
+
+  echo "✅ Wrote ${instructions_file}"
+}
