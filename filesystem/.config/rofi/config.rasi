@@ -11,6 +11,8 @@ rofi -location 2 -yoffset -2 -bw 2 -show run
 
 configuration {
 	modi: "window,windowcd,drun,combi,keys,run,ssh,filebrowser";
+  me-select-entry: "MousePrimary";
+  me-accept-entry: "!MousePrimary";
 /*	width: 50;*/
 /*	lines: 15;*/
 /*	columns: 1;*/
@@ -154,7 +156,6 @@ configuration {
 /*	me-accept-entry: "MouseDPrimary";*/
 /*	me-accept-custom: "Control+MouseDPrimary";*/
 
-
    recursivebrowser {
       /** Directory the file browser starts in. */
       directory: "~/";
@@ -174,4 +175,4 @@ configuration {
 }
 
 @import "dracula1"
-@theme "dracula1"
+// @theme "dracula1" // that's implied by the line above
