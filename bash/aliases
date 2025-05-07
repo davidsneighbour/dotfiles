@@ -1,5 +1,5 @@
 # reload the profile
-alias reload='. ~/.bash_profile'
+alias reload='. ~/.bashrc'
 
 # go up multiple levels
 # (also see 'up' function)
