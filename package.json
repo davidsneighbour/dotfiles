@@ -28,7 +28,8 @@
   },
   "scripts": {
     "link:prepare": "wireit",
-    "lint:hook:commit": "lint-staged",
+    "lint:hook:commit:loud": "lint-staged --debug --verbose",
+    "lint:hook:commit:quiet": "lint-staged --quiet",
     "release": "commit-and-tag-version -a -t \"v\" --releaseCommitMessageFormat \"chore(release): v{{currentTag}}\" && ./bin/repo/release/postrelease",
     "setup": "./dotbot.sh clean && ./dotbot.sh && ./dotbot.sh protected",
     "lint:reproduce": "wireit"
@@ -43,7 +44,7 @@
   },
   "main": "index.js",
   "simple-git-hooks": {
-    "pre-commit": "npm run lint:hook:commit",
+    "pre-commit": "npm run lint:hook:commit:loud",
     "commit-msg": "npx commitlint -e \"$@\""
   },
   "type": "module"
