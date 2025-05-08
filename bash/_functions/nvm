@@ -1,0 +1,73 @@
+# upgrade_node_versions - Upgrade all installed Node.js versions to the latest patch releases
+# Usage: upgrade_node_versions [--help]
+# Options:
+#   --help      Display this help and exit
+# Description:
+#   This function:
+#   - Upgrades each installed Node.js minor version to the latest available patch.
+#   - Automatically removes outdated patch versions.
+#   - Sets the latest version as the default.
+#   - Logs operations to ~/.logs/setup-log-YYYYMMDD-HHMMSS.log
+upgrade_node_versions() {
+  if [[ "${1:-}" == '--help' ]]; then
+    cat <<EOF
+${FUNCNAME[0]} - Upgrade all installed Node.js versions to the latest patch releases
+
+Usage:
+  ${FUNCNAME[0]} [--help]
+
+Description:
+  - Upgrades each installed Node.js minor version to the latest available patch.
+  - Automatically removes outdated patch versions.
+  - Sets the latest version as the default.
+  - Logs operations to ~/.logs/setup-log-YYYYMMDD-HHMMSS.log
+EOF
+    return 0
+  fi
+
+  # Create a log file for the operation
+  local logfile="${HOME}/.logs/setup-log-$(date +'%Y%m%d-%H%M%S').log"
+  mkdir -p "$(dirname "${logfile}")"
+
+  log() {
+    local level=$1; shift
+    printf "[%s][nvm-upgrade][%s] %s\n" "$(date +'%Y-%m-%d %H:%M:%S')" "$level" "$*" | tee -a "${logfile}"
+  }
+
+  log "INFO" "🔄 Starting Node.js version upgrade process..."
+
+  # List installed major.minor versions and strip the 'v' prefix
+  local installed_versions
+  installed_versions=$(nvm ls --no-colors | grep -oP '(?<=v)\d+\.\d+' | sort -u)
+
+  # Loop through each minor version and install the latest patch
+  for version in ${installed_versions}; do
+    log "INFO" "🔎 Checking latest patch for Node.js ${version}.x..."
+    local latest_patch
+    latest_patch=$(nvm ls-remote --no-colors | grep -E "v${version}\.\d+" | tail -n 1 | awk '{print $1}')
+
+    if [[ -n "${latest_patch}" ]]; then
+      log "INFO" "⬆️  Upgrading to ${latest_patch}"
+      nvm install "${latest_patch}"
+
+      # Collect old versions for this minor version
+      local old_versions
+      old_versions=$(nvm ls --no-colors | grep -E "v${version}\.\d+" | grep -v "${latest_patch}" | awk '{print $1}')
+
+      for old_version in ${old_versions}; do
+        log "INFO" "🗑️  Removing old version ${old_version}..."
+        nvm uninstall "${old_version}"
+      done
+    else
+      log "WARNING" "⚠️  No remote versions found for ${version}"
+    fi
+  done
+
+  # Set the highest installed version as default
+  local latest_installed
+  latest_installed=$(nvm ls --no-colors | grep -oP 'v\d+\.\d+\.\d+' | sort -V | tail -n 1)
+  nvm alias default "${latest_installed}"
+
+  log "SUCCESS" "✅ All versions upgraded and cleaned up. Default set to ${latest_installed}."
+  log "INFO" "📜 Logfile saved at: ${logfile}"
+}

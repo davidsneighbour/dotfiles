@@ -1,7 +1,4 @@
 {
-  "explorer.fileNesting.patterns": {
-    "README.md": "SECURITY*, LICENSE*, CITATION.cff, OS_INSTALL_FIRST_STEPS.md"
-  },
   // https://code.visualstudio.com/api/references/theme-color
   "workbench.colorCustomizations": {
     "activityBar.activeBackground": "#fbfb00",
@@ -22,5 +19,9 @@
     "titleBar.inactiveBackground": "#fbfb0099",
     "titleBar.inactiveForeground": "#00000099"
   },
-  //"peacock.color": "#fbfb00"
+  //"peacock.color": "#fbfb00",
+  "explorer.fileNesting.patterns": {
+    "README.md": "SECURITY*, LICENSE*, CITATION.cff, OS_INSTALL_FIRST_STEPS.md",
+    "package.json": ".lintstagedrc.*,.commitlintrc.*,.markdownlint.*,.npmrc.*,.nvmrc,.secretlint*,.shellcheck*,biome.*,.yamllint.*,.versionrc.*,eslint.*,jsconfig.*,tsconfig.*,link.config.*,package-lock.json"
+  },
 }
