@@ -49,4 +49,7 @@ export default {
   // '**/*.*': [
   //   'npx secretlint'
   // ]
+  '*.jsonnet': [
+    'jsonnetfmt -i *.jsonnet',
+  ],
 }
