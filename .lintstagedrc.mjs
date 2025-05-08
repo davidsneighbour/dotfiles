@@ -18,6 +18,9 @@ const removeIgnoredFiles = async (/** @type {any[]} */ files) => {
  */
 export default {
   // '*.{json,jsonc}': ['biome check --staged'],
+  // '.github/workflows/**/*.y(a?)ml': [
+  //   'zizmor --no-exit-codes',
+  // ],
   'package-lock.json': [
     'lockfile-lint --path package-lock.json --validate-https --allowed-hosts npm',
   ],
