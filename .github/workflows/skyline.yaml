@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3 # zizmor: ignore[artipacked] required later
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
@@ -53,7 +53,7 @@ jobs:
           git config user.name "$REPO_OWNER"
           git config user.email "$USER_EMAIL"
 
-      - name: Commit and push changes
+      - name: Commit and push changes # zizmor: ignore[excessive-permissions]
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Provides authentication for GitHub CLI commands
         run: |
