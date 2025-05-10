@@ -1,5 +1,3 @@
-# https://blog.gitbutler.com/how-git-core-devs-configure-git/
-
 [user]
 email = davidsneighbourdev+gh@gmail.com
 name = Patrick Kollitsch
@@ -297,7 +295,7 @@ submoduleSummary = true
 submodule = log
 colorMoved = plain
 colorMovedWS = allow-indentation-change
-context = 10
+context = 5
 algorithm = histogram # better diffs, require more time
 renames = true
 mnemonicPrefix = true
