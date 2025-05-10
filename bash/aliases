@@ -1,15 +1,8 @@
 # reload the profile
 alias reload='. ~/.bashrc'
 
-# go up multiple levels
-# (also see 'up' function)
+# change into a directory and run nvm use if .nvmrc is present
 alias cd='change_directory'
-alias ..='cd ..'
-alias ...='cd ../..'
-alias ....='cd ../../..'
-alias .....='cd ../../../..'
-alias ......='cd ../../../../..'
-alias cdhist='dirs -v'
 
 # datetime for filenames
 alias d='date +%Y%m%d%H%M'

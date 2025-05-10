@@ -1,18 +1,17 @@
-# If not running interactively, don't do anything
+# if not running interactively, don't do anything
 case $- in
 *i*) ;;
 *) return ;;
 esac
 
-CURDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-DOTFILES_PATH="${CURDIR}/../"
+# set to 0 or 1 to regulate verbosity
+export DNB_VERBOSE=1
 
-# # Enable debugging
-# PS4='+ (${BASH_SOURCE}:${LINENO}): ${FUNCNAME[0]:+${FUNCNAME[0]}(): }'
-# set -x
-# exec 2>/tmp/bashrc_debug.log
+# manually done for now
+CURDIR="/home/patrick/github.com/davidsneighbour/dotfiles/bash"
+DOTFILES_PATH="/home/patrick/github.com/davidsneighbour/dotfiles"
 
-# history setup
+# bash (and history) config
 export HISTCONTROL=ignoreboth:erasedups # remove duplicate lines or lines starting with space from history
 export HISTFILESIZE=                    # unlimited history size
 export HISTSIZE=
@@ -136,21 +135,14 @@ source ${CURDIR}/../bin/lib/b/_get_lib.sh
 export STARSHIP_CACHE=~/.cache/starship
 export STARSHIP_CONFIG=~/.config/starship.toml
 
-if command -v starship >/dev/null 2>&1; then
+# Check if we are running the first time or being reloaded
+if [[ -z "${BASHRC_LOADED}" ]]; then
+  export BASHRC_LOADED=true
+  if command -v starship >/dev/null 2>&1; then
     eval "$(starship init bash)"
+  else
+    [[ -n "${DNB_VERBOSE}" ]] && echo "Note: Starship is not installed. Skipping prompt setup."
+  fi
 else
-    if [[ -n "${DNB_VERBOSE}" ]]; then
-        echo "Note: Starship is not installed. Skipping prompt setup."
-    fi
-fi
-
-# atuin setup
-# see https://docs.atuin.sh/guide/
-if command -v atuin >/dev/null 2>&1; then
-    . "$HOME/.atuin/bin/env"
-    eval "$(atuin init bash)"
-else
-    if [[ -n "${DNB_VERBOSE}" ]]; then
-        echo "Note: Atuin is not installed. Skipping history setup."
-    fi
+  [[ -n "${DNB_VERBOSE}" ]] && echo "Note: Skipping Starship initialization on sourced .bashrc"
 fi
