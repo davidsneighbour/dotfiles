@@ -1,7 +1,7 @@
 # https://blog.gitbutler.com/how-git-core-devs-configure-git/
 
 [user]
-	email = 83281+davidsneighbour@users.noreply.github.com
+	email = davidsneighbourdev+gh@gmail.com
 	name = Patrick Kollitsch
 signingkey = 01A2661D61A772CA
 
