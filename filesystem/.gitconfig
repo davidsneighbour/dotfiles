@@ -3,7 +3,10 @@
 [user]
 	email = 83281+davidsneighbour@users.noreply.github.com
 	name = Patrick Kollitsch
-signingkey = 1D10C1627D5AFC3CC48AA18401A2661D61A772CA
+signingkey = 01A2661D61A772CA
+
+
+
 
 [apply]
 whitespace = fix
