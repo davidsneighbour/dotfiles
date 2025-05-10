@@ -1,0 +1,44 @@
+#!/bin/bash
+
+github_release_feed() {
+  # Help message
+  if [[ $# -eq 0 || "$1" == '--help' ]]; then
+    cat <<EOF
+${FUNCNAME[0]} - Generate GitHub Release Feed URL
+
+Usage:
+  ${FUNCNAME[0]} <github-url>
+
+Arguments:
+  github-url    The full GitHub repository URL
+
+Example:
+  ${FUNCNAME[0]} https://github.com/davidsneighbour/hugo-modules
+
+Output:
+  https://github.com/davidsneighbour/hugo-modules/releases.atom
+EOF
+    return 0
+  fi
+
+  # Extract parts
+  IFS='/' read -r -a parts <<< "$1"
+
+  # Check if it's long enough to form a URL
+  if [[ ${#parts[@]} -lt 5 ]]; then
+    echo "Error: The provided URL is not long enough to extract owner and repo."
+    return 1
+  fi
+
+  # Form the release feed URL
+  release_url="https://github.com/${parts[3]}/${parts[4]}/releases.atom"
+
+  # Output and copy to clipboard (Ubuntu specific)
+  echo "${release_url}"
+  echo -n "${release_url}" | xclip -selection clipboard
+
+  echo "Release feed URL copied to clipboard."
+}
+
+# Example usage:
+# github_release_feed https://github.com/davidsneighbour/hugo-modules

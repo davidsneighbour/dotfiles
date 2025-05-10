@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# ensure the script is only sourced once
+# ensure the script is only sourced once per session
 if [[ -n "${DNB_DOTFILES_INIT_DONE}" ]]; then
   return 0
 fi
@@ -12,27 +12,15 @@ if ! command -v gsettings &>/dev/null; then
 fi
 
 # set up workspaces
-WORKSPACE_COUNT=6
+WORKSPACE_COUNT=9
 gsettings set org.gnome.mutter dynamic-workspaces false
 gsettings set org.gnome.desktop.wm.preferences num-workspaces "${WORKSPACE_COUNT}"
 
-# define keybinding function
-set_gnome_keybinding() {
-  local key="$1"
-  local value="$2"
-
-  if gsettings writable "${key}" &>/dev/null; then
-    gsettings set "${key}" "${value}"
-  else
-    echo "Warning: Key '${key}' is not writable. Skipping..." >&2
-  fi
-}
-
 # set keybindings dynamically
 for ws in $(seq 1 "${WORKSPACE_COUNT}"); do
-  set_gnome_keybinding "org.gnome.desktop.wm.keybindings switch-to-workspace-${ws}" "['<Super>${ws}']"
-  set_gnome_keybinding "org.gnome.desktop.wm.keybindings move-to-workspace-${ws}" "['<Shift><Super>${ws}']"
+  dconf write /org/gnome/desktop/wm/keybindings/switch-to-workspace-${ws} "['<Control><Super>${ws}']"
+  dconf write /org/gnome/desktop/wm/keybindings/move-to-workspace-${ws} "['<Shift><Super>${ws}']"
 done
-
+  
 # prevent multiple executions
 export DNB_DOTFILES_INIT_DONE=1
