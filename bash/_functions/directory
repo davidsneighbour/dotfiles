@@ -1,4 +1,4 @@
-alias cd='change_directory'
+
 change_directory() {
   builtin cd "$@" || return
   if command -v nvm >/dev/null 2>&1 && [[ -f .nvmrc ]]; then
