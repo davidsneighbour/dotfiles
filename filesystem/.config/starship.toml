@@ -30,7 +30,7 @@ version_format = '${raw}'
 style = "bold mauve"
 
 [custom.hugo]
-when = '''find . -regextype posix-extended -regex './(hugo|config)\.(toml|ya?ml|json)$|./config/_default$' | grep -q .'''
+when = '''find . -maxdepth 1 -regextype posix-extended -regex './(hugo|config)\.(toml|ya?ml|json)$|./config/_default$' | grep -q .'''
 format = '[Hugo ${output}](bold #c9177e) '
 command = "hugo version | sed -E 's/.*v([0-9]+\\.[0-9]+\\.[0-9]+).*/\\1/'"
 description = "Hugo version installed and used in the current directory"
