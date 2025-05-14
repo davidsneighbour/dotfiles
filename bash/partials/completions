@@ -1,9 +1,6 @@
-shopt -s extglob # required for bash completion support
 set +o nounset
 
-# enable programmable completion features (you don't need to enable
-# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
-# sources /etc/bash.bashrc).
+# enable programmable completion features
 if ! shopt -oq posix; then
   if [ -f /usr/share/bash-completion/bash_completion ]; then
     . /usr/share/bash-completion/bash_completion
@@ -88,18 +85,16 @@ _ssh() {
 }
 complete -F _ssh ssh
 
-
 SSH_COMPLETE=("$(cut -f1 -d' ' ~/.ssh/known_hosts |\
                  tr ',' '\n' |\
                  sort -u |\
                  grep -e '[[:alpha:]]')")
 complete -o default -W "${SSH_COMPLETE[*]}" ssh
 
-for FILE in "${DOTFILES_PATH}"/bash/_completions/{bootstrap,caniuse,gohugo,netlify,npm,robo,wp}; do
+for FILE in "${BASHRC_PATH}"/_completions/{bootstrap,caniuse,gohugo,netlify,npm,robo,wp}; do
   # this routine ranges through a folder of files that we don't explicitly know (@davidsneighbour)
   # see https://github.com/koalaman/shellcheck/wiki/SC1090
   # shellcheck source-path=SOURCEDIR/completions
   [ -r "${FILE}" ] && source "${FILE}";
 done;
 unset FILE;
-
