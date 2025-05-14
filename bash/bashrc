@@ -8,8 +8,64 @@ esac
 export DNB_VERBOSE=1
 
 # manually done for now
-CURDIR="/home/patrick/github.com/davidsneighbour/dotfiles/bash"
-DOTFILES_PATH="/home/patrick/github.com/davidsneighbour/dotfiles"
+DOTFILES_PATH="${HOME}/github.com/davidsneighbour/dotfiles"
+BASHRC_PATH="${DOTFILES_PATH}/bash"
+
+# load the library functions
+for FILE in "${BASHRC_PATH}"/_lib/*; do
+  # this literally checks if the file exists before sourcing it
+  # shellcheck disable=SC1090
+  [[ -f "${FILE}" && -r "${FILE}" ]] && source "${FILE}"
+done
+
+# export the .env file
+FILE="${HOME}"/.env
+if [[ -f "${FILE}" && -r "${FILE}" ]]; then
+  set -a
+  # shellcheck source=/dev/null
+  source "${FILE}"
+  set +a
+fi
+unset FILE
+
+for FILE in "${BASHRC_PATH}"/partials/{init,eval,options,bash,functions,exports,aliases,completions,prompt}; do
+  # this routine ranges through a folder of filenames that we don't explicitly know (@davidsneighbour)
+  # shellcheck source=/dev/null
+  [[ -f "${FILE}" && -r "${FILE}" ]] && source "${FILE}"
+done
+unset FILE
+
+# shellcheck source=home/.cargo/env
+if [ -f "${HOME}/.cargo/env" ]; then
+  # shellcheck source=/dev/null
+  source "${HOME}/.cargo/env"
+fi
+
+export NVM_DIR="${HOME}/.nvm"
+# shellcheck source=/dev/null
+[ -s "${NVM_DIR}/nvm.sh" ] && \. "${NVM_DIR}/nvm.sh" # This loads nvm
+# shellcheck source=/dev/null
+[ -s "${NVM_DIR}/bash_completion" ] && \. "${NVM_DIR}/bash_completion" # This loads nvm bash_completion
+
+# hack to disable error messages about max listeners
+export NODE_OPTIONS="--require ${BASHRC_PATH}/helpers/set_max_listeners.cjs ${NODE_OPTIONS}"
+
+eval "$(zoxide init bash)"
+
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
+
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+. "$HOME/.cargo/env"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+export GPG_TTY=$(tty)
+
+# the default umask is set in /etc/profile; for setting the umask
+# for ssh logins, install and configure the libpam-umask package.
+umask 022
 
 # bash (and history) config
 export HISTCONTROL=ignoreboth:erasedups # remove duplicate lines or lines starting with space from history
@@ -17,7 +73,7 @@ export HISTFILESIZE=                    # unlimited history size
 export HISTSIZE=
 shopt -s histappend              # append to the history file, don't overwrite it
 shopt -s histverify              # don't execute history searched lines, put them in the shell
-shopt -s extglob                 # extended pattern matching features
+shopt -s extglob                 # extended pattern matching features (required for bash completion)
 shopt -s dotglob                 # for considering dot files (turn on dot files)
 shopt -s cdspell                 # correct dir spelling errors on cd
 shopt -s lithist                 # save multi-line commands with newlines
@@ -53,7 +109,7 @@ if ! shopt -oq posix; then
 fi
 
 # shellcheck disable=SC2154 # we know the variable is initialised
-FILE="${DOTFILES_PATH}"/etc/paths
+FILE="${BASHRC_PATH}"/etc/paths
 if test -f "${FILE}"; then
   while IFS= read -r line; do
     if [ -d "$(dirname "${line}")" ]; then
@@ -62,7 +118,8 @@ if test -f "${FILE}"; then
   done <"${FILE}"
 fi
 
-# Androi${ SDK} and npm require special t${eatm}ent
+# Android and npm require special treatment
+# @todo recheck if this is still needed
 if [ -d "${HOME}"/.bin/android-sdk ]; then
   PATH=${HOME}/.bin/android-sdk/tools:"${HOME}"/.bin/android-sdk/platform-tools:"${PATH}"
   export ANDROID_HOME="${HOME}"/.bin/android/sdk
@@ -126,8 +183,6 @@ eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
 export DENO_INSTALL="/home/patrick/.deno"
 export PATH="${DENO_INSTALL}/bin:${PATH}"
-
-source ${CURDIR}/../bin/lib/b/_get_lib.sh
 
 # starship setup
 # see https://starship.rs/config

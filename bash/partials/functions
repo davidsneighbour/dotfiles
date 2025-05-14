@@ -1,14 +1,7 @@
 #!/bin/bash
 
-SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
-
-# load the library functions
-for FILE in "${SCRIPT_DIR}"/_lib/*; do
-  [ -f "${FILE}" ] && source "${FILE}"
-done
-
 # load the bash functions
-for FILE in "${SCRIPT_DIR}"/_functions/*; do
+for FILE in "${BASHRC_PATH}"/_functions/*; do
   set -a
   # this routine ranges through a folder of files that we don't explicitly know (@davidsneighbour)
   # see https://github.com/koalaman/shellcheck/wiki/SC1090
