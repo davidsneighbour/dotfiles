@@ -22,12 +22,6 @@
 #     fi
 #     return
 #     ;;
-#   commit)
-#     if [[ "${GIT_CZ_AVAILABLE}" == "true" && $# -eq 1 ]]; then
-#       git-cz
-#       return
-#     fi
-#     ;;
 #   esac
 
 git() {

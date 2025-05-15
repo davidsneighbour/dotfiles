@@ -1,8 +1,18 @@
-#!/bin/bash
+# shellcheck shell=bash
 
 # check for required tools
 # @param $1 Array of required tool names
-check_requirements() {
+
+# Example usage
+#
+# REQUIRED_TOOLS=(
+#   curl
+#   sed
+#   git
+# )
+# check_requirements "${REQUIRED_TOOLS[@]}"
+
+__dnb_check_requirements() {
   local tools=("$@") # Accepts an array of tool names as arguments
 
   # Show a message if no tools are specified
@@ -18,12 +28,3 @@ check_requirements() {
     fi
   done
 }
-
-# Example usage
-#
-# REQUIRED_TOOLS=(
-#   curl
-#   sed
-#   git
-# )
-# check_requirements "${REQUIRED_TOOLS[@]}"

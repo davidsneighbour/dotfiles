@@ -16,8 +16,8 @@ if [[ -z "${DNB_DOTFILES_INIT_DONE}" ]]; then
 
   # set keybindings dynamically
   for ws in $(seq 1 "${WORKSPACE_COUNT}"); do
-    dconf write /org/gnome/desktop/wm/keybindings/switch-to-workspace-${ws} "['<Control><Super>${ws}']"
-    dconf write /org/gnome/desktop/wm/keybindings/move-to-workspace-${ws} "['<Shift><Super>${ws}']"
+    dconf write /org/gnome/desktop/wm/keybindings/switch-to-workspace-"${ws}" "['<Control><Super>${ws}']"
+    dconf write /org/gnome/desktop/wm/keybindings/move-to-workspace-"${ws}" "['<Shift><Super>${ws}']"
   done
 
   # prevent multiple executions

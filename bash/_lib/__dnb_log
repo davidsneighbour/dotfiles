@@ -1,5 +1,5 @@
-## _log - Unified logger for reusable Bash functions
-## Usage: _log [--help] [--json] "message" [level]
+## __dnb_log - Unified logger for reusable Bash functions
+## Usage: __dnb_log [--help] [--json] "message" [level]
 ## Options:
 ##   --help      Display this help and exit
 ##   --json      Output in JSON mode
@@ -14,7 +14,7 @@
 
 ## _log - Unified logger for reusable Bash functions
 ## Usage: _log [--help] [--json] "message" [level]
-_log() {
+__dnb_log() {
   # help
   if [[ $# -eq 0 || "$1" == '--help' ]]; then
     cat <<EOF
@@ -143,9 +143,9 @@ EOF
   local levels=(error warn info success dry skip)
   for lvl in "${levels[@]}"; do
     if [[ "${json_mode}" == true ]]; then
-      _log --json "Sample ${lvl^^} message" "${lvl}"
+      __dnb_log --json "Sample ${lvl^^} message" "${lvl}"
     else
-      _log "Sample ${lvl^^} message" "${lvl}"
+      __dnb_log "Sample ${lvl^^} message" "${lvl}"
     fi
   done
 

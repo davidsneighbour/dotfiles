@@ -100,13 +100,6 @@ alias vlc-stop="dbus-send --type=method_call --dest=org.mpris.MediaPlayer2.vlc /
 
 alias cal="ncal"
 
-alias get-books="rsync -rztv media:/home/patrick/Downloads/Books/ /home/patrick/Books"
-
-alias rector="~/github.com/getbooka/booka/vendor/bin/rector process"
-
-# npm install -g @socketsecurity/cli
-# alias npm="socket npm"
-# alias npx="socket npx"
 
 alias check-network="sudo arp-scan --localnet --numeric --quiet --ignoredups"
 
@@ -119,6 +112,3 @@ alias pi-reboot='ssh $PI_SERVER -t "sudo /usr/sbin/shutdown now -r"'
 alias py-activate="python -m venv .env && \
   source .env/bin/activate && \
   echo 'run \"deactivate\" to exit the virtual environment'"
-
-# actionable functions
-alias runall='function _runall() { for dir in */; do (cd \"\$dir\" && \"\$@\" &); done; wait; }; _runall'

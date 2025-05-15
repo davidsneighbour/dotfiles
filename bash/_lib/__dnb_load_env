@@ -1,0 +1,103 @@
+#!/bin/bash
+
+#------------------------------------------------------------------------------
+# Function: __dnb_load_env
+# Description:
+#   Load and export environment variables from .env files in the user's home
+#   directory and the current working directory.  Values in the local .env
+#   override those in the home .env, while any missing values fall back to home.
+#
+# Usage:
+#   __dnb_load_env [--help] [-v|-vv|-vvv|--debug]
+#
+# Options:
+#   --help    Show this help message and exit.
+#   -v        Enable verbose/debug output.
+#   -vv       More verbose output.
+#   -vvv      Maximum verbosity.
+#   --debug   Alias for -v.
+#
+# Examples:
+#   __dnb_load_env            # Load env vars silently.
+#   __dnb_load_env -v         # Load env vars with debug output.
+#   __dnb_load_env --debug    # Same as -v.
+#   __dnb_load_env --help     # Display usage.
+#------------------------------------------------------------------------------
+
+__dnb_load_env() {
+  local debug=0
+  local script="${FUNCNAME[0]}"
+
+  # Parse flags
+  while [[ $# -gt 0 ]]; do
+    case "${1}" in
+      -v)       debug=1; shift ;;
+      -vv)      debug=2; shift ;;
+      -vvv)     debug=3; shift ;;
+      --debug)  debug=1; shift ;;
+      --help)
+        cat <<EOF
+Usage: ${script} [--help] [-v|-vv|-vvv|--debug]
+
+Load and export environment variables from .env files in the home and
+current directories.  Home .env is loaded first; local .env overrides values.
+
+Options:
+  --help    Show this help message and exit.
+  -v        Enable verbose/debug output.
+  -vv       More verbose output.
+  -vvv      Maximum verbosity.
+  --debug   Alias for -v.
+EOF
+        return 0
+        ;;
+      *)
+        echo "Error: Unknown option '${1}'"
+        echo "Use --help for usage."
+        return 1
+        ;;
+    esac
+  done
+
+  # Define file paths
+  local home_env="${HOME}/.env"
+  local cur_env
+  cur_env="$(pwd -P)/.env"
+
+  # Load from home .env
+  if [[ -f "${home_env}" ]]; then
+    (( debug >= 1 )) && echo "Loading environment variables from ${home_env}"
+    set -a
+    # shellcheck disable=SC1090
+    source "${home_env}" || {
+      echo "Error: Failed to source ${home_env}"
+      set +a
+      return 1
+    }
+    set +a
+  else
+    (( debug >= 1 )) && echo "No home .env file at ${home_env}, skipping."
+  fi
+
+  # Load from current directory .env (overrides home)
+  if [[ -f "${cur_env}" ]]; then
+    (( debug >= 1 )) && echo "Loading environment variables from ${cur_env}"
+    set -a
+    # shellcheck disable=SC1090
+    source "${cur_env}" || {
+      echo "Error: Failed to source ${cur_env}"
+      set +a
+      return 1
+    }
+    set +a
+  else
+    (( debug >= 1 )) && echo "No local .env file at ${cur_env}, skipping."
+  fi
+
+  return 0
+}
+
+# Example invocations (you can uncomment one to auto-load on shell start):
+# __dnb_load_env            # silent
+# __dnb_load_env -v         # verbose
+# __dnb_load_env --debug    # alias for -v

@@ -1,4 +1,4 @@
-#!/bin/bash
+# shellcheck shell=bash
 
 # update version and release date in CITATION.cff
 # @param $1 (optional) Version string (e.g., "1.0.0"). If not provided, version is extracted from package.json.

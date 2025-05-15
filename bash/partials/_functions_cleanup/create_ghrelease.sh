@@ -1,4 +1,4 @@
-#!/bin/bash
+# shellcheck shell=bash
 
 # create a GitHub release
 # Uses the GITHUB_SECRET and GITHUB_REPOSLUG environment variables
