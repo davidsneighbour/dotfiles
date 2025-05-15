@@ -1,4 +1,4 @@
-#!/bin/bash
+# shellcheck shell=bash
 
 # Function to extract the next version number using commit-and-tag-version
 # Sets NEW_VERSION to the next version number without the "v" prefix

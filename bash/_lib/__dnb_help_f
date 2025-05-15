@@ -1,0 +1,14 @@
+# shellcheck shell=bash
+
+# Usage:
+# __dnb_help_f git
+
+__dnb_help_f() {
+  compgen -A function "$1" | while read -r fn; do
+    # shellcheck disable=SC2154 # defined in bashrc
+    grep -m1 "^# ${fn}" "${DOTFILES_PATH}/bash/functions/${1}.sh"
+  done
+}
+
+# @todo parse through markdown and create readable docs
+# @todo add a parameter to hand over a folder to search in

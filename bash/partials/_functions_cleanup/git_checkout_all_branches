@@ -22,21 +22,21 @@ git_checkout_all_remote_branches() {
       --dry-run) dry_run=true ;;
       --confirm) confirm=true ;;
       --help)
-        _log "git_checkout_all_remote_branches - Create local branches for all remote branches" info
-        _log "Usage: git_checkout_all_remote_branches [--dry-run] [--confirm] [--help]" info
-        _log "" info
-        _log "Options:" info
-        _log "  --dry-run   Show which branches would be created without making changes" info
-        _log "  --confirm   Ask before creating each branch" info
-        _log "  --help      Show this help message" info
+        __dnb_log "git_checkout_all_remote_branches - Create local branches for all remote branches" info
+        __dnb_log "Usage: git_checkout_all_remote_branches [--dry-run] [--confirm] [--help]" info
+        __dnb_log "" info
+        __dnb_log "Options:" info
+        __dnb_log "  --dry-run   Show which branches would be created without making changes" info
+        __dnb_log "  --confirm   Ask before creating each branch" info
+        __dnb_log "  --help      Show this help message" info
         return 0
         ;;
-      *) _log "Unknown option: ${arg}" error; return 1 ;;
+      *) __dnb_log "Unknown option: ${arg}" error; return 1 ;;
     esac
   done
 
   git fetch --all --prune || {
-    _log "Failed to fetch remotes" error
+    __dnb_log "Failed to fetch remotes" error
     return 1
   }
 
@@ -53,22 +53,22 @@ git_checkout_all_remote_branches() {
     fi
 
     if [[ "${dry_run}" == true ]]; then
-      _log "Would create local branch: ${branch_name} tracking origin/${branch_name}" dry
+      __dnb_log "Would create local branch: ${branch_name} tracking origin/${branch_name}" dry
     else
       if [[ "${confirm}" == true ]]; then
         read -rp "Create branch ${branch_name}? [y/N]: " user_confirm
         [[ "${user_confirm}" != [yY] ]] && continue
       fi
       if git branch --track "${branch_name}" "origin/${branch_name}"; then
-        _log "Created ${branch_name}" success
+        __dnb_log "Created ${branch_name}" success
         ((created_count++))
       else
-        _log "Failed to create ${branch_name}" error
+        __dnb_log "Failed to create ${branch_name}" error
       fi
     fi
   done < <(git branch -r | grep -v 'HEAD')
 
-  _log "Remote branches found: ${total_remote}" success
-  _log "Local branches already existed: ${total_local}" info
-  _log "New local branches created: ${created_count}" success
+  __dnb_log "Remote branches found: ${total_remote}" success
+  __dnb_log "Local branches already existed: ${total_local}" info
+  __dnb_log "New local branches created: ${created_count}" success
 }

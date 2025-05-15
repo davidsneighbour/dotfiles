@@ -1,14 +1,16 @@
-#!/bin/bash
+# shellcheck shell=bash
 
-auto_source() {
+__dnb_auto_source() {
   # Call with either a single directory path:
-  #   auto_source "/path/to/completions"
+  #   __dnb_auto_source "/path/to/completions"
   # Or a single file path:
-  #   auto_source "/path/to/completions.sh"
+  #   __dnb_auto_source "/path/to/completions.sh"
   # Or multiple paths:
-  #   auto_source "/path/to/one" "/path/to/two"
+  #   __dnb_auto_source "/path/to/one" "/path/to/two"
+  # Or multiple paths and folders:
+  #   __dnb_auto_source "/path/to/one" "/path/to/folder"
   # Or pass an array:
-  #   auto_source "${ARRAY_OF_PATHS[@]}"
+  #   __dnb_auto_source "${ARRAY_OF_PATHS[@]}"
   #
   for ITEM in "$@"; do
     if [ -d "${ITEM}" ]; then

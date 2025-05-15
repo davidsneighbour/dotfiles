@@ -3,12 +3,13 @@
 # @todo review and refactor
 
 function g_one_commit() {
-  # shellcheck disable=SC2039
-  local last_commit_message
-  last_commit_message=$(git show -s --format=%s)
-  # shellcheck disable=SC2039
+
+  local LAST_COMMIT_MESSAGE
+  LAST_COMMIT_MESSAGE=$(git show -s --format=%s)
+
   local BRANCH
 
+  # @todo check if main branch exists
   if [ -z "$1" ]; then
     echo "no branch, using main"
     BRANCH="main"
@@ -18,5 +19,5 @@ function g_one_commit() {
 
   git branch --show-current | xargs git merge-base "${BRANCH}" | xargs git reset --soft
   git add -A
-  git commit -m "${last_commit_message}" --amend --reset-author
+  git commit -m "${LAST_COMMIT_MESSAGE}" --amend --reset-author
 }

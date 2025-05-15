@@ -11,10 +11,9 @@ export DNB_VERBOSE=1
 DOTFILES_PATH="${HOME}/github.com/davidsneighbour/dotfiles"
 BASHRC_PATH="${DOTFILES_PATH}/bash"
 
-# load the library functions
+# load the helper functions
 for FILE in "${BASHRC_PATH}"/_lib/*; do
-  # this literally checks if the file exists before sourcing it
-  # shellcheck disable=SC1090
+  # shellcheck disable=SC1090 # we check the files for existence and readability
   [[ -f "${FILE}" && -r "${FILE}" ]] && source "${FILE}"
 done
 
@@ -28,7 +27,7 @@ if [[ -f "${FILE}" && -r "${FILE}" ]]; then
 fi
 unset FILE
 
-for FILE in "${BASHRC_PATH}"/partials/{init,eval,options,bash,functions,exports,aliases,completions,prompt}; do
+for FILE in "${BASHRC_PATH}"/partials/{eval,options,bash,functions,exports,aliases,completions,prompt}; do
   # this routine ranges through a folder of filenames that we don't explicitly know (@davidsneighbour)
   # shellcheck source=/dev/null
   [[ -f "${FILE}" && -r "${FILE}" ]] && source "${FILE}"

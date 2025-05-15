@@ -1,4 +1,4 @@
-#!/bin/bash
+# shellcheck shell=bash
 
 # build a GitHub repository string "username/reponame"
 # Uses the GITHUB_USER environment variable for the username

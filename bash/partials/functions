@@ -1,11 +1,8 @@
 #!/bin/bash
 
-# load the bash functions
-for FILE in "${BASHRC_PATH}"/partials/_functions/*; do
-  set -a
-  # this routine ranges through a folder of files that we don't explicitly know (@davidsneighbour)
-  # see https://github.com/koalaman/shellcheck/wiki/SC1090
-  # shellcheck source=/dev/null
-  [ -f "${FILE}" ] && source "${FILE}"
-  set +a
-done
+# load the bashrc helper functions
+# shellcheck disable=SC2154 # defined in bashrc
+__dnb_auto_source "${BASHRC_PATH}"/partials/_functions__helpers/*;
+
+# load the bashrc functions
+__dnb_auto_source "${BASHRC_PATH}"/partials/_functions/*;

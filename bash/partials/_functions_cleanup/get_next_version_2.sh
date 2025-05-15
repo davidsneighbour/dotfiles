@@ -1,4 +1,4 @@
-#!/bin/bash
+# shellcheck shell=bash
 
 get_next_version2() {
   local increment_type="$1"

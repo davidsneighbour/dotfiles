@@ -1,4 +1,4 @@
-#!/bin/bash
+# shellcheck shell=bash
 
 # example usage
 #
@@ -33,4 +33,3 @@ create_changelog() {
     return 1
   fi
 }
-
