@@ -113,21 +113,6 @@ dc = diff --cached
 # Like "git show myfile", but uses the last commit that changed "myfile".
 showlast = log -n 1 -p
 
-# Switch branches, creating them if necessary. I want to unlearn using
-# "git checkout" for switching between branches because of the possible
-# dataloss when not paying attention. (You could see the PEBKAC, but I
-# could reply with another four letter acronym, slightly resembling TOFU.)
-#
-# Suppose I have modified a file named "password" and have two branches,
-# "password-expiry-mechanism" and "password-reset-mail". If I want to
-# switch to either branch, I would type "git checkout pass<Tab><Enter>",
-# but the autocomplete would stop at "git checkout password" because of
-# the ambiguity. Because I press <Enter> without really thinking, I have
-# now reset my "password" file. With "git go pass<Tab><Enter>", I would
-# simply have created a new branch called "password". (I would be forced
-# to use "--" to separate paths from banch names, which is a Good Thing™.)
-go = checkout -B
-
 # Make "git grep" look a bit like "ack"/"ag". Note that you need to
 # specify --no-index to search all files, and that submodules are not
 # searched.
@@ -308,9 +293,5 @@ date = iso
 rebase = true
 [branch]
 sort = -committerdate
-[maintenance]
-repo = /home/patrick/github.com/davidsneighbour/kollitsch.dev
-[safe]
-directory = /home/patrick/github.com/theNewDynamic/gohugo-theme-ananke
 [pack]
 usePathWalk = true

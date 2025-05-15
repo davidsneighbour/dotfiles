@@ -2,7 +2,6 @@
 @bramus/caniuse-cli
 @davidsneighbour/remark-config
 @dotenvx/dotenvx
-@socketsecurity/cli
 act
 better-commits
 bun
