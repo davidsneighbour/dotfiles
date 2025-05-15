@@ -5,6 +5,14 @@
 		}
 	],
 	"settings": {
+  "vale.valeCLI.installVale": true,
+  "vale.valeCLI.syncOnStartup": true,
+
+      "vale.valeCLI.config": "${workspaceFolder}/.gitlab/vale/vale.ini",
+    "vale.readabilityProblemLocation": "both",
+    "vale.enableSpellcheck": true,
+    "vale.doNotShowWarningForFileToBeSavedBeforeLinting": true,
+  
 		"yaml.schemas": {
 			"http://json-schema.org/draft-07/schema#": [
 				"./static/_schemata/*.schema.yaml"
