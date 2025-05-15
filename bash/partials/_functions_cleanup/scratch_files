@@ -1,3 +1,5 @@
+# shellcheck shell=bash
+
 scratch_files() {
   ## scratch_files - Find all scratch.md and scratch/*.md files recursively with relative path and size
   ## Usage: scratch_files

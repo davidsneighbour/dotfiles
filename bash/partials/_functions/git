@@ -1,0 +1,112 @@
+# shellcheck shell=bash
+
+#   # Define the path to the custom status hook file
+#   FILE=.git/hooks/status
+
+#   # Use a case statement to handle specific git subcommands
+#   # shellcheck disable=SC2249
+#   case "$1" in
+#   status)
+#     [[ -x ${FILE} ]] && bash "${FILE}" # Run custom status hook, if executable
+#     ;;
+#   stash)
+#     local stash_args=("--include-untracked")
+#     if [[ "$2" == "-m" ]]; then
+#       stash_args+=("$2" "$3" "${@:4}")
+#     fi
+#     output=$(command git stash "${stash_args[@]}" 2>&1)
+#     echo "${output}"
+#     if echo "${output}" | grep -q "No local changes to save"; then
+#       echo -e "\nCurrent stashes:"
+#       command git stash list
+#     fi
+#     return
+#     ;;
+#   commit)
+#     if [[ "${GIT_CZ_AVAILABLE}" == "true" && $# -eq 1 ]]; then
+#       git-cz
+#       return
+#     fi
+#     ;;
+#   esac
+
+git() {
+
+  # if commitlint is setup and cz is available 
+  if [[ "$1" == "commit" ]]; then
+    if command -v cz >/dev/null 2>&1 && \
+       git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+      
+      # Get the root directory of the Git repository
+      local git_root
+      git_root=$(git rev-parse --show-toplevel 2>/dev/null)
+
+      # Check for the config files at the root of the repository
+      if [[ -f "${git_root}/.commitlintrc.cjs" || -f "${git_root}/.commitlintrc.js" || -f "${git_root}/.commitlintrc.mjs" ]]; then
+        shift
+        cz "$@"
+        return
+      fi
+    fi
+  fi
+
+  # if the subcommand is 'clone' and exactly one path-like argument is given...
+  if [[ "$1" == "clone" && $# -ge 2 && "$2" =~ ^[^/]+/[^/]+$ ]]; then
+    # build a GitHub HTTPS URL from user/repo
+    local shorthand=$2
+    # pass through --force-https if supplied
+    if [[ "$3" == "--force-https" ]]; then
+      glone "https://github.com/${shorthand}.git" --force-https
+    else
+      glone "https://github.com/${shorthand}.git"
+    fi
+    return
+  fi
+
+  # Fallback to regular git command if conditions are not met
+  command git "$@"
+}
+
+
+function glone() {
+  local REPO_URL=$1
+  local FORCE_HTTPS=false
+  local USERNAME
+  local REPO_NAME
+  local REPO_PATH
+
+  # Check for --force-https flag
+  if [[ "$2" == "--force-https" ]]; then
+    FORCE_HTTPS=true
+  fi
+
+  # Transform HTTPS to SSH format unless forced to use HTTPS
+  if [[ "${REPO_URL}" == https://* && "${FORCE_HTTPS}" == false ]]; then
+    # Convert HTTPS URL to SSH format
+    USERNAME=$(cut -d'/' -f4 <<<"${REPO_URL}")
+    REPO_NAME=$(cut -d'/' -f5 <<<"${REPO_URL}" | sed 's/\.git$//')
+    REPO_URL="git@github.com:${USERNAME}/${REPO_NAME}.git"
+  elif [[ "${REPO_URL}" == *@* ]]; then
+    # Handle SSH URL directly
+    USERNAME=$(cut -d':' -f2 <<<"${REPO_URL}" | cut -d'/' -f1)
+    REPO_NAME=$(cut -d'/' -f2 <<<"${REPO_URL}" | sed 's/\.git$//')
+  else
+    # Handle HTTPS URL if forced or already HTTPS
+    USERNAME=$(cut -d'/' -f4 <<<"${REPO_URL}")
+    REPO_NAME=$(cut -d'/' -f5 <<<"${REPO_URL}" | sed 's/\.git$//')
+  fi
+
+  # Construct the path as ~/github.com/username/reponame
+  REPO_PATH="${HOME}/github.com/${USERNAME}/${REPO_NAME}"
+
+  # Create the directory path
+  mkdir -p "${REPO_PATH}"
+
+  # Clone the repository into the determined path
+  git clone "${REPO_URL}" "${REPO_PATH}"
+}
+
+# Usage:
+# glone "https://github.com/dracula/plymouth.git"               # Clones via SSH (default behavior)
+# glone "https://github.com/dracula/plymouth.git" --force-https # Clones via HTTPS
+# glone "git@github.com:dracula/plymouth.git"                   # Clones via SSH

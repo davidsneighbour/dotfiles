@@ -1,3 +1,5 @@
+# shellcheck shell=bash
+
 create_local_desktop() {
 
   local DEFAULT_TEMP_DIR="${HOME}/.config/Local/local-tmp-folder"

@@ -1,3 +1,5 @@
+# shellcheck shell=bash
+
 function git_check() {
     if [[ "$1" == "--help" ]]; then
         echo "Usage: ${FUNCNAME[0]}"
@@ -28,4 +30,3 @@ function git_check() {
     }
     scan_directories "$(pwd)"
 }
-

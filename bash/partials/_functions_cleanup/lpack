@@ -1,4 +1,4 @@
-#!/bin/bash
+# shellcheck shell=bash
 
 lpack() {
   ## lpack - Create a zip archive of the current directory with advanced ignore logic

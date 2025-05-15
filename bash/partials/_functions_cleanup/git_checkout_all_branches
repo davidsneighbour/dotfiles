@@ -1,4 +1,4 @@
-#!/bin/bash
+# shellcheck shell=bash
 
 git_checkout_all_remote_branches() {
   ## git_checkout_all_remote_branches - Create local branches for all remote branches

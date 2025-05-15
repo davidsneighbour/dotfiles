@@ -1,3 +1,5 @@
+# shellcheck shell=bash
+
 # upgrade_node_versions - Upgrade all installed Node.js versions to the latest patch releases
 # Usage: upgrade_node_versions [--help]
 # Options:

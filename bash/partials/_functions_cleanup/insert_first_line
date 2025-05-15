@@ -1,3 +1,5 @@
+# shellcheck shell=bash
+
 # insert_first_line
 # Adds a string as the first line to each file in a directory (recursively).
 # Can be used as a Bash function in .bashrc or similar.

@@ -1,4 +1,4 @@
-#!/bin/bash
+# shellcheck shell=bash
 
 # Function to install PHP packages for specified versions with configurable options
 install_php_packages() {

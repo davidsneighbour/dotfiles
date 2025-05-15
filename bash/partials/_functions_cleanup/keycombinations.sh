@@ -1,4 +1,4 @@
-#!/bin/bash
+# shellcheck shell=bash
 
 export_keybindings() {
     if [[ "$1" == "--help" ]]; then
