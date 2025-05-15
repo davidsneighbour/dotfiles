@@ -1,4 +1,4 @@
-#!/bin/bash
+# shellcheck shell=bash
 
 generate_keybindings_page() {
     if [[ "$1" == "--help" ]]; then

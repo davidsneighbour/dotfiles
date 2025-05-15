@@ -1,4 +1,3 @@
-#!/bin/bash
 # shellcheck shell=bash
 
 bootstrap_class_lookup() {

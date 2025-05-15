@@ -1,4 +1,4 @@
-#!/bin/bash
+# shellcheck shell=bash
 
 # Function to initialize the script environment
 function git_status_checker_init() {

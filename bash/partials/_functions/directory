@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 
 change_directory() {
   builtin cd "$@" || return

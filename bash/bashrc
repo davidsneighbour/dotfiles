@@ -52,16 +52,19 @@ export NODE_OPTIONS="--require ${BASHRC_PATH}/helpers/set_max_listeners.cjs ${NO
 
 eval "$(zoxide init bash)"
 
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
+# shellcheck disable=SC1091
+[ -s "${NVM_DIR}/bash_completion" ] && \. "${NVM_DIR}/bash_completion" # This loads nvm bash_completion
 
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-. "$HOME/.cargo/env"
+# shellcheck disable=SC1091
+. "${HOME}/.cargo/env"
 
 # bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
+export BUN_INSTALL="${HOME}/.bun"
+export PATH="${BUN_INSTALL}/bin:${PATH}"
 
-export GPG_TTY=$(tty)
+GPG_TTY=$(tty)
+export GPG_TTY
 
 # the default umask is set in /etc/profile; for setting the umask
 # for ssh logins, install and configure the libpam-umask package.
@@ -129,10 +132,10 @@ if [ -d "${HOME}"/.npm ]; then
   export NODE_PATH="${NODE_PATH}":"${HOME}"/.npm/lib/node_modules
 fi
 
-PATH=/opt/firefox/firefox:$PATH
-PATH="/home/patrick/snap/deno/86/.deno/bin:$PATH"
+PATH=/opt/firefox/firefox:${PATH}
+PATH="/home/patrick/snap/deno/86/.deno/bin:${PATH}"
 
-# aaaaan export...
+# aaaaand export...
 export PATH
 
 # don't add jrnl entries to bash history
