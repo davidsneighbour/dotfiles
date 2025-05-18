@@ -31,6 +31,7 @@ export HOMEBREW_NO_ENV_HINTS=1
 export HOMEBREW_NO_ANALYTICS=1
 
 # dotfiles setup system
+# shellcheck disable=SC2154
 export DOTFILES_SETUPDIR="${DOTFILES_PATH}/setup"
 if command -v gum >/dev/null 2>&1; then
 	DOTFILES_GUM=true

@@ -1,6 +1,6 @@
 # shellcheck shell=bash
 
-github_release_feed() {
+github_feed_releases() {
   # Help message
   if [[ $# -eq 0 || "$1" == '--help' ]]; then
     cat <<EOF

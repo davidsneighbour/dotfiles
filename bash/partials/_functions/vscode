@@ -218,3 +218,42 @@ EOF
 
   echo "✅ Wrote ${instructions_file}"
 }
+
+function code() {
+  local binary="/usr/bin/code"
+  local target folder workspace_file
+
+  # Help option
+  if [[ "$1" == "--help" ]]; then
+    echo "Usage: code [file or directory]"
+    echo
+    echo "Options:"
+    echo "  --help     Show this help message"
+    return
+  fi
+
+  # Determine whether a file or folder is provided
+  if [ $# -eq 0 ]; then
+    folder="$(pwd)"
+  else
+    target="$1"
+    if [ -f "${target}" ]; then
+      # Open the specific file directly
+      ${binary} "${target}"
+      return
+    elif [ -d "${target}" ]; then
+      folder="${target}"
+    else
+      echo "Invalid file or directory: ${target}"
+      return 1
+    fi
+  fi
+
+  # Check for a workspace file within the directory
+  workspace_file=$(find "${folder}" -maxdepth 1 -type f -name "*.code-workspace" | head -n 1)
+  if [ -n "${workspace_file}" ]; then
+    ${binary} "${workspace_file}"
+  else
+    ${binary} "${folder}"
+  fi
+}
