@@ -25,12 +25,9 @@ if [ -f "/usr/share/autojump/autojump.bash" ]; then
 fi
 
 # initializes completion for grunt
-gruntcompletion() {
-    if hash grunt 2>/dev/null; then
-       	eval "$(grunt --completion=bash)"
-    fi
-}
-gruntcompletion
+if hash grunt 2>/dev/null; then
+    eval "$(grunt --completion=bash)"
+fi
 
 complete -A hostname rsh rcp telnet r ftp ping fail
 complete -A export printenv
