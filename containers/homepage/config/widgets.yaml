@@ -1,0 +1,30 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/configs/service-widgets
+
+- resources:
+    cpu: true
+    memory: true
+    disk: /
+
+- search:
+    provider: google
+    focus: true
+    showSearchSuggestions: true
+    target: _blank
+
+- datetime:
+    text_size: xl
+    format:
+      timeStyle: short
+      dateStyle: long
+      hour12: true
+
+- openmeteo:
+    latitude: 9.5786
+    longitude: 99.9582
+    timezone: Asia/Bangkok
+    units: metric
+    cache: 30
+    format:
+      maximumFractionDigits: 1

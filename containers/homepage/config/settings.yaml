@@ -1,0 +1,30 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/configs/settings
+
+startUrl: http://pizen:3000/
+theme: dark # or light
+# /app/public/images
+background:
+  image: https://images.unsplash.com/photo-1502790671504-542ad42d5189?auto=format&fit=crop&w=2560&q=80
+  blur: xs # sm, "", md, xl... see https://tailwindcss.com/docs/backdrop-blur
+  # saturate: 50 # 0, 50, 100... see https://tailwindcss.com/docs/backdrop-saturate
+  # brightness: 50 # 0, 50, 75... see https://tailwindcss.com/docs/backdrop-brightness
+  # opacity: 50 # 0-100
+cardBlur: "" # sm, "", md, etc... see https://tailwindcss.com/docs/backdrop-blur
+color: rose
+
+hideVersion: true
+
+showStats: true
+statusStyle: "dot"
+
+layout:
+  Media:
+    style: row
+    columns: 4
+
+# https://gethomepage.dev/configs/settings/#favicon
+providers:
+  openweathermap: openweathermapapikey
+  weatherapi: weatherapiapikey
