@@ -1,0 +1,32 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/configs/services
+
+- My Third Group:
+    - Calendar:
+        widget:
+          type: calendar
+          firstDayInWeek: sunday
+          view: monthly # optional - possible values monthly, agenda
+          maxEvents: 10
+          showTime: true
+          timezone: Asia/Bangkok
+          integrations: # optional
+            - type: ical # Show calendar events from another service
+              url: https://calendar.google.com/calendar/ical/pkollitsch%40gmail.com/public/basic.ics
+              name: My Events # required - name for these calendar events
+              color: zinc # optional - defaults to pre-defined color for the service (zinc for ical)
+              params: # optional - additional params for the service
+              showName: true # optional - show name before event title in event line - defaults to false          #
+
+- My Fourth Group:
+    - UptimeRobot:
+        widget:
+          type: uptimerobot
+          url: https://api.uptimerobot.com
+          key: ur14067-8c82917181639a7f38482792
+    - kollitsch.dev:
+        widget:
+          type: uptimerobot
+          url: https://api.uptimerobot.com
+          key: m792489075-dab6d6c2a3ec80fc5f9e869e
