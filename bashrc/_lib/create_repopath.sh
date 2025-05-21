@@ -6,7 +6,7 @@
 # Otherwise, extract it from the git remote.
 # Exits with a warning if not in a git repo or no GitHub remote found.
 
-create_repopath() {
+__dnb_create_repopath() {
   local is_verbose="${DNB_VERBOSE:-false}"
 
   # Check if we're inside a git repository

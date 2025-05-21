@@ -21,7 +21,7 @@ done
 
 __dnb_check_requirements "${REQUIRED_TOOLS[@]}"
 __dnb_load_env
-create_repopath
+__dnb_create_repopath
 
 # Push release to GitHub
 git push origin main --follow-tags
