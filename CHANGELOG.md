@@ -1,4 +1,38 @@
 Changelog
+## [2025.10.0](https://github.com/davidsneighbour/dotfiles/compare/v2025.9.0...v2025.10.0) (2025-05-21)
+
+
+### Documentation
+
+* add README.md for container setups ([26de50c](https://github.com/davidsneighbour/dotfiles/commit/26de50ce19e27a7d18da3a9927739bd06b3db0f4))
+
+
+### Features
+
+* add botanics wallpaper section ([a23f623](https://github.com/davidsneighbour/dotfiles/commit/a23f623901007e3642377cee19b253bca2fa2165))
+* **excalidraw:** add excalidraw setup ([4f3eee7](https://github.com/davidsneighbour/dotfiles/commit/4f3eee796bbfa0f9d2ffdd482b6eeb9b44c4ef9e))
+* **homepage:** add homepage setup ([90c5c2b](https://github.com/davidsneighbour/dotfiles/commit/90c5c2b11b5f5f78e490e5ae8ab8ecae5c6dc133))
+
+
+### Bug Fixes
+
+* bash to bashrc in .profile ([795d66c](https://github.com/davidsneighbour/dotfiles/commit/795d66c6faa4c36f19629163be059fc3306c1fd3))
+* cleanup autostart ([2f766bb](https://github.com/davidsneighbour/dotfiles/commit/2f766bb0ea42cf5aacaee3195ef75edb7a86e333))
+* re-add insert_first_line function ([f2fec6b](https://github.com/davidsneighbour/dotfiles/commit/f2fec6b2d7d3640e454273b388ac852176a463a2))
+* update inkscape configuration ([9d1e8f0](https://github.com/davidsneighbour/dotfiles/commit/9d1e8f03cea61725ee372dca29a3cc32cea55a93))
+
+
+### Chore
+
+* **deps:** update node.js to v23.11.1 ([#262](https://github.com/davidsneighbour/dotfiles/issues/262)) ([2f2e29d](https://github.com/davidsneighbour/dotfiles/commit/2f2e29dcfa032f279792265348607356b2dc6c9d))
+* **git:** remove binaries submodule ([7cd8414](https://github.com/davidsneighbour/dotfiles/commit/7cd84145bfc44b8a10641f36056c097f8cbbef99))
+
+
+### Build System
+
+* **fix:** build script particles fixed ([371ba39](https://github.com/davidsneighbour/dotfiles/commit/371ba39d473709652bcc24c0f4ac9505f42187ba))
+* **fix:** release script fixes ([dd9ba28](https://github.com/davidsneighbour/dotfiles/commit/dd9ba28e4f78fa90169781f099f1ffab6397e434))
+
 ## [2025.9.0](https://github.com/davidsneighbour/dotfiles/compare/v2025.3.1...v2025.9.0) (2025-05-21)
 
 
