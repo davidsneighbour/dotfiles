@@ -1,40 +1,46 @@
 # shellcheck shell=bash
 
-# build a GitHub repository string "username/reponame"
-# Uses the GITHUB_USER environment variable for the username
-# @returns The GitHub repository string in the GITHUB_REPOSLUG variable
+# Generate a GitHub-style repository string and store it in GITHUB_REPOSLUG.
+# If the Git repository is inside $HOME/github.com/davidsneighbour,
+# use "davidsneighbour/REPO_NAME".
+# Otherwise, extract it from the git remote.
+# Exits with a warning if not in a git repo or no GitHub remote found.
+
 create_repopath() {
-  # Use externally defined verbose variable, default to 'false' if not set
-  local is_verbose="${verbose:-false}"
+  local is_verbose="${DNB_VERBOSE:-false}"
 
-  # Ensure GITHUB_USER is set
-  if [ -z "$GITHUB_USER" ]; then
-    echo "Error: GITHUB_USER environment variable is not set."
-    return 1
-  fi
-
-  # Get the root folder name of the git repository
+  # Check if we're inside a git repository
   local repo_root
-  repo_root="$(git rev-parse --show-toplevel 2>/dev/null)"
-  if [ -z "$repo_root" ]; then
-    echo "Error: This is not a git repository."
+  if ! repo_root="$(git rev-parse --show-toplevel 2>/dev/null)"; then
+    echo "Warning: Not inside a git repository." >&2
     return 1
   fi
 
-  # Extract the repository name from the root folder
   local repo_name
-  repo_name="$(basename "$repo_root")"
+  repo_name="$(basename "${repo_root}")"
 
-  # Combine GITHUB_USER and repo_name into the desired format
-  GITHUB_REPOSLUG="${GITHUB_USER}/${repo_name}"
+  # Check if inside $HOME/github.com/davidsneighbour
+  if [[ "${repo_root}" == "${HOME}/github.com/davidsneighbour/"* ]]; then
+    GITHUB_REPOSLUG="davidsneighbour/${repo_name}"
+    [[ "${is_verbose}" == "true" ]] && echo "Repo identified by folder path: ${GITHUB_REPOSLUG}"
+    return 0
+  fi
 
-  # Handle success or failure based on verbose flag
-  if [ $? -eq 0 ]; then
-    if [ "$is_verbose" == "true" ]; then
-      echo "GitHub repository string: $GITHUB_REPOSLUG"
-    fi
+  # Try to extract from git remote
+  local remote_url
+  remote_url="$(git remote get-url origin 2>/dev/null || true)"
+
+  if [[ -z "${remote_url}" ]]; then
+    echo "Warning: No git remote 'origin' found." >&2
+    return 1
+  fi
+
+  if [[ "${remote_url}" =~ github\.com[:/](.+)/(.+?)(\.git)?$ ]]; then
+    GITHUB_REPOSLUG="${BASH_REMATCH[1]}/${BASH_REMATCH[2]}"
+    [[ "${is_verbose}" == "true" ]] && echo "Repo identified by remote: ${GITHUB_REPOSLUG}"
+    return 0
   else
-    echo "Failed to build GitHub repository string."
+    echo "Warning: Git remote is not on GitHub." >&2
     return 1
   fi
 }
