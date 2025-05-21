@@ -1,7 +1,7 @@
 {
   "name": "@davidsneighbour/dotfiles",
   "description": "David's Neighbour's .dotfiles",
-  "version": "2025.8.0",
+  "version": "2025.9.0",
   "license": "GPL-3.0-or-later",
   "repository": "https://github.com/davidsneighbour/dotfiles",
   "author": "Patrick Kollitsch <davidsneighbourdev+gh@gmail.com>",
@@ -12,6 +12,7 @@
     "@clack/prompts": "^0.10.1",
     "@commitlint/cli": "19.8.1",
     "@commitlint/config-conventional": "19.8.1",
+    "@davidsneighbour/release-config": "^2025.2.2",
     "@eslint/css": "0.7.0",
     "@eslint/js": "9.26.0",
     "@eslint/json": "0.12.0",

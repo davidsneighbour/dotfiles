@@ -1,4 +1,158 @@
 Changelog
+## [2025.9.0](https://github.com/davidsneighbour/dotfiles/compare/v2025.3.1...v2025.9.0) (2025-05-21)
+
+
+### Features
+
+* add .nvmrc to personal files ([8bfa8e2](https://github.com/davidsneighbour/dotfiles/commit/8bfa8e269cb7c41c4dbb8411b67a631223681df2))
+* add a checkout function for all branches ([ca01812](https://github.com/davidsneighbour/dotfiles/commit/ca01812e4169d230288855ec5fbeea79d7362180))
+* add auto_source ([d000692](https://github.com/davidsneighbour/dotfiles/commit/d000692f850ddc44c7e598f2a1cb5cca827c3266))
+* add bootstrap lookup function and completion ([4ad9e9d](https://github.com/davidsneighbour/dotfiles/commit/4ad9e9dd50f1686bd49b3f8e2407206339149d09))
+* add commit template ([597f046](https://github.com/davidsneighbour/dotfiles/commit/597f0464c30ed049a556d9e7a91c31d61b709640))
+* add debugging to lintstaged ([531de7b](https://github.com/davidsneighbour/dotfiles/commit/531de7baefc143b46bc9bd08e678472c786b4cf1))
+* add eza to setup scripts ([65830c5](https://github.com/davidsneighbour/dotfiles/commit/65830c533882aa2bc8b82a6e2c6da0f516fdedd9))
+* add function to list scratch files ([45daf74](https://github.com/davidsneighbour/dotfiles/commit/45daf74968053784c8518be737adb186d372adb9))
+* add git-monitor plugin script ([ad734c8](https://github.com/davidsneighbour/dotfiles/commit/ad734c8481fc0a33e8eeb7d730343b3ee7f23e2a))
+* add insert first line script to bashrc ([809d75a](https://github.com/davidsneighbour/dotfiles/commit/809d75abb92c87010685560712256c08c464899c))
+* add install script ([a94ed29](https://github.com/davidsneighbour/dotfiles/commit/a94ed29217bf65188a77ee82f3f7ac3aa7cd3fde))
+* add jsonnet to lintstaged configuration ([8fc867a](https://github.com/davidsneighbour/dotfiles/commit/8fc867a2c98ca3796e8b832e292bcd6e079b1e96))
+* add lockscreen wallpapers ([1988325](https://github.com/davidsneighbour/dotfiles/commit/1988325a69e02f95409603d4144bd33f747253b6))
+* add logging function for bashrc ([6747e2a](https://github.com/davidsneighbour/dotfiles/commit/6747e2a41452ffacd649d277722786af1ff658ad))
+* add lpack function to bashrc ([a6840d2](https://github.com/davidsneighbour/dotfiles/commit/a6840d29f0e1edf7f5e3c6e5b02cb19d80603199))
+* add scratchfile finder ([48f8edb](https://github.com/davidsneighbour/dotfiles/commit/48f8edbb8c87069bd67309c740dc7119a8df526e))
+* add yamllint and configuration ([0d186f3](https://github.com/davidsneighbour/dotfiles/commit/0d186f3661b5874d196f5fdbe7321424f8f1bcfc))
+* add zizmor configuration ([699e257](https://github.com/davidsneighbour/dotfiles/commit/699e257f75ffee5f9d5b834fb15adb17e0407a00))
+* **copilot:** prompt and copilot instructions ([e50d3dd](https://github.com/davidsneighbour/dotfiles/commit/e50d3dd96b4d572100558a1299621be4009184ad))
+* **fastfetch:** add fastfetch config and setup ([c8d4a32](https://github.com/davidsneighbour/dotfiles/commit/c8d4a3236848f744b92cf153c9b68234dd6b7b32))
+* **setup:** add mission-center to snap packages ([3e129ff](https://github.com/davidsneighbour/dotfiles/commit/3e129fff01895f20a7acdfb1a0ee5da7fac2c44a))
+
+
+### Bug Fixes
+
+* add .qodo to gitignore ([e53af84](https://github.com/davidsneighbour/dotfiles/commit/e53af846ac69a0c616d023fa9cb6f86f2bb247cc))
+* add ananke workspace ([01852ae](https://github.com/davidsneighbour/dotfiles/commit/01852ae447a3b4b3d3b6fae794dbb9a2a47bad72))
+* add architecture tag to exa apt source ([315e679](https://github.com/davidsneighbour/dotfiles/commit/315e6799b301055c48f0a1072b05bfed71db7bcf))
+* add lighthouse cronjob to dotbot config ([3230b6c](https://github.com/davidsneighbour/dotfiles/commit/3230b6c911e67795b1507ddf68a4abadde49981b))
+* add missing completions to bashrc setup ([9adb66e](https://github.com/davidsneighbour/dotfiles/commit/9adb66e2cd75b5e27c613ab46a44d955da3e9e4b))
+* add osv-scanner to brew installations and fix zizmor install ([2a84c27](https://github.com/davidsneighbour/dotfiles/commit/2a84c27781f4148a654fddceadb8984d7c5e0b1f))
+* add signing info to git setup ([cc90dc6](https://github.com/davidsneighbour/dotfiles/commit/cc90dc6051ad10ef8ca57d26acb3b605ddae6756))
+* add wonderland workspace ([eafe95d](https://github.com/davidsneighbour/dotfiles/commit/eafe95d4ab5f186d1fd29d60fd7f9f8fb0a125cb))
+* add yarn lockfile to gitignore ([495a45d](https://github.com/davidsneighbour/dotfiles/commit/495a45d5d9266113295214adfcd29045417865b4))
+* again git committer name/email ([dd01e72](https://github.com/davidsneighbour/dotfiles/commit/dd01e72d83eb869fda0a725f9f9c75b1c6c77862))
+* bash completions do not need executable bit ([b390c12](https://github.com/davidsneighbour/dotfiles/commit/b390c12ccbc00808ba3ca42ec0f765284bdb2426))
+* **bash:** move bash scripts around ([6875b58](https://github.com/davidsneighbour/dotfiles/commit/6875b58f36048bef71ed34bdf76953594ffea035))
+* bashrc config changes ([2128035](https://github.com/davidsneighbour/dotfiles/commit/212803524dcc0ddfccb6c16c4be4856e6f1a2a31))
+* cleanup config files ([30661e6](https://github.com/davidsneighbour/dotfiles/commit/30661e6d98a1073e76d5a97e59d659caef79dca0))
+* cleanup loading of starship and atuin ([a78cb85](https://github.com/davidsneighbour/dotfiles/commit/a78cb85570452c26021524ef8a137eb51e29bda6))
+* cleanup setup files ([34b56f3](https://github.com/davidsneighbour/dotfiles/commit/34b56f3456d33dd20009ecdf11be6c80cfd7da14))
+* **config:** cleanup config file ([e53d9a2](https://github.com/davidsneighbour/dotfiles/commit/e53d9a2072b63ba066b69eb7e062507b17b4b97e))
+* eza is installed via script, not brew ([b8a25d9](https://github.com/davidsneighbour/dotfiles/commit/b8a25d9713580d8f14da7153fe839600e64878a3))
+* git commit email address ([4533a95](https://github.com/davidsneighbour/dotfiles/commit/4533a958984c4ab58126258af5920beac433daa7))
+* git committer info ([5283aa6](https://github.com/davidsneighbour/dotfiles/commit/5283aa6f7ac02370a5e9b9d6ae7156f603ec7001))
+* **git:** remove committer data initialisation on bash init ([c3cd9ea](https://github.com/davidsneighbour/dotfiles/commit/c3cd9ea1cb8e6f45f1dd81b1a60b5e5ebbf8a32d))
+* **inkscape:** update inkscape configuration ([4265347](https://github.com/davidsneighbour/dotfiles/commit/42653472df1ce439ff5c720525a5df10f974a879))
+* less context in git diff ([30f5b73](https://github.com/davidsneighbour/dotfiles/commit/30f5b735e3125cbe9ac312d4bbef595f6fb39583))
+* move logs into ~/.logs directory ([ce6adc5](https://github.com/davidsneighbour/dotfiles/commit/ce6adc586ede0fcdf8554461e8195027826af41b))
+* move template files into etc directory ([0caabf7](https://github.com/davidsneighbour/dotfiles/commit/0caabf78108308e540c266a85da8c3fa75412233))
+* move transmission configuration to protected dotfiles ([41eff34](https://github.com/davidsneighbour/dotfiles/commit/41eff34550ba6ab87e8a127730a2a92da3e2a434))
+* proper biome package for default packages ([7f3dad1](https://github.com/davidsneighbour/dotfiles/commit/7f3dad1846c8b51fdbcd3daf53559f84a7e92ba5))
+* proper git email address for commits ([0dea23f](https://github.com/davidsneighbour/dotfiles/commit/0dea23f0bd99cea096da24c7860d7b9aa061efb9))
+* recent changes in bulk ([b74eac5](https://github.com/davidsneighbour/dotfiles/commit/b74eac51ca1b5bc64cb4505164c5bfcc4d93435e))
+* remove kitty from initial setup ([a82f21c](https://github.com/davidsneighbour/dotfiles/commit/a82f21cae4c9618e2a6d09e5bc02bea26273d693))
+* remove merged secret lint configuration ([4bec522](https://github.com/davidsneighbour/dotfiles/commit/4bec52257e761dae27650c248304fdf19cd34400))
+* remove pipefail config from bash script ([48b2461](https://github.com/davidsneighbour/dotfiles/commit/48b2461c01d34cdf1f31ea977d10c38a1c9015e1))
+* remove snap libreoffice and fix apt libreoffice ([4d51b6b](https://github.com/davidsneighbour/dotfiles/commit/4d51b6bc9225085474c92f0fab437c56a4baea8b))
+* remove vscode backup ([5bb836a](https://github.com/davidsneighbour/dotfiles/commit/5bb836a94191c45549ce68da99cf74a76a86f82f))
+* remove vscode state files from repository ([d2babff](https://github.com/davidsneighbour/dotfiles/commit/d2babffebb5e9eab00ad6eb4b7d076a7a60fe72e))
+* remove vscode workaround in bashrc ([2475af2](https://github.com/davidsneighbour/dotfiles/commit/2475af2c1303eb831edb50271e1c309eeaef73e0))
+* remove workspace configuration ([5c8f581](https://github.com/davidsneighbour/dotfiles/commit/5c8f581d20e2a45bf917ba34c7f5f9e17de00a3e))
+* rework CITATION.cff ([367af4b](https://github.com/davidsneighbour/dotfiles/commit/367af4b6f1998079ed26f3dc39dacdec84780f78))
+* **rofi:** sort recent projects by recency ([968c885](https://github.com/davidsneighbour/dotfiles/commit/968c8855aafa7336e962b37d848fecd91e469c12))
+* simplify starship config for hugo detection ([8879d44](https://github.com/davidsneighbour/dotfiles/commit/8879d44903c378a3f25cdc3b2aaf093ee310114e))
+* **starship:** fix depth of check for hugo config ([6adde37](https://github.com/davidsneighbour/dotfiles/commit/6adde372d441cf044e5fd174155484019de16e17))
+* **starship:** update configuration ([70ecb3f](https://github.com/davidsneighbour/dotfiles/commit/70ecb3fa2d8ca86e0d9871ef7c2a4f9c4a5fa143))
+* update autostart configurations ([3639d80](https://github.com/davidsneighbour/dotfiles/commit/3639d8070e504c4ba9d24c9803e4bb544cbfb29a))
+* update bash scripts ([31c57ae](https://github.com/davidsneighbour/dotfiles/commit/31c57aeace2598a8a79299b8c3cdda5ba6ade021))
+* update filesystem files ([f4eb941](https://github.com/davidsneighbour/dotfiles/commit/f4eb9419c671cbe56fda0eaa4ed77d847883f274))
+* update firefox setup script ([6bc88a1](https://github.com/davidsneighbour/dotfiles/commit/6bc88a1a7f4b30776bf89679fc4189fd2713340e))
+* update global packages on nvm ([bd8ca19](https://github.com/davidsneighbour/dotfiles/commit/bd8ca1917755e391a24427aa51aaf6af2e4de84b))
+* update lpack to accept ignored files ([d39c35b](https://github.com/davidsneighbour/dotfiles/commit/d39c35bb9f6d793e581512532c9c0556b63fa8f5))
+* update ollama setup ([de72432](https://github.com/davidsneighbour/dotfiles/commit/de7243283ce44ccefde419ee000104cedf6b0ae9))
+* update package link configuration ([bf19ed7](https://github.com/davidsneighbour/dotfiles/commit/bf19ed70e824b55db444b18da0d5a6cc00079e36))
+* various fixes ([f185cc3](https://github.com/davidsneighbour/dotfiles/commit/f185cc3e68a4eeaa52615e3808f8a04b5a55b907))
+* various fixes and changes ([a3e17dd](https://github.com/davidsneighbour/dotfiles/commit/a3e17dd8366e623ed971f1aab58b1c4f68b88fcd))
+* **wallpapers:** cleanup wallpapers ([9dc8ff8](https://github.com/davidsneighbour/dotfiles/commit/9dc8ff8e7d81695a8566b2a90ccde99ebf9bd68b))
+* **wip:** bashrc rework ([6dd27e2](https://github.com/davidsneighbour/dotfiles/commit/6dd27e2ba25c2d317cc259e604bf253c251271ab))
+
+
+### Refactors
+
+* **bashrc:** rework bashrc setup (WIP) ([e875705](https://github.com/davidsneighbour/dotfiles/commit/e87570551ead3c53b1a8b035d47428a763f990a5))
+* **bashrc:** reworking bashrc system (WIP) ([9dd5bb6](https://github.com/davidsneighbour/dotfiles/commit/9dd5bb6e72dbbaa56f754a61862d680a7910a75d))
+* move bash to bashrc ([c36151e](https://github.com/davidsneighbour/dotfiles/commit/c36151efe9ebe58688b83f1424d7410fa8ccabf7))
+* rework bashrc files ([a3110d9](https://github.com/davidsneighbour/dotfiles/commit/a3110d9c16aa25d3de6c1b159e9cbdd63312dcd4))
+
+
+### Tests
+
+* remove obsolete tests ([06b5349](https://github.com/davidsneighbour/dotfiles/commit/06b53491c65972565b079cd826bf8580a9961d01))
+
+
+### Chore
+
+* **assets:** update skyline stats for 2025 ([038d609](https://github.com/davidsneighbour/dotfiles/commit/038d6099f5ae8774ac17a330edd5b496f34d80fc))
+* **assets:** update skyline stats for 2025 ([2211a2d](https://github.com/davidsneighbour/dotfiles/commit/2211a2dbfc83e1fa8ee7c5b6bee91c61528a6906))
+* **assets:** update skyline stats for 2025 ([dd38c94](https://github.com/davidsneighbour/dotfiles/commit/dd38c94c63617b6ac45f27dd12deea989605cf06))
+* **config:** add proper readonly email address for github ([b22c2f5](https://github.com/davidsneighbour/dotfiles/commit/b22c2f5d40d9f5fbafe398eeca08db169781a2b0))
+* **config:** add tsconfig and jsconfig ([5d301e0](https://github.com/davidsneighbour/dotfiles/commit/5d301e042c59cd08b2887c73f59524d26613ba2f))
+* **config:** update workspace configurations ([cc8358c](https://github.com/davidsneighbour/dotfiles/commit/cc8358c37927b46ed6fd8a8e64d7563465d8769d))
+* **config:** update workspaces ([67ab052](https://github.com/davidsneighbour/dotfiles/commit/67ab052ac845a7bb20496e55ca0307503c92c495))
+* **git:** update bin submodule ([8919142](https://github.com/davidsneighbour/dotfiles/commit/891914255477c38ceb51a6b14556fcd5e8535e32))
+* **git:** update bin submodule ([7c18161](https://github.com/davidsneighbour/dotfiles/commit/7c181613c01e980b39e75bedb3666039627143cd))
+* **git:** update bin submodule ([a7833eb](https://github.com/davidsneighbour/dotfiles/commit/a7833eb3fefc34776d31101f9018b9f19710f5ca))
+* **git:** update git submodules ([9162523](https://github.com/davidsneighbour/dotfiles/commit/9162523f09478f112fce18c80c41f4cbbe8e2ea3))
+* **release:** v2025.4.0 ([db71165](https://github.com/davidsneighbour/dotfiles/commit/db711655220096a1787c93d0e249e9ed0049dc7e))
+* **release:** v2025.4.1 ([238ce45](https://github.com/davidsneighbour/dotfiles/commit/238ce455d76c20fb10122e0213ff4d9bf616dc96))
+* **release:** v2025.5.0 ([d8bd584](https://github.com/davidsneighbour/dotfiles/commit/d8bd584eba07f1c00f1da8fbd76969398b6d5aa7))
+* **release:** v2025.6.0 ([b969946](https://github.com/davidsneighbour/dotfiles/commit/b96994638fc94afffcdc5ad9eb1d30803ab130f1))
+* **release:** v2025.6.1 ([3b25774](https://github.com/davidsneighbour/dotfiles/commit/3b2577489ee4f99c084a52dc867ba29caa97099b))
+* **release:** v2025.7.0 ([d5c5561](https://github.com/davidsneighbour/dotfiles/commit/d5c55619c346d6b5589c950f18db8afb71d7e972))
+* **release:** v2025.8.0 ([eb261ec](https://github.com/davidsneighbour/dotfiles/commit/eb261ec4d563b2f5983853f6c8483321991911ac))
+* update tasks and mcp configuration ([73a6189](https://github.com/davidsneighbour/dotfiles/commit/73a61891fb2024dcc6c66107ea7ec4a192b79ccf))
+* update workspace configurations ([9c09e25](https://github.com/davidsneighbour/dotfiles/commit/9c09e25dc7013f170e418481497a4fde52dc203b))
+* update workspaces ([7d5707e](https://github.com/davidsneighbour/dotfiles/commit/7d5707e636ac4bb762f9e334861dd10dce0e4137))
+
+
+### Configuration
+
+* add mcp configuration to gitignore ([43631fe](https://github.com/davidsneighbour/dotfiles/commit/43631fe3246efc6ee8dc05d8b81d912d67e65577))
+* **fix:** remove columns from github ui ([93e1618](https://github.com/davidsneighbour/dotfiles/commit/93e1618950d7ccaaa26282881c674fcdbc44cee2))
+* remove logs directory from ignore list ([7ccfe8e](https://github.com/davidsneighbour/dotfiles/commit/7ccfe8ef13297a3da85c38c3c4f8ef2a24453ca5))
+* update autostart setup ([ea2fca5](https://github.com/davidsneighbour/dotfiles/commit/ea2fca5836f4f086dc6246efa727a1fa6809902c))
+* update workspace files ([b1ad067](https://github.com/davidsneighbour/dotfiles/commit/b1ad0677b52db27ef706ce6514c9ae0c7fbdc9bf))
+* update workspaces ([0b6ed94](https://github.com/davidsneighbour/dotfiles/commit/0b6ed946d4f86a859a1d9456e104aec9c1fc0d40))
+
+
+### Build System
+
+* **ai:** setup github copilot and mcp servers ([39be88b](https://github.com/davidsneighbour/dotfiles/commit/39be88b7521474c6c17cba5e102ed3994521cfaf))
+* cleanup repo structure and fix filenesting patterns ([0b0f1f3](https://github.com/davidsneighbour/dotfiles/commit/0b0f1f3855fbb8c7e767c91bc009f5202dc31a2f))
+* **config:** set lintstaged pre commit hook verbose ([31e3ec4](https://github.com/davidsneighbour/dotfiles/commit/31e3ec44a4c6d9cfa04e1b30d0b45bbb4163df4b))
+* **deps:** remove shelljs and update dependencies ([b511fca](https://github.com/davidsneighbour/dotfiles/commit/b511fca02117c981c56d4f8043863515d32f07d7))
+* **deps:** update and fix dependencies ([b010ec2](https://github.com/davidsneighbour/dotfiles/commit/b010ec2a896fb71b49a60afb6d775de08c3582f3))
+* **deps:** update dependencies ([87535cb](https://github.com/davidsneighbour/dotfiles/commit/87535cb07fd32e7955da7122acd42e0f7cf66cfd))
+* **deps:** update dependencies ([39075a6](https://github.com/davidsneighbour/dotfiles/commit/39075a65bf414c35ff1c283a7da2f6f728c824bf))
+* **deps:** update dependencies ([e03dff0](https://github.com/davidsneighbour/dotfiles/commit/e03dff0e807dc98d2df99c732ecaf0d2fe20cec1))
+* **deps:** update node.js to v23.11.0 ([#261](https://github.com/davidsneighbour/dotfiles/issues/261)) ([3f43910](https://github.com/davidsneighbour/dotfiles/commit/3f43910e12906cf32ec64ed89215694b81f8073c))
+* fix color setup for vscode settings ([09d119a](https://github.com/davidsneighbour/dotfiles/commit/09d119af102c29f7185f9ca08edd84f072231603))
+* **fix:** reconfigure yamllint and lint yaml config ([796e282](https://github.com/davidsneighbour/dotfiles/commit/796e2824fb7f57e84cc729c07fe2dcef5bede31a))
+
+
+### CI
+
+* **fix:** setup gitlab ci ([d23d70d](https://github.com/davidsneighbour/dotfiles/commit/d23d70d80ee3ada9cd216d9a50dcd56cfc33e326))
+* **setup:** add .gitlab-ci.yml configuration ([e40f0ea](https://github.com/davidsneighbour/dotfiles/commit/e40f0ea85d617176325c40a0895a89a26e764c15))
+
 ## [2025.8.0](https://github.com/davidsneighbour/dotfiles/compare/v2025.3.1...v2025.8.0) (2025-05-10)
 
 
