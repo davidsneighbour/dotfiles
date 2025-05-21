@@ -13,7 +13,7 @@ DOTFILES_PATH="${HOME}/github.com/davidsneighbour/dotfiles"
 umask 022
 
 # load the library functions
-for FILE in "${DOTFILES_PATH}"/bash/_lib/*; do
+for FILE in "${DOTFILES_PATH}"/bashrc/_lib/*; do
   # shellcheck disable=SC1090
   [ -f "${FILE}" ] && source "${FILE}"
 done
