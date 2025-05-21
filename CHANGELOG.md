@@ -1,4 +1,11 @@
 Changelog
+## [2025.10.1](https://github.com/davidsneighbour/dotfiles/compare/v2025.10.0...v2025.10.1) (2025-05-21)
+
+
+### Bug Fixes
+
+* **bashrc:** fix evaluation of repostring ([15b7856](https://github.com/davidsneighbour/dotfiles/commit/15b78564c5d84cb4579b3a72dc0e4db7430b9feb))
+
 ## [2025.10.0](https://github.com/davidsneighbour/dotfiles/compare/v2025.9.0...v2025.10.0) (2025-05-21)
 
 
