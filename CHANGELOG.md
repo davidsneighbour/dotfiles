@@ -1,4 +1,11 @@
 Changelog
+## [2025.10.2](https://github.com/davidsneighbour/dotfiles/compare/v2025.10.1...v2025.10.2) (2025-05-21)
+
+
+### Bug Fixes
+
+* **bashrc:** rename create_repopath to __dnb_create_repopath ([0c07006](https://github.com/davidsneighbour/dotfiles/commit/0c07006b9f8119559b17147527aa02c76c91a8fd))
+
 ## [2025.10.1](https://github.com/davidsneighbour/dotfiles/compare/v2025.10.0...v2025.10.1) (2025-05-21)
 
 
