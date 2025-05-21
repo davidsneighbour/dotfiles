@@ -44,23 +44,9 @@ git() {
     fi
   fi
 
-  # if the subcommand is 'clone' and exactly one path-like argument is given...
-  if [[ "$1" == "clone" && $# -ge 2 && "$2" =~ ^[^/]+/[^/]+$ ]]; then
-    # build a GitHub HTTPS URL from user/repo
-    local shorthand=$2
-    # pass through --force-https if supplied
-    if [[ "$3" == "--force-https" ]]; then
-      glone "https://github.com/${shorthand}.git" --force-https
-    else
-      glone "https://github.com/${shorthand}.git"
-    fi
-    return
-  fi
-
   # Fallback to regular git command if conditions are not met
   command git "$@"
 }
-
 
 function glone() {
   local REPO_URL=$1
