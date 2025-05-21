@@ -4,12 +4,12 @@ case $- in
 *) return ;;
 esac
 
-# set to 0 or 1 to regulate verbosity
-export DNB_VERBOSE=1
-
 # manually done for now
 DOTFILES_PATH="${HOME}/github.com/davidsneighbour/dotfiles"
-BASHRC_PATH="${DOTFILES_PATH}/bash"
+BASHRC_PATH="${DOTFILES_PATH}/bashrc"
+
+force_color_prompt=yes
+export force_color_prompt
 
 # load the helper functions
 for FILE in "${BASHRC_PATH}"/_lib/*; do
@@ -27,7 +27,7 @@ if [[ -f "${FILE}" && -r "${FILE}" ]]; then
 fi
 unset FILE
 
-for FILE in "${BASHRC_PATH}"/partials/{eval,options,bash,functions,exports,aliases,completions,prompt}; do
+for FILE in "${BASHRC_PATH}"/partials/{eval,bash,functions,exports,aliases,completions,prompt}; do
   # this routine ranges through a folder of filenames that we don't explicitly know (@davidsneighbour)
   # shellcheck source=/dev/null
   [[ -f "${FILE}" && -r "${FILE}" ]] && source "${FILE}"
