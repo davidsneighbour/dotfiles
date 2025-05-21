@@ -20,7 +20,7 @@ done
 
 __dnb_check_requirements "${REQUIRED_TOOLS[@]}"
 __dnb_load_env
-create_repopath
+__dnb_create_repopath
 get_next_version
 # Clean ANSI escape codes from version string
 NEW_VERSION=$(echo "$NEW_VERSION" | sed 's/\x1B\[[0-9;]*[a-zA-Z]//g')
