@@ -60,7 +60,7 @@
     "link:prepare": "wireit",
     "lint:hook:commit": "lint-staged",
     "lint:hook:commit:loud": "lint-staged --debug --verbose",
-    "release": "commit-and-tag-version -a -t \"v\" --releaseCommitMessageFormat \"chore(release): v{{currentTag}}\" && ./bin/repo/release/postrelease",
+    "release": "commit-and-tag-version -a -t \"v\" --releaseCommitMessageFormat \"chore(release): v{{currentTag}}\" && ./bashrc/helpers/postrelease",
     "setup": "./dotbot.sh clean && ./dotbot.sh && ./dotbot.sh protected"
   },
   "wireit": {
