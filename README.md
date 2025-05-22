@@ -1,5 +1,13 @@
 ![The Dotfiles of @davidsneighbour](.github/header.jpg)
 
+# The Dot-Files of @davidsneighbour
+
+- [Introduction](#introduction)
+- [Setup](#setup)
+- [Update](#update)
+- [Other Details](#other-details)
+- [LICENSE](#license)
+
 > [!CAUTION]
 > While this repo is public and licensed under MIT you probably do NOT want to just clone it and use it as a template for your own project. Feel free to look around and take inspiration as I did with plenty of dotfile repository before me. This is my personal setup and it works for me. If you have questions or suggestions (or find me adding my own private keys to this repo) feel free to contact me or peruse the issues section.
 
@@ -19,55 +27,58 @@ See the note above. If you are still here, then you probably are interested in h
 
 > [!CAUTION]
 > Again: You do not want to directly set up this repository on your own system. Clone it to learn, then create your own .dotfiles setup.
->
-### Manual setup
 
-Clone with submodules:
+**Step 1:** Clone with submodules:
 
-```shell
+```bash
 git clone --recurse-submodules git@github.com:davidsneighbour/dotfiles.git
 ```
 
-Install dependencies:
+**Step 2:** Install dependencies:
 
-```shell
+```bash
 npm install
 ```
 
-Run initial setup:
+**Step 3:** Run initial setup:
 
-```shell
+```bash
 ./dotbot.sh install
 ```
 
-### Automatic setup script (TBD)
+**Step 4 (optional):** Set up protected files. 
+
+This is a "self-invented" feature that allows me to put protected files (like .env) into a safe repository. The files are not stored in *this* repo and encryption and privacy is handled separtedly. The protected files reside in a submodule/git repository that is located in `protected/`. 
 
 ```bash
-wget -qO- <https://raw.githubusercontent.com/davidsneighbour/dotfiles/main/setup/install.sh> | bash
-```
-
-```bash
-bash <(curl -s "https://raw.githubusercontent.com/davidsneighbour/dotfiles/main/setup/install.sh")
+git clone protected-repo-path protected
+./dotbot.sh protected
 ```
 
 ## Update
 
 Run consecutive updates:
 
-```shell
+```bash
 git pull
 ./dotbot.sh
-./dotbot.sh protected
+./dotbot.sh protected # if you have set up protected files (see step 4)
 git submodule update --recursive --remote --merge --force
 ```
 
-## Shortcuts/Keybindings
+Updating dotbot submodules is a bit tricky and might not work all times. Running into issues the following will help:
 
-### Import/Export Shortcuts
+```bash
+cd broken-submodule-path
+git merge --abort
+git pull
+git checkout main # or whatever branch the main branch is
+```
 
-Dotfiles set up adds a cronjob that exports the keybindings at 6pm daily to `etc/keybindings.csv`. This file is imported when running dotbot.sh.
+## Other Details
 
-### Custom Shortcuts
+- [Key Bindings](documentation/keybindings.md)
 
-SUPER+R = `rofi -show run`
-SUPER+W = `vscode workspaces`
+## LICENSE
+
+As far as components of this project are licensable this is done so under the MIT License – see the [LICENSE](LICENSE.md) file for details. Again… use at your own risk.
