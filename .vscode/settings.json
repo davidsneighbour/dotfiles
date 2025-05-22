@@ -24,4 +24,5 @@
     "README.md": "SECURITY*, LICENSE*, CITATION.cff, OS_INSTALL_FIRST_STEPS.md",
     "package.json": ".lintstagedrc.*,.commitlintrc.*,.markdownlint.*,.npmrc.*,.nvmrc,.secretlint*,.shellcheck*,biome.*,.yamllint.*,.versionrc.*,eslint.*,jsconfig.*,tsconfig.*,link.config.*,package-lock.json"
   },
+  "markdown.extension.toc.levels": "2..6",
 }
