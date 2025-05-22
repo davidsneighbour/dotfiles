@@ -1,4 +1,18 @@
 Changelog
+## [2025.10.3](https://github.com/davidsneighbour/dotfiles/compare/v2025.10.2...v2025.10.3) (2025-05-22)
+
+
+### Documentation
+
+* update README.md and LICENSE.md ([01d6f5d](https://github.com/davidsneighbour/dotfiles/commit/01d6f5dced8c31bb5c5350eda37c7fef13e132cc))
+
+
+### Chore
+
+* **git:** update dotbot submodule ([de26c9a](https://github.com/davidsneighbour/dotfiles/commit/de26c9a8c568712018dd461919decc8f7f3eccab))
+* update configuration ([afda8c2](https://github.com/davidsneighbour/dotfiles/commit/afda8c2749673012224ba8988800269543f79843))
+* **vscode:** update workspace configuration ([c19bb61](https://github.com/davidsneighbour/dotfiles/commit/c19bb61103f9017a9b4da732ba534e81e12d4b53))
+
 ## [2025.10.2](https://github.com/davidsneighbour/dotfiles/compare/v2025.10.1...v2025.10.2) (2025-05-21)
 
 
