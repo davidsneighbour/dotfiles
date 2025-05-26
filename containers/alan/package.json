@@ -1,0 +1,22 @@
+{
+  "name": "@davidsneighbour/alan",
+  "description": "",
+  "version": "0.0.2",
+  "license": "MIT",
+  "author": "Patrick Kollitsch <patrick@davids-neighbour.com>",
+  "keywords": [],
+  "devDependencies": {
+    "@davidsneighbour/release-config": "2025.1.1",
+    "@davidsneighbour/tools": "2025.1.1"
+  },
+  "scripts": {
+    "release": "wireit",
+    "server": "./server.sh",
+    "update": "docker pull ghcr.io/open-webui/open-webui:ollama"
+  },
+  "wireit": {
+    "release": {
+      "command": "commit-and-tag-version --sign -a -t \"v\" --releaseCommitMessageFormat \"chore(release): v{{currentTag}}\" -- --no-verify && ./bin/repo/release/postrelease"
+    }
+  }
+}
