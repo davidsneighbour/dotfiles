@@ -5,8 +5,8 @@ services:
     ports:
       - 3000:3000
     volumes:
-      - /home/patrick/github.com/davidsneighbour/pizen/homepage/config:/app/config
-      - /home/patrick/github.com/davidsneighbour/pizen/homepage/images:/app/public/images
+      - /home/patrick/github.com/davidsneighbour/dotfiles/containers/homepage/config:/app/config
+      - /home/patrick/github.com/davidsneighbour/dotfiles/containers/homepage/images:/app/public/images
       - /var/run/docker.sock:/var/run/docker.sock:ro
     restart: unless-stopped
     environment:
