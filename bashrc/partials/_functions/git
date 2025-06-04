@@ -26,17 +26,17 @@
 
 git() {
 
-  # if commitlint is setup and cz is available 
+  # if commitlint is setup and cz is available
   if [[ "$1" == "commit" ]]; then
     if command -v cz >/dev/null 2>&1 && \
        git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-      
+
       # Get the root directory of the Git repository
       local git_root
       git_root=$(git rev-parse --show-toplevel 2>/dev/null)
 
       # Check for the config files at the root of the repository
-      if [[ -f "${git_root}/.commitlintrc.cjs" || -f "${git_root}/.commitlintrc.js" || -f "${git_root}/.commitlintrc.mjs" ]]; then
+      if [[ -f "${git_root}/.commitlintrc.cjs" || -f "${git_root}/.commitlintrc.js" || -f "${git_root}/.commitlintrc.mjs"  || -f "${git_root}/.commitlintrc.ts" ]]; then
         shift
         cz "$@"
         return

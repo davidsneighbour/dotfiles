@@ -30,7 +30,6 @@
     "znck.grammarly",
     "mechatroner.rainbow-csv",
     "mkhl.shfmt",
-    "ms-azuretools.vscode-docker",
     "editorconfig.editorconfig",
     "tamasfe.even-better-toml",
     "github.copilot-chat",
@@ -38,5 +37,8 @@
     "github.vscode-pull-request-github",
     "yzhang.markdown-all-in-one",
     "ms-playwright.playwright",
+    "docker.docker",
+    "ms-azuretools.vscode-docker",
+    "ms-azuretools.vscode-containers",
   ]
 }
