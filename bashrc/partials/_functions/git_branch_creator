@@ -1,0 +1,79 @@
+# Place this function in your ~/.bashrc and then run `source ~/.bashrc`
+who_created_branches() {
+  local BASE="origin/master"
+  local VERBOSE=false
+
+  # Show help if requested or no args
+  if [[ $# -gt 0 ]]; then
+    case "$1" in
+      --help)
+        cat <<EOF
+Usage: ${FUNCNAME[0]} [--base <remote>/<branch>] [--verbose]
+
+Shows, for each remote branch, the author of its first unique commit
+(i.e. likely the person who created it) and the date of its latest commit.
+Defaults to base=origin/master.
+
+  --base     Name of the base branch for merge-base (default: origin/master)
+  --verbose  Print extra debugging info
+  --help     Show this help message
+EOF
+        return 0
+        ;;
+    esac
+  fi
+
+  # Parse options
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --base)
+        BASE="$2"
+        shift 2
+        ;;
+      --verbose)
+        VERBOSE=true
+        shift
+        ;;
+      --help)
+        # Handled above
+        ;;
+      *)
+        echo "Unknown option: $1" >&2
+        echo "Use --help for usage" >&2
+        return 1
+        ;;
+    esac
+  done
+
+  if $VERBOSE; then
+    echo "Fetching origin..."
+  fi
+  git fetch --prune origin
+
+  git for-each-ref --format='%(refname:short)' refs/remotes/origin | while read -r branch; do
+    # Skip the base itself (e.g. origin/master)
+    if [[ "$branch" == "${BASE#origin/}" ]]; then
+      continue
+    fi
+
+    full_ref="origin/${branch#origin/}"
+    $VERBOSE && echo "Processing $full_ref..."
+
+    # Find the merge-base between this branch and the base
+    base_sha=$(git merge-base "$full_ref" "$BASE")
+
+    # Find the first commit unique to the branch
+    first_sha=$(git rev-list --reverse "$base_sha..$full_ref" | head -n1)
+
+    if [[ -n "$first_sha" ]]; then
+      creator=$(git log -1 --format='%an <%ae>' "$first_sha")
+    else
+      creator="(no unique commits)"
+    fi
+
+    # Find the date of the latest commit on the branch
+    last_date=$(git log -1 --format='%ci' "$full_ref")
+
+    printf '%-25s | %-40s | %s\n' "$last_date" "$full_ref" "$creator"
+  done
+}
