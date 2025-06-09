@@ -1,4 +1,97 @@
 Changelog
+## [2025.11.0](https://github.com/davidsneighbour/dotfiles/compare/v2025.10.3...v2025.11.0) (2025-06-09)
+
+
+### Features
+
+* **bashrc:** add git branch creation function ([2a26fac](https://github.com/davidsneighbour/dotfiles/commit/2a26fac1bbb79dbc34e7f619c6d0ebf1a079ff27))
+
+
+### Bug Fixes
+
+* **alan:** cleanup alan's directory ([cb7ba03](https://github.com/davidsneighbour/dotfiles/commit/cb7ba0336827cdeb9eda750f6b5474a8ae96a402))
+* **bashrc:** move lpack back in ([3e352d5](https://github.com/davidsneighbour/dotfiles/commit/3e352d5d7e4203e2ef1540a0c48222bd93c0d350))
+* **bashrc:** update g_one_commit function ([491d232](https://github.com/davidsneighbour/dotfiles/commit/491d2323f6b9ef7e7521c25bffc992e7fa89072d))
+* **containers:** new background image for homepage ([b1538e3](https://github.com/davidsneighbour/dotfiles/commit/b1538e39a117f066d7baa552fb84cc6ae220d289))
+* latest changes ([d63a26a](https://github.com/davidsneighbour/dotfiles/commit/d63a26a6590d04e2ee1f83209c44c60d2f1ffce5))
+* move homepage container config to protected dotfiles repo ([2806717](https://github.com/davidsneighbour/dotfiles/commit/2806717ba9394dc23ea11b87bc8ddf0022a9e2be))
+* **setup:** update sublime edit and merge setups ([c5ef66d](https://github.com/davidsneighbour/dotfiles/commit/c5ef66d52f418502ddccb873f41aa8caed27d120))
+* update dropbox autostart settings ([9ed2452](https://github.com/davidsneighbour/dotfiles/commit/9ed2452e7a0597c8449eeefc429ad966853e869b))
+
+
+### Chore
+
+* **assets:** update skyline stats for 2025 ([39a8187](https://github.com/davidsneighbour/dotfiles/commit/39a8187a265464386eb65f21d49b27c52ecab736))
+* **deps:** lock file maintenance ([#265](https://github.com/davidsneighbour/dotfiles/issues/265)) ([b913ba3](https://github.com/davidsneighbour/dotfiles/commit/b913ba3f04672feca4fbab96cd5009a2d7b5fe38))
+* **deps:** lock file maintenance ([#266](https://github.com/davidsneighbour/dotfiles/issues/266)) ([3c45297](https://github.com/davidsneighbour/dotfiles/commit/3c4529797677a76cd11dd20be68169faa2e6278a))
+* **inkscape:** update configuration ([313aa32](https://github.com/davidsneighbour/dotfiles/commit/313aa32891fe1121deb12d106791255346c17b90))
+
+
+### Build System
+
+* **deps:** update dependencies ([fb9b488](https://github.com/davidsneighbour/dotfiles/commit/fb9b48833beee5ad789ebcfd767dddd77cd25036))
+* **deps:** update dependencies ([39a53c9](https://github.com/davidsneighbour/dotfiles/commit/39a53c9185eec62b724fcba2938f1fa3ec9519b0))
+* **deps:** update dependencies ([b4a76fc](https://github.com/davidsneighbour/dotfiles/commit/b4a76fca82940adf045005d7f6c76164717305cf))
+
+## [0.0.2](https://github.com/davidsneighbour/dotfiles/compare/v2025.6.1...v0.0.2) (2025-04-24)
+
+
+### Documentation
+
+* **fix:** add license ([55105e9](https://github.com/davidsneighbour/dotfiles/commit/55105e984936df067ab893f429e19900d97954ae))
+
+
+### Features
+
+* add update script ([b3f50fd](https://github.com/davidsneighbour/dotfiles/commit/b3f50fddf40c7d4a5c1f2a41c6552b0a203bf573))
+
+
+### Bug Fixes
+
+* use open webui that uses existing local ollama ([ca5513e](https://github.com/davidsneighbour/dotfiles/commit/ca5513eab37009addfde72d014758b0d485fdf4d))
+
+
+### Chore
+
+* **config:** add docker extension to recommendations ([e7645ea](https://github.com/davidsneighbour/dotfiles/commit/e7645ea9b5e1e8dc007404739151e632a6c75dba))
+* **deps:** update dependabot update interval ([ed43352](https://github.com/davidsneighbour/dotfiles/commit/ed433527d91e2767caa0a837fb920f89013791d8))
+* **git:** update bin submodule ([310799f](https://github.com/davidsneighbour/dotfiles/commit/310799f81a168a5b685de4ec62ca1361f8d1d9db))
+* **release:** v0.0.2 ([b8c48ae](https://github.com/davidsneighbour/dotfiles/commit/b8c48aef7af462ef93efb5532caa8e3901893243))
+
+
+### Build System
+
+* **deps:** update dependencies ([e160089](https://github.com/davidsneighbour/dotfiles/commit/e1600890abbfc6b5259d89a9d6cda2509692c3dd))
+* **deps:** update dependencies ([6fbda8a](https://github.com/davidsneighbour/dotfiles/commit/6fbda8ae26f70477bd0ee3e2557e04d9581754bf))
+* **deps:** update dependencies ([c22110b](https://github.com/davidsneighbour/dotfiles/commit/c22110b8df269941e371f95ac87d6e24569ae2d4))
+* **deps:** update dependencies ([4d6ac52](https://github.com/davidsneighbour/dotfiles/commit/4d6ac52f7d536822a1f96183231a0814a04146c1))
+* **fix:** add ignored files ([7023e69](https://github.com/davidsneighbour/dotfiles/commit/7023e6917104d711ff2214e5c35af4246a6272c5))
+
+## [0.0.1](https://github.com/davidsneighbour/dotfiles/compare/v2024.5.0...v0.0.1) (2024-11-25)
+
+
+### Bug Fixes
+
+* proper environmental variable for WEBUI_NAME ([dafa9ca](https://github.com/davidsneighbour/dotfiles/commit/dafa9cae559a74d7e78825fe9e788d38741ba397))
+* updater and local config volume ([2ce3f08](https://github.com/davidsneighbour/dotfiles/commit/2ce3f0838b1554c9e3df4f4a31b3fc0b4ca6022f))
+
+
+### Chore
+
+* **config:** set up CODEOWNERS config ([1fd94e4](https://github.com/davidsneighbour/dotfiles/commit/1fd94e4e832c18bbc59ac51c831b27a5ca9c77e0))
+* **config:** setup dependabot ([7d75c3e](https://github.com/davidsneighbour/dotfiles/commit/7d75c3e956f170930e1e79d65ab1187abaf3360e))
+* configure renovate ([bfcbc1b](https://github.com/davidsneighbour/dotfiles/commit/bfcbc1b6ae4ba191b7599f923ae1fc64949edbe1))
+* **deps:** initialise and install dependencies ([ea156ac](https://github.com/davidsneighbour/dotfiles/commit/ea156ac9e01a943eff6ced1b3fe1b7b947c2dc4c))
+* **release:** v0.0.1 ([9b08707](https://github.com/davidsneighbour/dotfiles/commit/9b08707b9c5278886eaf205ee36afc7c84fe486b))
+* **release:** v0.0.2 ([7847867](https://github.com/davidsneighbour/dotfiles/commit/78478672e33bc9e8bcee4f05c5236fd5f33ad0b9))
+
+
+### Build System
+
+* **feat:** add release setup ([c7c86fc](https://github.com/davidsneighbour/dotfiles/commit/c7c86fcfe4a53f9c197f4ce50aa931340c3f6cfd))
+* **fix:** update package file ([b7f9ce3](https://github.com/davidsneighbour/dotfiles/commit/b7f9ce31d22addd6ea3a1a13d632ec45b9de4315))
+* **fix:** update repo layout and add binaries ([b3fab93](https://github.com/davidsneighbour/dotfiles/commit/b3fab93d42f54c6da71c6c388692a15d692f637f))
+
 ## [2025.10.3](https://github.com/davidsneighbour/dotfiles/compare/v2025.10.2...v2025.10.3) (2025-05-22)
 
 
