@@ -1,4 +1,29 @@
 Changelog
+## [2025.13.0](https://github.com/davidsneighbour/dotfiles/compare/v2025.11.0...v2025.13.0) (2025-06-16)
+
+
+### Features
+
+* **wallpapers:** add black and white photos ([c6cc713](https://github.com/davidsneighbour/dotfiles/commit/c6cc713e517b5c7a8160067b8f96ec9f395aeeb5))
+
+
+### Bug Fixes
+
+* disable node messaging about experimental ts integration ([391439a](https://github.com/davidsneighbour/dotfiles/commit/391439a2fbd2abb0699d5e12d63fc3fdc2462bdf))
+* **rofi:** set font size larger due to scaling ([996f0fa](https://github.com/davidsneighbour/dotfiles/commit/996f0fa8c944a3ae2d6f3854bd93b147a255f142))
+* **wallpapers:** remove unused wallpaper ([1c043b6](https://github.com/davidsneighbour/dotfiles/commit/1c043b637616db9d9799c38cbbac01429b36b48f))
+
+
+### Chore
+
+* **deps): build(deps:** update lockfile dependencies ([#267](https://github.com/davidsneighbour/dotfiles/issues/267)) ([bd65382](https://github.com/davidsneighbour/dotfiles/commit/bd653826390f75d0ef4dfe006b7bc54f73dd7d15))
+* **release:** v2025.12.0 ([f0e8f98](https://github.com/davidsneighbour/dotfiles/commit/f0e8f98f490895690297c5a73b4edb15a1f81c5f))
+
+
+### Build System
+
+* **deps:** update dependencies ([fdb58f3](https://github.com/davidsneighbour/dotfiles/commit/fdb58f3a26864b92d89ab21e66ade5ee83c19ec1))
+
 ## [2025.12.0](https://github.com/davidsneighbour/dotfiles/compare/v2025.11.0...v2025.12.0) (2025-06-16)
 
 
