@@ -1,4 +1,18 @@
 Changelog
+## [2025.12.0](https://github.com/davidsneighbour/dotfiles/compare/v2025.11.0...v2025.12.0) (2025-06-16)
+
+
+### Features
+
+* **wallpapers:** add black and white photos ([358335b](https://github.com/davidsneighbour/dotfiles/commit/358335b00099a1b8d52b0bffac5491308e4dfe9d))
+
+
+### Bug Fixes
+
+* disable node messaging about experimental ts integration ([69842b1](https://github.com/davidsneighbour/dotfiles/commit/69842b1fa764da02fd61df0cfb3987c7f0ad8796))
+* **rofi:** set font size larger due to scaling ([9a07600](https://github.com/davidsneighbour/dotfiles/commit/9a07600b7d91902e2ac01ff5d64bde64b2a309ae))
+* **wallpapers:** remove unused wallpaper ([d32d7cb](https://github.com/davidsneighbour/dotfiles/commit/d32d7cbda3ab362c3f20bbfcbed5c4e8b68869a2))
+
 ## [2025.11.0](https://github.com/davidsneighbour/dotfiles/compare/v2025.10.3...v2025.11.0) (2025-06-09)
 
 
