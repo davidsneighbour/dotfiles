@@ -5,3 +5,6 @@ ignore = dirty
 [submodule "dotbot-plugins/crontab-dotbot"]
 path = dotbot-plugins/crontab-dotbot
 url = git@github.com:fundor333/crontab-dotbot.git
+[submodule "dotbot-aptget"]
+path = dotbot-plugins/dotbot-aptget
+url = https://github.com/alegsan/dotbot-aptget.git
