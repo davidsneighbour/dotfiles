@@ -23,57 +23,9 @@ See the note above. If you are still here, then you probably are interested in h
 
 - I will document most of the features within the scripts themselves. I will not document the features in the README.md file or only mention them in a drive-by.
 
-## Setup
+## Setup and update
 
-> [!CAUTION]
-> Again: You do not want to directly set up this repository on your own system. Clone it to learn, then create your own .dotfiles setup.
-
-**Step 1:** Clone with submodules:
-
-```bash
-git clone --recurse-submodules git@github.com:davidsneighbour/dotfiles.git
-```
-
-**Step 2:** Install dependencies:
-
-```bash
-npm install
-```
-
-**Step 3:** Run initial setup:
-
-```bash
-./dotbot.sh install
-```
-
-**Step 4 (optional):** Set up protected files. 
-
-This is a "self-invented" feature that allows me to put protected files (like .env) into a safe repository. The files are not stored in *this* repo and encryption and privacy is handled separtedly. The protected files reside in a submodule/git repository that is located in `protected/`. 
-
-```bash
-git clone protected-repo-path protected
-./dotbot.sh protected
-```
-
-## Update
-
-Run consecutive updates:
-
-```bash
-git pull
-./dotbot.sh
-./dotbot.sh protected # if you have set up protected files (see step 4)
-git submodule update --recursive --remote --merge --force
-```
-
-Updating dotbot submodules is a bit tricky and might not work all times. Running into issues the following will help:
-
-```bash
-cd broken-submodule-path
-git merge --abort
-git pull
-git checkout main # or whatever branch the main branch is
-```
+See [SETUP.md](SETUP.md) for details. 
 
 ## Other Details
 
