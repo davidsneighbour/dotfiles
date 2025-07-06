@@ -6,23 +6,6 @@ version: 2
 enable-beta-ecosystems: true
 
 updates:
-  - package-ecosystem: beta-ecosystem
-    directory: "/"
-    schedule:
-      interval: monthly
-      day: "friday"
-      time: "23:00"
-      timezone: Asia/Bangkok
-    assignees:
-      - davidsneighbour
-    reviewers:
-      - davidsneighbour
-    target-branch: main
-    open-pull-requests-limit: 999
-    pull-request-branch-name:
-      separator: /
-    labels:
-      - "Type: Dependencies"
 
   - package-ecosystem: cargo
     directory: "/"
