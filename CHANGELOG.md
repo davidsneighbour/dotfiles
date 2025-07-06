@@ -1,4 +1,18 @@
 Changelog
+## [2025.13.4](https://github.com/davidsneighbour/dotfiles/compare/v2025.13.2...v2025.13.4) (2025-07-06)
+
+
+### Chore
+
+* cleanout setup scripts ([bbed8f9](https://github.com/davidsneighbour/dotfiles/commit/bbed8f92d230a978d6305f6dd04d0c2a26d933d2))
+
+## [2025.13.3](https://github.com/davidsneighbour/dotfiles/compare/v2025.13.2...v2025.13.3) (2025-07-06)
+
+
+### Chore
+
+* cleanout setup scripts ([bbed8f9](https://github.com/davidsneighbour/dotfiles/commit/bbed8f92d230a978d6305f6dd04d0c2a26d933d2))
+
 ## [2025.13.2](https://github.com/davidsneighbour/dotfiles/compare/v2025.13.1...v2025.13.2) (2025-07-06)
 
 
