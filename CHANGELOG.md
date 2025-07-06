@@ -1,4 +1,21 @@
 Changelog
+## [2025.13.1](https://github.com/davidsneighbour/dotfiles/compare/v2025.13.0...v2025.13.1) (2025-07-06)
+
+
+### Documentation
+
+* update key combination overview ([b734e65](https://github.com/davidsneighbour/dotfiles/commit/b734e65ee5b89fd75627b1e7c2739d886f537a78))
+* update README.md, add SETUP.md, remove documentation/* ([5790e25](https://github.com/davidsneighbour/dotfiles/commit/5790e25b828d6e5afeb684d930402c3d509af610))
+
+
+### Chore
+
+* **assets:** update skyline stats for 2025 ([beb7680](https://github.com/davidsneighbour/dotfiles/commit/beb768089482dd30a2f3f6b816a9efe284e7d113))
+* **config:** set node version to 24 ([1261d12](https://github.com/davidsneighbour/dotfiles/commit/1261d1213bed7928bce5236f03e6261d5549b015))
+* **deps): build(deps:** update lockfile dependencies ([#268](https://github.com/davidsneighbour/dotfiles/issues/268)) ([e62c6d1](https://github.com/davidsneighbour/dotfiles/commit/e62c6d1db66f14c21dc659f3e6c919638685f0de))
+* **submodules:** add aptget submodule for dotbot ([9d83314](https://github.com/davidsneighbour/dotfiles/commit/9d83314e3ea9745552988ce3ee30215f4b1294c3))
+* **submodule:** update dotbot submodule ([932ff59](https://github.com/davidsneighbour/dotfiles/commit/932ff5902a9d370ef8b46c868a457526b5b2c5f7))
+
 ## [2025.13.0](https://github.com/davidsneighbour/dotfiles/compare/v2025.11.0...v2025.13.0) (2025-06-16)
 
 
