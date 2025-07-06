@@ -44,18 +44,19 @@ Work in progress... to be written.
 
 ### Custom Shortcuts that are set up (work in progress)
 
-| key binding | command | notes |
-|-------------|---------|-------|
-| SUPER+R     | `rofi -show run` | |
-| SUPER+W     | `vscode workspaces` | |
-| SUPER+E     | `vscode workspaces` | like SUPER+W but doesn't take over the already open VSCode window(s) |
-| SUPER+N | | open Netflix |
-| SUPER+C | | open Chrome user profile selection (or browser) |
-| SUPER+T | | open Terminal |
-| SUPER+F | | open file manager in Home directory |
-| SUPER+S | | open Spotify |
-| SUPER+Q | | open Todoist |
-| SUPER+J | | open Joplin |
+| key binding | function |
+| :---: | --- |
+| SUPER+A | open Alan |
+| SUPER+W | open VSCode workspace selection, keep single window |
+| SUPER+E | like SUPER+W but doesn't take over the already open VSCode window(s) |
+| SUPER+N | open Netflix |
+| SUPER+C | open Chrome user profile selection (or browser) |
+| SUPER+T | open Terminal |
+| SUPER+F | open file manager in Home directory |
+| SUPER+S | open Spotify |
+| SUPER+SHIFT+S | open Sublime Text |
+| SUPER+Q | open Todoist |
+| SUPER+J | open Joplin |
 
 # Manual installations after setup
 
