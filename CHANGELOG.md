@@ -1,4 +1,11 @@
 Changelog
+## [2025.13.5](https://github.com/davidsneighbour/dotfiles/compare/v2025.13.4...v2025.13.5) (2025-07-06)
+
+
+### Build System
+
+* remove verbosity, release call from release script ([4445168](https://github.com/davidsneighbour/dotfiles/commit/4445168eeef5576cd5ffad354e44c1b3e43bbdc5))
+
 ## [2025.13.4](https://github.com/davidsneighbour/dotfiles/compare/v2025.13.2...v2025.13.4) (2025-07-06)
 
 
