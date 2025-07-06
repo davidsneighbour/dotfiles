@@ -1,4 +1,19 @@
 Changelog
+## [2025.13.2](https://github.com/davidsneighbour/dotfiles/compare/v2025.13.1...v2025.13.2) (2025-07-06)
+
+
+### Chore
+
+* **deps:** update dependabot configuration ([c1a67dc](https://github.com/davidsneighbour/dotfiles/commit/c1a67dcf7c74c5d2660eac140c30ccb614022a3e))
+* **deps:** update dependencies ([1260e31](https://github.com/davidsneighbour/dotfiles/commit/1260e31a77cd32ac20667404629d8dc9823bd340))
+* **deps:** update renovate bot to ignore containers directory ([d684a10](https://github.com/davidsneighbour/dotfiles/commit/d684a103658a81c6c0c4670b95241e6da890df7a))
+
+
+### Build System
+
+* **deps:** bump actions/checkout from 3 to 4 ([#269](https://github.com/davidsneighbour/dotfiles/issues/269)) ([4ba544e](https://github.com/davidsneighbour/dotfiles/commit/4ba544ebcdf949888ea275dc74751a5054b6a4ba))
+* **deps:** bump actions/setup-node from 3 to 4 ([#270](https://github.com/davidsneighbour/dotfiles/issues/270)) ([af51b3e](https://github.com/davidsneighbour/dotfiles/commit/af51b3e9e3b929eadf1b82de28dc39704138b1cb))
+
 ## [2025.13.1](https://github.com/davidsneighbour/dotfiles/compare/v2025.13.0...v2025.13.1) (2025-07-06)
 
 
