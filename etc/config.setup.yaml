@@ -7,16 +7,22 @@
 - plugins:
     - dotbot-plugins/crontab-dotbot/
     - dotbot-plugins/dotbot-aptget/
-    
+
 - defaults:
     link:
       create: true
       relink: true
       force: true
 
-- clean: ["~"]
-
-- shell:
-    - "rm -f ~/.bash_history ~/.lesshst ~/.viminfo ~/.sudo_as_admin_successful"
-    - "rm -f ~/.wget-hsts ~/.ncu-cache.json ~/.lesshst"
-    - "rm -f ~/hs_err_pid*.log"
+- aptget:
+    xclip:
+    dnsmasq-base:
+    gzip:
+    ubuntu-drivers-common:
+    git:
+    terminator:
+    ca-certificates:
+    curl:
+    flatpak:
+        ppa_source: ppa:flatpak/stable
+        upgrade: true

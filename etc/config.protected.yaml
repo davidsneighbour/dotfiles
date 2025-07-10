@@ -2,6 +2,10 @@
 ################################################################################
 # Setup configuration for the protected repository
 ################################################################################
+- plugins:
+    - dotbot-plugins/crontab-dotbot/
+    - dotbot-plugins/dotbot-aptget/
+    
 - defaults:
     link:
       create: true
