@@ -1,0 +1,21 @@
+---
+################################################################################
+# config options that were relevant for gnome desktop setups
+################################################################################
+- plugins:
+    - dotbot-plugins/crontab-dotbot/
+    - dotbot-plugins/dotbot-aptget/
+    
+- aptget:
+    flatpak:
+        ppa_source: ppa:flatpak/stable
+    gnome-software-plugin-flatpak:
+
+- shell:
+    # - 'gsettings set org.gnome.desktop.interface gtk-theme "Dracula"'
+    # - 'gsettings set org.gnome.desktop.wm.preferences theme "Dracula"'
+    # - 'gsettings set org.gnome.desktop.interface icon-theme "Dracula"'
+    - flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+    - flatpak install flathub org.gnome.Extensions
+    - flatpak install flathub ca.desrt.dconf-editor
+    - flatpak install flathub io.github.flattool.Ignition
