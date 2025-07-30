@@ -14,15 +14,38 @@
       relink: true
       force: true
 
-- aptget:
-    xclip:
-    dnsmasq-base:
-    gzip:
-    ubuntu-drivers-common:
-    git:
-    terminator:
-    ca-certificates:
-    curl:
-    flatpak:
-        ppa_source: ppa:flatpak/stable
-        upgrade: true
+- shell:
+    # brew and packages via brew
+    - /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    - brew install typos-cli gum yamllint vale lychee python jrnl
+    # clean up automatically installed packages
+    - sudo apt purge totem sssd kitty xterm libreoffice -y
+    - sudo apt autoremove -y
+    # setup development directories
+    - mkdir -p ~/github.com/davidsneighbour ~/gitlab.com/davidsneighbour ~/.config
+    - nvm install --lts
+    - nvm install v20
+    - nvm install v22
+    - nvm install v23
+    - nvm use --lts
+    # setup Ollama
+    - curl -fsSL https://ollama.com/install.sh | sh
+    - ollama pull llama3.2
+    - ollama pull deepseek-r1
+    - ollama pull gemma3
+
+# - aptget:
+#     xclip:
+#     dnsmasq-base:
+#     gzip:
+#     git:
+#     terminator:
+#     ca-certificates:
+#     curl:
+#     vlc:
+#     flatpak:
+#         ppa_source: ppa:flatpak/stable
+#         upgrade: true
+#     libreoffice:
+#         ppa_source: ppa:libreoffice/ppa
+#         upgrade: true

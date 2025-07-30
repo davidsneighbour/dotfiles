@@ -6,10 +6,10 @@
     - dotbot-plugins/crontab-dotbot/
     - dotbot-plugins/dotbot-aptget/
     
-- aptget:
-    flatpak:
-        ppa_source: ppa:flatpak/stable
-    gnome-software-plugin-flatpak:
+# - aptget:
+#     flatpak:
+#         ppa_source: ppa:flatpak/stable
+#     gnome-software-plugin-flatpak:
 
 - shell:
     # - 'gsettings set org.gnome.desktop.interface gtk-theme "Dracula"'
@@ -19,3 +19,5 @@
     - flatpak install flathub org.gnome.Extensions
     - flatpak install flathub ca.desrt.dconf-editor
     - flatpak install flathub io.github.flattool.Ignition
+    # battery meter for bluetooth devices
+    - busctl --user call org.gnome.Shell.Extensions /org/gnome/Shell/Extensions org.gnome.Shell.Extensions InstallRemoteExtension s Bluetooth-Battery-Meter@maniacx.github.com

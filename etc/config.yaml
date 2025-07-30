@@ -6,7 +6,7 @@
 ################################################################################
 - plugins:
     - dotbot-plugins/crontab-dotbot/
-    - dotbot-plugins/dotbot-aptget/
+    # - dotbot-plugins/dotbot-aptget/
     
 - defaults:
       link:
@@ -78,16 +78,16 @@
       ~/.vim: filesystem/.vim
       ~/.wallpapers: filesystem/.wallpapers
 
-- shell:
-      - 'gsettings set org.gnome.desktop.interface gtk-theme "Dracula"'
-      - 'gsettings set org.gnome.desktop.wm.preferences theme "Dracula"'
-#    - "gsettings set org.gnome.desktop.interface icon-theme \"Dracula\""
+# - shell:
+#       # - 'gsettings set org.gnome.desktop.interface gtk-theme "Dracula"'
+#       # - 'gsettings set org.gnome.desktop.wm.preferences theme "Dracula"'
+# #    - "gsettings set org.gnome.desktop.interface icon-theme \"Dracula\""
 
 - crontab:
       - cron: 0 0 * * *
-        command: ${HOME}/github.com/davidsneighbour/dotfiles/bin/cronjobs/update-npm.sh >> ${HOME}/.logs/cron.log 2>&1
+        command: ${HOME}/github.com/davidsneighbour/dotfiles/bashrc/helpers/update-npm.sh >> ${HOME}/.logs/cron.log 2>&1
       - cron: 30 */4 * * *
-        command: ${HOME}/github.com/davidsneighbour/dotfiles/bin/cronjobs/filespace-discord.sh >> ${HOME}/.logs/cron.log 2>&1
+        command: ${HOME}/github.com/davidsneighbour/dotfiles/bashrc/helpers/filespace-discord.sh >> ${HOME}/.logs/cron.log 2>&1
       - cron: 0 18 * * *
         command: /bin/bash -c "cd ${HOME}/github.com/davidsneighbour/dotfiles && keybindingsmanager -e etc/keycombinations.csv" >> ${HOME}/.logs/cron.log 2>&1
       - cron: 0 6,12,18 * * *
