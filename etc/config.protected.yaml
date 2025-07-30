@@ -30,3 +30,4 @@
     ~/.config/filezilla/trustedcerts.xml: protected/filezilla/trustedcerts.xml
     # docker containers with sensitive data
     containers/homepage/config: protected/containers/homepage/config
+    containers/paperless/db: protected/containers/paperless/db
