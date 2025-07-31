@@ -8,3 +8,9 @@ url = git@github.com:fundor333/crontab-dotbot.git
 [submodule "dotbot-aptget"]
 path = dotbot-plugins/dotbot-aptget
 url = https://github.com/alegsan/dotbot-aptget.git
+[submodule "ai/prompts"]
+	path = ai/prompts
+	url = git@github.com:davidsneighbour/dotfiles-aiprompts.git
+[submodule "containers"]
+	path = containers
+	url = git@github.com:davidsneighbour/dotfiles-containers.git
