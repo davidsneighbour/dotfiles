@@ -14,7 +14,7 @@
     "@commitlint/config-conventional": "19.8.1",
     "@davidsneighbour/markdownlint-config": "^2025.2.4",
     "@davidsneighbour/release-config": "^2025.2.4",
-    "@eslint/css": "0.9.0",
+    "@eslint/css": "0.10.0",
     "@eslint/js": "9.30.1",
     "@eslint/json": "0.12.0",
     "@eslint/markdown": "6.6.0",
