@@ -1,5 +1,6 @@
 @biomejs/biome
 @bramus/caniuse-cli
+@charmland/crush
 @davidsneighbour/remark-config
 @dotenvx/dotenvx
 act
@@ -11,6 +12,7 @@ cypress
 cz-git
 eslint
 fixpack
+generator-code
 http-server
 jshint
 lerna-wizard
@@ -24,3 +26,4 @@ playwright
 sassdoc
 svgo
 typescript
+yo
