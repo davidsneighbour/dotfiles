@@ -1,0 +1,7 @@
+#!/bin/bash
+
+alias sysinfo='inxi -Sxxx'
+alias sysinfo-full='inxi -Fxxxz'
+alias sysinfo-cpu='inxi -Cxxx'
+alias sysinfo-gpu='inxi -Gxxx'
+alias sysinfo-mem='inxi -mxxx'			
