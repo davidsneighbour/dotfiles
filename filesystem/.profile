@@ -19,3 +19,6 @@ for FILE in "${DOTFILES_PATH}"/bashrc/_lib/*; do
 done
 
 # @TODO add npm
+. "/home/patrick/.deno/env"
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm

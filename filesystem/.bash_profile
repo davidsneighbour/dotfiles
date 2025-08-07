@@ -19,3 +19,5 @@ for FILE in "${DOTFILES_PATH}"/bashrc/_lib/*; do
 done
 
 # @TODO add npm
+. "/home/patrick/.deno/env"
+source /home/patrick/.local/share/bash-completion/completions/deno.bash

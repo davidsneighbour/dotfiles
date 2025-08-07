@@ -14,3 +14,8 @@ DOTFILES_PATH="${HOME}/github.com/davidsneighbour/dotfiles"
 # load the bash configuration
 # shellcheck disable=SC1091
 source "${DOTFILES_PATH}"/bashrc/bashrc
+. "/home/patrick/.deno/env"
+source /home/patrick/.local/share/bash-completion/completions/deno.bash
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
