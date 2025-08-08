@@ -4,6 +4,10 @@
 #
 # @see https://github.com/anishathalye/dotbot for more info
 ################################################################################
+- plugins:
+    - dotbot-plugins/crontab-dotbot/
+    # - dotbot-plugins/dotbot-aptget/
+    
 - defaults:
       link:
           create: true
@@ -72,18 +76,26 @@
       ~/.logs: logs
       ~/.themes: filesystem/.themes
       ~/.vim: filesystem/.vim
-      ~/.wallpapers: filesystem/.wallpapers
 
-- shell:
-      - 'gsettings set org.gnome.desktop.interface gtk-theme "Dracula"'
-      - 'gsettings set org.gnome.desktop.wm.preferences theme "Dracula"'
-#    - "gsettings set org.gnome.desktop.interface icon-theme \"Dracula\""
+      # background images for Cinnamon
+      ~/.config/cinnamon/backgrounds/user-folders.lst: configs/wallpapers/user-folders.lst
+      ~/.config/cinnamon/backgrounds/black-and-white: configs/wallpapers/black-and-white
+      ~/.config/cinnamon/backgrounds/botanics: configs/wallpapers/botanics
+      ~/.config/cinnamon/backgrounds/colors: configs/wallpapers/colors
+      ~/.config/cinnamon/backgrounds/graphic: configs/wallpapers/graphic
+      ~/.config/cinnamon/backgrounds/liminal: configs/wallpapers/liminal
+      ~/.config/cinnamon/backgrounds/synched: configs/wallpapers/synched
+
+# - shell:
+#       # - 'gsettings set org.gnome.desktop.interface gtk-theme "Dracula"'
+#       # - 'gsettings set org.gnome.desktop.wm.preferences theme "Dracula"'
+# #    - "gsettings set org.gnome.desktop.interface icon-theme \"Dracula\""
 
 - crontab:
       - cron: 0 0 * * *
-        command: ${HOME}/github.com/davidsneighbour/dotfiles/bin/cronjobs/update-npm.sh >> ${HOME}/.logs/cron.log 2>&1
+        command: ${HOME}/github.com/davidsneighbour/dotfiles/bashrc/helpers/update-npm.sh >> ${HOME}/.logs/cron.log 2>&1
       - cron: 30 */4 * * *
-        command: ${HOME}/github.com/davidsneighbour/dotfiles/bin/cronjobs/filespace-discord.sh >> ${HOME}/.logs/cron.log 2>&1
+        command: ${HOME}/github.com/davidsneighbour/dotfiles/bashrc/helpers/filespace-discord.sh >> ${HOME}/.logs/cron.log 2>&1
       - cron: 0 18 * * *
         command: /bin/bash -c "cd ${HOME}/github.com/davidsneighbour/dotfiles && keybindingsmanager -e etc/keycombinations.csv" >> ${HOME}/.logs/cron.log 2>&1
       - cron: 0 6,12,18 * * *

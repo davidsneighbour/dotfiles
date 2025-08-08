@@ -1,3 +1,7 @@
+# load the bashrc helper functions
+# shellcheck disable=SC2154 # defined in bashrc
+__dnb_auto_source "${BASHRC_PATH}"/partials/_aliases/*;
+
 # reload the profile
 alias reload='. ~/.bashrc'
 

@@ -4,6 +4,10 @@
 #
 # @see https://github.com/anishathalye/dotbot for more info
 ################################################################################
+- plugins:
+    - dotbot-plugins/crontab-dotbot/
+    - dotbot-plugins/dotbot-aptget/
+    
 - defaults:
     link:
       create: true

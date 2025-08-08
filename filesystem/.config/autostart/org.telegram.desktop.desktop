@@ -1,0 +1,5 @@
+[Desktop Entry]
+Type=Application
+Name=org.telegram.desktop
+Exec=/usr/bin/flatpak run --branch=stable --arch=x86_64 --command=Telegram --file-forwarding org.telegram.desktop -- @@u %u @@
+X-Flatpak=org.telegram.desktop

@@ -2,6 +2,10 @@
 ################################################################################
 # Setup configuration for the protected repository
 ################################################################################
+- plugins:
+    - dotbot-plugins/crontab-dotbot/
+    - dotbot-plugins/dotbot-aptget/
+    
 - defaults:
     link:
       create: true
@@ -26,3 +30,4 @@
     ~/.config/filezilla/trustedcerts.xml: protected/filezilla/trustedcerts.xml
     # docker containers with sensitive data
     containers/homepage/config: protected/containers/homepage/config
+    containers/paperless/db: protected/containers/paperless/db
