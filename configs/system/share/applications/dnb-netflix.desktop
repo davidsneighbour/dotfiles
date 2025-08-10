@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.0
+Name=Netflix
+Comment=Web App
+Exec=google-chrome-stable --app="https://www.netflix.com" --class=dnb-netflix --name=dnb-netflix
+Terminal=false
+X-MultipleArgs=false
+Type=Application
+Icon=web-netflix
+Categories=GTK;WebApps;
+MimeType=text/html;text/xml;application/xhtml_xml;
+StartupWMClass=dnb-netflix
+StartupNotify=true

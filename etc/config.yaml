@@ -37,7 +37,6 @@
       ~/.fixpackrc: filesystem/.fixpackrc
       ~/.gitmessage: filesystem/.gitmessage
       ~/.gitconfig: filesystem/.gitconfig
-      ~/.gitignore: filesystem/.gitignore.template
       ~/.git-templates: filesystem/.git-templates
       ~/.hidden: filesystem/.hidden
       ~/.nvmrc: filesystem/.nvmrc
@@ -76,6 +75,15 @@
       ~/.logs: logs
       ~/.themes: filesystem/.themes
       ~/.vim: filesystem/.vim
+
+      ##########################################################################
+      # new configuration structure
+      ##########################################################################
+      # git setup
+      ~/.gitignore: configs/git/global.gitignore
+
+      # folders in ~/.local/share
+      ~/.local/share/applications: configs/system/share/applications
 
       # background images for Cinnamon
       ~/.config/cinnamon/backgrounds/user-folders.lst: configs/wallpapers/user-folders.lst
