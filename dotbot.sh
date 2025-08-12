@@ -23,6 +23,8 @@ cd "${BASEDIR}"
 git -C "${DOTBOT_DIR}" submodule sync --quiet --recursive
 git submodule update --init --recursive "${DOTBOT_DIR}"
 
+export HOSTNAME="$(hostname)"
+
 "${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" \
   --base-directory "${BASEDIR}" \
   --config-file "${DOTBOT_CONFIG}" \
