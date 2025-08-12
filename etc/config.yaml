@@ -36,6 +36,9 @@
     ~/.config/cinnamon/backgrounds/liminal: configs/wallpapers/liminal
     ~/.config/cinnamon/backgrounds/synched: configs/wallpapers/synched
 
+    # fastfetch
+    ~/.config/fastfetch: configs/system/fastfetch
+
     ############################################################################
     # legacy, deprecated, rework
     ############################################################################
@@ -72,7 +75,6 @@
     ##################################################################
     ~/.config/assets: filesystem/.themes/Dracula/assets
     ~/.config/BetterDiscord: filesystem/.config/BetterDiscord
-    ~/.config/fastfetch: filesystem/.config/fastfetch
     ~/.config/filezilla: filesystem/.config/filezilla
     ~/.config/fontconfig: filesystem/.config/fontconfig
     ~/.config/gh: filesystem/.config/gh

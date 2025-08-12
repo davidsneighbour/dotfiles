@@ -1,0 +1,15 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Joplin
+Comment=Joplin for Desktop
+Exec=env APPIMAGELAUNCHER_DISABLE=TRUE "/home/patrick/.joplin/Joplin.AppImage"  %u
+Icon=joplin
+StartupWMClass=Joplin
+Type=Application
+Categories=Office;
+MimeType=x-scheme-handler/joplin;
+# should be removed eventually as it was upstream to be an XDG specification
+X-GNOME-SingleWindow=true
+SingleMainWindow=true
+Terminal=false
+PrefersNonDefaultGPU=false
