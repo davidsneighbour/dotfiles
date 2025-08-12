@@ -1,4 +1,52 @@
 Changelog
+## [2025.14.0](https://github.com/davidsneighbour/dotfiles/compare/v2025.13.5...v2025.14.0) (2025-08-12)
+
+
+### Documentation
+
+* update SETUP.md ([ae22b73](https://github.com/davidsneighbour/dotfiles/commit/ae22b730826db27e2d57e71d16b76fe90346d3ab))
+
+
+### Features
+
+* add save file folder ([02ba468](https://github.com/davidsneighbour/dotfiles/commit/02ba468f56e63661a346e419123f9c4744ae3aac))
+* **autostart:** configure autostarts for hosts ([64f7b29](https://github.com/davidsneighbour/dotfiles/commit/64f7b2957d1da8568ec810e99cfd296a961a8b2d))
+* **launcher:** add Netflix launcher ([d0c0986](https://github.com/davidsneighbour/dotfiles/commit/d0c098638d7ad3f8f47837a838d9adc3c0d61a17))
+* **wallpapers:** add test for synched wallpapers ([c8bf2a9](https://github.com/davidsneighbour/dotfiles/commit/c8bf2a947b0aa1a89c442e2a8688a45ef9e44e40))
+
+
+### Bug Fixes
+
+* add yeoman and plugin to default packages for nvm ([bf747f3](https://github.com/davidsneighbour/dotfiles/commit/bf747f3b38e37a98c0ebb14e23c70d9fb39b6200))
+* **cronjobs:** fix helpers and update dotbot config ([42b6efb](https://github.com/davidsneighbour/dotfiles/commit/42b6efb4ccc5a4fcf650f8091ab482482fdc25cc))
+* **launchers:** update autostarts and launchers ([8397340](https://github.com/davidsneighbour/dotfiles/commit/8397340769fb9b52c8a8b5bf5294e60144f80ebb))
+* rework keybindings script ([938595a](https://github.com/davidsneighbour/dotfiles/commit/938595af6ff3351a40bc223c48298671f7068c15))
+* **rofi:** change font size back to 12 for rofi menu ([d61e337](https://github.com/davidsneighbour/dotfiles/commit/d61e337870324a235ca7cdaa5c790b47ce331b74))
+* troubleshoot a couple of weird git stashes ([ce384ca](https://github.com/davidsneighbour/dotfiles/commit/ce384caa3d085e04185449fd74b5959282c986da))
+* update bashrc and system files ([f3c161a](https://github.com/davidsneighbour/dotfiles/commit/f3c161ad505f475c2e8796166d79409d99eea0c5))
+* use docker container for excalidraw ([8b8937a](https://github.com/davidsneighbour/dotfiles/commit/8b8937a5e24e98af7402946f8a121c1b4137ba07))
+* **wallpapers:** move wallpapers around and fix symlinks for Cinnamon ([3e130fe](https://github.com/davidsneighbour/dotfiles/commit/3e130fe0a771d150f4adbddb6911c1e5c89052dd))
+
+
+### Chore
+
+* **assets:** update skyline stats for 2025 ([9d8e897](https://github.com/davidsneighbour/dotfiles/commit/9d8e8979ffeefa8c56e8f0355668ce909833a15a))
+* **config:** update github configuration files ([28b0875](https://github.com/davidsneighbour/dotfiles/commit/28b087580bff5999f0f323db99b77f7dafd21a6b))
+* **deps:** update dependencies ([6218fd4](https://github.com/davidsneighbour/dotfiles/commit/6218fd400f0a0c7ceea230cd07951f55a3e336b1))
+* **git:** add submodules and cleanup ([0b0b9cc](https://github.com/davidsneighbour/dotfiles/commit/0b0b9cc361a15d5029d102c9106dac8edefdc65e))
+* **git:** update dotbot submodule ([9d282c9](https://github.com/davidsneighbour/dotfiles/commit/9d282c9c16fa9e169e109130e316ac34f36d61f8))
+
+
+### Build System
+
+* **commitlint:** update commitlint config from cjs to ts ([91a8578](https://github.com/davidsneighbour/dotfiles/commit/91a8578fc4ddc6c5d06d09892bad331927830eae))
+* **deps:** bump dotbot from `54609b4` to `569ff0b` ([#292](https://github.com/davidsneighbour/dotfiles/issues/292)) ([82a6f1c](https://github.com/davidsneighbour/dotfiles/commit/82a6f1ca35912f2a1b24cc3bab9c77810a6090e6))
+* **deps:** bump form-data from 4.0.3 to 4.0.4 ([#290](https://github.com/davidsneighbour/dotfiles/issues/290)) ([5dbdd6f](https://github.com/davidsneighbour/dotfiles/commit/5dbdd6fca3d690464a51350c2fbe4252d7559596))
+* **deps:** update dependencies ([fb13c6b](https://github.com/davidsneighbour/dotfiles/commit/fb13c6bbb96c8115cc04630fbcf3f0ccdfa2f03e))
+* **deps:** update dependencies ([a1ba13d](https://github.com/davidsneighbour/dotfiles/commit/a1ba13d29a57f2a71cb9b795bb8719750fb22100))
+* **dotbot:** add setup configuration to dotbot.sh ([97ec4a1](https://github.com/davidsneighbour/dotfiles/commit/97ec4a18471b21443a08771e2c2cd3d4be0f7a2b))
+* update dotbot configuration ([c353ddc](https://github.com/davidsneighbour/dotfiles/commit/c353ddca35fd135db1f491d8b644ff7e48307a7a))
+
 ## [2025.13.5](https://github.com/davidsneighbour/dotfiles/compare/v2025.13.4...v2025.13.5) (2025-07-06)
 
 
