@@ -5,7 +5,7 @@
 - plugins:
     - dotbot-plugins/crontab-dotbot/
     - dotbot-plugins/dotbot-aptget/
-    
+
 # - aptget:
 #     flatpak:
 #         ppa_source: ppa:flatpak/stable

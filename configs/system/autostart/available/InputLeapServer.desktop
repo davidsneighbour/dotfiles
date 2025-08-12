@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Exec=/usr/bin/flatpak run --branch=stable --arch=x86_64 --command=input-leap io.github.input_leap.input-leap
+X-GNOME-Autostart-enabled=true
+NoDisplay=false
+Hidden=false
+Name[en_US]=Input Leap Server
+Comment[en_US]=No description
+X-GNOME-Autostart-Delay=0

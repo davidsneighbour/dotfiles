@@ -1,0 +1,21 @@
+---
+################################################################################
+# Setup configuration for Dotbot
+#
+# @see https://github.com/anishathalye/dotbot for more info
+################################################################################
+- defaults:
+    link:
+      create: true
+      relink: true
+      force: true
+
+- clean: ["~"]
+
+- link:
+    # autostart
+    configs/system/autostart/unkle/conky.desktop: configs/system/autostart/available/conky.desktop
+    configs/system/autostart/unkle/dropbox.desktop: configs/system/autostart/available/dropbox.desktop
+    configs/system/autostart/unkle/Enpass.desktop: configs/system/autostart/available/Enpass.desktop
+    configs/system/autostart/unkle/InputLeapServer.desktop: configs/system/autostart/available/InputLeapServer.desktop
+    configs/system/autostart/unkle/shutter.desktop: configs/system/autostart/available/shutter.desktop

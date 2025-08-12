@@ -4,10 +4,6 @@
 #
 # @see https://github.com/anishathalye/dotbot for more info
 ################################################################################
-- plugins:
-    - dotbot-plugins/crontab-dotbot/
-    - dotbot-plugins/dotbot-aptget/
-
 - defaults:
     link:
       create: true
@@ -16,7 +12,8 @@
 
 - clean: ["~"]
 
-- shell:
-    - "rm -f ~/.bash_history ~/.lesshst ~/.viminfo ~/.sudo_as_admin_successful"
-    - "rm -f ~/.wget-hsts ~/.ncu-cache.json ~/.lesshst"
-    - "rm -f ~/hs_err_pid*.log"
+- link:
+    # autostart
+    configs/system/autostart/donald/conky.desktop: configs/system/autostart/available/conky.desktop
+    configs/system/autostart/donald/Enpass.desktop: configs/system/autostart/available/Enpass.desktop
+    configs/system/autostart/donald/shutter.desktop: configs/system/autostart/available/shutter.desktop
