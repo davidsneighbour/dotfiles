@@ -3,6 +3,7 @@
 * [Installation](#installation)
 * [Update](#update)
 * [Automatic functionality after setup](#automatic-functionality-after-setup)
+  * [Installed programs and systems](#installed-programs-and-systems)
   * [Shortcuts/Keybindings](#shortcutskeybindings)
     * [Import/Export Shortcuts](#importexport-shortcuts)
     * [Custom Shortcuts that are set up (work in progress)](#custom-shortcuts-that-are-set-up-work-in-progress)
@@ -50,10 +51,13 @@
 6. Run `./dotbot.sh install` to set up the environment.
 
    ```bash
-   ./dotbot.sh install
+   sudo ./dotbot.sh setup
    ```
 
-7. Run `./dotbot.sh` to setup all symlinks and `./dotbot.sh protected` to setup the protected symlinks.
+   > [!WARNING]
+   > This MUST run with `sudo`, so make sure to check the `etc/config.setup.yaml` file and adjust depending on the requirements.
+
+7. Run `./dotbot.sh` to setup symlinks and programs and `./dotbot.sh protected` to setup protected symlinks.
 
    ```bash
    ./dotbot.sh
@@ -81,6 +85,12 @@ git checkout main
 ```
 
 ## Automatic functionality after setup
+
+### Installed programs and systems
+
+* [nvm](https://github.com/nvm-sh/nvm), [Node.js](https://nodejs.org/en/), and [npm](https://www.npmjs.com/)
+* [git](https://git-scm.com/)
+* [Flatpak](https://flatpak.org/)
 
 ### Shortcuts/Keybindings
 

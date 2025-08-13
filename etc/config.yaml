@@ -37,7 +37,7 @@
     ~/.config/cinnamon/backgrounds/liminal: configs/wallpapers/liminal
     ~/.config/cinnamon/backgrounds/synched: configs/wallpapers/synched
 
-    # fastfetch
+    # fastfetch config
     ~/.config/fastfetch: configs/system/fastfetch
 
     ############################################################################
