@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Exec=flatpak run --command=input-leapc io.github.input_leap.input-leap --enable-crypto --display :0 --debug INFO -f 192.168.1.201
+X-GNOME-Autostart-enabled=true
+NoDisplay=false
+Hidden=false
+Name[en_US]=Input-Leap
+Comment[en_US]=No description
+X-GNOME-Autostart-Delay=0

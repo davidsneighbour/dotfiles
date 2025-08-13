@@ -5,3 +5,6 @@ text/xml=webapp-OnlineChat4519.desktop;
 x-scheme-handler/joplin=appimagekit-joplin.desktop;
 x-scheme-handler/tg=org.telegram.desktop._60773819c8c2824ebac912e84e932a8b.desktop;
 x-scheme-handler/tonsite=org.telegram.desktop._60773819c8c2824ebac912e84e932a8b.desktop;
+application/xhtml_xml=dnb-netflix.desktop;
+text/html=dnb-netflix.desktop;
+text/xml=dnb-netflix.desktop;
