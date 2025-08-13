@@ -1,5 +1,6 @@
 // .commitlintrc.ts
 import type { UserConfig } from 'cz-git';
+import { RuleConfigSeverity } from "@commitlint/types"; 
 
 const config: UserConfig = {
   // extends: [
@@ -11,6 +12,9 @@ const config: UserConfig = {
 
   // https://cz-git.qbb.sh/guide/options-show.html
   prompt: {
+    rules: {
+      'signed-off-by': [RuleConfigSeverity.Warning, 'always', 'Signed-off-by:']
+    },
     messages: {
       type: "Select the type of change that you're committing:",
       scope: 'Denote the SCOPE of this change (optional):',
@@ -64,7 +68,11 @@ const config: UserConfig = {
     maxHeaderLength: Infinity,
     maxSubjectLength: Infinity,
     minSubjectLength: 0,
-    scopeOverrides: undefined,
+    scopeOverrides: {
+      build: ['deps', 'deps-dev', 'vscode'],
+      content: ['new', 'fix', 'schema', 'update'],
+      theme: ['fix', 'feat'],
+    },
     defaultBody: '',
     defaultIssues: '',
     defaultScope: '',
