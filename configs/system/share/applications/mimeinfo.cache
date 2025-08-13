@@ -1,10 +1,12 @@
 [MIME Cache]
-application/xhtml_xml=webapp-OnlineChat4519.desktop;
-text/html=webapp-OnlineChat4519.desktop;
-text/xml=webapp-OnlineChat4519.desktop;
-x-scheme-handler/joplin=appimagekit-joplin.desktop;
-x-scheme-handler/tg=org.telegram.desktop._60773819c8c2824ebac912e84e932a8b.desktop;
-x-scheme-handler/tonsite=org.telegram.desktop._60773819c8c2824ebac912e84e932a8b.desktop;
+application/x-sh=kitty-open.desktop;
+application/x-shellscript=kitty-open.desktop;
 application/xhtml_xml=dnb-netflix.desktop;
+image/*=kitty-open.desktop;
+inode/directory=kitty-open.desktop;
+text/*=kitty-open.desktop;
 text/html=dnb-netflix.desktop;
 text/xml=dnb-netflix.desktop;
+x-scheme-handler/joplin=appimagekit-joplin.desktop;
+x-scheme-handler/kitty=kitty-open.desktop;
+x-scheme-handler/ssh=kitty-open.desktop;
