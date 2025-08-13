@@ -17,6 +17,7 @@
 
 - link:
     ~/.dotfiles: ""
+    ~/.bin: "bin"
 
     # autostart
     ~/.config/autostart: configs/system/autostart/${HOSTNAME}
@@ -115,3 +116,5 @@
       command: ${HOME}/github.com/davidsneighbour/lighthousing/cronjob.sh >> ${HOME}/.logs/cron.log 2>&1
     - cron: "@reboot"
       command: ${HOME}/github.com/davidsneighbour/lighthousing/cronjob.sh >> ${HOME}/.logs/cron.log 2>&1
+    - cron: 0 * * * *
+      command: ${HOME}/.bin/cronjobs/synch_downloads.sh >> ${HOME}/.logs/cron.log 2>&1
