@@ -7,4 +7,3 @@ Name=Netflix
 Exec=/opt/google/chrome/google-chrome --profile-directory=Default --app-id=eppojlglocelodeimnohnlnionkobfln
 Icon=chrome-eppojlglocelodeimnohnlnionkobfln-Default
 StartupWMClass=crx_eppojlglocelodeimnohnlnionkobfln
-OnlyShowIn=Old;

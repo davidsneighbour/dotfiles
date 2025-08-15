@@ -7,4 +7,3 @@ Name=Todoist
 Exec=/opt/google/chrome/google-chrome --profile-directory=Default --app-id=knaiokfnmjjldlfhlioejgcompgenfhb
 Icon=chrome-knaiokfnmjjldlfhlioejgcompgenfhb-Default
 StartupWMClass=crx_knaiokfnmjjldlfhlioejgcompgenfhb
-OnlyShowIn=Old;
