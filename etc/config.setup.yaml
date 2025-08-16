@@ -34,7 +34,7 @@
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" --quiet
     -
       description: Install Homebrew packages
-      command: brew install typos-cli gum yamllint vale lychee python jrnl
+      command: brew install zoxide typos-cli gum yamllint vale lychee python jrnl
     -
       description: Install and setup Node and NPM
       command: |
@@ -53,6 +53,9 @@
         wget https://starship.rs/install.sh -O install.sh
         sh install.sh --verbose --yes
         rm install.sh
+    -
+      description: Install Deno
+      command: curl -fsSL https://deno.land/install.sh | sh
     -
       description: Install Ollama (only on UNKLE)
       command: |
