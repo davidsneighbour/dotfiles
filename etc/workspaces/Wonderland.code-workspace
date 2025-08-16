@@ -1,0 +1,49 @@
+{
+	"folders": [
+		{
+			"path": "../../../../gitlab.com/wonderland-gmbh/wonderland-engine-website"
+		}
+	],
+	"settings": {
+  "vale.valeCLI.installVale": true,
+  "vale.valeCLI.syncOnStartup": true,
+
+      "vale.valeCLI.config": ".gitlab/vale/vale.ini",
+    "vale.readabilityProblemLocation": "both",
+    "vale.enableSpellcheck": true,
+    "vale.doNotShowWarningForFileToBeSavedBeforeLinting": true,
+  
+		"yaml.schemas": {
+			"http://json-schema.org/draft-07/schema#": [
+				"./static/_schemata/*.schema.yaml"
+			]
+		},
+		"files.associations": {
+			"**/*.html": "GoHTML",
+			"**/*.json": "GoHTML",
+			"**/*.xml": "GoHTML"
+		},
+		"js/ts.implicitProjectConfig.checkJs": true,
+		"workbench.colorCustomizations": {
+			"activityBar.activeBackground": "#ff29a5",
+			"activityBar.background": "#ff29a5",
+			"activityBar.foreground": "#000000",
+			"activityBar.inactiveForeground": "#00000099",
+			"activityBarBadge.background": "#81df00",
+			"activityBarBadge.foreground": "#15202b",
+			"sash.hoverBorder": "#ff29a5",
+			"commandCenter.border": "#00000099",
+			"statusBar.background": "#f5008e",
+			"statusBar.foreground": "#000000",
+			"statusBarItem.hoverBackground": "#ff29a5",
+			"statusBarItem.remoteBackground": "#f5008e",
+			"statusBarItem.remoteForeground": "#000000",
+			"titleBar.activeBackground": "#f5008e",
+			"titleBar.activeForeground": "#000000",
+			"titleBar.inactiveBackground": "#f5008e99",
+			"titleBar.inactiveForeground": "#00000099"
+		},
+		"peacock.color": "#f5008e",
+		"peacock.lightForegroundColor": "#000000"
+	}
+}
