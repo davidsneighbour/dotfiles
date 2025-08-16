@@ -5,7 +5,7 @@
 # @see https://github.com/anishathalye/dotbot for more info
 ################################################################################
 - plugins:
-    - dotbot-plugins/crontab-dotbot/
+    - modules/dotbot-plugins/crontab-dotbot/
 
 - defaults:
     link:
