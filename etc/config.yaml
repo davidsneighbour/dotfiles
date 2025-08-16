@@ -93,7 +93,6 @@
     ~/.config/sublime-text: filesystem/.config/sublime-text
     ~/.config/tabtab: filesystem/.config/tabtab
     ~/.config/wlogout: filesystem/.config/wlogout
-    ~/.gnome: filesystem/.gnome
     ~/.icons: filesystem/.icons
     ~/.logs: logs
     ~/.themes: filesystem/.themes
