@@ -4,48 +4,68 @@
 #
 # @see https://github.com/anishathalye/dotbot for more info
 ################################################################################
-- plugins:
-    - dotbot-plugins/crontab-dotbot/
-    - dotbot-plugins/dotbot-aptget/
 
 - defaults:
-    link:
-      create: true
-      relink: true
-      force: true
+    shell:
+      quiet: true
+      description: <<<<<<<<####### DESCRIPTION MISSING
 
 - shell:
-    # brew and packages via brew
-    - /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    - brew install typos-cli gum yamllint vale lychee python jrnl
-    # clean up automatically installed packages
-    - sudo apt purge totem sssd kitty xterm libreoffice -y
-    - sudo apt autoremove -y
-    # setup development directories
-    - mkdir -p ~/github.com/davidsneighbour ~/gitlab.com/davidsneighbour ~/.config
-    - nvm install --lts
-    - nvm install v20
-    - nvm install v22
-    - nvm install v23
-    - nvm use --lts
-    # setup Ollama
-    - curl -fsSL https://ollama.com/install.sh | sh
-    - ollama pull llama3.2
-    - ollama pull deepseek-r1
-    - ollama pull gemma3
-
-# - aptget:
-#     xclip:
-#     dnsmasq-base:
-#     gzip:
-#     git:
-#     terminator:
-#     ca-certificates:
-#     curl:
-#     vlc:
-#     flatpak:
-#         ppa_source: ppa:flatpak/stable
-#         upgrade: true
-#     libreoffice:
-#         ppa_source: ppa:libreoffice/ppa
-#         upgrade: true
+    -
+      description: Setup directories
+      command: mkdir -p ~/github.com/davidsneighbour ~/gitlab.com/davidsneighbour ~/.config
+    -
+      description: Add individual PPAs
+      command: |
+        sudo add-apt-repository ppa:flatpak/stable --yes
+        sudo add-apt-repository ppa:libreoffice/ppa --yes
+    -
+      description: Install essentials
+      command: |
+        sudo apt autoremove -y
+        sudo apt-get install build-essential procps curl file git -y
+        sudo apt install -qq \
+            xclip dnsmasq-base gzip git terminator ca-certificates \
+            curl vlc
+    -
+      description: Install Homebrew
+      command: |
+        NONINTERACTIVE=1 \
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" --quiet
+    -
+      description: Install Homebrew packages
+      command: brew install typos-cli gum yamllint vale lychee python jrnl
+    -
+      description: Install and setup Node and NPM
+      command: |
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+        export NVM_DIR="$HOME/.nvm"
+        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+        [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+        nvm install --lts
+        nvm install v20
+        nvm install v22
+        nvm install v24
+        nvm use --lts
+    -
+      description: Install Starship (CLI prompt modification)
+      command: |
+        wget https://starship.rs/install.sh -O install.sh
+        sh install.sh --verbose --yes
+        rm install.sh
+    -
+      description: Install Ollama (only on UNKLE)
+      command: |
+        if [[ "$(hostname)" == "unkle" ]]; then
+            curl -fsSL https://ollama.com/install.sh | sh
+            ollama pull llama3.2
+            ollama pull gemma3
+        fi
+    -
+      description: Update system
+      command: |
+        sudo apt update
+        sudo apt upgrade --yes
+        sudo apt dist-upgrade --yes
+        sudo apt autoremove --yes
+        sudo apt clean --yes
