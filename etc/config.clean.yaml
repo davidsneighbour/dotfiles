@@ -4,19 +4,13 @@
 #
 # @see https://github.com/anishathalye/dotbot for more info
 ################################################################################
-- plugins:
-    - dotbot-plugins/crontab-dotbot/
-    - dotbot-plugins/dotbot-aptget/
-
-- defaults:
-    link:
-      create: true
-      relink: true
-      force: true
-
-- clean: ["~"]
-
 - shell:
-    - "rm -f ~/.bash_history ~/.lesshst ~/.viminfo ~/.sudo_as_admin_successful"
-    - "rm -f ~/.wget-hsts ~/.ncu-cache.json ~/.lesshst"
-    - "rm -f ~/hs_err_pid*.log"
+    - rm -f ~/.bash_history
+    - rm -f ~/.lesshst
+    - rm -f ~/.ncu-cache.json
+    - rm -f ~/.sudo_as_admin_successful
+    - rm -f ~/.viminfo
+    - rm -f ~/.wget-hsts
+    - rm -f ~/hs_err_pid*.log
+    - sudo apt autoremove --yes
+    - sudo apt clean --yes
