@@ -1,4 +1,33 @@
 Changelog
+## [2025.15.0](https://github.com/davidsneighbour/dotfiles/compare/v2025.14.0...v2025.15.0) (2025-08-16)
+
+
+### Features
+
+* **actions:** adding actions script and keybindings actions ([b523db2](https://github.com/davidsneighbour/dotfiles/commit/b523db21e87bb512a5f1f5f040da6c1575bb3f9b))
+* **autostart:** startup setup scripts and config ([10da78e](https://github.com/davidsneighbour/dotfiles/commit/10da78ef71f387c8d235b75068a610a9ae056e6a))
+* **cronjobs:** synch download directory hourly ([037d40e](https://github.com/davidsneighbour/dotfiles/commit/037d40e1abea528e5eec759710d79cdddd180914))
+* **dotbot:** rework setup and update config ([da50fff](https://github.com/davidsneighbour/dotfiles/commit/da50fff2320fd9247a2fa50e577b6675a086b48c))
+
+
+### Bug Fixes
+
+* more fixes to host confusion related issues ([c01d9ef](https://github.com/davidsneighbour/dotfiles/commit/c01d9ef664ce5ad05585988d4b23e6d5abfcd388))
+* more fixes to synch and stash issues ([d75e0c8](https://github.com/davidsneighbour/dotfiles/commit/d75e0c890ecb6a0fbd3b6422b675f0e86ad027fe))
+* restructure etc directory ([d2fd62c](https://github.com/davidsneighbour/dotfiles/commit/d2fd62c8b4b720a9b3fc1e24c5bd9c24ac006b02))
+* updates from donald ([161b027](https://github.com/davidsneighbour/dotfiles/commit/161b027978d05e046ed3ecfc37998511c06d8c42))
+
+
+### Chore
+
+* adding launchers for chrome apps on donald ([215570f](https://github.com/davidsneighbour/dotfiles/commit/215570ff8a21041d9020bb8415d45786343b69a9))
+* **git:** merge conflicts ([474fd7a](https://github.com/davidsneighbour/dotfiles/commit/474fd7ac4377f6187709c86341081a5bc3db931b))
+
+
+### Configuration
+
+* enable Joplin on donald ([3e6e2be](https://github.com/davidsneighbour/dotfiles/commit/3e6e2bee5aed5f19b17d07e6335592c7a1b53399))
+
 ## [2025.14.0](https://github.com/davidsneighbour/dotfiles/compare/v2025.13.5...v2025.14.0) (2025-08-12)
 
 
