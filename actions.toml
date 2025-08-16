@@ -1,0 +1,17 @@
+[scopes.wallpapers]
+label = "Wallpapers"
+
+[scopes.wallpapers.activities.set]
+label = "Set desktop wallpaper (Cinnamon)"
+cmd = 'gsettings set org.cinnamon.desktop.background picture-uri "file://${WALLPAPER_PATH}"'
+
+[scopes.keybindings]
+label = "Keyboard combinations"
+
+[scopes.keybindings.activities.export]
+label = "Export keybindings to etc/dconf/keybindings.conf"
+cmd = '/usr/bin/dconf dump /org/cinnamon/desktop/keybindings/ > "${DOTFILES}/etc/dconf/keybindings.conf"'
+
+[scopes.keybindings.activities.import]
+label = "Import keybindings from etc/dconf/keybindings.conf"
+cmd = 'dconf load /org/cinnamon/desktop/keybindings/ < "${DOTFILES}/etc/dconf/keybindings.conf"'
