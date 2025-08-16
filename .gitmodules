@@ -1,16 +1,16 @@
 [submodule "dotbot"]
-path = dotbot
+	path = modules/dotbot
 url = git@github.com:anishathalye/dotbot
 ignore = dirty
 [submodule "dotbot-plugins/crontab-dotbot"]
-path = dotbot-plugins/crontab-dotbot
+	path = modules/dotbot-plugins/crontab-dotbot
 url = git@github.com:fundor333/crontab-dotbot.git
 [submodule "dotbot-aptget"]
-path = dotbot-plugins/dotbot-aptget
+	path = modules/dotbot-plugins/dotbot-aptget
 url = https://github.com/alegsan/dotbot-aptget.git
 [submodule "ai/prompts"]
-	path = ai/prompts
+	path = modules/ai/prompts
 	url = git@github.com:davidsneighbour/dotfiles-aiprompts.git
 [submodule "containers"]
-	path = containers
+	path = modules/containers
 	url = git@github.com:davidsneighbour/dotfiles-containers.git
