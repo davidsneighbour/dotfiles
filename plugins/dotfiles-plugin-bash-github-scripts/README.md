@@ -1,1 +1,0 @@
-# dotfiles-plugin-bash-github-scripts

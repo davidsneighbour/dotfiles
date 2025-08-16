@@ -22,7 +22,7 @@ if [[ $# -gt 0 ]]; then
 
 fi
 
-DOTBOT_DIR="dotbot"
+DOTBOT_DIR="modules/dotbot"
 DOTBOT_BIN="bin/dotbot"
 BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
