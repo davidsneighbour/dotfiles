@@ -40,6 +40,9 @@
     # fastfetch config
     ~/.config/fastfetch: configs/system/fastfetch
 
+    ~/.vale.ini: configs/vale/vale.ini
+    ~/.config/vale/styles: configs/vale/styles
+
     ############################################################################
     # legacy, deprecated, rework
     ############################################################################
