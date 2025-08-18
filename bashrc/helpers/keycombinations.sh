@@ -1,13 +1,9 @@
-
-# Backup Cinnamon keybindings and log output with timestamps
-
-LOG_DIR="${HOME}/.logs"
-TIMESTAMP="$(date '+%Y%m%d-%H%M%S')"
-LOG_FILE="${LOG_DIR}/cron-keybindings-${TIMESTAMP}.log"
-BACKUP_DIR="${HOME}/github.com/davidsneighbour/dotfiles/etc"
-BACKUP_FILE="${BACKUP_DIR}/dconf-settings.conf"
-
-# Ensure log directory exists
+# backup Cinnamon based keybindings
+LOG_DIR="${HOME}/.logs/cron"
+TIMESTAMP="$(date '+%Y%m%d')"
+LOG_FILE="${LOG_DIR}/keybindings-${TIMESTAMP}.log"
+BACKUP_DIR="${HOME}/github.com/davidsneighbour/dotfiles/etc/dconf"
+BACKUP_FILE="${BACKUP_DIR}/keybindings.conf"
 mkdir -p "${LOG_DIR}"
 
 {
