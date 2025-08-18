@@ -4,7 +4,6 @@
 ################################################################################
 - plugins:
     - modules/dotbot-plugins/crontab-dotbot/
-    - modules/dotbot-plugins/dotbot-aptget/
 
 - defaults:
     link:
@@ -28,6 +27,3 @@
     ~/.config/filezilla/filezilla.xml: protected/filezilla/filezilla.xml
     ~/.config/filezilla/sitemanager.xml: protected/filezilla/sitemanager.xml
     ~/.config/filezilla/trustedcerts.xml: protected/filezilla/trustedcerts.xml
-    # docker containers with sensitive data
-    containers/homepage/config: protected/containers/homepage/config
-    containers/paperless/db: protected/containers/paperless/db
