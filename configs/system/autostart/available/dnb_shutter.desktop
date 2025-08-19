@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Exec=shutter --min_at_startup
+Name=Shutter
+Icon=shutter
+Comment=Capture, edit and share screenshots
+X-GNOME-Autostart-enabled=true
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-Delay=10
