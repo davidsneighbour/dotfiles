@@ -1,9 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=Disable Ubuntu AppIndicator
-Exec=gnome-extensions disable ubuntu-appindicators@ubuntu.com
-Comment=Does what it says
-X-GNOME-Autostart-Delay=60
-NoDisplay=true
-
-X-GNOME-Autostart-enabled=false
