@@ -1,6 +1,6 @@
 {
 	"theme": "Adaptive.sublime-theme",
-	"color_scheme": "Packages/Dracula Color Scheme/Dracula.tmTheme",
+	"color_scheme": "Breakers.sublime-color-scheme",
 	"ignored_packages":
 	[
 		"Vintage",

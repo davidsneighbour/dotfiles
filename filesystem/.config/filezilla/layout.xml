@@ -13,6 +13,7 @@
 		</Resources>
 		<Language id="en_US" date="1711950515">
 			<Font font="Ubuntu 10" width="769" height="16" />
+			<Dialog name="Settings" width="509" />
 		</Language>
 	</Layout>
 </FileZilla3>
