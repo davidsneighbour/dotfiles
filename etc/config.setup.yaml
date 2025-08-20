@@ -23,10 +23,13 @@
       description: Install essentials
       command: |
         sudo apt autoremove -y
-        sudo apt-get install build-essential procps curl file git -y
-        sudo apt install -qq \
-            xclip dnsmasq-base gzip git terminator ca-certificates \
-            curl vlc
+        sudo apt-get install \
+          build-essential procps curl file \
+          xclip dnsmasq-base gzip git terminator \
+          ca-certificates \
+          vlc shutter \
+          -y
+
     -
       description: Install Homebrew
       command: |
@@ -63,6 +66,15 @@
             curl -fsSL https://ollama.com/install.sh | sh
             ollama pull llama3.2
             ollama pull gemma3
+        fi
+    -
+      description: Install AnyDesk
+      command: |
+        if [[ "$(hostname)" == "unkle" ]]; then
+          wget -qO - https://keys.anydesk.com/repos/DEB-GPG-KEY | sudo gpg --dearmor -o /usr/share/keyrings/anydesk.gpg
+          echo "deb [signed-by=/usr/share/keyrings/anydesk.gpg] http://deb.anydesk.com/ubuntu focal main" | sudo tee /etc/apt/sources.list.d/anydesk.list
+          sudo apt update && sudo apt install anydesk
+          sudo systemctl disable --now anydesk.service 2>/dev/null || true
         fi
     -
       description: Update system
