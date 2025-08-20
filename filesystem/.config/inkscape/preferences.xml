@@ -306,7 +306,7 @@
        id="lpetool"
        mode="drag"
        style="fill:#ff0000;fill-opacity:1;fill-rule:nonzero;stroke:none;"
-       unit="mm"
+       unit="px"
        show_bbox="1" />
     <eventcontext
        id="text"
@@ -651,7 +651,8 @@
     <group
        id="undo-history" />
     <group
-       id="objects" />
+       id="objects"
+       layers_only="0" />
     <group
        id="layerProp"
        addLayerPosition="0" />
@@ -1091,8 +1092,8 @@
   <group
      id="theme"
      defaultPreferDarkTheme="0"
-     defaultIconTheme="Mint-Y-Red"
-     defaultGtkTheme="Dracula"
+     defaultIconTheme="Papirus-Dark"
+     defaultGtkTheme="Mint-Y-Dark-Orange"
      narrowSpinButton="1"
      preferDarkTheme="1"
      darkTheme="1"
