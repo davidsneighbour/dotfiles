@@ -113,10 +113,10 @@
     # - cron: 0 18 * * *
     #   command: /bin/bash -c "cd ${HOME}/github.com/davidsneighbour/dotfiles && keybindingsmanager -e etc/keycombinations.csv" >> ${HOME}/.logs/cron.log 2>&1
     - cron: 55 * * * *
-      command: /home/patrick/github.com/davidsneighbour/dotfiles/bashrc/helpers/keycombinations.sh
+      command: ${HOME}/.bin/cronjobs/keycombinations.sh
     - cron: 0 6,12,18 * * *
       command: ${HOME}/github.com/davidsneighbour/lighthousing/cronjob.sh >> ${HOME}/.logs/cron.log 2>&1
     - cron: "@reboot"
       command: ${HOME}/github.com/davidsneighbour/lighthousing/cronjob.sh >> ${HOME}/.logs/cron.log 2>&1
     - cron: 0 * * * *
-      command: ${HOME}/.bin/cronjobs/synch_downloads.sh >> ${HOME}/.logs/cron.log 2>&1
+      command: ${HOME}/.bin/cronjobs/synch_downloads.sh
