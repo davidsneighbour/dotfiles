@@ -1,4 +1,40 @@
 Changelog
+## [2025.16.0](https://github.com/davidsneighbour/dotfiles/compare/v2025.15.0...v2025.16.0) (2025-08-21)
+
+
+### Features
+
+* **dotbot:** add AnyDesk setup (for unkle) ([e342a0a](https://github.com/davidsneighbour/dotfiles/commit/e342a0a494acc0f5ef2d525fb7fb38c9bc173b05))
+* **dotbot:** add deno to setup configuration ([1772bad](https://github.com/davidsneighbour/dotfiles/commit/1772badbac3a73bc9585722167c3a732c329aee3))
+* **vale:** add vale setup and configuration ([cf4a8d8](https://github.com/davidsneighbour/dotfiles/commit/cf4a8d85d2cd360b0d143e6c80c56bcf35ce12c6))
+
+
+### Bug Fixes
+
+* **autostart:** fix and configurer autostarts on donald ([05ddbc6](https://github.com/davidsneighbour/dotfiles/commit/05ddbc67d1ea2d3180a4d21e823e466fc75f7540))
+* **cronjobs:** better keybindings backup ([206b1ca](https://github.com/davidsneighbour/dotfiles/commit/206b1caf659d21c7e26721240186210e30cc2911))
+* **dotbot:** add build tools and theme setup to config ([1e55647](https://github.com/davidsneighbour/dotfiles/commit/1e55647edef2cf3a6cb5d2e3b7b3c27f2c4035ae))
+* **dotbot:** remove unused protected files ([075219f](https://github.com/davidsneighbour/dotfiles/commit/075219f0370d6f8dd8a9f620addd30b3348de391))
+* **dotbot:** update setup config ([237d31d](https://github.com/davidsneighbour/dotfiles/commit/237d31d3bb7d0c5d078214f387ef7fbf4d590bce))
+* update configs and wallpapers ([44e0e14](https://github.com/davidsneighbour/dotfiles/commit/44e0e14481bbde9494b75163e68760c32ab5d9cc))
+* **vale:** update Vale configuration with vocabulary and DNB config ([2d41e65](https://github.com/davidsneighbour/dotfiles/commit/2d41e6536aa77bc70544cea1fe85fc49f18701dc))
+
+
+### Chore
+
+* **containers:** update submodule ([226df13](https://github.com/davidsneighbour/dotfiles/commit/226df13d48e713ce06e8d5fae5ecfc4a6010a48c))
+* **deps:** update actions/checkout action to v5 ([#316](https://github.com/davidsneighbour/dotfiles/issues/316)) ([ffb3596](https://github.com/davidsneighbour/dotfiles/commit/ffb35967803191d38f890235332b02e7a032c2b8))
+* **deps:** update dependency node to v22 ([#317](https://github.com/davidsneighbour/dotfiles/issues/317)) ([5ba47ab](https://github.com/davidsneighbour/dotfiles/commit/5ba47ab15dc379a0f105215b8fb372687e0d6be4))
+* recent config changes to programs ([a4ebde2](https://github.com/davidsneighbour/dotfiles/commit/a4ebde268cd6e210abc5f8c595ce66d28c27cd93))
+
+
+### Build System
+
+* **cronjobs:** clean up cronjobs and fix synch downloads cronjob ([bddd81d](https://github.com/davidsneighbour/dotfiles/commit/bddd81dbe7d406e312a011d81b0fa682106762ff))
+* disable debugging for pre-commit hook ([88e7517](https://github.com/davidsneighbour/dotfiles/commit/88e751775fe534e7c099ea61f2d19bfc506cd0e7))
+* restructure modules ([#318](https://github.com/davidsneighbour/dotfiles/issues/318)) ([a8c1c51](https://github.com/davidsneighbour/dotfiles/commit/a8c1c519a26d97472a27a1d3694f27a83d88f6f6))
+* **vscode:** enable deno plugin ([b3474ef](https://github.com/davidsneighbour/dotfiles/commit/b3474ef18cbabddcfca31c2d59f931b56f1933a5))
+
 ## [2025.15.0](https://github.com/davidsneighbour/dotfiles/compare/v2025.14.0...v2025.15.0) (2025-08-16)
 
 
