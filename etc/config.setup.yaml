@@ -30,7 +30,7 @@
           gir1.2-rsvg-2.0 librsvg2-bin gir1.2-gtk-3.0 \
           xclip dnsmasq-base gzip git terminator \
           ca-certificates rofi \
-          vlc shutter \
+          vlc shutter zoxide \
           papirus-icon-theme filezilla-theme-papirus papirus-folders \
           -y
     -
