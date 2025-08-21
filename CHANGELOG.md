@@ -1,4 +1,11 @@
 Changelog
+## [2025.16.1](https://github.com/davidsneighbour/dotfiles/compare/v2025.16.0...v2025.16.1) (2025-08-21)
+
+
+### Build System
+
+* **deps:** update dependencies ([9f7b823](https://github.com/davidsneighbour/dotfiles/commit/9f7b8230cdd9d269fed45f4ef3db3bac2ea34e8d))
+
 ## [2025.16.0](https://github.com/davidsneighbour/dotfiles/compare/v2025.15.0...v2025.16.0) (2025-08-21)
 
 
