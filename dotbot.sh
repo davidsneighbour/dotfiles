@@ -2,29 +2,21 @@
 
 set -e
 
-DOTBOT_CONFIG="etc/config.yaml"
+DOTBOT_CONFIG="etc/dotbot/config.yaml"
 if [[ $# -gt 0 ]]; then
-  if [ "${1}" = "protected" ]; then
-    DOTBOT_CONFIG="etc/config.protected.yaml"
+  CONFIG_NAME="${1}"
+  ALT_CONFIG="etc/dotbot/config.${CONFIG_NAME}.yaml"
+  if [[ -f "${ALT_CONFIG}" ]]; then
+    DOTBOT_CONFIG="${ALT_CONFIG}"
+  else
+    echo "Error: Config file './${ALT_CONFIG}' not found."
+    exit 1
   fi
-  if [ "${1}" = "setup" ]; then
-    DOTBOT_CONFIG="etc/config.setup.yaml"
-  fi
-  if [ "${1}" = "clean" ]; then
-    DOTBOT_CONFIG="etc/config.clean.yaml"
-  fi
-  if [ "${1}" = "unkle" ]; then
-    DOTBOT_CONFIG="etc/config.autostart.unkle.yaml"
-  fi
-  if [ "${1}" = "donald" ]; then
-    DOTBOT_CONFIG="etc/config.autostart.donald.yaml"
-  fi
-
 fi
 
+BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DOTBOT_DIR="modules/dotbot"
 DOTBOT_BIN="bin/dotbot"
-BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 cd "${BASEDIR}"
 git -C "${DOTBOT_DIR}" submodule sync --quiet --recursive
