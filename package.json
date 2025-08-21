@@ -79,7 +79,7 @@
   },
   "main": "index.js",
   "simple-git-hooks": {
-    "pre-commit": "npm run lint:hook:commit:loud"
+    "pre-commit": "npm run lint:hook:commit"
   },
   "type": "module"
 }
