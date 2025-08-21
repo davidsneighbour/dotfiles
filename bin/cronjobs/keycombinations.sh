@@ -1,3 +1,6 @@
+#!/bin/bash
+set -euo pipefail
+
 # backup Cinnamon based keybindings
 LOG_DIR="${HOME}/.logs/cron"
 TIMESTAMP="$(date '+%Y%m%d')"
