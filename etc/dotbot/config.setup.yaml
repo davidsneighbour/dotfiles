@@ -32,6 +32,7 @@
           ca-certificates rofi \
           vlc shutter zoxide \
           papirus-icon-theme filezilla-theme-papirus papirus-folders \
+          dconf-editor \
           -y
     -
       description: Install Homebrew
@@ -79,6 +80,12 @@
           sudo apt update && sudo apt install anydesk
           sudo systemctl disable --now anydesk.service 2>/dev/null || true
         fi
+
+    -
+      description: Remove unused packages
+      command: |
+        sudo apt purge --yes \
+          *-cursor-theme yaru-*
     -
       description: Update system
       command: |
