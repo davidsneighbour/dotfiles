@@ -42,6 +42,7 @@
 
     ~/.vale.ini: configs/vale/vale.ini
     ~/.config/vale/styles: configs/vale/styles
+    ~/.config/github-label-manager: configs/git/github-label-manager
 
     ############################################################################
     # legacy, deprecated, rework
