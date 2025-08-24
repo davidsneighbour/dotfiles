@@ -1,8 +1,2 @@
 [icon theme]
-<<<<<<< HEAD
-Inherits=Bibata-Modern-Dracula-Red
-||||||| parent of c6412fbdbecf (fix: cleanout icons theme directory)
-Inherits=Yaru
-=======
 Inherits=material_cursors
->>>>>>> c6412fbdbecf (fix: cleanout icons theme directory)
