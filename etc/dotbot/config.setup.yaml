@@ -41,7 +41,7 @@
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" --quiet
     -
       description: Install Homebrew packages
-      command: brew install zoxide typos-cli gum yamllint vale lychee python jrnl
+      command: brew install zoxide typos-cli gum yamllint vale lychee python jrnl fastfetch
     -
       description: Install and setup Node and NPM
       command: |
@@ -54,6 +54,10 @@
         nvm install v22
         nvm install v24
         nvm use --lts
+    -
+      description: Install Flatpak programs
+      command: |
+        flatpak install flathub be.alexandervanhee.gradia
     -
       description: Install Starship (CLI prompt modification)
       command: |

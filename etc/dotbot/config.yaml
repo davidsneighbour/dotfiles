@@ -28,6 +28,10 @@
     # folders in ~/.local/share
     ~/.local/share/applications: configs/system/share/applications
 
+    # Cinnamon
+    ~/.config/cinnamon: configs/system/cinnamon/cinnamon
+    ~/.config/cinnamon-session: configs/system/cinnamon/cinnamon-session
+
     # background images for Cinnamon
     ~/.config/cinnamon/backgrounds/user-folders.lst: configs/wallpapers/user-folders.lst
     ~/.config/cinnamon/backgrounds/black-and-white: configs/wallpapers/black-and-white
