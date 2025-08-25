@@ -33,13 +33,7 @@
     ~/.config/cinnamon-session: configs/system/cinnamon/cinnamon-session
 
     # background images for Cinnamon
-    ~/.config/cinnamon/backgrounds/user-folders.lst: configs/wallpapers/user-folders.lst
-    ~/.config/cinnamon/backgrounds/black-and-white: configs/wallpapers/black-and-white
-    ~/.config/cinnamon/backgrounds/botanics: configs/wallpapers/botanics
-    ~/.config/cinnamon/backgrounds/colors: configs/wallpapers/colors
-    ~/.config/cinnamon/backgrounds/graphic: configs/wallpapers/graphic
-    ~/.config/cinnamon/backgrounds/liminal: configs/wallpapers/liminal
-    ~/.config/cinnamon/backgrounds/synched: configs/wallpapers/synched
+    ~/.config/cinnamon/backgrounds: configs/wallpapers
 
     # fastfetch config
     ~/.config/fastfetch: configs/system/fastfetch
