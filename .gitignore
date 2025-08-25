@@ -1,7 +1,6 @@
 .uuid
 notes*
 .env
-!workspaces/*.code-workspace
 .npmrc
 themer/*
 gen/*

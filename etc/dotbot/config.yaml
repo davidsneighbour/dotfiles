@@ -43,9 +43,8 @@
 
     # fastfetch config
     ~/.config/fastfetch: configs/system/fastfetch
-
-    ~/.vale.ini: configs/vale/vale.ini
-    ~/.config/vale/styles: configs/vale/styles
+    ~/.local/share/vale: configs/vale
+    ~/.config/vale/.vale.ini: configs/vale/vale.ini
     ~/.config/github-label-manager: configs/git/github-label-manager
 
     ############################################################################
