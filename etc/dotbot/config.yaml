@@ -35,10 +35,10 @@
     # background images for Cinnamon
     ~/.config/cinnamon/backgrounds: configs/wallpapers
 
-    # fastfetch config
+    # Fastfetch config
     ~/.config/fastfetch: configs/system/fastfetch
     ~/.local/share/vale: configs/vale
-    ~/.config/vale/.vale.ini: configs/vale/vale.ini
+    ~/.config/vale: configs/vale
     ~/.config/github-label-manager: configs/git/github-label-manager
 
     ############################################################################

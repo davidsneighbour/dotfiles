@@ -40,3 +40,7 @@ else
 	DOTFILES_GUM=false
 fi
 export DOTFILES_GUM
+
+# set vale styles path
+VALE_STYLES_PATH="${HOME}/.config/vale/styles"
+export VALE_STYLES_PATH
