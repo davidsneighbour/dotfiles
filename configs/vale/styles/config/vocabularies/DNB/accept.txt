@@ -1,0 +1,38 @@
+# Version: 0.1.6
+
+[Bb]oolean
+[Cc]acheability
+[Ff]rontmatter
+[kK]ollitsch
+[Nn]amespaced
+[Ss]hortcode
+[Ss]hortcodes
+[Tt]eardown
+Boxicons
+config
+CORS
+crossorigin
+CSS
+David's Neighbour
+davidsneighbour
+Font Awesome
+GNU
+GoHugo
+Google Fonts
+Iconoir
+JavaScript
+Kurzschnitte
+Lineicons
+MIT License
+Netlify
+SASS
+Tabler
+VSCode
+WSL
+XFCE
+YouTube
+GoHugo
+Ananke
+Astro
+dev
+CLI

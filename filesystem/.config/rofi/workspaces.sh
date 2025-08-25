@@ -36,18 +36,50 @@ HIDE_EMPTY_PROJECTS="false"
 NEW_WINDOW="false"
 
 # Helpers
+resolve_dir() {
+  local input="${1:-}"
+  local resolved=""
+
+  [[ -z "${input}" ]] && return 1
+
+  case "${input}" in
+    # absolute
+    /*) resolved="${input}" ;;
+    # tilde
+    ~)  resolved="${HOME}" ;;
+    ~/*) resolved="${HOME}/${input#~/}" ;;
+    # $HOME shortcuts often used in your setup
+    .dotfiles/*|github.com/*|gitlab.com/*)
+        resolved="${HOME}/${input}" ;;
+    # explicit relative
+    ./*|../*)
+        resolved="${PWD}/${input#./}" ;;
+    # bare segment: try CWD, then $HOME
+    *)
+        if [[ -d "${PWD}/${input}" ]]; then
+          resolved="${PWD}/${input}"
+        elif [[ -d "${HOME}/${input}" ]]; then
+          resolved="${HOME}/${input}"
+        else
+          return 1
+        fi
+        ;;
+  esac
+
+  [[ -d "${resolved}" ]] || return 1
+  printf '%s\n' "${resolved}"
+}
+
 sanitize_project_dirs() {
-  local dirs=()
+  local out=() d r
   for d in "$@"; do
-    if [[ -d "$d" ]]; then
-      dirs+=("$d")
-    elif [[ -d "${HOME}/$d" ]]; then
-      dirs+=("${HOME}/$d")
+    if r="$(resolve_dir "${d}")"; then
+      out+=("${r}")
     else
-      log warn "Skipping invalid project directory '$d'"
+      log warn "Skipping invalid project directory '${d}'"
     fi
   done
-  printf '%s\n' "${dirs[@]}"
+  ((${#out[@]})) && printf '%s\n' "${out[@]}"
 }
 
 update_cache() {
@@ -127,13 +159,24 @@ done
 
 log debug "Parsed options: WORKINGDIR=${WORKINGDIR}, SORT_ORDER=${SORT_ORDER}, CREATE_WORKSPACE=${CREATE_WORKSPACE}, HIDE_EMPTY_PROJECTS=${HIDE_EMPTY_PROJECTS}, NEW_WINDOW=${NEW_WINDOW}"
 
+# Log resolved directories for debugging
+if (( ${#PROJECTS_DIRS[@]} > 0 )); then
+  log debug "Resolved PROJECTS_DIRS:"
+  for d in "${PROJECTS_DIRS[@]}"; do log debug "  - ${d}"; done
+fi
+
+if (( ${#WORKSPACE_FILES_DIRS[@]} > 0 )); then
+  log debug "Resolved WORKSPACE_FILES_DIRS:"
+  for d in "${WORKSPACE_FILES_DIRS[@]}"; do log debug "  - ${d}"; done
+fi
+
 # Determine VS Code command
 if [[ "$NEW_WINDOW" == "true" ]]; then
-  CODE_COMMAND="code"
+  CODE_COMMAND=(code)
 else
-  CODE_COMMAND="code -r"
+  CODE_COMMAND=(code -r)
 fi
-log debug "Using CODE_COMMAND='$CODE_COMMAND'"
+log debug "Using CODE_COMMAND='${CODE_COMMAND[*]}'"
 
 # Collect project directories
 PROJECT_DIRS=()
@@ -143,14 +186,32 @@ for base in "${PROJECTS_DIRS[@]}"; do
 done
 log info "Found ${#PROJECT_DIRS[@]} project directories"
 
-# Collect workspace files
+# Collect workspace files (from explicit dirs)
 WORKSPACE_FILES=()
-for d in "${WORKSPACE_FILES_DIRS[@]}"; do
-  while IFS= read -r -d '' f; do
-    WORKSPACE_FILES+=("$f")
-  done < <(find "$d" -type f -name "$FILE_PATTERN" -print0)
-done
+if ((${#WORKSPACE_FILES_DIRS[@]})); then
+  for d in "${WORKSPACE_FILES_DIRS[@]}"; do
+    log debug "Scanning workspace dir: ${d}"
+    while IFS= read -r -d '' f; do
+      WORKSPACE_FILES+=("${f}")
+    done < <(find "${d}" -type f -name "${FILE_PATTERN}" -print0 2>/dev/null || true)
+  done
+else
+  # Optional fallback: if a common default exists, use it
+  if [[ -d "${HOME}/.dotfiles/configs/workspaces" ]]; then
+    log warn "No --workspacedirs provided; falling back to ${HOME}/.dotfiles/configs/workspaces"
+    WORKSPACE_FILES_DIRS=("${HOME}/.dotfiles/configs/workspaces")
+    while IFS= read -r -d '' f; do
+      WORKSPACE_FILES+=("${f}")
+    done < <(find "${WORKSPACE_FILES_DIRS[0]}" -type f -name "${FILE_PATTERN}" -print0 2>/dev/null || true)
+  else
+    log debug "No WORKSPACE_FILES_DIRS provided"
+  fi
+fi
 log info "Found ${#WORKSPACE_FILES[@]} workspace files"
+
+if (( ${#WORKSPACE_FILES_DIRS[@]} > 0 )) && (( ${#WORKSPACE_FILES[@]} == 0 )); then
+  log warn "No *.code-workspace files found in provided --workspacedirs"
+fi
 
 # Map names to paths
 declare -A PROJECT_MAP WORKSPACE_MAP
@@ -235,6 +296,12 @@ for name in "${sorted[@]}"; do
   MENU_ENTRIES+=("$entry")
 done
 
+log debug "Resolved PROJECTS_DIRS:"
+for d in "${PROJECTS_DIRS[@]}"; do log debug "  - ${d}"; done || true
+
+log debug "Resolved WORKSPACE_FILES_DIRS:"
+for d in "${WORKSPACE_FILES_DIRS[@]}"; do log debug "  - ${d}"; done || true
+
 # Launch rofi with markup (config.rasi must have markup-rows: true)
 PROMPT="${PROMPT} (${#MENU_ENTRIES[@]} available)"
 log debug "Launching rofi"
@@ -255,7 +322,7 @@ update_cache "$sel_name"
 if [[ -d "$sel_target" ]]; then
   wsf=$(find "$sel_target" -mindepth 1 -maxdepth 1 -type f -name "$FILE_PATTERN" | head -n1)
   if [[ -n "$wsf" ]]; then
-    $CODE_COMMAND "$wsf"
+    "${CODE_COMMAND[@]}" "$wsf"
   elif [[ "$CREATE_WORKSPACE" == "true" ]]; then
     tpl="${WORKINGDIR}/workspace.code-workspace"
     new="${sel_target}/workspace.code-workspace"
@@ -269,12 +336,12 @@ if [[ -d "$sel_target" ]]; then
 EOL
     fi
     log info "Created workspace: $new"
-    $CODE_COMMAND "$new"
+    "${CODE_COMMAND[@]}" "$new"
   else
-    $CODE_COMMAND "$sel_target"
+    "${CODE_COMMAND[@]}" "$sel_target"
   fi
 else
-  $CODE_COMMAND "$sel_target"
+  "${CODE_COMMAND[@]}" "$sel_target"
 fi
 
 exit 0
