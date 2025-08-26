@@ -1,4 +1,49 @@
 Changelog
+## [2025.17.0](https://github.com/davidsneighbour/dotfiles/compare/v2025.16.1...v2025.17.0) (2025-08-26)
+
+
+### Documentation
+
+* update README.md ([fb22cba](https://github.com/davidsneighbour/dotfiles/commit/fb22cba9a20115edcc17e46bcdad879296fd37e1))
+
+
+### Features
+
+* **theme:** add bibata cursor build script ([41390fb](https://github.com/davidsneighbour/dotfiles/commit/41390fbba9abd889524b197efeccc832ca665491))
+* **vale:** setup vale and restructure default config ([a07a4de](https://github.com/davidsneighbour/dotfiles/commit/a07a4de6fd11abf4d39faf576bd36b37a63da619))
+
+
+### Bug Fixes
+
+* cleanout icons theme directory ([89e7aca](https://github.com/davidsneighbour/dotfiles/commit/89e7acaba76a76efa5e349704dcd5e245cf0cc08))
+* **config:** hide AppImage files from bin directory ([66e7e3a](https://github.com/davidsneighbour/dotfiles/commit/66e7e3a73473ed594892a02e97653f7c9bcc191a))
+* **config:** move cinnamon config into configs directory ([dad49ff](https://github.com/davidsneighbour/dotfiles/commit/dad49ff47362c4e4e2fd207f3979982ff428cbce))
+* **config:** update wallpaper setup ([e77afc7](https://github.com/davidsneighbour/dotfiles/commit/e77afc75e70b7e08514415da7b62ba62720f194f))
+* **dotbot:** make dotbot command availabel globally and add wrappers ([de257b4](https://github.com/davidsneighbour/dotfiles/commit/de257b45dbbe3fdc06de6a26f565a33db719dd1d))
+* **dotbot:** rewrite config selection ([c97f277](https://github.com/davidsneighbour/dotfiles/commit/c97f2774d50d98b8ed34f347e2e81ec930555f74))
+* **dotbot:** update package cleanup after installations ([31a472f](https://github.com/davidsneighbour/dotfiles/commit/31a472f7c64a640caad84b1b63ef46489e26783d))
+* re-add terminal shortcut to keybindings ([fc9f1c8](https://github.com/davidsneighbour/dotfiles/commit/fc9f1c86b4f970df45922da085b27afb59cae3f2))
+* **rofi:** proper folder parsing for code workspace launcher ([f6239da](https://github.com/davidsneighbour/dotfiles/commit/f6239da592165e805f41641f28d1686b84e02b09))
+* **theme:** set material cursors theme ([5ea59d4](https://github.com/davidsneighbour/dotfiles/commit/5ea59d41369418e90242a975c81b1c8c0a15d8b0))
+* **theme:** update icon themes ([b537b9b](https://github.com/davidsneighbour/dotfiles/commit/b537b9b508c8ab4600a4ad226dbfbe8e2fd822b2))
+
+
+### Chore
+
+* **autostart:** update donald autostart config ([6e25200](https://github.com/davidsneighbour/dotfiles/commit/6e252003c2f5f7698b1bb159f5301918f3349a1d))
+* cleanup github images and add licensing note ([7388379](https://github.com/davidsneighbour/dotfiles/commit/7388379cc124ee9b5e60fc5c6d1ba07fa88a051e))
+* merge conflicts on unkle ([5f6f6f7](https://github.com/davidsneighbour/dotfiles/commit/5f6f6f7cdff96414e47d66299e42d8ba78bd644f))
+* re-add autostarts for unkle ([69eef1c](https://github.com/davidsneighbour/dotfiles/commit/69eef1cf4e69c04c3655ada9380baaba683d7dc7))
+* remove empty symlinks from .github directory ([108aa90](https://github.com/davidsneighbour/dotfiles/commit/108aa90079c6919a00225280c67ea2deb719ff44))
+* **wip:** add gh label manager config ([6815d4b](https://github.com/davidsneighbour/dotfiles/commit/6815d4b65033524eff1a200d74824e9babca3eae))
+
+
+### Build System
+
+* **deps:** add git-delta to brew dependencies ([3ea701f](https://github.com/davidsneighbour/dotfiles/commit/3ea701f11db57d1b09eac8bce8cf7943cd325849))
+* **deps:** update dependencies ([f6708e2](https://github.com/davidsneighbour/dotfiles/commit/f6708e242ec7e0e2d979504ca61f51e0c7e625b5))
+* **vscode:** update bar colors to muted violett instead of bright yellow ([1b6a279](https://github.com/davidsneighbour/dotfiles/commit/1b6a279cb7c4177e74a97876d79a72d067dff6e7))
+
 ## [2025.16.1](https://github.com/davidsneighbour/dotfiles/compare/v2025.16.0...v2025.16.1) (2025-08-21)
 
 
