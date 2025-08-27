@@ -1,0 +1,11 @@
+---
+# via https://github.com/ChrisChinchilla/Openly
+# License: https://github.com/ChrisChinchilla/Openly/blob/main/LICENSE
+
+extends: consistency
+message: "Inconsistent use of '%s' ('smart' mixed with 'dumb')"
+level: error
+nonword: true
+either:
+  '"': '[”“]'
+  "'": "[‘’]"

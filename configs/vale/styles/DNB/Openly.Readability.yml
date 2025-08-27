@@ -1,3 +1,7 @@
+---
+# via https://github.com/ChrisChinchilla/Openly
+# License: https://github.com/ChrisChinchilla/Openly/blob/main/LICENSE
+
 extends: metric
 message: "Try to keep the Flesch reading ease score (%s) above 70."
 link: https://en.wikipedia.org/wiki/Flesch%E2%80%93Kincaid_readability_tests

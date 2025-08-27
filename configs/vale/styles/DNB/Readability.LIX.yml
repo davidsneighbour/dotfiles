@@ -1,3 +1,7 @@
+# via https://github.com/errata-ai/Readability
+# License: https://github.com/errata-ai/readability/blob/main/LICENSE
+# Version: https://github.com/errata-ai/readability/releases/tag/v0.1.1
+
 extends: metric
 message: "Try to keep the LIX score (%s) below 35."
 

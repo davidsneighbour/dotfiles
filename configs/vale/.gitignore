@@ -1,7 +1,3 @@
-styles/alex
-styles/Google
-styles/Joblint
-styles/proselint
-styles/write-good
-styles/.vale-config/5-Hugo.ini
-styles/.vale-config/6-MDX.ini
+styles/*
+!styles/config/
+!styles/DNB/
