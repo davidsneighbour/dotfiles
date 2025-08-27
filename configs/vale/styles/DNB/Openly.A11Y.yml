@@ -1,0 +1,12 @@
+---
+# via https://github.com/ChrisChinchilla/Openly
+# License: https://github.com/ChrisChinchilla/Openly/blob/main/LICENSE
+
+extends: substitution
+message: Consider using '%s' instead of '%s'
+ignorecase: true
+level: error
+action:
+  name: replace
+swap:
+  (?:click|press): "'select'"

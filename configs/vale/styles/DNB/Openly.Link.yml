@@ -1,0 +1,12 @@
+---
+# via https://github.com/ChrisChinchilla/Openly
+# License: https://github.com/ChrisChinchilla/Openly/blob/main/LICENSE
+
+
+message: "Don't use 'here' as the content of a link."
+extends: existence
+ignorecase: true
+scope: raw
+level: error
+raw:
+  - '\[here\]\(.+\)'
