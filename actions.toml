@@ -15,3 +15,14 @@ cmd = '/usr/bin/dconf dump /org/cinnamon/desktop/keybindings/ > "${DOTFILES}/etc
 [scopes.keybindings.activities.import]
 label = "Import keybindings from etc/dconf/keybindings.conf"
 cmd = 'dconf load /org/cinnamon/desktop/keybindings/ < "${DOTFILES}/etc/dconf/keybindings.conf"'
+
+[scopes.cinnamon]
+label = "Cinnamon desktop"
+
+[scopes.cinnamon.activities.export]
+label = "Export Cinnamon settings"
+cmd = '/usr/bin/dconf dump /org/cinnamon/ > "${DOTFILES}/etc/dconf/cinnamon.conf"'
+
+[scopes.cinnamon.activities.import]
+label = "Import Cinnamon settings"
+cmd = 'dconf load /org/cinnamon/ < "${DOTFILES}/etc/dconf/cinnamon.conf"'
