@@ -4,8 +4,6 @@ notes*
 .npmrc
 themer/*
 gen/*
-protected
-scratch
 changes.md
 response.json
 bun.lockb

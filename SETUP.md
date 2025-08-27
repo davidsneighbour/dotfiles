@@ -41,7 +41,7 @@
    git clone --recurse-submodules git@github.com:davidsneighbour/dotfiles.git
    ```
 
-4. Clone the `protected` repository into `protected/`.
+4. ~~Clone the `protected` repository into `protected/`.~~
 5. Install dependencies with `npm install`.
 
    ```bash

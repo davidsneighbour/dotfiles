@@ -2,9 +2,6 @@
 ################################################################################
 # Setup configuration for the protected repository
 ################################################################################
-- plugins:
-    - modules/dotbot-plugins/crontab-dotbot/
-
 - defaults:
     link:
       create: true
@@ -14,16 +11,16 @@
 - clean: ["~"]
 
 - link:
-    ~/.env: protected/.env
-    ~/.gmailctl: protected/.gmailctl
-    ~/.gnupg: protected/.gnupg
-    ~/.npmrc: protected/.npmrc
-    ~/.sentryclirc: protected/.sentryclirc
-    ~/.fonts: protected/.fonts
-    ~/.ssh: protected/.ssh
-    ~/JoplinBackup: protected/JoplinBackup
-    ~/.config/Cryptomator: protected/Cryptomator
-    ~/.config/transmission: protected/transmission
-    ~/.config/filezilla/filezilla.xml: protected/filezilla/filezilla.xml
-    ~/.config/filezilla/sitemanager.xml: protected/filezilla/sitemanager.xml
-    ~/.config/filezilla/trustedcerts.xml: protected/filezilla/trustedcerts.xml
+    ~/.env: modules/protected/.env
+    ~/.gmailctl: modules/protected/.gmailctl
+    ~/.gnupg: modules/protected/.gnupg
+    ~/.npmrc: modules/protected/.npmrc
+    ~/.sentryclirc: modules/protected/.sentryclirc
+    ~/.fonts: modules/protected/.fonts
+    ~/.ssh: modules/protected/.ssh
+    ~/JoplinBackup: modules/protected/JoplinBackup
+    ~/.config/Cryptomator: modules/protected/Cryptomator
+    ~/.config/transmission: modules/protected/transmission
+    ~/.config/filezilla/filezilla.xml: modules/protected/filezilla/filezilla.xml
+    ~/.config/filezilla/sitemanager.xml: modules/protected/filezilla/sitemanager.xml
+    ~/.config/filezilla/trustedcerts.xml: modules/protected/filezilla/trustedcerts.xml
