@@ -49,11 +49,10 @@
         export NVM_DIR="$HOME/.nvm"
         [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
         [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-        nvm install --lts
         nvm install v20
         nvm install v22
         nvm install v24
-        nvm use --lts
+        nvm use v24
     -
       description: Install Flatpak programs
       command: |
