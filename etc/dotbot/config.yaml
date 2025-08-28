@@ -19,6 +19,10 @@
     ~/.dotfiles: ""
     ~/.bin: "bin"
 
+    # system setup
+    ~/.face.icon: configs/system/face.icon
+    ~/.face: configs/system/face.icon
+
     # autostart
     ~/.config/autostart: configs/system/autostart/${HOSTNAME}
 
@@ -31,11 +35,9 @@
     # Cinnamon
     ~/.config/cinnamon: configs/system/cinnamon/cinnamon
     ~/.config/cinnamon-session: configs/system/cinnamon/cinnamon-session
-
-    # background images for Cinnamon
     ~/.config/cinnamon/backgrounds: configs/wallpapers
 
-    # Fastfetch config
+    # Tool configs
     ~/.config/fastfetch: configs/system/fastfetch
     ~/.local/share/vale: configs/vale
     ~/.config/vale: configs/vale
@@ -57,7 +59,6 @@
     ~/.config/user-dirs.dirs: filesystem/.config/user-dirs.dirs
     ~/.czrc: filesystem/.czrc
     ~/.dir_colors: filesystem/.dir_colors
-    ~/.face.icon: filesystem/.face.icon
     ~/.editorconfig: filesystem/.editorconfig
     ~/.fehbg: filesystem/.fehbg
     ~/.fixpackrc: filesystem/.fixpackrc
