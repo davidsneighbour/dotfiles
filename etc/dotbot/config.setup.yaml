@@ -100,4 +100,4 @@
     -
       description: System settings
       command: |
-        gsettings set org.nemo.desktop show-desktop-icons false 
+        gsettings set org.nemo.desktop show-desktop-icons false
