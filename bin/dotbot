@@ -9,8 +9,8 @@ print_help() {
 Usage: dotbot [--debug] [<config-name>]
 
 Runs Dotbot from the repository root. If <config-name> is given and a matching
-etc/dotbot/config.<config-name>.yaml exists, it will be used. Otherwise the
-default etc/dotbot/config.yaml is used.
+configs/dotbot/config.<config-name>.yaml exists, it will be used. Otherwise the
+default configs/dotbot/config.yaml is used.
 
 Options:
   --debug        Enable verbose -vv output
@@ -55,7 +55,7 @@ done
 # Config selection
 # ----------------------------
 if [[ -n "${CONFIG_NAME}" ]]; then
-  ALT_CONFIG="${REPO_ROOT}/etc/dotbot/config.${CONFIG_NAME}.yaml"
+  ALT_CONFIG="${REPO_ROOT}/configs/dotbot/config.${CONFIG_NAME}.yaml"
   if [[ -f "${ALT_CONFIG}" ]]; then
     DOTBOT_CONFIG="${ALT_CONFIG}"
   else
@@ -63,7 +63,7 @@ if [[ -n "${CONFIG_NAME}" ]]; then
     exit 1
   fi
 else
-  DOTBOT_CONFIG="${REPO_ROOT}/etc/dotbot/config.yaml"
+  DOTBOT_CONFIG="${REPO_ROOT}/configs/dotbot/config.yaml"
 fi
 
 # ----------------------------
