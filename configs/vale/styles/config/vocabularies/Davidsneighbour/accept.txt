@@ -19,7 +19,7 @@ GoHugo
 Google Fonts
 Iconoir
 JavaScript
-Kurzschnitte
+[Kk]urzschnitte
 Lineicons
 MIT License
 Netlify
