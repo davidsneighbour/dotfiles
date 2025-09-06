@@ -169,8 +169,8 @@ export CYAN=$'\033[1;36m'
 export WHITE=$'\033[1;37m'
 export NONE=$'\033[m'
 
-# random grep colour
-export GREP_COLORS="mt=1;32$((RANDOM % 6 + 1))"
+# grep colors
+export GREP_COLORS="mt=1;38;2;255;85;85:fn=38;2;255;121;198:ln=38;2;80;250;123:bn=38;2;80;250;123:se=38;2;139;233;253"
 
 # path for directories
 export CDPATH=".:..:../..:~/:~/dev/"
