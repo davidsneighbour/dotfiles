@@ -12,6 +12,7 @@ bun.lockb
 release.json
 todoctor
 filesystem/.themes/Orchis*
+filesystem/.icons/Papirus*
 .crush
 
 # add shared launchers
