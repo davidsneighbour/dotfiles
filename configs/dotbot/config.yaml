@@ -37,6 +37,14 @@
     ~/.config/cinnamon-session: configs/system/cinnamon/cinnamon-session
     ~/.config/cinnamon/backgrounds: configs/wallpapers
 
+    # Dracula Theme
+    ~/.config/gtk-3.0: configs/theme/gtk-3.0
+    ~/.config/gtk-4.0: configs/theme/gtk-4.0
+    ~/.themes/Dracula: configs/theme/Dracula
+    ~/.config/assets: configs/theme/Dracula/assets
+    ~/.config/gtk-4.0/gtk.css: configs/theme/Dracula/gtk-4.0/gtk.css
+    ~/.config/gtk-4.0/gtk-dark.css: configs/theme/Dracula/gtk-4.0/gtk-dark.css
+
     # Tool configs
     ~/.config/fastfetch: configs/system/fastfetch
     ~/.local/share/vale: configs/vale
@@ -76,13 +84,10 @@
     ##################################################################
     # directory links
     ##################################################################
-    ~/.config/assets: filesystem/.themes/Dracula/assets
     ~/.config/BetterDiscord: filesystem/.config/BetterDiscord
     ~/.config/filezilla: filesystem/.config/filezilla
     ~/.config/fontconfig: filesystem/.config/fontconfig
     ~/.config/gh: filesystem/.config/gh
-    ~/.config/gtk-3.0: filesystem/.config/gtk-3.0
-    ~/.config/gtk-4.0: filesystem/.config/gtk-4.0
     ~/.config/i3: filesystem/.config/i3
     ~/.config/inkscape: filesystem/.config/inkscape
     ~/.config/lsd: filesystem/.config/lsd
@@ -97,7 +102,6 @@
     ~/.config/wlogout: filesystem/.config/wlogout
     ~/.icons: filesystem/.icons
     ~/.logs: logs
-    ~/.themes: filesystem/.themes
     ~/.vim: filesystem/.vim
 
 # - shell:
