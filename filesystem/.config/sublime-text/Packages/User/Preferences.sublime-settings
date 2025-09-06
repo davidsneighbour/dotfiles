@@ -1,6 +1,6 @@
 {
 	"theme": "Adaptive.sublime-theme",
-	"color_scheme": "Breakers.sublime-color-scheme",
+	"color_scheme": "Monokai.sublime-color-scheme",
 	"ignored_packages":
 	[
 		"Vintage",
