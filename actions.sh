@@ -14,9 +14,9 @@ set -euo pipefail
 # Globals & defaults
 # ----------------------------
 SCRIPT_NAME="$(basename "$0")"
-CONFIG_FILE="./actions.toml"   # default if no --config is provided
+CONFIG_FILE="./configs/actions/actions.toml"   # default if no --config is provided
 VERBOSE="false"
-DRY_RUN="false"                # default: execute for real when no CLI option is given
+DRY_RUN="false"
 LOG_DIR="${HOME}/.logs/actions"
 TIMESTAMP="$(date '+%Y%m%d-%H%M%S')"
 LOG_FILE="${LOG_DIR}/${TIMESTAMP}.log"
