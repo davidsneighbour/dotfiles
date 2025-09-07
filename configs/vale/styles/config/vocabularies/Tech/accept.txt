@@ -31,13 +31,10 @@ evm
 geocode
 geocoding
 geospatial
-geth
-git
+[Gg]iscus
+[Gg]it
 GitHub
-GitHub
-gradle
-Gradle
-grafana
+[Gg]radle
 grafana
 GraphQL
 grpc
@@ -61,7 +58,7 @@ linters
 livestream
 mainnet
 manjaro
-markdown
+Markdown
 maven
 merkle
 mesos
@@ -103,3 +100,6 @@ vm
 web3
 web3j
 wget
+[Tt]o[Dd]o
+Blogroll
+Zod
