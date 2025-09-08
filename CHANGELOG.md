@@ -1,4 +1,63 @@
 Changelog
+## [2025.18.0](https://github.com/davidsneighbour/dotfiles/compare/v2025.17.0...v2025.18.0) (2025-09-08)
+
+
+### Documentation
+
+* add timezone note ([aac9d12](https://github.com/davidsneighbour/dotfiles/commit/aac9d12b7fb78339e767a4b5772c25bb8fc899e3))
+
+
+### Features
+
+* **cronjob:** update git repositories ([3eaefb3](https://github.com/davidsneighbour/dotfiles/commit/3eaefb3095f7a2599dc1802e3bd797fc9fa62469))
+
+
+### Bug Fixes
+
+* **actions:** add cinnamon config dump and import to actions menu ([f1d6972](https://github.com/davidsneighbour/dotfiles/commit/f1d6972de83f1423d3a333a5a9973bbd079f5356))
+* **actions:** move actions config into config directory ([893717b](https://github.com/davidsneighbour/dotfiles/commit/893717ba728991a0ad9676980238192ae235bebe))
+* **bashrc:** update grep colors ([165cd71](https://github.com/davidsneighbour/dotfiles/commit/165cd7167d5e555431c32bd7f5cbd5ddbbfee9ec))
+* cleanup gtk bookmarks ([849bfbf](https://github.com/davidsneighbour/dotfiles/commit/849bfbf5280d6de2e3e48cff2d8313a759fa236f))
+* **dotbot:** move dotbot config into configs directory ([02c68eb](https://github.com/davidsneighbour/dotfiles/commit/02c68eb6667cc3a7d4d879c951dfcddf7754703c))
+* **dotbot:** remove terminator from setup ([572ae16](https://github.com/davidsneighbour/dotfiles/commit/572ae16657de504393d3d2aea0fddd772024e0f8))
+* **github:** permissions on skyline workflow ([bd95d1f](https://github.com/davidsneighbour/dotfiles/commit/bd95d1f5840e4ebf4236b7aa6631a138024ad20e))
+* move account image ([2098083](https://github.com/davidsneighbour/dotfiles/commit/20980836ed2c6cc8f30ee785a66a94e150ba7b8b))
+* **theme:** remove build files from Dracula theme ([3f0778c](https://github.com/davidsneighbour/dotfiles/commit/3f0778ce0c50522d3562e74c44f61da0be700c76))
+* **vale:** allow lowercase kurzschnitte ([0ab32bf](https://github.com/davidsneighbour/dotfiles/commit/0ab32bf8d4242ca186c531e03f039c8e2fe715d3))
+* **vale:** styles path typo ([fdf7e3d](https://github.com/davidsneighbour/dotfiles/commit/fdf7e3da4be188f9d2e78d997e9b1854368c7213))
+
+
+### Chore
+
+* **assets:** update skyline stats for 2025 ([a4f8593](https://github.com/davidsneighbour/dotfiles/commit/a4f8593cbf42371312707f68e843e984a41386f2))
+* **autostart:** update autostarts on donald ([a02cb47](https://github.com/davidsneighbour/dotfiles/commit/a02cb475304145f8d1ec79f0a40dd00fadac4cbd))
+* **git:** move protected submodule into modules directory ([0ea0351](https://github.com/davidsneighbour/dotfiles/commit/0ea03517932264a2d9d1bbf56e1f114ee384b042))
+* recent changes ([ca59c6c](https://github.com/davidsneighbour/dotfiles/commit/ca59c6c3774b7762a1d9aee8156e2b4ee236dab3))
+* **repo:** update gitignore ([600f92a](https://github.com/davidsneighbour/dotfiles/commit/600f92acf24a1ec7a3b801be736f3904aa92214b))
+* **submodules:** update ([1fe1ead](https://github.com/davidsneighbour/dotfiles/commit/1fe1ead9a93f5fd0c59c648cb0d12c2d9829f216))
+
+
+### Configuration
+
+* **commitlint:** add scopes ([4cfda5c](https://github.com/davidsneighbour/dotfiles/commit/4cfda5cba89c6d35acd21bb15b7f0b59beb9d340))
+* **sublime:** update sublime text settings ([70c59e4](https://github.com/davidsneighbour/dotfiles/commit/70c59e43a4d123743b2b266d00ad841d455bc622))
+* **theme:** default cursor theme setup ([a6351c4](https://github.com/davidsneighbour/dotfiles/commit/a6351c46da1ecffb990fb3d88cf5f79eedcde17f))
+* **theme:** update theme setup ([8062538](https://github.com/davidsneighbour/dotfiles/commit/8062538150d470f718afeff1bff11f35f143a837))
+* **vale:** update spelling and dictionary configuration ([5862718](https://github.com/davidsneighbour/dotfiles/commit/586271814cfdc2ab49354d1b9635c32c410d1b22))
+
+
+### Build System
+
+* **deps:** update dependencies ([f9d91c1](https://github.com/davidsneighbour/dotfiles/commit/f9d91c12158ce579bd526b51beb316d7f930facd))
+* **dotbot:** add system settings for cinnamon ([9b0f596](https://github.com/davidsneighbour/dotfiles/commit/9b0f596b0d5be08093cf817e2f218cf98bf3c5b7))
+* **dotbot:** setup only lts releases for node and nvm ([601dcdb](https://github.com/davidsneighbour/dotfiles/commit/601dcdbe407536e9d7688a5fe9ff4b9242273bbd))
+
+
+### CI
+
+* **vale:** update configuration ([353d01f](https://github.com/davidsneighbour/dotfiles/commit/353d01f1f47a2857d67a1f1d9f06a629f9303486))
+* **vale:** update configuration ([18bf1e5](https://github.com/davidsneighbour/dotfiles/commit/18bf1e55611a8781a3da8c7042891cd8b65b40aa))
+
 ## [2025.17.0](https://github.com/davidsneighbour/dotfiles/compare/v2025.16.1...v2025.17.0) (2025-08-26)
 
 
