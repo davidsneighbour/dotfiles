@@ -1,5 +1,5 @@
 [user]
-email = davidsneighbourdev+gh@gmail.com
+email = davidsneighbourdev@gmail.com
 name = Patrick Kollitsch
 signingkey = 01A2661D61A772CA
 
@@ -295,3 +295,9 @@ rebase = true
 sort = -committerdate
 [pack]
 usePathWalk = true
+
+# conditional includes based on the remote URL
+[includeIf "hasconfig:remote.*.url:git@github.com:**"]
+path = "~/.dotfiles/configs/git/github.gitconfig"
+[includeIf "hasconfig:remote.*.url:git@gitlab.com:**"]
+path = "~/.dotfiles/configs/git/gitlab.gitconfig"
