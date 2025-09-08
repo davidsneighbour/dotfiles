@@ -1,0 +1,15 @@
+[[repos]]
+type = "gitlab"
+slug = "wonderland-gmbh/discourse-custom-header-links"
+
+[[repos]]
+type = "gitlab"
+slug = "wonderland-gmbh/wonderland-engine-api"
+
+[[repos]]
+type = "gitlab"
+slug = "wonderland-gmbh/wonderland-engine-website"
+
+[[repos]]
+type = "gitlab"
+slug = "wonderland-gmbh/wonderland-discourse-theme"
