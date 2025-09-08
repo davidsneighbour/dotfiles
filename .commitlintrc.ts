@@ -32,6 +32,7 @@ const config: UserConfig = {
     types: [
       { value: 'feat', name: 'feat:     A new feature', emoji: ':sparkles:' },
       { value: 'fix', name: 'fix:      A bug fix', emoji: ':bug:' },
+      { value: 'config', name: 'config:   Configuration only changes', emoji: ':wrench:' },
       { value: 'docs', name: 'docs:     Documentation only changes', emoji: ':memo:' },
       { value: 'style', name: 'style:    Changes that do not affect the meaning of the code', emoji: ':lipstick:' },
       { value: 'refactor', name: 'refactor: A code change that neither fixes a bug nor adds a feature', emoji: ':recycle:' },
@@ -72,6 +73,8 @@ const config: UserConfig = {
       build: ['deps', 'deps-dev', 'vscode'],
       content: ['new', 'fix', 'schema', 'update'],
       theme: ['fix', 'feat'],
+      fix: ['bashrc'],
+      chore: ['repo'],
     },
     defaultBody: '',
     defaultIssues: '',
