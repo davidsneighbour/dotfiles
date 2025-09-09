@@ -1,4 +1,20 @@
 Changelog
+## [2025.19.0](https://github.com/davidsneighbour/dotfiles/compare/v2025.18.0...v2025.19.0) (2025-09-09)
+
+
+### Features
+
+* **git:** add private email address per provider ([6d19262](https://github.com/davidsneighbour/dotfiles/commit/6d19262fa511e2a32f89f4d0989d0425f113170b))
+* **vale:** add AI detection rules ([03cb5c3](https://github.com/davidsneighbour/dotfiles/commit/03cb5c35f1d987922b0633547ebe2bf00befb169))
+
+
+### Configuration
+
+* add crosspost env file to protected setup ([d1acf96](https://github.com/davidsneighbour/dotfiles/commit/d1acf96b8b66b3f2b164a7895eceb136faf62817))
+* **nvm:** add default packages ([63f7730](https://github.com/davidsneighbour/dotfiles/commit/63f7730617a56e6ec615cb746cf50d9925c275d4))
+* **secretlint:** add chatgpt chat links to watch list ([0ae68da](https://github.com/davidsneighbour/dotfiles/commit/0ae68daa84bb601b0a082745dd35cb7a64a2cae0))
+* **vscode:** update workspace configuration for dotfiles ([083fba0](https://github.com/davidsneighbour/dotfiles/commit/083fba04e936277e0e8615dd2da7c87f7bc898f4))
+
 ## [2025.18.0](https://github.com/davidsneighbour/dotfiles/compare/v2025.17.0...v2025.18.0) (2025-09-08)
 
 
