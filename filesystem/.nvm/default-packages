@@ -3,6 +3,7 @@
 @charmland/crush
 @davidsneighbour/remark-config
 @dotenvx/dotenvx
+@humanwhocodes/crosspost
 act
 better-commits
 bun
