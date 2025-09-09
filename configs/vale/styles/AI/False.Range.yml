@@ -1,0 +1,7 @@
+---
+extends: existence
+message: "'%s' is putting undue emphasis on symbolism and importance."
+ignorecase: true
+level: warning
+tokens:
+  - from * to *

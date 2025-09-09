@@ -1,0 +1,12 @@
+---
+extends: existence
+message: "'%s' is editorializing."
+ignorecase: true
+level: warning
+tokens:
+  - it's important to note
+  - it's important to consider
+  - it's important to remember
+  - it is worth
+  - no discussion would be complete without
+  - this article wouldn't exist without

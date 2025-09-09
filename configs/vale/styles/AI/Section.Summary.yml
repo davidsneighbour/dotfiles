@@ -1,0 +1,9 @@
+---
+extends: existence
+message: "'%s' is a section summary."
+ignorecase: true
+level: warning
+tokens:
+  - In summary
+  - In conclusion
+  - Overall
