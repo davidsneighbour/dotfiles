@@ -24,3 +24,4 @@
     ~/.config/filezilla/filezilla.xml: modules/protected/filezilla/filezilla.xml
     ~/.config/filezilla/sitemanager.xml: modules/protected/filezilla/sitemanager.xml
     ~/.config/filezilla/trustedcerts.xml: modules/protected/filezilla/trustedcerts.xml
+    ~/.crosspost.env: modules/protected/crosspost.env
