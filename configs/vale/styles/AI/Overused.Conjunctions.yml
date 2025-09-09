@@ -1,0 +1,10 @@
+---
+extends: existence
+message: "'%s' is editorializing."
+ignorecase: true
+level: warning
+tokens:
+  - on the other hand
+  - moreover
+  - in addition
+  - furthermore

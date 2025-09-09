@@ -1,0 +1,14 @@
+---
+extends: existence
+message: "'%s' is editorializing."
+ignorecase: true
+level: warning
+tokens:
+  - I hope this helps
+  - Of course!
+  - Certainly!
+  - Would you like...
+  - is there anything else
+  - let me know
+  - more detailed breakdown
+  - here is a

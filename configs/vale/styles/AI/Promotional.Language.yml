@@ -1,0 +1,16 @@
+---
+extends: existence
+message: "'%s' is promotional language."
+ignorecase: true
+level: warning
+tokens:
+  - rich cultural heritage
+  - rich history
+  - breathtaking
+  - must-visit
+  - must-see
+  - stunning natural beauty
+  - enduring/lasting legacy
+  - rich cultural tapestry
+  - nestled
+  - in the heart of

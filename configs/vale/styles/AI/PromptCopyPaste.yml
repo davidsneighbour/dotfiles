@@ -1,0 +1,12 @@
+---
+extends: existence
+message: "'%s' is something an AI chat assistant might say or add to their answer."
+ignorecase: true
+level: warning
+tokens:
+  - as an AI language model
+  - as a large language model
+  - I'm sorry
+  - citeturn0search0
+  - citeturn0search1
+  - iturn0image0turn0image1turn0image4turn0image5

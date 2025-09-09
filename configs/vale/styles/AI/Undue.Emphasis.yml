@@ -1,0 +1,21 @@
+---
+extends: existence
+message: "'%s' is putting undue emphasis on symbolism and importance."
+ignorecase: true
+level: warning
+tokens:
+  - is a testament
+  - stands as a testament
+  - serves as a testament
+  - plays a vital role
+  - plays a significant role
+  - underscores its importance
+  - continues to captivate
+  - leaves a lasting impact
+  - watershed moment
+  - key turning point
+  - deeply rooted
+  - profound heritage
+  - steadfast dedication
+  - stands as a
+  - solidifies
