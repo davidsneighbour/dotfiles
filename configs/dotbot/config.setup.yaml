@@ -21,7 +21,7 @@
         sudo add-apt-repository ppa:libreoffice/ppa --yes
         sudo add-apt-repository ppa:papirus/papirus --yes
     -
-      description: Install essentials
+      description: Install essentials and requirements
       command: |
         sudo apt autoremove -y
         sudo apt-get install \
@@ -32,7 +32,7 @@
           ca-certificates rofi \
           vlc shutter zoxide \
           papirus-icon-theme filezilla-theme-papirus papirus-folders \
-          dconf-editor \
+          dconf-editor inxi \
           -y
     -
       description: Install Homebrew
