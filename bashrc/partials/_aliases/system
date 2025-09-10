@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# a collection of inxi aliases for quick system information
 alias sysinfo='inxi -Sxxx'
 alias sysinfo-full='inxi -Fxxxz'
 alias sysinfo-cpu='inxi -Cxxx'
