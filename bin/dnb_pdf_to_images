@@ -1,0 +1,219 @@
+#!/bin/bash
+# dnb_pdf_to_images - Render ONE PDF file to one image per page.
+# Linux Mint Cinnamon 22.2 compatible.
+# Dependencies: poppler-utils (pdftoppm)
+# shellcheck shell=bash
+
+set -euo pipefail
+
+# ---------------------------
+# Defaults
+# ---------------------------
+SOURCE_FILE=""              # required: path to a single PDF
+OUTPUT_DIR=""               # empty -> alongside the PDF
+FORMAT="png"                # png|jpg
+DPI="200"
+QUALITY="92"                # jpg only
+OVERWRITE="false"
+VERBOSE="false"
+
+# ---------------------------
+# Logging and error handling
+# ---------------------------
+log() {
+  if [[ "${VERBOSE}" == "true" ]]; then
+    printf '[%s] %s\n' "$(date '+%Y-%m-%d %H:%M:%S')" "$*" >&2
+  fi
+}
+
+log_cmd() {
+  if [[ "${VERBOSE}" == "true" ]]; then
+    {
+      printf '[%s] $' "$(date '+%Y-%m-%d %H:%M:%S')"
+      local arg
+      for arg in "$@"; do printf ' %q' "${arg}"; done
+      printf '\n'
+    } >&2
+  fi
+}
+
+die() {
+  printf 'ERROR: %s\n' "$*" >&2
+  exit 1
+}
+
+trap 'die "Unexpected error on line ${LINENO}. Last command: ${BASH_COMMAND}"' ERR
+
+# ---------------------------
+# Help
+# ---------------------------
+print_help() {
+  cat <<EOF
+$(basename "$0") - Render ONE PDF into images (one image per page)
+
+Usage:
+  $(basename "$0") --source <file.pdf> [--output <dir>]
+                   [--format <png|jpg>] [--dpi <number>]
+                   [--quality <1-100>] [--overwrite]
+                   [--verbose] [--help]
+
+Options:
+  --source <file>    Path to a single PDF file. Required.
+  --output <dir>     Root output folder. Default: alongside the PDF
+                     (creates "<pdfname>/" next to the PDF).
+  --format <fmt>     Output format: png or jpg. Default: ${FORMAT}
+  --dpi <number>     Render DPI. Default: ${DPI}
+  --quality <1-100>  JPEG quality (only for --format jpg). Default: ${QUALITY}
+  --overwrite        Re-render even if output subfolder exists. Default: off
+  --verbose          Print detailed progress logs. Default: off
+  --help             Show this help.
+
+Examples:
+  $(basename "$0") --source "./Rent and Buy.pdf" --verbose
+  $(basename "$0") --source "./รายงาน.pdf" --output ./out --format jpg --quality 90 --dpi 150 --overwrite --verbose
+EOF
+}
+
+# ---------------------------
+# Utilities
+# ---------------------------
+need_cmd() {
+  command -v "$1" >/dev/null 2>&1 || die "Missing dependency: $1"
+}
+
+parse_args() {
+  if [[ "$#" -eq 0 ]]; then
+    print_help
+    exit 0
+  fi
+
+  while [[ "$#" -gt 0 ]]; do
+    case "${1}" in
+      --source)        shift; SOURCE_FILE="${1:-}";;
+      --output)        shift; OUTPUT_DIR="${1:-}";;
+      --format)        shift; FORMAT="${1:-}";;
+      --dpi)           shift; DPI="${1:-}";;
+      --quality)       shift; QUALITY="${1:-}";;
+      --overwrite)     OVERWRITE="true";;
+      --verbose)       VERBOSE="true";;
+      --help|-h)       print_help; exit 0;;
+      *)               die "Unknown option: ${1}. Use --help.";;
+    esac
+    shift
+  done
+
+  [[ -n "${SOURCE_FILE}" ]] || die "--source <file.pdf> is required"
+  [[ -f "${SOURCE_FILE}" ]] || die "--source does not exist or is not a file: ${SOURCE_FILE}"
+
+  # Case-insensitive .pdf check
+  local lower_ext
+  lower_ext=$(printf '%s' "${SOURCE_FILE##*.}" | tr '[:upper:]' '[:lower:]')
+  [[ "${lower_ext}" == "pdf" ]] || die "--source must point to a .pdf file"
+
+  case "${FORMAT}" in
+    png|jpg) ;;
+    *) die "--format must be png or jpg";;
+  esac
+
+  [[ "${DPI}" =~ ^[0-9]+$ ]] || die "--dpi must be a positive integer"
+  if [[ "${FORMAT}" == "jpg" ]]; then
+    [[ "${QUALITY}" =~ ^[0-9]+$ ]] || die "--quality must be 1-100"
+    (( QUALITY >= 1 && QUALITY <= 100 )) || die "--quality must be between 1 and 100"
+  fi
+
+  if [[ -n "${OUTPUT_DIR}" ]]; then
+    mkdir -p "${OUTPUT_DIR}"
+  fi
+}
+
+# ---------------------------
+# Core
+# ---------------------------
+render_single_pdf() {
+  local pdf_path="${1}"
+
+  local pdf_dir pdf_file pdf_base out_root out_dir ext opt_fmt
+  local -a opt_extra
+
+  pdf_dir=$(dirname -- "${pdf_path}")
+  pdf_file=$(basename -- "${pdf_path}")
+  pdf_base="${pdf_file%.*}"
+
+  if [[ -n "${OUTPUT_DIR}" ]]; then
+    out_root="${OUTPUT_DIR}"
+  else
+    out_root="${pdf_dir}"
+  fi
+  out_dir="${out_root}/${pdf_base}"
+  mkdir -p "${out_root}"
+
+  log "Planning render"
+  log "  pdf_path   : ${pdf_path}"
+  log "  pdf_dir    : ${pdf_dir}"
+  log "  pdf_file   : ${pdf_file}"
+  log "  pdf_base   : ${pdf_base}"
+  log "  out_root   : ${out_root}"
+  log "  out_dir    : ${out_dir}"
+  log "  format/dpi : ${FORMAT}/${DPI}"
+
+  if [[ -d "${out_dir}" && "${OVERWRITE}" == "false" ]]; then
+    log "Skipping existing: ${pdf_file} -> ${out_dir} (use --overwrite to force)"
+    return 0
+  fi
+
+  if [[ -d "${out_dir}" && "${OVERWRITE}" == "true" ]]; then
+    log "Cleaning existing output files in: ${out_dir}"
+    find "${out_dir}" -maxdepth 1 -type f -name 'page-*.*' -print0 | xargs -0 -r rm -f
+  fi
+
+  mkdir -p "${out_dir}"
+
+  case "${FORMAT}" in
+    png) opt_fmt="-png";  opt_extra=();                                ext="png" ;;
+    jpg) opt_fmt="-jpeg"; opt_extra=( -jpegopt "quality=${QUALITY}" ); ext="jpg" ;;
+  esac
+
+  local tmp_prefix
+  tmp_prefix="${out_dir}/__tmp_page"
+
+  log "Rendering pages"
+  log_cmd pdftoppm -r "${DPI}" "${opt_fmt}" "${opt_extra[@]}" "${pdf_path}" "${tmp_prefix}"
+  pdftoppm -r "${DPI}" "${opt_fmt}" "${opt_extra[@]}" "${pdf_path}" "${tmp_prefix}" > /dev/null
+
+  log "Normalizing filenames to page-0001.${ext}"
+  shopt -s nullglob
+  local f base num new
+  for f in "${out_dir}"/__tmp_page-*.${ext}; do
+    base=$(basename -- "${f}")
+    num="${base#__tmp_page-}"        # e.g. "1" or "01" or "08"
+    num="${num%%.*}"
+    # Force base-10 so "08" and "09" do not error as octal.
+    printf -v new 'page-%04d.%s' "$((10#${num}))" "${ext}"
+    log "  mv ${base} -> ${new}"
+    mv -f -- "${f}" "${out_dir}/${new}"
+  done
+  shopt -u nullglob
+
+  log "Cleaning temp artifacts"
+  find "${out_dir}" -maxdepth 1 -type f -name '__tmp_page-*' -print0 | xargs -0 -r rm -f
+
+  log "Done: ${out_dir}"
+}
+
+main() {
+  need_cmd pdftoppm
+  parse_args "$@"
+
+  log "Settings"
+  log "  source     : ${SOURCE_FILE}"
+  log "  output     : ${OUTPUT_DIR:-<alongside PDF>}"
+  log "  format     : ${FORMAT}"
+  log "  dpi        : ${DPI}"
+  if [[ "${FORMAT}" == "jpg" ]]; then
+    log "  quality    : ${QUALITY}"
+  fi
+
+  render_single_pdf "${SOURCE_FILE}"
+}
+
+main "$@"
