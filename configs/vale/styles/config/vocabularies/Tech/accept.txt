@@ -103,3 +103,6 @@ wget
 [Tt]o[Dd]o
 Blogroll
 Zod
+TailwindCSS
+Tailwind
+CSS
