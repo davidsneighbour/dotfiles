@@ -4,8 +4,18 @@ case $- in
 *) return ;;
 esac
 
-# manually done for now
-DOTFILES_PATH="${HOME}/github.com/davidsneighbour/dotfiles"
+# Determine and export the dotfiles repository root path
+if [ -z "$DOTFILES_PATH" ]; then
+  if [ -d "$HOME/.dotfiles" ]; then
+    export DOTFILES_PATH="$HOME/.dotfiles"
+  else
+    # Fallback: derive path from this bashrc file's location
+    thisrc="$(dirname "${BASH_SOURCE[0]:-$0}")"
+    thisrc="$(cd "$thisrc" && pwd)"   # absolute path of directory containing this file
+    export DOTFILES_PATH="$(dirname "$thisrc")"
+  fi
+fi
+
 BASHRC_PATH="${DOTFILES_PATH}/bashrc"
 
 force_color_prompt=yes
