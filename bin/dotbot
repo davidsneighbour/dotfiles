@@ -1,6 +1,9 @@
 #!/bin/bash
-# dotbot repo wrapper that always runs from the repo root,
-# even when invoked via a symlinked ~/bin/dotbot etc.
+################################################################################
+# Dotbot wrapper script
+# 
+# @see https://github.com/davidsneighbour/dotfiles
+################################################################################
 
 set -euo pipefail
 
