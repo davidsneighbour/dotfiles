@@ -23,17 +23,35 @@
     -
       description: Install essentials and requirements
       command: |
-        sudo apt autoremove -y
-        sudo apt-get install \
-          build-essential procps curl file \
-          meson libgirepository1.0-dev libgtk-3-dev python3 python3-gi \
-          gir1.2-rsvg-2.0 librsvg2-bin gir1.2-gtk-3.0 \
-          xclip dnsmasq-base gzip git \
-          ca-certificates rofi \
-          vlc shutter zoxide \
-          papirus-icon-theme filezilla-theme-papirus papirus-folders \
-          dconf-editor inxi \
-          -y
+        sudo apt-get autoremove -y
+        sudo apt-get install -y \
+          build-essential \            # Essential compilation tools (gcc, g++, make, etc.)
+          ca-certificates \            # SSL/TLS CA certificates for secure connections
+          curl \                       # Command-line tool for HTTP/FTP requests
+          dconf-editor \               # GUI tool to edit GNOME dconf settings
+          dnsmasq-base \               # Lightweight DNS forwarder and DHCP server base
+          file \                       # Utility to determine file types
+          filezilla-theme-papirus \    # Papirus icon theme for FileZilla
+          gir1.2-gtk-3.0 \             # Introspection data for GTK+ 3
+          gir1.2-rsvg-2.0 \            # Introspection data for SVG rendering
+          git \                        # Distributed version control system
+          gzip \                       # Compression utility
+          inxi \                       # System information script
+          libgirepository1.0-dev \     # Development files for GObject introspection
+          libgtk-3-dev \               # Development files for GTK+ 3
+          librsvg2-bin \               # Tools for converting and rendering SVG files
+          meson \                      # Fast build system
+          papirus-folders \            # Folder color variations for Papirus icon theme
+          papirus-icon-theme \         # Papirus icon theme package
+          poppler-utils \              # PDF utilities (pdftotext, pdfinfo, etc.)
+          procps \                     # Process management utilities (ps, top, etc.)
+          python3 \                    # Python 3 interpreter
+          python3-gi \                 # Python bindings for GObject introspection
+          rofi \                       # Window switcher, run launcher, and dmenu replacement
+          shutter \                    # Screenshot tool with annotation support
+          vlc \                        # Media player supporting most formats
+          xclip \                      # X11 clipboard command-line utility
+          zoxide                       # Smarter cd command with learning and ranking capabilities
     -
       description: Install Homebrew
       command: |
