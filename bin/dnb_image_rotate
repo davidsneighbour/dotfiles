@@ -1,0 +1,166 @@
+#!/bin/bash
+# dnb_image_rotate - Rotate a single image file (handles spaces/unicode).
+# Linux Mint Cinnamon 22.2
+# Dependencies: ImageMagick (v7: magick, v6: convert/mogrify)
+# shellcheck shell=bash
+
+set -euo pipefail
+
+SOURCE_FILE=""
+OUTPUT_FILE=""
+IN_PLACE="false"
+DEGREE="90"            # 1..180
+DIRECTION="left"       # left|right (left = CCW)
+PRESET=""              # turn-left|turn-right|flip
+SUFFIX=".rotated"
+VERBOSE="false"
+
+log() { [[ "${VERBOSE}" == "true" ]] && printf '[%s] %s\n' "$(date '+%F %T')" "$*" >&2; }
+die() { printf 'ERROR: %s\n' "$*" >&2; exit 1; }
+
+print_help() {
+  cat <<EOF
+$(basename "$0") - Rotate a single image.
+
+Usage:
+  $(basename "$0") --source <file> [--output <file>] [--in-place]
+                   [--degree <1-180>] [--direction <left|right>]
+                   [--turn-left] [--turn-right] [--flip]
+                   [--suffix <text>] [--verbose] [--help]
+
+Defaults: degree=90, direction=left (counter-clockwise)
+
+Shortcuts:
+  --turn-left  -> 90° CCW
+  --turn-right -> 90° CW
+  --flip       -> 180°
+
+Examples:
+  $(basename "$0") --source "Haus 1/page-0004.png"
+  $(basename "$0") --source "scan.jpg" --turn-right --in-place --verbose
+  $(basename "$0") --source "img.png" --degree 15 --direction left --output "out.png"
+EOF
+}
+
+need_cmd() { command -v "$1" >/dev/null 2>&1; }
+
+pick_im_cmds() {
+  if need_cmd magick; then
+    IM_VERSION=7
+  elif need_cmd convert && need_cmd mogrify; then
+    IM_VERSION=6
+  else
+    die "ImageMagick not installed. Install: sudo apt update && sudo apt install --yes imagemagick"
+  fi
+}
+
+parse_args() {
+  if [[ "$#" -eq 0 ]]; then print_help; exit 0; fi
+  while [[ "$#" -gt 0 ]]; do
+    case "$1" in
+      --source)     shift; SOURCE_FILE="${1:-}";;
+      --output)     shift; OUTPUT_FILE="${1:-}";;
+      --in-place)   IN_PLACE="true";;
+      --degree)     shift; DEGREE="${1:-}";;
+      --direction)  shift; DIRECTION="${1:-}";;
+      --turn-left)  PRESET="left";;
+      --turn-right) PRESET="right";;
+      --flip)       PRESET="flip";;
+      --suffix)     shift; SUFFIX="${1:-}";;
+      --verbose)    VERBOSE="true";;
+      --help|-h)    print_help; exit 0;;
+      *)            die "Unknown option: $1";;
+    esac
+    shift
+  done
+
+  [[ -n "${SOURCE_FILE}" ]] || die "--source <file> is required"
+  [[ -f "${SOURCE_FILE}" ]] || die "No such file: ${SOURCE_FILE}"
+
+  case "${PRESET}" in
+    left)  DEGREE="90";  DIRECTION="left"  ;;
+    right) DEGREE="90";  DIRECTION="right" ;;
+    flip)  DEGREE="180"; DIRECTION="left"  ;; # dir irrelevant for 180
+    "")    : ;;
+    *)     die "Invalid preset" ;;
+  esac
+
+  [[ "${DEGREE}" =~ ^[0-9]+$ ]] || die "--degree must be integer 1..180"
+  (( DEGREE >= 1 && DEGREE <= 180 )) || die "--degree must be 1..180"
+
+  case "${DIRECTION}" in
+    left|right) ;;
+    *) die "--direction must be 'left' or 'right'";;
+  esac
+
+  if [[ -n "${OUTPUT_FILE}" && "${IN_PLACE}" == "true" ]]; then
+    log "--output provided; ignoring --in-place"
+    IN_PLACE="false"
+  fi
+}
+
+derive_output_path() {
+  local in_path="$1" suffix="$2"
+  local dir base name ext
+  dir=$(dirname -- "$in_path")
+  base=$(basename -- "$in_path")
+  if [[ "$base" == *.* ]]; then
+    name="${base%.*}"; ext=".${base##*.}"
+  else
+    name="$base"; ext=""
+  fi
+  printf '%s/%s%s%s' "$dir" "$name" "$suffix" "$ext"
+}
+
+rotate_image() {
+  local angle
+  if (( DEGREE == 180 )); then
+    angle=180
+  else
+    # ImageMagick: positive = clockwise, negative = counter-clockwise.
+    if [[ "${DIRECTION}" == "left" ]]; then
+      angle="-$DEGREE"   # CCW
+    else
+      angle="${DEGREE}"  # CW
+    fi
+  fi
+
+  if [[ -z "${OUTPUT_FILE}" && "${IN_PLACE}" != "true" ]]; then
+    OUTPUT_FILE="$(derive_output_path "${SOURCE_FILE}" "${SUFFIX}")"
+  fi
+  [[ "${IN_PLACE}" == "true" ]] || mkdir -p -- "$(dirname -- "${OUTPUT_FILE}")"
+
+  log "Settings"
+  log "  IM version : ${IM_VERSION}"
+  log "  source     : ${SOURCE_FILE}"
+  log "  in-place   : ${IN_PLACE}"
+  log "  degree     : ${DEGREE}"
+  log "  direction  : ${DIRECTION}"
+  log "  angle used : ${angle}"
+  log "  output     : ${OUTPUT_FILE:-<in-place>}"
+
+  if [[ "${IN_PLACE}" == "true" ]]; then
+    if [[ "${IM_VERSION}" -eq 7 ]]; then
+      magick mogrify -auto-orient -filter Lanczos -rotate "${angle}" "$SOURCE_FILE"
+    else
+      mogrify -auto-orient -filter Lanczos -rotate "${angle}" "$SOURCE_FILE"
+    fi
+  else
+    if [[ "${IM_VERSION}" -eq 7 ]]; then
+      magick "$SOURCE_FILE" -auto-orient -filter Lanczos -rotate "${angle}" "$OUTPUT_FILE"
+    else
+      convert "$SOURCE_FILE" -auto-orient -filter Lanczos -rotate "${angle}" "$OUTPUT_FILE"
+    fi
+    [[ -f "${OUTPUT_FILE}" ]] || die "No output written to ${OUTPUT_FILE}"
+  fi
+
+  log "Done."
+}
+
+main() {
+  pick_im_cmds
+  parse_args "$@"
+  rotate_image
+}
+
+main "$@"
