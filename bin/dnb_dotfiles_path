@@ -1,0 +1,81 @@
+#!/bin/bash
+set -o pipefail
+
+if [[ "${BASH_SOURCE[0]}" != "$0" ]]; then
+  echo "Do not source this script; execute it." >&2
+  return 1
+fi
+
+_dnb_dotfiles_path__print_help() {
+  cat <<EOF
+${FUNCNAME[0]}:
+  Prints the absolute path to your dotfiles repository.
+
+Usage:
+  dotfiles-path [--help|--quiet]
+
+Options:
+  --help     Show this help and exit 0
+  --quiet    Suppress diagnostics; print only the path or nothing on failure
+
+Exit codes:
+  0 on success (path printed)
+  1 on failure (no path found)
+EOF
+}
+
+_dnb_dotfiles_path__resolve_path() {
+  local p="${1-}"
+  if [ -z "${p}" ]; then printf '%s' ""; return 0; fi
+
+  if command -v readlink >/dev/null 2>&1 && readlink -f / >/dev/null 2>&1; then
+    readlink -f "${p}"
+    return 0
+  fi
+  if command -v realpath >/dev/null 2>&1; then
+    realpath "${p}" 2>/dev/null && return 0
+  fi
+
+  local d b
+  d="$(dirname -- "${p}")" || return 0
+  b="$(basename -- "${p}")" || return 0
+  ( cd "${d}" >/dev/null 2>&1 && printf '%s/%s' "${PWD}" "${b}" ) || printf '%s' ""
+}
+
+_dnb_dotfiles_path__main() {
+  local quiet=0
+  case "${1-}" in
+    --help) _dnb_dotfiles_path__print_help; return 0 ;;
+    --quiet) quiet=1; shift ;;
+    "" ) ;;
+    * ) [ "${quiet}" -eq 0 ] && printf 'Note: unknown option: %s\n' "${1}" >&2 ;;
+  esac
+
+  if [ -n "${DOTFILES_PATH-}" ] && [ -d "${DOTFILES_PATH}" ]; then
+    printf '%s\n' "${DOTFILES_PATH}"; return 0
+  fi
+
+  if [ -e "${HOME}/.dotfiles" ]; then
+    local resolved
+    resolved="$(_dnb_dotfiles_path__resolve_path "${HOME}/.dotfiles")"
+    if [ -n "${resolved}" ] && [ -d "${resolved}" ]; then
+      printf '%s\n' "${resolved}"; return 0
+    fi
+  fi
+
+  local self resolved_self parent_dir repo_root
+  self="${0}"
+  resolved_self="$(_dnb_dotfiles_path__resolve_path "${self}")"
+  if [ -n "${resolved_self}" ]; then
+    parent_dir="$(dirname -- "${resolved_self}")"
+    repo_root="$(dirname -- "${parent_dir}")"
+    if [ -d "${repo_root}" ]; then
+      printf '%s\n' "${repo_root}"; return 0
+    fi
+  fi
+
+  [ "${quiet}" -eq 0 ] && printf 'Note: could not determine dotfiles path.\n' >&2
+  return 1
+}
+
+_dnb_dotfiles_path__main "$@"
