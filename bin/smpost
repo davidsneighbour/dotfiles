@@ -1,0 +1,29 @@
+#!/bin/bash
+# shellcheck disable=SC2312
+
+set -euo pipefail
+
+# Known services to select from
+KNOWN_SERVICES=("twitter" "mastodon" "bluesky" "linkedin" "discord" "discord-webhook" "telegram" "devto")
+PRESELECTED="mastodon,linkedin" # comma separated list of preselected services
+placeholder="${1:-Write your post text...}"
+
+# Collect post text
+post_tmp="$(mktemp)"
+trap 'rm -f "${post_tmp}"' EXIT
+gum write --placeholder "${placeholder}" --width 80 > "${post_tmp}"
+value="$(<"${post_tmp}")"
+
+# Multi-select services
+IFS=',' read -r -a DEFAULTS <<< "${PRESELECTED}"
+mapfile -t SELECTED_SERVICES < <(gum choose --no-limit "${KNOWN_SERVICES[@]}" --selected="${DEFAULTS[@]}")
+
+# Build flags
+SERVICE_FLAGS=()
+for svc in "${SELECTED_SERVICES[@]}"; do
+  SERVICE_FLAGS+=("--${svc}")
+done
+
+# Crosspost
+echo "crosspost ${SERVICE_FLAGS[@]} \"${value}\""
+crosspost ${SERVICE_FLAGS[@]} "${value}"
