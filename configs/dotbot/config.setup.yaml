@@ -75,6 +75,12 @@
       description: Install Flatpak programs
       command: |
         flatpak install flathub be.alexandervanhee.gradia
+        flatpak install flathub md.obsidian.Obsidian
+    -
+      description: Install rclone
+      # https://rclone.org/downloads/
+      command: |
+        sudo -v ; curl https://rclone.org/install.sh | sudo bash
     -
       description: Install Starship (CLI prompt modification)
       command: |
