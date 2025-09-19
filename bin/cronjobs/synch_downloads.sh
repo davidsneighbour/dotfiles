@@ -13,14 +13,20 @@ mkdir -p "${LOG_DIR}"
   # Only run on host 'donald'
   current_host=$(hostname -s)
   if [[ "$current_host" != "donald" ]]; then
-    # echo "This script runs only on host 'donald'. Current host is '$current_host'. Exiting."
+    echo "This script runs only on host 'donald'. Current host is '$current_host'. Exiting."
     exit 0
   fi
 
   # Proceed with rsync only if hostname match
   rsync -rztv \
     patrick@192.168.1.201:/home/patrick/Downloads/ \
-    /home/patrick/Downloads/Unkle \
+    /home/patrick/Downloads/000_unkle \
+    --exclude '.incoming' \
+    --delete
+
+  rsync -rztv \
+    /home/patrick/Downloads/000_synchback \
+    patrick@192.168.1.201:/home/patrick/Downloads/ \
     --exclude '.incoming' \
     --delete
 
