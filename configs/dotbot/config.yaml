@@ -28,6 +28,9 @@
 
     # git setup
     ~/.gitignore: configs/git/global.gitignore
+    ~/.gitmessage: configs/git/.gitmessage
+    ~/.gitconfig: configs/git/.gitconfig
+    ~/.git-templates: configs/git/.git-templates
 
     # folders in ~/.local/share
     ~/.local/share/applications: configs/system/share/applications
@@ -70,9 +73,6 @@
     ~/.editorconfig: filesystem/.editorconfig
     ~/.fehbg: filesystem/.fehbg
     ~/.fixpackrc: filesystem/.fixpackrc
-    ~/.gitmessage: filesystem/.gitmessage
-    ~/.gitconfig: filesystem/.gitconfig
-    ~/.git-templates: filesystem/.git-templates
     ~/.hidden: filesystem/.hidden
     ~/.nvmrc: filesystem/.nvmrc
     ~/.pam_environment: filesystem/.pam_environment

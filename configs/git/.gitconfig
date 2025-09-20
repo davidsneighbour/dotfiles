@@ -1,7 +1,21 @@
+# Global user info
 [user]
 email = davidsneighbourdev@gmail.com
 name = Patrick Kollitsch
 signingkey = 01A2661D61A772CA
+
+# GPG signing, do NOT set gpg.format
+# SSH signing, set:  [gpg] format = ssh  and user.signingkey = ~/.ssh/id_ed25519
+
+[commit]
+gpgsign = true
+verbose = true
+template = ~/.gitmessage
+
+[tag]
+sort = version:refname
+gpgSign = true
+
 
 [apply]
 whitespace = fix
@@ -194,10 +208,7 @@ squash = "!git rebase -v -i $(git mainbranch)"
 publish = push origin HEAD --force-with-lease
 pub = publish
 
-[commit]
-gpgsign = true
-verbose = true
-template = ~/.gitmessage
+
 
 [init]
 defaultBranch = main
@@ -263,8 +274,6 @@ enabled = true
 autoupdate = true
 [transfer]
 fsckobjects = true
-[tag]
-sort = version:refname
 [fetch]
 fsckobjects = true
 prune = true
@@ -296,8 +305,11 @@ sort = -committerdate
 [pack]
 usePathWalk = true
 
+
+
 # conditional includes based on the remote URL
-[includeIf "hasconfig:remote.*.url:git@github.com:**"]
-path = "~/.dotfiles/configs/git/github.gitconfig"
-[includeIf "hasconfig:remote.*.url:git@gitlab.com:**"]
-path = "~/.dotfiles/configs/git/gitlab.gitconfig"
+# GitHub overrides Gitlab if both match
+[includeIf "gitdir:/home/patrick/github.com/"]
+path = /home/patrick/.dotfiles/configs/git/github.gitconfig
+[includeIf "gitdir:/home/patrick/gitlab.com/"]
+path = /home/patrick/.dotfiles/configs/git/gitlab.gitconfig
