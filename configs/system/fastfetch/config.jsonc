@@ -1,4 +1,3 @@
-
 {
     "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
     "logo": {
@@ -6,14 +5,33 @@
     },
     "display": {
         "separator": "",
-        "color": {
-            "separator": "0" // Bold
-        },
         "constants": [
+            "────────────────────────────────────────────────────────────────────────────────"
         ],
+        "color": {
+            "separator": "6", // Bold,
+            "keys": "blue", // Key color
+            "title": "red" // Title color
+        },
         "key": {
             "type": "string",
-            "paddingLeft": 0
+            "paddingLeft": 0,
+            "width": 20
+        },
+        "bar": {
+            "width": 10, // Width of percentage bars
+            "char": {
+                "elapsed": "■", // Character for elapsed portion
+                "total": "-", // Character for total portion
+            },
+        },
+        "percent": {
+            "type": 3, // 1=number, 2=bar, 3=both, 9=colored number
+            "color": {
+                "green": "green",
+                "yellow": "light_yellow",
+                "red": "light_red"
+            }
         }
     },
     "modules": [
@@ -21,52 +39,288 @@
             "type": "title",
             "format": "{#1}System Information{#} {user-name-colored}{at-symbol-colored}{host-name-colored}"
         },
-        "break",
         {
-            "key": "OS           ",
+            "key": "OS",
             "keyColor": "green",
             "type": "os"
         },
         {
-            "key": "Kernel       ",
+            "key": "Kernel",
             "keyColor": "green",
             "type": "kernel"
         },
         {
-            "key": "Uptime       ",
+            "key": "Uptime",
             "keyColor": "green",
             "type": "uptime"
         },
         {
-            "key": "CPU          ",
+            "key": "CPU",
             "keyColor": "green",
             "type": "cpu"
         },
         {
-            "key": "GPU          ",
+            "key": "GPU",
             "keyColor": "green",
             "type": "gpu"
         },
         {
-            "key": "CPU Load     ",
+            "key": "CPU Load",
             "keyColor": "green",
             "type": "cpuusage",
             //"compact": true
         },
         {
-            "key": "Memory       ",
+            "key": "Memory",
             "keyColor": "green",
             "type": "memory"
         },
         {
-            "key": "Resolution   ",
+            "key": "Resolution",
             "keyColor": "green",
             "type": "display",
             "compactType": "original-with-refresh-rate"
         },
         {
-            "key": "WM           ",
+            "key": "WM",
             "keyColor": "green",
+            "type": "wm"
+        },
+        {
+            "key": "DE",
+            "keyColor": "green",
+            "type": "de"
+        },
+        {
+            "key": "Theme",
+            "keyColor": "green",
+            "type": "theme"
+        },
+        {
+            "key": "Font",
+            "keyColor": "green",
+            "type": "font"
+        },
+        {
+            "key": "Terminal",
+            "keyColor": "green",
+            "type": "terminal"
+        },
+        {
+            "key": "Shell",
+            "keyColor": "green",
+            "type": "shell"
+        },
+        {
+            "type": "publicip",
+            "key": "{#90}│ {#94}Public IPv4 {#90}│",
+            "ipv6": false,
+            "timeout": 1000,
+            "format": "{$1}{ip}  {#2}[{location}]"
+        },
+        {
+            "type": "custom",
+            "format": " {#90}  {#31}  {#32}  {#33}  {#34}  {#35}  {#36}  {#37}  {#38}  {#39}       {#38}  {#37}  {#36}  {#35}  {#34}  {#33}  {#32}  {#31}  {#90}"
+        },
+        {
+            "type": "custom",
+            "format": "┌{$1}{$1}┐",
+            "outputColor": "90"
+        },
+        {
+            "type": "title",
+            "keyWidth": 10
+        },
+        {
+            "type": "custom",
+            "format": "└{$1}{$1}┘",
+            "outputColor": "90"
+        },
+        {
+            "type": "custom",
+            "format": " {#90}  {#31}  {#32}  {#33}  {#34}  {#35}  {#36}  {#37}  {#38}  {#39}       {#38}  {#37}  {#36}  {#35}  {#34}  {#33}  {#32}  {#31}  {#90}"
+        },
+        {
+            "type": "custom",
+            "format": "┌{$1}{$1}┐",
+            "outputColor": "90"
+        },
+        {
+            "type": "os",
+            "key": "{icon} OS",
+            "keyColor": "yellow"
+        },
+        {
+            "type": "kernel",
+            "key": "│ ├",
+            "keyColor": "yellow"
+        },
+        {
+            "type": "packages",
+            "key": "│ ├󰏖",
+            "keyColor": "yellow"
+        },
+        {
+            "type": "shell",
+            "key": "│ └",
+            "keyColor": "yellow"
+        },
+        {
+            "type": "wm",
+            "key": " DE/WM",
+            "keyColor": "blue"
+        },
+        {
+            "type": "lm",
+            "key": "│ ├󰧨",
+            "keyColor": "blue"
+        },
+        {
+            "type": "wmtheme",
+            "key": "│ ├󰉼",
+            "keyColor": "blue"
+        },
+        {
+            "type": "icons",
+            "key": "│ ├󰀻",
+            "keyColor": "blue"
+        },
+        {
+            "type": "terminal",
+            "key": "│ ├",
+            "keyColor": "blue"
+        },
+        {
+            "type": "wallpaper",
+            "key": "│ └󰸉",
+            "keyColor": "blue"
+        },
+        {
+            "type": "host",
+            "key": "󰌢 PC",
+            "keyColor": "green"
+        },
+        {
+            "type": "cpu",
+            "key": "│ ├󰻠",
+            "keyColor": "green"
+        },
+        {
+            "type": "gpu",
+            "key": "│ ├󰍛",
+            "keyColor": "green"
+        },
+        {
+            "type": "disk",
+            "key": "│ ├",
+            "keyColor": "green"
+        },
+        {
+            "type": "memory",
+            "key": "│ ├󰑭",
+            "keyColor": "green"
+        },
+        {
+            "type": "swap",
+            "key": "│ ├󰓡",
+            "keyColor": "green"
+        },
+        {
+            "type": "uptime",
+            "key": "│ ├󰅐",
+            "keyColor": "green"
+        },
+        {
+            "type": "display",
+            "key": "│ └󰍹",
+            "keyColor": "green"
+        },
+        {
+            "type": "sound",
+            "key": " SND",
+            "keyColor": "cyan"
+        },
+        {
+            "type": "player",
+            "key": "│ ├󰥠",
+            "keyColor": "cyan"
+        },
+        {
+            "type": "media",
+            "key": "│ └󰝚",
+            "keyColor": "cyan"
+        },
+        {
+            "type": "custom",
+            "format": "└{$1}{$1}┘",
+            "outputColor": "90"
+        },
+        {
+            "type": "custom",
+            "format": " {#90}  {#31}  {#32}  {#33}  {#34}  {#35}  {#36}  {#37}  {#38}  {#39}       {#38}  {#37}  {#36}  {#35}  {#34}  {#33}  {#32}  {#31}  {#90}"
+        },
+        {
+            "key": "Distro      ",
+            "type": "os"
+        },
+        {
+            "key": "Shell       ",
+            "type": "shell"
+        },
+        {
+            "key": "Terminal    ",
+            "type": "terminal"
+        },
+        {
+            "key": "Display     ",
+            "type": "display"
+        },
+        {
+            "key": "Backlight   ",
+            "type": "brightness"
+        },
+        {
+            "type": "custom",
+            "format": "{$1}",
+            "outputColor": "90"
+        },
+        {
+            "type": "title",
+            "format": "                             {user-name-colored}{at-symbol-colored}{host-name-colored}"
+        },
+        {
+            "type": "custom",
+            "format": "┌{$1} {#1}System Information{#} {$1}┐"
+        },
+        {
+            "key": "OS           ",
+            "keyColor": "red",
+            "type": "os"
+        },
+        {
+            "key": "Machine      ",
+            "keyColor": "green",
+            "type": "host"
+        },
+        {
+            "key": "Kernel       ",
+            "keyColor": "magenta",
+            "type": "kernel"
+        },
+        {
+            "key": "Uptime       ",
+            "keyColor": "red",
+            "type": "uptime"
+        },
+        {
+            "key": "Resolution   ",
+            "keyColor": "yellow",
+            "type": "display",
+            "compactType": "original-with-refresh-rate"
+        },
+        {
+            "key": "WM           ",
+            "keyColor": "blue",
             "type": "wm"
         },
         {
@@ -75,35 +329,2036 @@
             "type": "de"
         },
         {
-            "key": "Theme        ",
-            "keyColor": "green",
-            "type": "theme"
-        },
-        {
-            "key": "Font         ",
-            "keyColor": "green",
-            "type": "font"
-        },
-        {
-            "key": "Terminal     ",
-            "keyColor": "green",
-            "type": "terminal"
-        },
-        {
             "key": "Shell        ",
-            "keyColor": "green",
+            "keyColor": "cyan",
             "type": "shell"
         },
         {
-            "key": "Public IP    ",
-            "keyColor": "green",
-            "type": "publicip",
-            "timeout": 1000
+            "key": "Terminal     ",
+            "keyColor": "red",
+            "type": "terminal"
         },
         {
-            "type": "colors",
-            "paddingLeft": 0,
-            "symbol": "diamond"
+            "key": "CPU          ",
+            "keyColor": "yellow",
+            "type": "cpu"
+        },
+        {
+            "key": "GPU          ",
+            "keyColor": "blue",
+            "type": "gpu"
+        },
+        {
+            "key": "Memory       ",
+            "keyColor": "magenta",
+            "type": "memory"
+        },
+        {
+            "key": "Local IP     ",
+            "keyColor": "red",
+            "type": "localip",
+            "compact": true
+        },
+        {
+            "type": "custom",
+            "format": "└{$1}────────────────────{$1}┘"
+        },
+        {
+            "type": "custom",
+            "format": "{$1}",
+            "outputColor": "90"
+        },
+        {
+            "key": "╭───────────╮",
+            "type": "custom"
+        },
+        {
+            "key": "│ {#31} user    {#keys}│",
+            "type": "title",
+            "format": "{user-name}"
+        },
+        {
+            "key": "│ {#32}󰇅 hname   {#keys}│",
+            "type": "title",
+            "format": "{host-name}"
+        },
+        {
+            "key": "│ {#33}󰅐 uptime  {#keys}│",
+            "type": "uptime"
+        },
+        {
+            "key": "│ {#34}{icon} distro  {#keys}│",
+            "type": "os"
+        },
+        {
+            "key": "│ {#35} kernel  {#keys}│",
+            "type": "kernel"
+        },
+        {
+            "key": "│ {#36}󰇄 desktop {#keys}│",
+            "type": "de"
+        },
+        {
+            "key": "│ {#31} term    {#keys}│",
+            "type": "terminal"
+        },
+        {
+            "key": "│ {#32} shell   {#keys}│",
+            "type": "shell"
+        },
+        {
+            "key": "│ {#33}󰍛 cpu     {#keys}│",
+            "type": "cpu",
+            "showPeCoreCount": true
+        },
+        {
+            "key": "│ {#34}󰉉 disk    {#keys}│",
+            "type": "disk",
+            "folders": "/"
+        },
+        {
+            "key": "│ {#35} memory  {#keys}│",
+            "type": "memory"
+        },
+        {
+            "key": "│ {#36}󰩟 network {#keys}│",
+            "type": "localip",
+            "format": "{ipv4} ({ifname})"
+        },
+        {
+            "type": "custom",
+            "format": "{$1}",
+            "outputColor": "90"
+        },
+        {
+            // draw borders first to make colors of left and right border consistant
+            "key": " user",
+            "type": "title",
+            "format": "{user-name}",
+            "keyColor": "31"
+        },
+        {
+            "key": "󰇅 hname",
+            "type": "title",
+            "format": "{host-name}",
+            "keyColor": "32"
+        },
+        {
+            "key": "󰅐 uptime",
+            "type": "uptime",
+            "keyColor": "33"
+        },
+        {
+            "key": "{icon} distro",
+            "type": "os",
+            "keyColor": "34"
+        },
+        {
+            "key": " kernel",
+            "type": "kernel",
+            "keyColor": "35"
+        },
+        {
+            "key": "󰇄 desktop",
+            "type": "de",
+            "keyColor": "36"
+        },
+        {
+            "key": " term",
+            "type": "terminal",
+            "keyColor": "31"
+        },
+        {
+            "key": " shell",
+            "type": "shell",
+            "keyColor": "32"
+        },
+        {
+            "key": "󰍛 cpu",
+            "type": "cpu",
+            "showPeCoreCount": true,
+            "keyColor": "33"
+        },
+        {
+            "key": "󰉉 disk",
+            "type": "disk",
+            "folders": "/",
+            "keyColor": "34"
+        },
+        {
+            "key": " memory",
+            "type": "memory",
+            "keyColor": "35"
+        },
+        {
+            "key": "󰩟 network",
+            "type": "localip",
+            "format": "{ipv4} ({ifname})",
+            "keyColor": "36"
+        },
+        {
+            "type": "custom",
+            "format": "{$1}",
+            "outputColor": "90"
+        },
+        {
+            "key": "•••••••••••••",
+            "type": "custom"
+        },
+        {
+            "key": "• {#31} user    {#keys}•",
+            "type": "title",
+            "format": "{user-name}"
+        },
+        {
+            "key": "• {#32}󰇅 hname   {#keys}•",
+            "type": "title",
+            "format": "{host-name}"
+        },
+        {
+            "key": "• {#33}󰅐 uptime  {#keys}•",
+            "type": "uptime"
+        },
+        {
+            "key": "• {#34}{icon} distro  {#keys}•",
+            "type": "os"
+        },
+        {
+            "key": "• {#35} kernel  {#keys}•",
+            "type": "kernel"
+        },
+        {
+            "key": "• {#36}󰇄 desktop {#keys}•",
+            "type": "de"
+        },
+        {
+            "key": "• {#31} term    {#keys}•",
+            "type": "terminal"
+        },
+        {
+            "key": "• {#32} shell   {#keys}•",
+            "type": "shell"
+        },
+        {
+            "key": "• {#33}󰍛 cpu     {#keys}•",
+            "type": "cpu",
+            "showPeCoreCount": true
+        },
+        {
+            "key": "• {#34}󰉉 disk    {#keys}•",
+            "type": "disk",
+            "folders": "/"
+        },
+        {
+            "key": "• {#35} memory  {#keys}•",
+            "type": "memory"
+        },
+        {
+            "key": "• {#36}󰩟 network {#keys}•",
+            "type": "localip",
+            "format": "{ipv4} ({ifname})"
+        },
+        {
+            "key": "•••••••••••••",
+            "type": "custom"
+        },
+        {
+            "key": "•••••••••••••",
+            "type": "custom"
+        },
+        {
+            "type": "custom",
+            "format": "{$1}",
+            "outputColor": "90"
+        },
+        {
+            "key": "╔═══════════╗",
+            "type": "custom"
+        },
+        {
+            "key": "║ {#31} user    {#keys}║",
+            "type": "title",
+            "format": "{user-name}"
+        },
+        {
+            "key": "║ {#32}󰇅 hname   {#keys}║",
+            "type": "title",
+            "format": "{host-name}"
+        },
+        {
+            "key": "║ {#33}󰅐 uptime  {#keys}║",
+            "type": "uptime"
+        },
+        {
+            "key": "║ {#34}{icon} distro  {#keys}║",
+            "type": "os"
+        },
+        {
+            "key": "║ {#35} kernel  {#keys}║",
+            "type": "kernel"
+        },
+        {
+            "key": "║ {#36}󰇄 desktop {#keys}║",
+            "type": "de"
+        },
+        {
+            "key": "║ {#31} term    {#keys}║",
+            "type": "terminal"
+        },
+        {
+            "key": "║ {#32} shell   {#keys}║",
+            "type": "shell"
+        },
+        {
+            "key": "║ {#33}󰍛 cpu     {#keys}║",
+            "type": "cpu",
+            "showPeCoreCount": true
+        },
+        {
+            "key": "║ {#34}󰉉 disk    {#keys}║",
+            "type": "disk",
+            "folders": "/"
+        },
+        {
+            "key": "║ {#35} memory  {#keys}║",
+            "type": "memory"
+        },
+        {
+            "key": "║ {#36}󰩟 network {#keys}║",
+            "type": "localip",
+            "format": "{ipv4} ({ifname})"
+        },
+        {
+            "key": "╚═══════════╝",
+            "type": "custom"
+        },
+        {
+            "type": "custom",
+            "format": "{$1}",
+            "outputColor": "90"
+        },
+        {
+            "format": "{#1}{#keys}╭{$1}╮\u001b[76D {user-name-colored}{at-symbol-colored}{host-name-colored} 🖥  ",
+            "type": "title"
+        },
+        {
+            "key": "{$2}{#31} kernel   ",
+            "type": "kernel"
+        },
+        {
+            "key": "{$2}{#32}󰅐 uptime   ",
+            "type": "uptime"
+        },
+        {
+            "key": "{$2}{#33}{icon} distro   ",
+            "type": "os"
+        },
+        {
+            "key": "{$2}{#34}󰇄 desktop  ",
+            "type": "de"
+        },
+        {
+            "key": "{$2}{#35} term     ",
+            "type": "terminal"
+        },
+        {
+            "key": "{$2}{#36} shell    ",
+            "type": "shell"
+        },
+        {
+            "key": "{$2}{#35}󰍛 cpu      ",
+            "type": "cpu",
+            "showPeCoreCount": true,
+            "temp": true
+        },
+        {
+            "key": "{$2}{#34}󰍛 gpu      ",
+            "type": "gpu"
+        },
+        {
+            "key": "{$2}{#33}󰉉 disk     ",
+            "type": "disk",
+            "folders": "/"
+        },
+        {
+            "key": "{$2}{#32} memory   ",
+            "type": "memory"
+        },
+        {
+            "key": "{$2}{#31}󰩟 network  ",
+            "type": "localip",
+            "format": "{ipv4} ({ifname})"
+        },
+        {
+            "format": "{#1}{#keys}├{$1}┤",
+            "type": "custom"
+        },
+        {
+            "format": "{#1}{#keys}╰{$1}╯",
+            "type": "custom"
+        },
+        {
+            "type": "custom",
+            "format": "{$1}",
+            "outputColor": "90"
+        },
+        {
+            "format": "{#1}{#keys}╔{$1}╗\u001b[76D {user-name-colored}{at-symbol-colored}{host-name-colored} 💻 ",
+            "type": "title"
+        },
+        {
+            "key": "{$2}{#31} kernel   ",
+            "type": "kernel"
+        },
+        {
+            "key": "{$2}{#32}󰅐 uptime   ",
+            "type": "uptime"
+        },
+        {
+            "key": "{$2}{#33}{icon} distro   ",
+            "type": "os"
+        },
+        {
+            "key": "{$2}{#34}󰇄 desktop  ",
+            "type": "de"
+        },
+        {
+            "key": "{$2}{#35} term     ",
+            "type": "terminal"
+        },
+        {
+            "key": "{$2}{#36} shell    ",
+            "type": "shell"
+        },
+        {
+            "key": "{$2}{#35}󰍛 cpu      ",
+            "type": "cpu",
+            "showPeCoreCount": true,
+            "temp": true
+        },
+        {
+            "key": "{$2}{#34}󰍛 gpu      ",
+            "type": "gpu"
+        },
+        {
+            "key": "{$2}{#33}󰉉 disk     ",
+            "type": "disk",
+            "folders": "/"
+        },
+        {
+            "key": "{$2}{#32} memory   ",
+            "type": "memory"
+        },
+        {
+            "key": "{$2}{#31}󰩟 network  ",
+            "type": "localip",
+            "format": "{ipv4} ({ifname})"
+        },
+        {
+            "format": "{#1}{#keys}╠{$1}╣",
+            "type": "custom"
+        },
+        {
+            "format": "{#1}{#keys}╚{$1}╝",
+            "type": "custom"
+        },
+        {
+            "type": "custom",
+            "format": "{$1}",
+            "outputColor": "90"
+        },
+        {
+            "type": "custom", // HardwareInfo
+            "format": "• {#green}SYSTEM INFORMATION"
+        },
+        {
+            "type": "host",
+            "key": "HOST",
+            "format": "{name}{?vendor} ({vendor}){?}",
+            "keyColor": "green"
+        },
+        {
+            "type": "chassis",
+            "key": "COMPUTER TYPE",
+            "keyColor": "green"
+        },
+        {
+            "type": "cpu",
+            "key": "CPU",
+            "keyColor": "green"
+        },
+        {
+            "type": "gpu",
+            "key": "GPU",
+            "keyColor": "green"
+        },
+        {
+            "type": "memory",
+            "key": "MEMORY USED",
+            "keyColor": "green"
+        },
+        {
+            "type": "swap",
+            "key": "SWAP USED",
+            "keyColor": "green"
+        },
+        {
+            "type": "disk",
+            "key": "DISK",
+            "folders": "/",
+            "keyColor": "green"
+        },
+        {
+            "type": "custom", // SoftwareInfo
+            "format": "• {#red}SOFTWARE INFORMATION"
+        },
+        {
+            "type": "os",
+            "key": "DISTRO",
+            "keyColor": "red"
+        },
+        {
+            "type": "disk",
+            "folders": "/", // Use "/System/Volumes/VM" or something else on macOS
+            "format": "{create-time}",
+            "key": "INSTALLED DATE",
+            "keyColor": "red"
+        },
+        {
+            "type": "kernel",
+            "key": "KERNEL",
+            "keyColor": "red"
+        },
+        {
+            "type": "packages",
+            "key": "PACKAGES",
+            "keyColor": "red"
+        },
+        {
+            "type": "uptime",
+            "key": "UPTIME",
+            "keyColor": "red"
+        },
+        {
+            "type": "custom", // DisplayInfo
+            "format": "• {#blue}DISPLAY INFORMATION"
+        },
+        {
+            "type": "de",
+            "key": "DESKTOP ENVIRONMENT",
+            "keyColor": "blue"
+        },
+        {
+            "type": "lm",
+            "key": "LOGIN MANAGER",
+            "format": "{type}",
+            "keyColor": "blue"
+        },
+        {
+            "type": "wm",
+            "key": "WM",
+            "keyColor": "blue"
+        },
+        {
+            "type": "wmtheme",
+            "key": "WM THEME",
+            "keyColor": "blue"
+        },
+        {
+            "type": "display",
+            "key": "MONITOR ({name})",
+            "keyColor": "blue",
+            "format": "{width}x{height} @ {refresh-rate} Hz - {physical-width}x{physical-height} mm ({inch} inches, {ppi} ppi)"
+        },
+        {
+            "type": "custom", // DesignInfo
+            "format": "• {#yellow}DESIGN INFORMATION"
+        },
+        {
+            "type": "wallpaper",
+            "key": "WALLPAPER",
+            "keyColor": "yellow"
+        },
+        {
+            "type": "theme",
+            "key": "KDE THEME",
+            "format": "{1}",
+            "keyColor": "yellow"
+        },
+        {
+            "type": "icons",
+            "key": "ICON THEME",
+            "format": "{1}",
+            "keyColor": "yellow"
+        },
+        {
+            "type": "font",
+            "key": "FONT",
+            "format": "{?1}{1} [Qt]{?}{/1}Unknown", // Remove "[Qt]" if not using Qt
+            "keyColor": "yellow"
+        },
+        {
+            "type": "terminalfont",
+            "key": "TERMINAL FONT",
+            "keyColor": "yellow"
+        },
+        {
+            "type": "cursor",
+            "key": "CURSOR",
+            "keyColor": "yellow"
+        },
+        {
+            "type": "custom", // OtherInfo
+            "format": "• {#cyan}VARIOUS INFORMATION"
+        },
+        {
+            "type": "media",
+            "key": "NOW PLAYING",
+            "format": "{?artist}{artist} - {?}{title}",
+            "keyColor": "cyan"
+        },
+        {
+            "type": "weather",
+            "key": "WEATHER",
+            "timeout": 1000,
+            "keyColor": "cyan"
+        },
+        {
+            "type": "version",
+            "key": "INFO",
+            "keyColor": "cyan"
+        },
+        {
+            "type": "custom",
+            "format": "{$1}",
+            "outputColor": "90"
+        },
+        {
+            "type": "custom", // HardwareStart
+            // {#1} is equivalent to `\u001b[1m`. {#} is equivalent to `\u001b[m`
+            "format": "┌{$1} {#1}Hardware Information{#} {$1}┐"
+        },
+        "host",
+        "cpu",
+        "gpu",
+        "disk",
+        "memory",
+        "swap",
+        "display",
+        "brightness",
+        "battery",
+        "poweradapter",
+        "bluetooth",
+        "sound",
+        "gamepad",
+        {
+            "type": "custom", // SoftwareStart
+            "format": "├{$1} {#1}Software Information{#} {$1}┤"
+        },
+        {
+            "type": "title",
+            "keyIcon": "",
+            "key": "Title", // Title module has no key by default, so that icon is not displayed
+            "format": "{user-name}@{host-name}"
+        },
+        "os",
+        "kernel",
+        "lm",
+        "de",
+        "wm",
+        "shell",
+        "terminal",
+        "terminalfont",
+        "theme",
+        "icons",
+        "wallpaper",
+        "packages",
+        "uptime",
+        "media",
+        {
+            "type": "localip",
+            "compact": true
+        },
+        {
+            "type": "wifi",
+            "format": "{ssid}"
+        },
+        "locale",
+        {
+            "type": "custom", // InformationEnd
+            "format": "└{$1}──────────────────────{$1}┘"
+        },
+        {
+            "type": "custom",
+            "format": "{$1}",
+            "outputColor": "90"
+        },
+        {
+            "type": "custom",
+            "format": "┌┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┐"
+        },
+        {
+            "type": "custom",
+            "format": "├┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┤"
+        },
+        {
+            "type": "version",
+            "key": " ",
+            "format": "│                   FASTFETCH v{version}                   │"
+        },
+        {
+            "type": "custom",
+            "format": "│                 TR-100 MACHINE REPORT                 │"
+        },
+        {
+            "type": "custom",
+            "format": "├────────────┬──────────────────────────────────────────┤"
+        },
+        {
+            "type": "os",
+            "key": "│ OS         │{$1}"
+        },
+        {
+            "type": "kernel",
+            "key": "│ KERNEL     │{$1}"
+        },
+        {
+            "type": "custom",
+            "format": "├────────────┼──────────────────────────────────────────┤"
+        },
+        {
+            "type": "title",
+            "key": "│ HOSTNAME   │{$1}",
+            "format": "{host-name}"
+        },
+        {
+            "type": "localip",
+            "key": "│ CLIENT IP  │{$1}",
+            "format": "{ipv4}"
+        },
+        {
+            "type": "localip",
+            "key": "│ MAC ADDR   │{$1}",
+            "format": "{mac} ({ifname})",
+            "showIpv4": false,
+            "showMac": true
+        },
+        {
+            "type": "dns",
+            "key": "│ DNS        │{$1}",
+            "showType": "ipv4"
+        },
+        {
+            "type": "title",
+            "key": "│ USER       │{$1}",
+            "format": "{user-name}"
+        },
+        {
+            "type": "host",
+            "key": "│ MACHINE    │{$1}",
+            "format": "{name}"
+        },
+        {
+            "type": "custom",
+            "format": "├────────────┼──────────────────────────────────────────┤"
+        },
+        {
+            "type": "cpu",
+            "key": "│ PROCESSOR  │{$1}",
+            "format": "{name}"
+        },
+        {
+            "type": "cpu",
+            "key": "│ CORES      │{$1}",
+            "format": "{cores-physical} PHYSICAL CORES / {cores-logical} THREADS",
+            "showPeCoreCount": false
+        },
+        {
+            "type": "cpu",
+            "key": "│ CPU FREQ   │{$1}",
+            "format": "{freq-max}{/freq-max}{freq-base}{/}"
+        },
+        {
+            "type": "loadavg",
+            "compact": false,
+            "key": "│ LOAD  {duration>2}m  │{$1}" // pad duration to 2 chars
+        },
+        {
+            "type": "custom",
+            "format": "├────────────┼──────────────────────────────────────────┤"
+        },
+        {
+            "type": "memory",
+            "key": "│ MEMORY     │{$1}",
+            "format": "{used} / {total} [{percentage}]",
+            "percent": {
+                "type": [
+                    "num"
+                ]
+            }
+        },
+        {
+            "type": "memory",
+            "key": "│ USAGE      │{$1}",
+            "format": "",
+            "percent": {
+                "type": [
+                    "bar",
+                    "hide-others"
+                ]
+            }
+        },
+        {
+            "type": "custom",
+            "format": "├────────────┼──────────────────────────────────────────┤"
+        },
+        {
+            "type": "disk",
+            "key": "│ VOLUME     │{$1}",
+            "format": "{size-used} / {size-total} [{size-percentage}]",
+            "folders": "/",
+            "percent": {
+                "type": [
+                    "num"
+                ]
+            }
+        },
+        {
+            "type": "disk",
+            "key": "│ DISK USAGE │{$1}",
+            "format": "",
+            "percent": {
+                "type": [
+                    "bar",
+                    "hide-others"
+                ]
+            }
+        },
+        {
+            "type": "custom",
+            "format": "├────────────┼──────────────────────────────────────────┤"
+        },
+        {
+            "type": "users",
+            "key": "│ LAST LOGIN │{$1}",
+            "format": "{login-time}{?client-ip} ({client-ip})",
+            "myselfOnly": true
+        },
+        {
+            "type": "uptime",
+            "key": "│ UPTIME     │{$1}"
+        },
+        {
+            "type": "custom",
+            "format": "└────────────┴──────────────────────────────────────────┘"
+        },
+        {
+            "type": "custom",
+            "format": "{$1}",
+            "outputColor": "90"
+        },
+        {
+            "key": "{$1}Distro",
+            "keyColor": "38;5;210",
+            "type": "os"
+        },
+        {
+            "key": "{$1}Kernel",
+            "keyColor": "38;5;84",
+            "type": "kernel"
+        },
+        {
+            "key": "{$1}Shell",
+            "keyColor": "38;5;147",
+            "type": "shell"
+        },
+        {
+            "key": "{$1}Packages",
+            "keyColor": "38;5;200",
+            "type": "packages"
+        },
+        {
+            "key": "{$1}WM",
+            "keyColor": "38;5;44",
+            "type": "wm"
+        },
+        {
+            "key": "{$1}CPU",
+            "keyColor": "38;5;75",
+            "type": "cpu"
+        },
+        {
+            "key": "{$1}Memory",
+            "keyColor": "38;5;123",
+            "type": "memory"
+        },
+        {
+            "type": "custom",
+            "format": "{$1}",
+            "outputColor": "90"
+        },
+        {
+            "type": "kernel",
+            "key": " /\\rch Linux",
+            "keyColor": "magenta"
+        },
+        {
+            "type": "custom",
+            "format": "{$1}",
+            "outputColor": "separator"
+        },
+        {
+            "type": "uptime",
+            "key": "   Uptime   ",
+            "keyColor": "green"
+        },
+        {
+            "type": "shell",
+            "key": "   Shell    ",
+            "keyColor": "green"
+        },
+        {
+            "type": "terminal",
+            "key": "   Terminal ",
+            "keyColor": "green"
+        },
+        {
+            "type": "terminalfont",
+            "key": "   Font     ",
+            "keyColor": "green"
+        },
+        {
+            "type": "packages",
+            "key": "   Packages ",
+            "keyColor": "green"
+        },
+        {
+            "type": "localip",
+            "key": "   Local IP ",
+            "keyColor": "green"
+        },
+        {
+            "type": "custom",
+            "format": "{$1}",
+            "outputColor": "separator"
+        },
+        {
+            "type": "display",
+            "key": "   Display  ",
+            "keyColor": "cyan"
+        },
+        {
+            "type": "cpu",
+            "key": "   CPU      ",
+            "keyColor": "cyan"
+        },
+        {
+            "type": "gpu",
+            "key": "   GPU      ",
+            "keyColor": "cyan"
+        },
+        {
+            "type": "memory",
+            "key": "   RAM      ",
+            "keyColor": "cyan"
+        },
+        {
+            "type": "swap",
+            "key": "   SWAP     ",
+            "keyColor": "cyan"
+        },
+        {
+            "type": "disk",
+            "key": "   Disk     ",
+            "keyColor": "cyan"
+        },
+        {
+            "type": "battery",
+            "key": "   Battery  ",
+            "keyColor": "cyan"
+        },
+        {
+            "type": "custom",
+            "format": "{$1}",
+            "outputColor": "separator"
+        },
+        {
+            "type": "custom",
+            "format": "{$1}",
+            "outputColor": "90"
+        },
+        {
+            "type": "kernel",
+            "key": "[_Kernel___> ",
+            "keyColor": "blue"
+        },
+        {
+            "type": "packages",
+            "outputColor": "white",
+            "key": " [_Packages_> ",
+            "keyColor": "green"
+        },
+        {
+            "type": "localip",
+            "outputColor": "white",
+            "key": " [_Local_IP_> ",
+            "keyColor": "green"
+        },
+        {
+            "type": "memory",
+            "format": "[{3}] {1} / {2}",
+            "key": " [_RAM______> ",
+            "keyColor": "magenta"
+        },
+        {
+            "type": "swap",
+            "format": "[{3}] {1} / {2}",
+            "key": " [_SWAP_____> ",
+            "keyColor": "magenta"
+        },
+        {
+            "type": "disk",
+            "format": "[{3}] {1} / {2} {9}",
+            "key": " [_Disk_____> ",
+            "keyColor": "magenta"
+        },
+        {
+            "type": "battery",
+            "format": "[{4}] {5}",
+            "key": " [_Battery__> ",
+            "keyColor": "magenta"
+        },
+        {
+            "type": "custom",
+            "format": "{$1}",
+            "outputColor": "90"
+        },
+        // CUSTOM - Top UI bar
+        {
+            "type": "custom",
+            "key": "{#90}{$1}╭─────────────╮",
+            "format": "{#90}{$2}╭────────────────────────────────────────────────────────────╮",
+        },
+        {
+            "type": "title",
+            "key": "{#90}{$1}│ {#92}User        {#90}│",
+            "format": "{$2}{$3}{user-name}  {#2}[{home-dir}]"
+        },
+        {
+            "type": "users",
+            "key": "{#90}{$1}│ {#92}Users       {#90}│",
+            "myselfOnly": false,
+            "format": "{$2}{$3}{1}@{host-name}{/host-name}localhost{/}{?client-ip}  {#2}[IP:{client-ip}]{?}  [Login time: {login-time}]"
+        },
+        {
+            "type": "datetime",
+            "key": "{#90}{$1}│ {#92}Datetime    {#90}│",
+            "format": "{$2}{$3}{year}-{month-pretty}-{day-in-month} {hour-pretty}:{minute-pretty}:{second-pretty}  [{weekday}] [W{week}] [UTC{offset-from-utc}]"
+        },
+        {
+            "type": "title",
+            "key": "{#90}{$1}│ {#93}Host        {#90}│",
+            "format": "{$2}{$3}{host-name}"
+        },
+        {
+            "type": "host",
+            "key": "{#90}{$1}│ {#93}Machine     {#90}│",
+            "format": "{$2}{$3}{name}  {#2}{version}"
+        },
+        {
+            "type": "os",
+            "key": "{#90}{$1}│ {#93}OS          {#90}│",
+            "format": "{$2}{$3}{?pretty-name}{pretty-name}{?}{/pretty-name}{name}{/} {codename}  {#2}[v{version}] [{arch}]"
+        },
+        {
+            "type": "kernel",
+            "key": "{#90}{$1}│ {#93}Kernel      {#90}│",
+            "format": "{$2}{$3}{sysname}  {#2}[v{release}]"
+        },
+        {
+            "type": "uptime",
+            "key": "{#90}{$1}│ {#93}Uptime      {#90}│",
+            "format": "{$2}{$3}{?days}{days} Days + {?}{hours}:{minutes}:{seconds}"
+        },
+        {
+            "type": "cpu",
+            "key": "{#90}{$1}│ {#91}CPU         {#90}│",
+            "showPeCoreCount": true,
+            "temp": true,
+            "format": "{$2}{$3}{name}  {#2}[C:{core-types}] [{freq-max}]"
+        },
+        {
+            "type": "gpu",
+            "key": "{#90}{$1}│ {#91}GPU         {#90}│",
+            "detectionMethod": "auto",
+            "driverSpecific": true,
+            "format": "{$2}{$3}{name}  {#2}[C:{core-count}]{?frequency} [{frequency}]{?} [{type}]"
+        },
+        {
+            "type": "memory",
+            "key": "{#90}{$1}│ {#91}Memory      {#90}│",
+            "format": "{$2}{$3}{used} / {total} ({percentage}{$2})"
+        },
+        {
+            "type": "disk",
+            "key": "{#90}{$1}│ {#91}Disk        {#90}│",
+            "format": "{$2}{$3}{size-used} / {size-total} ({size-percentage}{$2})"
+        },
+        {
+            "type": "poweradapter",
+            "key": "{#90}{$1}│ {#91}Power       {#90}│",
+            "format": "{$2}{$3}{name}"
+        },
+        {
+            "type": "terminal",
+            "key": "{#90}{$1}│ {#95}Terminal    {#90}│",
+            "format": "{$2}{$3}{pretty-name}  {#2}[{version}] [PID:{pid}]"
+        },
+        {
+            "type": "terminalfont",
+            "key": "{#90}{$1}│ {#95}Font        {#90}│",
+            "format": "{$2}{$3}{name}  {#2}[{size}]"
+        },
+        {
+            "type": "shell",
+            "key": "{#90}{$1}│ {#95}Shell       {#90}│",
+            "format": "{$2}{$3}{pretty-name}  {#2}[v{version}] [PID:{pid}]"
+        },
+        {
+            // localip IPv4
+            "type": "localip",
+            "key": "{#90}{$1}│ {#94}Local IPv4  {#90}│",
+            "showPrefixLen": true,
+            "showIpv4": true,
+            "showIpv6": false,
+            "showMtu": true,
+            "format": "{$2}{$3}{ifname}: {ipv4}  {#2}[MTU:{mtu}]"
+        },
+        {
+            // localip IPv6
+            "type": "localip",
+            "key": "{#90}{$1}│ {#94}Local IPv6  {#90}│",
+            "showPrefixLen": true,
+            "showIpv4": false,
+            "showIpv6": true,
+            "showMtu": true,
+            "format": "{$2}{$3}{ifname}: {ipv6}  {#2}[MTU:{mtu}]"
+        },
+        // CUSTOM - Button UI bar
+        {
+            "type": "custom",
+            "key": "{#90}{$1}╰─────────────╯",
+            "format": "{#90}{$2}╰────────────────────────────────────────────────────────────╯",
+        },
+        {
+            "type": "custom",
+            "format": "{$1}",
+            "outputColor": "90"
+        },
+        {
+            "type": "version",
+            "key": "┌───────────────┬─{$1}┐\u001b[41D",
+            "format": "\u001b[1m{#keys} {1} - {2} "
+        },
+        {
+            "type": "os",
+            // Key format breakdown for OS module:
+            // "│  {icon}  \u001b[s{sysname}\u001b[u\u001b[10C│{$3}│{$2}"
+            //
+            // │                    - Left border of key block
+            //   {icon}             - OS icon (defined internally by fastfetch)
+            //   \u001b[s           - ANSI escape: save cursor position (ESC[s)
+            // {sysname}            - Format variable: system name (e.g., "Linux", "Darwin")
+            // \u001b[u             - ANSI escape: restore cursor to saved position (ESC[u)
+            //                        Necessary because the length of `{sysname}` differs between different platforms
+            // \u001b[10C           - ANSI escape: move cursor right 10 columns (ESC[10C)
+            // │                    - Right border of key block (always 10 columns from left border)
+            // {$3}                 - Reference to constants[2]: move cursor right 47 columns
+            // │                    - Right border of value block
+            // {$2}                 - Reference to constants[1]: move cursor left 47 columns
+            //
+            // This creates a fixed-width layout where the key block is exactly 10 columns wide,
+            // regardless of the actual content length. The cursor manipulation ensures proper
+            // alignment for the table-like structure.
+            "key": "│  {icon}  \u001b[s{sysname}\u001b[u\u001b[10C│{$3}│{$2}"
+        },
+        {
+            "type": "datetime",
+            "key": "│  {icon}  Fetched   │{$3}│{$2}",
+            "format": "{year}-{month-pretty}-{day-pretty} {hour-pretty}:{minute-pretty}:{second-pretty} {timezone-name}"
+        },
+        {
+            "type": "locale",
+            "key": "│  {icon}  Locale    │{$3}│{$2}"
+        },
+        // Hardware section with cyan color theme
+        {
+            "type": "custom",
+            "key": "│{#cyan}┌──────────────┬{$1}┐{#keys}│\u001b[37D",
+            "format": "{#bright_cyan} Hardware "
+        },
+        {
+            "type": "chassis",
+            // Similar structure but with cyan color formatting:
+            // │{#cyan}│             - Left border with cyan color
+            //  {icon}               - Chassis icon
+            //  Chassis             - Fixed label text
+            // │{$4}│{#keys}│{$2}    - Positioning and borders for value area
+            "key": "│{#cyan}│ {icon}  Chassis   │{$4}│{#keys}│{$2}"
+        },
+        {
+            "type": "memory",
+            "key": "│{#cyan}│ {icon}  RAM       │{$4}│{#keys}│{$2}"
+        },
+        {
+            "type": "swap",
+            "key": "│{#cyan}│ {icon}  SWAP      │{$4}│{#keys}│{$2}"
+        },
+        {
+            "type": "cpu",
+            "key": "│{#cyan}│ {icon}  CPU       │{$4}│{#keys}│{$2}",
+            "showPeCoreCount": true
+        },
+        {
+            "type": "gpu",
+            "key": "│{#cyan}│ {icon}  GPU       │{$4}│{#keys}│{$2}"
+        },
+        {
+            "type": "disk",
+            "key": "│{#cyan}│ {icon}  Disk      │{$4}│{#keys}│{$2}",
+            "format": "{size-used} \/ {size-total} ({size-percentage}) - {filesystem}",
+        },
+        {
+            "type": "battery",
+            "key": "│{#cyan}│ {icon}  Battery   │{$4}│{#keys}│{$2}"
+        },
+        {
+            "type": "custom",
+            "key": "│{#cyan}└──────────────┴{$1}┘{#keys}│",
+            "format": ""
+        },
+        // Desktop section with green color theme
+        {
+            "type": "custom",
+            "key": "│{#green}┌──────────────┬{$1}┐{#keys}│\u001b[37D",
+            "format": "{#bright_green} Desktop "
+        },
+        {
+            "type": "de",
+            "key": "│{#green}│ {icon}  Desktop   │{$4}│{#keys}│{$2}"
+        },
+        {
+            "type": "wm",
+            "key": "│{#green}│ {icon}  Session   │{$4}│{#keys}│{$2}"
+        },
+        {
+            "type": "display",
+            "key": "│{#green}│ {icon}  Display   │{$4}│{#keys}│{$2}",
+            "compactType": "original-with-refresh-rate"
+        },
+        {
+            "type": "gpu",
+            "key": "│{#green}│ {icon}  G-Driver  │{$4}│{#keys}│{$2}",
+            "format": "{driver}"
+        },
+        {
+            "type": "custom",
+            "key": "│{#green}└──────────────┴{$1}┘{#keys}│",
+            "format": ""
+        },
+        // Terminal section with yellow color theme
+        {
+            "type": "custom",
+            "key": "│{#yellow}┌──────────────┬{$1}┐{#keys}│\u001b[37D",
+            "format": "{#bright_yellow} Terminal "
+        },
+        {
+            "type": "shell",
+            "key": "│{#yellow}│ {icon}  Shell     │{$4}│{#keys}│{$2}"
+        },
+        {
+            "type": "terminal",
+            "key": "│{#yellow}│ {icon}  Terminal  │{$4}│{#keys}│{$2}"
+        },
+        {
+            "type": "terminalfont",
+            "key": "│{#yellow}│ {icon}  Term Font │{$4}│{#keys}│{$2}"
+        },
+        {
+            "type": "terminaltheme",
+            "key": "│{#yellow}│ {icon}  Colors    │{$4}│{#keys}│{$2}"
+        },
+        {
+            "type": "packages",
+            "key": "│{#yellow}│ {icon}  Packages  │{$4}│{#keys}│{$2}"
+        },
+        {
+            "type": "custom",
+            "key": "│{#yellow}└──────────────┴{$1}┘{#keys}│",
+            "format": ""
+        },
+        // Development section with red color theme
+        {
+            "type": "custom",
+            "key": "│{#red}┌──────────────┬{$1}┐{#keys}│\u001b[39D",
+            "format": "{#bright_red} Development "
+        },
+        {
+            "type": "command",
+            "keyIcon": "", // Custom icon override
+            "key": "│{#red}│ {icon}  Rust      │{$4}│{#keys}│{$2}",
+            "text": "rustc --version",
+            "format": "rustc {~6,13}" // Print 6th to 13th characters (version number)
+        },
+        {
+            "type": "command",
+            "condition": {
+                "!system": "Windows" // Posix version
+            },
+            "keyIcon": "",
+            "key": "│{#red}│ {icon}  Clang     │{$4}│{#keys}│{$2}",
+            "text": "clang --version | head -1 | awk '{print $NF}'",
+            "format": "clang {}"
+        },
+        {
+            "type": "command",
+            "condition": {
+                "system": "Windows" // Windows version
+            },
+            "keyIcon": "",
+            "key": "│{#red}│ {icon}  Clang     │{$4}│{#keys}│{$2}",
+            "text": "clang --version | findstr version", // Finds the line with "version"
+            "format": "clang {~-6}" // Prints the last 6 characters (version number)
+        },
+        {
+            "type": "command",
+            "keyIcon": "",
+            "key": "│{#red}│ {icon}  NodeJS    │{$4}│{#keys}│{$2}",
+            "text": "node --version",
+            "format": "node {~1}" // {~1} removes first character (v)
+        },
+        {
+            "type": "command",
+            "keyIcon": "",
+            "key": "│{#red}│ {icon}  Go        │{$4}│{#keys}│{$2}",
+            "text": "go version | cut -d' ' -f3",
+            "format": "go {~2}" // {~2} removes first 2 characters (go)
+        },
+        {
+            "type": "command",
+            "keyIcon": "",
+            "key": "│{#red}│ {icon}  Zig       │{$4}│{#keys}│{$2}",
+            "text": "zig version",
+            "format": "zig {}"
+        },
+        {
+            "type": "editor",
+            "key": "│{#red}│ {icon}  Editor    │{$4}│{#keys}│{$2}"
+        },
+        {
+            "type": "command",
+            "keyIcon": "󰊢",
+            "key": "│{#red}│ {icon}  Git       │{$4}│{#keys}│{$2}",
+            "text": "git version",
+            "format": "git {~12}"
+        },
+        {
+            "type": "font",
+            "key": "│{#red}│ {icon}  Interface │{$4}│{#keys}│{$2}"
+        },
+        {
+            "type": "custom",
+            "key": "│{#red}└──────────────┴{$1}┘{#keys}│",
+            "format": ""
+        },
+        // Uptime section with magenta color theme
+        {
+            "type": "custom",
+            "key": "│{#magenta}┌──────────────┬{$1}┐{#keys}│\u001b[36D",
+            "format": "{#bright_magenta} Uptime "
+        },
+        {
+            "type": "uptime",
+            "key": "│{#magenta}│ {icon}  Uptime    │{$4}│{#keys}│{$2}"
+        },
+        {
+            "type": "users",
+            "myselfOnly": true, // Only show current user
+            "keyIcon": "",
+            "key": "│{#magenta}│ {icon}  Login     │{$4}│{#keys}│{$2}"
+        },
+        {
+            "condition": { // Conditional module: only show on non-macOS
+                "!system": "macOS"
+            },
+            "type": "disk",
+            "keyIcon": "",
+            "key": "│{#magenta}│ {icon}  OS Age    │{$4}│{#keys}│{$2}",
+            "folders": "/", // Check root filesystem
+            "format": "{create-time:10} [{days} days]" // Show creation time and age in days
+        },
+        {
+            "condition": { // Conditional module: only show on macOS
+                "system": "macOS"
+            },
+            "type": "disk",
+            "keyIcon": "",
+            "key": "│{#magenta}│ {icon}  OS Age    │{$4}│{#keys}│{$2}",
+            "folders": "/System/Volumes/VM", // Work around for APFS on macOS
+            "format": "{create-time:10} [{days} days]"
+        },
+        {
+            "type": "custom",
+            "key": "│{#magenta}└──────────────┴{$1}┘{#keys}│",
+            "format": ""
+        },
+        {
+            "type": "custom",
+            "key": "└─────────────────{$1}┘", // Bottom border of the entire layout
+            "format": ""
+        },
+        // End with color palette and line break // Add a blank line
+        /*
+Key Format Structure Explanation:
+
+The key format uses a combination of:
+1. Unicode box drawing characters (│ ┌ ┐ └ ┘ ┬ ┴) for borders
+2. ANSI escape codes for cursor positioning (\u001b[...)
+3. Format variables ({icon}, {sysname}, etc.)
+4. Constant references ({$1}, {$2}, etc.)
+5. Color formatting ({#color})
+
+ANSI Escape Codes Used:
+- \u001b[s      - Save cursor position (ESC[s)
+- \u001b[u      - Restore cursor position (ESC[u)
+- \u001b[nC     - Move cursor right n columns (ESC[nC)
+- \u001b[nD     - Move cursor left n columns (ESC[nD)
+
+This creates a table-like layout with fixed column widths and proper alignment,
+regardless of the actual content length in each field.
+
+For more ANSI escape code reference, see:
+https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797#cursor-controls
+*/
+        {
+            "type": "custom",
+            "format": "{$1}",
+            "outputColor": "90"
+        },
+        // CUSTOM - Top UI bar
+        {
+            "type": "custom",
+            "key": "{#90}╭ Keys ───────╮",
+            "format": "{#90}╭ Values ────────────────────────────────────────────────────╮",
+        },
+        {
+            "type": "title",
+            "key": "{#90}│ {#92}User        {#90}│",
+            "format": "{$1}{user-name}  {#2}[{home-dir}]"
+        },
+        {
+            "type": "users",
+            "key": "{#90}│ {#92}Users       {#90}│",
+            "myselfOnly": false,
+            "format": "{$1}{1}@{host-name}{/host-name}localhost{/}{?client-ip}  {#2}[IP:{client-ip}]{?}  [Login time: {login-time}]"
+        },
+        {
+            "type": "datetime",
+            "key": "{#90}│ {#92}Datetime    {#90}│",
+            "format": "{$1}{year}-{month-pretty}-{day-in-month} {hour-pretty}:{minute-pretty}:{second-pretty}  {#2}[{weekday}] [W{week}] [UTC{offset-from-utc}]"
+        },
+        {
+            "type": "title",
+            "key": "{#90}│ {#93}Host        {#90}│",
+            "format": "{$1}{host-name}"
+        },
+        {
+            "type": "host",
+            "key": "{#90}│ {#93}Machine     {#90}│",
+            "format": "{$1}{name}  {#2}{version}"
+        },
+        {
+            "type": "os",
+            "key": "{#90}│ {#93}OS          {#90}│",
+            "format": "{$1}{?pretty-name}{pretty-name}{?}{/pretty-name}{name}{/} {codename}  {#2}[v{version}] [{arch}]"
+        },
+        {
+            "type": "kernel",
+            "key": "{#90}│ {#93}Kernel      {#90}│",
+            "format": "{$1}{sysname}  {#2}[v{release}]"
+        },
+        {
+            "type": "uptime",
+            "key": "{#90}│ {#93}Uptime      {#90}│",
+            "format": "{$1}{?days}{days} Days + {?}{hours}:{minutes}:{seconds}"
+        },
+        {
+            "type": "cpu",
+            "key": "{#90}│ {#91}CPU         {#90}│",
+            "showPeCoreCount": true,
+            "temp": true,
+            "format": "{$1}{name}  {#2}[C:{core-types}] [{freq-max}]"
+        },
+        {
+            "type": "gpu",
+            "key": "{#90}│ {#91}GPU         {#90}│",
+            "detectionMethod": "auto",
+            "driverSpecific": true,
+            "format": "{$1}{name}  {#2}[C:{core-count}]{?frequency} [{frequency}]{?} {#2}[{type}]"
+        },
+        {
+            "type": "memory",
+            "key": "{#90}│ {#91}Memory      {#90}│",
+            "format": "{$1}{used} / {total} ({percentage})"
+        },
+        {
+            "type": "disk",
+            "key": "{#90}│ {#91}Disk        {#90}│",
+            "format": "{$1}{size-used} / {size-total} ({size-percentage})"
+        },
+        {
+            "type": "poweradapter",
+            "key": "{#90}│ {#91}Power       {#90}│",
+            "format": "{$1}{name}"
+        },
+        {
+            "type": "terminal",
+            "key": "{#90}│ {#95}Terminal    {#90}│",
+            "format": "{$1}{pretty-name}  {#2}[{version}] [PID:{pid}]"
+        },
+        {
+            "type": "terminalfont",
+            "key": "{#90}│ {#95}Font        {#90}│",
+            "format": "{$1}{name}  {#2}[{size}]"
+        },
+        {
+            "type": "shell",
+            "key": "{#90}│ {#95}Shell       {#90}│",
+            "format": "{$1}{pretty-name}  {#2}[v{version}] [PID:{pid}]"
+        },
+        {
+            // localip IPv4
+            "type": "localip",
+            "key": "{#90}│ {#94}Local IPv4  {#90}│",
+            "showPrefixLen": true,
+            "showIpv4": true,
+            "showIpv6": false,
+            "showMtu": true,
+            "format": "{$1}{ifname}: {ipv4}  {#2}[MTU:{mtu}]"
+        },
+        {
+            // localip IPv6
+            "type": "localip",
+            "key": "{#90}│ {#94}Local IPv6  {#90}│",
+            "showPrefixLen": true,
+            "showIpv4": false,
+            "showIpv6": true,
+            "showMtu": true,
+            "format": "{$1}{ifname}: {ipv6}  {#2}[MTU:{mtu}]"
+        },
+        // CUSTOM - Button UI bar
+        {
+            "type": "custom",
+            "key": "{#90}╰─────────────╯",
+            "format": "{#90}╰────────────────────────────────────────────────────────────╯",
+        },
+
+        {
+            "type": "custom",
+            "format": "{$1}",
+            "outputColor": "90"
+        },
+        "title",
+        {
+            "type": "os",
+            "key": "os    ",
+            "keyColor": "red"
+        },
+        {
+            "type": "kernel",
+            "key": "kernel",
+            "keyColor": "green"
+        },
+        {
+            "type": "host",
+            "format": "{vendor} {family}",
+            "key": "host  ",
+            "keyColor": "yellow"
+        },
+        {
+            "type": "packages",
+            "key": "pkgs  ",
+            "keyColor": "blue"
+        },
+        {
+            "type": "uptime",
+            "format": "{?days}{days}d {?}{hours}h {minutes}m",
+            "key": "uptime",
+            "keyColor": "magenta"
+        },
+        {
+            "type": "memory",
+            "key": "memory",
+            "keyColor": "cyan"
+        },
+        {
+            "type": "custom",
+            "format": "{$1}",
+            "outputColor": "90"
+        },
+        "title",
+        "separator",
+        {
+            "type": "memory",
+            "key": "MEM"
+        },
+        {
+            "type": "swap",
+            "key": "SWP"
+        },
+        {
+            "type": "disk",
+            "folders": "/",
+            "key": "DSK"
+        },
+        {
+            "type": "battery",
+            "key": "BAT"
+        },
+        {
+            "type": "brightness",
+            "key": "BGT"
+        },
+        {
+            "type": "custom",
+            "format": "{$1}",
+            "outputColor": "90"
+        },
+        "title",
+        "separator",
+        {
+            "type": "memory",
+            "key": "MEM"
+        },
+        {
+            "type": "swap",
+            "key": "SWP"
+        },
+        {
+            "type": "disk",
+            "folders": "/",
+            "key": "DSK"
+        },
+        {
+            "type": "battery",
+            "key": "BAT"
+        },
+        {
+            "type": "brightness",
+            "key": "BGT"
+        },
+        {
+            "type": "custom",
+            "format": "{$1}",
+            "outputColor": "90"
+        },
+        "vulkan",
+        "opengl",
+        "opencl",
+        "memory",
+        {
+            "type": "disk",
+            "folders": "/:/home:/boot:/efi"
+        },
+        "localip",
+        {
+            "type": "custom",
+            "format": "{$1}",
+            "outputColor": "90"
+        },
+        {
+            "type": "datetime",
+            "key": "Date",
+            "format": "{1}-{3}-{11}"
+        },
+        {
+            "type": "datetime",
+            "key": "Time",
+            "format": "{14}:{17}:{20}"
+        },
+        "player",
+        "media",
+        {
+            "type": "custom",
+            "format": "{$1}",
+            "outputColor": "90"
+        },
+        {
+            "type": "theme",
+            "key": "T"
+        },
+        {
+            "type": "icons",
+            "key": "I"
+        },
+        {
+            "type": "font",
+            "key": "F"
+        },
+        {
+            "type": "cursor",
+            "key": "C"
+        },
+        {
+            "type": "custom",
+            "format": "{$1}",
+            "outputColor": "90"
+        },
+        {
+            "type": "host",
+            "key": "╭─󰌢",
+            "keyColor": "green"
+        },
+        {
+            "type": "cpu",
+            "key": "├─󰻠",
+            "keyColor": "green"
+        },
+        {
+            "type": "gpu",
+            "key": "├─󰍛",
+            "keyColor": "green"
+        },
+        {
+            "type": "disk",
+            "key": "├─",
+            "keyColor": "green"
+        },
+        {
+            "type": "memory",
+            "key": "├─󰑭",
+            "keyColor": "green"
+        },
+        {
+            "type": "swap",
+            "key": "├─󰓡",
+            "keyColor": "green"
+        },
+        {
+            "type": "display",
+            "key": "├─󰍹",
+            "keyColor": "green"
+        },
+        {
+            "type": "brightness",
+            "key": "├─󰃞",
+            "keyColor": "green"
+        },
+        {
+            "type": "battery",
+            "key": "├─",
+            "keyColor": "green"
+        },
+        {
+            "type": "poweradapter",
+            "key": "├─",
+            "keyColor": "green"
+        },
+        {
+            "type": "gamepad",
+            "key": "├─",
+            "keyColor": "green"
+        },
+        {
+            "type": "bluetooth",
+            "key": "├─",
+            "keyColor": "green"
+        },
+        {
+            "type": "sound",
+            "key": "╰─",
+            "keyColor": "green"
+        },
+        {
+            "type": "shell",
+            "key": "╭─",
+            "keyColor": "yellow"
+        },
+        {
+            "type": "terminal",
+            "key": "├─",
+            "keyColor": "yellow"
+        },
+        {
+            "type": "terminalfont",
+            "key": "├─",
+            "keyColor": "yellow"
+        },
+        {
+            "type": "lm",
+            "key": "├─󰧨",
+            "keyColor": "yellow"
+        },
+        {
+            "type": "de",
+            "key": "├─",
+            "keyColor": "yellow"
+        },
+        {
+            "type": "wm",
+            "key": "├─",
+            "keyColor": "yellow"
+        },
+        {
+            "type": "theme",
+            "key": "├─󰉼",
+            "keyColor": "yellow"
+        },
+        {
+            "type": "icons",
+            "key": "├─󰀻",
+            "keyColor": "yellow"
+        },
+        {
+            "type": "wallpaper",
+            "key": "╰─󰸉",
+            "keyColor": "yellow"
+        },
+        {
+            "type": "title",
+            "key": "╭─",
+            "format": "{user-name}@{host-name}",
+            "keyColor": "blue"
+        },
+        {
+            "type": "os",
+            "key": "├─{icon}", // Just get your distro's logo off nerdfonts.com
+            "keyColor": "blue"
+        },
+        {
+            "type": "kernel",
+            "key": "├─",
+            "keyColor": "blue"
+        },
+        {
+            "type": "packages",
+            "key": "├─󰏖",
+            "keyColor": "blue"
+        },
+        {
+            "type": "uptime",
+            "key": "├─󰅐",
+            "keyColor": "blue"
+        },
+        {
+            "type": "media",
+            "key": "├─󰝚",
+            "keyColor": "blue"
+        },
+        {
+            "type": "localip",
+            "key": "├─󰩟",
+            "compact": true,
+            "keyColor": "blue"
+        },
+        {
+            "type": "wifi",
+            "key": "├─",
+            "format": "{ssid}",
+            "keyColor": "blue"
+        },
+        {
+            "type": "locale",
+            "key": "╰─",
+            "keyColor": "blue"
+        },
+        {
+            "type": "custom",
+            "format": "{$1}",
+            "outputColor": "90"
+        },
+        "title",
+        "separator",
+        {
+            "type": "os",
+            "key": " OS",
+            "keyColor": "yellow",
+            "format": "{2}"
+        },
+        {
+            "type": "os",
+            "key": "├{icon}", // Just get your distro's logo off nerdfonts.com
+            "keyColor": "yellow"
+        },
+        {
+            "type": "kernel",
+            "key": "├",
+            "keyColor": "yellow"
+        },
+        {
+            "type": "packages",
+            "key": "├󰏖",
+            "keyColor": "yellow"
+        },
+        {
+            "type": "shell",
+            "key": "└",
+            "keyColor": "yellow"
+        },
+        {
+            "type": "wm",
+            "key": " DE/WM",
+            "keyColor": "blue"
+        },
+        {
+            "type": "lm",
+            "key": "├󰧨",
+            "keyColor": "blue"
+        },
+        {
+            "type": "wmtheme",
+            "key": "├󰉼",
+            "keyColor": "blue"
+        },
+        {
+            "type": "icons",
+            "key": "├󰀻",
+            "keyColor": "blue"
+        },
+        {
+            "type": "terminal",
+            "key": "├",
+            "keyColor": "blue"
+        },
+        {
+            "type": "wallpaper",
+            "key": "└󰸉",
+            "keyColor": "blue"
+        },
+        {
+            "type": "host",
+            "key": "󰌢 PC",
+            "keyColor": "green"
+        },
+        {
+            "type": "cpu",
+            "key": "├󰻠",
+            "keyColor": "green"
+        },
+        {
+            "type": "gpu",
+            "key": "├󰍛",
+            "keyColor": "green"
+        },
+        {
+            "type": "disk",
+            "key": "├",
+            "keyColor": "green"
+        },
+        {
+            "type": "memory",
+            "key": "├󰑭",
+            "keyColor": "green"
+        },
+        {
+            "type": "swap",
+            "key": "├󰓡",
+            "keyColor": "green"
+        },
+        {
+            "type": "display",
+            "key": "├󰍹",
+            "keyColor": "green"
+        },
+        {
+            "type": "uptime",
+            "key": "└󰅐",
+            "keyColor": "green"
+        },
+        {
+            "type": "sound",
+            "key": " SOUND",
+            "keyColor": "cyan"
+        },
+        {
+            "type": "player",
+            "key": "├󰥠",
+            "keyColor": "cyan"
+        },
+        {
+            "type": "media",
+            "key": "└󰝚",
+            "keyColor": "cyan"
+        },
+        {
+            "type": "custom",
+            "format": "{$1}",
+            "outputColor": "90"
+        },
+        {
+            "type": "title",
+            "color": {
+                "user": "green",
+                "at": "red",
+                "host": "blue"
+            }
+        },
+        "os",
+        "kernel",
+        "memory",
+        "packages",
+        "uptime",
+        {
+            "type": "custom",
+            "format": "{$1}",
+            "outputColor": "90"
+        },
+        "title",
+        "separator",
+        "memory",
+        "swap",
+        {
+            "type": "disk",
+            "folders": "/"
+        },
+        {
+            "type": "battery",
+            "key": "Battery"
+        },
+        {
+            "type": "custom",
+            "format": "{$1}",
+            "outputColor": "90"
+        },
+        "break",
+        "break",
+        "break",
+        {
+            "type": "custom",
+            "format": "{$1}",
+            "outputColor": "90"
+        },
+        {
+            "type": "custom",
+            "key": " ",
+            "format": "{#90}╭ Colors ──────────────────────────────────────────────────────────────────────╮",
+        },
+        {
+            "type": "custom",
+            "format": "{#90}│ {#40}    {#41}    {#42}    {#43}    {#44}    {#45}    {#46}    {#47}    {#}                                             {#90}│",
+        },
+        {
+            "type": "custom",
+            "format": "{#90}│ {#100}    {#101}    {#102}    {#103}    {#104}    {#105}    {#106}    {#107}    {#}                                             {#90}│",
+        },
+        {
+            "type": "custom",
+            "format": "{#90}╰──────────────────────────────────────────────────────────────────────────────╯",
+        },
+        {
+            "type": "custom",
+            "format": "{$1}",
+            "outputColor": "90"
         }
     ]
 }
