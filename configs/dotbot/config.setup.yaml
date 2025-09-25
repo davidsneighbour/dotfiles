@@ -25,6 +25,7 @@
       command: |
         sudo apt-get autoremove -y
         sudo apt-get install -y \
+          arc-theme \                  # Arc GTK themegu
           build-essential \            # Essential compilation tools (gcc, g++, make, etc.)
           ca-certificates \            # SSL/TLS CA certificates for secure connections
           curl \                       # Command-line tool for HTTP/FTP requests
