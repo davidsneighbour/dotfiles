@@ -2,6 +2,9 @@
 	"folders": [
 		{
 			"path": "../../../github.com/davidsneighbour/dotfiles"
+		},
+		{
+			"path": "../../../github.com/davidsneighbour/configurations"
 		}
 	],
 	"settings": {

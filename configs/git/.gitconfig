@@ -16,7 +16,6 @@ template = ~/.gitmessage
 sort = version:refname
 gpgSign = true
 
-
 [apply]
 whitespace = fix
 
@@ -208,8 +207,6 @@ squash = "!git rebase -v -i $(git mainbranch)"
 publish = push origin HEAD --force-with-lease
 pub = publish
 
-
-
 [init]
 defaultBranch = main
 templatedir = ~/.git-templates
@@ -304,8 +301,6 @@ rebase = true
 sort = -committerdate
 [pack]
 usePathWalk = true
-
-
 
 # conditional includes based on the remote URL
 # GitHub overrides Gitlab if both match

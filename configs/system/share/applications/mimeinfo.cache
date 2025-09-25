@@ -9,5 +9,4 @@ text/html=dnb-netflix.desktop;
 text/xml=dnb-netflix.desktop;
 x-scheme-handler/joplin=appimagekit-joplin.desktop;
 x-scheme-handler/kitty=kitty-open.desktop;
-x-scheme-handler/obsidian=appimagekit_041ba2ed76a953ceba16b9343a74b04a-Obsidian.desktop;
 x-scheme-handler/ssh=kitty-open.desktop;
