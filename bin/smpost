@@ -1,29 +1,318 @@
 #!/bin/bash
-# shellcheck disable=SC2312
-
+# smpost - Compose and cross-post social updates interactively using gum + crosspost
+#
+# Requirements:
+#   - gum: https://github.com/charmbracelet/gum
+#   - crosspost (CLI): https://github.com/humanwhocodes/crosspost
+#
+# Notes:
+#   - Loads .env from CWD first, then from HOME (~/.env). CWD has priority.
+#   - Uses ~/.crosspost.env (or provided path) and passes it via CROSSPOST_DOTENV.
+#   - Default services are overridable via env or CLI.
+#
+# See:
+#   - https://chatgpt.com/share/68c09926-45f4-8009-b0ef-7a9caa6d915a
+#   - https://github.com/humanwhocodes/crosspost
+#   - https://github.com/charmbracelet/gum
+# Shell safety:
 set -euo pipefail
 
-# Known services to select from
+#######################################
+# Defaults (overridable via env or CLI)
+#######################################
+SMPOST_TEMPLATE_DEFAULT='${text} ${link} ${tags}'
+#SMPOST_DEFAULT_SERVICES_DEFAULT='twitter,mastodon,bluesky,linkedin,discord,discord-webhook,telegram'
+SMPOST_DEFAULT_SERVICES_DEFAULT='twitter'
+CROSSPOST_ENV_DEFAULT="${HOME}/.crosspost.env"
+LOG_DIR="${HOME}/.logs"
+TIMESTAMP="$(date +%Y%m%d-%H%M%S)"
+LOG_FILE="${LOG_DIR}/setup-log-${TIMESTAMP}.log"
+VERBOSE="false"
+DRY_RUN="false"
+
+# Known services for the menu (must map to crosspost CLI flags)
 KNOWN_SERVICES=("twitter" "mastodon" "bluesky" "linkedin" "discord" "discord-webhook" "telegram" "devto")
-PRESELECTED="mastodon,linkedin" # comma separated list of preselected services
-placeholder="${1:-Write your post text...}"
 
-# Collect post text
-post_tmp="$(mktemp)"
-trap 'rm -f "${post_tmp}"' EXIT
-gum write --placeholder "${placeholder}" --width 80 > "${post_tmp}"
-value="$(<"${post_tmp}")"
+#######################################
+# Logging helpers
+#######################################
+log() {
+  if [[ "${VERBOSE}" == "true" ]]; then printf "%s\n" "$*" | tee -a "${LOG_FILE}"; else printf "%s\n" "$*" >> "${LOG_FILE}"; fi
+}
+log_err() { printf "ERROR: %s\n" "$*" | tee -a "${LOG_FILE}" >&2; }
+log_ok()  { printf "OK: %s\n" "$*" | tee -a "${LOG_FILE}"; }
 
-# Multi-select services
-IFS=',' read -r -a DEFAULTS <<< "${PRESELECTED}"
-mapfile -t SELECTED_SERVICES < <(gum choose --no-limit "${KNOWN_SERVICES[@]}" --selected="${DEFAULTS[@]}")
+#######################################
+# Help
+#######################################
+print_help() {
+  cat <<EOF
+${FUNCNAME[0]} - Interactive social post composer using gum + crosspost
 
-# Build flags
-SERVICE_FLAGS=()
-for svc in "${SELECTED_SERVICES[@]}"; do
-  SERVICE_FLAGS+=("--${svc}")
-done
+Usage:
+  smpost [--help]
+         [--verbose]
+         [--dry-run]
+         [--template "<template>"]
+         [--services "svc1,svc2"]
+         [--dotenv "/path/to/.crosspost.env"]
+         [--text "<message text>"]
+         [--link "<url>"]
+         [--tags "tag1,tag2"]
 
-# Crosspost
-echo "crosspost ${SERVICE_FLAGS[@]} \"${value}\""
-crosspost ${SERVICE_FLAGS[@]} "${value}"
+Options:
+  --help                 Show this help and exit.
+  --verbose              Verbose logging to stdout and \${HOME}/.logs/.
+  --dry-run              Do not post; only show what would run.
+  --template             Template string. Defaults to env SMPOST_TEMPLATE or:
+                         '${SMPOST_TEMPLATE_DEFAULT}'
+                         Placeholders: \${text} \${link} \${tags}
+  --services             Comma-separated services; overrides selection UI.
+                         Defaults to env SMPOST_DEFAULT_SERVICES or:
+                         '${SMPOST_DEFAULT_SERVICES_DEFAULT}'
+  --dotenv               Path to .crosspost.env (exported as CROSSPOST_DOTENV).
+                         Default: ${CROSSPOST_ENV_DEFAULT}
+  --text                 Provide post text non-interactively (skip prompt).
+  --link                 Provide optional link non-interactively (skip prompt).
+  --tags                 Comma- or space-separated tags (without #).
+
+Environment:
+  - .env loading order: "./.env" then "\${HOME}/.env" (first found wins).
+  - SMPOST_TEMPLATE, SMPOST_DEFAULT_SERVICES override defaults.
+  - CROSSPOST_DOTENV is set per --dotenv (or default) for crosspost CLI.
+
+Examples:
+  smpost --verbose
+  smpost --template "\${text} - \${link} \${tags}" --services "twitter,mastodon"
+  smpost --dry-run --text "New blog post!" --link "https://kollitsch.dev/" --tags "til,web"
+EOF
+}
+
+#######################################
+# Deps
+#######################################
+require_bin() {
+  if ! command -v "$1" >/dev/null 2>&1; then
+    log_err "Missing dependency: $1"
+    exit 1
+  fi
+}
+
+#######################################
+# .env loader (CWD first, then HOME)
+#######################################
+load_env() {
+  if [[ -f ".env" ]]; then
+    # shellcheck disable=SC1091
+    set -a; source ".env"; set +a
+    log_ok "Loaded environment from ./\.env"
+  elif [[ -f "${HOME}/.env" ]]; then
+    # shellcheck disable=SC1091
+    set -a; source "${HOME}/.env"; set +a
+    log_ok "Loaded environment from \${HOME}/.env"
+  else
+    log "No .env found; relying on existing env"
+  fi
+}
+
+#######################################
+# Args
+#######################################
+TEMPLATE=""
+SERVICES_CSV=""
+DOTENV_PATH=""
+INPUT_TEXT=""
+INPUT_LINK=""
+INPUT_TAGS="" # raw
+
+parse_args() {
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --help) print_help; exit 0 ;;
+      --verbose) VERBOSE="true"; shift ;;
+      --dry-run) DRY_RUN="true"; shift ;;
+      --template) TEMPLATE="${2:-}"; shift 2 ;;
+      --services) SERVICES_CSV="${2:-}"; shift 2 ;;
+      --dotenv) DOTENV_PATH="${2:-}"; shift 2 ;;
+      --text) INPUT_TEXT="${2:-}"; shift 2 ;;
+      --link) INPUT_LINK="${2:-}"; shift 2 ;;
+      --tags) INPUT_TAGS="${2:-}"; shift 2 ;;
+      *)
+        log_err "Unknown option: $1"
+        print_help
+        exit 2
+        ;;
+    esac
+  done
+}
+
+#######################################
+# Helpers
+#######################################
+trim() { awk '{$1=$1;print}' <<<"$*"; }
+csv_to_array() { local IFS=','; read -r -a _arr <<<"$1"; printf "%s\n" "${_arr[@]}"; }
+split_tags_to_array() { tr ', ' '\n' <<<"$1" | sed 's/^#\?//' | awk 'NF'; }
+build_tags_string() {
+  local built=()
+  for t in "$@"; do
+    local clean="${t// /-}"
+    built+=("#${clean}")
+  done
+  printf "%s" "$(printf "%s " "${built[@]}" | sed 's/[[:space:]]$//')"
+}
+apply_template() {
+  local _text="$1" _link="$2" _tags="$3" _tpl="$4"
+  local out="${_tpl//\$\{text\}/$_text}"
+  out="${out//\$\{link\}/$_link}"
+  out="${out//\$\{tags\}/$_tags}"
+  out="$(sed -E 's/[[:space:]]+/ /g' <<<"${out}")"
+  if [[ -z "${_link}" ]]; then
+    out="$(sed -E 's/[[:space:]]+-[[:space:]]+/ /g' <<<"${out}")"
+    out="$(sed -E 's/[[:space:]]+([,.;:-])[[:space:]]+/ \1 /g' <<<"${out}")"
+  fi
+  printf "%s" "$(trim "${out}")"
+}
+ensure_log_dir() { mkdir -p "${LOG_DIR}"; : > "${LOG_FILE}"; }
+ensure_dotenv_present() {
+  if [[ ! -f "${DOTENV_PATH}" ]]; then
+    log_err "Env file not found: ${DOTENV_PATH}"
+    log "Tip: symlink your protected env to ${CROSSPOST_ENV_DEFAULT}"
+    exit 1
+  fi
+}
+
+# map service name -> crosspost flag
+service_flag() {
+  case "$1" in
+    twitter) echo "--twitter" ;;
+    mastodon) echo "--mastodon" ;;
+    bluesky) echo "--bluesky" ;;
+    linkedin) echo "--linkedin" ;;
+    discord) echo "--discord" ;;
+    discord-webhook) echo "--discord-webhook" ;;
+    telegram) echo "--telegram" ;;
+    devto) echo "--devto" ;;
+    *) return 1 ;;
+  esac
+}
+
+#######################################
+# Posting
+#######################################
+post_once() {
+  local svc="$1" msg="$2" dotenv="$3"
+
+  local flag
+  if ! flag="$(service_flag "${svc}")"; then
+    gum style --border normal --padding "0 1" "❌ Unsupported service: ${svc}"
+    log_err "Unsupported service: ${svc}"
+    return 1
+  fi
+
+  # build cmd; inject CROSSPOST_DOTENV for this call
+  local cmd=(env CROSSPOST_DOTENV="${dotenv}" crosspost "${flag}" --file -)
+  # crosspost reads message from stdin with --file - (dash)
+  if [[ "${DRY_RUN}" == "true" ]]; then
+    printf "DRY-RUN: %q " "${cmd[@]}"; printf " <<< '%s'\n" "${msg}"
+    return 0
+  fi
+
+  if printf "%s" "${msg}" | "${cmd[@]}" >> "${LOG_FILE}" 2>&1; then
+    gum style --border normal --padding "0 1" "✅ Posted to ${svc}"
+    log_ok "Posted to ${svc}"
+    return 0
+  else
+    gum style --border normal --padding "0 1" "❌ Failed to post to ${svc}"
+    log_err "Failed to post to ${svc}"
+    return 1
+  fi
+}
+
+#######################################
+# Main
+#######################################
+main() {
+  ensure_log_dir
+  load_env
+
+  local TEMPLATE_FINAL="${TEMPLATE:-${SMPOST_TEMPLATE:-${SMPOST_TEMPLATE_DEFAULT}}}"
+  local DEFAULT_SERVICES_CSV="${SMPOST_DEFAULT_SERVICES:-${SMPOST_DEFAULT_SERVICES_DEFAULT}}"
+  local DOTENV_FINAL="${DOTENV_PATH:-${CROSSPOST_ENV_DEFAULT}}"
+
+  require_bin gum
+  require_bin crosspost
+
+  DOTENV_PATH="${DOTENV_FINAL}"
+  ensure_dotenv_present
+
+  local text="${INPUT_TEXT}"
+  if [[ -z "${text}" ]]; then
+    text="$(gum write --placeholder "Write your post text..." --width 80)" || true
+    if [[ -z "${text}" ]]; then
+      log_err "No text provided. Exiting."
+      exit 2
+    fi
+  fi
+
+  local link="${INPUT_LINK}"
+  if [[ -z "${link}" ]]; then
+    link="$(gum input --placeholder "Optional link (leave empty to skip)")" || true
+  fi
+
+  local tags_raw="${INPUT_TAGS}"
+  if [[ -z "${tags_raw}" ]]; then
+    tags_raw="$(gum input --placeholder "Optional tags (comma or space separated, no #)")" || true
+  fi
+  mapfile -t tags_arr < <(split_tags_to_array "${tags_raw:-}")
+  local tags_string=""
+  if [[ ${#tags_arr[@]} -gt 0 ]]; then
+    tags_string="$(build_tags_string "${tags_arr[@]}")"
+  fi
+
+  local selected_services_csv="${SERVICES_CSV:-${DEFAULT_SERVICES_CSV}}"
+  local final_services=()
+  if [[ -n "${SERVICES_CSV}" ]]; then
+    mapfile -t final_services < <(csv_to_array "${SERVICES_CSV}")
+  else
+    # Preselect defaults in gum choose
+    IFS=',' read -r -a preselect <<<"${selected_services_csv}"
+    # Build selected flags for gum
+    selected_flags=()
+    for s in "${preselect[@]}"; do selected_flags+=(--selected "$s"); done
+    mapfile -t final_services < <(gum choose --no-limit "${selected_flags[@]}" "${KNOWN_SERVICES[@]}")
+  fi
+
+  if [[ ${#final_services[@]} -eq 0 ]]; then
+    log_err "No services selected. Exiting."
+    exit 2
+  fi
+
+  local message
+  message="$(apply_template "${text}" "${link}" "${tags_string}" "${TEMPLATE_FINAL}")"
+
+  gum style --border double --margin "1 0" --padding "1 2" \
+    "Preview:" "" "${message}" "" "Services: ${final_services[*]}" "Env: ${DOTENV_PATH}"
+
+  if ! gum confirm "Post this message?"; then
+    log "User cancelled."
+    exit 0
+  fi
+
+  local failures=0
+  for svc in "${final_services[@]}"; do
+    if ! post_once "${svc}" "${message}" "${DOTENV_PATH}"; then
+      failures=$((failures+1))
+    fi
+  done
+
+  if (( failures == 0 )); then
+    gum style --border normal --margin "1 0" --padding "0 1" "🎉 All posts succeeded."
+    exit 0
+  else
+    gum style --border normal --margin "1 0" --padding "0 1" "⚠ Some posts failed. See log: ${LOG_FILE}"
+    exit 1
+  fi
+}
+
+parse_args "$@"
+main
