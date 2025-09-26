@@ -75,7 +75,7 @@ const config: UserConfig = {
       theme: ['fix', 'feat'],
       fix: ['bashrc'],
       chore: ['repo'],
-      config: ['dotbot'],
+      config: ['dotbot', 'keybindings'],
     },
     defaultBody: '',
     defaultIssues: '',
