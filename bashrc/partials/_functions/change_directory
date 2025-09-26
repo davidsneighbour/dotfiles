@@ -1,8 +1,240 @@
+#!/bin/bash
 # shellcheck shell=bash
 
-change_directory() {
-  builtin cd "$@" || return
-  if command -v nvm >/dev/null 2>&1 && [[ -f .nvmrc ]]; then
-    nvm use --silent
+# ===== Global defaults (override in ~/.bashrc or environment) =====
+export CDHELPER_DEFAULT_MODE="${CDHELPER_DEFAULT_MODE:-status}"    # status|pull
+export CDHELPER_FETCH_INTERVAL="${CDHELPER_FETCH_INTERVAL:-600}"   # seconds; 0 = never
+export CDHELPER_FETCH_STRATEGY="${CDHELPER_FETCH_STRATEGY:-stale}" # stale|always|never
+export CDHELPER_PRUNE="${CDHELPER_PRUNE:-true}"                    # true|false
+export CDHELPER_NO_TAGS="${CDHELPER_NO_TAGS:-true}"                # true|false
+export CDHELPER_SUBMODULES="${CDHELPER_SUBMODULES:-false}"         # true|false
+
+# ===== Small helpers =====
+_cdhelper_repo_root() { git rev-parse --show-toplevel 2>/dev/null || pwd; }
+_cdhelper_branch()    { git rev-parse --abbrev-ref HEAD 2>/dev/null || printf '%s' '?'; }
+_cdhelper_upstream()  { git rev-parse --abbrev-ref '@{u}' 2>/dev/null || printf '%s' 'no-upstream'; }
+
+_cdhelper_dirty() { # 1 if dirty, 0 if clean
+  if ! git diff --quiet || ! git diff --cached --quiet; then printf '1'; else printf '0'; fi
+}
+
+_cdhelper_counts() { # "<behind> <ahead>" using local tracking refs
+  git rev-list --left-right --count '@{u}...HEAD' 2>/dev/null || printf '0 0'
+}
+
+_cdhelper_mk_fetch_args() {
+  local args=()
+  [[ "${CDHELPER_PRUNE}" == "true" ]] && args+=(--prune)
+  [[ "${CDHELPER_NO_TAGS}" == "true" ]] && args+=(--no-tags)
+  [[ "${CDHELPER_SUBMODULES}" == "true" ]] && args+=("--recurse-submodules")
+  printf '%s\0' "${args[@]}"
+}
+
+_cdhelper_fetch_stale_seconds() {
+  # prints seconds since last fetch; very large if unknown
+  local head file now mtime
+  head="$(git rev-parse --git-path FETCH_HEAD 2>/dev/null || true)"
+  file="${head:-.git/FETCH_HEAD}"
+  now=$(date +%s)
+  if [[ -f "${file}" ]]; then
+    mtime=$(date -r "${file}" +%s)
+    echo $(( now - mtime ))
+  else
+    echo 999999
   fi
 }
+
+_cdhelper_repo_config() {
+  # repo-local overrides
+  git config --get "$1" 2>/dev/null || true
+}
+
+_cdhelper_resolve_mode() {
+  local mode
+  # .folderoptions has top priority (optional)
+  if [[ -f ".folderoptions" ]]; then
+    mode="$(sed -n -E 's/^[[:space:]]*cdhelper[[:space:]]*=[[:space:]]*([[:alnum:]]+).*/\1/p' ".folderoptions" | head -n1)"
+  fi
+  # git config next
+  [[ -z "${mode}" ]] && mode="$(_cdhelper_repo_config cdhelper.mode)"
+  # env default last
+  mode="${mode:-${CDHELPER_DEFAULT_MODE}}"
+  case "${mode,,}" in status|pull) printf '%s' "${mode,,}";; *) printf '%s' "status";; esac
+}
+
+_cdhelper_resolve_fetch_strategy() {
+  local s
+  s="$(_cdhelper_repo_config cdhelper.fetchStrategy)"
+  s="${s:-${CDHELPER_FETCH_STRATEGY}}"
+  case "${s,,}" in stale|always|never) printf '%s' "${s,,}";; *) printf '%s' "stale";; esac
+}
+
+_cdhelper_resolve_fetch_interval() {
+  local i
+  i="$(_cdhelper_repo_config cdhelper.fetchIntervalSeconds)"
+  i="${i:-${CDHELPER_FETCH_INTERVAL}}"
+  printf '%s' "${i}"
+}
+
+_cdhelper_print_friendly_status() {
+  local base br up dirty behind ahead
+  base="$(basename "$(_cdhelper_repo_root)")"
+  br="$(_cdhelper_branch)"
+  up="$(_cdhelper_upstream)"
+  dirty="$(_cdhelper_dirty)"
+  read -r behind ahead < <(_cdhelper_counts)
+
+  local relation status
+  relation="${br} vs ${up}"
+
+  if [[ "${up}" == "no-upstream" ]]; then
+    status=$([[ "${dirty}" == "1" ]] && echo "no upstream; local changes present" || echo "no upstream set")
+  else
+    if [[ "${behind}" -eq 0 && "${ahead}" -eq 0 ]]; then
+      status=$([[ "${dirty}" == "1" ]] && echo "up to date; local changes present" || echo "up to date")
+    elif [[ "${behind}" -gt 0 && "${ahead}" -eq 0 ]]; then
+      status="remote changes available (behind ${behind})"
+    elif [[ "${behind}" -eq 0 && "${ahead}" -gt 0 ]]; then
+      status="local commits ahead (${ahead})"
+    else
+      status="diverged (ahead ${ahead}, behind ${behind})"
+    fi
+  fi
+  printf '%s\n' "% ${base} on ${relation}: ${status}"
+}
+
+_cdhelper_fetch_bg_if_stale() {
+  local strat interval age
+  strat="$(_cdhelper_resolve_fetch_strategy)"
+  interval="$(_cdhelper_resolve_fetch_interval)"
+  [[ "${strat}" == "never" || "${interval}" -eq 0 ]] && return 0
+  # if no upstream, skip
+  git rev-parse --abbrev-ref '@{u}' >/dev/null 2>&1 || return 0
+  age="$(_cdhelper_fetch_stale_seconds)"
+  if [[ "${strat}" == "always" || "${age}" -ge "${interval}" ]]; then
+    printf '%s' "(refreshing remote info in background) "
+    # build args
+    local IFS=; read -r -d '' -a args < <(_cdhelper_mk_fetch_args)
+    nohup git fetch --quiet "${args[@]}" >/dev/null 2>&1 &
+  fi
+}
+
+_cdhelper_fetch_fg_if_stale_with_msg() {
+  local strat interval age
+  strat="$(_cdhelper_resolve_fetch_strategy)"
+  interval="$(_cdhelper_resolve_fetch_interval)"
+  [[ "${strat}" == "never" || "${interval}" -eq 0 ]] && return 0
+  git rev-parse --abbrev-ref '@{u}' >/dev/null 2>&1 || return 0
+  age="$(_cdhelper_fetch_stale_seconds)"
+  if [[ "${strat}" == "always" || "${age}" -ge "${interval}" ]]; then
+    printf '%s' "updating remote info... "
+    local IFS=; read -r -d '' -a args < <(_cdhelper_mk_fetch_args)
+    git fetch --quiet "${args[@]}" 2>/dev/null || true
+    printf '%s\n' "done."
+  fi
+}
+
+_cdhelper_auto_pull() {
+  _cdhelper_fetch_fg_if_stale_with_msg
+
+  # still nothing to do without upstream
+  git rev-parse --abbrev-ref '@{u}' >/dev/null 2>&1 || { _cdhelper_print_friendly_status; return 0; }
+
+  # do not pull if dirty
+  if [[ "$(_cdhelper_dirty)" == "1" ]]; then
+    _cdhelper_print_friendly_status
+    return 0
+  fi
+
+  local behind ahead
+  read -r behind ahead < <(_cdhelper_counts)
+  if [[ "${behind}" -gt 0 ]]; then
+    # try ff first, then rebase
+    if git merge-base --is-ancestor HEAD '@{u}' 2>/dev/null; then
+      git pull --ff-only --quiet || git pull --rebase --autostash --quiet || true
+    else
+      git pull --rebase --autostash --quiet || true
+    fi
+  fi
+  _cdhelper_print_friendly_status
+}
+
+_cdhelper_status_only() {
+  _cdhelper_print_friendly_status
+  _cdhelper_fetch_bg_if_stale
+}
+
+# ===== command to manage per-repo settings =====
+cdhelper() {
+  if [[ "${1-}" == "--help" || -z "${1-}" ]]; then
+    cat <<EOF
+Usage:
+  cdhelper --help
+  cdhelper --show
+  cdhelper --set-mode <status|pull>
+  cdhelper --set-fetch <stale|always|never>
+  cdhelper --set-interval <seconds>
+
+Notes:
+  - status: print friendly status immediately, optionally refresh remotes in background when stale
+  - pull  : fetch in foreground when stale, fast-forward/rebase if safe, then show status
+
+Per-repo (stored in git config --local):
+  cdhelper.mode                  # status|pull
+  cdhelper.fetchStrategy         # stale|always|never
+  cdhelper.fetchIntervalSeconds  # integer seconds
+
+Globals (env defaults):
+  CDHELPER_DEFAULT_MODE="${CDHELPER_DEFAULT_MODE}"
+  CDHELPER_FETCH_STRATEGY="${CDHELPER_FETCH_STRATEGY}"
+  CDHELPER_FETCH_INTERVAL="${CDHELPER_FETCH_INTERVAL}"
+EOF
+    return 0
+  fi
+  git rev-parse --is-inside-work-tree >/dev/null 2>&1 || { echo "Not in a Git repo."; return 1; }
+  case "${1-}" in
+    --show)
+      echo "mode=$(git config --get cdhelper.mode || echo "${CDHELPER_DEFAULT_MODE}")"
+      echo "fetchStrategy=$(git config --get cdhelper.fetchStrategy || echo "${CDHELPER_FETCH_STRATEGY}")"
+      echo "fetchIntervalSeconds=$(git config --get cdhelper.fetchIntervalSeconds || echo "${CDHELPER_FETCH_INTERVAL}")"
+      ;;
+    --set-mode)       shift; git config --local cdhelper.mode "${1?status|pull}";;
+    --set-fetch)      shift; git config --local cdhelper.fetchStrategy "${1?stale|always|never}";;
+    --set-interval)   shift; git config --local cdhelper.fetchIntervalSeconds "${1?seconds}";;
+    *) echo "Unknown option. Use cdhelper --help"; return 2;;
+  esac
+}
+
+# ===== main cd wrapper =====
+change_directory() {
+  if [[ "${1-}" == "--help" ]]; then
+    cat <<'EOF'
+Usage: cd <path>
+On enter:
+  - nvm use if .nvmrc exists
+  - If inside a Git repo:
+      status : print friendly status immediately; background refresh if stale
+      pull   : fetch in foreground if stale; fast-forward/rebase if safe; show status
+Config precedence:
+  .folderoptions cdhelper=status|pull
+  git config --local cdhelper.mode
+  $CDHELPER_DEFAULT_MODE
+EOF
+    return 0
+  fi
+
+  builtin cd "$@" || return
+
+  if command -v nvm >/dev/null 2>&1 && [[ -f ".nvmrc" ]]; then
+    nvm use --silent >/dev/null 2>&1 || true
+  fi
+
+  if command -v git >/dev/null 2>&1 && git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    case "$(_cdhelper_resolve_mode)" in
+      pull)   _cdhelper_auto_pull ;;
+      *)      _cdhelper_status_only ;;
+    esac
+  fi
+}
+
+alias cd='change_directory'

@@ -10,3 +10,5 @@ text/xml=dnb-netflix.desktop;
 x-scheme-handler/joplin=appimagekit-joplin.desktop;
 x-scheme-handler/kitty=kitty-open.desktop;
 x-scheme-handler/ssh=kitty-open.desktop;
+x-scheme-handler/steam=steam.desktop;
+x-scheme-handler/steamlink=steam.desktop;
