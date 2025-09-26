@@ -1092,8 +1092,8 @@
   <group
      id="theme"
      defaultPreferDarkTheme="0"
-     defaultIconTheme="Papirus-Dark"
-     defaultGtkTheme="Mint-Y-Dark-Orange"
+     defaultIconTheme="Mint-Y-Yaru"
+     defaultGtkTheme="Mint-Y-Dark-Red"
      narrowSpinButton="1"
      preferDarkTheme="1"
      darkTheme="1"

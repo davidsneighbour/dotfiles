@@ -19,6 +19,7 @@
     "@eslint/js": "9.34.0",
     "@eslint/json": "0.13.2",
     "@eslint/markdown": "7.2.0",
+    "@humanwhocodes/crosspost": "^0.17.0",
     "@j9t/obsohtml": "1.9.0",
     "@secretlint/secretlint-rule-no-dotenv": "11.2.0",
     "@secretlint/secretlint-rule-no-homedir": "11.2.0",
