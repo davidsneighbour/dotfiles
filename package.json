@@ -12,7 +12,7 @@
     "@clack/prompts": "^0.11.0",
     "@commitlint/cli": "19.8.1",
     "@commitlint/config-conventional": "19.8.1",
-    "@davidsneighbour/eslint-config": "^2025.3.3",
+    "@davidsneighbour/eslint-config": "^2025.3.5",
     "@davidsneighbour/markdownlint-config": "^2025.3.1",
     "@davidsneighbour/release-config": "^2025.3.3",
     "@eslint/css": "0.10.0",
