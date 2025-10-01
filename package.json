@@ -61,7 +61,7 @@
     "wireit": "0.14.12"
   },
   "devDependencies": {
-    "dompurify": ">=3.2.6",
+    "dompurify": ">=3.2.7",
     "nanoid": ">=5.1.5"
   },
   "scripts": {
