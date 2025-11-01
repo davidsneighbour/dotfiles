@@ -54,7 +54,7 @@
     "npm-watch": "0.13.0",
     "rimraf": "6.0.1",
     "secretlint": "11.2.0",
-    "semver": "^7.7.2",
+    "semver": "^7.7.3",
     "simple-git-hooks": "2.13.1",
     "themer": "6.8.0",
     "toml": "3.0.0",
