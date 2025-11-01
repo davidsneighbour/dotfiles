@@ -25,7 +25,7 @@
     "@secretlint/secretlint-rule-no-homedir": "11.2.0",
     "@secretlint/secretlint-rule-no-k8s-kind-secret": "11.2.0",
     "@secretlint/secretlint-rule-openai": "11.2.0",
-    "@secretlint/secretlint-rule-pattern": "11.2.0",
+    "@secretlint/secretlint-rule-pattern": "11.2.5",
     "@secretlint/secretlint-rule-preset-recommend": "11.2.0",
     "@secretlint/secretlint-rule-secp256k1-privatekey": "11.2.0",
     "@stylistic/eslint-plugin": "5.2.3",
