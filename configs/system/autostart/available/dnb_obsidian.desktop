@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Exec=/opt/Obsidian/obsidian %U
+Name=Obsidian
+Icon=obsidian
+Comment=Obsidian note-taking app
+X-GNOME-Autostart-enabled=true
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-Delay=10
