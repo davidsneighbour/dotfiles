@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Exec=/opt/google/chrome/google-chrome --profile-directory=Default --app-id=knaiokfnmjjldlfhlioejgcompgenfhb
+Name=Todoist
+Icon=todoist
+Comment=Todoist task manager app
+X-GNOME-Autostart-enabled=true
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-Delay=10
