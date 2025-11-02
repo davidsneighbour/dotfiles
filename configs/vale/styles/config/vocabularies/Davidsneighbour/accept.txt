@@ -2,6 +2,7 @@
 [Cc]acheability
 [Ff]rontmatter
 [kK]ollitsch
+KOLLITSCH.dev*
 [Nn]amespaced
 [Ss]hortcode
 [Ss]hortcodes
@@ -32,5 +33,10 @@ YouTube
 GoHugo
 Ananke
 Astro
+CSS
 dev
 CLI
+Changa
+Exo
+APIs
+[Aa]gents?

@@ -1,16 +1,16 @@
 {
 	"folders": [
 		{
-			"path": "../../../theNewDynamic/gohugo-theme-ananke"
+			"path": "/home/patrick/github.com/theNewDynamic/gohugo-theme-ananke"
 		},
 		{
-			"path": "../../../theNewDynamic/gohugo-theme-ananke.wiki"
+			"path": "/home/patrick/github.com/theNewDynamic/gohugo-theme-ananke.wiki"
 		},
 		{
-			"path": "../../gohugo-theme-ananke-template-mod"
+			"path": "/home/patrick/github.com/davidsneighbour/gohugo-theme-ananke-template-mod"
 		},
 		{
-			"path": "../../gohugo-theme-ananke-template-submod"
+			"path": "/home/patrick/github.com/davidsneighbour/gohugo-theme-ananke-template-submod"
 		}
 	],
 	"settings": {}

@@ -2,8 +2,7 @@ abi
 akka
 aleth
 Android
-api
-api
+API
 AppVeyor
 axios
 bitcoin
@@ -13,7 +12,6 @@ coreos
 cqrs
 crowdsale
 cryptocurrency
-css
 cto
 daemonset
 dapp
@@ -39,7 +37,7 @@ grafana
 GraphQL
 grpc
 hackathon
-html
+HTML
 httpie
 infura
 iOS
@@ -93,7 +91,7 @@ ttd
 ubuntu
 unencrypted
 userspace
-vale
+Vale
 validator
 vcs
 vm
