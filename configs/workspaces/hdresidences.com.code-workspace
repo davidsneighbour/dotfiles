@@ -4,5 +4,10 @@
 			"path": "../../../github.com/davidsneighbour/hdresidences.com"
 		}
 	],
-	"settings": {}
+	"settings": {},
+	"extensions": {
+		"recommendations": [
+			"astro-build.astro-vscode"
+		]
+	}
 }

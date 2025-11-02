@@ -1,4 +1,3 @@
-// .commitlintrc.ts
 import type { UserConfig } from 'cz-git';
 import { RuleConfigSeverity } from "@commitlint/types"; 
 
