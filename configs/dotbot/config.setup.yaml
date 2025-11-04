@@ -36,6 +36,7 @@
           gir1.2-gtk-3.0 \             # Introspection data for GTK+ 3
           gir1.2-rsvg-2.0 \            # Introspection data for SVG rendering
           git \                        # Distributed version control system
+          git-extras \                 # Additional Git commands
           gzip \                       # Compression utility
           inxi \                       # System information script
           libgirepository1.0-dev \     # Development files for GObject introspection
