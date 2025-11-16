@@ -29,7 +29,7 @@ format = '[Go $version](bold cyan) '
 version_format = '${raw}'
 
 [git_branch]
-style = "bold mauve"
+style = "bold purple"
 
 [custom.hugo]
 when = '''find . -maxdepth 2 -regextype posix-extended -regex './(hugo|config)\.(toml|ya?ml|json)$|./config/_default$' | grep -q .'''
