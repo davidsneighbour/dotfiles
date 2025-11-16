@@ -62,7 +62,7 @@
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" --quiet
     -
       description: Install Homebrew packages
-      command: brew install git-delta zoxide typos-cli gum yamllint vale lychee python jrnl fastfetch
+      command: brew install biome git-delta zoxide typos-cli gum yamllint vale lychee python jrnl fastfetch
     -
       description: Install and setup Node and NPM
       command: |
