@@ -33,7 +33,7 @@
     "@types/eslint-plugin-markdown": "2.0.2",
     "@types/eslint-plugin-security": "3.0.0",
     "@typescript-eslint/parser": "^8.46.4",
-    "commit-and-tag-version": "12.6.0",
+    "commit-and-tag-version": "12.6.1",
     "cross-env": "10.1.0",
     "cz-git": "^1.12.0",
     "debug": "4.4.3",
