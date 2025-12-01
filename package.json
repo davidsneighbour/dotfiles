@@ -13,7 +13,7 @@
     "@commitlint/cli": "20.1.0",
     "@commitlint/config-conventional": "20.0.0",
     "@davidsneighbour/eslint-config": "^2025.3.7",
-    "@davidsneighbour/markdownlint-config": "^2025.3.4",
+    "@davidsneighbour/markdownlint-config": "^2025.3.5",
     "@davidsneighbour/release-config": "^2025.3.8",
     "@eslint/css": "0.14.1",
     "@eslint/js": "9.39.1",
