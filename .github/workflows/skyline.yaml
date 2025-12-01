@@ -14,7 +14,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5 # zizmor: ignore[artipacked] required later
+        uses: actions/checkout@v6 # zizmor: ignore[artipacked] required later
 
       - name: Set up Node.js
         uses: actions/setup-node@v6
