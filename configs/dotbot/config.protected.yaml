@@ -18,7 +18,6 @@
     ~/.sentryclirc: modules/protected/.sentryclirc
     ~/.fonts: modules/protected/.fonts
     ~/.ssh: modules/protected/.ssh
-    ~/JoplinBackup: modules/protected/JoplinBackup
     ~/.config/Cryptomator: modules/protected/Cryptomator
     ~/.config/transmission: modules/protected/transmission
     ~/.config/filezilla/filezilla.xml: modules/protected/filezilla/filezilla.xml
