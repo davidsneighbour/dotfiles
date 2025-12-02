@@ -16,7 +16,6 @@
   * [Productivity tools](#productivity-tools)
     * [Dropbox](#dropbox)
     * [Todoist](#todoist)
-    * [Joplin](#joplin)
 
 ## Installation
 
@@ -112,7 +111,6 @@ git checkout main
 | SUPER+S | open Spotify |
 | SUPER+SHIFT+S | open Sublime Text |
 | SUPER+Q | open Todoist |
-| SUPER+J | open Joplin |
 
 ## Installation notes for programs
 
@@ -136,14 +134,3 @@ Install flatpak version instead of the snap or deb version. The deb version requ
 
 > [!WARNING]
 > Don't try to get fancy. Use Chrome and set up as Chrome app. Their "app" works only on Gnome.
-
-#### Joplin
-
-The recommended way to install Joplin on Linux is to use the script provided by the Joplin team. This script will handle the installation and future updates. For possible options, like install path, [see the script itself](https://github.com/laurent22/joplin/blob/dev/Joplin_install_and_update.sh#L50):
-
-```bash
-wget -O - https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_install_and_update.sh | bash
-```
-
-> [!NOTE]
-> to myself: data is stored in Onedrive

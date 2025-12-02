@@ -1,9 +1,0 @@
-[Desktop Entry]
-Type=Application
-Exec=/usr/bin/env APPIMAGELAUNCHER_DISABLE=TRUE "/home/patrick/.joplin/Joplin.AppImage"  %u
-Name=Joplin
-Comment=Note taking application
-NoDisplay=false
-Hidden=false
-X-GNOME-Autostart-enabled=true
-X-GNOME-Autostart-Delay=10
