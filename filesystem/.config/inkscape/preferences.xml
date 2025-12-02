@@ -118,8 +118,10 @@
          id="rect"
          style="fill:blue;"
          usecurrent="1"
-         width="1200"
-         height="628" />
+         width="1000"
+         height="1000"
+         rx="0"
+         ry="0" />
       <eventcontext
          id="3dbox"
          style="stroke:none;stroke-linejoin:round;"
@@ -155,8 +157,8 @@
          end="0"
          start="0"
          usecurrent="1"
-         rx="10.9096965789795"
-         ry="8.64926528930664" />
+         rx="446.708571066074"
+         ry="446.708571066074" />
       <eventcontext
          id="star"
          magnitude="5"
@@ -306,7 +308,7 @@
        id="lpetool"
        mode="drag"
        style="fill:#ff0000;fill-opacity:1;fill-rule:nonzero;stroke:none;"
-       unit="px"
+       unit="mm"
        show_bbox="1" />
     <eventcontext
        id="text"
@@ -315,7 +317,7 @@
        font_sample="AaBbCcIiPpQq12369$€¢?.;/()"
        show_sample_in_list="1"
        use_svg2="1"
-       style="line-height:0.05;font-family:sans-serif;font-size:37.33333333px"
+       style="line-height:0.05;font-family:'Exo 2';font-size:50px;-inkscape-font-specification:'Exo 2, '"
        selcue="1" />
     <eventcontext
        id="nodes"
@@ -544,7 +546,8 @@
        id="textandfont" />
     <group
        id="transformation"
-       applyseparately="0" />
+       applyseparately="0"
+       rotateCounterClockwise="0" />
     <group
        id="align" />
     <group
@@ -564,7 +567,7 @@
     <group
        id="preferences"
        state="1"
-       page="34" />
+       page="48" />
     <group
        id="gradienteditor" />
     <group
@@ -577,7 +580,7 @@
        defaultopts="1">
       <group
          id="exportarea"
-         value="page" />
+         value="drawing" />
       <group
          id="defaultxdpi" />
       <group
@@ -589,8 +592,9 @@
        default="org.inkscape.output.svg.inkscape"
        append_extension="1"
        enable_preview="1"
-       path="/home/patrick/github.com/davidsneighbour/kollitsch.dev/src/assets/logo"
-       use_current_dir="1" />
+       path="/home/patrick/github.com/davidsneighbour/astro-components/src/assets/images"
+       use_current_dir="1"
+       enable_svgexport="1" />
     <group
        id="save_copy"
        default=""
@@ -667,7 +671,8 @@
   </group>
   <group
      id="options"
-     rotationlock="1">
+     rotationlock="1"
+     onimport="0">
     <group
        id="renderingcache"
        size="512" />
@@ -931,7 +936,7 @@
        partialdynamic="0" />
     <group
        id="font"
-       unitType="2" />
+       unitType="1" />
     <group
        id="boot"
        theme="system"
@@ -964,10 +969,11 @@
      org.inkscape.render.grid_cartesian.dx_unit="mm"
      org.inkscape.render.grid_cartesian.x_div_unit="px"
      org.inkscape.render.grid_cartesian.dy_unit="mm"
-     org.inkscape.render.grid_cartesian.y_div_unit="px" />
+     org.inkscape.render.grid_cartesian.y_div_unit="px"
+     org.inkscape.input.gdkpixbuf.png.scale="optimizeQuality" />
   <group
      id="desktop"
-     style="fill:#000000;font-size:74.66666667px;-inkscape-font-specification:'Exo 2 Bold';font-family:'Exo 2';font-weight:bold">
+     style="fill:none;font-size:600px;-inkscape-font-specification:'Changa One';font-family:'Changa One';stroke:#ff0000;stroke-width:7.327">
     <group
        width="1390"
        height="1018"
@@ -1107,4 +1113,7 @@
        symbolicWarningColor="2155905279"
        symbolicErrorColor="2155905279" />
   </group>
+  <group
+     id="gradient-edit"
+     stoplist="1" />
 </inkscape>

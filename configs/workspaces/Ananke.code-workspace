@@ -4,13 +4,7 @@
 			"path": "/home/patrick/github.com/theNewDynamic/gohugo-theme-ananke"
 		},
 		{
-			"path": "/home/patrick/github.com/theNewDynamic/gohugo-theme-ananke.wiki"
-		},
-		{
-			"path": "/home/patrick/github.com/davidsneighbour/gohugo-theme-ananke-template-mod"
-		},
-		{
-			"path": "/home/patrick/github.com/davidsneighbour/gohugo-theme-ananke-template-submod"
+			"path": "../../../github.com/davidsneighbour/gohugo-theme-ananke-documentation"
 		}
 	],
 	"settings": {}
