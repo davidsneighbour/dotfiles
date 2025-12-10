@@ -88,7 +88,7 @@ SSH_COMPLETE=("$(cut -f1 -d' ' ~/.ssh/known_hosts |\
                  grep -e '[[:alpha:]]')")
 complete -o default -W "${SSH_COMPLETE[*]}" ssh
 
-for FILE in "${BASHRC_PATH}"/_completions/{bootstrap,caniuse,gohugo,netlify,npm,phinx,robo,wp}; do
+for FILE in "${BASHRC_PATH}"/partials/_completions/{bootstrap,caniuse,gohugo,netlify,npm,phinx,robo,wp}; do
   # this routine ranges through a folder of files that we don't explicitly know (@davidsneighbour)
   # see https://github.com/koalaman/shellcheck/wiki/SC1090
   # shellcheck source-path=SOURCEDIR/completions
