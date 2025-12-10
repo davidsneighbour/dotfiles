@@ -155,3 +155,37 @@ EOF
     export LOG_LEVEL="${old_level}"
   fi
 }
+
+
+__dnb_init_log() {
+  if [[ -z "${DNB_SETUP_LOG_FILE:-}" ]]; then
+    local log_dir="${HOME}/.logs"
+    mkdir -p "${log_dir}"
+    DNB_SETUP_LOG_FILE="${log_dir}/setup-log-$(date +%Y%m%d-%H%M%S).log"
+  fi
+}
+__dnb_error() {
+  local message="${1:-Unknown error}"
+  __dnb_log "ERROR" "${message}"
+  printf 'ERROR: %s\n' "${message}" >&2
+}
+
+__dnb_create_directory() {
+  local dir_path="${1:-}"
+
+  if [[ -z "${dir_path}" ]]; then
+    __dnb_error "__dnb_create_directory called with empty path"
+    return 1
+  fi
+
+  if [[ -d "${dir_path}" ]]; then
+    __dnb_log "INFO" "Directory already exists: ${dir_path}"
+  else
+    if mkdir -p "${dir_path}"; then
+      __dnb_log "INFO" "Created directory: ${dir_path}"
+    else
+      __dnb_error "Failed to create directory: ${dir_path}"
+      return 1
+    fi
+  fi
+}
