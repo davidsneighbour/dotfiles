@@ -108,7 +108,6 @@ git checkout main
 | SUPER+C | open Chrome user profile selection (or browser) |
 | SUPER+T | open Terminal |
 | SUPER+F | open file manager in Home directory |
-| SUPER+S | open Spotify |
 | SUPER+SHIFT+S | open Sublime Text |
 | SUPER+Q | open Todoist |
 
