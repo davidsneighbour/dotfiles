@@ -18,9 +18,8 @@ for FILE in "${DOTFILES_PATH}"/bashrc/_lib/*; do
   [ -f "${FILE}" ] && source "${FILE}"
 done
 
-# @TODO add npm
 . "/home/patrick/.deno/env"
+
+# load nvm (node and npm)
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-
-. "$HOME/.atuin/bin/env"
