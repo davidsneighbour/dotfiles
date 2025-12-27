@@ -6,3 +6,7 @@ alias sysinfo-full='inxi -Fxxxz'
 alias sysinfo-cpu='inxi -Cxxx'
 alias sysinfo-gpu='inxi -Gxxx'
 alias sysinfo-mem='inxi -mxxx'			
+
+# more verbosity
+alias mv="mv -iv"
+alias cp="cp -iv"
