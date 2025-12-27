@@ -1,116 +1,347 @@
 #!/bin/bash
 ################################################################################
 # Dotbot wrapper script
-# 
+#
 # @see https://github.com/davidsneighbour/dotfiles
 ################################################################################
 
 set -euo pipefail
 
+# ------------------------------------------------------------------------------
+# Help
+# ------------------------------------------------------------------------------
 print_help() {
   cat <<'EOF'
-Usage: dotbot [--debug] [<config-name>]
+Usage:
+  dotbot [--ext-file <file>] [list|run <slug>|<config-name>] [-q|-v|-vv]
 
-Runs Dotbot from the repository root. If <config-name> is given and a matching
-configs/dotbot/config.<config-name>.yaml exists, it will be used. Otherwise the
-default configs/dotbot/config.yaml is used.
+Modes:
+  1) Default Dotbot run (no args) uses configs/dotbot/config.yaml
+  2) Legacy named run: dotbot <config-name>
+     - Uses configs/dotbot/config.<config-name>.yaml if it exists
+  3) Extensions:
+     - dotbot list               # list slugs from extensions.toml, show status, optionally pick to run (uses gum if present)
+     - dotbot run <slug>         # run an extension by slug, from the TOML
 
 Options:
-  --debug        Enable verbose -vv output
-  -h, --help     Show this help
+  -q                Quiet mode (less output)
+  -v                Verbose mode
+  -vv               Very verbose mode
+                    (If multiple are given: -vv > -v > -q, highest wins)
+  --ext-file <file> Path to extensions TOML (default: configs/dotbot/extensions.toml)
+  -h, --help        Show this help
 
-Examples:
-  dotbot
-  dotbot setup
-  dotbot clean
-  dotbot --debug setup
+Extensions TOML (example):
+  [config.obsidian]
+  path=${HOME}/github.com/davidsneighbour/notes/.obsidian
+  config=hosts/dotbot.yaml
+  label=Obsidian Links
+
+Rules:
+  - The Dotbot config to execute is: ${path}/${config}
+  - Before running, the script exports:
+      path   -> value from TOML (with ${HOME} expanded)
+      config -> value from TOML (as-is)
+      label  -> value from TOML (as-is)
 EOF
 }
 
-# ----------------------------
-# Resolve repo root (works via symlink)
-# ----------------------------
+# ------------------------------------------------------------------------------
+# Resolve repo root (via symlink-safe path)
+# ------------------------------------------------------------------------------
 SCRIPT_PATH="$(readlink -f "${BASH_SOURCE[0]}")"
 REPO_ROOT="$(cd "$(dirname "${SCRIPT_PATH}")/.." && pwd)"
 
-# ----------------------------
-# CLI args
-# ----------------------------
-DEBUG_FLAG=""
+# ------------------------------------------------------------------------------
+# Defaults and globals
+# ------------------------------------------------------------------------------
+VERBOSITY=""
 CONFIG_NAME=""
+SUBCOMMAND=""
+SUBARG=""
 
-for arg in "$@"; do
-  case "${arg}" in
-    --debug)
-      DEBUG_FLAG="-vv"
+EXT_FILE_DEFAULT="${REPO_ROOT}/configs/dotbot/extensions.toml"
+EXT_FILE="${EXT_FILE_DEFAULT}"
+
+# dotbot paths
+DOTBOT_DIR="${REPO_ROOT}/modules/dotbot"
+DOTBOT_BIN="${DOTBOT_DIR}/bin/dotbot"
+
+# ------------------------------------------------------------------------------
+# CLI parse
+# ------------------------------------------------------------------------------
+if [[ "${DOTBOT_EXT_FILE-}" != "" ]]; then
+  EXT_FILE="${DOTBOT_EXT_FILE}"
+fi
+
+while (( "$#" )); do
+  case "$1" in
+    -v)
+      [[ "$VERBOSITY" != "-vv" ]] && VERBOSITY="-v"
+      shift
+      ;;
+    -vv)
+      VERBOSITY="-vv"
+      shift
+      ;;
+    -q)
+      # only set if not overridden later by -v/-vv
+      [[ -z "$VERBOSITY" ]] && VERBOSITY="-q"
+      shift
+      ;;
+    --ext-file)
+      EXT_FILE="${2-}"
+      if [[ -z "${EXT_FILE}" ]]; then
+        echo "Error: --ext-file requires a value." >&2
+        exit 2
+      fi
+      shift 2
       ;;
     -h|--help)
       print_help
       exit 0
       ;;
+    list)
+      SUBCOMMAND="list"
+      shift
+      ;;
+    run)
+      SUBCOMMAND="run"
+      SUBARG="${2-}"
+      if [[ -z "${SUBARG}" ]]; then
+        echo "Error: run requires a <slug>." >&2
+        exit 2
+      fi
+      shift 2
+      ;;
     *)
-      CONFIG_NAME="${arg}"
+      CONFIG_NAME="${1}"
+      shift
       ;;
   esac
 done
 
-# ----------------------------
-# Config selection
-# ----------------------------
-if [[ -n "${CONFIG_NAME}" ]]; then
-  ALT_CONFIG="${REPO_ROOT}/configs/dotbot/config.${CONFIG_NAME}.yaml"
-  if [[ -f "${ALT_CONFIG}" ]]; then
-    DOTBOT_CONFIG="${ALT_CONFIG}"
-  else
-    echo "Error: Config file '${ALT_CONFIG}' not found." >&2
-    exit 1
-  fi
-else
-  DOTBOT_CONFIG="${REPO_ROOT}/configs/dotbot/config.yaml"
-fi
-
-# ----------------------------
-# Paths
-# ----------------------------
-DOTBOT_DIR="${REPO_ROOT}/modules/dotbot"
-DOTBOT_BIN="${DOTBOT_DIR}/bin/dotbot"
-
-# ----------------------------
-# Ensure submodule present
-# ----------------------------
+# ------------------------------------------------------------------------------
+# Ensure dotbot submodule present
+# ------------------------------------------------------------------------------
 if [[ -d "${DOTBOT_DIR}" ]]; then
-  if [[ "${DOTBOT_VERBOSE-}" == "1" ]]; then
-    git -C "${REPO_ROOT}" submodule sync --recursive
-    git -C "${REPO_ROOT}" submodule update --init --recursive "${DOTBOT_DIR#${REPO_ROOT}/}"
-  else
-    git -C "${REPO_ROOT}" submodule sync --quiet --recursive
-    git -C "${REPO_ROOT}" submodule update --init --recursive "${DOTBOT_DIR#${REPO_ROOT}/}" >/dev/null 2>&1
-  fi
+  git -C "${REPO_ROOT}" submodule sync --quiet --recursive
+  git -C "${REPO_ROOT}" submodule update --init --recursive "${DOTBOT_DIR#${REPO_ROOT}/}" >/dev/null 2>&1
 fi
-
-# ----------------------------
-# Execute from repo root
-# ----------------------------
-export HOSTNAME="$(hostname)"
-cd "${REPO_ROOT}"
 
 if [[ ! -x "${DOTBOT_BIN}" ]]; then
   echo "Error: Dotbot binary not found or not executable at '${DOTBOT_BIN}'." >&2
   exit 1
 fi
 
-"${DOTBOT_BIN}" \
-  --base-directory "${REPO_ROOT}" \
-  --config-file "${DOTBOT_CONFIG}" \
-  --force-color \
-  --exit-on-failure \
-  ${DEBUG_FLAG}
+# ------------------------------------------------------------------------------
+# Minimal TOML parser for our constrained format
+# ------------------------------------------------------------------------------
+declare -Ag EXT_PATHS=()
+declare -Ag EXT_CONFIGS=()
+declare -Ag EXT_LABELS=()
 
-STATUS=$?
-if [[ $STATUS -eq 0 ]]; then
-  echo "✅ Dotbot finished successfully."
-else
-  echo "❌ Dotbot failed with exit code $STATUS."
+trim() { awk '{$1=$1;print}' <<<"$*"; }
+
+expand_home_ref() {
+  local v="$1"
+  v="${v//'${HOME}'/${HOME}}"
+  if [[ "$v" == "~/"* ]]; then
+    v="${HOME}/${v:2}"
+  fi
+  echo "$v"
+}
+
+load_extensions() {
+  local file="$1"
+  [[ -f "$file" ]] || return 0
+
+  local current_slug=""
+  while IFS='' read -r raw || [[ -n "$raw" ]]; do
+    local line
+    line="$(trim "$raw")"
+    [[ -z "$line" ]] && continue
+
+    if [[ "$line" =~ ^\[(config\.([A-Za-z0-9_-]+))\]$ ]]; then
+      current_slug="${BASH_REMATCH[2]}"
+      continue
+    fi
+
+    [[ -z "$current_slug" ]] && continue
+
+    if [[ "$line" =~ ^([a-zA-Z0-9_-]+)[[:space:]]*=[[:space:]]*(.*)$ ]]; then
+      local k="${BASH_REMATCH[1]}"
+      local v="${BASH_REMATCH[2]}"
+
+      if [[ "$v" =~ ^\"(.*)\"$ ]]; then
+        v="${BASH_REMATCH[1]}"
+      fi
+
+      case "$k" in
+        path)   v="$(expand_home_ref "$v")"; EXT_PATHS["$current_slug"]="$v" ;;
+        config) EXT_CONFIGS["$current_slug"]="$v" ;;
+        label)  EXT_LABELS["$current_slug"]="$v" ;;
+      esac
+    fi
+  done < "$file"
+}
+
+# ------------------------------------------------------------------------------
+# Utilities
+# ------------------------------------------------------------------------------
+have_cmd() { command -v "$1" >/dev/null 2>&1; }
+
+ext_config_fullpath() {
+  local slug="$1"
+  local p="${EXT_PATHS[$slug]-}"
+  local c="${EXT_CONFIGS[$slug]-}"
+  [[ -n "$p" && -n "$c" ]] || return 1
+  printf '%s/%s' "$p" "$c"
+}
+
+print_extensions_status() {
+  local file="$1"
+
+  if [[ ! -f "$file" ]]; then
+    echo "No extensions file found at: $file"
+    return 0
+  fi
+
+  echo "Extensions from: $file"
+  local any=0
+  for slug in "${!EXT_CONFIGS[@]}"; do
+    any=1
+    local path="${EXT_PATHS[$slug]-}"
+    local conf="${EXT_CONFIGS[$slug]-}"
+    local label="${EXT_LABELS[$slug]-}"
+    local full
+    full="$(ext_config_fullpath "$slug" || true)" || full="(invalid)"
+
+    if [[ -f "$full" ]]; then
+      printf '  [%s] %s -> %s (label: %s)\n' "$slug" "$path" "$conf" "${label:-""}"
+    else
+      printf '  [%s] %s -> %s (label: %s)  MISSING: %s\n' "$slug" "$path" "$conf" "${label:-""}" "$full"
+    fi
+  done
+
+  [[ "$any" -eq 0 ]] && echo "  (no [config.*] entries found)"
+}
+
+run_dotbot_with_config() {
+  local cfg="$1"
+  cd "${REPO_ROOT}"
+  "${DOTBOT_BIN}" \
+    --base-directory "${REPO_ROOT}" \
+    --config-file "${cfg}" \
+    --force-color \
+    --exit-on-failure \
+    ${VERBOSITY}
+}
+
+run_extension() {
+  local slug="$1"
+  local path="${EXT_PATHS[$slug]-}"
+  local conf_rel="${EXT_CONFIGS[$slug]-}"
+  local label="${EXT_LABELS[$slug]-}"
+
+  if [[ -z "$path" || -z "$conf_rel" ]]; then
+    echo "Error: extension '$slug' not found or incomplete in ${EXT_FILE}." >&2
+    exit 1
+  fi
+
+  local cfg_full
+  cfg_full="$(ext_config_fullpath "$slug")"
+
+  if [[ ! -f "$cfg_full" ]]; then
+    echo "Notice: extension '$slug' config missing: $cfg_full"
+    exit 1
+  fi
+
+  export path="$path"
+  export config="$conf_rel"
+  export label="$label"
+
+  echo "Running extension '$slug' -> ${cfg_full}"
+  run_dotbot_with_config "${cfg_full}"
+}
+
+interactive_list_and_run() {
+  if ! have_cmd gum; then
+    echo "gum not installed. Listing only:"
+    print_extensions_status "${EXT_FILE}"
+    exit 0
+  fi
+
+  local choices=()
+  for slug in "${!EXT_CONFIGS[@]}"; do
+    local full
+    full="$(ext_config_fullpath "$slug" || true)" || full=""
+    local status="missing"
+    [[ -f "$full" ]] && status="ok"
+    local label="${EXT_LABELS[$slug]-}"
+    choices+=("${slug} | ${status} | ${label}")
+  done
+
+  [[ "${#choices[@]}" -eq 0 ]] && { echo "No extensions found in ${EXT_FILE}"; exit 0; }
+
+  local picked
+  picked="$(printf '%s\n' "${choices[@]}" | gum choose --header "Select extension to run")" || exit 130
+  local slug
+  slug="$(awk -F'|' '{print $1}' <<<"$picked" | awk '{$1=$1;print}')"
+  run_extension "$slug"
+}
+
+# ------------------------------------------------------------------------------
+# Load extensions if file present
+# ------------------------------------------------------------------------------
+load_extensions "${EXT_FILE}"
+
+# ------------------------------------------------------------------------------
+# Subcommands first
+# ------------------------------------------------------------------------------
+case "${SUBCOMMAND}" in
+  list)
+    print_extensions_status "${EXT_FILE}"
+    if have_cmd gum; then
+      echo
+      if gum confirm "Pick an extension to run now?"; then
+        interactive_list_and_run
+        exit $?
+      fi
+    fi
+    exit 0
+    ;;
+  run)
+    run_extension "${SUBARG}"
+    STATUS=$?
+    exit $STATUS
+    ;;
+esac
+
+# ------------------------------------------------------------------------------
+# Legacy behaviour: named config or default
+# ------------------------------------------------------------------------------
+DOTBOT_CONFIG="${REPO_ROOT}/configs/dotbot/config.yaml"
+if [[ -n "${CONFIG_NAME}" ]]; then
+  ALT_CONFIG="${REPO_ROOT}/configs/dotbot/config.${CONFIG_NAME}.yaml"
+  if [[ -f "${ALT_CONFIG}" ]]; then
+    DOTBOT_CONFIG="${ALT_CONFIG}"
+  else
+    if [[ -n "${EXT_CONFIGS[${CONFIG_NAME}]-}" ]]; then
+      run_extension "${CONFIG_NAME}"
+      exit $?
+    fi
+    echo "Error: Config file '${ALT_CONFIG}' not found." >&2
+    exit 1
+  fi
 fi
 
+# ------------------------------------------------------------------------------
+# Execute default or legacy named config
+# ------------------------------------------------------------------------------
+export HOSTNAME="$(hostname)"
+cd "${REPO_ROOT}"
+
+run_dotbot_with_config "${DOTBOT_CONFIG}"
+STATUS=$?
 exit $STATUS

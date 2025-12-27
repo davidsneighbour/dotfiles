@@ -1,0 +1,11 @@
+# https://chatgpt.com/share/68def2e5-bcd4-8009-8bb3-ed424c7d29a6
+
+[config.obsidian]
+path="${HOME}/github.com/davidsneighbour/notes/.obsidian"
+config="hosts/dotbot.yaml"
+label="Obsidian Links"
+
+[config.obsidian1]
+path="${HOME}/github.com/davidsneighbour/notes/.obsidian"
+config="hosts/dotbot.yaml"
+label="Obsidian Links 2"

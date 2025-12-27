@@ -1,0 +1,64 @@
+# GNOME custom keyboard shortcuts export
+# exported_at = "2025-12-25T00:00:00.000Z"
+# host = "your-hostname"
+# user = "patrick"
+version = 1
+
+[[shortcuts]]
+title = "Launch VSCode"
+accelerator = "<Super>w"
+command = "/home/patrick/.dotfiles/filesystem/.config/rofi/workspaces.sh --workspacedirs /home/patrick/.dotfiles/configs/workspaces --projectsdirs /home/patrick/github.com/davidsneighbour,/home/patrick/github.com/theNewDynamic,/home/patrick/gitlab.com/wonderland-gmbh"
+# command_sha256 = "d2ff9f1b9b7a1f7d1c8c0c20d6d49bc03d8c78cb8058d5c1f1e7c1c3e9d3e7d6"
+
+[[shortcuts]]
+title = "Launch VSCode (new window)"
+accelerator = "<Super>e"
+command = "/home/patrick/.dotfiles/filesystem/.config/rofi/workspaces.sh --workspacedirs /home/patrick/.dotfiles/configs/workspaces --projectsdirs /home/patrick/github.com/davidsneighbour,/home/patrick/github.com/theNewDynamic,/home/patrick/gitlab.com/wonderland-gmbh --newwindow"
+# command_sha256 = "d2ff9f1b9b7a1f7d1c8c0c20d6d49bc03d8c78cb8058d5c1f1e7c1c3e9d3e7d6"
+
+[[shortcuts]]
+title = "Show Run Dialog"
+accelerator = "<Super>r"
+command = "rofi -show run"
+# command_sha256 = "0f1e2d3c4b5a69788796a5b4c3d2e1f00112233445566778899aabbccddeeff0"
+
+[[shortcuts]]
+title = "Start AI"
+accelerator = "<Super>a"
+command = "/opt/google/chrome/google-chrome --profile-directory=Default --app-id=cadlkienfkclaiaibeoongdcgmdikeeg"
+# command_sha256 = "0f1e2d3c4b5a69788796a5b4c3d2e1f00112233445566778899aabbccddeeff0"
+
+[[shortcuts]]
+title = "Start Todoist"
+accelerator = "<Super>q"
+command = "/opt/google/chrome/google-chrome --profile-directory=Default --app-id=knaiokfnmjjldlfhlioejgcompgenfhb"
+# command_sha256 = "0f1e2d3c4b5a69788796a5b4c3d2e1f00112233445566778899aabbccddeeff0"
+
+[[shortcuts]]
+title = "Start Netflix"
+accelerator = "<Super>n"
+command = "/usr/bin/gio launch ~/.local/share/applications/dnb-netflix.desktop"
+# command_sha256 = "0f1e2d3c4b5a69788796a5b4c3d2e1f00112233445566778899aabbccddeeff0"
+
+[[shortcuts]]
+title = "Start Sublime Edit"
+accelerator = "<Primary><Shift>s"
+command = "subl"
+# command_sha256 = "0f1e2d3c4b5a69788796a5b4c3d2e1f00112233445566778899aabbccddeeff0"
+
+[[shortcuts]]
+title = "Start Codex"
+accelerator = "<Super>c"
+command = "/opt/google/chrome/google-chrome --profile-directory=Default --ignore-profile-directory-if-not-exists https://chatgpt.com/codex"
+# command_sha256 = "0f1e2d3c4b5a69788796a5b4c3d2e1f00112233445566778899aabbccddeeff0"
+
+[[shortcuts]]
+title = "Start Obsidian"
+accelerator = "<Super>o"
+command = "/home/patrick/github.com/davidsneighbour/dotfiles/bin/launch-scripts/obsidian.sh"
+# command_sha256 = "0f1e2d3c4b5a69788796a5b4c3d2e1f00112233445566778899aabbccddeeff0"
+
+[[shortcuts]]
+title = "Start Terminal"
+accelerator = "<Super>t"
+command = "/usr/bin/ptyxis --new-window"

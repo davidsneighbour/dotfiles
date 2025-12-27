@@ -306,7 +306,7 @@ for d in "${WORKSPACE_FILES_DIRS[@]}"; do log debug "  - ${d}"; done || true
 PROMPT="${PROMPT} (${#MENU_ENTRIES[@]} available)"
 log debug "Launching rofi"
 SELECTED=$(printf '%s\n' "${MENU_ENTRIES[@]}" \
-  | rofi -dmenu -i -markup-rows -config "${ROFI_CONFIG}" -p "${PROMPT}")
+  | rofi -x11 -dmenu -i -markup-rows -config "${ROFI_CONFIG}" -p "${PROMPT}")
 if [[ -z "$SELECTED" ]]; then
   log info "No selection, exiting"
   exit 1
