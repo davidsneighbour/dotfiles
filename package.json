@@ -20,7 +20,7 @@
     "@eslint/json": "0.14.0",
     "@eslint/markdown": "7.5.1",
     "@humanwhocodes/crosspost": "^1.0.2",
-    "@j9t/obsohtml": "1.9.4",
+    "@j9t/obsohtml": "1.9.5",
     "@secretlint/secretlint-rule-no-dotenv": "11.2.5",
     "@secretlint/secretlint-rule-no-homedir": "11.2.5",
     "@secretlint/secretlint-rule-no-k8s-kind-secret": "11.2.5",
