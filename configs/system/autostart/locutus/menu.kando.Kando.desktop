@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Kando
+Comment=Do things with utmost efficiency
+Categories=Utility;
+Icon=menu.kando.Kando
+Exec=/usr/bin/flatpak run --branch=stable --arch=x86_64 --command=AppRun --file-forwarding menu.kando.Kando @@u %U @@
+Terminal=false
+X-Flatpak=menu.kando.Kando
