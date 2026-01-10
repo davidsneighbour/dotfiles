@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"workbench.colorCustomizations": {
+			"activityBar.activeBackground": "#EEE8D5",
+			"activityBar.activeBorder": "#ff7700",
+			"activityBar.background": "#fdf6e3",
+			"activityBar.foreground": "#15202b",
+			"activityBar.inactiveForeground": "#15202b99",
+			"activityBarBadge.background": "#ff9900",
+			"activityBarBadge.foreground": "#15202b",
+			"sash.hoverBorder": "#ff7700"
+		},
+		"editor.tabSize": 2
+	}
+}
