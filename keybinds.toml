@@ -50,13 +50,11 @@ command = "subl"
 title = "Start Codex"
 accelerator = "<Super>c"
 command = "/opt/google/chrome/google-chrome --profile-directory=Default --ignore-profile-directory-if-not-exists https://chatgpt.com/codex"
-# command_sha256 = "0f1e2d3c4b5a69788796a5b4c3d2e1f00112233445566778899aabbccddeeff0"
 
 [[shortcuts]]
 title = "Start Obsidian"
 accelerator = "<Super>o"
 command = "/home/patrick/github.com/davidsneighbour/dotfiles/bin/launch-scripts/obsidian.sh"
-# command_sha256 = "0f1e2d3c4b5a69788796a5b4c3d2e1f00112233445566778899aabbccddeeff0"
 
 [[shortcuts]]
 title = "Start Terminal"

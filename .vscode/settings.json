@@ -17,7 +17,12 @@
     "titleBar.activeBackground": "#6272a4",
     "titleBar.activeForeground": "#000000",
     "titleBar.inactiveBackground": "#6272a499",
-    "titleBar.inactiveForeground": "#00000099"
+    "titleBar.inactiveForeground": "#00000099",
+
+
+    "editorIndentGuide.background1": "#00000001",
+    "editorIndentGuide.activeBackground1": "#ff9900"
+
   },
   //"peacock.color": "#6272a4",
   "explorer.fileNesting.patterns": {

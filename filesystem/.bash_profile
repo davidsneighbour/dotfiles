@@ -21,4 +21,3 @@ done
 # @TODO add npm
 . "/home/patrick/.deno/env"
 source /home/patrick/.local/share/bash-completion/completions/deno.bash
-. "$HOME/.cargo/env"
