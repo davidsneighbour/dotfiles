@@ -14,6 +14,7 @@ todoctor
 filesystem/.themes/Orchis*
 filesystem/.icons/Papirus*
 .crush
+cache
 
 # add shared launchers
 configs/system/share/applications/**
