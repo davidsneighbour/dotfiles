@@ -35,11 +35,6 @@
     # folders in ~/.local/share
     ~/.local/share/applications: configs/system/share/applications
 
-    # Cinnamon
-    ~/.config/cinnamon: configs/system/cinnamon/cinnamon
-    ~/.config/cinnamon-session: configs/system/cinnamon/cinnamon-session
-    ~/.config/cinnamon/backgrounds: configs/wallpapers
-
     # Dracula Theme
     ~/.config/gtk-3.0: configs/theme/gtk-3.0
     ~/.config/gtk-4.0: configs/theme/gtk-4.0
@@ -54,12 +49,20 @@
     ~/.config/vale: configs/vale
     ~/.config/github-label-manager: configs/git/github-label-manager
 
+    # node configs
+    ~/.ncurc.js: configs/npm/ncu.cjs
+
+    # qbittorrent
+    ~/.config/qBittorrent/watched_folders.json: configs/bittorrent/qbittorrent-watched_folders.json
+    ~/.config/qBittorrent/qBittorrent.con: configs/bittorrent/qbittorrent.conf
+    ~/.config/qBittorrent/categories.json: configs/bittorrent/qbittorrent-categories.json
+
     ############################################################################
     # legacy, deprecated, rework
     ############################################################################
     # file links
     ############################################################################
-    ~/.barriers.conf: filesystem/.barriers.conf
+    # ~/.barriers.conf: filesystem/.barriers.conf
     ~/.bash_logout: filesystem/.bash_logout
     ~/.bash_profile: filesystem/.bash_profile
     ~/.bashrc: filesystem/.bashrc
