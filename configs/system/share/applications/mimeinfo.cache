@@ -10,5 +10,5 @@ text/xml=dnb-netflix.desktop;
 x-scheme-handler/joplin=appimagekit-joplin.desktop;
 x-scheme-handler/kitty=kitty-open.desktop;
 x-scheme-handler/ssh=kitty-open.desktop;
-x-scheme-handler/steam=steam.desktop;
-x-scheme-handler/steamlink=steam.desktop;
+x-scheme-handler/tg=org.telegram.desktop._31f57746abd7d3c5e429aa8633e88c7d.desktop;
+x-scheme-handler/tonsite=org.telegram.desktop._31f57746abd7d3c5e429aa8633e88c7d.desktop;

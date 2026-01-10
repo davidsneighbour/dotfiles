@@ -1,12 +1,16 @@
-#!/bin/bash
+# shellcheck shell=bash
 
 # a collection of inxi aliases for quick system information
 alias sysinfo='inxi -Sxxx'
 alias sysinfo-full='inxi -Fxxxz'
 alias sysinfo-cpu='inxi -Cxxx'
 alias sysinfo-gpu='inxi -Gxxx'
-alias sysinfo-mem='inxi -mxxx'			
+alias sysinfo-mem='inxi -mxxx'
 
 # more verbosity
 alias mv="mv -iv"
 alias cp="cp -iv"
+
+# shutdown, logout, reboot shortcuts
+alias wlogout="wlogout --buttons-per-row 2 --column-spacing 50 --row-spacing 50"
+alias wleave="wlogout --buttons-per-row 2 --column-spacing 50 --row-spacing 50"

@@ -1,24 +1,32 @@
 {
-    "label" : "lock",
-    "action" : "swaylock",
-    "text" : "Lock",
-    "keybind" : "l"
+"label" : "lock",
+"action" : "swaylock",
+"text" : "[L]ock",
+"keybind" : "l",
+"height" : 1,
+"width" : 1
 }
 {
-    "label" : "logout",
-    "action" : "loginctl terminate-user $USER",
-    "text" : "Logout",
-    "keybind" : "e"
+"label" : "reboot",
+"action" : "systemctl reboot",
+"text" : "[R]eboot",
+"keybind" : "r",
+"height" : 1,
+"width" : 1
 }
 {
-    "label" : "shutdown",
-    "action" : "systemctl poweroff",
-    "text" : "Shutdown",
-    "keybind" : "s"
+"label" : "logout",
+"action" : "loginctl terminate-user $USER",
+"text" : "Lo[g]out",
+"keybind" : "g",
+"height" : 1,
+"width" : 1
 }
 {
-    "label" : "reboot",
-    "action" : "systemctl reboot",
-    "text" : "Reboot",
-    "keybind" : "r"
+"label" : "shutdown",
+"action" : "systemctl poweroff",
+"text" : "[S]hutdown",
+"keybind" : "s",
+"height" : 1,
+"width" : 1
 }
