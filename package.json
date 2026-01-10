@@ -1,7 +1,7 @@
 {
   "name": "@davidsneighbour/dotfiles",
   "description": "David's Neighbour's .dotfiles",
-  "version": "3000.0.0",
+  "version": "3001.0.0",
   "license": "GPL-3.0-or-later",
   "repository": "https://github.com/davidsneighbour/dotfiles",
   "author": "Patrick Kollitsch <davidsneighbourdev+gh@gmail.com>",

@@ -1,4 +1,103 @@
 Changelog
+## [3001.0.0](https://github.com/davidsneighbour/dotfiles/compare/v2025.19.0...v3001.0.0) (2026-01-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* new semver numbering without year number
+
+### Features
+
+* add crosspost script ([23f3b54](https://github.com/davidsneighbour/dotfiles/commit/23f3b54e743e7e7e10b3135059b8cb4e0e0bb9ac))
+* add image generation from pdf and rotate script ([2264b9c](https://github.com/davidsneighbour/dotfiles/commit/2264b9c6fe1283ef189f83b884a9923872e7f269))
+* add script to evaluate the dotfiles path ([1820865](https://github.com/davidsneighbour/dotfiles/commit/18208651d48578e867c19c9792217fdfe07780cd))
+* add some bashrc scripts ([1e3ec8c](https://github.com/davidsneighbour/dotfiles/commit/1e3ec8c5286bdba47bbe6baab8036dca05c66ae4))
+* force breaking change ([009c215](https://github.com/davidsneighbour/dotfiles/commit/009c215f84db6c73202e30262c69f7c5f5e6ff70))
+* **installer:** add obsidian installer script ([a4087df](https://github.com/davidsneighbour/dotfiles/commit/a4087df40a7bfc9cbe3d95d8851ebc6c5625c949))
+* set new version number without year ([3578378](https://github.com/davidsneighbour/dotfiles/commit/3578378f73e2201fa9d6492ed33d8b91525f41df))
+
+
+### Bug Fixes
+
+* add ignored folders to synch cronjob ([e7f3300](https://github.com/davidsneighbour/dotfiles/commit/e7f3300498e1c7b8e98afeb7eb356482f56bde3e))
+* **cronjob:** add synchback to synch cron ([e1e7ef6](https://github.com/davidsneighbour/dotfiles/commit/e1e7ef63bb494c97bf693aad18e3182459c0a298))
+* ignore cache directory ([6864a18](https://github.com/davidsneighbour/dotfiles/commit/6864a183719ab3fc7a69e2ca5be12e19c815d043))
+* **spotify:** remove spotify ([f2c1a76](https://github.com/davidsneighbour/dotfiles/commit/f2c1a76f86116fb0d4a4e6af0befa121b568671c))
+* **vale:** remove empty rule ([e21161b](https://github.com/davidsneighbour/dotfiles/commit/e21161b321d48f4d8b04c3af5c0a0a3125180711))
+
+
+### Refactors
+
+* add comments ([50e0eb1](https://github.com/davidsneighbour/dotfiles/commit/50e0eb13dc29bd74d1f5ed9fb461e6aac9f39dc5))
+* add comments and requirements ([6706bad](https://github.com/davidsneighbour/dotfiles/commit/6706bad6843dcd8c00f691b8119b0b08e4495e96))
+
+
+### Chore
+
+* **assets:** update skyline stats for 2025 ([c1746d1](https://github.com/davidsneighbour/dotfiles/commit/c1746d1917264ce03f51dddb2201b914ce2c6d09))
+* **assets:** update skyline stats for 2025 ([151da5e](https://github.com/davidsneighbour/dotfiles/commit/151da5eaa669d86fe44aa8640729bf40ef6931fd))
+* **assets:** update skyline stats for 2025 ([23c9551](https://github.com/davidsneighbour/dotfiles/commit/23c955124370700024bad2238c7ccb3c924da67b))
+* **assets:** update skyline stats for 2025 ([94d4983](https://github.com/davidsneighbour/dotfiles/commit/94d4983f62ea15837b0ea0539dea05fa4703f6a9))
+* **deps:** update actions/setup-node action to v6 ([#360](https://github.com/davidsneighbour/dotfiles/issues/360)) ([5a68888](https://github.com/davidsneighbour/dotfiles/commit/5a6888861aae9c56973184a6e6e75b57aae233e8))
+* **deps:** update dependency node to v24 ([#361](https://github.com/davidsneighbour/dotfiles/issues/361)) ([0315163](https://github.com/davidsneighbour/dotfiles/commit/0315163e69b4c91dc016f206b410bc8690a5faa8))
+* recent changes ([f0123ac](https://github.com/davidsneighbour/dotfiles/commit/f0123acd9a43bd7804c21305aab5ed36f1b5d6e2))
+* recent smaller changes ([af715d9](https://github.com/davidsneighbour/dotfiles/commit/af715d9bdfb62005fbe81149244eb94722e72eda))
+* recent unsorted changes ([7a66c8e](https://github.com/davidsneighbour/dotfiles/commit/7a66c8efc5793f7f03a791497a7a5fab5578073b))
+* **release:** v2025.20.0 ([6ccff96](https://github.com/davidsneighbour/dotfiles/commit/6ccff9622dcaab0086119dbc2ce87f11a39d013b))
+* **release:** v2999.1.0 ([3f290c7](https://github.com/davidsneighbour/dotfiles/commit/3f290c775f64c0c8ae1de95ad6548a1a568fb5cd))
+* **release:** v3000.0.0 ([191df76](https://github.com/davidsneighbour/dotfiles/commit/191df768e0a5e9456f1262a7910ce6ae0b18fff9))
+* remove joplin ([b0cab33](https://github.com/davidsneighbour/dotfiles/commit/b0cab3392af81d128c1255ac950ac05d318469d5))
+* **repo:** fix merge conflict ([2b6be42](https://github.com/davidsneighbour/dotfiles/commit/2b6be420056f02baa98678fe7fd7c2bed1e7d0e2))
+* **repo:** fix merge conflicts ([a011aed](https://github.com/davidsneighbour/dotfiles/commit/a011aedd7636b0b1051b7661bd803131613f83a1))
+* **repo:** move ai submodule so modules/ai ([660ae95](https://github.com/davidsneighbour/dotfiles/commit/660ae951fccde2c81e6a1cfbc6f0dda35f87e452))
+* **repo:** update container submodules ([8e2f104](https://github.com/davidsneighbour/dotfiles/commit/8e2f104c35082c82e299b4b278a93defc0e1b0d6))
+* **repo:** update submodules ([34f2821](https://github.com/davidsneighbour/dotfiles/commit/34f2821c6f367c3270008c301e7d0acdce26bed3))
+* **repo:** update submodules ([cbe8a6d](https://github.com/davidsneighbour/dotfiles/commit/cbe8a6dfa1d7af4f18345abc37a6563c43934571))
+* **repo:** update submodules ([d6c3b43](https://github.com/davidsneighbour/dotfiles/commit/d6c3b43e6df21acda9e225d62857bff847996631))
+* **repo:** update submodules ([d23a660](https://github.com/davidsneighbour/dotfiles/commit/d23a660c93d0b362a3d82d957326c360a1b9512d))
+* **repo:** update submodules ([f8cc197](https://github.com/davidsneighbour/dotfiles/commit/f8cc197cde33fbeec25d0b299e1d311b546fb24b))
+* smaller updates ([f7e69b2](https://github.com/davidsneighbour/dotfiles/commit/f7e69b2bb1e9973fcb4157a65ef7233d62c5072e))
+* unsorted recent updates ([94d1b09](https://github.com/davidsneighbour/dotfiles/commit/94d1b097a33184ec2b0ffbb30161dbb1a06c4b75))
+* various unsorted updates ([5181654](https://github.com/davidsneighbour/dotfiles/commit/518165430d636cb368db5a5f6756eb6c11be08ef))
+* working ([0882b14](https://github.com/davidsneighbour/dotfiles/commit/0882b1432e1811ab19d091a9318dc2f179e7ea9e))
+
+
+### Configuration
+
+* add cookie clicker startup file ([adfed50](https://github.com/davidsneighbour/dotfiles/commit/adfed50690d64243d19e810ea0559be114d8a2e5))
+* **autostart:** add guake autostart on unkle ([992552a](https://github.com/davidsneighbour/dotfiles/commit/992552ab60ce92fab52d4ae080eb0229fa46115d))
+* **autostart:** setup autostarts on donald ([277867a](https://github.com/davidsneighbour/dotfiles/commit/277867a158700367bcb34cd1b2d49fcc79477a58))
+* **autostart:** update on unkle ([d19aebd](https://github.com/davidsneighbour/dotfiles/commit/d19aebdb26f361fbc68af64006418fdeb338934f))
+* **commitlint:** update scopes ([4b35213](https://github.com/davidsneighbour/dotfiles/commit/4b3521315c4714ebe08944d59cff23aa5fe478cf))
+* **dotbot:** add arc-theme to setup ([31f0072](https://github.com/davidsneighbour/dotfiles/commit/31f0072ed8b4dbe2116c593624befa16d602f6a7))
+* **dotbot:** add file right fixes for .ssh folder ([421a3c3](https://github.com/davidsneighbour/dotfiles/commit/421a3c33ae0d6778ef00b64156f83e69c8309e1c))
+* **dotbot:** add git-extras to setup configuration ([66e4133](https://github.com/davidsneighbour/dotfiles/commit/66e4133f44a50dc8a53f593c2fb15049770aa087))
+* **dotbot:** add papirus-colors to setup ([aa36b4f](https://github.com/davidsneighbour/dotfiles/commit/aa36b4f709556262f3a6b334e913e72eea7b3eb2))
+* **dotbot:** add rclone and obsidian install to setup ([a75361a](https://github.com/davidsneighbour/dotfiles/commit/a75361a298fab8e56e0bea7bcf56d9400488e893))
+* **dotbot:** restructuring dotbot configs ([686de50](https://github.com/davidsneighbour/dotfiles/commit/686de5089a0aca94491395bae5dac8f84e20947f))
+* **dotbot:** update apt-get setups ([f208d11](https://github.com/davidsneighbour/dotfiles/commit/f208d115d3f27c748f24b002f725f0c2ea831240))
+* **git:** git configuration, includeIf based on local path ([99db3e5](https://github.com/davidsneighbour/dotfiles/commit/99db3e5f2f3057466f1a659be4a20b459e607869))
+* **keybindings:** update keybinding ([9c0d7ce](https://github.com/davidsneighbour/dotfiles/commit/9c0d7ce8a4f504561404211caf91ad1f2e9a11c8))
+* **keybindings:** update with obsidian start on SYSTEM+O ([aabd941](https://github.com/davidsneighbour/dotfiles/commit/aabd9416570b0741abd1004c021b0fc70ff3062f))
+* **startup:** add guake startup script ([c891d5e](https://github.com/davidsneighbour/dotfiles/commit/c891d5ed7a19c3d6170d6751e492aec3dc3ea4b6))
+* **sublime text:** update configuration ([85bca82](https://github.com/davidsneighbour/dotfiles/commit/85bca8255957ec699752614d243a4fa13b518e07))
+* update autostart on locutus ([a140242](https://github.com/davidsneighbour/dotfiles/commit/a1402425d5f2263c431a1db5a17b75b76e366771))
+* update autostart settings on donald ([a17d1b1](https://github.com/davidsneighbour/dotfiles/commit/a17d1b1c765bb91d92e7368c782ef42abf17a372))
+* update mimeinfo.cache ([ca40e6e](https://github.com/davidsneighbour/dotfiles/commit/ca40e6ec3ffcc21923ba4129ba94d5529ce2de98))
+* **vale:** update Tech vocabulary ([bc902df](https://github.com/davidsneighbour/dotfiles/commit/bc902df38f0539fd81bc318bf65bc9dd064025d4))
+* various configurations ([e4171a3](https://github.com/davidsneighbour/dotfiles/commit/e4171a399bd8a155c4ebcf1b2530ac2dd0f1334e))
+* **vscode:** add existing workspace configurations ([10de5ec](https://github.com/davidsneighbour/dotfiles/commit/10de5ecc7dd070e3fd61e83ee679988f8c758531))
+
+
+### Build System
+
+* **deps:** bump actions/checkout from 5 to 6 ([#399](https://github.com/davidsneighbour/dotfiles/issues/399)) ([bcdb91f](https://github.com/davidsneighbour/dotfiles/commit/bcdb91ff614515ea406c786fc0ba46c7226e74dc))
+* **deps:** bump actions/setup-node from 4 to 6 ([#367](https://github.com/davidsneighbour/dotfiles/issues/367)) ([de1d2c5](https://github.com/davidsneighbour/dotfiles/commit/de1d2c5a9b924b75834a16db5cfa882db6a2a2d2))
+* **deps:** bump modules/dotbot from `1dbf92c` to `60e532b` ([#366](https://github.com/davidsneighbour/dotfiles/issues/366)) ([57ea6f0](https://github.com/davidsneighbour/dotfiles/commit/57ea6f0ec81e07153c8c83b1be5d4e32ebde7e72))
+* **deps:** update dependencies ([c52db7c](https://github.com/davidsneighbour/dotfiles/commit/c52db7c0317d84c55021363567cfae3738bddf98))
+* **deps:** update dependencies ([6cd0813](https://github.com/davidsneighbour/dotfiles/commit/6cd0813a0cc0238175c3ccd6cd4cb01147e03819))
+* **deps:** update git submodules ([1aff059](https://github.com/davidsneighbour/dotfiles/commit/1aff0598d834a7d42ef0011cf632a97b846927d3))
+
 ## [3000.0.0](https://github.com/davidsneighbour/dotfiles/compare/v2025.19.0...v3000.0.0) (2026-01-10)
 
 
