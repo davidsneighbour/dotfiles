@@ -1,4 +1,11 @@
 Changelog
+## [2999.1.0](https://github.com/davidsneighbour/dotfiles/compare/v2025.20.0...v2999.1.0) (2026-01-10)
+
+
+### Features
+
+* set new version number without year ([5e7998f](https://github.com/davidsneighbour/dotfiles/commit/5e7998f2447aad97596e3a6cf6d594f248942481))
+
 ## [2025.20.0](https://github.com/davidsneighbour/dotfiles/compare/v2025.19.0...v2025.20.0) (2026-01-10)
 
 
