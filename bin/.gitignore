@@ -1,3 +1,4 @@
 programs
 *.AppImage
 eza
+local
