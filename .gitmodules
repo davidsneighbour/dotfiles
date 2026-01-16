@@ -20,3 +20,6 @@ url = https://github.com/alegsan/dotbot-aptget.git
 [submodule "modules/copailot"]
 	path = modules/copailot
 	url = git@github.com:davidsneighbour/copailot.git
+[submodule "modules/containers-pi"]
+	path = modules/containers-pi
+	url = git@github.com:davidsneighbour/dotfiles-containers-pi.git
