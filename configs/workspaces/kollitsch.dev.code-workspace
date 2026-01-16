@@ -1,0 +1,54 @@
+{
+	"folders": [
+		{
+			"path": "../../../kollitsch.dev"
+		}
+	],
+	"settings": {
+		"explorer.fileNesting.expand": false,
+		"svg.preview.background": "black",
+		"files.associations": {
+			"**/*.astro": "astro",
+			"**/*.css": "tailwindcss"
+		},
+		"markdown.extension.toc.levels": "2..6",
+		"markdown.extension.toc.unorderedList.marker": "*",
+		"peacock.color": "#ff7733",
+		"workbench.colorCustomizations": {
+			"activityBar.activeBackground": "#ff9966",
+			"activityBar.background": "#ff9966",
+			"activityBar.foreground": "#15202b",
+			"activityBar.inactiveForeground": "#15202b99",
+			"activityBarBadge.background": "#00802b",
+			"activityBarBadge.foreground": "#e7e7e7",
+			"commandCenter.border": "#15202b99",
+			"sash.hoverBorder": "#ff9966",
+			"statusBar.background": "#ff7733",
+			"statusBar.foreground": "#15202b",
+			"statusBarItem.hoverBackground": "#ff5500",
+			"statusBarItem.remoteBackground": "#ff7733",
+			"statusBarItem.remoteForeground": "#15202b",
+			"titleBar.activeBackground": "#ff7733",
+			"titleBar.activeForeground": "#15202b",
+			"titleBar.inactiveBackground": "#ff773399",
+			"titleBar.inactiveForeground": "#15202b99"
+		},
+		"tailwindCSS.classAttributes": [
+			"class",
+			"className",
+			"ngClass",
+			"class:list",
+			"classes"
+		],
+		"tailwindCSS.files.exclude": [
+			"**/.git/**",
+			"**/node_modules/**",
+			"**/.hg/**",
+			"**/.svn/**",
+			"**/dist/**",
+			"**/.wireit/**",
+			"**/.astro/**"
+		],
+		"biome.requireConfiguration": true
+	}
+}

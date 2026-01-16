@@ -1,0 +1,10 @@
+{
+	"folders": [
+		{
+			"uri": "vscode-remote://ssh-remote+pizen/home/patrick/github.com/davidsneighbour/dotfiles"
+		}
+	],
+	"remoteAuthority": "ssh-remote+pizen",
+	"settings": {
+	}
+}

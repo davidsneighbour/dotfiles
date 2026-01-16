@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "../../../copailot"
+		}
+	],
+	"settings": {
+		"github.copilot.chat.codeGeneration.useInstructionFiles": true,
+		"chat.useAgentsMdFile": true,
+		"chat.useNestedAgentsMdFiles": false
+	}
+}
