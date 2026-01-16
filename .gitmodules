@@ -17,3 +17,6 @@ url = https://github.com/alegsan/dotbot-aptget.git
 [submodule "modules/ai"]
 	path = modules/ai
 	url = https://github.com/davidsneighbour/dotfiles-ai
+[submodule "modules/copailot"]
+	path = modules/copailot
+	url = git@github.com:davidsneighbour/copailot.git
