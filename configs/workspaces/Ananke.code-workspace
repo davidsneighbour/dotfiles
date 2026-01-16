@@ -1,11 +1,33 @@
 {
-	"folders": [
-		{
-			"path": "/home/patrick/github.com/theNewDynamic/gohugo-theme-ananke"
-		},
-		{
-			"path": "../../../github.com/davidsneighbour/gohugo-theme-ananke-documentation"
-		}
-	],
-	"settings": {}
+  "folders": [
+    {
+      "path": "../../../gohugo-theme-ananke"
+    },
+    {
+      "name": "GoHugo Module",
+      "path": "../../../gohugo-theme-ananke-template-mod"
+    },
+    {
+      "name": "Git Submodule",
+      "path": "../../../gohugo-theme-ananke-template-submod"
+    },
+    {
+      "name": "theNewDynamic/gohugo-theme-ananke",
+      "path": "/home/patrick/github.com/theNewDynamic/gohugo-theme-ananke"
+    },
+    {
+      "name": "theNewDynamic/gohugo-theme-ananke.wiki",
+      "path": "/home/patrick/github.com/theNewDynamic/gohugo-theme-ananke.wiki"
+    }
+  ],
+  "settings": {
+    "search.exclude": {
+      "gohugo-theme-ananke/**": true,
+      "gohugo-theme-ananke.wiki/**": true
+    },
+    "editor.formatOnSave": true,
+    "files.autoSave": "afterDelay",
+    "files.autoSaveWhenNoErrors": true,
+    "files.autoSaveWorkspaceFilesOnly": true
+  }
 }
