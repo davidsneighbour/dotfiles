@@ -1,4 +1,29 @@
 Changelog
+## [3001.1.0](https://github.com/davidsneighbour/dotfiles/compare/v3001.0.0...v3001.1.0) (2026-01-16)
+
+
+### Features
+
+* add remarkable transfer script ([7940f90](https://github.com/davidsneighbour/dotfiles/commit/7940f905a921c917d307346369d58792c0d7e0d5))
+
+
+### Bug Fixes
+
+* **bashrc:** add atuin to bash configuration ([d5a31d6](https://github.com/davidsneighbour/dotfiles/commit/d5a31d63a3d49b92cd760c28d51f83cf237220eb))
+
+
+### Chore
+
+* **repo:** ignore bin/local ([6bd65f5](https://github.com/davidsneighbour/dotfiles/commit/6bd65f5714b1c1929cc04d74a2c63e581a81a936))
+* **repo:** update submodules ([4015203](https://github.com/davidsneighbour/dotfiles/commit/40152030c5e575929c9c07164de6f0d6c21a65ef))
+* **repo:** update submodules ([c994b20](https://github.com/davidsneighbour/dotfiles/commit/c994b2020b0115fcadc5f70e80b34e72d0171ebf))
+
+
+### Configuration
+
+* **vscode:** update workspaces ([07759cc](https://github.com/davidsneighbour/dotfiles/commit/07759cc21fdd5405cf0ce08352847221677a07d9))
+* **workspaces:** update workspaces ([2e94bdc](https://github.com/davidsneighbour/dotfiles/commit/2e94bdc1d1d658c390f5a66f725b05a3dad48210))
+
 ## [3001.0.0](https://github.com/davidsneighbour/dotfiles/compare/v2025.19.0...v3001.0.0) (2026-01-10)
 
 
