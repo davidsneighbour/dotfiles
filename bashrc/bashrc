@@ -72,8 +72,10 @@ eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 export BUN_INSTALL="${HOME}/.bun"
 export PATH="${BUN_INSTALL}/bin:${PATH}"
 
+# Ensure GPG can talk to the current terminal
 GPG_TTY=$(tty)
 export GPG_TTY
+gpg-connect-agent updatestartuptty /bye >/dev/null
 
 # the default umask is set in /etc/profile; for setting the umask
 # for ssh logins, install and configure the libpam-umask package.
