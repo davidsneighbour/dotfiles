@@ -32,6 +32,9 @@
     ~/.gitconfig: configs/git/.gitconfig
     ~/.git-templates: configs/git/.git-templates
 
+    # shell tools
+    ~/.config/atuin: configs/shell/atuin
+
     # folders in ~/.local/share
     ~/.local/share/applications: configs/system/share/applications
 
