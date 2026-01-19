@@ -22,6 +22,6 @@ keywords:
   - npm
   - configuration
 license: MIT
-commit: 6bd65f5714b1c1929cc04d74a2c63e581a81a936
-version: 3001.1.0
-date-released: 2026-01-17
+commit: 1bd5c1ff662c4e3c15e4dabe8d001f510c665ec8
+version: 3001.2.0
+date-released: 2026-01-20
