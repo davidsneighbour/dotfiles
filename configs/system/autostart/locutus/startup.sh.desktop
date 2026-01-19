@@ -1,0 +1,4 @@
+[Desktop Entry]
+Type=Application
+Name=startup.sh
+Exec=sh -c '~/.config/autostart/startup.sh'

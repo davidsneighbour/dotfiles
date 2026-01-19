@@ -22,6 +22,7 @@
     # system setup
     ~/.face.icon: configs/system/face.icon
     ~/.face: configs/system/face.icon
+    ~/.config/conky: configs/system/conky
 
     # autostart
     ~/.config/autostart: configs/system/autostart/${HOSTNAME}
