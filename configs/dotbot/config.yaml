@@ -133,3 +133,5 @@
     - cron: 5 */6 * * *
       # every sixth hour, at 5 minutes past the hour
       command: ${HOME}/.bin/cronjobs/git_updates.sh --config ${HOME}/.dotfiles/configs/system/repository_updates.toml --verbose >> "$HOME/.logs/cron/repo-update-$(date +\%Y\%m\%d-\%H\%M\%S).log" 2>&1
+    - cron: "@reboot"
+      command: ${HOME}/.bin/cronjobs/bash-history-backup.sh >> ${HOME}/.logs/cron.log 2>&1
