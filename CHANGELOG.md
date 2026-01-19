@@ -1,4 +1,38 @@
 Changelog
+## [3001.2.0](https://github.com/davidsneighbour/dotfiles/compare/v3001.1.0...v3001.2.0) (2026-01-19)
+
+
+### Documentation
+
+* add git-tools docs ([35b8844](https://github.com/davidsneighbour/dotfiles/commit/35b8844c1148cb712b78754f1dfac5d60c8721c7))
+
+
+### Features
+
+* add atuin configuration ([dc659ba](https://github.com/davidsneighbour/dotfiles/commit/dc659bac94b4c2641fa7a264bdcbd0f307b06c91))
+* **bash:** add backup script for bash history ([0ffe0e2](https://github.com/davidsneighbour/dotfiles/commit/0ffe0e26af112e18e5421fc5cd1e9508941d364e))
+
+
+### Bug Fixes
+
+* **bashrc:** export GPG_TTY properly on each terminal ([dcca654](https://github.com/davidsneighbour/dotfiles/commit/dcca65454c9c654021550d86034ea3f70f0e5816))
+
+
+### Chore
+
+* **repo:** add containers-pi submodule ([847fa96](https://github.com/davidsneighbour/dotfiles/commit/847fa960b753aab28faa0c6b5dec6f489f272644))
+
+
+### Configuration
+
+* **dotbot:** add conky setup to dotbot ([b783603](https://github.com/davidsneighbour/dotfiles/commit/b7836038c6b4224b11f6bbe22709a7a63863d767))
+* **workspaces:** update ananke workspace ([6d47a0d](https://github.com/davidsneighbour/dotfiles/commit/6d47a0db5dfcf9842b2cdbae83b14ad9c16a7a87))
+
+
+### Build System
+
+* **deps:** update dependencies ([1bd5c1f](https://github.com/davidsneighbour/dotfiles/commit/1bd5c1ff662c4e3c15e4dabe8d001f510c665ec8))
+
 ## [3001.1.0](https://github.com/davidsneighbour/dotfiles/compare/v3001.0.0...v3001.1.0) (2026-01-16)
 
 
