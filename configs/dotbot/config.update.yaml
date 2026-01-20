@@ -1,0 +1,18 @@
+---
+################################################################################
+# Update configuration for Dotbot
+#
+# @see https://github.com/anishathalye/dotbot for more info
+################################################################################
+
+- defaults:
+    shell:
+      quiet: false
+      description: <<<<<<<<####### DESCRIPTION MISSING
+
+- shell:
+
+    -
+      description: Update Atuin
+      command: |
+        atuin-update
