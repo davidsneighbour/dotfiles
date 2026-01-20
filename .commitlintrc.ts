@@ -1,5 +1,5 @@
 import type { UserConfig } from 'cz-git';
-import { RuleConfigSeverity } from "@commitlint/types"; 
+import { RuleConfigSeverity } from "@commitlint/types";
 
 const config: UserConfig = {
   // extends: [
@@ -74,7 +74,7 @@ const config: UserConfig = {
       theme: ['fix', 'feat'],
       fix: ['bashrc'],
       chore: ['repo'],
-      config: ['dotbot', 'keybindings'],
+      config: ['dotbot', 'keybindings', 'theme'],
     },
     defaultBody: '',
     defaultIssues: '',
