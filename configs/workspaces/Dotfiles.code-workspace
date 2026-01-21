@@ -1,18 +1,27 @@
 {
-	"folders": [
-		{
-			"path": "../.."
-		}
-	],
-	"settings": {
-		"markdown.extension.toc.levels": "2..6",
-
+  "folders": [
+    {
+      "path": "../.."
+    }
+  ],
+  "settings": {
+    "markdown.extension.toc.levels": "2..6",
     "workbench.colorCustomizations": {
-		"editorIndentGuide.background1": "#00000001",
-		"editorIndentGuide.activeBackground1": "#ff9900"
-	},
-	"cSpell.words": [
-		"qbittorrent"
-	],
-	}
+      "editorIndentGuide.background1": "#00000001",
+      "editorIndentGuide.activeBackground1": "#ff9900",
+    },
+
+    "cSpell.language": "en-GB",
+    "cSpell.enabled": true,
+    "cSpell.customDictionaries": {
+      "dotfiles": {
+        "name": "dotfiles",
+        "path": "${workspaceFolder:dotfiles}/.vscode/dotfiles.txt",
+        "description": "Words used in this project",
+        "addWords": true,
+        "scope": "workspace"
+      }
+    },
+    "cSpell.validateDirectives": true
+  }
 }
