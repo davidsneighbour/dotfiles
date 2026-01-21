@@ -1,7 +1,5 @@
 #!/bin/bash
 # shellcheck disable=SC2034
-set -euo pipefail
-IFS=$'\n\t'
 
 # dnb_config_get: Read config values from a TOML file
 # Contract (collision-safe):
