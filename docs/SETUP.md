@@ -1,21 +1,22 @@
 # Setup Notes
 
-* [Installation](#installation)
-* [Update](#update)
-* [Automatic functionality after setup](#automatic-functionality-after-setup)
-  * [Installed programs and systems](#installed-programs-and-systems)
-  * [Shortcuts/Keybindings](#shortcutskeybindings)
-    * [Import/Export Shortcuts](#importexport-shortcuts)
-    * [Custom Shortcuts that are set up (work in progress)](#custom-shortcuts-that-are-set-up-work-in-progress)
-* [Installation notes for programs](#installation-notes-for-programs)
-  * [Development tools](#development-tools)
-  * [Communication tools](#communication-tools)
-    * [Discord](#discord)
-    * [Signal](#signal)
-    * [Telegram](#telegram)
-  * [Productivity tools](#productivity-tools)
-    * [Dropbox](#dropbox)
-    * [Todoist](#todoist)
+- [Installation](#installation)
+- [Update](#update)
+- [Automatic functionality after setup](#automatic-functionality-after-setup)
+  - [Installed programs and systems](#installed-programs-and-systems)
+  - [Shortcuts/Keybindings](#shortcutskeybindings)
+    - [Import/Export Shortcuts](#importexport-shortcuts)
+    - [Custom Shortcuts that are set up (work in progress)](#custom-shortcuts-that-are-set-up-work-in-progress)
+- [Installation notes for programs](#installation-notes-for-programs)
+  - [Development tools](#development-tools)
+  - [Communication tools](#communication-tools)
+    - [Discord](#discord)
+    - [Signal](#signal)
+    - [Telegram](#telegram)
+  - [Productivity tools](#productivity-tools)
+    - [Dropbox](#dropbox)
+    - [Todoist](#todoist)
+    - [Atuin](#atuin)
 
 ## Installation
 
@@ -133,3 +134,6 @@ Install flatpak version instead of the snap or deb version. The deb version requ
 
 > [!WARNING]
 > Don't try to get fancy. Use Chrome and set up as Chrome app. Their "app" works only on Gnome.
+
+#### Atuin
+
