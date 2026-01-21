@@ -1,0 +1,5 @@
+atuin
+FUNCNAME
+inspectable
+pipefail
+shellcheck
