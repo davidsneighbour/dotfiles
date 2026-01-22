@@ -2,10 +2,10 @@
 
 # The Dot-Files of @davidsneighbour
 
-* [Introduction](#introduction)
-* [Setup and update](#setup-and-update)
-* [Other Details](#other-details)
-* [LICENSE](#license)
+- [Introduction](#introduction)
+- [Setup and update](#setup-and-update)
+- [Other Details](#other-details)
+- [LICENSE](#license)
 
 > [!CAUTION]
 > While this repo is public and licensed under MIT you probably do NOT want to just clone it and use it as a template for your own project. Feel free to look around and take inspiration as I did with plenty of dotfile repository before me. This is my personal setup and it works for me. If you have questions or suggestions (or find me adding my own private keys to this repo) feel free to contact me or peruse the issues section.
@@ -24,7 +24,7 @@ See the note above. If you are still here, then you probably are interested in h
 
 ## Setup and update
 
-See [SETUP.md](SETUP.md) for details.
+See [SETUP.md](docs/SETUP.md) for details.
 
 ## Other Details
 
