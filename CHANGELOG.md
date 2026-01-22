@@ -1,4 +1,50 @@
 Changelog
+## [3001.3.0](https://github.com/davidsneighbour/dotfiles/compare/v3001.1.0...v3001.3.0) (2026-01-22)
+
+
+### Documentation
+
+* add git-tools docs ([35b8844](https://github.com/davidsneighbour/dotfiles/commit/35b8844c1148cb712b78754f1dfac5d60c8721c7))
+* more documentation updates and AGENTS.md ([aec67f3](https://github.com/davidsneighbour/dotfiles/commit/aec67f35b190be9dd267cdb4756ca510d8b791c4))
+* move SETUP.md into docs directory ([23619ae](https://github.com/davidsneighbour/dotfiles/commit/23619ae1e720e57249434c2f7f7610f7271d644f))
+* update header images for repo ([5109f01](https://github.com/davidsneighbour/dotfiles/commit/5109f0158eb101fcd15be5e21cfdc93d143ad817))
+
+
+### Features
+
+* add atuin configuration ([dc659ba](https://github.com/davidsneighbour/dotfiles/commit/dc659bac94b4c2641fa7a264bdcbd0f307b06c91))
+* add dnb-repo-config-get ([7b933e3](https://github.com/davidsneighbour/dotfiles/commit/7b933e3e37d35e7ee5ffc8419c0b1dba53bb52bf))
+* **bash:** add backup script for bash history ([0ffe0e2](https://github.com/davidsneighbour/dotfiles/commit/0ffe0e26af112e18e5421fc5cd1e9508941d364e))
+* dnb-config-get function ([62b96ad](https://github.com/davidsneighbour/dotfiles/commit/62b96adcaa9cccad1d825ba57a5906cd08e5c0e3))
+
+
+### Bug Fixes
+
+* **bashrc:** error reporting breaks terminals ([9a18836](https://github.com/davidsneighbour/dotfiles/commit/9a18836c2b73d0525a7fc740b4eead71d9c62f3d))
+* **bashrc:** export GPG_TTY properly on each terminal ([dcca654](https://github.com/davidsneighbour/dotfiles/commit/dcca65454c9c654021550d86034ea3f70f0e5816))
+
+
+### Chore
+
+* **release:** v3001.2.0 ([c1011cd](https://github.com/davidsneighbour/dotfiles/commit/c1011cd0f26e9e5a36ae047eba8501547634b329))
+* **repo:** add containers-pi submodule ([847fa96](https://github.com/davidsneighbour/dotfiles/commit/847fa960b753aab28faa0c6b5dec6f489f272644))
+
+
+### Configuration
+
+* add cspell configuration and dictionary to workspace config ([6e6c78c](https://github.com/davidsneighbour/dotfiles/commit/6e6c78c0d79d6dd39463402f87e24d70fdab864d))
+* add theme to config settings in commitlint ([e8aa503](https://github.com/davidsneighbour/dotfiles/commit/e8aa503392390b1530e6cf9dd219d1e7bddf92ca))
+* **dotbot:** add atuin to dotbot setup ([ffdd448](https://github.com/davidsneighbour/dotfiles/commit/ffdd448053379b7c83bca6ef5fa1ee7778f57c4f))
+* **dotbot:** add conky setup to dotbot ([b783603](https://github.com/davidsneighbour/dotfiles/commit/b7836038c6b4224b11f6bbe22709a7a63863d767))
+* **theme:** dracula theme for atuin ([87287c4](https://github.com/davidsneighbour/dotfiles/commit/87287c4c9f1d06e2f5074b661863b9c8a04d5579))
+* **workspaces:** update ananke workspace ([6d47a0d](https://github.com/davidsneighbour/dotfiles/commit/6d47a0db5dfcf9842b2cdbae83b14ad9c16a7a87))
+
+
+### Build System
+
+* **deps:** bump hono in the npm_and_yarn group across 1 directory ([#407](https://github.com/davidsneighbour/dotfiles/issues/407)) ([baa0573](https://github.com/davidsneighbour/dotfiles/commit/baa0573aab73e988cde8a82803ea5e4d67d8fcec))
+* **deps:** update dependencies ([1bd5c1f](https://github.com/davidsneighbour/dotfiles/commit/1bd5c1ff662c4e3c15e4dabe8d001f510c665ec8))
+
 ## [3001.2.0](https://github.com/davidsneighbour/dotfiles/compare/v3001.1.0...v3001.2.0) (2026-01-19)
 
 
