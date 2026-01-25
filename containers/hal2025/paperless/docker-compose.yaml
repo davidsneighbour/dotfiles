@@ -1,3 +1,4 @@
+---
 # @see https://github.com/paperless-ngx/paperless-ngx
 #
 # SQLite is used as the database. The SQLite file is stored in the `paperless_data` volume.
