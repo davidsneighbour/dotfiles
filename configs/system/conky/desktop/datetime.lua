@@ -8,9 +8,11 @@ conky.config = {
 	update_interval = 1,
 	total_run_times = 0,
 
+  -- window specifications
 	own_window = true,
 	own_window_type = 'normal',
 	own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
+
   -- for transparency
 	own_window_transparent = true,
 	own_window_argb_visual = true,
@@ -27,7 +29,7 @@ conky.config = {
 	default_shade_color = 'red',
 	default_outline_color = 'green',
 	alignment = 'top_right',
-	gap_x = 200,
+	gap_x = 30,
 	gap_y = 30,
 	no_buffers = true,
 	uppercase = false,
@@ -35,17 +37,17 @@ conky.config = {
 	net_avg_samples = 1,
 	override_utf8_locale = true,
 	use_spacer = 'left',
-
-
 	minimum_width = 0, minimum_height = 0,
 };
 
 conky.text = [[
-${voffset 10}${color EAEAEA}${font GE Inspira:pixelsize=120}${time %I:%M}${font}${voffset -84}${offset 10}${color FFA300}${font GE Inspira:pixelsize=42}${time %d} ${voffset -15}${color EAEAEA}${font GE Inspira:pixelsize=22}${time  %B} ${time %Y}${font}${voffset 24}${font GE Inspira:pixelsize=58}${offset -148}${time %A}${font}
-${voffset 1}${offset 12}${font Ubuntu:pixelsize=12}${color FFA300}HD ${offset 9}$color${fs_free /} / ${fs_size /}${offset 30}${color FFA300}RAM ${offset 9}$color$mem / $memmax${offset 30}${color FFA300}CPU ${offset 9}$color${cpu cpu0}%
+${voffset 10}
+${alignr}${color EAEAEA}${font GE Inspira:pixelsize=130}${time %I:%M}${font}
+${alignr}${voffset -5}${color FFA300}${font GE Inspira:pixelsize=42}${time %d %B %Y}${font}${color}
+${alignr}${voffset -10}${font GE Inspira:pixelsize=58}${time %A}${font}
 
-
-
-
-# empty lines for spacing
+${alignr}${font GE Inspira:pixelsize=24}${color FFA300}HD1 ${offset 9}$color${fs_free /} / ${fs_size /}${font}
+${alignr}${font GE Inspira:pixelsize=24}${color FFA300}HD2 ${offset 9}$color${fs_free /home} / ${fs_size /home}${font}
+${alignr}${font GE Inspira:pixelsize=24}${color FFA300}RAM ${offset 9}$color$mem / $memmax${font}
+${alignr}${font GE Inspira:pixelsize=24}${color FFA300}CPU ${offset 9}$color${cpu cpu0}%${font}
 ]];
