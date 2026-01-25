@@ -16,8 +16,8 @@
 - clean: ["~"]
 
 - link:
-    ~/github.com/davidsneighbour/containers/hal2025/paperless/export: /mnt/storage/Paperless/export
-    ~/github.com/davidsneighbour/containers/hal2025/paperless/consume: /mnt/storage/Paperless/consume
+    ~/github.com/davidsneighbour/dotfiles/containers/hal2025/paperless/export: /mnt/storage/Paperless/export
+    ~/github.com/davidsneighbour/dotfiles/containers/hal2025/paperless/consume: /mnt/storage/Paperless/consume
 - crontab:
     - cron: 0 0 * * *
       command: ${HOME}/github.com/davidsneighbour/dotfiles/containers/hal2025/paperless/backup
