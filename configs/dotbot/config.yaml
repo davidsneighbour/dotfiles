@@ -109,7 +109,6 @@
     ~/.config/wlogout: filesystem/.config/wlogout
     ~/.icons: filesystem/.icons
     ~/.logs: logs
-    ~/.vim: filesystem/.vim
 
 # - shell:
 #     # create autostart folder connection
