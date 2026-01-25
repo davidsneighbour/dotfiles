@@ -1,0 +1,23 @@
+---
+################################################################################
+# Setup configuration for Dotbot
+#
+# @see https://github.com/anishathalye/dotbot for more info
+################################################################################
+- plugins:
+    - modules/dotbot-plugins/crontab-dotbot/
+
+- defaults:
+    link:
+      create: true
+      relink: true
+      force: true
+
+- clean: ["~"]
+
+- link:
+    ~/github.com/davidsneighbour/containers/hal2025/paperless/export: /mnt/storage/Paperless/export
+    ~/github.com/davidsneighbour/containers/hal2025/paperless/consume: /mnt/storage/Paperless/consume
+- crontab:
+    - cron: 0 0 * * *
+      command: ${HOME}/github.com/davidsneighbour/dotfiles/containers/hal2025/paperless/backup
