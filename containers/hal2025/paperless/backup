@@ -1,0 +1,81 @@
+#!/bin/bash
+set -euo pipefail
+
+SCRIPT_NAME="$(basename "$0")"
+
+print_help() {
+  cat <<EOF
+Usage: ${SCRIPT_NAME} [options]
+
+Options:
+  --service <name>       Docker Compose service name (default: webserver)
+  --target <path>        Export target path inside the container (default: ../export)
+  --prefix <string>      Zip filename prefix (default: paperless)
+  --timestamp <format>   date format (default: %Y%m%d-%H%M)
+  --no-progress-bar      Disable progress bar
+  --verbose              Print the generated docker command
+  --help                 Show this help and exit
+
+Result:
+  Creates: <prefix>-<timestamp>.zip
+  Example: paperless-20260126-0512.zip
+EOF
+}
+
+run_export() {
+  local service="webserver"
+  local target="../export"
+  local prefix="paperless"
+  local ts_format="%Y%m%d-%H%M"
+  local no_progress_bar="false"
+  local verbose="false"
+
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --service) service="${2:-}"; shift 2 ;;
+      --target) target="${2:-}"; shift 2 ;;
+      --prefix) prefix="${2:-}"; shift 2 ;;
+      --timestamp) ts_format="${2:-}"; shift 2 ;;
+      --no-progress-bar) no_progress_bar="true"; shift ;;
+      --verbose) verbose="true"; shift ;;
+      --help) print_help; return 0 ;;
+      *)
+        echo "Error: Unknown option '$1'" >&2
+        echo >&2
+        print_help >&2
+        return 2
+        ;;
+    esac
+  done
+
+  local stamp
+  stamp="$(date +"${ts_format}")"
+
+  local zip_name
+  zip_name="${prefix}-${stamp}"
+
+  local -a cmd=(
+    docker compose exec -T "${service}"
+    document_exporter "${target}"
+    --compare-checksums
+    --zip
+    --zip-name "${zip_name}"
+  )
+
+  if [[ "${no_progress_bar}" == "true" ]]; then
+    cmd+=(--no-progress-bar)
+  fi
+
+  if [[ "${verbose}" == "true" ]]; then
+    printf "Running: "
+    printf "%q " "${cmd[@]}"
+    printf "\n"
+  fi
+
+  "${cmd[@]}"
+  printf "Created export: %s/%s\n" "${target}" "${zip_name}"
+}
+
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+  run_export "$@"
+fi

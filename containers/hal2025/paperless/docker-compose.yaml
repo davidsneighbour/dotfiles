@@ -1,6 +1,6 @@
 # @see https://github.com/paperless-ngx/paperless-ngx
 #
-# SQLite is used as the database. The SQLite file is stored in the data volume.
+# SQLite is used as the database. The SQLite file is stored in the `paperless_data` volume.
 #
 # - Run 'docker compose pull'.
 # - Run 'docker compose up -d'.
@@ -20,19 +20,12 @@ services:
       - broker
       - gotenberg
       - tika
-    user: "1000:1000"
     ports:
       - 3010:8000
-    # volumes:
-    #   - paperless_data:/usr/src/paperless/data
-    #   - paperless_media:/usr/src/paperless/media
-    #   - paperless_export:/usr/src/paperless/export
-    #   - paperless_consume:/usr/src/paperless/consume
-
     volumes:
-      - /mnt/storage/Paperless/data:/usr/src/paperless/data
-      - /mnt/storage/Paperless/media:/usr/src/paperless/media
-      - /mnt/storage/Paperless/export:/usr/src/paperless/export
+      - data:/usr/src/paperless/data
+      - ./media:/usr/src/paperless/media
+      - ./export:/usr/src/paperless/export
       - /mnt/storage/Paperless/consume:/usr/src/paperless/consume
     env_file: docker-compose.env
     environment:
@@ -56,30 +49,5 @@ services:
     restart: unless-stopped
 
 volumes:
-  data:
-  media:
   redisdata:
-  # paperless_data:
-  #   driver: local
-  #   driver_opts:
-  #     type: none
-  #     o: bind
-  #     device: "/mnt/storage/Paperless/db/data"
-  # paperless_media:
-  #   driver: local
-  #   driver_opts:
-  #     type: none
-  #     o: bind
-  #     device: "/mnt/storage/Paperless/db/media"
-  # paperless_export:
-  #   driver: local
-  #   driver_opts:
-  #     type: none
-  #     o: bind
-  #     device: "/mnt/storage/Paperless/export"
-  # paperless_consume:
-  #   driver: local
-  #   driver_opts:
-  #     type: none
-  #     o: bind
-  #     device: "/mnt/storage/Paperless/consume"
+  data:
