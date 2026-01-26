@@ -23,6 +23,7 @@
     ~/.face.icon: configs/system/face.icon
     ~/.face: configs/system/face.icon
     ~/.config/conky: configs/system/conky
+    ~/Downloads/Paperless: /mnt/storage/Paperless/consume
 
     # autostart
     ~/.config/autostart: configs/system/autostart/${HOSTNAME}

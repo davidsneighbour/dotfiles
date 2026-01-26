@@ -49,6 +49,9 @@
 			"**/.wireit/**",
 			"**/.astro/**"
 		],
-		"biome.requireConfiguration": true
+		"biome.requireConfiguration": true,
+		"chat.tools.terminal.autoApprove": {
+			"npx astro": true
+		}
 	}
 }
