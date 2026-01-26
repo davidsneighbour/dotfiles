@@ -8,7 +8,7 @@
     "markdown.extension.toc.levels": "2..6",
     "workbench.colorCustomizations": {
       "editorIndentGuide.background1": "#00000001",
-      "editorIndentGuide.activeBackground1": "#ff9900",
+      "editorIndentGuide.activeBackground1": "#ff9900"
     },
 
     "cSpell.language": "en-GB",

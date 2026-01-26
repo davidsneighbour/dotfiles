@@ -18,7 +18,7 @@ EOF
 }
 
 vault="notes"
-file="Home.md"
+file="Home/Home.canvas"
 uri=""
 verbose="false"
 
