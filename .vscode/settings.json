@@ -31,9 +31,5 @@
     "actions.sh": "actions.toml"
   },
   "markdown.extension.toc.levels": "2..6",
-  "deno.enable": true,
-  "cSpell.words": [
-    "copailot",
-    "gethomepage"
-  ],
+  "deno.enable": true
 }
