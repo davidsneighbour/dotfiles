@@ -16,7 +16,7 @@
     "cSpell.customDictionaries": {
       "dotfiles": {
         "name": "dotfiles",
-        "path": "${workspaceFolder:dotfiles}/.vscode/dotfiles.txt",
+        "path": "${workspaceFolder:dotfiles}/.vscode/cspell-dict-dotfiles.txt",
         "description": "Words used in this project",
         "addWords": true,
         "scope": "workspace"

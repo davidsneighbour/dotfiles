@@ -1,5 +1,8 @@
 atuin
 FUNCNAME
 inspectable
+journalctl
+ollama
 pipefail
 shellcheck
+webui
