@@ -14,20 +14,20 @@ services:
       - "3001:80"
     expose:
       - 80
-    # networks:
-    #  - proxy
-    # volumes:
-    #  - ./:/opt/node_app/app:delegated
-    #  - ./package.json:/opt/node_app/package.json
-    #  - ./yarn.lock:/opt/node_app/yarn.lock
-    #  - notused:/opt/node_app/app/node_modules
-    # labels:
-    #  - traefik.enable=true
-    #  - traefik.http.routers.excalidraw.rule=Host(`draw.example.com`)
-    #  - traefik.http.services.excalidraw.loadbalancer.server.port=80
-    #  - traefik.docker.network=proxy
-    #  # Part for local lan services only; disable to expose externally
-    #  - traefik.http.routers.excalidraw.middlewares=local-ipwhitelist@file
+# networks:
+#  - proxy
+# volumes:
+#  - ./:/opt/node_app/app:delegated
+#  - ./package.json:/opt/node_app/package.json
+#  - ./yarn.lock:/opt/node_app/yarn.lock
+#  - notused:/opt/node_app/app/node_modules
+# labels:
+#  - traefik.enable=true
+#  - traefik.http.routers.excalidraw.rule=Host(`draw.example.com`)
+#  - traefik.http.services.excalidraw.loadbalancer.server.port=80
+#  - traefik.docker.network=proxy
+#  # Part for local lan services only; disable to expose externally
+#  - traefik.http.routers.excalidraw.middlewares=local-ipwhitelist@file
 
 # networks:
 #  proxy:
