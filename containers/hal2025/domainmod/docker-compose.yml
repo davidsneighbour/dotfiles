@@ -1,0 +1,38 @@
+---
+services:
+  app:
+    image: domainmod/domainmod:latest
+    container_name: domainmod_app
+    depends_on:
+      - db
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Vancouver
+      - DOMAINMOD_WEB_ROOT=
+      - DOMAINMOD_DATABASE_HOST=db
+      - DOMAINMOD_DATABASE=domainmod
+      - DOMAINMOD_USER=domainmod
+      - DOMAINMOD_PASSWORD=7rh1EJ1ayoYKHzjB
+    volumes:
+      - ./application:/var/www/html
+    ports:
+      - 8080:80
+    restart: unless-stopped
+
+  db:
+    image: ghcr.io/linuxserver/mariadb:alpine
+    container_name: domainmod_db
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Vancouver
+      - MYSQL_DATABASE=domainmod
+      - MYSQL_USER=domainmod
+      - MYSQL_PASSWORD=7rh1EJ1ayoYKHzjB
+      - MYSQL_ROOT_PASSWORD=f3rdpNW9GOxgWDMB
+    volumes:
+      - ./database:/config
+    ports:
+      - 3306
+    restart: unless-stopped
