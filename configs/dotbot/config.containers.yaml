@@ -1,0 +1,16 @@
+---
+################################################################################
+# Setup configuration for Dotbot
+#
+# @see https://github.com/anishathalye/dotbot for more info
+################################################################################
+- defaults:
+    link:
+      create: true
+      relink: true
+      force: true
+
+- clean: ["~"]
+
+- link:
+    ~/github.com/davidsneighbour/dotfiles/containers/hal2025/homepage/config: ~/github.com/davidsneighbour/dotfiles/modules/protected/containers/homepage
