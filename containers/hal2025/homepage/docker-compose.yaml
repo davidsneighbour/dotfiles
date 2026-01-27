@@ -5,9 +5,8 @@ services:
     ports:
       - 3000:3000
     volumes:
-      - ${DIR}/_protected/homepage/config:/app/config
-      - ${DIR}/homepage/images:/app/public/images
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ${CONFIG}:/app/config
+      - ${DIR}/images:/app/public/images
     restart: unless-stopped
     environment:
       PUID: 1000
