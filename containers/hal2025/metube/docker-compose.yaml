@@ -1,0 +1,10 @@
+# https://github.com/alexta69/metube
+services:
+  metube:
+    image: ghcr.io/alexta69/metube
+    container_name: metube
+    restart: unless-stopped
+    ports:
+      - "3037:8081"
+    volumes:
+      - /home/patrick/Downloads/ytdownloads:/downloads
