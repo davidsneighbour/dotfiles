@@ -8,7 +8,7 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=America/Vancouver
+      - TZ=Asia/Bangkok
       - DOMAINMOD_WEB_ROOT=
       - DOMAINMOD_DATABASE_HOST=db
       - DOMAINMOD_DATABASE=domainmod
@@ -26,7 +26,7 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=America/Vancouver
+      - TZ=Asia/Bangkok
       - MYSQL_DATABASE=domainmod
       - MYSQL_USER=domainmod
       - MYSQL_PASSWORD=7rh1EJ1ayoYKHzjB
