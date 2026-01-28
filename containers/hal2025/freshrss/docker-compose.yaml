@@ -1,0 +1,26 @@
+---
+services:
+  freshrss:
+    image: lscr.io/linuxserver/freshrss:latest
+    container_name: freshrss
+    volumes:
+      - ./config:/config
+    ports:
+      - 3050:80
+    restart: unless-stopped
+
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: Asia/Bangkok
+      CRON_MIN: '2,32'
+      LISTEN: 0.0.0.0:80
+      OIDC_ENABLED: 0
+
+    healthcheck:
+      test: ["CMD", "cli/health.php"]
+      timeout: 10s
+      start_period: 60s
+      start_interval: 11s
+      interval: 75s
+      retries: 3
