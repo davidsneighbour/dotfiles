@@ -1,0 +1,42 @@
+{
+  "run_on_hosts": ["donald"],
+
+  "log": {
+    "dir": "~/.logs/cron",
+    "filename_prefix": "download-synch",
+    "date_format": "%Y%m%d"
+  },
+
+  "rsync": {
+    "base_args": ["-rzt"],
+    "delete": true
+  },
+
+  "exclude": [
+    ".incoming",
+    "*.crdownload",
+    "Takeout/",
+    "takeout-*",
+    "ytdownloads",
+    ".btsdone",
+    ".btsincoming",
+    ".btsworking",
+    "Paperless",
+    ".hidden"
+  ],
+
+  "jobs": [
+    {
+      "name": "download-pull",
+      "from": "patrick@192.168.1.201:/home/patrick/Downloads/",
+      "to": "/home/patrick/Downloads/000_unkle"
+    },
+    {
+      "name": "download-push",
+      "from": "/home/patrick/Downloads/000_synchback",
+      "to": "patrick@192.168.1.201:/home/patrick/Downloads/",
+      "exclude": [".incoming", "*.crdownload"],
+      "delete": true
+    }
+  ]
+}
