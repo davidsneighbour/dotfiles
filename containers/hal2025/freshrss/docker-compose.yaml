@@ -13,7 +13,7 @@ services:
       PUID: 1000
       PGID: 1000
       TZ: Asia/Bangkok
-      CRON_MIN: '2,32'
+      CRON_MIN: '2,12,22,32,42,52'
       LISTEN: 0.0.0.0:80
       OIDC_ENABLED: 0
 
