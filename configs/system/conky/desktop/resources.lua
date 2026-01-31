@@ -42,7 +42,8 @@ conky.config = {
 -- https://conky.cc/variables
 
 conky.text = [[
-${alignc}${color EAEAEA}${font Ubuntu:pixelsize=140}${time %I:%M}${font}
-${alignc}${voffset -5}${color1}${font Ubuntu:pixelsize=42}${time %d %B %Y}${font}${color}
-${alignc}${voffset -10}${font Ubuntu:pixelsize=64}${time %A}${font}
+${alignr}${color1}HD1  $color${fs_free /} / ${fs_size /}${font}
+${alignr}${color1}HD2  $color${fs_free /home} / ${fs_size /home}${font}
+${alignr}${color1}RAM  $color$mem / $memmax${font}
+${alignr}${color1}CPU  $color${cpu cpu0}%${font}
 ]];
