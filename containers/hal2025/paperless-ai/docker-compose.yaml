@@ -3,10 +3,13 @@
 services:
 
   webserver:
-    name: paperless-ai
+    container_name: paperless-ai
     image: clusterzx/paperless-ai:latest
     restart: unless-stopped
     ports:
       - 3011:3000
     volumes:
       - paperless-ai_data:/app/data
+
+volumes:
+  paperless-ai_data:
