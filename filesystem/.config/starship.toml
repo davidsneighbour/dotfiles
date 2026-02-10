@@ -33,11 +33,10 @@ style = "bold purple"
 
 [custom.hugo]
 when = '''find . -maxdepth 2 -regextype posix-extended -regex './(hugo|config)\.(toml|ya?ml|json)$|./config/_default$' | grep -q .'''
-## when = '''find . -maxdepth 1 -regextype posix-extended -regex './(hugo|config)\.(toml|ya?ml|json)$|./config/_default$' | grep -q .'''
 format = '[Hugo ${output}](bold #c9177e) '
 command = "hugo version | sed -E 's/.*v([0-9]+\\.[0-9]+\\.[0-9]+).*/\\1/'"
 description = "Hugo version installed and used in the current directory"
-os = "linux" # might be even ["linux", "macos"]
+os = "linux"
 
 [custom.sudo]
 description = "valid sudo timestamp marker"
@@ -83,77 +82,7 @@ fi
 format  = "$output($style)"
 style   = "bold cyan"
 
-#[custom.live-clock-icon]
-#command = 'echo "" | cut -c $(($(date +%H)%12+1))'
-#description = "Live updating clock icon, changes hourly. Icons can be customized to your liking."
-#when = true
-
-#[custom.reponame]
-#require_repo=true
-#symbol=' '
-#command="""
-#git ls-remote --get-url | sed 's#.*:\\(.*\\).git#\\1#'
-#""" 
-#description="display the directory root of the current repo"
-#when=true
-
-# [directory]
-# truncation_length = 4
-# style = "bold lavender"
-
 # Palette definitions
-[palettes.catppuccin_mocha]
-rosewater = "#f5e0dc"
-flamingo = "#f2cdcd"
-pink = "#f5c2e7"
-mauve = "#cba6f7"
-red = "#f38ba8"
-maroon = "#eba0ac"
-peach = "#fab387"
-yellow = "#f9e2af"
-green = "#a6e3a1"
-teal = "#94e2d5"
-sky = "#89dceb"
-sapphire = "#74c7ec"
-blue = "#89b4fa"
-lavender = "#b4befe"
-text = "#cdd6f4"
-subtext1 = "#bac2de"
-subtext0 = "#a6adc8"
-overlay2 = "#9399b2"
-overlay1 = "#7f849c"
-overlay0 = "#6c7086"
-surface2 = "#585b70"
-surface1 = "#45475a"
-surface0 = "#313244"
-base = "#1e1e2e"
-mantle = "#181825"
-crust = "#11111b"
-
-
-
-#format = """$all\
-#$fill\
-#${custom.wttr-in}\
-#$line_break\
-#$jobs\
-#$battery\
-#$time\
-#$status\
-#$os\
-#$container\
-#$shell\
-#$character"""
-#
-#[custom.wttr-in]
-#description = "Weather info by wttr.in"
-#command = "echo -n $(curl wttr.in/?format=3)"
-#shell = "/bin/sh"
-#when = """ true """
-#symbol = '🌡️ ' 
-#command = 'CACHE_FILE="$HOME/.cache/weather.txt"; CACHE_TIME=600; if [[ -f "$CACHE_FILE" && $(( $(date +%s) - $(stat -f "%m" "$CACHE_FILE") )) -lt $CACHE_TIME ]]; then echo "$(cat "$CACHE_FILE")"; else echo "Loading..."; (curl -s wttr.in/?format="%C+%t" > "$CACHE_FILE" &) fi'
-
-
 [palettes.dracula]
 background = "#282a36"
 current_line = "#44475a"
