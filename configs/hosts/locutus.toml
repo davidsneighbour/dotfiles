@@ -2,7 +2,6 @@
 ip = "192.169.1.201"
 
 [bashrc]
-atuin = true
 node = true
 
 [openweathermap]

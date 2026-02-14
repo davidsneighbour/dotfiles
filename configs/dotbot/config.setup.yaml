@@ -115,11 +115,6 @@
         fi
 
     -
-      description: Install Atuin
-      command: |
-        curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh
-
-    -
       description: Remove unused packages
       command: |
         sudo apt purge --yes \
