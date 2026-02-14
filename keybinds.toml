@@ -54,7 +54,7 @@ command = "/opt/google/chrome/google-chrome --profile-directory=Default --ignore
 [[shortcuts]]
 title = "Start Obsidian"
 accelerator = "<Super>o"
-command = "/home/patrick/github.com/davidsneighbour/dotfiles/bin/launch-scripts/obsidian.sh"
+command = "/home/patrick/github.com/davidsneighbour/dotfiles/bin/launchers/obsidian.sh"
 
 [[shortcuts]]
 title = "Start Terminal"
