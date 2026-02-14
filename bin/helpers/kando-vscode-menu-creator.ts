@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-/* eslint-disable no-console */
 
 /**
  * Kando "Workspace Starter" menu updater.
@@ -24,7 +23,7 @@ import process from "node:process";
 const DEFAULTS = {
   menuJsonPath: path.join(
     os.homedir(),
-    ".var/app/menu.kando.Kando/config/kando/menus.json",
+    ".config/kando/menus.json",
   ),
   workspacesDir:
     "/home/patrick/github.com/davidsneighbour/dotfiles/configs/workspaces",
