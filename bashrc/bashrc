@@ -215,6 +215,3 @@ if [[ -z "${BASHRC_LOADED}" ]]; then
 else
   [[ -n "${DNB_VERBOSE}" ]] && echo "Note: Skipping Starship initialization on sourced .bashrc"
 fi
-
-# atuin
-eval "$(atuin init bash)"
