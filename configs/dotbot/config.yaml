@@ -29,13 +29,13 @@
     ~/.config/autostart: configs/system/autostart/${HOSTNAME}
 
     # git setup
-    ~/.gitignore: configs/git/global.gitignore
-    ~/.gitmessage: configs/git/.gitmessage
-    ~/.gitconfig: configs/git/.gitconfig
-    ~/.git-templates: configs/git/.git-templates
+    ~/.gitignore: configs/system/git/global.gitignore
+    ~/.gitmessage: configs/system/git/.gitmessage
+    ~/.gitconfig: configs/system/git/.gitconfig
+    ~/.git-templates: configs/system/git/.git-templates
 
     # shell tools
-    ~/.config/atuin: configs/shell/atuin
+    ~/.config/atuin: configs/system/atuin
 
     # folders in ~/.local/share
     ~/.local/share/applications: configs/system/share/applications
@@ -50,17 +50,17 @@
 
     # Tool configs
     ~/.config/fastfetch: configs/system/fastfetch
-    ~/.local/share/vale: configs/vale
-    ~/.config/vale: configs/vale
-    ~/.config/github-label-manager: configs/git/github-label-manager
+    ~/.local/share/vale: configs/system/vale
+    ~/.config/vale: configs/system/vale
+    ~/.config/github-label-manager: configs/system/git/github-label-manager
 
     # node configs
-    ~/.ncurc.js: configs/npm/ncu.cjs
+    ~/.ncurc.js: configs/system/npm/ncu.cjs
 
     # qbittorrent
-    ~/.config/qBittorrent/watched_folders.json: configs/bittorrent/qbittorrent-watched_folders.json
-    ~/.config/qBittorrent/qBittorrent.con: configs/bittorrent/qbittorrent.conf
-    ~/.config/qBittorrent/categories.json: configs/bittorrent/qbittorrent-categories.json
+    ~/.config/qBittorrent/watched_folders.json: configs/system/bittorrent/qbittorrent-watched_folders.json
+    ~/.config/qBittorrent/qBittorrent.con: configs/system/bittorrent/qbittorrent.conf
+    ~/.config/qBittorrent/categories.json: configs/system/bittorrent/qbittorrent-categories.json
 
     ############################################################################
     # legacy, deprecated, rework
@@ -95,12 +95,12 @@
     ~/.config/filezilla: filesystem/.config/filezilla
     ~/.config/fontconfig: filesystem/.config/fontconfig
     ~/.config/gh: filesystem/.config/gh
-    ~/.config/i3: filesystem/.config/i3
+    ~/.config/i3: configs/system/i3
     ~/.config/inkscape: filesystem/.config/inkscape
     ~/.config/lsd: filesystem/.config/lsd
     ~/.config/jrnl: filesystem/.config/jrnl
     ~/.config/neofetch: filesystem/.config/neofetch
-    ~/.config/polybar: filesystem/.config/polybar
+    ~/.config/polybar: configs/system/polybar
     ~/.config/qt5ct: filesystem/.config/qt5ct
     ~/.config/rofi: filesystem/.config/rofi
     ~/.config/sublime-merge: filesystem/.config/sublime-merge
@@ -121,8 +121,6 @@
       command: ${HOME}/github.com/davidsneighbour/dotfiles/bashrc/helpers/filespace-discord.sh >> ${HOME}/.logs/cron.log 2>&1
     # - cron: 0 18 * * *
     #   command: /bin/bash -c "cd ${HOME}/github.com/davidsneighbour/dotfiles && keybindingsmanager -e etc/keycombinations.csv" >> ${HOME}/.logs/cron.log 2>&1
-    - cron: 55 * * * *
-      command: ${HOME}/.bin/cronjobs/keycombinations.sh
     - cron: 0 6,12,18 * * *
       command: ${HOME}/github.com/davidsneighbour/lighthousing/cronjob.sh >> ${HOME}/.logs/cron.log 2>&1
     - cron: "@reboot"
@@ -134,3 +132,5 @@
       command: ${HOME}/.bin/cronjobs/git_updates.sh --config ${HOME}/.dotfiles/configs/system/repository_updates.toml --verbose >> "$HOME/.logs/cron/repo-update-$(date +\%Y\%m\%d-\%H\%M\%S).log" 2>&1
     - cron: "@reboot"
       command: ${HOME}/.bin/cronjobs/bash-history-backup.sh >> ${HOME}/.logs/cron.log 2>&1
+    - cron: 10 * * * *
+      command: ${HOME}/.local/bin/msgvault sync >> ${HOME}/.logs/msgvault-cron.log 2>&1
