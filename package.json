@@ -22,7 +22,7 @@
     "@secretlint/secretlint-rule-openai": "11.3.0",
     "@secretlint/secretlint-rule-pattern": "11.3.0",
     "@secretlint/secretlint-rule-preset-recommend": "11.3.0",
-    "@secretlint/secretlint-rule-secp256k1-privatekey": "11.3.0",
+    "@secretlint/secretlint-rule-secp256k1-privatekey": "11.3.1",
     "commit-and-tag-version": "12.6.1",
     "cross-env": "10.1.0",
     "cz-git": "1.12.0",
