@@ -20,7 +20,13 @@
 
 ## Installation
 
-1. Install nvm and set to use required Node.js version (currently 24, see `.nvmrc`, for the latest script [check the repository](https://github.com/nvm-sh/nvm#install--update-script)).
+* Setup Github folder
+
+  ```bash
+  mkdir -p ~/github.com/davidsneighbour
+  ```
+
+* Install nvm and set to use required Node.js version (currently 24, see `.nvmrc`, for the latest script [check the repository](https://github.com/nvm-sh/nvm#install--update-script)).
 
    ```bash
    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
@@ -29,26 +35,26 @@
    nvm use 24
    ```
 
-2. Install [git](https://git-scm.com/downloads) if not already installed.
+* Install [git](https://git-scm.com/downloads) if not already installed.
 
    ```bash
    sudo apt install git
    ```
 
-3. Clone this repository with submodules (this might be complicated, because the SSH key needs to be set up first).
+* Clone this repository with submodules (this might be complicated, because the SSH key needs to be set up first).
 
    ```bash
    git clone --recurse-submodules git@github.com:davidsneighbour/dotfiles.git
    ```
 
-4. ~~Clone the `protected` repository into `protected/`.~~
-5. Install dependencies with `npm install`.
+* ~~Clone the `protected` repository into `protected/`.~~
+* Install dependencies with `npm install`.
 
    ```bash
    npm install
    ```
 
-6. Run `./dotbot.sh install` to set up the environment.
+* Run `./dotbot.sh install` to set up the environment.
 
    ```bash
    sudo ./dotbot.sh setup
@@ -57,7 +63,7 @@
    > [!WARNING]
    > This MUST run with `sudo`, so make sure to check the `etc/config.setup.yaml` file and adjust depending on the requirements.
 
-7. Run `./dotbot.sh` to setup symlinks and programs and `./dotbot.sh protected` to setup protected symlinks.
+* Run `./dotbot.sh` to setup symlinks and programs and `./dotbot.sh protected` to setup protected symlinks.
 
    ```bash
    ./dotbot.sh
@@ -136,4 +142,3 @@ Install flatpak version instead of the snap or deb version. The deb version requ
 > Don't try to get fancy. Use Chrome and set up as Chrome app. Their "app" works only on Gnome.
 
 #### Atuin
-
