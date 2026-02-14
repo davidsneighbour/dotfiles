@@ -17,3 +17,6 @@ url = https://github.com/alegsan/dotbot-aptget.git
 [submodule "modules/copailot"]
 	path = modules/copailot
 	url = git@github.com:davidsneighbour/copailot.git
+[submodule "modules/gmailctl"]
+	path = modules/gmailctl
+	url = git@github.com:davidsneighbour/gmailctl-config.git
