@@ -1,16 +1,4 @@
 // @see https://github.com/lint-staged/lint-staged
-import { ESLint } from 'eslint'
-
-const removeIgnoredFiles = async (/** @type {any[]} */ files) => {
-  const eslint = new ESLint()
-  const isIgnored = await Promise.all(
-    files.map((/** @type {string} */ file) => {
-      return eslint.isPathIgnored(file)
-    })
-  )
-  const filteredFiles = files.filter((/** @type {any} */ _, /** @type {string | number} */ i) => !isIgnored[i])
-  return filteredFiles.join(' ')
-}
 
 /**
  * @filename: .lintstagedrc.mjs
@@ -24,12 +12,8 @@ export default {
   'package-lock.json': [
     'lockfile-lint --path package-lock.json --validate-https --allowed-hosts npm',
   ],
-  '*.{ts,tsx,(m|c)js,jsx}': async (/** @type {any} */ files) => {
-    const filesToLint = await removeIgnoredFiles(files)
-    return [
-      `eslint --max-warnings=0 ${filesToLint}`,
-      //'biome check --staged'
-    ]
+  '*.{ts,tsx,(m|c)js,jsx}': (/** @type {string[]} */ files) => {
+    return [`biome check --no-errors-on-unmatched ${files.join(' ')}`]
   },
   '*.yaml': ['yamllint -c .yamllint.yml'],
   // '*.{scss,css}': ['stylelint --fix', "prettier --write"],
