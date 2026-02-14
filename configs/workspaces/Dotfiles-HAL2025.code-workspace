@@ -1,0 +1,31 @@
+{
+	"folders": [
+		{
+			"uri": "vscode-remote://ssh-remote+hal2025/home/patrick/github.com/davidsneighbour/dotfiles"
+		}
+	],
+	"remoteAuthority": "ssh-remote+hal2025",
+	"settings": {
+      "workbench.colorCustomizations": {
+        "activityBar.activeBackground": "#6272a4",
+        "activityBar.background": "#6272a4",
+        "activityBar.foreground": "#000000",
+        "activityBar.inactiveForeground": "#99999999",
+        "activityBarBadge.background": "#422c74",
+        "activityBarBadge.foreground": "#999999",
+        "commandCenter.border": "#999999",
+        "sash.hoverBorder": "#2f7c47",
+        "statusBar.background": "#FF9580",
+        "statusBar.foreground": "#000000",
+        "statusBarItem.hoverBackground": "#6272a4",
+        "statusBarItem.remoteBackground": "#FF9580",
+        "statusBarItem.remoteForeground": "#000000",
+        "titleBar.activeBackground": "#FF9580",
+        "titleBar.activeForeground": "#000000",
+        "titleBar.inactiveBackground": "#FF958099",
+        "titleBar.inactiveForeground": "#00000099",
+        "editorIndentGuide.background1": "#00000001",
+        "editorIndentGuide.activeBackground1": "#ff990050",
+    },
+	}
+}

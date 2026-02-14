@@ -42,7 +42,7 @@ conky.config = {
 -- https://conky.cc/variables
 
 conky.text = [[
-${alignc}${color EAEAEA}${font Ubuntu:pixelsize=140}${time %I:%M}${font}
-${alignc}${voffset -5}${color1}${font Ubuntu:pixelsize=42}${time %d %B %Y}${font}${color}
-${alignc}${voffset -10}${font Ubuntu:pixelsize=64}${time %A}${font}
+${alignc}${color EAEAEA}${font Ubuntu:pixelsize=180}${time %I:%M}${font}
+${alignc}${voffset -5}${color1}${font Ubuntu:pixelsize=58}${time %d %B %Y}${font}${color}
+${alignc}${voffset -10}${font Ubuntu:pixelsize=74}${time %A}${font}
 ]];

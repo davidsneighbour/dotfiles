@@ -1,0 +1,19 @@
+---
+################################################################################
+# Setup configuration for Dotbot
+#
+# @see https://github.com/anishathalye/dotbot for more info
+################################################################################
+
+- defaults:
+    shell:
+      quiet: false
+      description: <<<<<<<<####### DESCRIPTION MISSING
+
+- shell:
+    - /usr/bin/rm -rf ~/github.com/dracula
+    - /usr/bin/mkdir -p ~/github.com/dracula
+    - git clone https://github.com/dracula/apt ~/github.com/dracula/apt
+    - git clone https://github.com/dracula/dircolors ~/github.com/dracula/dircolors
+    - git clone https://github.com/dracula/gtk ~/github.com/dracula/gtk
+    - git clone https://github.com/dracula/starship ~/github.com/dracula/starship
