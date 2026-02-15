@@ -12,7 +12,7 @@
 
 - link:
     ~/.env: modules/protected/.env
-    ~/.gmailctl: modules/protected/.gmailctl
+    ~/.gmailctl: modules/gmailctl
     ~/.gnupg: modules/protected/.gnupg
     ~/.npmrc: modules/protected/.npmrc
     ~/.sentryclirc: modules/protected/.sentryclirc
