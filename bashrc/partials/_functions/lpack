@@ -19,7 +19,7 @@ lpack() {
   local verbose=false
   local include_gitignored=false
   local extra_ignore=""
-  local logdir="${HOME}/.logs"
+  local logdir="${HOME}/.logs/package"
   mkdir -p "${logdir}"
   local logfile="${logdir}/setup-log-${datetime}.log"
 

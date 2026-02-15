@@ -1,7 +1,7 @@
 #!/bin/bash
 # executed by the command interpreter for non-interactive login shells
 
-LOG_FILE="${HOME}/.logs/bashprofile-$(date +'%Y%m%d-%H%M%S').log"
+LOG_FILE="${HOME}/.logs/bash/profile-$(date +'%Y%m%d-%H%M%S').log"
 exec > >(tee \
     >(sed -r 's/\x1B\[[0-9;]*[mK]//g' >> "${LOG_FILE}") \
 ) 2>&1

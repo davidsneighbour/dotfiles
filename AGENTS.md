@@ -91,7 +91,7 @@ All Bash code **MUST** comply with the following rules.
 
 ### Logging
 
-* All logs go to `~/.logs/`
+* All logs go to `~/.logs/$FUNCTIONALITY` where the $FUNCTIONALITY is displayed in the foldername
 * Log files **MUST** be named: `setup-log-YYYYMMDD-HHMMSS.log`
 
 No per-error or per-script log naming.

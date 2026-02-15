@@ -9,7 +9,7 @@
 #   - Upgrades each installed Node.js minor version to the latest available patch.
 #   - Automatically removes outdated patch versions.
 #   - Sets the latest version as the default.
-#   - Logs operations to ~/.logs/setup-log-YYYYMMDD-HHMMSS.log
+#   - Logs operations to ~/.logs/setup/YYYYMMDD-HHMMSS.log
 upgrade_node_versions() {
   if [[ "${1:-}" == '--help' ]]; then
     cat <<EOF
@@ -22,13 +22,13 @@ Description:
   - Upgrades each installed Node.js minor version to the latest available patch.
   - Automatically removes outdated patch versions.
   - Sets the latest version as the default.
-  - Logs operations to ~/.logs/setup-log-YYYYMMDD-HHMMSS.log
+  - Logs operations to ~/.logs/setup/YYYYMMDD-HHMMSS.log
 EOF
     return 0
   fi
 
   # Create a log file for the operation
-  local logfile="${HOME}/.logs/setup-log-$(date +'%Y%m%d-%H%M%S').log"
+  local logfile="${HOME}/.logs/setup/$(date +'%Y%m%d-%H%M%S').log"
   mkdir -p "$(dirname "${logfile}")"
 
   log() {
