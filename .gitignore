@@ -2,7 +2,6 @@
 notes*
 .env
 .npmrc
-themer/*
 gen/*
 changes.md
 response.json

@@ -54,6 +54,7 @@
     ~/.config/assets: configs/theme/Dracula/assets
     ~/.config/gtk-4.0/gtk.css: configs/theme/Dracula/gtk-4.0/gtk.css
     ~/.config/gtk-4.0/gtk-dark.css: configs/theme/Dracula/gtk-4.0/gtk-dark.css
+    ~/.icons: configs/theme/icons
 
     # Tool configs
     ~/.config/fastfetch: configs/system/fastfetch
@@ -103,7 +104,6 @@
     ~/.config/sublime-text: filesystem/.config/sublime-text
     ~/.config/tabtab: filesystem/.config/tabtab
     ~/.config/wlogout: filesystem/.config/wlogout
-    ~/.icons: filesystem/.icons
 
 # - shell:
 #     # create autostart folder connection
