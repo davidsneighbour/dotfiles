@@ -6,9 +6,8 @@ sudo apt install -y \
     git \
     git-delta \
     htop \
-    neofetch \
+    qbittorrent \
     software-properties-common \
     unzip \
     wget \
-    yamllint \
-    qbittorrent
+    yamllint
