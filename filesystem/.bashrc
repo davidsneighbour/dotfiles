@@ -5,7 +5,7 @@
 export DNB_VERBOSE=0
 
 if [[ ${DNB_VERBOSE:-0} -gt 1 ]]; then
-  LOG_FILE="${HOME}/.logs/bashrc-$(date +'%Y%m%d-%H%M%S').log"
+  LOG_FILE="${HOME}/.logs/bashrc/-$(date +'%Y%m%d-%H%M%S').log"
   exec > >(tee >(sed -r 's/\x1B\[[0-9;]*[mK]//g' >>"${LOG_FILE}")) 2>&1
 fi
 

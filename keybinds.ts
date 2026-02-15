@@ -46,9 +46,9 @@ interface BackupDoc {
   };
 }
 
-const LOG_DIR = resolve(homedir(), ".logs");
+const LOG_DIR = resolve(homedir(), ".logs/setup/");
 const TIMESTAMP = formatTimestamp(new Date());
-const LOG_FILE = resolve(LOG_DIR, `setup-log-${TIMESTAMP}.log`);
+const LOG_FILE = resolve(LOG_DIR, `setup-${TIMESTAMP}.log`);
 
 function main(): void {
   const opts = parseArgs(process.argv.slice(2));
@@ -240,7 +240,7 @@ Options:
   --mode      merge (default): update/create by exact title match
               replace: remove all existing custom shortcuts first
   --dry-run   Show planned changes without applying them
-  --verbose   Print detailed output and write logs to ~/.logs
+  --verbose   Print detailed output and write logs to ~/.logs/setup
 
 Notes:
   * Shortcut matching during import is exact on 'title'

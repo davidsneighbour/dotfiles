@@ -12,7 +12,7 @@
 # - Sends Discord notifications on issues and continues.
 #
 # Cron example:
-# 17 3 * * * /path/to/repo-auto-update.sh --config /path/to/repos.toml --verbose >> "$HOME/.logs/repo-auto-update-$(date +\%Y\%m\%d-\%H\%M\%S).log" 2>&1
+# 17 3 * * * /path/to/repo-auto-update.sh --config /path/to/repos.toml --verbose >> "$HOME/.logs/repos/auto-update-$(date +\%Y\%m\%d-\%H\%M\%S).log" 2>&1
 #
 # Requirements:
 #   - jq for JSON configs
@@ -27,9 +27,9 @@ DRY_RUN=false
 VERBOSE=false
 DISCORD_WEBHOOK_OVERRIDE=""
 
-LOG_DIR="${HOME}/.logs"
+LOG_DIR="${HOME}/.logs/repos"
 mkdir -p "${LOG_DIR}"
-LOG_FILE="${LOG_DIR}/setup-log-$(date +%Y%m%d-%H%M%S).log"
+LOG_FILE="${LOG_DIR}/auto-update-$(date +%Y%m%d-%H%M%S).log"
 
 # --- Logging ---------------------------------------------------------------
 

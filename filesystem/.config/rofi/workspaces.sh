@@ -3,7 +3,7 @@
 set -euo pipefail  # Exit on error, undefined var, or pipe failure
 
 # Manual logging
-LOGFILE="${HOME}/.logs/rofi.log"
+LOGFILE="${HOME}/.logs/rofi/rofi.log"
 mkdir -p "$(dirname "$LOGFILE")"
 log() {
   local level=$1; shift

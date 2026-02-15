@@ -111,23 +111,20 @@
 
 - crontab:
     - cron: 0 0 * * *
-      command: ${HOME}/github.com/davidsneighbour/dotfiles/bashrc/helpers/update-npm.sh >> ${HOME}/.logs/cron.log 2>&1
+      command: ${HOME}/github.com/davidsneighbour/dotfiles/bashrc/helpers/update-npm.sh >> "$HOME/.logs/cron/job-$(date +\%Y\%m\%d-\%H\%M\%S).log" 2>&1
     - cron: 30 */4 * * *
-      command: ${HOME}/github.com/davidsneighbour/dotfiles/bashrc/helpers/filespace-discord.sh >> ${HOME}/.logs/cron.log 2>&1
-    # - cron: 0 18 * * *
-    #   command: /bin/bash -c "cd ${HOME}/github.com/davidsneighbour/dotfiles && keybindingsmanager -e etc/keycombinations.csv" >> ${HOME}/.logs/cron.log 2>&1
+      command: ${HOME}/github.com/davidsneighbour/dotfiles/bashrc/helpers/filespace-discord.sh >> "$HOME/.logs/cron/job-$(date +\%Y\%m\%d-\%H\%M\%S).log" 2>&1
     - cron: 0 6,12,18 * * *
-      command: ${HOME}/github.com/davidsneighbour/lighthousing/cronjob.sh >> ${HOME}/.logs/cron.log 2>&1
+      command: ${HOME}/github.com/davidsneighbour/lighthousing/cronjob.sh >> "$HOME/.logs/cron/job-$(date +\%Y\%m\%d-\%H\%M\%S).log" 2>&1
     - cron: "@reboot"
-      command: ${HOME}/github.com/davidsneighbour/lighthousing/cronjob.sh >> ${HOME}/.logs/cron.log 2>&1
+      command: ${HOME}/github.com/davidsneighbour/lighthousing/cronjob.sh >> "$HOME/.logs/cron/job-$(date +\%Y\%m\%d-\%H\%M\%S).log" 2>&1
     - cron: 0 * * * *
       command: ${HOME}/.bin/cronjobs/synch_downloads.sh
     - cron: 5 */6 * * *
-      # every sixth hour, at 5 minutes past the hour
       command: ${HOME}/.bin/cronjobs/git_updates.sh --config ${HOME}/.dotfiles/configs/system/repository_updates.toml --verbose >> "$HOME/.logs/cron/repo-update-$(date +\%Y\%m\%d-\%H\%M\%S).log" 2>&1
     - cron: "@reboot"
-      command: ${HOME}/.bin/cronjobs/bash-history-backup.sh >> ${HOME}/.logs/cron.log 2>&1
+      command: ${HOME}/.bin/cronjobs/bash-history-backup.sh >> "$HOME/.logs/cron/job-$(date +\%Y\%m\%d-\%H\%M\%S).log" 2>&1
     - cron: 10 * * * *
-      command: ${HOME}/.local/bin/msgvault sync >> ${HOME}/.logs/msgvault-cron.log 2>&1
+      command: ${HOME}/.local/bin/msgvault sync >> ${HOME}/.logs/mail/msgvault-cron.log 2>&1
     - cron: "@reboot"
-      command: ${HOME}/.local/bin/msgvault sync >> ${HOME}/.logs/msgvault-cron.log 2>&1
+      command: ${HOME}/.local/bin/msgvault sync >> ${HOME}/.logs/mail/msgvault-cron.log 2>&1
