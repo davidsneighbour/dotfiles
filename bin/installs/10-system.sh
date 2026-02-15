@@ -9,4 +9,5 @@ sudo apt install -y \
     neofetch \
     software-properties-common \
     unzip \
-    wget
+    wget \
+    yamllint
