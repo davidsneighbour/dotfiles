@@ -53,6 +53,7 @@
 
     # node configs
     ~/.ncurc.js: configs/system/npm/ncu.cjs
+    ~/.nvm/default-packages: configs/system/npm/default-packages
 
     # qbittorrent
     ~/.config/qBittorrent/watched_folders.json: configs/system/bittorrent/qbittorrent-watched_folders.json
@@ -81,7 +82,6 @@
     ~/.remarkrc.js: filesystem/.remarkrc.js
     ~/.remarkignore: filesystem/.remarkignore
     ~/.Xresources: filesystem/.Xresources
-    ~/.nvm/default-packages: filesystem/.nvm/default-packages
     ##################################################################
     # directory links
     ##################################################################

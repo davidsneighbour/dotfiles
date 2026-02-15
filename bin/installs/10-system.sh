@@ -10,4 +10,5 @@ sudo apt install -y \
     software-properties-common \
     unzip \
     wget \
-    yamllint
+    yamllint \
+    qbittorrent
