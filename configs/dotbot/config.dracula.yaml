@@ -13,7 +13,12 @@
 - shell:
     - /usr/bin/rm -rf ~/github.com/dracula
     - /usr/bin/mkdir -p ~/github.com/dracula
-    - git clone https://github.com/dracula/apt ~/github.com/dracula/apt
     - git clone https://github.com/dracula/dircolors ~/github.com/dracula/dircolors
+    - git clone https://github.com/dracula/xresources.git ~/github.com/dracula/xresources
+    - git clone https://github.com/dracula/apt ~/github.com/dracula/apt
     - git clone https://github.com/dracula/gtk ~/github.com/dracula/gtk
-    - git clone https://github.com/dracula/starship ~/github.com/dracula/starship
+    - sudo cp ~/github.com/dracula/apt/50dracula-colors.conf /etc/apt/apt.conf.d/50dracula-colors.conf
+
+- link:
+    ~/.dircolors: ~/github.com/dracula/dircolors/.dircolors
+    ~/.Xresources: ~/github.com/dracula/xresources/Xresources

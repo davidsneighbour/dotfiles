@@ -67,7 +67,6 @@
     ~/.config/gtk-4.0/gtk.css: configs/theme/Dracula/gtk-4.0/gtk.css
     ~/.config/gtk-4.0/gtk-dark.css: configs/theme/Dracula/gtk-4.0/gtk-dark.css
     ~/.icons: configs/theme/icons
-    ~/.Xresources: configs/theme/.Xresources
 
     # Tool configs
     ~/.config/fastfetch: configs/system/fastfetch
