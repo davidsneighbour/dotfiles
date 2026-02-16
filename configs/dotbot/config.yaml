@@ -110,3 +110,15 @@
       command: ${HOME}/.local/bin/msgvault sync >> ${HOME}/.logs/mail/msgvault-cron.log 2>&1
     - cron: "@reboot"
       command: ${HOME}/.local/bin/msgvault sync >> ${HOME}/.logs/mail/msgvault-cron.log 2>&1
+
+- shell:
+    -
+      description: Fix file rights for keys
+      command: |
+        chmod 0700 ~/.ssh
+        chmod 0600 ~/.ssh/authorized_keys
+        chmod 0600 ~/.ssh/id_ed25519
+        chmod 0644 ~/.ssh/id_ed25519.pub
+        chmod 0600 ~/.ssh/config
+        chmod 0700 ~/.ssh/conf.d
+        chmod 0600 ~/.ssh/conf.d/*
