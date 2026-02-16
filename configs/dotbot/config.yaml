@@ -20,10 +20,10 @@
     ~/.bin: "bin"
 
     # bashrc setup
-    ~/.bash_logout: filesystem/.bash_logout
-    ~/.bash_profile: filesystem/.bash_profile
-    ~/.bashrc: filesystem/.bashrc
-    ~/.config/starship.toml: filesystem/.config/starship.toml
+    ~/.bash_logout: bashrc/.bash_logout
+    ~/.bash_profile: bashrc/.bash_profile
+    ~/.bashrc: bashrc/.bashrc
+    ~/.config/starship.toml: configs/system/starship/starship.toml
 
     # system setup
     ~/.face.icon: configs/system/face.icon
@@ -34,6 +34,9 @@
     ~/.config/polybar: configs/system/polybar
     ~/.config/i3: configs/system/i3
     ~/.logs: logs
+    ~/.nvmrc: .nvmrc
+    ~/.editorconfig: .editorconfig
+    ~/.fixpackrc: .fixpackrc
 
     # autostart
     ~/.config/autostart: configs/system/autostart/${HOSTNAME}
@@ -77,11 +80,7 @@
     # file links
     ############################################################################
     ~/.czrc: filesystem/.czrc
-    ~/.editorconfig: filesystem/.editorconfig
-    ~/.fehbg: filesystem/.fehbg
-    ~/.fixpackrc: filesystem/.fixpackrc
     ~/.hidden: filesystem/.hidden
-    ~/.nvmrc: filesystem/.nvmrc
     ~/.pam_environment: filesystem/.pam_environment
     ~/.profile: filesystem/.profile
     ~/.remarkrc.js: filesystem/.remarkrc.js

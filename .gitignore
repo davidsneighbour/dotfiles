@@ -1,7 +1,6 @@
 .uuid
 notes*
 .env
-.npmrc
 gen/*
 changes.md
 response.json
@@ -10,8 +9,6 @@ bun.lockb
 .wireit
 release.json
 todoctor
-filesystem/.themes/Orchis*
-filesystem/.icons/Papirus*
 .crush
 cache
 
