@@ -12,5 +12,6 @@
 
 - clean: ["~"]
 
-- link:
-    ~/github.com/davidsneighbour/dotfiles/containers/hal2025/homepage/config: ~/github.com/davidsneighbour/dotfiles/modules/protected/containers/homepage
+- shell:
+    - curl -fsSL "https://animations.dev/api/activate-design-engineering?email=pkollitsch%40gmail.com" | bash
+    - curl -fsSL "https://animations.dev/api/activate?email=pkollitsch@gmail.com" | bash
