@@ -23,13 +23,14 @@
     ~/.bash_logout: bashrc/.bash_logout
     ~/.bash_profile: bashrc/.bash_profile
     ~/.bashrc: bashrc/.bashrc
+    ~/.profile: bashrc/.profile
     ~/.config/starship.toml: configs/system/starship/starship.toml
 
     # system setup
     ~/.face.icon: configs/system/face.icon
     ~/.face: configs/system/face.icon
     ~/.config/conky: configs/system/conky
-    ~/.config/user-dirs.dirs: filesystem/.config/user-dirs.dirs
+    ~/.config/user-dirs.dirs: configs/system/user-dirs.dirs
     ~/Downloads/Paperless: /mnt/storage/Paperless/consume
     ~/.config/polybar: configs/system/polybar
     ~/.config/i3: configs/system/i3
@@ -37,6 +38,14 @@
     ~/.nvmrc: .nvmrc
     ~/.editorconfig: .editorconfig
     ~/.fixpackrc: .fixpackrc
+    ~/.hidden: configs/system/.hidden
+    ~/.pam_environment: configs/system/.pam_environment
+    ~/.czrc: configs/system/.czrc
+    ~/.config/sublime-merge: configs/system/sublime-merge
+    ~/.config/sublime-text: configs/system/sublime-text
+    ~/.config/wlogout: configs/system/wlogout
+    ~/.config/filezilla: configs/system/filezilla
+    ~/.config/rofi: configs/system/rofi
 
     # autostart
     ~/.config/autostart: configs/system/autostart/${HOSTNAME}
@@ -58,6 +67,7 @@
     ~/.config/gtk-4.0/gtk.css: configs/theme/Dracula/gtk-4.0/gtk.css
     ~/.config/gtk-4.0/gtk-dark.css: configs/theme/Dracula/gtk-4.0/gtk-dark.css
     ~/.icons: configs/theme/icons
+    ~/.Xresources: configs/theme/.Xresources
 
     # Tool configs
     ~/.config/fastfetch: configs/system/fastfetch
@@ -74,35 +84,9 @@
     ~/.config/qBittorrent/qBittorrent.con: configs/system/bittorrent/qbittorrent.conf
     ~/.config/qBittorrent/categories.json: configs/system/bittorrent/qbittorrent-categories.json
 
-    ############################################################################
-    # legacy, deprecated, rework
-    ############################################################################
-    # file links
-    ############################################################################
-    ~/.czrc: filesystem/.czrc
-    ~/.hidden: filesystem/.hidden
-    ~/.pam_environment: filesystem/.pam_environment
-    ~/.profile: filesystem/.profile
-    ~/.remarkrc.js: filesystem/.remarkrc.js
-    ~/.remarkignore: filesystem/.remarkignore
-    ~/.Xresources: filesystem/.Xresources
-    ##################################################################
-    # directory links
-    ##################################################################
-    ~/.config/BetterDiscord: filesystem/.config/BetterDiscord
-    ~/.config/filezilla: filesystem/.config/filezilla
-    ~/.config/fontconfig: filesystem/.config/fontconfig
-    ~/.config/gh: filesystem/.config/gh
-    ~/.config/inkscape: filesystem/.config/inkscape
-    ~/.config/lsd: filesystem/.config/lsd
-    ~/.config/jrnl: filesystem/.config/jrnl
-    ~/.config/neofetch: filesystem/.config/neofetch
-    ~/.config/qt5ct: filesystem/.config/qt5ct
-    ~/.config/rofi: filesystem/.config/rofi
-    ~/.config/sublime-merge: filesystem/.config/sublime-merge
-    ~/.config/sublime-text: filesystem/.config/sublime-text
-    ~/.config/tabtab: filesystem/.config/tabtab
-    ~/.config/wlogout: filesystem/.config/wlogout
+    # content quality
+    ~/.remarkrc.js: configs/content/.remarkrc.js
+    ~/.remarkignore: configs/content/.remarkignore
 
 # - shell:
 #     # create autostart folder connection
