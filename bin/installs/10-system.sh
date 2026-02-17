@@ -13,7 +13,7 @@ sudo apt install -y \
     build-essential \
     curl \
     filezilla filezilla-theme-papirus filezilla-common \
-    git  git-delta git-extras \
+    git git-delta git-extras \
     htop \
     papirus-icon-theme papirus-folders papirus-colors \
     qbittorrent \
