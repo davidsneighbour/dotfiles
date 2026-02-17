@@ -60,13 +60,13 @@
     ~/.local/share/applications: configs/system/share/applications
 
     # Dracula Theme
-    ~/.config/gtk-3.0: configs/theme/gtk-3.0
-    ~/.config/gtk-4.0: configs/theme/gtk-4.0
-    ~/.themes/Dracula: configs/theme/Dracula
-    ~/.config/assets: configs/theme/Dracula/assets
-    ~/.config/gtk-4.0/gtk.css: configs/theme/Dracula/gtk-4.0/gtk.css
-    ~/.config/gtk-4.0/gtk-dark.css: configs/theme/Dracula/gtk-4.0/gtk-dark.css
-    ~/.icons: configs/theme/icons
+    # ~/.config/gtk-3.0: configs/theme/gtk-3.0
+    # ~/.config/gtk-4.0: configs/theme/gtk-4.0
+    # ~/.themes/Dracula: configs/theme/Dracula
+    # ~/.config/assets: configs/theme/Dracula/assets
+    # ~/.config/gtk-4.0/gtk.css: configs/theme/Dracula/gtk-4.0/gtk.css
+    # ~/.config/gtk-4.0/gtk-dark.css: configs/theme/Dracula/gtk-4.0/gtk-dark.css
+    ~/.icons/DNB-Bibata: configs/theme/DNB-Bibata
 
     # Tool configs
     ~/.config/fastfetch: configs/system/fastfetch

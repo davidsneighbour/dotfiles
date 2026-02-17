@@ -13,5 +13,6 @@
 - clean: ["~"]
 
 - shell:
+    - curl -fsSL https://ollama.com/install.sh | sh
     - curl -fsSL "https://animations.dev/api/activate-design-engineering?email=pkollitsch%40gmail.com" | bash
     - curl -fsSL "https://animations.dev/api/activate?email=pkollitsch@gmail.com" | bash
