@@ -15,6 +15,7 @@ sudo apt install -y \
     filezilla filezilla-theme-papirus filezilla-common \
     git git-delta git-extras \
     htop \
+    golang-go \
     papirus-icon-theme papirus-folders papirus-colors \
     qbittorrent \
     software-properties-common \
