@@ -81,6 +81,9 @@
     ~/.remarkrc.js: configs/content/.remarkrc.js
     ~/.remarkignore: configs/content/.remarkignore
 
+    # fixing emojis in chrome tab names (I know, right?)
+    ~/.config/fontconfig/conf.d/01-emoji.conf: configs/system/fontconfig/01-emoji.conf
+
 # - shell:
 #     # create autostart folder connection
 #     - ln -f -s ${HOME}/.dotfiles/configs/system/autostart/${HOSTNAME} ${HOME}/.config/autostart
