@@ -45,7 +45,6 @@
     ~/.czrc: configs/system/.czrc
     ~/.config/sublime-merge: configs/system/sublime-merge
     ~/.config/sublime-text: configs/system/sublime-text
-    ~/.config/wlogout: configs/system/wlogout
     ~/.config/filezilla: configs/system/filezilla
     ~/.config/rofi: configs/system/rofi
 
