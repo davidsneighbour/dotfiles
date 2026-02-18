@@ -54,7 +54,7 @@
   "scripts": {
     "clean": "rimraf logs/*.log",
     "link:prepare": "wireit",
-    "lint:hook:commit": "lint-staged",
+    "lint:hook:commit": "lint-staged --quiet",
     "lint:hook:commit:loud": "lint-staged --debug --verbose",
     "lint:config": "yamllint -c .yamllint.yml etc/*.yaml",
     "release": "commit-and-tag-version -a -t \"v\" --releaseCommitMessageFormat \"chore(release): v{{currentTag}}\" && ./bashrc/helpers/postrelease",
