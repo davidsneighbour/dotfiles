@@ -106,6 +106,6 @@
     - cron: "@reboot"
       command: ${HOME}/.bin/cronjobs/bash-history-backup.sh >> "$HOME/.logs/cron/job-$(date +\%Y\%m\%d-\%H\%M\%S).log" 2>&1
     - cron: "* */10 * * *"
-      command: ${HOME}/.local/bin/msgvault sync >> ${HOME}/.logs/mail/msgvault-cron.log 2>&1
+      command: ${HOME}/.bin/cronjobs/msgvault.sh
     - cron: "@reboot"
-      command: ${HOME}/.local/bin/msgvault sync >> ${HOME}/.logs/mail/msgvault-cron.log 2>&1
+      command: ${HOME}/.bin/cronjobs/msgvault.sh
