@@ -5,6 +5,8 @@
 # @see https://github.com/anishathalye/dotbot for more info
 ################################################################################
 
+- description: One-time workstation bootstrap tasks (packages, runtimes, and base tooling).
+
 - shell:
     -
       description: Setup directories

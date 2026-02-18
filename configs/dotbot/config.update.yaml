@@ -5,6 +5,8 @@
 # @see https://github.com/anishathalye/dotbot for more info
 ################################################################################
 
+- description: Maintenance/update tasks for already installed workstation tools.
+
 - defaults:
     shell:
       quiet: false

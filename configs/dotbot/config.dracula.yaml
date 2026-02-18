@@ -5,6 +5,8 @@
 # @see https://github.com/anishathalye/dotbot for more info
 ################################################################################
 
+- description: Install and link Dracula theme assets (dircolors, Xresources, and apt colors).
+
 - defaults:
     shell:
       quiet: false
