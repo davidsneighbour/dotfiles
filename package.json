@@ -57,8 +57,7 @@
     "lint:hook:commit": "lint-staged --quiet",
     "lint:hook:commit:loud": "lint-staged --debug --verbose",
     "lint:config": "yamllint -c .yamllint.yml etc/*.yaml",
-    "release": "commit-and-tag-version -a -t \"v\" --releaseCommitMessageFormat \"chore(release): v{{currentTag}}\" && ./bashrc/helpers/postrelease",
-    "setup": "./dotbot.sh clean && ./dotbot.sh && ./dotbot.sh protected"
+    "release": "commit-and-tag-version -a -t \"v\" --releaseCommitMessageFormat \"chore(release): v{{currentTag}}\" && ./bashrc/helpers/postrelease"
   },
   "wireit": {
     "link:prepare": {
