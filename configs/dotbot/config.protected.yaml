@@ -24,3 +24,15 @@
     ~/.config/filezilla/sitemanager.xml: modules/protected/filezilla/sitemanager.xml
     ~/.config/filezilla/trustedcerts.xml: modules/protected/filezilla/trustedcerts.xml
     ~/.crosspost.env: modules/protected/crosspost.env
+
+- shell:
+    -
+      description: Fix file rights for keys
+      command: |
+        chmod 0700 ~/.ssh
+        chmod 0600 ~/.ssh/authorized_keys
+        chmod 0600 ~/.ssh/id_ed25519
+        chmod 0644 ~/.ssh/id_ed25519.pub
+        chmod 0600 ~/.ssh/config
+        chmod 0700 ~/.ssh/conf.d
+        chmod 0600 ~/.ssh/conf.d/*
