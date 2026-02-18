@@ -10,16 +10,17 @@ sudo apt autoremove --yes
 sudo apt clean --yes
 
 sudo apt install -y \
-    build-essential \
-    curl \
-    filezilla filezilla-theme-papirus filezilla-common \
-    git git-delta git-extras \
-    htop \
-    golang-go \
-    papirus-icon-theme papirus-folders papirus-colors \
-    qbittorrent \
-    software-properties-common \
-    unzip \
-    vlc \
-    wget \
-    yamllint
+  build-essential \
+  curl \
+  filezilla filezilla-theme-papirus filezilla-common \
+  git git-delta git-extras \
+  htop \
+  golang-go \
+  papirus-icon-theme papirus-folders papirus-colors \
+  qbittorrent \
+  shfmt \
+  software-properties-common \
+  unzip \
+  vlc \
+  wget \
+  yamllint
