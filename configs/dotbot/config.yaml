@@ -104,7 +104,7 @@
       command: ${HOME}/.bin/cronjobs/git_updates.sh --config ${HOME}/.dotfiles/configs/system/repository_updates.toml --verbose >> "$HOME/.logs/cron/repo-update-$(date +\%Y\%m\%d-\%H\%M\%S).log" 2>&1
     - cron: "@reboot"
       command: ${HOME}/.bin/cronjobs/bash-history-backup.sh >> "$HOME/.logs/cron/job-$(date +\%Y\%m\%d-\%H\%M\%S).log" 2>&1
-    - cron: "* */10 * * *"
+    - cron: "*/10 * * * *"
       command: ${HOME}/.bin/cronjobs/msgvault.sh
     - cron: "@reboot"
       command: ${HOME}/.bin/cronjobs/msgvault.sh

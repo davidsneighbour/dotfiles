@@ -2,6 +2,8 @@
 
 set -euo pipefail
 
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:${HOME}/.local/bin"
+
 # ------------------------------------------------------------
 # msgvault cron wrapper
 # Creates daily log files in ~/.logs/mail/
