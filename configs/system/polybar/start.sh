@@ -1,39 +1,79 @@
 #!/bin/bash
 
-# https://github.com/TiagoDanin/Awesome-Polybar
-# https://github.com/polybar/polybar/wiki/Configuration
-# https://github.com/polybar/polybar-scripts
-# https://github.com/adi1090x/polybar-themes/tree/master
+set -Eeuo pipefail
 
-trap 'echo "Polybar terminated unexpectedly"; exit 1' SIGTERM SIGINT
+# Polybar startup for XFCE session
+# - waits for xfwm4
+# - stops existing polybar instances for this user
+# - writes daily logs to ~/.logs/polybar/
+# - starts top and bottom bars
 
-# Define the script directory to make paths independent
-SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
+# shutdown xfce4 panel if it exists
+# xfce4-panel --quit >/dev/null 2>&1 || true
 
-# Configuration variables
-LOGLEVEL=trace # possible values: {trace, info, notice, warning, error}
-LOG_DIR="${HOME}/.logs"
-DATE=$(date +%Y%m%d)
-TOP_LOGFILE="${LOG_DIR}/polybar/top-${DATE}.log"
-BOTTOM_LOGFILE="${LOG_DIR}/polybar/bottom-${DATE}.log"
-GENERAL_LOGFILE="${LOG_DIR}/polybar/general-${DATE}.log"
+on_err() {
+  local exit_code=$?
+  echo "Polybar start script failed (exit ${exit_code}) at $(date)"
+  exit "${exit_code}"
+}
+trap on_err ERR
+
+on_term() {
+  echo "Polybar start script received termination signal at $(date)"
+  exit 0
+}
+trap on_term SIGTERM SIGINT
+
+# Wait for WM (xfwm4)
+while ! pgrep -x xfwm4 >/dev/null 2>&1; do
+  sleep 0.5
+done
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+LOGLEVEL="trace" # {trace, info, notice, warning, error}
+LOG_DIR="${HOME}/.logs/polybar"
+DATE="$(date +%Y%m%d)"
+
+GENERAL_LOGFILE="${LOG_DIR}/general-${DATE}.log"
+TOP_LOGFILE="${LOG_DIR}/top-${DATE}.log"
+BOTTOM_LOGFILE="${LOG_DIR}/bottom-${DATE}.log"
+
 CONFIG_FILE="${SCRIPT_DIR}/config.ini"
 
-# Ensure the log directory exists
-mkdir -p "${LOG_DIR}/polybar"
+mkdir -p "${LOG_DIR}"
 
-# Redirect all script output to the general log file
-exec > "${GENERAL_LOGFILE}" 2>&1
+# Redirect all script output to general log file (keep errors too)
+exec >>"${GENERAL_LOGFILE}" 2>&1
 
-# Terminate already running bar instances
-killall -q polybar
+echo "start at $(date)"
+echo "script=${SCRIPT_DIR}"
+echo "config=${CONFIG_FILE}"
 
-# Wait until the processes have been shut down
-while pgrep -u "${UID}" -x polybar >/dev/null; do sleep 1; done
+if [[ ! -f "${CONFIG_FILE}" ]]; then
+  echo "ERROR: polybar config not found: ${CONFIG_FILE}"
+  exit 1
+fi
 
-# Log separator
-echo "--- start at $(date)" | tee -a "${TOP_LOGFILE}" "${BOTTOM_LOGFILE}"
+# Stop existing polybar instances for this user only
+if pgrep -u "${UID}" -x polybar >/dev/null 2>&1; then
+  echo "stopping existing polybar instances"
+  pkill -u "${UID}" -x polybar || true
 
-# Launch new bars with nohup
-nohup polybar -l="${LOGLEVEL}" -c "${CONFIG_FILE}" top 2>&1 | tee -a "${TOP_LOGFILE}" & disown
-nohup polybar -l="${LOGLEVEL}" -c "${CONFIG_FILE}" bottom 2>&1 | tee -a "${BOTTOM_LOGFILE}" & disown
+  # Wait until they are fully gone
+  for _ in {1..20}; do
+    if ! pgrep -u "${UID}" -x polybar >/dev/null 2>&1; then
+      break
+    fi
+    sleep 0.25
+  done
+fi
+
+echo "launching bars"
+
+# Start bars, append stdout/stderr into their own logs
+polybar -l "${LOGLEVEL}" -c "${CONFIG_FILE}" top >>"${TOP_LOGFILE}" 2>&1 &
+polybar -l "${LOGLEVEL}" -c "${CONFIG_FILE}" bottom >>"${BOTTOM_LOGFILE}" 2>&1 &
+
+disown || echo "disown not available in this shell, continuing"
+echo "done at $(date)"
