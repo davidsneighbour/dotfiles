@@ -1,0 +1,89 @@
+[
+  {
+    "name": "prio:1",
+    "color": "FF9580"
+  },
+  {
+    "name": "prio:2",
+    "color": "FFFF80"
+  },
+  {
+    "name": "prio:3",
+    "color": "8AFF80"
+  },
+  {
+    "name": "type:bug",
+    "color": "B60205",
+    "description": "Bugfixes in codebase when something is not working."
+  },
+  {
+    "name": "type:enhancement",
+    "color": "1D76DB",
+    "description": "New enhancements and features."
+  },
+  {
+    "name": "type:dependencies",
+    "color": "1D76DB",
+    "description": "Dependencies and upstream updates."
+  },
+  {
+    "name": "type:documentation",
+    "color": "FBCA04",
+    "description": "Improvements or additions to docs."
+  },
+  {
+    "name": "type:refactor",
+    "color": "0E8A16",
+    "description": "Code refactoring."
+  },
+  {
+    "name": "type:data",
+    "description": "Issues pertaining to data or data preparations.",
+    "color": "D93F0B"
+  },
+  {
+    "name": "type:tests",
+    "description": "Issues related to tests.",
+    "color": "006B75"
+  },
+  {
+    "name": "state:question",
+    "description": "Further information requested.",
+    "color": "FEF2C0"
+  },
+  {
+    "name": "state:unconfirmed",
+    "description": "This issue needs to be reproduced.",
+    "color": "F9D0C4"
+  },
+  {
+    "name": "state:confirmed",
+    "description": "This issue is confirmed.",
+    "color": "C2E0C6"
+  },
+  {
+    "name": "state:duplicate",
+    "description": "This is a duplicate of another issue.",
+    "color": "F9D0C4"
+  },
+  {
+    "name": "state:invalid",
+    "description": "This is not an issue.",
+    "color": "C5DEF5"
+  },
+  {
+    "name": "state:keep",
+    "description": "Do not close this issue (neither manual nor automatic).",
+    "color": "520B43"
+  },
+  {
+    "name": "state:wontfix",
+    "description": "This will not be fixed.",
+    "color": "E99695"
+  },
+  {
+    "name": "state:inprogress",
+    "description": "Work is done on this issue. Probably in main branch too.",
+    "color": "E9324A"
+  }
+]
