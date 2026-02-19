@@ -174,5 +174,5 @@ configuration {
 
 }
 
-@import "dracula1"
+@import "theme"
 // @theme "dracula1" // that's implied by the line above
