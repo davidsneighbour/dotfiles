@@ -1,4 +1,137 @@
 Changelog
+## [3001.4.0](https://github.com/davidsneighbour/dotfiles/compare/v3001.3.0...v3001.4.0) (2026-02-19)
+
+
+### Documentation
+
+* update SETUP.md ([324f928](https://github.com/davidsneighbour/dotfiles/commit/324f9286a8a3f4250e1307af4c9a9979a40a6a39))
+
+
+### Features
+
+* add apt install set ([d2a3ebb](https://github.com/davidsneighbour/dotfiles/commit/d2a3ebb518c4abc5ad5872745227a558b2baec46))
+* add brew installation script ([ba657bd](https://github.com/davidsneighbour/dotfiles/commit/ba657bdbd02ed3fc4e965ebe31d834c2c94c7be3))
+* **conky:** update conky configuration for date/time section ([21bc0c0](https://github.com/davidsneighbour/dotfiles/commit/21bc0c0113514153b72b18236f6bd7dbf320b664))
+* **container:** re-add paperless container ([a2861a6](https://github.com/davidsneighbour/dotfiles/commit/a2861a6e5f6f7a38460ab73f356c39893d26ad9a))
+* **containers:** add domainmod container ([2a63f57](https://github.com/davidsneighbour/dotfiles/commit/2a63f57b921cbc79e1d64c4138a0d15ecdb52f89))
+* **containers:** add freshrss container ([2495fe0](https://github.com/davidsneighbour/dotfiles/commit/2495fe0d54582c77b38470bb295cd8a79ab92b6f))
+* **containers:** add kuma container ([94a6401](https://github.com/davidsneighbour/dotfiles/commit/94a6401cfdd761beeb96c0fbb40dccf4b72c32be))
+* **containers:** add listmonk container ([27da043](https://github.com/davidsneighbour/dotfiles/commit/27da043cefdf0cef0ac869f01476961c6d852fee))
+* **containers:** add metube container ([36e1bdf](https://github.com/davidsneighbour/dotfiles/commit/36e1bdf8241021e4007f684f16b582def182d6d9))
+* **containers:** add n8n container ([020881d](https://github.com/davidsneighbour/dotfiles/commit/020881de23881548a451a3aaa479efed6cd3b8ae))
+* **containers:** add paperless-ai container ([89aa8c9](https://github.com/davidsneighbour/dotfiles/commit/89aa8c9001bb6529e9a358d00b8f728c579e0661))
+* **containers:** add penpot container ([b9389f0](https://github.com/davidsneighbour/dotfiles/commit/b9389f00f63bee0cf34f04c145f61aaa087f10fc))
+* **containers:** add traefik container ([762c74e](https://github.com/davidsneighbour/dotfiles/commit/762c74e13c41a602ac153c32dfca83913800fc40))
+* **containters:** add excalidraw container ([7ef2535](https://github.com/davidsneighbour/dotfiles/commit/7ef253523fbffb0e955a858a2616299c33d83958))
+* **dotbot:** add --config CLI parameter to list available configurations ([970b77a](https://github.com/davidsneighbour/dotfiles/commit/970b77a61bcaaeb32a32f6ab5adbafd9e5b96844))
+* **installs:** add install script for sublime text and merge ([5893829](https://github.com/davidsneighbour/dotfiles/commit/58938299444a952ea8159383527036a84d24fa49))
+* **installs:** add shfmt to apt package install ([41eb79d](https://github.com/davidsneighbour/dotfiles/commit/41eb79d54baad71100bd4fce2b6f55ab1cc84fb8))
+* **installs:** google chrome setup ([3687f4e](https://github.com/davidsneighbour/dotfiles/commit/3687f4e509897c0b2c6b443261d179ce2a43ccaa))
+
+
+### Bug Fixes
+
+* adding installation scripts and config ([4761a7f](https://github.com/davidsneighbour/dotfiles/commit/4761a7fdc93900adf10c6322b402d8b3176550b9))
+* **containers:** domainmod configuration changes ([6975461](https://github.com/davidsneighbour/dotfiles/commit/6975461e95f73b3fd59a33e36ad1971ca17c568c))
+* **containers:** lint yaml files and fix issues ([177e3ec](https://github.com/davidsneighbour/dotfiles/commit/177e3eca2eefe1442ffbeba3959314ac0fdc9718))
+* **containers:** paperless maintenance scripts ([c87754b](https://github.com/davidsneighbour/dotfiles/commit/c87754bbfe6ef3c2db977ea9cc9d9be59ca11d62))
+* **containers:** proper configuration for paperless-ai ([5b41cf3](https://github.com/davidsneighbour/dotfiles/commit/5b41cf3f772090074dfba61ac5f174c1d82ec1fb))
+* **containers:** update excalidraw container formatting ([31f8fc4](https://github.com/davidsneighbour/dotfiles/commit/31f8fc4c10f1ef6ad0d678c6263f30cc552b7edb))
+* **containers:** update freshrss configuration ([e989ace](https://github.com/davidsneighbour/dotfiles/commit/e989ace8230a659964bc44d6b75f8d6eb11ff5d8))
+* **containers:** update traefik configuration ([f3c4a96](https://github.com/davidsneighbour/dotfiles/commit/f3c4a96fa1019e84f752a0bbc44b11e5c906889c))
+* **cronjob:** revert download synch ([15481a7](https://github.com/davidsneighbour/dotfiles/commit/15481a7ce58b385d94f45ca7a634865d6b337828))
+* **cronjob:** run msgvault job every 10 minutes ([3c9d1d4](https://github.com/davidsneighbour/dotfiles/commit/3c9d1d4c06dda34e55a0a8c4d2532d0dc081e539))
+* **cronjobs:** update msgvault cronjob script ([6467e00](https://github.com/davidsneighbour/dotfiles/commit/6467e0020cc86784add05f45cb5b5f0c7f873df0))
+* **cronjob:** update download synch ([004ac9a](https://github.com/davidsneighbour/dotfiles/commit/004ac9aea8f261a835bef0feb02ea2e402cba071))
+* **dotbot:** move ssh file rights to protected config ([0a61ca5](https://github.com/davidsneighbour/dotfiles/commit/0a61ca5c0d8a3143d217a38ac6af700669fc90ed))
+* **eslint:** remove eslint configuration from repository ([01ee650](https://github.com/davidsneighbour/dotfiles/commit/01ee650c3a0ac56070e13cf2d4ba12677ade9008))
+* **installs:** add apt packages to install ([34bb9d8](https://github.com/davidsneighbour/dotfiles/commit/34bb9d859f071eedece4d49d34bc70bb8148e47e))
+* log file paths ([ba9a83d](https://github.com/davidsneighbour/dotfiles/commit/ba9a83d31bdf84717bc2701ac1a9f5591dabe21f))
+* more cleanup ([bc37c3a](https://github.com/davidsneighbour/dotfiles/commit/bc37c3acff02fcaa0166af1d79e59fb7fb3f6649))
+* more cleanup of install and setup rules ([ed87c14](https://github.com/davidsneighbour/dotfiles/commit/ed87c14484778acecb5fbf4f9203ad4f28678e30))
+* move theme files around ([d5c275b](https://github.com/davidsneighbour/dotfiles/commit/d5c275be85f4133ddc14c5a4617571a2118ccb12))
+* move theme icons around ([7305d13](https://github.com/davidsneighbour/dotfiles/commit/7305d1341c9b36af3e8fb565490c0745dd629a9f))
+* moving papirus into apt setup ([1461bf9](https://github.com/davidsneighbour/dotfiles/commit/1461bf9516b032b639391bef3372909d125e285b))
+* **msgvault:** update cronjob ([9f6a8cf](https://github.com/davidsneighbour/dotfiles/commit/9f6a8cfbc6578f38f27240daefd102630e489fb4))
+* **polybar:** update configuration ([df1e380](https://github.com/davidsneighbour/dotfiles/commit/df1e3804df8019a8f50e3e1ac8c9b9debfc2a027))
+* prefix install scripts ([a610d44](https://github.com/davidsneighbour/dotfiles/commit/a610d44cdeb211eb1fd72bce9f75ae8bd37a1bd6))
+* recent changes in filesystem ([72b6cfb](https://github.com/davidsneighbour/dotfiles/commit/72b6cfb20e4e6b14d08dc6e28e7bf39a5c6f15bb))
+* remove atuin ([c61bf44](https://github.com/davidsneighbour/dotfiles/commit/c61bf4456827b10e783cc8f1bb08cd3aa3fd9100))
+* remove cargo config ([3f08138](https://github.com/davidsneighbour/dotfiles/commit/3f081388c88860449c765fa259af9e1ed2d78b56))
+* remove defunct setup script ([3627e2b](https://github.com/davidsneighbour/dotfiles/commit/3627e2bafa727d715970c606d608f74db38b3c3a))
+* remove dracula theme files ([b81a07f](https://github.com/davidsneighbour/dotfiles/commit/b81a07f1ad376c63310877a05d9444b5ed88e443))
+* remove filesystem setup ([110721d](https://github.com/davidsneighbour/dotfiles/commit/110721d7b30024e6e5b4632988f91dedc1482c04))
+* remove wlogout setup ([2145a3a](https://github.com/davidsneighbour/dotfiles/commit/2145a3a732151140ee92cb76eabbe89e9d6aa46d))
+* **rofi:** update theme ([0b8a5f1](https://github.com/davidsneighbour/dotfiles/commit/0b8a5f15dcebc91186bc92d650208627b3e6a94a))
+* set lint-staged quiet ([4c546ef](https://github.com/davidsneighbour/dotfiles/commit/4c546ef4bfa155fe033ef347bc1e0b39a5ffd86e))
+* some smaller changes to keybinding setup (wip) ([59c0b68](https://github.com/davidsneighbour/dotfiles/commit/59c0b68b7cb4886a00802baaa6e1fc2cc8852b4c))
+* **startup:** add qbittorrent and polybar startup ([5f37147](https://github.com/davidsneighbour/dotfiles/commit/5f371472c5689d82c7220e2df280193d62f027cc))
+* **system:** re-add font config rules to enable color emojis in chrome ([0c9955e](https://github.com/davidsneighbour/dotfiles/commit/0c9955e7a18146159bace0dd0000eb18a5c8cda6))
+* update installations ([6e5f9df](https://github.com/davidsneighbour/dotfiles/commit/6e5f9df9634ccc2b56baab62359bd3a2fe727503))
+* update installers ([dcb9269](https://github.com/davidsneighbour/dotfiles/commit/dcb92693faa10e5b1805df14870ebe5b95dfe882))
+* update path in kando menu generation helper ([961c070](https://github.com/davidsneighbour/dotfiles/commit/961c070df74222d94de71ead402ed6870074526e))
+
+
+### Refactors
+
+* launchers and install scripts ([03f9cff](https://github.com/davidsneighbour/dotfiles/commit/03f9cffd097b84c800a6fa782d51497ec5ffaddf))
+
+
+### Chore
+
+* **assets:** update skyline stats for 2026 ([528fb23](https://github.com/davidsneighbour/dotfiles/commit/528fb232c3f07ebeb4d75cf757c0c450e151b755))
+* cleanup currently unused folder ([c53619b](https://github.com/davidsneighbour/dotfiles/commit/c53619b9a479d2d126d08b1701ace0c07df5beb6))
+* **repo:** add gmailctl submodule ([3d291f3](https://github.com/davidsneighbour/dotfiles/commit/3d291f3b3e66978af9f616cb13879331f940fee2))
+* **repo:** fix merge conflict ([154f200](https://github.com/davidsneighbour/dotfiles/commit/154f2004339b0001c8e8e24985527fa78df327d6))
+* **repo:** remove containers submodule ([652e5b0](https://github.com/davidsneighbour/dotfiles/commit/652e5b0b780df6bb32a05ebdcc251e29db36378b))
+* **repo:** remove containers-pi module ([e80702e](https://github.com/davidsneighbour/dotfiles/commit/e80702e1606ed6eef0dc50b4130cf8ae4f620b89))
+* **repo:** update gmailctl submodule ([5992901](https://github.com/davidsneighbour/dotfiles/commit/5992901efa28643f42c90722a6f099925aa90778))
+* **repo:** update protected submodule ([2d4b593](https://github.com/davidsneighbour/dotfiles/commit/2d4b5932f3c8fd068e5f7606897635dfa1a42a9d))
+* **repo:** update submodules ([abf6ef1](https://github.com/davidsneighbour/dotfiles/commit/abf6ef1d5d7a9b3643761e53a62571925a99c3a1))
+* **repo:** update workspace configuration ([1c8ff2b](https://github.com/davidsneighbour/dotfiles/commit/1c8ff2bb974bdf7e45ff00650653198078729679))
+* **workspace:** update configuration ([e729efe](https://github.com/davidsneighbour/dotfiles/commit/e729efee287f5a7b64073c49b5169b0467b6eb80))
+
+
+### Configuration
+
+* add gmailctl workspace configuration ([4f69527](https://github.com/davidsneighbour/dotfiles/commit/4f69527764b52a1d841dd9f593c042b64bfa98eb))
+* add gum to brew package setup ([e95f31b](https://github.com/davidsneighbour/dotfiles/commit/e95f31bc196c978b7059430494895a6565fcf319))
+* **autostart:** add talon autostart ([2ee7ff7](https://github.com/davidsneighbour/dotfiles/commit/2ee7ff777c1b9926ce3a8d735d1b6604c2acca5c))
+* **conky:** optimize desktop widgets ([8e0f406](https://github.com/davidsneighbour/dotfiles/commit/8e0f406f2b82328ec8671b40af1a20846f78bc3b))
+* **conky:** update conky configuration ([dcb2f89](https://github.com/davidsneighbour/dotfiles/commit/dcb2f89bab0f660de7f021035ecf86a2cc3c6c51))
+* **containers:** add homepage configuration ([e3586a5](https://github.com/davidsneighbour/dotfiles/commit/e3586a50ea60eb19a9cda255a3955fcf41cf6cf5))
+* **containers:** add open-webui container configuration ([09200a9](https://github.com/davidsneighbour/dotfiles/commit/09200a9841fbb4b41022a8fa6120c371be76258d))
+* **containers:** fix color of paperless logo ([bbd51be](https://github.com/davidsneighbour/dotfiles/commit/bbd51befe7beace9311c46a35dfde52fe87fc58e))
+* **containers:** fix config folder for homepage configuration ([cee114e](https://github.com/davidsneighbour/dotfiles/commit/cee114ea38fcc05891405eb79f4af43fed66bf5a))
+* **containers:** fix homepage setup ([b7e1697](https://github.com/davidsneighbour/dotfiles/commit/b7e16972ec020dd732276205dc453d650d632b32))
+* **containers:** fix paperless configuration ([fa95210](https://github.com/davidsneighbour/dotfiles/commit/fa95210749c5b7ffda2dae69086f46d815ec0c46))
+* **containers:** re-add containers dotbot file ([c5e1df3](https://github.com/davidsneighbour/dotfiles/commit/c5e1df36c77805e3ee55510e1726894eff9cc5b8))
+* **containers:** remove open-webui container ([f04363a](https://github.com/davidsneighbour/dotfiles/commit/f04363ad98c6af1e7d393c13034161c81a2fa271))
+* **containers:** update paperless configuration ([2b43535](https://github.com/davidsneighbour/dotfiles/commit/2b43535bad6731ea9585ac047cec7943c420cce1))
+* **containers:** update paperless configuration ([3e7d713](https://github.com/davidsneighbour/dotfiles/commit/3e7d7138527a2479e825c87a2227b4a7779d44a4))
+* **cspell:** fix configuration ([049571c](https://github.com/davidsneighbour/dotfiles/commit/049571c56a30ccceeeb7b23af05f344d09c7c730))
+* **dotbot:** add hal2025 config ([7369bdf](https://github.com/davidsneighbour/dotfiles/commit/7369bdff3b235aafbaa25514fe64c45dd01a2d7a))
+* **dotbot:** fix path to paperless mounts ([6276665](https://github.com/davidsneighbour/dotfiles/commit/6276665d9ed08d3ba4b052c914c5e737ee38b296))
+* **dotbot:** update gmailctl path ([4777f7a](https://github.com/davidsneighbour/dotfiles/commit/4777f7ae7c270838ea134353616ecafb19b1d97f))
+* **dotbot:** update paperless cronjob to 2-hourly ([3088fef](https://github.com/davidsneighbour/dotfiles/commit/3088fef74c2a458b6800b75834f6e99f47ccb429))
+* **fix:** remove barriers config ([ba3cedc](https://github.com/davidsneighbour/dotfiles/commit/ba3cedc15e8e9a9d47e13c3b0e472cf5c58efbd5))
+* **fix:** remove unused vim config ([f1e4786](https://github.com/davidsneighbour/dotfiles/commit/f1e4786f36906550996a6d446066882065c1c0c6))
+* more cleanup, remove unused icon files ([527334c](https://github.com/davidsneighbour/dotfiles/commit/527334c98cb82f33297f3b7137877fb2dc6c9198))
+* move configs around ([fe25ad7](https://github.com/davidsneighbour/dotfiles/commit/fe25ad73fa16f330807e6eed39392121911e34fa))
+* **starship:** cleanup configuration ([a7b695e](https://github.com/davidsneighbour/dotfiles/commit/a7b695efac1bcc998e601a8b1cb4924de7a86b5c))
+* update commitlint configuration ([ae55a16](https://github.com/davidsneighbour/dotfiles/commit/ae55a16d3d61a954db6036be3ebb58889c5f6f9f))
+* update devdocs site config backup ([4b34b1b](https://github.com/davidsneighbour/dotfiles/commit/4b34b1beadb35bfa46c62323c1297dac3add61cc))
+* **workspace:** add configuration workspace ([2055364](https://github.com/davidsneighbour/dotfiles/commit/20553642b62e6ec8ee4bd63c183b085c5478edc1))
+* **workspaces:** add hugo-asylum workspace ([9cde8a6](https://github.com/davidsneighbour/dotfiles/commit/9cde8a6c74475723acc771f4d9291fa3d04cde87))
+* **yamllint:** disable anchor rule ([649d1dd](https://github.com/davidsneighbour/dotfiles/commit/649d1dde4f93563aae194f4d9dc31807d9fb5363))
+
+
+### Build System
+
+* **deps:** bump modules/dotbot from `60e532b` to `830da25` ([#409](https://github.com/davidsneighbour/dotfiles/issues/409)) ([f492c8b](https://github.com/davidsneighbour/dotfiles/commit/f492c8bd7815b64026525449cbc39a6433e57d84))
+* **deps:** update dependencies ([5ec27cf](https://github.com/davidsneighbour/dotfiles/commit/5ec27cf387bc7a1f4c8e3755da04abec9123a7d4))
+* **deps:** update dependencies ([54c0da2](https://github.com/davidsneighbour/dotfiles/commit/54c0da2939b4cebfd15cb959ec94c69c11c38a0a))
+
 ## [3001.3.0](https://github.com/davidsneighbour/dotfiles/compare/v3001.1.0...v3001.3.0) (2026-01-22)
 
 
