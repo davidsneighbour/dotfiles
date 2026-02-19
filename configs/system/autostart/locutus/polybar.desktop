@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Polybar
+Comment=Start Polybar
+Exec=/home/patrick/.dotfiles/configs/system/polybar/start.sh
+OnlyShowIn=XFCE;
+X-GNOME-Autostart-enabled=true
+Terminal=false
