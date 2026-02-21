@@ -1,0 +1,27 @@
+[[workspace]]
+title = "Dashboard"
+icon = ""
+
+[[workspace]]
+title = "Web"
+icon = ""
+
+[[workspace]]
+title = "Code"
+icon = ""
+
+[[workspace]]
+title = "Ops"
+icon = ""
+
+[[workspace]]
+title = "Dotfiles"
+icon = ""
+
+[[workspace]]
+title = "Comms"
+icon = ""
+
+[[workspace]]
+title = "Cookies"
+icon = ""
