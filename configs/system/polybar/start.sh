@@ -72,7 +72,9 @@ fi
 echo "launching bars"
 
 # Start bars, append stdout/stderr into their own logs
+# FC_DEBUG=1 polybar -l "${LOGLEVEL}" -c "${CONFIG_FILE}" top >>"${TOP_LOGFILE}" 2>&1 &
 polybar -l "${LOGLEVEL}" -c "${CONFIG_FILE}" top >>"${TOP_LOGFILE}" 2>&1 &
+# FC_DEBUG=1 polybar -l "${LOGLEVEL}" -c "${CONFIG_FILE}" bottom >>"${BOTTOM_LOGFILE}" 2>&1 &
 polybar -l "${LOGLEVEL}" -c "${CONFIG_FILE}" bottom >>"${BOTTOM_LOGFILE}" 2>&1 &
 
 disown || echo "disown not available in this shell, continuing"
