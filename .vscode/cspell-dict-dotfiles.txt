@@ -15,6 +15,7 @@ ollama
 pipefail
 polybar
 powermenu
+prio
 remarkignore
 remarkrc
 shellcheck
