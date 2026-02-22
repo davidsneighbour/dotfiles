@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Handy
+Comment=Handystartup script
+Exec=/home/patrick/Downloads/Handy_0.7.6_amd64.AppImage 
+StartupNotify=false
+Terminal=false
