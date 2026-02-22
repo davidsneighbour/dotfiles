@@ -1,8 +1,18 @@
 {
-	"folders": [
-		{
-			"path": "../../../tailwind-asylum"
-		}
-	],
-	"settings": {}
+  "folders": [
+    {
+      "path": "../../../github.com/davidsneighbour/tailwind-asylum"
+    }
+  ],
+  "settings": {
+    "mcp": {
+      "servers": {
+        "Astro Documentation": {
+          "url": "https://mcp.docs.astro.build/mcp",
+          "type": "http"
+        }
+      },
+      "inputs": []
+    }
+  }
 }
