@@ -1,4 +1,19 @@
 Changelog
+## [3001.4.1](https://github.com/davidsneighbour/dotfiles/compare/v3001.4.0...v3001.4.1) (2026-02-22)
+
+
+### Bug Fixes
+
+* **bin:** remove unused binaries ([25a921f](https://github.com/davidsneighbour/dotfiles/commit/25a921f793891af25d3781d7da08853093bba01a))
+* **hyouji:** update hyouji configuration ([70fa492](https://github.com/davidsneighbour/dotfiles/commit/70fa492913fd48898956e0090b8fc0bf4d7bb936))
+* polybar and rofi configurations, workspace management ([970bf68](https://github.com/davidsneighbour/dotfiles/commit/970bf6866765a35e1f133ead203629824b27b072))
+* **polybar:** update configuration ([abab171](https://github.com/davidsneighbour/dotfiles/commit/abab171f41e0b75d6d3a1ed9a6fa8c83b0645fa1))
+
+
+### Chore
+
+* **assets:** update skyline stats for 2026 ([8e1a70c](https://github.com/davidsneighbour/dotfiles/commit/8e1a70c02bc62aa42fe0093f5cbf9e6b687c9ade))
+
 ## [3001.4.0](https://github.com/davidsneighbour/dotfiles/compare/v3001.3.0...v3001.4.0) (2026-02-19)
 
 
