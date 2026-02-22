@@ -45,18 +45,11 @@ done
 unset FILE
 
 export NVM_DIR="${HOME}/.nvm"
-# shellcheck source=/dev/null
-[ -s "${NVM_DIR}/nvm.sh" ] && \. "${NVM_DIR}/nvm.sh" # This loads nvm
-# shellcheck source=/dev/null
-[ -s "${NVM_DIR}/bash_completion" ] && \. "${NVM_DIR}/bash_completion" # This loads nvm bash_completion
 
 # hack to disable error messages about max listeners
 export NODE_OPTIONS="--require ${BASHRC_PATH}/helpers/set_max_listeners.cjs ${NODE_OPTIONS}"
 
 eval "$(zoxide init bash)"
-
-# shellcheck disable=SC1091
-[ -s "${NVM_DIR}/bash_completion" ] && \. "${NVM_DIR}/bash_completion" # This loads nvm bash_completion
 
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
@@ -186,6 +179,12 @@ export HOSTFILE=~/.bash_hosts
 export NO_AT_BRIDGE=1
 
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+
+# Load nvm after all PATH mutations so nvm-managed Node.js/npm take precedence over Homebrew.
+# shellcheck source=/dev/null
+[ -s "${NVM_DIR}/nvm.sh" ] && \. "${NVM_DIR}/nvm.sh"
+# shellcheck source=/dev/null
+[ -s "${NVM_DIR}/bash_completion" ] && \. "${NVM_DIR}/bash_completion"
 
 export DENO_INSTALL="/home/patrick/.deno"
 export PATH="${DENO_INSTALL}/bin:${PATH}"
