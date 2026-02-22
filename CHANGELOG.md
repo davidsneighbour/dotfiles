@@ -1,4 +1,26 @@
 Changelog
+## [3001.5.0](https://github.com/davidsneighbour/dotfiles/compare/v3001.4.1...v3001.5.0) (2026-02-22)
+
+
+### Features
+
+* add screencaps script ([5f0b1a6](https://github.com/davidsneighbour/dotfiles/commit/5f0b1a6eefc85c29c72c12ec4af518b2aa8836bb))
+* **containers:** add openwebui on locutus ([9c38ada](https://github.com/davidsneighbour/dotfiles/commit/9c38adaca262ba7c63933e72a8a909075179cac4))
+* **workspaces:** add open-on-workspace and tile-window scripts ([4bc2748](https://github.com/davidsneighbour/dotfiles/commit/4bc2748289a7669915e11f0871a40a597b264565))
+
+
+### Bug Fixes
+
+* **bashrc:** load nvm after brew ([ba0251f](https://github.com/davidsneighbour/dotfiles/commit/ba0251f793ab34dfec293d91b303c04fec076ef6))
+* **cspell:** add vocabulary ([03addf3](https://github.com/davidsneighbour/dotfiles/commit/03addf31bdc0aab41b3c997f01a118db17caa205))
+* **npm:** update default packages ([4d375d7](https://github.com/davidsneighbour/dotfiles/commit/4d375d7fa545339adfe86deefd91734c3daff3dd))
+* **startup:** add locutus startup scripts ([436aa5e](https://github.com/davidsneighbour/dotfiles/commit/436aa5e439d60b13c3ce409304df02d4eebfb3c0))
+
+
+### Configuration
+
+* **workspaces:** update workspaces ([1731c0f](https://github.com/davidsneighbour/dotfiles/commit/1731c0f3a7878141817eda59bcefdd1b7fa7aac8))
+
 ## [3001.4.1](https://github.com/davidsneighbour/dotfiles/compare/v3001.4.0...v3001.4.1) (2026-02-22)
 
 
