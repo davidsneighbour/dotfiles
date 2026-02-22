@@ -5,15 +5,13 @@ const config: UserConfig = {
   // extends: [
   //   '@davidsneighbour/commitlint-config'
   // ],
-  // rules: {
-  //   // @see: https://commitlint.js.org/#/reference-rules
-  // },
 
-  // https://cz-git.qbb.sh/guide/options-show.html
+  // @see: https://commitlint.js.org/#/reference-rules
+  rules: {
+    'signed-off-by': [RuleConfigSeverity.Warning, 'always', 'Signed-off-by:']
+  },
+  // https://cz-git.qbb.sh/config/show
   prompt: {
-    rules: {
-      'signed-off-by': [RuleConfigSeverity.Warning, 'always', 'Signed-off-by:']
-    },
     messages: {
       type: "Select the type of change that you're committing:",
       scope: 'Denote the SCOPE of this change (optional):',
@@ -27,7 +25,7 @@ const config: UserConfig = {
       confirmCommit: 'Are you sure you want to proceed with the commit above?'
     },
     // https://github.com/sindresorhus/xterm-colors
-    themeColorCode: '38;5;160',
+    themeColorCode: "38;2;112;140;169",
     types: [
       { value: 'feat', name: 'feat:     A new feature', emoji: ':sparkles:' },
       { value: 'fix', name: 'fix:      A bug fix', emoji: ':bug:' },
@@ -69,10 +67,11 @@ const config: UserConfig = {
     maxSubjectLength: Infinity,
     minSubjectLength: 0,
     scopeOverrides: {
+      feat: ['workspaces', 'config', 'theme'],
+      fix: ['bashrc'],
       build: ['deps', 'deps-dev', 'vscode'],
       content: ['new', 'fix', 'schema', 'update'],
       theme: ['fix', 'feat'],
-      fix: ['bashrc'],
       chore: ['repo'],
       config: ['dotbot', 'containers', 'keybindings', 'theme'],
     },
