@@ -11,16 +11,23 @@ sudo apt clean --yes
 
 sudo apt install -y \
   build-essential \
+  coreutils \
   curl \
+  ffmpeg \
   filezilla filezilla-theme-papirus filezilla-common \
   git git-delta git-extras \
   htop \
+  jsonnet \
   golang-go \
+  meld \
   papirus-icon-theme papirus-folders papirus-colors \
+  pulseaudio-utils \
   qbittorrent \
   shfmt \
   software-properties-common \
   unzip \
   vlc \
   wget \
+  wmctrl \
+  yad \
   yamllint

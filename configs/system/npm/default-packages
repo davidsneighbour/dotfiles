@@ -2,6 +2,7 @@
 @charmland/crush
 @davidsneighbour/remark-config
 @dotenvx/dotenvx
+@google/gemini-cli
 @humanwhocodes/crosspost
 act
 better-commits
@@ -16,6 +17,7 @@ generator-code
 http-server
 hyouji
 jshint
+jsonnet
 lerna-wizard
 lerna
 lighthouse
@@ -24,6 +26,7 @@ npm
 npm-check-updates
 pa11y
 playwright
+remark-lint-frontmatter-schema
 sassdoc
 svgo
 typescript
