@@ -3,24 +3,51 @@
 set -Eeuo pipefail
 
 SCRIPT_NAME="$(basename "$0")"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DEFAULT_TEMPLATE_FILE="${SCRIPT_DIR}/config.toml"
 
 usage() {
   cat <<EOF_USAGE
 Usage:
-  ${SCRIPT_NAME} --side <left|right> --ratio <50|66> [--verbose]
+  ${SCRIPT_NAME} [options]
   ${SCRIPT_NAME} --help
 
 Tile the currently active window on the current monitor.
 
 Options:
-  --side <left|right>  Place the window on the left or right side.
-  --ratio <50|66>      Width ratio in percent of monitor width (50% or 66%).
-  --verbose            Print debug information to stderr.
-  --help               Show this help.
+  --width <20-100>                 Target width in percent (default: 50).
+  --height <20-100>                Target height in percent (default: 100).
+
+  --horizontal-anchor <left|right> Horizontal anchor side (default: left).
+  --horizontal-position <0-100>    Horizontal offset percentage inside available space (default: 0).
+
+  --vertical-anchor <top|bottom>   Vertical anchor side (default: top).
+  --vertical-position <0-100>      Vertical offset percentage inside available space (default: 0).
+
+  --template <name>                Load tiling values from TOML template in ${DEFAULT_TEMPLATE_FILE}.
+  --template-file <path>           Path to TOML file containing templates (default: ${DEFAULT_TEMPLATE_FILE}).
+
+  --verbose                        Print debug information to stderr.
+  --help                           Show this help.
+
+Compatibility aliases (deprecated):
+  --ratio <20-100>                 Alias for --width.
+  --side <left|right>              Alias for --horizontal-anchor with --horizontal-position 0.
+
+Template format:
+  [tile_template."top-left-20"]
+  width = 20
+  height = 20
+  horizontal_anchor = "left"
+  horizontal_position = 0
+  vertical_anchor = "top"
+  vertical_position = 0
 
 Examples:
-  ${SCRIPT_NAME} --side left --ratio 50
-  ${SCRIPT_NAME} --side right --ratio 66 --verbose
+  ${SCRIPT_NAME}
+  ${SCRIPT_NAME} --width 66 --height 100 --horizontal-anchor right
+  ${SCRIPT_NAME} --width 40 --height 40 --horizontal-anchor left --horizontal-position 100 --vertical-anchor bottom --vertical-position 100
+  ${SCRIPT_NAME} --template top-left-20
 EOF_USAGE
 }
 
@@ -32,6 +59,11 @@ die() {
   exit 1
 }
 
+warn() {
+  local message="$1"
+  echo "WARN: ${message}" >&2
+}
+
 logv() {
   local message="$1"
   if [[ "${VERBOSE}" == "1" ]]; then
@@ -41,6 +73,99 @@ logv() {
 
 need_cmd() {
   command -v "$1" >/dev/null 2>&1
+}
+
+require_integer_in_range() {
+  local label="$1"
+  local value="$2"
+  local minimum="$3"
+  local maximum="$4"
+
+  [[ "${value}" =~ ^[0-9]+$ ]] || die "${label} must be an integer in range ${minimum}-${maximum}, got: ${value}"
+  [[ "${value}" -ge "${minimum}" && "${value}" -le "${maximum}" ]] || die "${label} must be between ${minimum} and ${maximum}, got: ${value}"
+}
+
+apply_template() {
+  local template_name="$1"
+  local template_file="$2"
+
+  [[ -f "${template_file}" ]] || die "Template TOML file not found: ${template_file}"
+  need_cmd python3 || die "python3 is required to read TOML templates"
+
+  local python_output
+  python_output="$(
+    python3 - "${template_file}" "${template_name}" <<'PY'
+import sys
+
+config_path = sys.argv[1]
+template_name = sys.argv[2]
+
+try:
+    import tomllib
+except ModuleNotFoundError:
+    print("ERROR: Python 3.11+ with tomllib is required.", file=sys.stderr)
+    sys.exit(2)
+
+try:
+    with open(config_path, "rb") as handle:
+        data = tomllib.load(handle)
+except Exception as ex:
+    print(f"ERROR: Could not parse TOML file '{config_path}': {ex}", file=sys.stderr)
+    sys.exit(2)
+
+templates = data.get("tile_template")
+if not isinstance(templates, dict):
+    print(f"ERROR: Missing [tile_template] table in '{config_path}'.", file=sys.stderr)
+    sys.exit(3)
+
+template = templates.get(template_name)
+if not isinstance(template, dict):
+    print(f"ERROR: Template '{template_name}' not found under [tile_template] in '{config_path}'.", file=sys.stderr)
+    sys.exit(4)
+
+allowed = [
+    "width",
+    "height",
+    "horizontal_anchor",
+    "horizontal_position",
+    "vertical_anchor",
+    "vertical_position",
+]
+
+for key in allowed:
+    value = template.get(key)
+    if value is not None:
+        print(f"{key}={value}")
+PY
+  )" || die "Failed to load template '${template_name}' from ${template_file}"
+
+  while IFS='=' read -r key value; do
+    case "${key}" in
+    width)
+      TILE_WIDTH="${value}"
+      ;;
+    height)
+      TILE_HEIGHT="${value}"
+      ;;
+    horizontal_anchor)
+      H_ANCHOR="${value}"
+      ;;
+    horizontal_position)
+      H_POSITION="${value}"
+      ;;
+    vertical_anchor)
+      V_ANCHOR="${value}"
+      ;;
+    vertical_position)
+      V_POSITION="${value}"
+      ;;
+    *)
+      die "Unsupported template key: ${key}"
+      ;;
+    esac
+  done <<<"${python_output}"
+
+  logv "Applied template '${template_name}' from ${template_file}"
 }
 
 get_current_desktop_idx() {
@@ -69,13 +194,14 @@ get_desktop_workarea() {
 }
 
 VERBOSE="0"
-SIDE=""
-RATIO=""
-
-if [[ $# -eq 0 ]]; then
-  usage
-  exit 1
-fi
+TILE_WIDTH="50"
+TILE_HEIGHT="100"
+H_ANCHOR="left"
+H_POSITION="0"
+V_ANCHOR="top"
+V_POSITION="0"
+TEMPLATE_NAME=""
+TEMPLATE_FILE="${DEFAULT_TEMPLATE_FILE}"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -87,16 +213,67 @@ while [[ $# -gt 0 ]]; do
     VERBOSE="1"
     shift
     ;;
-  --side)
+  --width)
     shift
-    [[ $# -gt 0 ]] || die "--side requires a value"
-    SIDE="$1"
+    [[ $# -gt 0 ]] || die "--width requires a value"
+    TILE_WIDTH="$1"
+    shift
+    ;;
+  --height)
+    shift
+    [[ $# -gt 0 ]] || die "--height requires a value"
+    TILE_HEIGHT="$1"
+    shift
+    ;;
+  --horizontal-anchor)
+    shift
+    [[ $# -gt 0 ]] || die "--horizontal-anchor requires a value"
+    H_ANCHOR="$1"
+    shift
+    ;;
+  --horizontal-position)
+    shift
+    [[ $# -gt 0 ]] || die "--horizontal-position requires a value"
+    H_POSITION="$1"
+    shift
+    ;;
+  --vertical-anchor)
+    shift
+    [[ $# -gt 0 ]] || die "--vertical-anchor requires a value"
+    V_ANCHOR="$1"
+    shift
+    ;;
+  --vertical-position)
+    shift
+    [[ $# -gt 0 ]] || die "--vertical-position requires a value"
+    V_POSITION="$1"
+    shift
+    ;;
+  --template)
+    shift
+    [[ $# -gt 0 ]] || die "--template requires a value"
+    TEMPLATE_NAME="$1"
+    shift
+    ;;
+  --template-file)
+    shift
+    [[ $# -gt 0 ]] || die "--template-file requires a value"
+    TEMPLATE_FILE="$1"
     shift
     ;;
   --ratio)
     shift
     [[ $# -gt 0 ]] || die "--ratio requires a value"
-    RATIO="$1"
+    TILE_WIDTH="$1"
+    warn "--ratio is deprecated; use --width instead"
+    shift
+    ;;
+  --side)
+    shift
+    [[ $# -gt 0 ]] || die "--side requires a value"
+    H_ANCHOR="$1"
+    H_POSITION="0"
+    warn "--side is deprecated; use --horizontal-anchor and --horizontal-position instead"
     shift
     ;;
   *)
@@ -105,8 +282,24 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-[[ "${SIDE}" == "left" || "${SIDE}" == "right" ]] || die "--side must be left or right"
-[[ "${RATIO}" == "50" || "${RATIO}" == "66" ]] || die "--ratio must be 50 or 66"
+if [[ -n "${TEMPLATE_NAME}" ]]; then
+  apply_template "${TEMPLATE_NAME}" "${TEMPLATE_FILE}"
+fi
+
+require_integer_in_range "--width" "${TILE_WIDTH}" 20 100
+require_integer_in_range "--height" "${TILE_HEIGHT}" 20 100
+require_integer_in_range "--horizontal-position" "${H_POSITION}" 0 100
+require_integer_in_range "--vertical-position" "${V_POSITION}" 0 100
+
+[[ "${H_ANCHOR}" == "left" || "${H_ANCHOR}" == "right" ]] || die "--horizontal-anchor must be left or right"
+[[ "${V_ANCHOR}" == "top" || "${V_ANCHOR}" == "bottom" ]] || die "--vertical-anchor must be top or bottom"
+
+if [[ "${TILE_WIDTH}" -le 20 ]]; then
+  warn "Requested width ${TILE_WIDTH}% is at or below 20% and may be too small to use comfortably"
+fi
+if [[ "${TILE_HEIGHT}" -le 20 ]]; then
+  warn "Requested height ${TILE_HEIGHT}% is at or below 20% and may be too small to use comfortably"
+fi
 
 need_cmd xdotool || die "xdotool is not installed. Install with: sudo apt install xdotool"
 need_cmd xrandr || die "xrandr is not installed. Install with: sudo apt install x11-xserver-utils"
@@ -208,18 +401,33 @@ else
   logv "Could not determine current desktop index; falling back to monitor bounds"
 fi
 
-TARGET_W=$((WORK_W * RATIO / 100))
-TARGET_H="${WORK_H}"
-TARGET_Y="${WORK_Y}"
+REQ_WIDTH="${TILE_WIDTH}"
+REQ_HEIGHT="${TILE_HEIGHT}"
 
-if [[ "${SIDE}" == "left" ]]; then
-  TARGET_X="${WORK_X}"
+TARGET_W=$((WORK_W * REQ_WIDTH / 100))
+TARGET_H=$((WORK_H * REQ_HEIGHT / 100))
+
+X_ROOM=$((WORK_W - TARGET_W))
+Y_ROOM=$((WORK_H - TARGET_H))
+
+X_OFFSET=$((X_ROOM * H_POSITION / 100))
+Y_OFFSET=$((Y_ROOM * V_POSITION / 100))
+
+if [[ "${H_ANCHOR}" == "left" ]]; then
+  TARGET_X=$((WORK_X + X_OFFSET))
 else
-  TARGET_X=$((WORK_X + WORK_W - TARGET_W))
+  TARGET_X=$((WORK_X + X_ROOM - X_OFFSET))
+fi
+
+if [[ "${V_ANCHOR}" == "top" ]]; then
+  TARGET_Y=$((WORK_Y + Y_OFFSET))
+else
+  TARGET_Y=$((WORK_Y + Y_ROOM - Y_OFFSET))
 fi
 
 logv "Monitor: x=${MON_X} y=${MON_Y} w=${MON_W} h=${MON_H}"
 logv "Usable area: x=${WORK_X} y=${WORK_Y} w=${WORK_W} h=${WORK_H}"
+logv "Requested: width=${REQ_WIDTH}% height=${REQ_HEIGHT}% h_anchor=${H_ANCHOR} h_pos=${H_POSITION}% v_anchor=${V_ANCHOR} v_pos=${V_POSITION}%"
 logv "Target: x=${TARGET_X} y=${TARGET_Y} w=${TARGET_W} h=${TARGET_H}"
 
 wmctrl -ir "${ACTIVE_WIN}" -b remove,maximized_vert,maximized_horz
