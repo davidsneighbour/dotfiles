@@ -5,5 +5,5 @@
   <circle cx="442" cy="191" r="3" fill="black" />
   <circle cx="452" cy="191" r="3" fill="black" />
   <circle cx="462" cy="191" r="3" fill="black" />
-  <text x="645" y="276" text-anchor="middle" dominant-baseline="middle" font-family="Verb Regular" font-size="60" fill="black">50x50</text>
+  <text x="645" y="276" text-anchor="middle" dominant-baseline="middle" font-family="Verb Regular" font-size="14" fill="black">50%x50%</text>
 </svg>

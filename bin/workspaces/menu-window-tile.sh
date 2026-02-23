@@ -6,6 +6,7 @@ SCRIPT_NAME="$(basename "${0}")"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DEFAULT_TEMPLATE_FILE="${SCRIPT_DIR}/config.toml"
 DEFAULT_TILE_SCRIPT="${SCRIPT_DIR}/wm-tile-window.sh"
+DEFAULT_TILE_DIR="${SCRIPT_DIR}/tiles"
 
 usage() {
   cat <<EOF_USAGE
@@ -18,6 +19,7 @@ Show available tile templates in rofi and apply the selected template to the act
 Options:
   --template-file <path>  Path to TOML template file (default: ${DEFAULT_TEMPLATE_FILE}).
   --tile-script <path>    Path to wm-tile-window.sh (default: ${DEFAULT_TILE_SCRIPT}).
+  --tile-dir <path>       Path to tile SVG folder (default: ${DEFAULT_TILE_DIR}).
   --rofi-theme <value>    Passed to rofi as: -theme <value> (optional).
   --prompt <text>         Prompt label shown by rofi (default: "Tile template").
   --verbose               Verbose debug output to stderr.
@@ -52,6 +54,7 @@ need_cmd() {
 VERBOSE="0"
 TEMPLATE_FILE="${DEFAULT_TEMPLATE_FILE}"
 TILE_SCRIPT="${DEFAULT_TILE_SCRIPT}"
+TILE_DIR="${DEFAULT_TILE_DIR}"
 ROFI_THEME=""
 PROMPT="Tile template"
 
@@ -75,6 +78,12 @@ while [[ ${#} -gt 0 ]]; do
     shift
     [[ ${#} -gt 0 ]] || die "--tile-script requires a value"
     TILE_SCRIPT="${1}"
+    shift
+    ;;
+  --tile-dir)
+    shift
+    [[ ${#} -gt 0 ]] || die "--tile-dir requires a value"
+    TILE_DIR="${1}"
     shift
     ;;
   --rofi-theme)
@@ -101,15 +110,21 @@ need_cmd python3 || die "python3 is not installed. Install with: sudo apt instal
 [[ -f "${TEMPLATE_FILE}" ]] || die "Template TOML file not found: ${TEMPLATE_FILE}"
 [[ -f "${TILE_SCRIPT}" ]] || die "Tile script not found: ${TILE_SCRIPT}"
 [[ -x "${TILE_SCRIPT}" ]] || die "Tile script is not executable: ${TILE_SCRIPT}"
+[[ -d "${TILE_DIR}" ]] || die "Tile SVG directory not found: ${TILE_DIR}"
 
 logv "Template file: ${TEMPLATE_FILE}"
 logv "Tile script: ${TILE_SCRIPT}"
+logv "Tile SVG directory: ${TILE_DIR}"
 
-menu="$({
-  python3 - "${TEMPLATE_FILE}" <<'PY'
+menu_file="$(mktemp)"
+trap 'rm -f "${menu_file}"' EXIT
+
+if ! python3 - "${TEMPLATE_FILE}" "${TILE_DIR}" >"${menu_file}" <<'PY'; then
 import sys
+from pathlib import Path
 
 config_path = sys.argv[1]
+tile_dir = Path(sys.argv[2])
 
 try:
     import tomllib
@@ -129,10 +144,18 @@ if not isinstance(templates, dict) or len(templates) == 0:
     print(f"ERROR: No [tile_template] entries found in '{config_path}'.", file=sys.stderr)
     sys.exit(4)
 
-for name in sorted(templates):
-    template = templates.get(name)
+entries = []
+for name, template in templates.items():
     if not isinstance(template, dict):
         continue
+
+    weight = template.get("weight", 0)
+    if not isinstance(weight, int):
+        print(
+            f"ERROR: Tile template '{name}' has invalid weight '{weight}'. Weight must be an integer.",
+            file=sys.stderr,
+        )
+        sys.exit(5)
 
     width = template.get("width", "?")
     height = template.get("height", "?")
@@ -141,27 +164,55 @@ for name in sorted(templates):
     v_anchor = template.get("vertical_anchor", "?")
     v_position = template.get("vertical_position", "?")
 
-    details = f"{width}%x{height}% · h:{h_anchor}@{h_position}% · v:{v_anchor}@{v_position}%"
-    print(f"{name}\t{details}")
+    entries.append((weight, name, width, height, h_anchor, h_position, v_anchor, v_position))
+
+for weight, name, width, height, h_anchor, h_position, v_anchor, v_position in sorted(entries, key=lambda entry: (entry[0], entry[1])):
+    icon_path = tile_dir / f"{name}.svg"
+    details = f"w:{weight} · {width}%x{height}% · h:{h_anchor}@{h_position}% · v:{v_anchor}@{v_position}%"
+    if icon_path.is_file():
+        print(f"{name}\0icon\x1f{icon_path}\x1fmeta\x1f{details}")
+    else:
+        print(f"{name}\0meta\x1f{details}")
 PY
-})" || die "Failed to read tile templates from ${TEMPLATE_FILE}"
+  die "Failed to read tile templates from ${TEMPLATE_FILE}"
+fi
 
-[[ -n "${menu}" ]] || die "No tile templates found in ${TEMPLATE_FILE}"
+if [[ ! -s "${menu_file}" ]]; then
+  die "No tile templates found in ${TEMPLATE_FILE}"
+fi
 
-logv "$(printf 'Menu entries:\n%s\n' "${menu}")"
+if [[ "${VERBOSE}" == "1" ]]; then
+  logv "Menu entries:"
+  python3 - "${menu_file}" <<'PY'
+import sys
+
+with open(sys.argv[1], 'rb') as handle:
+    for raw_line in handle.read().splitlines():
+        printable = raw_line.replace(b'\x00', b'\\0').replace(b'\x1f', b'\\x1f')
+        print(f"DEBUG: {printable.decode('utf-8', errors='replace')}", file=sys.stderr)
+PY
+fi
 
 rofi_args=(-dmenu -i -p "${PROMPT}")
+rofi_args+=(
+  -theme-str 'window { width: 30%; location: center; anchor: center; }'
+  -theme-str 'mainbox { children: [inputbar, listview]; }'
+  -theme-str 'listview { columns: 3; lines: 3; flow: horizontal; spacing: 14px; fixed-height: true; dynamic: false; scrollbar: true; }'
+  -theme-str 'element { orientation: vertical; children: [element-icon, element-text]; spacing: 8px; padding: 0px; squared: false; }'
+  -theme-str 'element-icon { size: 300px;  }'
+  -theme-str 'element-text { horizontal-align: 0.5; vertical-align: 0.5; }'
+)
 if [[ -n "${ROFI_THEME}" ]]; then
   rofi_args+=(-theme "${ROFI_THEME}")
 fi
 
-selection="$(printf '%s\n' "${menu}" | rofi "${rofi_args[@]}")" || true
+selection="$(rofi "${rofi_args[@]}" <"${menu_file}")" || true
 if [[ -z "${selection}" ]]; then
   logv "No selection (cancelled)."
   exit 0
 fi
 
-template_name="$(printf '%s\n' "${selection}" | cut -f1)"
+template_name="${selection}"
 [[ -n "${template_name}" ]] || die "Could not parse template name from selection: ${selection}"
 
 logv "Selected template: ${template_name}"
