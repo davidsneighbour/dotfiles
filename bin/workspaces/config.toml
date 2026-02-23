@@ -65,3 +65,35 @@ horizontal_anchor = "left"
 horizontal_position = 0
 vertical_anchor = "top"
 vertical_position = 0
+
+[tile_template."quarter-top-left"]
+width = 50
+height = 50
+horizontal_anchor = "left"
+horizontal_position = 0
+vertical_anchor = "top"
+vertical_position = 0
+
+[tile_template."quarter-top-right"]
+width = 50
+height = 50
+horizontal_anchor = "right"
+horizontal_position = 0
+vertical_anchor = "top"
+vertical_position = 0
+
+[tile_template."quarter-bottom-left"]
+width = 50
+height = 50
+horizontal_anchor = "left"
+horizontal_position = 0
+vertical_anchor = "bottom"
+vertical_position = 0
+
+[tile_template."quarter-bottom-right"]
+width = 50
+height = 50
+horizontal_anchor = "right"
+horizontal_position = 0
+vertical_anchor = "bottom"
+vertical_position = 0

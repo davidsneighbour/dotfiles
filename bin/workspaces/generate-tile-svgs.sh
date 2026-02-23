@@ -1,0 +1,254 @@
+#!/bin/bash
+
+set -Eeuo pipefail
+
+SCRIPT_NAME="$(basename "$0")"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DEFAULT_CONFIG_FILE="${SCRIPT_DIR}/config.toml"
+DEFAULT_OUTPUT_DIR="${SCRIPT_DIR}/tiles"
+
+usage() {
+  cat <<EOF_USAGE
+Usage:
+  ${SCRIPT_NAME} [options]
+  ${SCRIPT_NAME} --help
+
+Generate one SVG preview per [tile_template."name"] in a TOML config file.
+
+Options:
+  --config-file <path>        Path to template config TOML (default: ${DEFAULT_CONFIG_FILE}).
+  --output-dir <path>         Destination folder for generated SVGs (default: ${DEFAULT_OUTPUT_DIR}).
+  --background-color <color>  SVG background color (default: darkblue).
+  --window-color <color>      Window rectangle color (default: lightblue).
+  --label-font <font>         Label font family for size text (default: Verb Regular).
+  --label-color <color>       Label text color for size text (default: black).
+  --width-px <number>         SVG width in px (default: 430).
+  --height-px <number>        SVG height in px (default: 180).
+  --verbose                   Print debug output.
+  --help                      Show this help.
+
+Examples:
+  ${SCRIPT_NAME}
+  ${SCRIPT_NAME} --background-color '#0f172a' --window-color '#93c5fd'
+  ${SCRIPT_NAME} --label-font 'Verb Regular' --label-color '#111827'
+  ${SCRIPT_NAME} --width-px 860 --height-px 360 --output-dir "${SCRIPT_DIR}/tiles"
+EOF_USAGE
+}
+
+die() {
+  local message="$1"
+  echo "ERROR: ${message}" >&2
+  echo >&2
+  usage >&2
+  exit 1
+}
+
+logv() {
+  local message="$1"
+  if [[ "${VERBOSE}" == "1" ]]; then
+    echo "DEBUG: ${message}" >&2
+  fi
+}
+
+need_cmd() {
+  command -v "$1" >/dev/null 2>&1
+}
+
+require_positive_integer() {
+  local label="$1"
+  local value="$2"
+
+  [[ "${value}" =~ ^[0-9]+$ ]] || die "${label} must be a positive integer, got: ${value}"
+  [[ "${value}" -ge 1 ]] || die "${label} must be >= 1, got: ${value}"
+}
+
+VERBOSE="0"
+CONFIG_FILE="${DEFAULT_CONFIG_FILE}"
+OUTPUT_DIR="${DEFAULT_OUTPUT_DIR}"
+BACKGROUND_COLOR="darkblue"
+WINDOW_COLOR="lightblue"
+LABEL_FONT="Verb Regular"
+LABEL_COLOR="black"
+CANVAS_WIDTH="430"
+CANVAS_HEIGHT="180"
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+  --help)
+    usage
+    exit 0
+    ;;
+  --verbose)
+    VERBOSE="1"
+    shift
+    ;;
+  --config-file)
+    shift
+    [[ $# -gt 0 ]] || die "--config-file requires a value"
+    CONFIG_FILE="$1"
+    shift
+    ;;
+  --output-dir)
+    shift
+    [[ $# -gt 0 ]] || die "--output-dir requires a value"
+    OUTPUT_DIR="$1"
+    shift
+    ;;
+  --background-color)
+    shift
+    [[ $# -gt 0 ]] || die "--background-color requires a value"
+    BACKGROUND_COLOR="$1"
+    shift
+    ;;
+  --window-color)
+    shift
+    [[ $# -gt 0 ]] || die "--window-color requires a value"
+    WINDOW_COLOR="$1"
+    shift
+    ;;
+  --label-font)
+    shift
+    [[ $# -gt 0 ]] || die "--label-font requires a value"
+    LABEL_FONT="$1"
+    shift
+    ;;
+  --label-color)
+    shift
+    [[ $# -gt 0 ]] || die "--label-color requires a value"
+    LABEL_COLOR="$1"
+    shift
+    ;;
+  --width-px)
+    shift
+    [[ $# -gt 0 ]] || die "--width-px requires a value"
+    CANVAS_WIDTH="$1"
+    shift
+    ;;
+  --height-px)
+    shift
+    [[ $# -gt 0 ]] || die "--height-px requires a value"
+    CANVAS_HEIGHT="$1"
+    shift
+    ;;
+  *)
+    die "Unknown option: $1"
+    ;;
+  esac
+done
+
+[[ -f "${CONFIG_FILE}" ]] || die "Config file not found: ${CONFIG_FILE}"
+need_cmd python3 || die "python3 is required"
+
+require_positive_integer "--width-px" "${CANVAS_WIDTH}"
+require_positive_integer "--height-px" "${CANVAS_HEIGHT}"
+[[ -n "${LABEL_FONT}" ]] || die "--label-font must not be empty"
+[[ -n "${LABEL_COLOR}" ]] || die "--label-color must not be empty"
+
+mkdir -p "${OUTPUT_DIR}"
+
+logv "Config file: ${CONFIG_FILE}"
+logv "Output dir: ${OUTPUT_DIR}"
+logv "Canvas size: ${CANVAS_WIDTH}x${CANVAS_HEIGHT}"
+logv "Colors: background=${BACKGROUND_COLOR}, window=${WINDOW_COLOR}, label=${LABEL_COLOR}"
+logv "Label font: ${LABEL_FONT}"
+
+python3 - "${CONFIG_FILE}" "${OUTPUT_DIR}" "${BACKGROUND_COLOR}" "${WINDOW_COLOR}" "${CANVAS_WIDTH}" "${CANVAS_HEIGHT}" "${LABEL_FONT}" "${LABEL_COLOR}" <<'PY'
+import pathlib
+import re
+import sys
+
+config_path = pathlib.Path(sys.argv[1])
+output_dir = pathlib.Path(sys.argv[2])
+background = sys.argv[3]
+window_color = sys.argv[4]
+canvas_width = int(sys.argv[5])
+canvas_height = int(sys.argv[6])
+label_font = sys.argv[7]
+label_color = sys.argv[8]
+
+try:
+    import tomllib
+except ModuleNotFoundError:
+    print("ERROR: Python 3.11+ with tomllib is required.", file=sys.stderr)
+    sys.exit(2)
+
+try:
+    with config_path.open("rb") as handle:
+        data = tomllib.load(handle)
+except Exception as ex:
+    print(f"ERROR: Could not parse TOML file '{config_path}': {ex}", file=sys.stderr)
+    sys.exit(3)
+
+templates = data.get("tile_template")
+if not isinstance(templates, dict):
+    print(f"ERROR: Missing [tile_template] table in '{config_path}'.", file=sys.stderr)
+    sys.exit(4)
+
+output_dir.mkdir(parents=True, exist_ok=True)
+
+def clamp(value: int, minimum: int, maximum: int) -> int:
+    return max(minimum, min(value, maximum))
+
+count = 0
+for template_name, template in templates.items():
+    if not isinstance(template, dict):
+        print(f"WARN: Skipping template '{template_name}' because it is not a table.", file=sys.stderr)
+        continue
+
+    width_pct = clamp(int(template.get("width", 50)), 1, 100)
+    height_pct = clamp(int(template.get("height", 100)), 1, 100)
+    h_anchor = str(template.get("horizontal_anchor", "left"))
+    h_position = clamp(int(template.get("horizontal_position", 0)), 0, 100)
+    v_anchor = str(template.get("vertical_anchor", "top"))
+    v_position = clamp(int(template.get("vertical_position", 0)), 0, 100)
+
+    rect_width = round(canvas_width * width_pct / 100)
+    rect_height = round(canvas_height * height_pct / 100)
+
+    free_x = canvas_width - rect_width
+    free_y = canvas_height - rect_height
+
+    if h_anchor == "right":
+        origin_x = free_x - round(free_x * h_position / 100)
+    else:
+        origin_x = round(free_x * h_position / 100)
+
+    if v_anchor == "bottom":
+        origin_y = free_y - round(free_y * v_position / 100)
+    else:
+        origin_y = round(free_y * v_position / 100)
+
+    origin_x = clamp(origin_x, 0, free_x)
+    origin_y = clamp(origin_y, 0, free_y)
+
+    safe_name = re.sub(r"[^A-Za-z0-9._-]", "-", template_name)
+    output_file = output_dir / f"{safe_name}.svg"
+
+    header_height = max(16, round(rect_height * 0.12))
+    indicator_y = origin_y + max(8, round(header_height / 2))
+
+    label_text = f"{width_pct}%x{height_pct}%"
+    label_x = origin_x + round(rect_width / 2)
+    label_y = origin_y + round(rect_height / 2) + round(header_height * 0.25)
+    label_font_size = 14
+
+    svg = f'''<svg xmlns="http://www.w3.org/2000/svg" width="{canvas_width}" height="{canvas_height}" viewBox="0 0 {canvas_width} {canvas_height}">
+  <rect x="0" y="0" width="{canvas_width}" height="{canvas_height}" fill="{background}" rx="10" />
+  <rect x="{origin_x}" y="{origin_y}" width="{rect_width}" height="{rect_height}" fill="{window_color}" stroke="black" stroke-width="2" rx="8" />
+  <rect x="{origin_x}" y="{origin_y}" width="{rect_width}" height="{header_height}" fill="rgba(0,0,0,0.15)" rx="8" />
+  <circle cx="{origin_x + 12}" cy="{indicator_y}" r="3" fill="black" />
+  <circle cx="{origin_x + 22}" cy="{indicator_y}" r="3" fill="black" />
+  <circle cx="{origin_x + 32}" cy="{indicator_y}" r="3" fill="black" />
+  <text x="{label_x}" y="{label_y}" text-anchor="middle" dominant-baseline="middle" font-family="{label_font}" font-size="{label_font_size}" fill="{label_color}">{label_text}</text>
+</svg>
+'''
+    output_file.write_text(svg, encoding="utf-8")
+    print(f"Generated {output_file}")
+    count += 1
+
+if count == 0:
+    print("ERROR: No valid tile templates were found.", file=sys.stderr)
+    sys.exit(5)
+PY
+
+logv "SVG generation completed."
