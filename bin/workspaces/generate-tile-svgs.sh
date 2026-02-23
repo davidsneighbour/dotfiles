@@ -69,8 +69,8 @@ BACKGROUND_COLOR="darkblue"
 WINDOW_COLOR="lightblue"
 LABEL_FONT="Verb Regular"
 LABEL_COLOR="black"
-CANVAS_WIDTH="430"
-CANVAS_HEIGHT="180"
+CANVAS_WIDTH="860"
+CANVAS_HEIGHT="360"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -227,10 +227,10 @@ for template_name, template in templates.items():
     header_height = max(16, round(rect_height * 0.12))
     indicator_y = origin_y + max(8, round(header_height / 2))
 
-    label_text = f"{width_pct}%x{height_pct}%"
+    label_text = f"{width_pct}x{height_pct}"
     label_x = origin_x + round(rect_width / 2)
     label_y = origin_y + round(rect_height / 2) + round(header_height * 0.25)
-    label_font_size = 14
+    label_font_size = 60
 
     svg = f'''<svg xmlns="http://www.w3.org/2000/svg" width="{canvas_width}" height="{canvas_height}" viewBox="0 0 {canvas_width} {canvas_height}">
   <rect x="0" y="0" width="{canvas_width}" height="{canvas_height}" fill="{background}" rx="10" />
