@@ -1,0 +1,11 @@
+# [[issue]]
+# id = "identifier"
+# prio = 1
+# label = "short description"
+# description = "long description"
+
+# [[issue]]
+# id = "identifier2"
+# prio = 1
+# label = "short description"
+# description = "long description"
