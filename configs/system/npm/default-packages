@@ -2,6 +2,7 @@
 @charmland/crush
 @davidsneighbour/remark-config
 @dotenvx/dotenvx
+@github/copilot
 @google/gemini-cli
 @humanwhocodes/crosspost
 act
