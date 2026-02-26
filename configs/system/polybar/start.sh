@@ -71,7 +71,7 @@ fi
 
 echo "launching bars"
 
-~/.dotfiles/bashrc/helpers/workspace-setup.sh --count 7 --names "Dashboard,Web,Code,Ops,Dotfiles,Comms,Cookies"
+~/.dotfiles/bashrc/helpers/workspace-setup.sh --count 8 --names "Dashboard,Web,Code,Ops,Notes,Dotfiles,Comms,Cookies"
 
 # Start bars, append stdout/stderr into their own logs
 # FC_DEBUG=1 polybar -l "${LOGLEVEL}" -c "${CONFIG_FILE}" top >>"${TOP_LOGFILE}" 2>&1 &
