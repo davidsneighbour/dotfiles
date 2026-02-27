@@ -1,0 +1,377 @@
+#!/bin/bash
+
+set -Eeuo pipefail
+
+SCRIPT_NAME="$(basename "${0}")"
+SCRIPT_DIR="$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+DEFAULT_TEMPLATE_FILE="${SCRIPT_DIR}/config.toml"
+DEFAULT_TILE_SCRIPT="${SCRIPT_DIR}/wm-tile-window.sh"
+
+usage() {
+  cat <<EOF_USAGE
+Usage:
+  ${SCRIPT_NAME} [options]
+  ${SCRIPT_NAME} --help
+
+Select a tile template and a window via rofi, then tile that window on the current monitor.
+
+Options:
+  --template-file <path>  Path to TOML template file (default: ${DEFAULT_TEMPLATE_FILE}).
+  --tile-script <path>    Path to wm-tile-window.sh (default: ${DEFAULT_TILE_SCRIPT}).
+  --rofi-theme <value>    Passed to rofi as: -theme <value> (optional).
+  --template-prompt <text> Prompt label for template selection (default: "Tile template").
+  --window-prompt <text>  Prompt label for window selection (default: "Window").
+  --window-types <csv>    Comma-separated allowed _NET_WM_WINDOW_TYPE values
+                          (default: "_NET_WM_WINDOW_TYPE_NORMAL,_NET_WM_WINDOW_TYPE_DIALOG").
+  --window-title-exclude-regex <regex>
+                          Exclude windows whose title matches this regex (optional).
+  --verbose               Verbose debug output to stderr.
+  --help                  Show this help.
+
+Examples:
+  ${SCRIPT_NAME}
+  ${SCRIPT_NAME} --rofi-theme "gruvbox-dark" --verbose
+EOF_USAGE
+}
+
+die() {
+  local message="${1}"
+  echo "ERROR: ${message}" >&2
+  echo >&2
+  usage >&2
+  exit 1
+}
+
+logv() {
+  local message="${1}"
+  if [[ "${VERBOSE}" == "1" ]]; then
+    echo "DEBUG: ${message}" >&2
+  fi
+}
+
+need_cmd() {
+  command -v "${1}" >/dev/null 2>&1
+}
+
+get_current_desktop_index() {
+  local desktop_index
+
+  desktop_index="$(wmctrl -d | awk '/\*/ {print $1}')"
+  [[ "${desktop_index}" =~ ^[0-9]+$ ]] || return 1
+
+  printf '%s\n' "${desktop_index}"
+}
+
+
+window_has_allowed_type() {
+  local window_id="${1}"
+  local types_raw
+  local window_type
+
+  types_raw="$(xprop -id "${window_id}" _NET_WM_WINDOW_TYPE 2>/dev/null || true)"
+  [[ -n "${types_raw}" ]] || return 1
+
+  for window_type in "${WINDOW_TYPES[@]}"; do
+    if [[ "${types_raw}" == *"${window_type}"* ]]; then
+      return 0
+    fi
+  done
+
+  return 1
+}
+
+window_is_excluded_by_title() {
+  local window_title="${1}"
+
+  if [[ -z "${WINDOW_TITLE_EXCLUDE_REGEX}" ]]; then
+    return 1
+  fi
+
+  if [[ "${window_title}" =~ ${WINDOW_TITLE_EXCLUDE_REGEX} ]]; then
+    return 0
+  fi
+
+  return 1
+}
+
+get_current_monitor_geometry() {
+  local mouse_x
+  local mouse_y
+  local geometry
+
+  geometry="$(xdotool getmouselocation --shell 2>/dev/null || true)"
+  [[ -n "${geometry}" ]] || return 1
+
+  eval "${geometry}"
+  [[ -n "${X:-}" && -n "${Y:-}" ]] || return 1
+
+  mouse_x="${X}"
+  mouse_y="${Y}"
+
+  while IFS= read -r line; do
+    local monitor_geometry
+    local monitor_width
+    local monitor_height
+    local rest
+    local monitor_x
+    local monitor_y
+
+    monitor_geometry="$(printf '%s\n' "${line}" | awk '{print $3}')"
+    [[ "${monitor_geometry}" =~ ^[0-9]+x[0-9]+\+[0-9]+\+[0-9]+$ ]] || continue
+
+    monitor_width="${monitor_geometry%%x*}"
+    rest="${monitor_geometry#*x}"
+    monitor_height="${rest%%+*}"
+    rest="${rest#*+}"
+    monitor_x="${rest%%+*}"
+    monitor_y="${rest#*+}"
+
+    if [[ "${mouse_x}" -ge "${monitor_x}" && "${mouse_x}" -lt $((monitor_x + monitor_width)) && "${mouse_y}" -ge "${monitor_y}" && "${mouse_y}" -lt $((monitor_y + monitor_height)) ]]; then
+      printf '%s %s %s %s\n' "${monitor_x}" "${monitor_y}" "${monitor_width}" "${monitor_height}"
+      return 0
+    fi
+  done < <(xrandr --query | awk '/ connected/ {print}')
+
+  return 1
+}
+
+VERBOSE="0"
+TEMPLATE_FILE="${DEFAULT_TEMPLATE_FILE}"
+TILE_SCRIPT="${DEFAULT_TILE_SCRIPT}"
+ROFI_THEME=""
+TEMPLATE_PROMPT="Tile template"
+WINDOW_PROMPT="Window"
+WINDOW_TYPES_CSV="_NET_WM_WINDOW_TYPE_NORMAL,_NET_WM_WINDOW_TYPE_DIALOG"
+WINDOW_TITLE_EXCLUDE_REGEX=""
+WINDOW_TYPES=()
+
+while [[ ${#} -gt 0 ]]; do
+  case "${1}" in
+  --help)
+    usage
+    exit 0
+    ;;
+  --verbose)
+    VERBOSE="1"
+    shift
+    ;;
+  --template-file)
+    shift
+    [[ ${#} -gt 0 ]] || die "--template-file requires a value"
+    TEMPLATE_FILE="${1}"
+    shift
+    ;;
+  --tile-script)
+    shift
+    [[ ${#} -gt 0 ]] || die "--tile-script requires a value"
+    TILE_SCRIPT="${1}"
+    shift
+    ;;
+  --rofi-theme)
+    shift
+    [[ ${#} -gt 0 ]] || die "--rofi-theme requires a value"
+    ROFI_THEME="${1}"
+    shift
+    ;;
+  --template-prompt)
+    shift
+    [[ ${#} -gt 0 ]] || die "--template-prompt requires a value"
+    TEMPLATE_PROMPT="${1}"
+    shift
+    ;;
+  --window-prompt)
+    shift
+    [[ ${#} -gt 0 ]] || die "--window-prompt requires a value"
+    WINDOW_PROMPT="${1}"
+    shift
+    ;;
+  --window-types)
+    shift
+    [[ ${#} -gt 0 ]] || die "--window-types requires a value"
+    WINDOW_TYPES_CSV="${1}"
+    shift
+    ;;
+  --window-title-exclude-regex)
+    shift
+    [[ ${#} -gt 0 ]] || die "--window-title-exclude-regex requires a value"
+    WINDOW_TITLE_EXCLUDE_REGEX="${1}"
+    shift
+    ;;
+  *)
+    die "Unknown option: ${1}"
+    ;;
+  esac
+done
+
+need_cmd rofi || die "rofi is not installed. Install with: sudo apt install rofi"
+need_cmd python3 || die "python3 is not installed. Install with: sudo apt install python3"
+need_cmd xdotool || die "xdotool is not installed. Install with: sudo apt install xdotool"
+need_cmd xrandr || die "xrandr is not installed. Install with: sudo apt install x11-xserver-utils"
+need_cmd wmctrl || die "wmctrl is not installed. Install with: sudo apt install wmctrl"
+need_cmd xprop || die "xprop is not installed. Install with: sudo apt install x11-utils"
+
+[[ -f "${TEMPLATE_FILE}" ]] || die "Template TOML file not found: ${TEMPLATE_FILE}"
+[[ -f "${TILE_SCRIPT}" ]] || die "Tile script not found: ${TILE_SCRIPT}"
+[[ -x "${TILE_SCRIPT}" ]] || die "Tile script is not executable: ${TILE_SCRIPT}"
+
+IFS="," read -r -a WINDOW_TYPES <<<"${WINDOW_TYPES_CSV}"
+[[ ${#WINDOW_TYPES[@]} -gt 0 ]] || die "--window-types must provide at least one value"
+
+normalized_window_types=()
+for window_type in "${WINDOW_TYPES[@]}"; do
+  trimmed_window_type="$(printf '%s' "${window_type}" | sed -E 's/^[[:space:]]+//; s/[[:space:]]+$//')"
+  if [[ -n "${trimmed_window_type}" ]]; then
+    normalized_window_types+=("${trimmed_window_type}")
+  fi
+done
+WINDOW_TYPES=("${normalized_window_types[@]}")
+[[ ${#WINDOW_TYPES[@]} -gt 0 ]] || die "--window-types contains only empty values"
+
+monitor_geometry="$(get_current_monitor_geometry || true)"
+[[ -n "${monitor_geometry}" ]] || die "Could not determine current monitor from mouse position"
+
+read -r MON_X MON_Y MON_W MON_H <<<"${monitor_geometry}"
+
+logv "Current monitor: x=${MON_X} y=${MON_Y} w=${MON_W} h=${MON_H}"
+
+menu_templates_file="$(mktemp)"
+menu_windows_file="$(mktemp)"
+trap 'rm -f "${menu_templates_file}" "${menu_windows_file}"' EXIT
+
+if ! python3 - "${TEMPLATE_FILE}" >"${menu_templates_file}" <<'PY'; then
+import sys
+
+config_path = sys.argv[1]
+
+try:
+    import tomllib
+except ModuleNotFoundError:
+    print("ERROR: Python 3.11+ with tomllib is required.", file=sys.stderr)
+    sys.exit(2)
+
+try:
+    with open(config_path, "rb") as handle:
+        data = tomllib.load(handle)
+except Exception as ex:
+    print(f"ERROR: Could not parse TOML file '{config_path}': {ex}", file=sys.stderr)
+    sys.exit(3)
+
+templates = data.get("tile_template")
+if not isinstance(templates, dict) or len(templates) == 0:
+    print(f"ERROR: No [tile_template] entries found in '{config_path}'.", file=sys.stderr)
+    sys.exit(4)
+
+entries = []
+for name, template in templates.items():
+    if not isinstance(template, dict):
+        continue
+
+    weight = template.get("weight", 0)
+    if not isinstance(weight, int):
+        print(
+            f"ERROR: Tile template '{name}' has invalid weight '{weight}'. Weight must be an integer.",
+            file=sys.stderr,
+        )
+        sys.exit(5)
+
+    entries.append((weight, name))
+
+for _weight, name in sorted(entries, key=lambda entry: (entry[0], entry[1])):
+    print(name)
+PY
+  die "Failed to read tile templates from ${TEMPLATE_FILE}"
+fi
+
+[[ -s "${menu_templates_file}" ]] || die "No tile templates found in ${TEMPLATE_FILE}"
+
+template_rofi_args=(-dmenu -i -p "${TEMPLATE_PROMPT}")
+if [[ -n "${ROFI_THEME}" ]]; then
+  template_rofi_args+=(-theme "${ROFI_THEME}")
+fi
+
+selected_template="$(rofi "${template_rofi_args[@]}" <"${menu_templates_file}")" || true
+if [[ -z "${selected_template}" ]]; then
+  logv "Template selection cancelled"
+  exit 0
+fi
+
+logv "Selected template: ${selected_template}"
+
+while IFS= read -r line; do
+  window_id="$(printf '%s\n' "${line}" | awk '{print $1}')"
+  [[ -n "${window_id}" ]] || continue
+
+  if ! window_has_allowed_type "${window_id}"; then
+    logv "Skipping window ${window_id}: type not allowed"
+    continue
+  fi
+
+  geometry_raw="$(xdotool getwindowgeometry --shell "${window_id}" 2>/dev/null || true)"
+  [[ -n "${geometry_raw}" ]] || continue
+
+  eval "${geometry_raw}"
+  [[ -n "${X:-}" && -n "${Y:-}" && -n "${WIDTH:-}" && -n "${HEIGHT:-}" ]] || continue
+
+  center_x=$((X + (WIDTH / 2)))
+  center_y=$((Y + (HEIGHT / 2)))
+
+  if [[ "${center_x}" -lt "${MON_X}" || "${center_x}" -ge $((MON_X + MON_W)) || "${center_y}" -lt "${MON_Y}" || "${center_y}" -ge $((MON_Y + MON_H)) ]]; then
+    continue
+  fi
+
+  title="$(printf '%s\n' "${line}" | cut -d' ' -f5-)"
+  if [[ -z "${title}" ]]; then
+    title="(untitled)"
+  fi
+
+  if window_is_excluded_by_title "${title}"; then
+    logv "Skipping window ${window_id}: title excluded by regex"
+    continue
+  fi
+
+  printf '%s\t[%s] %s\n' "${window_id}" "${window_id}" "${title}" >>"${menu_windows_file}"
+done < <(wmctrl -l)
+
+[[ -s "${menu_windows_file}" ]] || die "No visible windows found on the current monitor"
+
+window_rofi_args=(-dmenu -i -p "${WINDOW_PROMPT}" -format s)
+if [[ -n "${ROFI_THEME}" ]]; then
+  window_rofi_args+=(-theme "${ROFI_THEME}")
+fi
+
+selected_window_entry="$(cut -f2- "${menu_windows_file}" | rofi "${window_rofi_args[@]}")" || true
+if [[ -z "${selected_window_entry}" ]]; then
+  logv "Window selection cancelled"
+  exit 0
+fi
+
+selected_window_id="$(awk -F'\t' -v target="${selected_window_entry}" '$2 == target {print $1; exit}' "${menu_windows_file}")"
+[[ -n "${selected_window_id}" ]] || die "Could not map selected window title to a window id"
+
+logv "Selected window id: ${selected_window_id}"
+
+current_desktop_index="$(get_current_desktop_index || true)"
+[[ -n "${current_desktop_index}" ]] || die "Could not determine current desktop index"
+
+logv "Current desktop index: ${current_desktop_index}"
+
+if ! wmctrl -ir "${selected_window_id}" -t "${current_desktop_index}"; then
+  die "Failed to move selected window ${selected_window_id} to current workspace index ${current_desktop_index}"
+fi
+
+sleep 0.05
+
+command_args=(--template "${selected_template}" --template-file "${TEMPLATE_FILE}" --window-id "${selected_window_id}")
+if [[ "${VERBOSE}" == "1" ]]; then
+  command_args+=(--verbose)
+fi
+
+"${TILE_SCRIPT}" "${command_args[@]}" || die "Failed to tile window ${selected_window_id} using template '${selected_template}'"
+
+if ! wmctrl -ia "${selected_window_id}"; then
+  if ! xdotool windowactivate --sync "${selected_window_id}"; then
+    die "Tiled window ${selected_window_id}, but failed to bring it to foreground"
+  fi
+fi
+
+logv "Done."
