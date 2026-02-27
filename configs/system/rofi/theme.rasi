@@ -35,8 +35,8 @@ configuration {
 
 #window {
     background-color: @background-color;
-    border:           3;
-    border-radius:    6;
+    border:           1;
+    border-radius:    15;
     border-color:     @bordercolor;
     padding:          15;
 }
