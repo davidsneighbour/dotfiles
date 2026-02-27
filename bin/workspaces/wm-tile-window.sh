@@ -3,7 +3,7 @@
 set -Eeuo pipefail
 
 SCRIPT_NAME="$(basename "$0")"
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_DIR="$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 DEFAULT_TEMPLATE_FILE="${SCRIPT_DIR}/config.toml"
 
 usage() {
@@ -26,6 +26,7 @@ Options:
 
   --template <name>                Load tiling values from TOML template in ${DEFAULT_TEMPLATE_FILE}.
   --template-file <path>           Path to TOML file containing templates (default: ${DEFAULT_TEMPLATE_FILE}).
+  --window-id <id>                 Tile the specified window id instead of the active window.
 
   --verbose                        Print debug information to stderr.
   --help                           Show this help.
@@ -202,6 +203,7 @@ V_ANCHOR="top"
 V_POSITION="0"
 TEMPLATE_NAME=""
 TEMPLATE_FILE="${DEFAULT_TEMPLATE_FILE}"
+TARGET_WINDOW_ID=""
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -261,6 +263,12 @@ while [[ $# -gt 0 ]]; do
     TEMPLATE_FILE="$1"
     shift
     ;;
+  --window-id)
+    shift
+    [[ $# -gt 0 ]] || die "--window-id requires a value"
+    TARGET_WINDOW_ID="$1"
+    shift
+    ;;
   --ratio)
     shift
     [[ $# -gt 0 ]] || die "--ratio requires a value"
@@ -306,8 +314,12 @@ need_cmd xrandr || die "xrandr is not installed. Install with: sudo apt install 
 need_cmd wmctrl || die "wmctrl is not installed. Install with: sudo apt install wmctrl"
 need_cmd xprop || die "xprop is not installed. Install with: sudo apt install x11-utils"
 
-ACTIVE_WIN="$(xdotool getactivewindow 2>/dev/null || true)"
-[[ -n "${ACTIVE_WIN}" ]] || die "Could not determine active window"
+if [[ -z "${TARGET_WINDOW_ID}" ]]; then
+  ACTIVE_WIN="$(xdotool getactivewindow 2>/dev/null || true)"
+  [[ -n "${ACTIVE_WIN}" ]] || die "Could not determine active window"
+else
+  ACTIVE_WIN="${TARGET_WINDOW_ID}"
+fi
 
 WINDOW_GEOMETRY="$(xdotool getwindowgeometry --shell "${ACTIVE_WIN}" 2>/dev/null || true)"
 [[ -n "${WINDOW_GEOMETRY}" ]] || die "Could not determine active window geometry"
