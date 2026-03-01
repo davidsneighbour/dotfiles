@@ -1,6 +1,18 @@
 [MIME Cache]
-application/xhtml_xml=dnb-netflix.desktop;
-text/html=dnb-netflix.desktop;
-text/xml=dnb-netflix.desktop;
+application/pdf=google-chrome.desktop;
+application/rdf+xml=google-chrome.desktop;
+application/rss+xml=google-chrome.desktop;
+application/xhtml+xml=google-chrome.desktop;
+application/xhtml_xml=google-chrome.desktop;netflix.desktop;
+application/xml=google-chrome.desktop;
+image/gif=google-chrome.desktop;
+image/jpeg=google-chrome.desktop;
+image/png=google-chrome.desktop;
+image/webp=google-chrome.desktop;
+text/html=google-chrome.desktop;netflix.desktop;
+text/xml=google-chrome.desktop;netflix.desktop;
+x-scheme-handler/google-chrome=google-chrome.desktop;
+x-scheme-handler/http=google-chrome.desktop;
+x-scheme-handler/https=google-chrome.desktop;
 x-scheme-handler/tg=telegram.desktop;
 x-scheme-handler/tonsite=telegram.desktop;

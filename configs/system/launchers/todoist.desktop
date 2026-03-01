@@ -5,5 +5,5 @@ Terminal=false
 Type=Application
 Name=Todoist
 Exec=/opt/google/chrome/google-chrome --profile-directory=Default --app-id=dlgohinmglaoopaiplliaecdpmnepmga
-Icon=chrome-dlgohinmglaoopaiplliaecdpmnepmga-Default
+Icon=.icons/DNB/todoist.png
 StartupWMClass=crx_dlgohinmglaoopaiplliaecdpmnepmga

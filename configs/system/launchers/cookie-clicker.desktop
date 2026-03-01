@@ -5,5 +5,5 @@ Terminal=false
 Type=Application
 Name=Cookie Clicker
 Exec=/opt/google/chrome/google-chrome --profile-directory=Default --app=https://orteil.dashnet.org/cookieclicker/
-Icon=chrome-cjeolmdejkegpoajfkgiffmcmjoolfmb-Default
+Icon=.icons/DNB/cookie-clicker.png
 StartupWMClass=chrome_cookieclicker
