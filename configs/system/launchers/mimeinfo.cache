@@ -2,6 +2,5 @@
 application/xhtml_xml=dnb-netflix.desktop;
 text/html=dnb-netflix.desktop;
 text/xml=dnb-netflix.desktop;
-x-scheme-handler/joplin=appimagekit-joplin.desktop;
 x-scheme-handler/tg=telegram.desktop;
 x-scheme-handler/tonsite=telegram.desktop;

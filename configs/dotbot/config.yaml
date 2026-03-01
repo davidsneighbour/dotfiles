@@ -58,7 +58,7 @@
     ~/.git-templates: configs/system/git/.git-templates
 
     # folders in ~/.local/share
-    ~/.local/share/applications: configs/system/share/applications
+    ~/.local/share/applications: configs/system/launchers
 
     # theme configs
     ~/.icons/DNB-Bibata: configs/theme/DNB-Bibata
