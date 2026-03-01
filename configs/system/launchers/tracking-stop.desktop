@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Stop Work Timer
+Icon=stop
+Exec=/home/patrick/.bin/local/bin/clockify out
+Terminal=true
+Categories=Utility;

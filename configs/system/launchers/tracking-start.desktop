@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Start Work Timer
+Icon=start
+Exec=/home/patrick/.bin/local/bin/clockify in -i
+Terminal=true
+Categories=Utility;

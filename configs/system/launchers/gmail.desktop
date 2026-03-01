@@ -6,4 +6,4 @@ Type=Application
 Name=Gmail
 Exec=/opt/google/chrome/google-chrome --profile-directory=Default --app-id=fmgjjmmmlfnkbppncabfkddbjimcfncm
 Icon=chrome-fmgjjmmmlfnkbppncabfkddbjimcfncm-Default
-StartupWMClass=crx_fmgjjmmmlfnkbppncabfkddbjimcfncm
+StartupWMClass=chrome_gmail

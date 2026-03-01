@@ -1,0 +1,127 @@
+#!/usr/bin/bash
+set -euo pipefail
+
+# Lists directory contents and lets user select item(s) using gum.
+DIR_AUTOSTARTS="${HOME}/.dotfiles/configs/system/autostart"
+DIR="${DIR_AUTOSTARTS}/available"
+PROMPT="Select an item:"
+NO_LIMIT=false
+DEST_HOST="${HOSTNAME:-unknown-host}"
+
+print_help() {
+  cat <<EOF
+Usage: $(basename "$0") [--dir DIR] [--prompt PROMPT] [--no-limit] [--host HOSTNAME]
+
+Lists items in a directory and lets you select using gum, then symlinks each
+selection into: ${DIR_AUTOSTARTS}/<hostname>/
+
+Options:
+  --dir DIR         Directory to list (default: ${DIR})
+  --prompt PROMPT   Prompt shown by gum (default: "${PROMPT}")
+  --no-limit        Allow selecting multiple items
+  --host HOSTNAME   Override destination hostname directory (default: ${DEST_HOST} (local host))
+  --help            Display this help and exit
+EOF
+}
+
+# Parse args
+while (( "$#" )); do
+  case "$1" in
+    --dir) DIR="${2:-}"; shift 2 ;;
+    --prompt) PROMPT="${2:-}"; shift 2 ;;
+    --no-limit) NO_LIMIT=true; shift ;;
+    --host) DEST_HOST="${2:-}"; shift 2 ;;
+    --help) print_help; exit 0 ;;
+    *) echo "Error: Unknown option: $1" >&2; print_help >&2; exit 1 ;;
+  esac
+done
+
+# Pre-flight checks
+if ! command -v gum >/dev/null 2>&1; then
+  echo "Error: gum is not installed or not in PATH." >&2
+  exit 1
+fi
+
+if [[ ! -d "$DIR" ]]; then
+  echo "Error: Directory not found: '$DIR'" >&2
+  exit 1
+fi
+
+# Collect entries (non-hidden, one level)
+shopt -s nullglob
+entries=( "${DIR%/}"/* )
+shopt -u nullglob
+
+if (( ${#entries[@]} == 0 )); then
+  echo "No items found in directory: '$DIR'" >&2
+  exit 1
+fi
+
+# Build list of basenames for user-facing selection
+basenames=()
+for p in "${entries[@]}"; do
+  basenames+=( "$(basename -- "$p")" )
+done
+
+# gum filter (fuzzy) selection
+gum_opts=( --placeholder "$PROMPT" )
+if [[ "$NO_LIMIT" == true ]]; then
+  gum_opts+=( --no-limit )
+fi
+
+if ! selected_out=$(printf '%s\n' "${basenames[@]}" | gum filter "${gum_opts[@]}"); then
+  echo "No selection made." >&2
+  exit 1
+fi
+
+# Normalize selections to an array
+selections=()
+if [[ "$NO_LIMIT" == true ]]; then
+  while IFS= read -r line; do
+    [[ -n "$line" ]] && selections+=( "$line" )
+  done <<< "$selected_out"
+else
+  selections=( "$selected_out" )
+fi
+
+# Ensure destination directory exists
+dest_dir="${DIR_AUTOSTARTS}/${DEST_HOST}"
+mkdir -p -- "$dest_dir"
+
+# Process each selection
+for sel in "${selections[@]}"; do
+  src="${DIR_AUTOSTARTS}/available/${sel}"
+  dst="${dest_dir}/${sel}"
+
+  if [[ ! -e "$src" ]]; then
+    echo "Warning: Source not found, skipping: $src" >&2
+    continue
+  fi
+
+  if [[ -L "$dst" || -e "$dst" ]]; then
+    # Already linked to the same target? Skip quietly.
+    if [[ -L "$dst" ]] && [[ "$(readlink -- "$dst")" == "$src" ]]; then
+      printf 'Already linked: %s -> %s\n' "$dst" "$src"
+      continue
+    fi
+
+    # Ask user to replace or skip (NOTE: gum choose has no --prompt; use --header)
+    action=$(printf '%s\n' "replace" "skip" | gum choose --header "File exists: ${sel}. What now?")
+    case "$action" in
+      replace)
+        rm -f -- "$dst"
+        ln -s -- "$src" "$dst"
+        printf 'Replaced: %s -> %s\n' "$dst" "$src"
+        ;;
+      skip)
+        printf 'Skipped: %s\n' "$dst"
+        ;;
+      *)
+        echo "Unknown action, skipping: $sel" >&2
+        ;;
+    esac
+  else
+    ln -s -- "$src" "$dst"
+    printf ':heavy_check_mark: Linked: %s -> %s\n' "$dst" "$src"  | gum format -t emoji
+  fi
+done

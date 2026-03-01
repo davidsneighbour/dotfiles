@@ -1,6 +1,6 @@
 [Desktop Entry]
 Type=Application
-Exec=/opt/google/chrome/google-chrome --profile-directory=Default --app-id=knaiokfnmjjldlfhlioejgcompgenfhb
+Exec=/opt/google/chrome/google-chrome --profile-directory=Default --app=https://app.todoist.com/app/project/00-immediate-6fm4q7V4M5FcX35R
 Name=Todoist
 Icon=todoist
 Comment=Todoist task manager app

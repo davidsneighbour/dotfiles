@@ -1,40 +1,88 @@
 #!/bin/bash
 
-set -euo pipefail
+set -uo pipefail
 
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:${HOME}/.local/bin"
 
 # ------------------------------------------------------------
 # msgvault cron wrapper
-# Creates daily log files in ~/.logs/mail/
+# Creates a timestamped log file in ~/.logs/msgvault/
 # ------------------------------------------------------------
 
-# Configuration
-LOG_BASE_DIR="${HOME}/.logs/mail"
-DATE="$(date +%Y%m%d)"
-LOG_FILE="${LOG_BASE_DIR}/msgvault-cron-${DATE}.log"
+LOG_BASE_DIR="${HOME}/.logs/msgvault"
+LOG_FILE="${LOG_BASE_DIR}/setup-log-$(date +%Y%m%d-%H%M%S).log"
 MSGVAULT_BIN="${HOME}/.local/bin/msgvault"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DOTFILES_PATH="$(cd "${SCRIPT_DIR}/../.." && pwd)"
+ISSUES_ADD_SCRIPT="${DOTFILES_PATH}/configs/system/polybar/scripts/issues-add.sh"
+ISSUE_ID="msgvault-sync"
 
-# Ensure log directory exists
 mkdir -p "${LOG_BASE_DIR}"
 
-# Validate binary exists
+add_polybar_issue() {
+  local failure_reason="$1"
+
+  if [[ ! -x "${ISSUES_ADD_SCRIPT}" ]]; then
+    {
+      echo "WARN: polybar issue script not executable: ${ISSUES_ADD_SCRIPT}"
+      echo "WARN: original failure: ${failure_reason}"
+    } >>"${LOG_FILE}"
+    return
+  fi
+
+  "${ISSUES_ADD_SCRIPT}" \
+    --id "${ISSUE_ID}" \
+    --prio 1 \
+    --label "msgvault sync failed" \
+    --description "${failure_reason}. Log: ${LOG_FILE}" >>"${LOG_FILE}" 2>&1 || {
+    echo "WARN: failed to add polybar issue for msgvault sync failure" >>"${LOG_FILE}"
+  }
+}
+
 if [[ ! -x "${MSGVAULT_BIN}" ]]; then
-  echo "ERROR: msgvault binary not found or not executable: ${MSGVAULT_BIN}" >>"${LOG_FILE}"
+  failure_reason="msgvault binary not found or not executable: ${MSGVAULT_BIN}"
+
+  {
+    echo "============================================================"
+    echo "Run started: $(date --iso-8601=seconds)"
+    echo "ERROR: ${failure_reason}"
+    echo "Run finished: $(date --iso-8601=seconds)"
+    echo "============================================================"
+    echo
+  } >>"${LOG_FILE}"
+
+  add_polybar_issue "${failure_reason}"
   exit 1
 fi
 
-# Run sync
 {
   echo "============================================================"
   echo "Run started: $(date --iso-8601=seconds)"
   echo "Command: ${MSGVAULT_BIN} sync"
   echo "------------------------------------------------------------"
+} >>"${LOG_FILE}"
 
-  "${MSGVAULT_BIN}" sync
+"${MSGVAULT_BIN}" sync >>"${LOG_FILE}" 2>&1
+sync_exit_code="$?"
 
+if [[ "${sync_exit_code}" -ne 0 ]]; then
+  failure_reason="msgvault sync failed with exit code ${sync_exit_code}"
+
+  {
+    echo "------------------------------------------------------------"
+    echo "ERROR: ${failure_reason}"
+    echo "Run finished: $(date --iso-8601=seconds)"
+    echo "============================================================"
+    echo
+  } >>"${LOG_FILE}"
+
+  add_polybar_issue "${failure_reason}"
+  exit "${sync_exit_code}"
+fi
+
+{
   echo "------------------------------------------------------------"
   echo "Run finished: $(date --iso-8601=seconds)"
   echo "============================================================"
   echo
-} >>"${LOG_FILE}" 2>&1
+} >>"${LOG_FILE}"
