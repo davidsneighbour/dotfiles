@@ -11,7 +11,7 @@ if [ -z "$DOTFILES_PATH" ]; then
   else
     # Fallback: derive path from this bashrc file's location
     thisrc="$(dirname "${BASH_SOURCE[0]:-$0}")"
-    thisrc="$(cd "$thisrc" && pwd)"   # absolute path of directory containing this file
+    thisrc="$(cd "$thisrc" && pwd)" # absolute path of directory containing this file
     export DOTFILES_PATH="$(dirname "$thisrc")"
   fi
 fi
@@ -23,7 +23,7 @@ export force_color_prompt
 
 # load the helper functions
 for FILE in "${BASHRC_PATH}"/_lib/*; do
-  # shellcheck disable=SC1090 # we check the files for existence and readability
+  # shellcheck disable=SC1090 # we check the files for existence and read rights
   [[ -f "${FILE}" && -r "${FILE}" ]] && source "${FILE}"
 done
 
@@ -130,6 +130,9 @@ fi
 
 PATH=/opt/firefox/firefox:${PATH}
 PATH="/home/patrick/snap/deno/86/.deno/bin:${PATH}"
+
+# adding helper commands to PATH
+PATH="${BASHRC_PATH}/helpers:${PATH}"
 
 # aaaaand export...
 export PATH
