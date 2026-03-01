@@ -19,7 +19,6 @@
 
 - link:
     ~/.dotfiles: ""
-    ~/.bin: "bin"
 
     # bashrc setup
     ~/.bash_logout: bashrc/.bash_logout
@@ -99,12 +98,12 @@
     - cron: "@reboot"
       command: ${HOME}/github.com/davidsneighbour/lighthousing/cronjob.sh >> "$HOME/.logs/cron/job-$(date +\%Y\%m\%d-\%H\%M\%S).log" 2>&1
     - cron: 0 * * * *
-      command: ${HOME}/.bin/cronjobs/synch_downloads.sh
+      command: ${HOME}/.dotfiles/bashrc/helpers/cronjobs/synch_downloads.sh
     - cron: 5 */6 * * *
-      command: ${HOME}/.bin/cronjobs/git_updates.sh --config ${HOME}/.dotfiles/configs/system/repository_updates.toml --verbose >> "$HOME/.logs/cron/repo-update-$(date +\%Y\%m\%d-\%H\%M\%S).log" 2>&1
+      command: ${HOME}/.dotfiles/bashrc/cronjobs/git_updates.sh --config ${HOME}/.dotfiles/configs/system/repository_updates.toml --verbose >> "$HOME/.logs/cron/repo-update-$(date +\%Y\%m\%d-\%H\%M\%S).log" 2>&1
     - cron: "@reboot"
-      command: ${HOME}/.bin/cronjobs/bash-history-backup.sh >> "$HOME/.logs/cron/job-$(date +\%Y\%m\%d-\%H\%M\%S).log" 2>&1
+      command: ${HOME}/.dotfiles/bashrc/cronjobs/bash-history-backup.sh >> "$HOME/.logs/cron/job-$(date +\%Y\%m\%d-\%H\%M\%S).log" 2>&1
     - cron: "*/5 * * * *"
-      command: ${HOME}/.bin/cronjobs/msgvault.sh
+      command: ${HOME}/.dotfiles/bashrc/cronjobs/msgvault.sh
     - cron: "@reboot"
-      command: ${HOME}/.bin/cronjobs/msgvault.sh
+      command: ${HOME}/.dotfiles/bashrc/cronjobs/msgvault.sh

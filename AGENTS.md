@@ -65,6 +65,10 @@ Nothing in this repository is intended to run on macOS or Windows unless explici
 
 All Bash code **MUST** comply with the following rules.
 
+### Instructions
+
+For all Bash and shell-related code, including every file within bashrc/ and any file outside that directory that influences the Bash or interactive shell experience, .github/instructions/bashrc.instructions.md MUST be read and strictly adhered to.
+
 ### Shell and safety
 
 * Use `#!/bin/bash`

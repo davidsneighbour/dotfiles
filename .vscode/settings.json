@@ -30,6 +30,8 @@
   "markdown.extension.toc.levels": "2..6",
   "deno.enable": true,
   "cSpell.words": [
+    "extensionless",
+    "pixelsize",
     "Polybar"
   ]
 }
