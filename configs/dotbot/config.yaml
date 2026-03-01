@@ -61,6 +61,7 @@
 
     # theme configs
     ~/.icons/DNB-Bibata: configs/theme/DNB-Bibata
+    ~/.icons/DNB: configs/theme/DNB
 
     # Tool configs
     ~/.config/fastfetch: configs/system/fastfetch

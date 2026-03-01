@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
 Name=Stop Work Timer
-Icon=stop
+Icon=.icons/DNB/mdi--stopwatch-stop-outline.svg
 Exec=/home/patrick/.bin/local/bin/clockify out
 Terminal=true
 Categories=Utility;

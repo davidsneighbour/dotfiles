@@ -5,5 +5,5 @@ Terminal=false
 Type=Application
 Name=Brain.fm App
 Exec=/opt/google/chrome/google-chrome --profile-directory=Default --app-id=dcllmfmjlkpljanfegjgohmlnfipachj
-Icon=chrome-dcllmfmjlkpljanfegjgohmlnfipachj-Default
+Icon=.icons/DNB/brainfm.png
 StartupWMClass=chrome_brainfm
