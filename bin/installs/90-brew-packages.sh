@@ -1,6 +1,8 @@
 #!/bin/bash
 
-brew install lychee
-brew install gemini-cli
-brew install yamllint
-brew install gum
+brew install gum \
+  lychee \
+  gemini-cli \
+  gmailctl \
+  snitch \
+  yamllint
