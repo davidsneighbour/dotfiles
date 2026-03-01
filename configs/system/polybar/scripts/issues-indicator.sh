@@ -18,8 +18,27 @@ Options:
 USAGE
 }
 
+CONFIG_FILE="${HOME}/.dotfiles/configs/system/polybar/configs/01-settings.ini"
+
+get_colour() {
+  local key="$1"
+  grep -E "^${key}[[:space:]]*=" "${CONFIG_FILE}" |
+    head -n1 |
+    awk -F'=' '{gsub(/[[:space:]]/, "", $2); print $2}'
+}
+
+red="$(get_colour red)"
+yellow="$(get_colour yellow)"
+green="$(get_colour green)"
+
+if [[ -z "${red}" || -z "${yellow}" || -z "${green}" ]]; then
+  echo "Colour lookup failed"
+  exit 1
+fi
+
 ISSUES_FILE="${HOME}/.config/polybar/issues.toml"
-SHOW_OK="${POLYBAR_ISSUES_SHOW_OK:-0}"
+#SHOW_OK="${POLYBAR_ISSUES_SHOW_OK:-0}"
+SHOW_OK="1"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -37,7 +56,7 @@ while [[ $# -gt 0 ]]; do
     ISSUES_FILE="$1"
     shift
     ;;
-  --show-ok|--verbose)
+  --show-ok | --verbose)
     SHOW_OK="1"
     shift
     ;;
@@ -56,7 +75,8 @@ if [[ ! -f "${ISSUES_FILE}" ]]; then
   exit 0
 fi
 
-parse_result="$({ python3 - "${ISSUES_FILE}" <<'PY'
+parse_result="$({
+  python3 - "${ISSUES_FILE}" <<'PY'
 import sys
 from pathlib import Path
 
@@ -101,26 +121,29 @@ print(f"ISSUES|{len(issues)}|{min_prio}", end="")
 PY
 } 2>/dev/null)"
 
+# printf "%%{F%s}1%%{F-} %%{F%s}2%%{F-} %%{F%s}3%%{F-}\n" \
+#   "${red}" "${yellow}" "${green}"
+
 case "${parse_result}" in
 OK\|0)
   if [[ "${SHOW_OK}" == "1" ]]; then
-    printf '%%{F#50fa7b}✓%%{F-}\n'
+    printf '%%{F%s}✓%%{F-}\n' "${green}"
   fi
   ;;
 ISSUES\|*)
   IFS='|' read -r _ issue_count min_prio <<<"${parse_result}"
-  color="#ff5555"
+  color="${red}"
   if [[ "${min_prio}" == "2" ]]; then
-    color="#f1c40f"
+    color="${yellow}"
   elif [[ "${min_prio}" == "3" ]]; then
-    color="#50fa7b"
+    color="${green}"
   fi
   printf '%%{F%s}●%%{F-} %s\n' "${color}" "${issue_count}"
   ;;
 *)
   # Fail closed (hide output) unless verbose/show-ok is requested.
   if [[ "${SHOW_OK}" == "1" ]]; then
-    printf '%%{F#50fa7b}✓%%{F-}\n'
+    printf '%%{F%s}✓%%{F-}\n' "${green}"
   fi
   ;;
 esac
