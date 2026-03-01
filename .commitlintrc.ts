@@ -64,7 +64,7 @@ const config: UserConfig = {
     allowEmptyIssuePrefixs: true,
     confirmColorize: true,
     maxHeaderLength: Infinity,
-    maxSubjectLength: Infinity,
+    maxSubjectLength: 72,
     minSubjectLength: 0,
     scopeOverrides: {
       feat: ['workspaces', 'config', 'theme'],
