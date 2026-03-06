@@ -11,6 +11,7 @@ sudo apt clean --yes
 
 sudo apt install -y \
   build-essential \
+  conky-all apcupsd audacious moc mpd \
   coreutils \
   curl \
   ffmpeg \
