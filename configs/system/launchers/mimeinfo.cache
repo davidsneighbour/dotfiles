@@ -14,5 +14,5 @@ text/xml=google-chrome.desktop;netflix.desktop;
 x-scheme-handler/google-chrome=google-chrome.desktop;
 x-scheme-handler/http=google-chrome.desktop;
 x-scheme-handler/https=google-chrome.desktop;
-x-scheme-handler/tg=telegram.desktop;
-x-scheme-handler/tonsite=telegram.desktop;
+x-scheme-handler/tg=org.telegram.desktop._d9f7d95d571427bf3c68780f640d215c.desktop;
+x-scheme-handler/tonsite=org.telegram.desktop._d9f7d95d571427bf3c68780f640d215c.desktop;
