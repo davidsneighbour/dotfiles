@@ -1,8 +1,8 @@
 {
-	"folders": [
-		{
-			"path": "."
-		}
-	],
-	"settings": {}
+  "folders": [
+    {
+      "path": "../../../github.com/davidsneighbour/envx"
+    }
+  ],
+  "settings": {}
 }
