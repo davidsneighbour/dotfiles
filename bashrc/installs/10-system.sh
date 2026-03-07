@@ -14,6 +14,7 @@ sudo apt install -y \
   conky-all apcupsd audacious moc mpd \
   coreutils \
   curl \
+  feh \
   ffmpeg \
   filezilla filezilla-theme-papirus filezilla-common \
   git git-delta git-extras \
