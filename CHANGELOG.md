@@ -1,4 +1,22 @@
 Changelog
+## [3002.0.0](https://github.com/davidsneighbour/dotfiles/compare/v3001.6.0...v3002.0.0) (2026-03-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* **desktop:** wall paper handling
+
+### Features
+
+* **desktop:** add wallpaper switcher script (based on wm) ([6a0e9c8](https://github.com/davidsneighbour/dotfiles/commit/6a0e9c8c1814d171304b5657d60338610d3c6129))
+
+
+### Build System
+
+* **deps:** bump lint-staged from 16.2.7 to 16.3.1 ([#433](https://github.com/davidsneighbour/dotfiles/issues/433)) ([531c03c](https://github.com/davidsneighbour/dotfiles/commit/531c03c4e40eb4c811587a3f0695a57ecb4b60db))
+* **deps:** bump modules/dotbot from `830da25` to `614c9fb` ([#432](https://github.com/davidsneighbour/dotfiles/issues/432)) ([342a47f](https://github.com/davidsneighbour/dotfiles/commit/342a47f894992df7f96b3160b8109dbd449fc1ce))
+* **deps:** bump npm-check-updates from 19.6.2 to 19.6.3 ([#434](https://github.com/davidsneighbour/dotfiles/issues/434)) ([7f8c43b](https://github.com/davidsneighbour/dotfiles/commit/7f8c43bb8bb26b74ed688c8622fd1146973bc5b8))
+
 ## [3001.6.0](https://github.com/davidsneighbour/dotfiles/compare/v3001.5.0...v3001.6.0) (2026-03-07)
 
 
