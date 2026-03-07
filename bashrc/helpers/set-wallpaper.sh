@@ -1,0 +1,1 @@
+../../configs/wallpapers/set-wallpaper.sh
