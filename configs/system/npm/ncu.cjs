@@ -9,7 +9,7 @@ module.exports = {
 
   //"cooldown": 5,
 
-  "format": ["group, ownerChanged, repo, time, installedVersion"],
+  //"format": ["group, ownerChanged, repo, time, installedVersion"],
   "install": "prompt",
   "upgrade": true,
 

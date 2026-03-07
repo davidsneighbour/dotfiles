@@ -30,15 +30,6 @@ icon = ""
 title = "Cookies"
 icon = ""
 
-[tile_template."top-left-50"]
-width = 40
-height = 50
-horizontal_anchor = "left"
-horizontal_position = 0
-vertical_anchor = "top"
-vertical_position = 0
-weight = -30
-
 [tile_template."right-half"]
 width = 50
 height = 100
