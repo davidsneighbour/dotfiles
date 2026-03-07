@@ -105,6 +105,7 @@
     - cron: "@reboot"
       command: ${HOME}/.dotfiles/bashrc/cronjobs/bash-history-backup.sh >> "$HOME/.logs/cron/job-$(date +\%Y\%m\%d-\%H\%M\%S).log" 2>&1
     - cron: "*/5 * * * *"
+      comment: load emails every 5 minutes
       command: ${HOME}/.dotfiles/bashrc/cronjobs/msgvault.sh
-    - cron: "@reboot"
-      command: ${HOME}/.dotfiles/bashrc/cronjobs/msgvault.sh
+    # - cron: "@reboot"
+    #   command: ${HOME}/.dotfiles/bashrc/cronjobs/msgvault.sh

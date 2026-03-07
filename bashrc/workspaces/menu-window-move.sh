@@ -105,7 +105,7 @@ need_cmd wmctrl || die "wmctrl is not installed. Install with: sudo apt install 
 
 if [[ -z "${MOVE_SCRIPT}" ]]; then
   SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-  MOVE_SCRIPT="/home/patrick/.dotfiles/bin/workspaces/wm-wmanagement.sh"
+  MOVE_SCRIPT="/home/patrick/.dotfiles/bashrc/workspaces/wm-wmanagement.sh"
 fi
 
 [[ -f "${MOVE_SCRIPT}" ]] || die "Move script not found: ${MOVE_SCRIPT}"

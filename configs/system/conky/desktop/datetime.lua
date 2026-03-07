@@ -16,7 +16,7 @@ conky.config = {
 	own_window_argb_visual = true,
 	own_window_argb_value = 144,
   -- positioning
-  alignment = 'top_right',
+  alignment = 'bottom_right',
 	gap_x = 30,
 	gap_y = 30,
   -- helpers

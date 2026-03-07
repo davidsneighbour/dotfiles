@@ -197,7 +197,7 @@ rofi_args=(-dmenu -i -p "${PROMPT}")
 rofi_args+=(
   -theme-str 'window { width: 30%; location: center; anchor: center; }'
   -theme-str 'mainbox { children: [inputbar, listview]; }'
-  -theme-str 'listview { columns: 3; lines: 3; flow: horizontal; spacing: 14px; fixed-height: true; dynamic: false; scrollbar: true; }'
+  -theme-str 'listview { columns: 4; lines: 3; flow: horizontal; spacing: 14px; fixed-height: true; dynamic: false; scrollbar: true; }'
   -theme-str 'element { orientation: vertical; children: [element-icon, element-text]; spacing: 8px; padding: 0px; squared: false; }'
   -theme-str 'element-icon { size: 300px;  }'
   -theme-str 'element-text { horizontal-align: 0.5; vertical-align: 0.5; }'
