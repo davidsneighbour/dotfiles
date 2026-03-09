@@ -1,18 +1,18 @@
 # if not running interactively, don't do anything
-case $- in
+case ${-} in
 *i*) ;;
 *) return ;;
 esac
 
 # Determine and export the dotfiles repository root path
-if [ -z "$DOTFILES_PATH" ]; then
-  if [ -d "$HOME/.dotfiles" ]; then
-    export DOTFILES_PATH="$HOME/.dotfiles"
+if [ -z "${DOTFILES_PATH}" ]; then
+  if [ -d "${HOME}/.dotfiles" ]; then
+    export DOTFILES_PATH="${HOME}/.dotfiles"
   else
     # Fallback: derive path from this bashrc file's location
     thisrc="$(dirname "${BASH_SOURCE[0]:-$0}")"
-    thisrc="$(cd "$thisrc" && pwd)" # absolute path of directory containing this file
-    export DOTFILES_PATH="$(dirname "$thisrc")"
+    thisrc="$(cd "${thisrc}" && pwd)" # absolute path of directory containing this file
+    export DOTFILES_PATH="$(dirname "${thisrc}")"
   fi
 fi
 
@@ -26,6 +26,17 @@ for FILE in "${BASHRC_PATH}"/_lib/*; do
   # shellcheck disable=SC1090 # we check the files for existence and read rights
   [[ -f "${FILE}" && -r "${FILE}" ]] && source "${FILE}"
 done
+
+# Add a directory to PATH if it exists and is not already present.
+__dnb_path_prepend() {
+  local dir="${1}"
+  [ -d "${dir}" ] || return 0
+
+  case ":${PATH}:" in
+    *":${dir}:"*) ;;
+    *) PATH="${dir}:${PATH}" ;;
+  esac
+}
 
 # export the .env file
 FILE="${HOME}"/.env
@@ -47,11 +58,21 @@ unset FILE
 export NVM_DIR="${HOME}/.nvm"
 
 # hack to disable error messages about max listeners
-export NODE_OPTIONS="--require ${BASHRC_PATH}/helpers/set_max_listeners.cjs ${NODE_OPTIONS}"
+if [ -n "${NODE_OPTIONS}" ]; then
+  export NODE_OPTIONS="--require ${BASHRC_PATH}/helpers/set_max_listeners.cjs ${NODE_OPTIONS}"
+else
+  export NODE_OPTIONS="--require ${BASHRC_PATH}/helpers/set_max_listeners.cjs"
+fi
 
-eval "$(zoxide init bash)"
+if command -v zoxide >/dev/null 2>&1; then
+  eval "$(zoxide init bash)"
+fi
 
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+if [ -x "${HOME}/.linuxbrew/bin/brew" ]; then
+  eval "$("${HOME}/.linuxbrew/bin/brew" shellenv)"
+elif [ -x /home/linuxbrew/.linuxbrew/bin/brew ]; then
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi
 
 # bun
 export BUN_INSTALL="${HOME}/.bun"
@@ -60,7 +81,9 @@ export PATH="${BUN_INSTALL}/bin:${PATH}"
 # Ensure GPG can talk to the current terminal
 GPG_TTY=$(tty)
 export GPG_TTY
-gpg-connect-agent updatestartuptty /bye >/dev/null
+if command -v gpg-connect-agent >/dev/null 2>&1; then
+  gpg-connect-agent updatestartuptty /bye >/dev/null
+fi
 
 # the default umask is set in /etc/profile; for setting the umask
 # for ssh logins, install and configure the libpam-umask package.
@@ -90,7 +113,7 @@ shopt -s no_empty_cmd_completion # don't try to complete empty cmds
 
 # set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
-  debian_chroot=$(cat /etc/debian_chroot)
+  read -r debian_chroot </etc/debian_chroot
 fi
 
 # set a fancy prompt
@@ -111,8 +134,10 @@ fi
 FILE="${BASHRC_PATH}"/etc/paths
 if test -f "${FILE}"; then
   while IFS= read -r line; do
-    if [ -d "$(dirname "${line}")" ]; then
-      PATH=${line}:${PATH}
+    [ -n "${line}" ] || continue
+    [[ "${line}" == \#* ]] && continue
+    if [ -d "${line}" ]; then
+      __dnb_path_prepend "${line}"
     fi
   done <"${FILE}"
 fi
@@ -120,16 +145,21 @@ fi
 # Android and npm require special treatment
 # @todo recheck if this is still needed
 if [ -d "${HOME}"/.bin/android-sdk ]; then
-  PATH=${HOME}/.bin/android-sdk/tools:"${HOME}"/.bin/android-sdk/platform-tools:"${PATH}"
+  __dnb_path_prepend "${HOME}/.bin/android-sdk/platform-tools"
+  __dnb_path_prepend "${HOME}/.bin/android-sdk/tools"
   export ANDROID_HOME="${HOME}"/.bin/android/sdk
 fi
 if [ -d "${HOME}"/.npm ]; then
-  PATH="${PATH}":"${HOME}"/.npm/bin:"${HOME}"/.npm/packages/bin
-  export NODE_PATH="${NODE_PATH}":"${HOME}"/.npm/lib/node_modules
+  PATH="${PATH}:${HOME}/.npm/bin:${HOME}/.npm/packages/bin"
+  if [ -n "${NODE_PATH}" ]; then
+    export NODE_PATH="${NODE_PATH}:${HOME}/.npm/lib/node_modules"
+  else
+    export NODE_PATH="${HOME}/.npm/lib/node_modules"
+  fi
 fi
 
-PATH=/opt/firefox/firefox:${PATH}
-PATH="/home/patrick/snap/deno/86/.deno/bin:${PATH}"
+__dnb_path_prepend "/opt/firefox/firefox"
+__dnb_path_prepend "${HOME}/snap/deno/86/.deno/bin"
 
 # adding helper commands to PATH
 PATH="${BASHRC_PATH}/helpers:${PATH}"
@@ -176,12 +206,10 @@ export GREP_COLORS="mt=1;38;2;255;85;85:fn=38;2;255;121;198:ln=38;2;80;250;123:b
 export CDPATH=".:..:../..:~/:~/dev/"
 
 # file containing hosts
-export HOSTFILE=~/.bash_hosts
+export HOSTFILE="${HOME}/.bash_hosts"
 
 # see https://wiki.archlinux.org/index.php/GTK+#Suppress_warning_about_accessibility_bus
 export NO_AT_BRIDGE=1
-
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
 # Load nvm after all PATH mutations so nvm-managed Node.js/npm take precedence over Homebrew.
 # shellcheck source=/dev/null
@@ -189,23 +217,27 @@ eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 # shellcheck source=/dev/null
 [ -s "${NVM_DIR}/bash_completion" ] && \. "${NVM_DIR}/bash_completion"
 
-export DENO_INSTALL="/home/patrick/.deno"
+export DENO_INSTALL="${HOME}/.deno"
 export PATH="${DENO_INSTALL}/bin:${PATH}"
 
 # starship setup
 # see https://starship.rs/config
 # export STARSHIP_CONFIG=~/example/non/default/path/starship.toml
-export STARSHIP_CACHE=~/.cache/starship
-export STARSHIP_CONFIG=~/.config/starship.toml
+export STARSHIP_CACHE="${HOME}/.cache/starship"
+export STARSHIP_CONFIG="${HOME}/.config/starship.toml"
 
 # Check if we are running the first time or being reloaded
 if [[ -z "${BASHRC_LOADED}" ]]; then
   export BASHRC_LOADED=true
   if command -v starship >/dev/null 2>&1; then
     eval "$(starship init bash)"
-  else
-    [[ -n "${DNB_VERBOSE}" ]] && echo "Note: Starship is not installed. Skipping prompt setup."
+  elif [[ -n "${DNB_VERBOSE}" ]]; then
+    echo "Note: Starship is not installed. Skipping prompt setup."
   fi
 else
-  [[ -n "${DNB_VERBOSE}" ]] && echo "Note: Skipping Starship initialization on sourced .bashrc"
+  if [[ -n "${DNB_VERBOSE}" ]]; then
+    echo "Note: Skipping Starship initialization on sourced .bashrc"
+  fi
 fi
+
+return 0
