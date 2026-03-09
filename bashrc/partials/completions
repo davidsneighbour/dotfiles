@@ -1,5 +1,3 @@
-set +o nounset
-
 # enable programmable completion features
 if ! shopt -oq posix; then
   if [ -f /usr/share/bash-completion/bash_completion ]; then
@@ -10,23 +8,26 @@ if ! shopt -oq posix; then
 fi
 
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f '/home/patrick/.bin/google-cloud-sdk/path.bash.inc' ]; then
-  source '/home/patrick/.bin/google-cloud-sdk/path.bash.inc';
+if [ -f "${HOME}/.bin/google-cloud-sdk/path.bash.inc" ]; then
+  # shellcheck source=/dev/null
+  source "${HOME}/.bin/google-cloud-sdk/path.bash.inc"
 fi
 
 # The next line enables shell command completion for gcloud.
-if [ -f '/home/patrick/.bin/google-cloud-sdk/completion.bash.inc' ]; then
-  source '/home/patrick/.bin/google-cloud-sdk/completion.bash.inc';
+if [ -f "${HOME}/.bin/google-cloud-sdk/completion.bash.inc" ]; then
+  # shellcheck source=/dev/null
+  source "${HOME}/.bin/google-cloud-sdk/completion.bash.inc"
 fi
 
 # running autojump completion file
 if [ -f "/usr/share/autojump/autojump.bash" ]; then
-  source '/usr/share/autojump/autojump.bash';
+  # shellcheck source=/usr/share/autojump/autojump.bash
+  source "/usr/share/autojump/autojump.bash"
 fi
 
 # initializes completion for grunt
 if hash grunt 2>/dev/null; then
-    eval "$(grunt --completion=bash)"
+  eval "$(grunt --completion=bash)"
 fi
 
 complete -A hostname rsh rcp telnet r ftp ping fail
@@ -70,28 +71,38 @@ complete -f -o default -X '!*.+(ogg|OGG)' ogg123
 
 complete -f -o default -X '!*.pl' perl perl5
 
-_ssh() {
-  local cur prev opts
+_ssh_hosts_completion() {
+  local cur
+  local -a config_files=()
+  local -a hosts=()
+
   COMPREPLY=()
   cur="${COMP_WORDS[COMP_CWORD]}"
-  prev="${COMP_WORDS[COMP_CWORD-1]}"
-  opts=$(grep '^Host' ~/.ssh/config ~/.ssh/config.d/* 2>/dev/null | grep -v '[?*]' | cut -d ' ' -f 2-)
 
-  COMPREPLY=( $(compgen -W "${{opt}s}" -- "${cur}") )
-  return 0
+  [ -r "${HOME}/.ssh/config" ] && config_files+=("${HOME}/.ssh/config")
+  if [ -d "${HOME}/.ssh/config.d" ]; then
+    local config_file
+    for config_file in "${HOME}/.ssh/config.d"/*; do
+      [ -r "${config_file}" ] && [ -f "${config_file}" ] && config_files+=("${config_file}")
+    done
+  fi
+
+  if [ "${#config_files[@]}" -gt 0 ]; then
+    mapfile -t hosts < <(
+      awk '/^Host[[:space:]]+/ {for (i = 2; i <= NF; i++) print $i}' "${config_files[@]}" 2>/dev/null |
+        grep -Ev '[*?]' |
+        sort -u
+    )
+  fi
+
+  COMPREPLY=( $(compgen -W "${hosts[*]}" -- "${cur}") )
 }
-complete -F _ssh ssh
-
-SSH_COMPLETE=("$(cut -f1 -d' ' ~/.ssh/known_hosts |\
-                 tr ',' '\n' |\
-                 sort -u |\
-                 grep -e '[[:alpha:]]')")
-complete -o default -W "${SSH_COMPLETE[*]}" ssh
+complete -F _ssh_hosts_completion ssh
 
 for FILE in "${BASHRC_PATH}"/partials/_completions/{bootstrap,caniuse,gohugo,netlify,npm,phinx,robo,wp}; do
   # this routine ranges through a folder of files that we don't explicitly know (@davidsneighbour)
   # see https://github.com/koalaman/shellcheck/wiki/SC1090
   # shellcheck source-path=SOURCEDIR/completions
-  [ -r "${FILE}" ] && source "${FILE}";
-done;
-unset FILE;
+  [ -r "${FILE}" ] && source "${FILE}"
+done
+unset FILE
