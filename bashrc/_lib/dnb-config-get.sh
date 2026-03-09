@@ -1,4 +1,4 @@
-#!/bin/bash
+# shellcheck shell=bash
 # shellcheck disable=SC2034
 
 # dnb_config_get: Read config values from a TOML file

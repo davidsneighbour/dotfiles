@@ -1,7 +1,0 @@
-# shellcheck shell=bash
-
-# @todo review and refactor
-
-function g_rebase_branch() {
-  git branch --show-current | xargs git merge-base "$1" | xargs git rebase -i
-}

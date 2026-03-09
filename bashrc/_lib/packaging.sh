@@ -1,5 +1,4 @@
 # shellcheck shell=bash
-#!/bin/bash
 
 package() {
   # Show help if no parameters are passed
