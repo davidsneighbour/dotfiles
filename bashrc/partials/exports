@@ -41,6 +41,19 @@ else
 fi
 export DOTFILES_GUM
 
+# shell actor identity: default to human unless LLM mode is explicitly enabled.
+# LLM tooling should export LLM=true before sourcing bashrc.
+if [ "${LLM}" = "true" ]; then
+	export LLM=true
+	export HUMAN=false
+elif [ "${HUMAN}" = "false" ]; then
+	export HUMAN=false
+	export LLM=true
+else
+	export HUMAN=true
+	export LLM=false
+fi
+
 # set vale styles path
 VALE_STYLES_PATH="${HOME}/.config/vale/styles"
 export VALE_STYLES_PATH

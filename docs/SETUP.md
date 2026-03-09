@@ -69,6 +69,21 @@
    ./dotbot.sh protected
    ```
 
+## Shell actor environment variables
+
+The interactive Bash setup defines a mutually exclusive actor identity with two exported variables:
+
+* `HUMAN` (default: `true`)
+* `LLM` (default: `false`)
+
+Rules enforced during Bash startup:
+
+* If `LLM=true` is already set before loading Bash config, then `HUMAN=false`.
+* If `HUMAN=false` is already set before loading Bash config, then `LLM=true`.
+* If neither mode is explicitly set, Bash defaults to `HUMAN=true` and `LLM=false`.
+
+For automation agents and LLM-based tooling: export `LLM=true` before sourcing `~/.bashrc` or before running commands that rely on this Bash configuration.
+
 ## Update
 
 Run consecutive updates:
