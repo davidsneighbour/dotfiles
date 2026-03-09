@@ -1,16 +1,13 @@
 #!/bin/bash
 # executed by the command interpreter for non-interactive login shells
 
-LOG_FILE="${HOME}/.logs/profile/$(date +'%Y%m%d-%H%M%S').log"
-exec > >(tee \
-    >(sed -r 's/\x1B\[[0-9;]*[mK]//g' >> "${LOG_FILE}") \
-) 2>&1
+# shell environment variables
+DNB_IS_INTERACTIVE=0
+DOTFILES_PATH="${HOME}/.dotfiles"
+LOG_PATH="bash/profile"
 
-DOTFILES_PATH="${HOME}/github.com/davidsneighbour/dotfiles"
-
-# the default umask is set in /etc/profile; for setting the umask
-# for ssh logins, install and configure the libpam-umask package.
-umask 022
+# set to 0 or 1 to regulate verbosity
+export DNB_VERBOSE=1
 
 # load the library functions
 for FILE in "${DOTFILES_PATH}"/bashrc/_lib/*; do
@@ -18,8 +15,20 @@ for FILE in "${DOTFILES_PATH}"/bashrc/_lib/*; do
   [ -f "${FILE}" ] && source "${FILE}"
 done
 
-. "/home/patrick/.deno/env"
+# set log file for .bashrc runs
+if [[ ${DNB_VERBOSE:-0} -gt 1 ]]; then
+  LOG_FILE="${HOME}/.logs/${LOG_PATH}/$(date +'%Y%m%d-%H%M%S').log"
+  exec > >(tee >(sed -r 's/\x1B\[[0-9;]*[mK]//g' >>"${LOG_FILE}")) 2>&1
+fi
 
-# load nvm (node and npm)
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# load the bash configuration
+# shellcheck disable=SC1091
+if [[ "${DNB_IS_INTERACTIVE}" == "1" ]]; then
+  source "${DOTFILES_PATH}"/bashrc/bashrc
+fi
+
+# load the bash programs configuration
+for FILE in "${DOTFILES_PATH}"/bashrc/partials/_programs/*; do
+  # shellcheck disable=SC1090
+  [ -f "${FILE}" ] && source "${FILE}"
+done

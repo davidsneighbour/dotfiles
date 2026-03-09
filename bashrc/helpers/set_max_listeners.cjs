@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 // set a larger maximum number of listeners globally
 require("events").EventEmitter.defaultMaxListeners = 20;
 

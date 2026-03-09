@@ -1,25 +1,34 @@
 #!/bin/bash
 # executed by the command interpreter for interactive non-login shells
 
+# shell environment variables
+DNB_IS_INTERACTIVE=1
+DOTFILES_PATH="${HOME}/.dotfiles"
+LOG_PATH="bash/bashrc"
+
 # set to 0 or 1 to regulate verbosity
 export DNB_VERBOSE=0
 
+# load the library functions
+for FILE in "${DOTFILES_PATH}"/bashrc/_lib/*; do
+  # shellcheck disable=SC1090
+  [ -f "${FILE}" ] && source "${FILE}"
+done
+
+# set log file for .bashrc runs
 if [[ ${DNB_VERBOSE:-0} -gt 1 ]]; then
-  LOG_FILE="${HOME}/.logs/bashrc/-$(date +'%Y%m%d-%H%M%S').log"
+  LOG_FILE="${HOME}/.logs/${LOG_PATH}/$(date +'%Y%m%d-%H%M%S').log"
   exec > >(tee >(sed -r 's/\x1B\[[0-9;]*[mK]//g' >>"${LOG_FILE}")) 2>&1
 fi
 
-DOTFILES_PATH="${HOME}/github.com/davidsneighbour/dotfiles"
-
 # load the bash configuration
 # shellcheck disable=SC1091
-source "${DOTFILES_PATH}"/bashrc/bashrc
-. "/home/patrick/.deno/env"
-source /home/patrick/.local/share/bash-completion/completions/deno.bash
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+if [[ "${DNB_IS_INTERACTIVE}" == "1" ]]; then
+  source "${DOTFILES_PATH}"/bashrc/bashrc
+fi
 
-
-export GPG_TTY="$(tty)"
-gpg-connect-agent updatestartuptty /bye >/dev/null
+# load the bash programs configuration
+for FILE in "${DOTFILES_PATH}"/bashrc/partials/_programs/*; do
+  # shellcheck disable=SC1090
+  [ -f "${FILE}" ] && source "${FILE}"
+done

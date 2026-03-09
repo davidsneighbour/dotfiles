@@ -1,4 +1,0 @@
-if [[ $- != *i* ]]; then
-    # Not interactive, skip initialization
-    return
-fi

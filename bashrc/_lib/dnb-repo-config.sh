@@ -1,4 +1,4 @@
-#!/bin/bash
+# shellcheck shell=bash
 # shellcheck disable=SC2034
 
 # dnb_repo_config_get: Read repo-local TOML config from <repo>/.github/dnb.toml

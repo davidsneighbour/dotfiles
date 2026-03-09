@@ -1,3 +1,5 @@
+# shellcheck shell=bash
+
 ## __dnb_log - Unified logger for reusable Bash functions
 ## Usage: __dnb_log [--help] [--json] "message" [level]
 ## Options:

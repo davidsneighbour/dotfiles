@@ -1,8 +1,0 @@
-# shellcheck shell=bash
-
-# @todo review and refactor
-
-function flag() {
-  OUTPUT=${*}
-  echo -e "\e[1;36m[===============${OUTPUT}===($(date +"%Y-%m-%d %H:%M-%S"))===============]\e[m"
-}

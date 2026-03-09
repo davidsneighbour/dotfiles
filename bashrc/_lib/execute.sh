@@ -1,3 +1,5 @@
+# shellcheck shell=bash
+
 execute() {
   local cmd="$1"
   local file="$2"
