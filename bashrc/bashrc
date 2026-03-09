@@ -33,8 +33,8 @@ __dnb_path_prepend() {
   [ -d "${dir}" ] || return 0
 
   case ":${PATH}:" in
-    *":${dir}:"*) ;;
-    *) PATH="${dir}:${PATH}" ;;
+  *":${dir}:"*) ;;
+  *) PATH="${dir}:${PATH}" ;;
   esac
 }
 
@@ -219,6 +219,9 @@ export NO_AT_BRIDGE=1
 
 export DENO_INSTALL="${HOME}/.deno"
 export PATH="${DENO_INSTALL}/bin:${PATH}"
+
+WM_TILE_POLYBAR_TOP_HEIGHT=40
+WM_TILE_POLYBAR_BOTTOM_HEIGHT=40
 
 # starship setup
 # see https://starship.rs/config
