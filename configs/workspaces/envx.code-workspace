@@ -4,5 +4,9 @@
       "path": "../../../github.com/davidsneighbour/envx"
     }
   ],
-  "settings": {}
+  "settings": {
+    "cSpell.words": [
+      "envx"
+    ]
+  }
 }
