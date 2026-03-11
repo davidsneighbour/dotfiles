@@ -12,7 +12,7 @@ url = https://github.com/alegsan/dotbot-aptget.git
 	path = modules/protected
 	url = git@github.com:davidsneighbour/dotfiles-protected.git
 [submodule "modules/ai"]
-	path = modules/ai
+	path = modules/dotfiles-ai
 	url = https://github.com/davidsneighbour/dotfiles-ai
 [submodule "modules/gmailctl"]
 	path = modules/gmailctl
