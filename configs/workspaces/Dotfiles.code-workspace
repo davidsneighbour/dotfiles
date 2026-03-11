@@ -6,7 +6,6 @@
   ],
   "settings": {
     "markdown.extension.toc.levels": "2..6",
-
     // https://code.visualstudio.com/api/references/theme-color
     "workbench.colorCustomizations": {
       "activityBar.activeBackground": "#6272a4",
@@ -26,12 +25,9 @@
       "titleBar.activeForeground": "#000000",
       "titleBar.inactiveBackground": "#6272a499",
       "titleBar.inactiveForeground": "#00000099",
-
       "editorIndentGuide.background1": "#00000001",
       "editorIndentGuide.activeBackground1": "#ff9900"
-
     },
-
     "cSpell.language": "en-GB",
     "cSpell.enabled": true,
     "cSpell.customDictionaries": {
@@ -43,6 +39,9 @@
         "scope": "workspace"
       }
     },
-    "cSpell.validateDirectives": true
+    "cSpell.validateDirectives": true,
+    "cSpell.words": [
+      "roleplay"
+    ]
   }
 }
