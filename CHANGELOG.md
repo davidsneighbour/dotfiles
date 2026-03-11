@@ -1,4 +1,17 @@
 Changelog
+## [3002.1.1](https://github.com/davidsneighbour/dotfiles/compare/v3002.1.0...v3002.1.1) (2026-03-11)
+
+
+### Bug Fixes
+
+* **cronjobs:** email cron every 2 minutes ([b205902](https://github.com/davidsneighbour/dotfiles/commit/b20590270cae7576a53e91623a2a10b7690a4096))
+* **vscode:** update workspace configuration ([a46f698](https://github.com/davidsneighbour/dotfiles/commit/a46f698cd303e128496e597125abbb6dc64defda))
+
+
+### Build System
+
+* **deps:** update dependencies ([10acc27](https://github.com/davidsneighbour/dotfiles/commit/10acc275f7f11599f74087e4fef6a93f926ac29c))
+
 ## [3002.1.0](https://github.com/davidsneighbour/dotfiles/compare/v3002.0.0...v3002.1.0) (2026-03-11)
 
 
