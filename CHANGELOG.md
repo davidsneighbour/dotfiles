@@ -1,4 +1,32 @@
 Changelog
+## [3002.1.0](https://github.com/davidsneighbour/dotfiles/compare/v3002.0.0...v3002.1.0) (2026-03-11)
+
+
+### Features
+
+* **bashrc:** add HUMAN and LLM environment variables ([ab558b2](https://github.com/davidsneighbour/dotfiles/commit/ab558b2566712bcae9929552776962f5f7807fde))
+* **bashrc:** refactor and sort bashrc and profile config file setup ([4442518](https://github.com/davidsneighbour/dotfiles/commit/4442518dc20e73c862e3a3bfe1b033462e004b9c))
+
+
+### Bug Fixes
+
+* **bashrc:** add polybar dimensions env variables ([b6b144d](https://github.com/davidsneighbour/dotfiles/commit/b6b144dc21a6cbf6225e5b7ddf7acc4da1d96531))
+* **bashrc:** more bashrc cleanup and structurising (with docs) ([d1e6677](https://github.com/davidsneighbour/dotfiles/commit/d1e667793def1161a50ca3e18321c21cb604976c))
+* **bashrc:** refactor bashrc startup flow and harden completion loading ([601beb2](https://github.com/davidsneighbour/dotfiles/commit/601beb20ff9f717508ab0b8ab693aefa10f0c3dc))
+* **bashrc:** update system installs ([d9b2782](https://github.com/davidsneighbour/dotfiles/commit/d9b2782d2960e99749e7fd6f252ffea522dcc03b))
+* **configs:** update ignored files in sublime merge setup ([b483d3e](https://github.com/davidsneighbour/dotfiles/commit/b483d3e6223fd15fe36d59234b73c3a3e755c891))
+* **polybar:** onclick action on date module loads calendar ([375c429](https://github.com/davidsneighbour/dotfiles/commit/375c429473510458638dc2de9d1628485d6897d7))
+* **vscode:** update workspace configuration ([289c6c5](https://github.com/davidsneighbour/dotfiles/commit/289c6c5c85c435be120b95ed84a39c9daf211095))
+* **workspaces:** update workspace configurations for vscode ([7e8d654](https://github.com/davidsneighbour/dotfiles/commit/7e8d654cd4a728208cc622dc5841cc8fa5a15e98))
+
+
+### Chore
+
+* **repo:** move ai submodule to dotfiles-ai ([3c22d9b](https://github.com/davidsneighbour/dotfiles/commit/3c22d9b61c97a7baeaea746af2cdcfd256751574))
+* **repo:** update submodules ([7914a03](https://github.com/davidsneighbour/dotfiles/commit/7914a03a97dbf628390d6ca0c7577fc4abf91025))
+* **repo:** update submodules ([a4f2594](https://github.com/davidsneighbour/dotfiles/commit/a4f25940a1fd723a7b134c46ac54a6c6a4d95126))
+* **workspace:** update configuration ([094d299](https://github.com/davidsneighbour/dotfiles/commit/094d2997f2f386788b8e1dc8a87b1829bc5e458a))
+
 ## [3002.0.0](https://github.com/davidsneighbour/dotfiles/compare/v3001.6.0...v3002.0.0) (2026-03-07)
 
 
