@@ -104,8 +104,6 @@
       command: ${HOME}/.dotfiles/bashrc/cronjobs/git_updates.sh --config ${HOME}/.dotfiles/configs/system/repository_updates.toml --verbose >> "$HOME/.logs/cron/repo-update-$(date +\%Y\%m\%d-\%H\%M\%S).log" 2>&1
     - cron: "@reboot"
       command: ${HOME}/.dotfiles/bashrc/cronjobs/bash-history-backup.sh >> "$HOME/.logs/cron/job-$(date +\%Y\%m\%d-\%H\%M\%S).log" 2>&1
-    - cron: "*/5 * * * *"
-      comment: load emails every 5 minutes
+    - cron: "*/2 * * * *"
+      comment: load emails every 2 minutes
       command: ${HOME}/.dotfiles/bashrc/cronjobs/msgvault.sh
-    # - cron: "@reboot"
-    #   command: ${HOME}/.dotfiles/bashrc/cronjobs/msgvault.sh
