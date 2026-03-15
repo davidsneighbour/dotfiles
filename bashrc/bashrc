@@ -207,12 +207,6 @@ export HOSTFILE="${HOME}/.bash_hosts"
 # see https://wiki.archlinux.org/index.php/GTK+#Suppress_warning_about_accessibility_bus
 export NO_AT_BRIDGE=1
 
-# Load nvm after all PATH mutations so nvm-managed Node.js/npm take precedence over Homebrew.
-# shellcheck source=/dev/null
-[ -s "${NVM_DIR}/nvm.sh" ] && \. "${NVM_DIR}/nvm.sh"
-# shellcheck source=/dev/null
-[ -s "${NVM_DIR}/bash_completion" ] && \. "${NVM_DIR}/bash_completion"
-
 export DENO_INSTALL="${HOME}/.deno"
 export PATH="${DENO_INSTALL}/bin:${PATH}"
 
