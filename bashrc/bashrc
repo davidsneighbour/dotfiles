@@ -155,7 +155,6 @@ if [ -d "${HOME}"/.npm ]; then
 fi
 
 __dnb_path_prepend "/opt/firefox/firefox"
-__dnb_path_prepend "${HOME}/snap/deno/86/.deno/bin"
 
 # adding helper commands to PATH
 PATH="${BASHRC_PATH}/helpers:${PATH}"
@@ -207,7 +206,6 @@ export HOSTFILE="${HOME}/.bash_hosts"
 # see https://wiki.archlinux.org/index.php/GTK+#Suppress_warning_about_accessibility_bus
 export NO_AT_BRIDGE=1
 
-export DENO_INSTALL="${HOME}/.deno"
 export PATH="${DENO_INSTALL}/bin:${PATH}"
 
 WM_TILE_POLYBAR_TOP_HEIGHT=40

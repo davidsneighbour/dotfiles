@@ -12,6 +12,7 @@ commitizen
 corepack
 cypress
 cz-git
+deno
 eslint
 fixpack
 generator-code

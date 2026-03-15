@@ -163,7 +163,6 @@ Contains program-specific initialisation.
 Examples:
 
 ```
-deno
 nvm
 language runtimes
 tool integrations
