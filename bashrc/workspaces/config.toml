@@ -1,3 +1,6 @@
+# file:///home/patrick/.fonts/Lucide/unicode.html
+# Read docs/workspaces.md for details on how to configure workspaces and tile templates.
+
 [[workspace]]
 title = "Dashboard"
 icon = ""
@@ -17,6 +20,10 @@ icon = ""
 [[workspace]]
 title = "Notes"
 icon = ""
+
+[[workspace]]
+title = "Bots"
+icon = ""
 
 [[workspace]]
 title = "Dotfiles"
