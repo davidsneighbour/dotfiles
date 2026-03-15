@@ -3,11 +3,13 @@
 
 # shell environment variables
 DNB_IS_INTERACTIVE=1
+DNB_NAMESPACE=davidsneighbour
 DOTFILES_PATH="${HOME}/.dotfiles"
 LOG_PATH="bash/bashrc"
+export DNB_IS_INTERACTIVE DNB_NAMESPACE DOTFILES_PATH LOG_PATH
 
 # set to 0 or 1 to regulate verbosity
-export DNB_VERBOSE=0
+export DNB_VERBOSE=1
 
 # load the library functions
 for FILE in "${DOTFILES_PATH}"/bashrc/_lib/*; do
