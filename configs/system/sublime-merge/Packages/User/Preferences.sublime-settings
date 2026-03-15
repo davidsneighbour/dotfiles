@@ -1,9 +1,15 @@
 {
-	"theme": "Merge Dark.sublime-theme",
+	/*"theme": "Merge Dark.sublime-theme",*/
 	"added_words":
 	[
 		"lockfile",
 		"deps",
 		"Kollitsch",
 	],
+	"diff_algorithm": "match_git",
+	"font_face": "JetBrains Mono",
+	"font_size": 11,
+	"side_bar_layout": "locations_as_column",
+	"theme": "Merge Dark.sublime-theme",
+	"trim_trailing_white_space_on_save": true,
 }
