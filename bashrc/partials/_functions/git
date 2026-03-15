@@ -24,73 +24,77 @@
 #     ;;
 #   esac
 
-# have cz run on commit if a commitlint config is found in the git root
-git() {
-  if [[ "${1}" == "commit" ]]; then
-    if command -v cz >/dev/null 2>&1 &&
-      command git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+_git_get_root() {
+  command git rev-parse --show-toplevel 2>/dev/null
+}
 
-      local git_root
-      git_root=$(command git rev-parse --show-toplevel 2>/dev/null)
+_git_find_commitlint_config() {
+  local git_root
+  git_root=$(_git_get_root) || return 1
 
-      if [[ -f "${git_root}/.commitlintrc.cjs" || -f "${git_root}/.commitlintrc.js" || -f "${git_root}/.commitlintrc.mjs" || -f "${git_root}/.commitlintrc.ts" ]]; then
-        local arg
-        for arg in "$@"; do
-          if [[ "${arg}" == "--amend" ]]; then
-            command git "$@"
-            return $?
-          fi
-        done
+  local -a commitlint_config_paths=(
+    "${git_root}/.commitlintrc"
+    "${git_root}/.commitlintrc.json"
+    "${git_root}/.commitlintrc.yaml"
+    "${git_root}/.commitlintrc.yml"
+    "${git_root}/.commitlintrc.js"
+    "${git_root}/.commitlintrc.cjs"
+    "${git_root}/.commitlintrc.mjs"
+    "${git_root}/.commitlintrc.ts"
+    "${git_root}/commitlint.config.js"
+    "${git_root}/commitlint.config.cjs"
+    "${git_root}/commitlint.config.mjs"
+    "${git_root}/commitlint.config.ts"
+  )
 
-        shift
-        NODE_OPTIONS='--experimental-transform-types --disable-warning ExperimentalWarning' cz "$@"
-        return $?
-      fi
+  local config_path
+  for config_path in "${commitlint_config_paths[@]}"; do
+    if [[ -f "${config_path}" ]]; then
+      printf '%s\n' "${config_path}"
+      return 0
     fi
+  done
+
+  return 1
+}
+
+_git_has_commitlint_config() {
+  _git_find_commitlint_config >/dev/null 2>&1
+}
+
+_git_should_use_cz() {
+  if [[ "$#" -eq 1 && "${1}" == "commit" ]]; then
+    return 0
+  fi
+
+  if [[ "$#" -eq 2 && "${1}" == "commit" && "${2}" == "--retry" ]]; then
+    return 0
+  fi
+
+  return 1
+}
+
+git() {
+  if ! command git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    command git "$@"
+    return $?
+  fi
+
+  if ! command -v cz >/dev/null 2>&1; then
+    command git "$@"
+    return $?
+  fi
+
+  if ! _git_has_commitlint_config; then
+    command git "$@"
+    return $?
+  fi
+
+  if _git_should_use_cz "$@"; then
+    shift
+    NODE_OPTIONS='--experimental-transform-types --disable-warning ExperimentalWarning' cz "$@"
+    return $?
   fi
 
   command git "$@"
 }
-
-function glone() {
-  local REPO_URL=$1
-  local FORCE_HTTPS=false
-  local USERNAME
-  local REPO_NAME
-  local REPO_PATH
-
-  # Check for --force-https flag
-  if [[ "$2" == "--force-https" ]]; then
-    FORCE_HTTPS=true
-  fi
-
-  # Transform HTTPS to SSH format unless forced to use HTTPS
-  if [[ "${REPO_URL}" == https://* && "${FORCE_HTTPS}" == false ]]; then
-    # Convert HTTPS URL to SSH format
-    USERNAME=$(cut -d'/' -f4 <<<"${REPO_URL}")
-    REPO_NAME=$(cut -d'/' -f5 <<<"${REPO_URL}" | sed 's/\.git$//')
-    REPO_URL="git@github.com:${USERNAME}/${REPO_NAME}.git"
-  elif [[ "${REPO_URL}" == *@* ]]; then
-    # Handle SSH URL directly
-    USERNAME=$(cut -d':' -f2 <<<"${REPO_URL}" | cut -d'/' -f1)
-    REPO_NAME=$(cut -d'/' -f2 <<<"${REPO_URL}" | sed 's/\.git$//')
-  else
-    # Handle HTTPS URL if forced or already HTTPS
-    USERNAME=$(cut -d'/' -f4 <<<"${REPO_URL}")
-    REPO_NAME=$(cut -d'/' -f5 <<<"${REPO_URL}" | sed 's/\.git$//')
-  fi
-
-  # Construct the path as ~/github.com/username/reponame
-  REPO_PATH="${HOME}/github.com/${USERNAME}/${REPO_NAME}"
-
-  # Create the directory path
-  mkdir -p "${REPO_PATH}"
-
-  # Clone the repository into the determined path
-  git clone "${REPO_URL}" "${REPO_PATH}"
-}
-
-# Usage:
-# glone "https://github.com/dracula/plymouth.git"               # Clones via SSH (default behavior)
-# glone "https://github.com/dracula/plymouth.git" --force-https # Clones via HTTPS
-# glone "git@github.com:dracula/plymouth.git"                   # Clones via SSH
