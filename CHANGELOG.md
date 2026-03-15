@@ -1,4 +1,20 @@
 Changelog
+## [3002.1.2](https://github.com/davidsneighbour/dotfiles/compare/v3002.1.1...v3002.1.2) (2026-03-15)
+
+
+### Bug Fixes
+
+* **bashrc:** git function fixes to fall back gracefully with additional parameters ([2aed6b6](https://github.com/davidsneighbour/dotfiles/commit/2aed6b60588a73fecc45140fc13b0a1f3ed1c4f5))
+* **bashrc:** re-setup brew package manager ([411012b](https://github.com/davidsneighbour/dotfiles/commit/411012bb5afed4c70f6399ebc7bba8844fd9c18c))
+* **bashrc:** re-setup nvm package manager ([a27941a](https://github.com/davidsneighbour/dotfiles/commit/a27941ab10305073e9fdd8ebf1af49f70cc3f3d3))
+* git commit and glone function fixes ([3bca132](https://github.com/davidsneighbour/dotfiles/commit/3bca13235bbbdcdb9f49cde40cc150dc23d1e826))
+
+
+### Chore
+
+* fix deno setup ([ba37387](https://github.com/davidsneighbour/dotfiles/commit/ba37387ccfd1c1ecc64a47d75bfa0a37c13f9772))
+* update workspace config and submodules ([6e8acd7](https://github.com/davidsneighbour/dotfiles/commit/6e8acd7d6bc17ef83c40521145ce9b191ab44960))
+
 ## [3002.1.1](https://github.com/davidsneighbour/dotfiles/compare/v3002.1.0...v3002.1.1) (2026-03-11)
 
 
