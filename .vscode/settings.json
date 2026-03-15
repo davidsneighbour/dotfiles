@@ -28,7 +28,7 @@
     "actions.sh": "actions.toml"
   },
   "markdown.extension.toc.levels": "2..6",
-  "deno.enable": true,
+  "deno.enable": false,
   "cSpell.words": [
     "extensionless",
     "offs",
