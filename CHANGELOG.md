@@ -1,5 +1,19 @@
 # Changelog
 
+## [3002.4.0](https://github.com/davidsneighbour/dotfiles/compare/v3002.3.1...v3002.4.0) (2026-03-16)
+
+### Features
+
+* add wm-launch script ([8072767](https://github.com/davidsneighbour/dotfiles/commit/8072767537bf19cf9410a60cb2f5e7af29c6a9cb))
+
+### Build
+
+* **fix:** require clean workspace for releases, again ([fa53f08](https://github.com/davidsneighbour/dotfiles/commit/fa53f0855b3a53a23c2b679e32eb5a3ad48fce7b))
+
+### Chore
+
+* **repo:** update submodules ([2e0ce94](https://github.com/davidsneighbour/dotfiles/commit/2e0ce948b3f0176387126ab4924aec56a5a70499))
+
 ## [3002.3.1](https://github.com/davidsneighbour/dotfiles/compare/v3002.3.0...v3002.3.1) (2026-03-16)
 
 ### Build
