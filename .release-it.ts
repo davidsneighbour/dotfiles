@@ -6,8 +6,7 @@ const config = {
   },
   git: {
     requireBranch: 'main',
-    addUntrackedFiles: false,
-    requireCleanWorkingDir: false,
+    requireCleanWorkingDir: true,
     commit: true,
     commitArgs: ['--signoff', '--no-verify'],
     commitMessage: 'chore(release): v${version}',
