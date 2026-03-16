@@ -8,14 +8,14 @@
   "bugs": "https://github.com/davidsneighbour/dotfiles/issues",
   "homepage": "https://github.com/davidsneighbour/dotfiles#readme",
   "dependencies": {
-    "@biomejs/biome": "2.4.6",
+    "@biomejs/biome": "2.4.7",
     "@clack/prompts": "1.1.0",
-    "@commitlint/cli": "20.4.3",
-    "@commitlint/config-conventional": "20.4.3",
+    "@commitlint/cli": "20.5.0",
+    "@commitlint/config-conventional": "20.5.0",
     "@davidsneighbour/markdownlint-config": "2026.0.2",
-    "@davidsneighbour/release-config": "2026.0.3",
     "@humanwhocodes/crosspost": "1.0.3",
     "@j9t/obsohtml": "1.9.5",
+    "@release-it/conventional-changelog": "10.0.6",
     "@secretlint/secretlint-rule-no-dotenv": "11.3.1",
     "@secretlint/secretlint-rule-no-homedir": "11.3.1",
     "@secretlint/secretlint-rule-no-k8s-kind-secret": "11.3.1",
@@ -30,7 +30,7 @@
     "dotenv": "17.3.1",
     "fixpack": "4.0.0",
     "fs-extra": "11.3.4",
-    "lint-staged": "16.3.3",
+    "lint-staged": "16.4.0",
     "lockfile-lint": "5.0.0",
     "markdownlint": "0.40.0",
     "markdownlint-cli2": "0.21.0",
@@ -39,25 +39,20 @@
     "npm-package-json-lint": "9.1.0",
     "npm-run-all2": "8.0.4",
     "npm-watch": "0.13.0",
+    "release-it": "19.2.4",
     "rimraf": "6.1.3",
     "secretlint": "11.3.1",
-    "semver": "^7.7.4",
+    "semver": "7.7.4",
     "simple-git-hooks": "2.13.1",
     "toml": "3.0.0",
-    "wireit": "0.14.12",
-    "release-it": "19.0.5",
-    "@release-it/conventional-changelog": "10.0.1"
-  },
-  "devDependencies": {
-    "dompurify": ">=3.3.3",
-    "nanoid": ">=5.1.6"
+    "wireit": "0.14.12"
   },
   "scripts": {
     "clean": "rimraf logs/*.log",
     "link:prepare": "wireit",
+    "lint:config": "yamllint -c .yamllint.yml etc/*.yaml",
     "lint:hook:commit": "lint-staged --quiet",
     "lint:hook:commit:loud": "lint-staged --debug --verbose",
-    "lint:config": "yamllint -c .yamllint.yml etc/*.yaml",
     "release": "release-it --config .release-it.ts --verbose --only-version"
   },
   "wireit": {
