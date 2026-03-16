@@ -157,7 +157,7 @@ fi
 __dnb_path_prepend "/opt/firefox/firefox"
 
 # adding helper commands to PATH
-PATH="${BASHRC_PATH}/helpers:${PATH}"
+PATH="${BASHRC_PATH}/helpers:${BASHRC_PATH}/workspaces:${PATH}"
 
 # aaaaand export...
 export PATH
