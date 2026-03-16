@@ -1,3 +1,25 @@
+# Changelog
+
+## [3002.3.0](https://github.com/davidsneighbour/dotfiles/compare/v3002.1.2...v3002.3.0) (2026-03-16)
+
+### Features
+
+* **config:** add bot workspace and document workspace setup ([9824b93](https://github.com/davidsneighbour/dotfiles/commit/9824b93ae0652d4469c38b31a0d8fc40a4407fdb))
+
+### Build
+
+* refactor release pipeline to release-it ([70f1989](https://github.com/davidsneighbour/dotfiles/commit/70f19897a52f7bc8e92f01839bea90db3f1b4cb6))
+
+## [3002.2.0](https://github.com/davidsneighbour/dotfiles/compare/v3002.1.2...v3002.2.0) (2026-03-16)
+
+### Features
+
+* **config:** add bot workspace and document workspace setup ([9824b93](https://github.com/davidsneighbour/dotfiles/commit/9824b93ae0652d4469c38b31a0d8fc40a4407fdb))
+
+### Build
+
+* refactor release pipeline to release-it ([70f1989](https://github.com/davidsneighbour/dotfiles/commit/70f19897a52f7bc8e92f01839bea90db3f1b4cb6))
+
 Changelog
 ## [3002.1.2](https://github.com/davidsneighbour/dotfiles/compare/v3002.1.1...v3002.1.2) (2026-03-15)
 
