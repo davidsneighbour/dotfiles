@@ -1,5 +1,5 @@
+import { RuleConfigSeverity } from '@commitlint/types';
 import type { UserConfig } from 'cz-git';
-import { RuleConfigSeverity } from "@commitlint/types";
 
 const config: UserConfig = {
   // extends: [
@@ -8,7 +8,7 @@ const config: UserConfig = {
 
   // @see: https://commitlint.js.org/#/reference-rules
   rules: {
-    'signed-off-by': [RuleConfigSeverity.Warning, 'always', 'Signed-off-by:']
+    'signed-off-by': [RuleConfigSeverity.Warning, 'always', 'Signed-off-by:'],
   },
   // https://cz-git.qbb.sh/config/show
   prompt: {
@@ -18,27 +18,69 @@ const config: UserConfig = {
       customScope: 'Denote the SCOPE of this change:',
       subject: 'Write a SHORT, IMPERATIVE tense description of the change:\n',
       body: 'Provide a LONGER description of the change (optional). Use "|" to break new line:\n',
-      breaking: 'List any BREAKING CHANGES (optional). Use "|" to break new line:\n',
-      footerPrefixsSelect: 'Select the ISSUES type of changeList by this change (optional):',
+      breaking:
+        'List any BREAKING CHANGES (optional). Use "|" to break new line:\n',
+      footerPrefixsSelect:
+        'Select the ISSUES type of changeList by this change (optional):',
       customFooterPrefixs: 'Input ISSUES prefix:',
       footer: 'List any ISSUES by this change. E.g.: #31, #34:\n',
-      confirmCommit: 'Are you sure you want to proceed with the commit above?'
+      confirmCommit: 'Are you sure you want to proceed with the commit above?',
     },
     // https://github.com/sindresorhus/xterm-colors
-    themeColorCode: "38;2;112;140;169",
+    themeColorCode: '38;2;112;140;169',
     types: [
       { value: 'feat', name: 'feat:     A new feature', emoji: ':sparkles:' },
       { value: 'fix', name: 'fix:      A bug fix', emoji: ':bug:' },
-      { value: 'config', name: 'config:   Configuration only changes', emoji: ':wrench:' },
-      { value: 'docs', name: 'docs:     Documentation only changes', emoji: ':memo:' },
-      { value: 'style', name: 'style:    Changes that do not affect the meaning of the code', emoji: ':lipstick:' },
-      { value: 'refactor', name: 'refactor: A code change that neither fixes a bug nor adds a feature', emoji: ':recycle:' },
-      { value: 'perf', name: 'perf:     A code change that improves performance', emoji: ':zap:' },
-      { value: 'test', name: 'test:     Adding missing tests or correcting existing tests', emoji: ':white_check_mark:' },
-      { value: 'build', name: 'build:    Changes that affect the build system or external dependencies', emoji: ':package:' },
-      { value: 'ci', name: 'ci:       Changes to our CI configuration files and scripts', emoji: ':ferris_wheel:' },
-      { value: 'chore', name: "chore:    Other changes that don't modify src or test files", emoji: ':hammer:' },
-      { value: 'revert', name: 'revert:   Reverts a previous commit', emoji: ':rewind:' }
+      {
+        value: 'config',
+        name: 'config:   Configuration only changes',
+        emoji: ':wrench:',
+      },
+      {
+        value: 'docs',
+        name: 'docs:     Documentation only changes',
+        emoji: ':memo:',
+      },
+      {
+        value: 'style',
+        name: 'style:    Changes that do not affect the meaning of the code',
+        emoji: ':lipstick:',
+      },
+      {
+        value: 'refactor',
+        name: 'refactor: A code change that neither fixes a bug nor adds a feature',
+        emoji: ':recycle:',
+      },
+      {
+        value: 'perf',
+        name: 'perf:     A code change that improves performance',
+        emoji: ':zap:',
+      },
+      {
+        value: 'test',
+        name: 'test:     Adding missing tests or correcting existing tests',
+        emoji: ':white_check_mark:',
+      },
+      {
+        value: 'build',
+        name: 'build:    Changes that affect the build system or external dependencies',
+        emoji: ':package:',
+      },
+      {
+        value: 'ci',
+        name: 'ci:       Changes to our CI configuration files and scripts',
+        emoji: ':ferris_wheel:',
+      },
+      {
+        value: 'chore',
+        name: "chore:    Other changes that don't modify src or test files",
+        emoji: ':hammer:',
+      },
+      {
+        value: 'revert',
+        name: 'revert:   Reverts a previous commit',
+        emoji: ':rewind:',
+      },
     ],
     useEmoji: false,
     customScopesAlign: 'bottom-top',
@@ -55,7 +97,7 @@ const config: UserConfig = {
     skipQuestions: [],
     issuePrefixs: [
       { value: 'closed', name: 'closed:   ISSUE has been resolved' },
-      { value: 'see', name: 'see:      ISSUE is connected to this commit' }
+      { value: 'see', name: 'see:      ISSUE is connected to this commit' },
     ],
     customIssuePrefixsAlign: 'top',
     emptyIssuePrefixsAlias: 'skip',
@@ -69,7 +111,7 @@ const config: UserConfig = {
     scopeOverrides: {
       feat: ['workspaces', 'config', 'theme'],
       fix: ['bashrc'],
-      build: ['deps', 'deps-dev', 'vscode'],
+      build: ['deps', 'releases', 'vscode'],
       content: ['new', 'fix', 'schema', 'update'],
       theme: ['fix', 'feat'],
       chore: ['repo'],
@@ -78,9 +120,9 @@ const config: UserConfig = {
     defaultBody: '',
     defaultIssues: '',
     defaultScope: '',
-    defaultSubject: ''
+    defaultSubject: '',
     // https://cz-git.qbb.sh/config/engineer.html
-  }
+  },
 };
 
 export default config;
