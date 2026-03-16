@@ -4,5 +4,12 @@
 			"path": "../../../github.com/davidsneighbour/independence-yacht-charter.com"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"files.autoSave": "afterDelay",
+		"files.autoSaveDelay": 6000,
+		"files.autoSaveWhenNoErrors": true,
+		"files.autoSaveWorkspaceFilesOnly": true,
+		"editor.formatOnSave": true,
+		"editor.codeActions.triggerOnFocusChange": true
+	}
 }
