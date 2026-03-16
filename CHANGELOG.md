@@ -1,5 +1,12 @@
 # Changelog
 
+## [3002.3.1](https://github.com/davidsneighbour/dotfiles/compare/v3002.3.0...v3002.3.1) (2026-03-16)
+
+### Build
+
+* **deps:** update dependencies ([a15dcea](https://github.com/davidsneighbour/dotfiles/commit/a15dcea8561c143d933b8d353a1a3586e8e7f320))
+* **release:** require a clean workspace on releases ([de2c043](https://github.com/davidsneighbour/dotfiles/commit/de2c04384b8148e1e20f2c400aa58f61cc5037d3))
+
 ## [3002.3.0](https://github.com/davidsneighbour/dotfiles/compare/v3002.1.2...v3002.3.0) (2026-03-16)
 
 ### Features
