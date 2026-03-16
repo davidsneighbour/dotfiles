@@ -5,7 +5,7 @@ const config = {
     publish: false,
   },
   git: {
-    requireCleanWorkingDir: false,
+    requireCleanWorkingDir: true,
     commit: true,
     commitArgs: ['--signoff', '--no-verify'],
     commitMessage: 'chore(release): v${version}',
@@ -61,7 +61,18 @@ const config = {
 
           if (
             level === null &&
-            ['fix', 'build', 'chore', 'ci', 'docs', 'perf', 'refactor', 'revert', 'style', 'test'].includes(type)
+            [
+              'fix',
+              'build',
+              'chore',
+              'ci',
+              'docs',
+              'perf',
+              'refactor',
+              'revert',
+              'style',
+              'test',
+            ].includes(type)
           ) {
             level = 2;
           }
@@ -78,7 +89,7 @@ const config = {
               ? 'There are feat/content commits.'
               : 'There are patch-level changes.',
         };
-      }
+      },
     },
   },
 } satisfies Config;
