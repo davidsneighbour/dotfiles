@@ -23,7 +23,6 @@
     "@secretlint/secretlint-rule-pattern": "11.3.1",
     "@secretlint/secretlint-rule-preset-recommend": "11.3.1",
     "@secretlint/secretlint-rule-secp256k1-privatekey": "11.3.1",
-    "commit-and-tag-version": "12.6.1",
     "cross-env": "10.1.0",
     "cz-git": "1.12.0",
     "debug": "4.4.3",
@@ -45,7 +44,9 @@
     "semver": "^7.7.4",
     "simple-git-hooks": "2.13.1",
     "toml": "3.0.0",
-    "wireit": "0.14.12"
+    "wireit": "0.14.12",
+    "release-it": "19.0.5",
+    "@release-it/conventional-changelog": "10.0.1"
   },
   "devDependencies": {
     "dompurify": ">=3.3.3",
@@ -57,7 +58,7 @@
     "lint:hook:commit": "lint-staged --quiet",
     "lint:hook:commit:loud": "lint-staged --debug --verbose",
     "lint:config": "yamllint -c .yamllint.yml etc/*.yaml",
-    "release": "commit-and-tag-version -a -t \"v\" --releaseCommitMessageFormat \"chore(release): v{{currentTag}}\" && ./bashrc/helpers/postrelease"
+    "release": "release-it --config .release-it.ts --verbose --only-version"
   },
   "wireit": {
     "link:prepare": {
