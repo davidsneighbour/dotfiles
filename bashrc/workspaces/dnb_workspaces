@@ -1,0 +1,196 @@
+#!/bin/bash
+
+set -Eeuo pipefail
+
+SCRIPT_NAME="$(basename "$0")"
+SCRIPT_DIR="$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+CONFIG_FILE="${SCRIPT_DIR}/config.toml"
+TUI_MAIN="${SCRIPT_DIR}/tui/dnb_workspaces_tui.go"
+LOG_DIR="${HOME}/.logs/workspaces"
+LOG_FILE=""
+VERBOSE="0"
+QUIET="0"
+NAME_ONLY="0"
+
+usage() {
+  cat <<EOF_USAGE
+Usage:
+  ${SCRIPT_NAME} [--name] [--quiet] [--verbose]
+  ${SCRIPT_NAME} --help
+
+List configured workspaces from ${CONFIG_FILE}.
+
+Options:
+  -n, --name       Output only workspace names.
+  --quiet          Plain output mode (no interactive Bubble Tea display).
+  --verbose        Enable verbose logging. Also enabled when DNB_VERBOSE is set.
+  --help           Show this help.
+
+Modes:
+  default          Interactive table via Bubble Tea if stdout is a TTY.
+  --quiet          Machine-friendly output.
+
+Examples:
+  ${SCRIPT_NAME}
+  ${SCRIPT_NAME} --name --quiet
+  DNB_VERBOSE=1 ${SCRIPT_NAME} --quiet
+EOF_USAGE
+}
+
+init_logging() {
+  mkdir -p "${LOG_DIR}"
+  LOG_FILE="${LOG_DIR}/setup-log-$(date +%Y%m%d-%H%M%S).log"
+  : > "${LOG_FILE}"
+}
+
+log_line() {
+  local level="$1"
+  local message="$2"
+  local timestamp
+
+  timestamp="$(date '+%Y-%m-%d %H:%M:%S')"
+  printf '[%s] [%s] %s\n' "${timestamp}" "${level}" "${message}" >> "${LOG_FILE}"
+
+  if [[ "${level}" == "ERROR" || "${VERBOSE}" == "1" ]]; then
+    printf '[%s] %s\n' "${level}" "${message}" >&2
+  fi
+}
+
+die() {
+  local message="$1"
+  log_line "ERROR" "${message}"
+  echo >&2
+  usage >&2
+  exit 1
+}
+
+need_cmd() {
+  command -v "$1" >/dev/null 2>&1
+}
+
+parse_workspace_lines() {
+  awk '
+    function emit_row() {
+      if (in_workspace == 1 && title != "") {
+        id += 1
+        print id "\t" title
+      }
+    }
+
+    BEGIN {
+      id = 0
+      in_workspace = 0
+      title = ""
+    }
+
+    /^\[\[workspace\]\]/ {
+      emit_row()
+      in_workspace = 1
+      title = ""
+      next
+    }
+
+    in_workspace == 1 && $0 ~ /^[[:space:]]*title[[:space:]]*=/ {
+      line = $0
+      sub(/^[[:space:]]*title[[:space:]]*=[[:space:]]*"/, "", line)
+      sub(/"[[:space:]]*$/, "", line)
+      title = line
+      next
+    }
+
+    END {
+      emit_row()
+    }
+  ' "${CONFIG_FILE}"
+}
+
+render_plain() {
+  local lines="$1"
+  if [[ "${NAME_ONLY}" == "1" ]]; then
+    printf '%s\n' "${lines}" | awk -F $'\t' '{ print $2 }'
+  else
+    printf '%s\n' "${lines}" | awk -F $'\t' '{ printf "%s\t%s\n", $1, $2 }'
+  fi
+}
+
+render_interactive() {
+  local lines="$1"
+  local mode_arg=""
+
+  if [[ "${NAME_ONLY}" == "1" ]]; then
+    mode_arg="--name-only"
+  fi
+
+  if ! need_cmd go; then
+    log_line "INFO" "Go not available. Falling back to plain output."
+    render_plain "${lines}" | column -t -s $'\t'
+    return 0
+  fi
+
+  if [[ ! -f "${TUI_MAIN}" ]]; then
+    log_line "INFO" "Bubble Tea renderer missing (${TUI_MAIN}). Falling back to plain output."
+    render_plain "${lines}" | column -t -s $'\t'
+    return 0
+  fi
+
+  if [[ "${NAME_ONLY}" == "1" ]]; then
+    printf '%s\n' "${lines}" | awk -F $'\t' '{ print $2 }' | go run "${TUI_MAIN}" ${mode_arg}
+  else
+    printf '%s\n' "${lines}" | go run "${TUI_MAIN}"
+  fi
+}
+
+main() {
+  if [[ -n "${DNB_VERBOSE:-}" ]]; then
+    VERBOSE="1"
+  fi
+
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --help)
+        usage
+        exit 0
+        ;;
+      --verbose)
+        VERBOSE="1"
+        shift
+        ;;
+      --quiet)
+        QUIET="1"
+        shift
+        ;;
+      -n|--name)
+        NAME_ONLY="1"
+        shift
+        ;;
+      *)
+        echo "ERROR: Unknown option: $1" >&2
+        echo >&2
+        usage >&2
+        exit 1
+        ;;
+    esac
+  done
+
+  init_logging
+
+  [[ -f "${CONFIG_FILE}" ]] || die "Workspace config file not found: ${CONFIG_FILE}"
+
+  local workspace_lines
+  workspace_lines="$(parse_workspace_lines)"
+
+  if [[ -z "${workspace_lines}" ]]; then
+    die "No [[workspace]] entries with title were found in ${CONFIG_FILE}"
+  fi
+
+  log_line "INFO" "Loaded $(printf '%s\n' "${workspace_lines}" | wc -l | tr -d ' ') workspace definitions"
+
+  if [[ "${QUIET}" == "1" || ! -t 1 ]]; then
+    render_plain "${workspace_lines}"
+    return 0
+  fi
+
+  render_interactive "${workspace_lines}"
+}
+
+main "$@"

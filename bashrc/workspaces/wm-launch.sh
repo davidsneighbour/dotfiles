@@ -10,30 +10,46 @@ VERBOSE="0"
 WORKSPACE_NUM=""
 TILE_TEMPLATE=""
 EXEC_COMMAND=""
+SWITCH_WORKSPACE="0"
 
 usage() {
   cat <<EOF_USAGE
-Usage:
-  ${SCRIPT_NAME} --exec <command> [--workspace <N>] [--tile <template>] [--verbose]
-  ${SCRIPT_NAME} --help
+${SCRIPT_NAME} [--workspace N] [--tile TEMPLATE] [--switch|--no-switch] [--verbose] --exec "command"
 
 Launch a program on a workspace and optionally apply a tile template.
 
 Options:
-  --exec <command>      Command to launch. Required.
-                        Use quotes when passing CLI args, for example:
-                        --exec "google-chrome --new-window https://example.com"
-  --workspace <N>       Workspace number (1-based). Optional.
-                        Default: current workspace.
-  --tile <template>     Tile template from ${SCRIPT_DIR}/config.toml. Optional.
-                        If omitted, no tiling is applied.
-  --verbose             Print debug logs to stderr.
-  --help                Show this help.
+  --exec COMMAND
+      Command to launch. Required.
+      Use quotes when passing CLI args, for example:
+      --exec "google-chrome --new-window https://example.com"
+
+  --workspace N
+      Workspace number (1-based). Optional. Default: current workspace.
+
+  --tile TEMPLATE
+      Tile template from ${SCRIPT_DIR}/config.toml. Optional.
+      If omitted, no tiling is applied.
+
+  --switch
+      Visually switch to the target workspace before launching the program.
+
+  --no-switch
+      Do not visually switch to the target workspace before launching the program.
+      Default.
+
+  --verbose
+      Print debug logs to stderr.
+
+  --help
+      Show this help.
 
 Examples:
   ${SCRIPT_NAME} --exec "code"
   ${SCRIPT_NAME} --workspace 3 --exec "obsidian"
   ${SCRIPT_NAME} --workspace 2 --tile right-half --exec "google-chrome --new-window"
+  ${SCRIPT_NAME} --workspace 4 --no-switch --exec "thunderbird"
+  ${SCRIPT_NAME} --workspace 5 --switch --exec "alacritty"
 EOF_USAGE
 }
 
@@ -58,6 +74,7 @@ log_line() {
 
 die() {
   local message="$1"
+
   log_line "ERROR" "${message}"
   echo >&2
   usage >&2
@@ -73,6 +90,7 @@ get_current_workspace_num() {
 
   current_idx="$(wmctrl -d | awk '/\*/ { print $1 }')"
   [[ -n "${current_idx}" ]] || return 1
+
   echo $((current_idx + 1))
 }
 
@@ -82,6 +100,7 @@ get_total_workspaces() {
 
 switch_to_workspace() {
   local workspace_idx="$1"
+
   wmctrl -s "${workspace_idx}"
 }
 
@@ -93,10 +112,12 @@ wait_for_window_id_by_pid() {
 
   for ((i = 0; i < attempts; i += 1)); do
     window_id="$(wmctrl -lp | awk -v target_pid="${pid}" '$3 == target_pid { print $1; exit }')"
+
     if [[ -n "${window_id}" ]]; then
       echo "${window_id}"
       return 0
     fi
+
     sleep "${sleep_seconds}"
   done
 
@@ -139,6 +160,14 @@ main() {
       EXEC_COMMAND="$1"
       shift
       ;;
+    --switch)
+      SWITCH_WORKSPACE="1"
+      shift
+      ;;
+    --no-switch)
+      SWITCH_WORKSPACE="0"
+      shift
+      ;;
     *)
       die "Unknown option: $1"
       ;;
@@ -168,13 +197,19 @@ main() {
 
   log_line "INFO" "Command: ${EXEC_COMMAND}"
   log_line "INFO" "Workspace: ${WORKSPACE_NUM}"
+  log_line "INFO" "Switch before launch: ${SWITCH_WORKSPACE}"
+
   if [[ -n "${TILE_TEMPLATE}" ]]; then
     log_line "INFO" "Tile template: ${TILE_TEMPLATE}"
   fi
 
   if [[ "${WORKSPACE_NUM}" != "${current_workspace}" ]]; then
-    log_line "INFO" "Switching to workspace ${WORKSPACE_NUM}"
-    switch_to_workspace "${target_workspace_idx}"
+    if [[ "${SWITCH_WORKSPACE}" == "1" ]]; then
+      log_line "INFO" "Switching to workspace ${WORKSPACE_NUM}"
+      switch_to_workspace "${target_workspace_idx}"
+    else
+      log_line "INFO" "Staying on current workspace ${current_workspace} and launching for workspace ${WORKSPACE_NUM}"
+    fi
   else
     log_line "INFO" "Using current workspace ${WORKSPACE_NUM}"
   fi
@@ -184,21 +219,27 @@ main() {
   disown "${launch_pid}" || true
   log_line "INFO" "Launched command with PID ${launch_pid}"
 
-  if [[ -n "${TILE_TEMPLATE}" ]]; then
+  if [[ "${WORKSPACE_NUM}" != "${current_workspace}" && "${SWITCH_WORKSPACE}" == "0" ]] || [[ -n "${TILE_TEMPLATE}" ]]; then
     local window_id
+
     if window_id="$(wait_for_window_id_by_pid "${launch_pid}")"; then
       log_line "INFO" "Detected window id ${window_id} for PID ${launch_pid}"
 
-      wmctrl -i -r "${window_id}" -t "${target_workspace_idx}"
-      log_line "INFO" "Moved window ${window_id} to workspace ${WORKSPACE_NUM}"
-
-      local tile_cmd=("${SCRIPT_DIR}/wm-tile-window.sh" "--template" "${TILE_TEMPLATE}" "--window-id" "${window_id}")
-      if [[ "${VERBOSE}" == "1" ]]; then
-        tile_cmd+=("--verbose")
+      if [[ "${WORKSPACE_NUM}" != "${current_workspace}" ]]; then
+        wmctrl -i -r "${window_id}" -t "${target_workspace_idx}"
+        log_line "INFO" "Moved window ${window_id} to workspace ${WORKSPACE_NUM}"
       fi
 
-      "${tile_cmd[@]}"
-      log_line "INFO" "Applied tile template '${TILE_TEMPLATE}' to window ${window_id}"
+      if [[ -n "${TILE_TEMPLATE}" ]]; then
+        local tile_cmd=("${SCRIPT_DIR}/wm-tile-window.sh" "--template" "${TILE_TEMPLATE}" "--window-id" "${window_id}")
+
+        if [[ "${VERBOSE}" == "1" ]]; then
+          tile_cmd+=("--verbose")
+        fi
+
+        "${tile_cmd[@]}"
+        log_line "INFO" "Applied tile template '${TILE_TEMPLATE}' to window ${window_id}"
+      fi
     else
       die "Unable to find a window for PID ${launch_pid}. Command may have forked immediately or did not open a window."
     fi
