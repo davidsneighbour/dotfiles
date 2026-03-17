@@ -5,7 +5,7 @@ set -Eeuo pipefail
 SCRIPT_NAME="$(basename "${0}")"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DEFAULT_TEMPLATE_FILE="${SCRIPT_DIR}/config.toml"
-DEFAULT_TILE_SCRIPT="${SCRIPT_DIR}/wm-tile-window.sh"
+DEFAULT_TILE_SCRIPT="${SCRIPT_DIR}/ws_tile_window"
 DEFAULT_TILE_DIR="${SCRIPT_DIR}/tiles"
 
 usage() {
@@ -18,7 +18,7 @@ Show available tile templates in rofi and apply the selected template to the act
 
 Options:
   --template-file <path>  Path to TOML template file (default: ${DEFAULT_TEMPLATE_FILE}).
-  --tile-script <path>    Path to wm-tile-window.sh (default: ${DEFAULT_TILE_SCRIPT}).
+  --tile-script <path>    Path to ws_tile_window (default: ${DEFAULT_TILE_SCRIPT}).
   --tile-dir <path>       Path to tile SVG folder (default: ${DEFAULT_TILE_DIR}).
   --rofi-theme <value>    Passed to rofi as: -theme <value> (optional).
   --prompt <text>         Prompt label shown by rofi (default: "Tile template").
