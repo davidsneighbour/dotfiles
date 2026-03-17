@@ -1,0 +1,124 @@
+#!/bin/bash
+
+set -Eeuo pipefail
+
+SCRIPT_NAME="$(basename "$0")"
+SCRIPT_DIR="$(CDPATH="" cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+OUTPUT_MODE="programs"
+INCLUDE_STICKY="0"
+WS_QUIET_MODE=0
+
+# shellcheck source=bashrc/workspaces/ws-common.sh
+source "${SCRIPT_DIR}/ws-common.sh"
+
+usage() {
+  cat <<EOF_USAGE
+Usage:
+  ${SCRIPT_NAME} [--workspace-full] [--full] [--workspace <N>] [--include-sticky] [--verbose|--quiet]
+  ${SCRIPT_NAME} --help
+
+Options:
+  --workspace-full     List windows on selected workspace as: workspace, window_id, program, title.
+  --full               List windows on all workspaces.
+  --workspace <N>      Select 1-based workspace number. Default: current workspace.
+  --include-sticky     Include sticky windows (-1).
+  --verbose            Enable verbose logging.
+  --quiet              Disable verbose logging.
+  --help               Show this help.
+EOF_USAGE
+}
+
+die() {
+  ws_log_error "${1}"
+  echo "ERROR: ${1}" >&2
+  echo >&2
+  usage >&2
+  exit 1
+}
+
+workspace_window_rows() {
+  wmctrl -lx | awk -v include_sticky="${INCLUDE_STICKY}" '
+    {
+      workspace = $2
+      if (workspace == "-1" && include_sticky != "1") next
+      window_id = $1
+      wm_class = $4
+      title = ""
+      for (i = 5; i <= NF; i += 1) { title = title $i ((i < NF) ? " " : "") }
+      split(wm_class, class_parts, ".")
+      program = class_parts[length(class_parts)]
+      if (program == "") program = wm_class
+      printf "%s\t%s\t%s\t%s\n", workspace, window_id, program, title
+    }
+  '
+}
+
+main() {
+  local workspace_override=""
+  ws_init_logging "workspaces/ws_list_windows"
+
+  while [[ $# -gt 0 ]]; do
+    if ws_parse_verbosity_flag "$1"; then
+      shift
+      continue
+    fi
+    case "$1" in
+    --help)
+      usage
+      exit 0
+      ;;
+    --workspace-full)
+      OUTPUT_MODE="workspace-full"
+      shift
+      ;;
+    --full)
+      OUTPUT_MODE="full"
+      shift
+      ;;
+    --workspace)
+      shift
+      [[ $# -gt 0 ]] || die "--workspace requires a value"
+      workspace_override="$1"
+      shift
+      ;;
+    --include-sticky)
+      INCLUDE_STICKY="1"
+      shift
+      ;;
+    *) die "Unknown option: $1" ;;
+    esac
+  done
+
+  command -v wmctrl >/dev/null 2>&1 || die "wmctrl is required"
+
+  local current_ws target_ws
+  current_ws="$(wmctrl -d | awk '/\*/ { print $1 }')"
+  [[ -n "${current_ws}" ]] || die "Could not detect current workspace"
+
+  if [[ -n "${workspace_override}" ]]; then
+    [[ "${workspace_override}" =~ ^[0-9]+$ ]] || die "--workspace must be a positive integer"
+    [[ "${workspace_override}" -ge 1 ]] || die "--workspace must be >= 1"
+    target_ws="$((workspace_override - 1))"
+  else
+    target_ws="${current_ws}"
+  fi
+
+  ws_log_verbose "Rendering mode=${OUTPUT_MODE}, target_workspace=$((target_ws + 1))"
+
+  case "${OUTPUT_MODE}" in
+  programs)
+    workspace_window_rows | awk -F $'\t' -v ws="${target_ws}" '$1 == ws { print $3 }' | awk '!seen[$0]++'
+    ;;
+  workspace-full)
+    workspace_window_rows | awk -F $'\t' -v ws="${target_ws}" '$1 == ws { printf "%s\t%s\t%s\t%s\n", $1, $2, $3, $4 }'
+    ;;
+  full)
+    workspace_window_rows | sort -t $'\t' -k1,1n -k3,3
+    ;;
+  *)
+    die "Unsupported output mode: ${OUTPUT_MODE}"
+    ;;
+  esac
+}
+
+main "$@"
