@@ -4,9 +4,11 @@ set -Eeuo pipefail
 
 SCRIPT_NAME="$(basename "$0")"
 SCRIPT_DIR="$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+CONFIG_FILE="${SCRIPT_DIR}/config.toml"
 LOG_DIR="${HOME}/.logs/workspaces"
 LOG_FILE=""
 VERBOSE="0"
+QUIET="0"
 WORKSPACE_NUM=""
 TILE_TEMPLATE=""
 EXEC_COMMAND=""
@@ -14,7 +16,7 @@ SWITCH_WORKSPACE="0"
 
 usage() {
   cat <<EOF_USAGE
-${SCRIPT_NAME} [--workspace N] [--tile TEMPLATE] [--switch|--no-switch] [--verbose] --exec "command"
+${SCRIPT_NAME} [--workspace N|NAME] [--tile TEMPLATE] [--switch|--no-switch] [--verbose|--quiet] --exec "command"
 
 Launch a program on a workspace and optionally apply a tile template.
 
@@ -24,8 +26,9 @@ Options:
       Use quotes when passing CLI args, for example:
       --exec "google-chrome --new-window https://example.com"
 
-  --workspace N
-      Workspace number (1-based). Optional. Default: current workspace.
+  --workspace N|NAME
+      Workspace indicator (1-based index or workspace title from ${CONFIG_FILE}).
+      Title lookup is case-insensitive. Optional. Default: current workspace.
 
   --tile TEMPLATE
       Tile template from ${SCRIPT_DIR}/config.toml. Optional.
@@ -41,6 +44,9 @@ Options:
   --verbose
       Print debug logs to stderr.
 
+  --quiet
+      Force non-verbose mode. Overrides --verbose and DNB_VERBOSE=1.
+
   --help
       Show this help.
 
@@ -48,6 +54,7 @@ Examples:
   ${SCRIPT_NAME} --exec "code"
   ${SCRIPT_NAME} --workspace 3 --exec "obsidian"
   ${SCRIPT_NAME} --workspace 2 --tile right-half --exec "google-chrome --new-window"
+  ${SCRIPT_NAME} --workspace notes --tile right-70 --exec "obsidian vault=notes"
   ${SCRIPT_NAME} --workspace 4 --no-switch --exec "thunderbird"
   ${SCRIPT_NAME} --workspace 5 --switch --exec "alacritty"
 EOF_USAGE
@@ -98,6 +105,87 @@ get_total_workspaces() {
   wmctrl -d | wc -l | tr -d ' '
 }
 
+parse_workspace_lines() {
+  awk '
+    function emit_row() {
+      if (in_workspace == 1 && title != "") {
+        id += 1
+        print id "\t" title
+      }
+    }
+
+    BEGIN {
+      id = 0
+      in_workspace = 0
+      title = ""
+    }
+
+    /^\[\[workspace\]\]/ {
+      emit_row()
+      in_workspace = 1
+      title = ""
+      next
+    }
+
+    in_workspace == 1 && $0 ~ /^[[:space:]]*title[[:space:]]*=/ {
+      line = $0
+      sub(/^[[:space:]]*title[[:space:]]*=[[:space:]]*"/, "", line)
+      sub(/"[[:space:]]*$/, "", line)
+      title = line
+      next
+    }
+
+    END {
+      emit_row()
+    }
+  ' "${CONFIG_FILE}"
+}
+
+normalize_workspace_key() {
+  local value="$1"
+
+  value="$(printf '%s' "${value}" | sed -E 's/^[[:space:]]+//; s/[[:space:]]+$//')"
+  printf '%s' "${value}" | tr '[:upper:]' '[:lower:]'
+}
+
+resolve_workspace_number() {
+  local workspace_input="$1"
+  local normalized_input
+  local workspace_lines
+  local row_id
+  local row_title
+  local row_normalized
+  local matched_id=""
+  local match_count="0"
+
+  if [[ "${workspace_input}" =~ ^[0-9]+$ ]]; then
+    [[ "${workspace_input}" -ge 1 ]] || die "--workspace must be >= 1, got: ${workspace_input}"
+    echo "${workspace_input}"
+    return 0
+  fi
+
+  normalized_input="$(normalize_workspace_key "${workspace_input}")"
+  [[ -n "${normalized_input}" ]] || die "--workspace cannot be empty"
+
+  [[ -f "${CONFIG_FILE}" ]] || die "Workspace config not found: ${CONFIG_FILE}"
+  workspace_lines="$(parse_workspace_lines)"
+  [[ -n "${workspace_lines}" ]] || die "No [[workspace]] entries with title were found in ${CONFIG_FILE}"
+
+  while IFS=$'\t' read -r row_id row_title; do
+    row_normalized="$(normalize_workspace_key "${row_title}")"
+
+    if [[ "${row_normalized}" == "${normalized_input}" ]]; then
+      matched_id="${row_id}"
+      match_count=$((match_count + 1))
+    fi
+  done <<< "${workspace_lines}"
+
+  [[ "${match_count}" -le 1 ]] || die "Workspace title '${workspace_input}' is ambiguous in ${CONFIG_FILE}"
+  [[ -n "${matched_id}" ]] || die "Workspace title '${workspace_input}' was not found in ${CONFIG_FILE}"
+
+  echo "${matched_id}"
+}
+
 switch_to_workspace() {
   local workspace_idx="$1"
 
@@ -125,6 +213,10 @@ wait_for_window_id_by_pid() {
 }
 
 main() {
+  if [[ "${DNB_VERBOSE:-0}" == "1" ]]; then
+    VERBOSE="1"
+  fi
+
   init_logging
 
   if [[ $# -eq 0 ]]; then
@@ -140,6 +232,10 @@ main() {
       ;;
     --verbose)
       VERBOSE="1"
+      shift
+      ;;
+    --quiet)
+      QUIET="1"
       shift
       ;;
     --workspace)
@@ -174,6 +270,10 @@ main() {
     esac
   done
 
+  if [[ "${QUIET}" == "1" ]]; then
+    VERBOSE="0"
+  fi
+
   [[ -n "${EXEC_COMMAND}" ]] || die "--exec is required"
 
   need_cmd wmctrl || die "wmctrl is required. Install with: sudo apt install wmctrl"
@@ -183,9 +283,11 @@ main() {
 
   if [[ -z "${WORKSPACE_NUM}" ]]; then
     WORKSPACE_NUM="${current_workspace}"
+  else
+    WORKSPACE_NUM="$(resolve_workspace_number "${WORKSPACE_NUM}")"
   fi
 
-  [[ "${WORKSPACE_NUM}" =~ ^[0-9]+$ ]] || die "--workspace must be a positive integer, got: ${WORKSPACE_NUM}"
+  [[ "${WORKSPACE_NUM}" =~ ^[0-9]+$ ]] || die "--workspace resolved to an invalid index: ${WORKSPACE_NUM}"
   [[ "${WORKSPACE_NUM}" -ge 1 ]] || die "--workspace must be >= 1, got: ${WORKSPACE_NUM}"
 
   local total_workspaces
