@@ -1,0 +1,5 @@
+- [ ] Add shell completion definitions for all ws_* commands (especially template/workspace-name completion).
+- [ ] Add a dry-run mode for mutating commands (--dry-run) to preview move/tile/launch actions.
+- [ ] Add automated validation command (e.g., ws_validate_config) that checks config.toml against config.schema.json.
+- [ ] Add integration tests in a virtual X session (Xephyr/Xvfb) for move/tile behavior regression protection.
+- [ ] Add explicit polybar hook/update command so workspace state changes can trigger bar refresh predictably.

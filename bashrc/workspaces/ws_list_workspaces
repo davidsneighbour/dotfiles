@@ -1,0 +1,99 @@
+#!/bin/bash
+
+set -Eeuo pipefail
+
+SCRIPT_NAME="$(basename "$0")"
+SCRIPT_DIR="$(CDPATH="" cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+CONFIG_FILE="${SCRIPT_DIR}/config.toml"
+NAME_ONLY="0"
+WS_QUIET_MODE=0
+
+# shellcheck source=bashrc/workspaces/ws-common.sh
+source "${SCRIPT_DIR}/ws-common.sh"
+
+usage() {
+  cat <<EOF_USAGE
+Usage:
+  ${SCRIPT_NAME} [--name] [--verbose|--quiet]
+  ${SCRIPT_NAME} --help
+
+List configured workspaces from ${CONFIG_FILE} in CLI format only.
+
+Options:
+  -n, --name       Output only workspace names.
+  --verbose        Enable verbose logging and set DNB_VERBOSE=1.
+  --quiet          Disable verbose logging.
+  --help           Show this help.
+EOF_USAGE
+}
+
+die() {
+  ws_log_error "${1}"
+  echo "ERROR: ${1}" >&2
+  echo >&2
+  usage >&2
+  exit 1
+}
+
+parse_workspace_lines() {
+  awk '
+    function emit_row() {
+      if (in_workspace == 1 && title != "") {
+        id += 1
+        print id "\t" title
+      }
+    }
+    BEGIN { id = 0; in_workspace = 0; title = "" }
+    /^\[\[workspace\]\]/ { emit_row(); in_workspace = 1; title = ""; next }
+    in_workspace == 1 && $0 ~ /^[[:space:]]*title[[:space:]]*=/ {
+      line = $0
+      sub(/^[[:space:]]*title[[:space:]]*=[[:space:]]*"/, "", line)
+      sub(/"[[:space:]]*$/, "", line)
+      title = line
+      next
+    }
+    END { emit_row() }
+  ' "${CONFIG_FILE}"
+}
+
+main() {
+  ws_init_logging "workspaces/ws_list_workspaces"
+
+  while [[ $# -gt 0 ]]; do
+    if ws_parse_verbosity_flag "$1"; then
+      shift
+      continue
+    fi
+
+    case "$1" in
+      --help)
+        usage
+        exit 0
+        ;;
+      -n|--name)
+        NAME_ONLY="1"
+        shift
+        ;;
+      *)
+        die "Unknown option: $1"
+        ;;
+    esac
+  done
+
+  [[ -f "${CONFIG_FILE}" ]] || die "Workspace config file not found: ${CONFIG_FILE}"
+
+  local workspace_lines
+  workspace_lines="$(parse_workspace_lines)"
+  [[ -n "${workspace_lines}" ]] || die "No [[workspace]] entries with title were found in ${CONFIG_FILE}"
+
+  ws_log_verbose "Loaded $(printf '%s\n' "${workspace_lines}" | wc -l | tr -d ' ') workspace definitions"
+
+  if [[ "${NAME_ONLY}" == "1" ]]; then
+    printf '%s\n' "${workspace_lines}" | awk -F $'\t' '{ print $2 }'
+    exit 0
+  fi
+
+  printf '%s\n' "${workspace_lines}" | awk -F $'\t' '{ printf "%s\t%s\n", $1, $2 }'
+}
+
+main "$@"

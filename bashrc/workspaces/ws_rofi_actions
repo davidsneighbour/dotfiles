@@ -1,0 +1,76 @@
+#!/bin/bash
+set -Eeuo pipefail
+
+SCRIPT_DIR="$(CDPATH="" cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=bashrc/workspaces/ws-common.sh
+source "${SCRIPT_DIR}/ws-common.sh"
+# shellcheck disable=SC2034  # Used by ws_parse_verbosity_flag from ws-common.sh.
+WS_QUIET_MODE=0
+MODE=""
+
+usage() {
+  cat <<EOF_USAGE
+Usage:
+  ws_rofi_actions --mode <start|move|tile-move|select-tile-workspace-program> [options] [--verbose|--quiet]
+
+Modes:
+  start     Use rofi to enter and run a command via ws_launch_program --exec.
+  move      Use rofi to select target workspace for active window.
+  tile-move Use rofi to select tile template and apply to active window.
+  select-tile-workspace-program
+            First select tile + workspace, then pick running window and apply both.
+
+Options:
+  --workspace <N|NAME>  Optional workspace for --mode start.
+  --help                Show this help.
+EOF_USAGE
+}
+
+workspace_value=""
+
+while [[ $# -gt 0 ]]; do
+  if ws_parse_verbosity_flag "$1"; then shift; continue; fi
+  case "$1" in
+    --help) usage; exit 0 ;;
+    --mode) shift; MODE="${1:-}"; [[ -n "${MODE}" ]] || { usage >&2; exit 1; }; shift ;;
+    --workspace) shift; workspace_value="${1:-}"; [[ -n "${workspace_value}" ]] || { usage >&2; exit 1; }; shift ;;
+    *) echo "Unknown option: $1" >&2; usage >&2; exit 1 ;;
+  esac
+done
+
+ws_init_logging "workspaces/ws_rofi_actions"
+
+case "${MODE}" in
+  start)
+    command -v rofi >/dev/null 2>&1 || { echo "rofi is required" >&2; exit 1; }
+    cmd="$(printf '' | rofi -dmenu -p 'Start program')"
+    [[ -n "${cmd}" ]] || exit 0
+    if [[ -n "${workspace_value}" ]]; then
+      "${SCRIPT_DIR}/ws_launch_program" --workspace "${workspace_value}" --exec "${cmd}"
+    else
+      "${SCRIPT_DIR}/ws_launch_program" --exec "${cmd}"
+    fi
+    ;;
+  move)
+    exec "${SCRIPT_DIR}/ws_menu_window_move"
+    ;;
+  tile-move)
+    exec "${SCRIPT_DIR}/ws_menu_window_tile"
+    ;;
+  select-tile-workspace-program)
+    selection="$(
+      {
+        "${SCRIPT_DIR}/ws_list_workspaces" --quiet | awk -F $'\t' '{print $1"\t"$2}'
+      } | rofi -dmenu -p 'Workspace'
+    )"
+    [[ -n "${selection}" ]] || exit 0
+    ws_num="${selection%%$'\t'*}"
+    exec "${SCRIPT_DIR}/ws_menu_window_tile_target" \
+      --workspace "${ws_num}" \
+      --window-prompt "Window for workspace ${ws_num}"
+    ;;
+  *)
+    usage >&2
+    exit 1
+    ;;
+esac

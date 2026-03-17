@@ -3,9 +3,9 @@
 set -Eeuo pipefail
 
 SCRIPT_NAME="$(basename "${0}")"
-SCRIPT_DIR="$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_DIR="$(CDPATH="" cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 DEFAULT_TEMPLATE_FILE="${SCRIPT_DIR}/config.toml"
-DEFAULT_TILE_SCRIPT="${SCRIPT_DIR}/wm-tile-window.sh"
+DEFAULT_TILE_SCRIPT="${SCRIPT_DIR}/ws_tile_window"
 
 usage() {
   cat <<EOF_USAGE
@@ -17,9 +17,10 @@ Select a tile template and a window via rofi, then tile that window on the curre
 
 Options:
   --template-file <path>  Path to TOML template file (default: ${DEFAULT_TEMPLATE_FILE}).
-  --tile-script <path>    Path to wm-tile-window.sh (default: ${DEFAULT_TILE_SCRIPT}).
+  --tile-script <path>    Path to ws_tile_window (default: ${DEFAULT_TILE_SCRIPT}).
   --rofi-theme <value>    Passed to rofi as: -theme <value> (optional).
   --template-prompt <text> Prompt label for template selection (default: "Tile template").
+  --workspace <N>        Workspace number (1-based) to move+tile on (default: current workspace).
   --window-prompt <text>  Prompt label for window selection (default: "Window").
   --window-types <csv>    Comma-separated allowed _NET_WM_WINDOW_TYPE values
                           (default: "_NET_WM_WINDOW_TYPE_NORMAL,_NET_WM_WINDOW_TYPE_DIALOG").
@@ -140,6 +141,7 @@ TEMPLATE_FILE="${DEFAULT_TEMPLATE_FILE}"
 TILE_SCRIPT="${DEFAULT_TILE_SCRIPT}"
 ROFI_THEME=""
 TEMPLATE_PROMPT="Tile template"
+WORKSPACE_NUMBER=""
 WINDOW_PROMPT="Window"
 WINDOW_TYPES_CSV="_NET_WM_WINDOW_TYPE_NORMAL,_NET_WM_WINDOW_TYPE_DIALOG"
 WINDOW_TITLE_EXCLUDE_REGEX=""
@@ -179,6 +181,12 @@ while [[ ${#} -gt 0 ]]; do
     TEMPLATE_PROMPT="${1}"
     shift
     ;;
+  --workspace)
+    shift
+    [[ ${#} -gt 0 ]] || die "--workspace requires a value"
+    WORKSPACE_NUMBER="${1}"
+    shift
+    ;;
   --window-prompt)
     shift
     [[ ${#} -gt 0 ]] || die "--window-prompt requires a value"
@@ -213,6 +221,11 @@ need_cmd xprop || die "xprop is not installed. Install with: sudo apt install x1
 [[ -f "${TEMPLATE_FILE}" ]] || die "Template TOML file not found: ${TEMPLATE_FILE}"
 [[ -f "${TILE_SCRIPT}" ]] || die "Tile script not found: ${TILE_SCRIPT}"
 [[ -x "${TILE_SCRIPT}" ]] || die "Tile script is not executable: ${TILE_SCRIPT}"
+
+if [[ -n "${WORKSPACE_NUMBER}" ]]; then
+  [[ "${WORKSPACE_NUMBER}" =~ ^[0-9]+$ ]] || die "--workspace must be a positive integer (1-based), got: ${WORKSPACE_NUMBER}"
+  [[ "${WORKSPACE_NUMBER}" -ge 1 ]] || die "--workspace must be >= 1, got: ${WORKSPACE_NUMBER}"
+fi
 
 IFS="," read -r -a WINDOW_TYPES <<<"${WINDOW_TYPES_CSV}"
 [[ ${#WINDOW_TYPES[@]} -gt 0 ]] || die "--window-types must provide at least one value"
@@ -353,10 +366,23 @@ logv "Selected window id: ${selected_window_id}"
 current_desktop_index="$(get_current_desktop_index || true)"
 [[ -n "${current_desktop_index}" ]] || die "Could not determine current desktop index"
 
-logv "Current desktop index: ${current_desktop_index}"
+target_desktop_index="${current_desktop_index}"
+if [[ -n "${WORKSPACE_NUMBER}" ]]; then
+  target_desktop_index="$((WORKSPACE_NUMBER - 1))"
+fi
 
-if ! wmctrl -ir "${selected_window_id}" -t "${current_desktop_index}"; then
-  die "Failed to move selected window ${selected_window_id} to current workspace index ${current_desktop_index}"
+logv "Current desktop index: ${current_desktop_index}"
+logv "Target desktop index: ${target_desktop_index}"
+
+if ! wmctrl -ir "${selected_window_id}" -t "${target_desktop_index}"; then
+  die "Failed to move selected window ${selected_window_id} to workspace index ${target_desktop_index}"
+fi
+
+if [[ "${target_desktop_index}" != "${current_desktop_index}" ]]; then
+  if ! wmctrl -s "${target_desktop_index}"; then
+    die "Moved selected window ${selected_window_id}, but failed to switch to workspace index ${target_desktop_index}"
+  fi
+  sleep 0.05
 fi
 
 sleep 0.05

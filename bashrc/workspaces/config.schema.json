@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dnb.local/bashrc/workspaces/config.schema.json",
+  "title": "Workspace and tile template configuration",
+  "type": "object",
+  "properties": {
+    "workspace": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["title"],
+        "properties": {
+          "title": { "type": "string", "minLength": 1 },
+          "icon": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "tile_template": {
+      "type": "object",
+      "patternProperties": {
+        ".+": {
+          "type": "object",
+          "required": ["width", "height", "horizontal_anchor", "horizontal_position", "vertical_anchor", "vertical_position"],
+          "properties": {
+            "width": { "type": "integer", "minimum": 20, "maximum": 100 },
+            "height": { "type": "integer", "minimum": 20, "maximum": 100 },
+            "horizontal_anchor": { "type": "string", "enum": ["left", "right"] },
+            "horizontal_position": { "type": "integer", "minimum": 0, "maximum": 100 },
+            "vertical_anchor": { "type": "string", "enum": ["top", "bottom"] },
+            "vertical_position": { "type": "integer", "minimum": 0, "maximum": 100 },
+            "weight": { "type": "integer" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": ["workspace", "tile_template"],
+  "additionalProperties": false
+}
