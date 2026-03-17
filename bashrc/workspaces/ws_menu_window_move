@@ -105,7 +105,7 @@ need_cmd wmctrl || die "wmctrl is not installed. Install with: sudo apt install 
 
 if [[ -z "${MOVE_SCRIPT}" ]]; then
   SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-  MOVE_SCRIPT="/home/patrick/.dotfiles/bashrc/workspaces/wm-wmanagement.sh"
+  MOVE_SCRIPT="${SCRIPT_DIR}/ws_move_active_window"
 fi
 
 [[ -f "${MOVE_SCRIPT}" ]] || die "Move script not found: ${MOVE_SCRIPT}"
@@ -183,7 +183,12 @@ logv "Target workspace (1-based): ${target_ws}"
 
 # Move active window and follow
 # (Your move script already handles 1-based -> 0-based internally.)
-if ! "${MOVE_SCRIPT}" --to "${target_ws}" --follow $([[ "${VERBOSE}" == "1" ]] && printf '%s' "--verbose"); then
+move_cmd=("${MOVE_SCRIPT}" --to "${target_ws}" --follow)
+if [[ "${VERBOSE}" == "1" ]]; then
+  move_cmd+=(--verbose)
+fi
+
+if ! "${move_cmd[@]}"; then
   die "Failed to move active window to workspace ${target_ws}"
 fi
 
