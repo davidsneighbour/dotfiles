@@ -6,7 +6,7 @@ SCRIPT_NAME="$(basename "${0}")"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DEFAULT_TEMPLATE_FILE="${SCRIPT_DIR}/config.toml"
 DEFAULT_TILE_SCRIPT="${SCRIPT_DIR}/ws_tile_window"
-DEFAULT_TILE_DIR="${SCRIPT_DIR}/tiles"
+DEFAULT_TILE_DIR="${SCRIPT_DIR}/tiles/generated"
 
 usage() {
   cat <<EOF_USAGE
@@ -110,7 +110,7 @@ need_cmd python3 || die "python3 is not installed. Install with: sudo apt instal
 [[ -f "${TEMPLATE_FILE}" ]] || die "Template TOML file not found: ${TEMPLATE_FILE}"
 [[ -f "${TILE_SCRIPT}" ]] || die "Tile script not found: ${TILE_SCRIPT}"
 [[ -x "${TILE_SCRIPT}" ]] || die "Tile script is not executable: ${TILE_SCRIPT}"
-[[ -d "${TILE_DIR}" ]] || die "Tile SVG directory not found: ${TILE_DIR}"
+[[ -d "${TILE_DIR}" ]] || die "Tile SVG directory not found: ${TILE_DIR}. Run ws_generate_tile_svgs to generate tile previews."
 
 logv "Template file: ${TEMPLATE_FILE}"
 logv "Tile script: ${TILE_SCRIPT}"

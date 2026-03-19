@@ -5,7 +5,7 @@ set -Eeuo pipefail
 SCRIPT_NAME="$(basename "$0")"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DEFAULT_CONFIG_FILE="${SCRIPT_DIR}/config.toml"
-DEFAULT_OUTPUT_DIR="${SCRIPT_DIR}/tiles"
+DEFAULT_OUTPUT_DIR="${SCRIPT_DIR}/tiles/generated"
 
 usage() {
   cat <<EOF_USAGE
@@ -31,7 +31,7 @@ Examples:
   ${SCRIPT_NAME}
   ${SCRIPT_NAME} --background-color '#0f172a' --window-color '#93c5fd'
   ${SCRIPT_NAME} --label-font 'Verb Regular' --label-color '#111827'
-  ${SCRIPT_NAME} --width-px 860 --height-px 360 --output-dir "${SCRIPT_DIR}/tiles"
+  ${SCRIPT_NAME} --width-px 860 --height-px 360 --output-dir "${SCRIPT_DIR}/tiles/generated"
 EOF_USAGE
 }
 
@@ -146,8 +146,13 @@ require_positive_integer "--height-px" "${CANVAS_HEIGHT}"
 
 mkdir -p "${OUTPUT_DIR}"
 
+while IFS= read -r existing_svg; do
+  rm -f -- "${existing_svg}"
+done < <(find "${OUTPUT_DIR}" -mindepth 1 -maxdepth 1 -type f -name '*.svg' -print)
+
 logv "Config file: ${CONFIG_FILE}"
 logv "Output dir: ${OUTPUT_DIR}"
+logv "Removed existing SVG tiles from output directory before regeneration."
 logv "Canvas size: ${CANVAS_WIDTH}x${CANVAS_HEIGHT}"
 logv "Colors: background=${BACKGROUND_COLOR}, window=${WINDOW_COLOR}, label=${LABEL_COLOR}"
 logv "Label font: ${LABEL_FONT}"
