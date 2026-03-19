@@ -1,8 +1,9 @@
+#!/usr/bin/env xdg-open
 [Desktop Entry]
 Version=1.0
 Name=Netflix
 Comment=Web App
-Exec=google-chrome-stable --app="https://www.netflix.com" --class=dnb-netflix --name=dnb-netflix
+Exec=/opt/google/chrome/google-chrome --app="https://www.netflix.com" --class=dnb-netflix --name=dnb-netflix
 Terminal=false
 X-MultipleArgs=false
 Type=Application

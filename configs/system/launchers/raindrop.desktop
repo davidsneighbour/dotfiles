@@ -4,6 +4,6 @@ Version=1.0
 Terminal=false
 Type=Application
 Name=Raindrop.io
-Exec=/opt/google/chrome/google-chrome --profile-directory=Default --app-id=bndmnggfngpgmmijcogkkgglhalbpomk
+Exec=/opt/google/chrome/google-chrome --profile-directory=Default --app=https://app.raindrop.io/my/0
 Icon=.icons/DNB/raindropio.png
 StartupWMClass=chrome-raindrop
