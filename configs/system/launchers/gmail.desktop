@@ -4,6 +4,6 @@ Version=1.0
 Terminal=false
 Type=Application
 Name=Gmail
-Exec=/opt/google/chrome/google-chrome --profile-directory=Default --app-id=fmgjjmmmlfnkbppncabfkddbjimcfncm
+Exec=/opt/google/chrome/google-chrome --profile-directory=Default --app=https://mail.google.com/
 Icon=.icons/DNB/gmail.svg
 StartupWMClass=chrome_gmail
