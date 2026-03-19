@@ -26,6 +26,7 @@
     ~/.bashrc: bashrc/.bashrc
     ~/.profile: bashrc/.profile
     ~/.config/starship.toml: configs/system/starship/starship.toml
+    ~/.config/atuin: configs/system/atuin
 
     # system setup
     ~/.face.icon: configs/system/face.icon
