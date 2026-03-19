@@ -1,0 +1,58 @@
+# @see https://docs.atuin.sh/cli/configuration/config/
+# @see https://docs.rs/regex/latest/regex/#syntax for regex syntax
+dialect = "uk"
+timezone = "local"
+auto_sync = true
+update_check = true
+style = "compact"
+inline_height = 48
+show_preview = true
+show_tabs = false
+show_help = false
+## prevent commands matching any of these regexes from being written to history.
+## Note that these regular expressions are unanchored, i.e. if they don't start
+## with ^ or end with $, they'll match anywhere in the command.
+history_filter = [
+#   "^secret-cmd",
+#   "^innocuous-cmd .*--secret=.+",
+]
+## prevent commands run with cwd matching any of these regexes from being written
+## to history. Note that these regular expressions are unanchored, i.e. if they don't
+## start with ^ or end with $, they'll match anywhere in CWD.
+cwd_filter = [
+#   "^/very/secret/area",
+]
+secrets_filter = true
+enter_accept = true
+search_mode = "daemon-fuzzy"
+command_chaining = true
+
+[stats]
+
+[keys]
+
+[sync]
+records = true
+
+[preview]
+
+[daemon]
+enabled = true
+autostart = true
+
+[theme]
+name = "dracula"
+debug = true
+
+[search]
+
+[tmux]
+
+[ui]
+columns = [ "time", "duration", "exit", "command"]
+
+[ai]
+enabled = true
+
+[dotfiles]
+enabled = false # I don't really want this feature
