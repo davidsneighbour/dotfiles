@@ -1,8 +1,8 @@
 # Workspace Configuration
 
-This repository currently uses **three separate workspace definitions**.
+This repository currently uses **two workspace definitions**.
 
-When you add, remove, or reorder a workspace, update all three sources in the same change.
+When you add, remove, or reorder a workspace, keep these sources aligned in the same change.
 
 ## 1) Workspace source of truth for names/icons
 
@@ -46,30 +46,28 @@ icon-7 = Comms;
 icon-8 = Cookies;
 ```
 
-## 3) XFCE workspace creation at Polybar startup
+## 3) XFCE workspace creation at Polybar startup (derived automatically)
 
 File:
 
 * `configs/system/polybar/start.sh`
 
-Update the `workspace-setup.sh` invocation:
+The startup script now reads workspace titles directly from:
 
-* `--count` must match the number of workspaces
-* `--names` must contain the same ordered names
+* `bashrc/workspaces/config.toml` (`[[workspace]]` -> `title`)
 
-Example:
+and derives:
 
-```bash
-~/.dotfiles/bashrc/helpers/workspace-setup.sh --count 9 --names "Dashboard,Web,Code,Ops,Notes,Bots,Dotfiles,Comms,Cookies"
-```
+* `--count` from the number of configured workspace titles
+* `--names` from the ordered list of workspace titles
+
+You do **not** need to manually edit `--count`/`--names` in `start.sh` anymore.
 
 ## Quick verification checklist
 
 After changing workspaces:
 
-1. The number of `[[workspace]]` blocks equals `--count`.
-2. The number of `icon-*` entries equals `--count`.
-3. `--names` order exactly matches `config.toml` titles.
-4. `icon-*` names exactly match `config.toml` titles.
+1. The number of `icon-*` entries equals the number of `[[workspace]]` titles.
+2. `icon-*` names exactly match `config.toml` titles and order.
 
 If any of these drift, workspace labels/icons become inconsistent between XFCE and Polybar.

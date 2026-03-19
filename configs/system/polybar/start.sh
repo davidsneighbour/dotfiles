@@ -64,7 +64,49 @@ fi
 echo "launching bars"
 
 # Read docs/workspaces.md for details on how to configure workspaces and tile templates.
-~/.dotfiles/bashrc/helpers/workspace-setup.sh --count 9 --names "Dashboard,Web,Code,Ops,Notes,Bots,Dotfiles,Comms,Cookies"
+WORKSPACE_CONFIG_FILE="${HOME}/.dotfiles/bashrc/workspaces/config.toml"
+WORKSPACE_SETUP_COMMAND="${HOME}/.dotfiles/bashrc/helpers/workspace-setup.sh"
+
+if [[ ! -f "${WORKSPACE_CONFIG_FILE}" ]]; then
+  echo "workspace config not found: ${WORKSPACE_CONFIG_FILE}"
+  exit 1
+fi
+
+if [[ ! -x "${WORKSPACE_SETUP_COMMAND}" ]]; then
+  echo "workspace setup helper is not executable: ${WORKSPACE_SETUP_COMMAND}"
+  exit 1
+fi
+
+mapfile -t WORKSPACE_TITLES < <(
+  awk '
+    function emit_title() {
+      if (in_workspace == 1 && title != "") {
+        print title
+      }
+    }
+    BEGIN { in_workspace = 0; title = "" }
+    /^\[\[workspace\]\]/ { emit_title(); in_workspace = 1; title = ""; next }
+    in_workspace == 1 && $0 ~ /^[[:space:]]*title[[:space:]]*=/ {
+      line = $0
+      sub(/^[[:space:]]*title[[:space:]]*=[[:space:]]*"/, "", line)
+      sub(/"[[:space:]]*$/, "", line)
+      title = line
+      next
+    }
+    END { emit_title() }
+  ' "${WORKSPACE_CONFIG_FILE}"
+)
+
+WORKSPACE_COUNT="${#WORKSPACE_TITLES[@]}"
+
+if [[ "${WORKSPACE_COUNT}" -eq 0 ]]; then
+  echo "no workspace titles found in ${WORKSPACE_CONFIG_FILE}"
+  exit 1
+fi
+
+WORKSPACE_NAMES="$(IFS=,; echo "${WORKSPACE_TITLES[*]}")"
+
+"${WORKSPACE_SETUP_COMMAND}" --count "${WORKSPACE_COUNT}" --names "${WORKSPACE_NAMES}"
 
 # Start bars, append stdout/stderr into their own logs
 # FC_DEBUG=1 polybar -l "${LOGLEVEL}" -c "${CONFIG_FILE}" top >>"${TOP_LOGFILE}" 2>&1 &
