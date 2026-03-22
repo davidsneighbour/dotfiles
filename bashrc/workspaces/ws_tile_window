@@ -194,6 +194,22 @@ get_desktop_workarea() {
   printf '%s %s %s %s\n' "${values[offset]}" "${values[offset + 1]}" "${values[offset + 2]}" "${values[offset + 3]}"
 }
 
+get_window_frame_extents() {
+  local window_id="$1"
+  local raw
+  local parsed
+
+  raw="$(xprop -id "${window_id}" _NET_FRAME_EXTENTS 2>/dev/null || true)"
+  [[ -n "${raw}" ]] || die "Could not read _NET_FRAME_EXTENTS for window ${window_id}. Cannot tile safely without frame extents."
+
+  parsed="$(
+    printf '%s\n' "${raw}" | sed -nE 's/^_NET_FRAME_EXTENTS\(CARDINAL\) = ([0-9]+), ([0-9]+), ([0-9]+), ([0-9]+)$/\1 \2 \3 \4/p'
+  )"
+
+  [[ -n "${parsed}" ]] || die "Failed to parse _NET_FRAME_EXTENTS for window ${window_id}. Raw value: ${raw}"
+  printf '%s\n' "${parsed}"
+}
+
 VERBOSE="0"
 TILE_WIDTH="50"
 TILE_HEIGHT="100"
@@ -440,9 +456,26 @@ fi
 logv "Monitor: x=${MON_X} y=${MON_Y} w=${MON_W} h=${MON_H}"
 logv "Usable area: x=${WORK_X} y=${WORK_Y} w=${WORK_W} h=${WORK_H}"
 logv "Requested: width=${REQ_WIDTH}% height=${REQ_HEIGHT}% h_anchor=${H_ANCHOR} h_pos=${H_POSITION}% v_anchor=${V_ANCHOR} v_pos=${V_POSITION}%"
-logv "Target: x=${TARGET_X} y=${TARGET_Y} w=${TARGET_W} h=${TARGET_H}"
+
+# Use per-window frame extents so the decorated outer window fits exactly inside
+# the computed tile area. This is required for windows that report non-zero
+# borders/titlebar (for example Chrome app windows created via "Save as app").
+FRAME_EXTENTS="$(get_window_frame_extents "${ACTIVE_WIN}")"
+read -r FRAME_LEFT FRAME_RIGHT FRAME_TOP FRAME_BOTTOM <<<"${FRAME_EXTENTS}"
+
+CLIENT_X=$((TARGET_X + FRAME_LEFT))
+CLIENT_Y=$((TARGET_Y + FRAME_TOP))
+CLIENT_W=$((TARGET_W - FRAME_LEFT - FRAME_RIGHT))
+CLIENT_H=$((TARGET_H - FRAME_TOP - FRAME_BOTTOM))
+
+[[ "${CLIENT_W}" -gt 0 ]] || die "Computed client width is not positive (${CLIENT_W}) for window ${ACTIVE_WIN}. Tile width=${TARGET_W}, extents left=${FRAME_LEFT}, right=${FRAME_RIGHT}."
+[[ "${CLIENT_H}" -gt 0 ]] || die "Computed client height is not positive (${CLIENT_H}) for window ${ACTIVE_WIN}. Tile height=${TARGET_H}, extents top=${FRAME_TOP}, bottom=${FRAME_BOTTOM}."
+
+logv "window=${ACTIVE_WIN} extents left=${FRAME_LEFT} right=${FRAME_RIGHT} top=${FRAME_TOP} bottom=${FRAME_BOTTOM}"
+logv "tile=${TARGET_X},${TARGET_Y} ${TARGET_W}x${TARGET_H}"
+logv "client=${CLIENT_X},${CLIENT_Y} ${CLIENT_W}x${CLIENT_H}"
 
 wmctrl -ir "${ACTIVE_WIN}" -b remove,maximized_vert,maximized_horz
-wmctrl -ir "${ACTIVE_WIN}" -e "0,${TARGET_X},${TARGET_Y},${TARGET_W},${TARGET_H}"
+wmctrl -ir "${ACTIVE_WIN}" -e "0,${CLIENT_X},${CLIENT_Y},${CLIENT_W},${CLIENT_H}"
 
 logv "Done"
