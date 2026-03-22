@@ -24,7 +24,6 @@ lerna-wizard
 lerna
 lighthouse
 netlify-cli
-npm
 npm-check-updates
 pa11y
 playwright

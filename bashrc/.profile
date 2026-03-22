@@ -32,3 +32,6 @@ for FILE in "${DOTFILES_PATH}"/bashrc/partials/_programs/*; do
   # shellcheck disable=SC1090
   [ -f "${FILE}" ] && source "${FILE}"
 done
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
