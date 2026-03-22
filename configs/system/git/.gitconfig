@@ -298,7 +298,7 @@ date = iso
 [pull]
 rebase = true
 [branch]
-sort = -committerdate
+	sort = refname
 [pack]
 usePathWalk = true
 
