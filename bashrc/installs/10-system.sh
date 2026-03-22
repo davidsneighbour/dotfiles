@@ -34,3 +34,5 @@ sudo apt install -y \
   wmctrl \
   yad \
   yamllint
+
+sudo snap install vale
