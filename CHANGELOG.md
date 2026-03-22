@@ -1,5 +1,40 @@
 # Changelog
 
+## [3002.5.0](https://github.com/davidsneighbour/dotfiles/compare/v3002.4.0...v3002.5.0) (2026-03-22)
+
+### Features
+
+* add atuin configuration and theme ([b26754c](https://github.com/davidsneighbour/dotfiles/commit/b26754c7593be2ad913636c69edc0b04878b6a6a))
+* add interface-restart script ([aa44cf5](https://github.com/davidsneighbour/dotfiles/commit/aa44cf5ca5d112c788a764f59d62c7f964fc71a5))
+* add verbosity options and set workspace with name or id ([d26c256](https://github.com/davidsneighbour/dotfiles/commit/d26c256aa136f87664b8dc69e96be19469d1138f))
+* **containers:** add owntrack container ([b7506dc](https://github.com/davidsneighbour/dotfiles/commit/b7506dcdfe9a14839c9694b98d31cbc06bd0473f))
+
+### Bug Fixes
+
+* **bashrc:** add --switch/--no-switch flag to wm-launch script ([87b3faf](https://github.com/davidsneighbour/dotfiles/commit/87b3faf25331d2b4c702cfdf3414d6236a100bd3))
+* **bashrc:** make workspace commands available on the PATH ([d6d6b57](https://github.com/davidsneighbour/dotfiles/commit/d6d6b574587720dafb0c52b756caecd8c6dd9fcb))
+* **containers:** add dnb theme to freshrss installation ([ab2c8aa](https://github.com/davidsneighbour/dotfiles/commit/ab2c8aa2c3cb9ed641f5337b7de04413ef3caf05))
+* **installs:** update package installations ([b856201](https://github.com/davidsneighbour/dotfiles/commit/b856201dfc19b884adc96aca11a25b1fe79d5e35))
+* proper tiles path and cleanup before re-creating them ([bb2ec4f](https://github.com/davidsneighbour/dotfiles/commit/bb2ec4fe7deaa558b8e3abf3af934fe9d45e0df7))
+* read workspace info from config file instead of redefining ([0b3a04f](https://github.com/davidsneighbour/dotfiles/commit/0b3a04fb25620974f40d60c73c4afcdf337cd91a))
+* remove bash history backup from cronjobs (done via atuin now) ([6e9da5f](https://github.com/davidsneighbour/dotfiles/commit/6e9da5fd303d31161c2fc304cd25634e63626ef8))
+* sort branches alphabetically ([423187f](https://github.com/davidsneighbour/dotfiles/commit/423187f0b93427f9a36abfb31b6658c060cd365e))
+* update launchers ([ef427b0](https://github.com/davidsneighbour/dotfiles/commit/ef427b0918ecf8b610e67518ea717365ebb56a25))
+* workspace scripts refactoring ([bf9905e](https://github.com/davidsneighbour/dotfiles/commit/bf9905edbffa345900b9a0e11fbc2ae993c1f225))
+
+### Build
+
+* **deps:** update dependencies ([8a109f3](https://github.com/davidsneighbour/dotfiles/commit/8a109f342ca1da06bf2d632d18afb6c8842a9d75))
+
+### Chore
+
+* **git:** update submodules ([ff6e1ef](https://github.com/davidsneighbour/dotfiles/commit/ff6e1efac7fb26e895dbcde0605365b4504367c7))
+* **vscode:** remove kollitsch.dev workspace (done in repo) ([df14857](https://github.com/davidsneighbour/dotfiles/commit/df14857e791d94245670affc5c518710853c4593))
+
+### Documentation
+
+* **ai:** add reusable global verbosity instruction for agents ([54b5ac6](https://github.com/davidsneighbour/dotfiles/commit/54b5ac6468a3e38ba0cfe541e0018075a3fe3be8))
+
 ## [3002.4.0](https://github.com/davidsneighbour/dotfiles/compare/v3002.3.1...v3002.4.0) (2026-03-16)
 
 ### Features
