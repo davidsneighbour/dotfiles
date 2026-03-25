@@ -5,6 +5,7 @@ brew install gum \
   lychee \
   gmailctl \
   llmfit \
+  osv-scanner \
   snitch \
   typos-cli \
   yamllint
