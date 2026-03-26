@@ -213,15 +213,18 @@ for template_name, template in templates.items():
     free_x = canvas_width - rect_width
     free_y = canvas_height - rect_height
 
+    x_offset = round(canvas_width * h_position / 100)
+    y_offset = round(canvas_height * v_position / 100)
+
     if h_anchor == "right":
-        origin_x = free_x - round(free_x * h_position / 100)
+        origin_x = free_x - x_offset
     else:
-        origin_x = round(free_x * h_position / 100)
+        origin_x = x_offset
 
     if v_anchor == "bottom":
-        origin_y = free_y - round(free_y * v_position / 100)
+        origin_y = free_y - y_offset
     else:
-        origin_y = round(free_y * v_position / 100)
+        origin_y = y_offset
 
     origin_x = clamp(origin_x, 0, free_x)
     origin_y = clamp(origin_y, 0, free_y)

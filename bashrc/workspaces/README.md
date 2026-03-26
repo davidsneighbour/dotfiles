@@ -18,14 +18,14 @@ This folder provides CLI-first workspace automation for XFCE on Xubuntu 25.10 wi
 
 ### `ws_list_workspaces`
 
-- `-n, --name`
+* `-n, --name`
 * `--verbose`
 * `--quiet`
 * `--help`
 
 ### `ws_list_windows`
 
-- `--workspace-full`
+* `--workspace-full`
 * `--full`
 * `--workspace <N>`
 * `--include-sticky`
@@ -35,7 +35,7 @@ This folder provides CLI-first workspace automation for XFCE on Xubuntu 25.10 wi
 
 ### `ws_launch_program`
 
-- `--exec <command>`
+* `--exec <command>`
 * `--workspace <N|NAME>`
 * `--tile <template>`
 * `--switch`
@@ -46,7 +46,7 @@ This folder provides CLI-first workspace automation for XFCE on Xubuntu 25.10 wi
 
 ### `ws_move_active_window`
 
-- `--next`
+* `--next`
 * `--prev`
 * `--to <N>`
 * `--follow`
@@ -55,14 +55,14 @@ This folder provides CLI-first workspace automation for XFCE on Xubuntu 25.10 wi
 
 ### `ws_open_on_workspace`
 
-- `--workspace <N>`
+* `--workspace <N>`
 * `--command <cmd>`
 * `--verbose`
 * `--help`
 
 ### `ws_tile_window`
 
-- `--width <20-100>`
+* `--width <20-100>`
 * `--height <20-100>`
 * `--horizontal-anchor <left|right>`
 * `--horizontal-position <0-100>`
