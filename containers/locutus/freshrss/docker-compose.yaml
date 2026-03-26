@@ -5,8 +5,7 @@ services:
     container_name: freshrss
     volumes:
       - ./config:/config
-      - /home/patrick/github.com/dracula/freshrss:/app/www/p/themes/dracula/
-      - ./dnb-theme:/app/www/p/themes/dnb-theme
+      - ./freshrss-theme:/app/www/p/themes/freshrss-theme/
     ports:
       - 3050:80
     restart: unless-stopped
