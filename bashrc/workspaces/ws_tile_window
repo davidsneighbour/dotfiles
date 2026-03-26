@@ -19,10 +19,10 @@ Options:
   --height <20-100>                Target height in percent (default: 100).
 
   --horizontal-anchor <left|right> Horizontal anchor side (default: left).
-  --horizontal-position <0-100>    Horizontal offset percentage inside available space (default: 0).
+  --horizontal-position <0-100>    Horizontal offset percentage from the anchored monitor edge (default: 0).
 
   --vertical-anchor <top|bottom>   Vertical anchor side (default: top).
-  --vertical-position <0-100>      Vertical offset percentage inside available space (default: 0).
+  --vertical-position <0-100>      Vertical offset percentage from the anchored monitor edge (default: 0).
 
   --template <name>                Load tiling values from TOML template in ${DEFAULT_TEMPLATE_FILE}.
   --template-file <path>           Path to TOML file containing templates (default: ${DEFAULT_TEMPLATE_FILE}).
@@ -438,8 +438,18 @@ TARGET_H=$((WORK_H * REQ_HEIGHT / 100))
 X_ROOM=$((WORK_W - TARGET_W))
 Y_ROOM=$((WORK_H - TARGET_H))
 
-X_OFFSET=$((X_ROOM * H_POSITION / 100))
-Y_OFFSET=$((Y_ROOM * V_POSITION / 100))
+X_OFFSET=$((WORK_W * H_POSITION / 100))
+Y_OFFSET=$((WORK_H * V_POSITION / 100))
+
+if [[ "${X_OFFSET}" -gt "${X_ROOM}" ]]; then
+  warn "horizontal-position ${H_POSITION}% exceeds available horizontal room for width ${REQ_WIDTH}%; clamping offset to keep the window on screen"
+  X_OFFSET="${X_ROOM}"
+fi
+
+if [[ "${Y_OFFSET}" -gt "${Y_ROOM}" ]]; then
+  warn "vertical-position ${V_POSITION}% exceeds available vertical room for height ${REQ_HEIGHT}%; clamping offset to keep the window on screen"
+  Y_OFFSET="${Y_ROOM}"
+fi
 
 if [[ "${H_ANCHOR}" == "left" ]]; then
   TARGET_X=$((WORK_X + X_OFFSET))
