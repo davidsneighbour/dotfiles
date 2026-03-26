@@ -14,3 +14,4 @@ text/xml=google-chrome-beta.desktop;google-chrome-canary.desktop;google-chrome-u
 x-scheme-handler/google-chrome=google-chrome.desktop;
 x-scheme-handler/http=google-chrome-beta.desktop;google-chrome-canary.desktop;google-chrome-unstable.desktop;google-chrome.desktop;
 x-scheme-handler/https=google-chrome-beta.desktop;google-chrome-canary.desktop;google-chrome-unstable.desktop;google-chrome.desktop;
+x-scheme-handler/lmstudio=appimagekit_a3a64e99bca61169161f942f066000f6-LM-Studio.desktop;
