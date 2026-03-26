@@ -55,6 +55,33 @@ vertical_anchor = "top"
 vertical_position = 0
 weight = -20
 
+[tile_template."full"]
+width = 100
+height = 100
+horizontal_anchor = "left"
+horizontal_position = 0
+vertical_anchor = "top"
+vertical_position = 0
+weight = 0
+
+[tile_template."left-half-spaced"]
+width = 47
+height = 100
+horizontal_anchor = "left"
+horizontal_position = 3
+vertical_anchor = "top"
+vertical_position = 0
+weight = 0
+
+[tile_template."right-half-spaced"]
+width = 47
+height = 100
+horizontal_anchor = "left"
+horizontal_position = 50
+vertical_anchor = "top"
+vertical_position = 0
+weight = 0
+
 [tile_template."right-70"]
 width = 70
 height = 100

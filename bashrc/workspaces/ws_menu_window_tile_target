@@ -6,6 +6,7 @@ SCRIPT_NAME="$(basename "${0}")"
 SCRIPT_DIR="$(CDPATH="" cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 DEFAULT_TEMPLATE_FILE="${SCRIPT_DIR}/config.toml"
 DEFAULT_TILE_SCRIPT="${SCRIPT_DIR}/ws_tile_window"
+DEFAULT_TILE_MENU_SCRIPT="${SCRIPT_DIR}/ws_menu_window_tile"
 
 usage() {
   cat <<EOF_USAGE
@@ -18,6 +19,8 @@ Select a tile template and a window via rofi, then tile that window on the curre
 Options:
   --template-file <path>  Path to TOML template file (default: ${DEFAULT_TEMPLATE_FILE}).
   --tile-script <path>    Path to ws_tile_window (default: ${DEFAULT_TILE_SCRIPT}).
+  --tile-menu-script <path>
+                         Path to ws_menu_window_tile (default: ${DEFAULT_TILE_MENU_SCRIPT}).
   --rofi-theme <value>    Passed to rofi as: -theme <value> (optional).
   --template-prompt <text> Prompt label for template selection (default: "Tile template").
   --workspace <N>        Workspace number (1-based) to move+tile on (default: current workspace).
@@ -139,6 +142,7 @@ get_current_monitor_geometry() {
 VERBOSE="0"
 TEMPLATE_FILE="${DEFAULT_TEMPLATE_FILE}"
 TILE_SCRIPT="${DEFAULT_TILE_SCRIPT}"
+TILE_MENU_SCRIPT="${DEFAULT_TILE_MENU_SCRIPT}"
 ROFI_THEME=""
 TEMPLATE_PROMPT="Tile template"
 WORKSPACE_NUMBER=""
@@ -167,6 +171,12 @@ while [[ ${#} -gt 0 ]]; do
     shift
     [[ ${#} -gt 0 ]] || die "--tile-script requires a value"
     TILE_SCRIPT="${1}"
+    shift
+    ;;
+  --tile-menu-script)
+    shift
+    [[ ${#} -gt 0 ]] || die "--tile-menu-script requires a value"
+    TILE_MENU_SCRIPT="${1}"
     shift
     ;;
   --rofi-theme)
@@ -212,7 +222,6 @@ while [[ ${#} -gt 0 ]]; do
 done
 
 need_cmd rofi || die "rofi is not installed. Install with: sudo apt install rofi"
-need_cmd python3 || die "python3 is not installed. Install with: sudo apt install python3"
 need_cmd xdotool || die "xdotool is not installed. Install with: sudo apt install xdotool"
 need_cmd xrandr || die "xrandr is not installed. Install with: sudo apt install x11-xserver-utils"
 need_cmd wmctrl || die "wmctrl is not installed. Install with: sudo apt install wmctrl"
@@ -221,6 +230,8 @@ need_cmd xprop || die "xprop is not installed. Install with: sudo apt install x1
 [[ -f "${TEMPLATE_FILE}" ]] || die "Template TOML file not found: ${TEMPLATE_FILE}"
 [[ -f "${TILE_SCRIPT}" ]] || die "Tile script not found: ${TILE_SCRIPT}"
 [[ -x "${TILE_SCRIPT}" ]] || die "Tile script is not executable: ${TILE_SCRIPT}"
+[[ -f "${TILE_MENU_SCRIPT}" ]] || die "Tile menu script not found: ${TILE_MENU_SCRIPT}"
+[[ -x "${TILE_MENU_SCRIPT}" ]] || die "Tile menu script is not executable: ${TILE_MENU_SCRIPT}"
 
 if [[ -n "${WORKSPACE_NUMBER}" ]]; then
   [[ "${WORKSPACE_NUMBER}" =~ ^[0-9]+$ ]] || die "--workspace must be a positive integer (1-based), got: ${WORKSPACE_NUMBER}"
@@ -247,68 +258,8 @@ read -r MON_X MON_Y MON_W MON_H <<<"${monitor_geometry}"
 
 logv "Current monitor: x=${MON_X} y=${MON_Y} w=${MON_W} h=${MON_H}"
 
-menu_templates_file="$(mktemp)"
 menu_windows_file="$(mktemp)"
-trap 'rm -f "${menu_templates_file}" "${menu_windows_file}"' EXIT
-
-if ! python3 - "${TEMPLATE_FILE}" >"${menu_templates_file}" <<'PY'; then
-import sys
-
-config_path = sys.argv[1]
-
-try:
-    import tomllib
-except ModuleNotFoundError:
-    print("ERROR: Python 3.11+ with tomllib is required.", file=sys.stderr)
-    sys.exit(2)
-
-try:
-    with open(config_path, "rb") as handle:
-        data = tomllib.load(handle)
-except Exception as ex:
-    print(f"ERROR: Could not parse TOML file '{config_path}': {ex}", file=sys.stderr)
-    sys.exit(3)
-
-templates = data.get("tile_template")
-if not isinstance(templates, dict) or len(templates) == 0:
-    print(f"ERROR: No [tile_template] entries found in '{config_path}'.", file=sys.stderr)
-    sys.exit(4)
-
-entries = []
-for name, template in templates.items():
-    if not isinstance(template, dict):
-        continue
-
-    weight = template.get("weight", 0)
-    if not isinstance(weight, int):
-        print(
-            f"ERROR: Tile template '{name}' has invalid weight '{weight}'. Weight must be an integer.",
-            file=sys.stderr,
-        )
-        sys.exit(5)
-
-    entries.append((weight, name))
-
-for _weight, name in sorted(entries, key=lambda entry: (entry[0], entry[1])):
-    print(name)
-PY
-  die "Failed to read tile templates from ${TEMPLATE_FILE}"
-fi
-
-[[ -s "${menu_templates_file}" ]] || die "No tile templates found in ${TEMPLATE_FILE}"
-
-template_rofi_args=(-dmenu -i -p "${TEMPLATE_PROMPT}")
-if [[ -n "${ROFI_THEME}" ]]; then
-  template_rofi_args+=(-theme "${ROFI_THEME}")
-fi
-
-selected_template="$(rofi "${template_rofi_args[@]}" <"${menu_templates_file}")" || true
-if [[ -z "${selected_template}" ]]; then
-  logv "Template selection cancelled"
-  exit 0
-fi
-
-logv "Selected template: ${selected_template}"
+trap 'rm -f "${menu_windows_file}"' EXIT
 
 while IFS= read -r line; do
   window_id="$(printf '%s\n' "${line}" | awk '{print $1}')"
@@ -387,12 +338,25 @@ fi
 
 sleep 0.05
 
-command_args=(--template "${selected_template}" --template-file "${TEMPLATE_FILE}" --window-id "${selected_window_id}")
-if [[ "${VERBOSE}" == "1" ]]; then
-  command_args+=(--verbose)
+if ! wmctrl -ia "${selected_window_id}"; then
+  if ! xdotool windowactivate --sync "${selected_window_id}"; then
+    die "Moved selected window ${selected_window_id}, but failed to activate it before tiling"
+  fi
 fi
 
-"${TILE_SCRIPT}" "${command_args[@]}" || die "Failed to tile window ${selected_window_id} using template '${selected_template}'"
+menu_command_args=(
+  --template-file "${TEMPLATE_FILE}"
+  --tile-script "${TILE_SCRIPT}"
+  --prompt "${TEMPLATE_PROMPT}"
+)
+if [[ -n "${ROFI_THEME}" ]]; then
+  menu_command_args+=(--rofi-theme "${ROFI_THEME}")
+fi
+if [[ "${VERBOSE}" == "1" ]]; then
+  menu_command_args+=(--verbose)
+fi
+
+"${TILE_MENU_SCRIPT}" "${menu_command_args[@]}" || die "Failed to tile window ${selected_window_id} via ${TILE_MENU_SCRIPT}"
 
 if ! wmctrl -ia "${selected_window_id}"; then
   if ! xdotool windowactivate --sync "${selected_window_id}"; then
