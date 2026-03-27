@@ -1,5 +1,29 @@
 # Changelog
 
+## [3002.6.0](https://github.com/davidsneighbour/dotfiles/compare/v3002.5.0...v3002.6.0) (2026-03-27)
+
+### Features
+
+* add msgvault indicator ([dec007c](https://github.com/davidsneighbour/dotfiles/commit/dec007c5a1f110c478258981078d9db7c45b4817))
+* logfile rotation helper ([d56e257](https://github.com/davidsneighbour/dotfiles/commit/d56e2576989f6258bceb4a51c1f93cee7574527a))
+
+### Bug Fixes
+
+* add LM Studio launcher config ([8e42d14](https://github.com/davidsneighbour/dotfiles/commit/8e42d14c8a7a99ed401ebc1afd184bb7281bb819))
+* add osv-scanner to brew packages ([c75bfb4](https://github.com/davidsneighbour/dotfiles/commit/c75bfb4c0c6ce896d7ec8175f0210cd9d6b6c2dc))
+* apply proper nvm initialisation on terminal start ([0b4d669](https://github.com/davidsneighbour/dotfiles/commit/0b4d66926fe4dac45ff86a464f347a9324b69b49))
+* **containers:** remove freshrss theme and setup @davidsneighbour/freshrss-theme ([7ed23fb](https://github.com/davidsneighbour/dotfiles/commit/7ed23fbffe2b695a2138a54ce22ea306c968da94))
+* deduplicate tiling function ([7ef5f9b](https://github.com/davidsneighbour/dotfiles/commit/7ef5f9bf47272ef692fdcedfc173bdda1e1f51f2))
+* fix anchor position to be relative to the anchor's window edge ([1575c53](https://github.com/davidsneighbour/dotfiles/commit/1575c53d49d7863672d48e93c9a819f0ad952b85))
+* ignore data directory in openwebui container ([1717ef4](https://github.com/davidsneighbour/dotfiles/commit/1717ef4c447c639911ab6db3bfaf95d89b311726))
+* purge atuin ([ac17bfd](https://github.com/davidsneighbour/dotfiles/commit/ac17bfd8405d68862a50cb77851f108daa29dcf1))
+* set executable bit on partial programs ([f80b588](https://github.com/davidsneighbour/dotfiles/commit/f80b588c4afc7526bae20ce510adc988a6173ee5))
+* tiling height in chrome app windows ([212b130](https://github.com/davidsneighbour/dotfiles/commit/212b13025c60f9dd7bf6c34833a0ca44f45f304c))
+
+### Chore
+
+* **repo:** update submodules ([19f0afc](https://github.com/davidsneighbour/dotfiles/commit/19f0afcb03fd7f128e309681dd5341069f93f438))
+
 ## [3002.5.0](https://github.com/davidsneighbour/dotfiles/compare/v3002.4.0...v3002.5.0) (2026-03-22)
 
 ### Features
