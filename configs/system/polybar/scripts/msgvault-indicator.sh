@@ -189,7 +189,7 @@ if [[ "${issue_state}" == "ISSUE" ]]; then
   colour="${red}"
 fi
 
-mail_icon="✉"
+mail_icon=""
 output="%{F${colour}}${mail_icon}%{F-}"
 
 if [[ "${SHOW_UNREAD}" == "1" ]]; then
