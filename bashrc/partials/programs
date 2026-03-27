@@ -1,6 +1,0 @@
-# shellcheck shell=bash
-# Bashrc partial (sourced by ~/.bashrc)
-
-# load program integrations (nvm, atuin, gpg helper, ...)
-# shellcheck disable=SC2154 # defined in bashrc
-__dnb_auto_source "${BASHRC_PATH}"/partials/_programs/*
