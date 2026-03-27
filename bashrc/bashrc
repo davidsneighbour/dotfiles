@@ -50,7 +50,7 @@ if [[ -f "${FILE}" && -r "${FILE}" ]]; then
 fi
 unset FILE
 
-for FILE in "${BASHRC_PATH}"/partials/{eval,bash,functions,exports,programs,aliases,completions,prompt}; do
+for FILE in "${BASHRC_PATH}"/partials/{eval,bash,functions,exports,aliases,completions,prompt}; do
   # this routine ranges through a folder of filenames that we don't explicitly know (@davidsneighbour)
   # shellcheck source=/dev/null
   [[ -f "${FILE}" && -r "${FILE}" ]] && source "${FILE}"
@@ -210,6 +210,13 @@ export PATH="${DENO_INSTALL}/bin:${PATH}"
 
 WM_TILE_POLYBAR_TOP_HEIGHT=40
 WM_TILE_POLYBAR_BOTTOM_HEIGHT=40
+
+for FILE in "${BASHRC_PATH}"/partials/programs/*; do
+  # this routine ranges through a folder of filenames that we don't explicitly know (@davidsneighbour)
+  # shellcheck source=/dev/null
+  [[ -f "${FILE}" && -r "${FILE}" ]] && source "${FILE}"
+done
+unset FILE
 
 # starship setup
 # see https://starship.rs/config
