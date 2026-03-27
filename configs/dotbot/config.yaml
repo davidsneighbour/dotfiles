@@ -106,3 +106,6 @@
     - cron: "*/2 * * * *"
       comment: load emails every 2 minutes
       command: ${HOME}/.dotfiles/bashrc/cronjobs/msgvault.sh
+    - cron: "0 * * * *"
+      comment: "cleanup old logs every hour"
+      command: ${HOME}/.dotfiles/bashrc/helpers/logcleanup/cleanup-logs.ts  --config ${HOME}/.dotfiles/bashrc/helpers/logcleanup/config.toml  --verbose >> "$HOME/.logs/cron/cleanup-logs-$(date +\%Y\%m\%d-\%H\%M\%S).log" 2>&1
