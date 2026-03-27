@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/schemas/log-cleanup.config.schema.json",
+  "title": "Log cleanup TOML config",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["default"],
+  "properties": {
+    "default": {
+      "$ref": "#/$defs/policy"
+    },
+    "rule": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/rule"
+      },
+      "default": []
+    }
+  },
+  "$defs": {
+    "action": {
+      "type": "string",
+      "enum": ["delete", "compress"]
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["action", "keep_hours"],
+      "properties": {
+        "action": {
+          "$ref": "#/$defs/action"
+        },
+        "keep_hours": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "rule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["folderslug", "action", "keep_hours"],
+      "properties": {
+        "folderslug": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!/)(?!.*\\.\\.)[^\\\\]+$"
+        },
+        "action": {
+          "$ref": "#/$defs/action"
+        },
+        "keep_hours": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    }
+  }
+}

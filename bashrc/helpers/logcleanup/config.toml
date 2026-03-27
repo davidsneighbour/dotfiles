@@ -1,0 +1,28 @@
+[default]
+action = "compress"
+keep_hours = 48
+
+[[rule]]
+folderslug = "desktop"
+action = "compress"
+keep_hours = 24
+
+[[rule]]
+folderslug = "polybar"
+action = "compress"
+keep_hours = 24
+
+[[rule]]
+folderslug = "cron"
+action = "delete"
+keep_hours = 24
+
+[[rule]]
+folderslug = "services/nginx"
+action = "compress"
+keep_hours = 168
+
+[[rule]]
+folderslug = "msgvault"
+action = "compress"
+keep_hours = 6
