@@ -7,7 +7,7 @@ SCRIPT_NAME="$(basename "$0")"
 usage() {
   cat <<USAGE
 Usage:
-  ${SCRIPT_NAME} [--issues-file <path>] [--settings-file <path>] [--gmail-credentials <path>] [--unread-file <path>] [--show-unread] [--verbose]
+  ${SCRIPT_NAME} [--issues-file <path>] [--settings-file <path>] [--gmail-credentials <path>] [--unread-file <path>] [--log-dir <path>] [--healthy-window-minutes <number>] [--show-unread] [--verbose]
   ${SCRIPT_NAME} --help
 
 Options:
@@ -15,6 +15,9 @@ Options:
   --settings-file <path>      Polybar settings INI file used for colours (default: ~/.dotfiles/configs/system/polybar/configs/01-settings.ini).
   --gmail-credentials <path>  Gmail API credentials file path for optional unread lookup.
   --unread-file <path>        Optional plain-text file containing a numeric unread count.
+  --log-dir <path>            Log directory used to determine last msgvault run freshness (default: ~/.logs/msgvault).
+  --healthy-window-minutes <number>
+                               Time window in minutes to keep mailbox green when no errors occurred (default: 5).
   --show-unread               Attempt to append unread count when available.
   --verbose                   Print debug messages to stderr.
   --help                      Show this help.
@@ -59,10 +62,51 @@ get_unread_count() {
   printf ''
 }
 
+seconds_since_last_run() {
+  local now_epoch=""
+  local newest_epoch="-1"
+  local age_seconds=""
+  local log_file=""
+  local log_mtime=""
+
+  if [[ ! -d "${LOG_DIR}" ]]; then
+    printf -- '-1'
+    return 0
+  fi
+
+  shopt -s nullglob
+  for log_file in "${LOG_DIR}"/*.log; do
+    log_mtime="$(stat -c %Y "${log_file}" 2>/dev/null || printf -- '-1')"
+    if [[ ! "${log_mtime}" =~ ^[0-9]+$ ]]; then
+      continue
+    fi
+    if [[ "${log_mtime}" -gt "${newest_epoch}" ]]; then
+      newest_epoch="${log_mtime}"
+    fi
+  done
+  shopt -u nullglob
+
+  now_epoch="$(date +%s)"
+
+  if [[ ! "${newest_epoch}" =~ ^[0-9]+$ ]]; then
+    printf -- '-1'
+    return 0
+  fi
+
+  age_seconds="$((now_epoch - newest_epoch))"
+  if [[ "${age_seconds}" -lt 0 ]]; then
+    age_seconds=0
+  fi
+
+  printf '%s' "${age_seconds}"
+}
+
 ISSUES_FILE="${HOME}/.config/polybar/issues.toml"
 SETTINGS_FILE="${HOME}/.dotfiles/configs/system/polybar/configs/01-settings.ini"
 GMAIL_CREDENTIALS="${HOME}/github.com/davidsneighbour/dotfiles/modules/gmailctl/credentials.json"
 UNREAD_FILE="${MSGVAULT_UNREAD_FILE:-${HOME}/.cache/gmailctl/unread_count}"
+LOG_DIR="${HOME}/.logs/msgvault"
+HEALTHY_WINDOW_MINUTES="5"
 SHOW_UNREAD="0"
 VERBOSE="0"
 
@@ -112,6 +156,26 @@ while [[ $# -gt 0 ]]; do
     UNREAD_FILE="$1"
     shift
     ;;
+  --log-dir)
+    shift
+    [[ $# -gt 0 ]] || {
+      echo "ERROR: --log-dir requires a value" >&2
+      usage >&2
+      exit 1
+    }
+    LOG_DIR="$1"
+    shift
+    ;;
+  --healthy-window-minutes)
+    shift
+    [[ $# -gt 0 ]] || {
+      echo "ERROR: --healthy-window-minutes requires a value" >&2
+      usage >&2
+      exit 1
+    }
+    HEALTHY_WINDOW_MINUTES="$1"
+    shift
+    ;;
   --show-unread)
     SHOW_UNREAD="1"
     shift
@@ -128,6 +192,11 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
+if [[ ! "${HEALTHY_WINDOW_MINUTES}" =~ ^[0-9]+$ ]]; then
+  echo "ERROR: --healthy-window-minutes must be a non-negative integer" >&2
+  exit 1
+fi
+
 if [[ ! -f "${SETTINGS_FILE}" ]]; then
   echo "ERROR: settings file not found: ${SETTINGS_FILE}" >&2
   exit 1
@@ -135,9 +204,10 @@ fi
 
 red="$(get_colour red)"
 green="$(get_colour green)"
+yellow="$(get_colour yellow)"
 
-if [[ -z "${red}" || -z "${green}" ]]; then
-  echo "ERROR: could not resolve red/green colours from ${SETTINGS_FILE}" >&2
+if [[ -z "${red}" || -z "${green}" || -z "${yellow}" ]]; then
+  echo "ERROR: could not resolve red/green/yellow colours from ${SETTINGS_FILE}" >&2
   exit 1
 fi
 
@@ -187,6 +257,12 @@ fi
 colour="${green}"
 if [[ "${issue_state}" == "ISSUE" ]]; then
   colour="${red}"
+else
+  healthy_window_seconds="$((HEALTHY_WINDOW_MINUTES * 60))"
+  run_age_seconds="$(seconds_since_last_run)"
+  if [[ "${run_age_seconds}" == "-1" || "${run_age_seconds}" -gt "${healthy_window_seconds}" ]]; then
+    colour="${yellow}"
+  fi
 fi
 
 mail_icon=""
