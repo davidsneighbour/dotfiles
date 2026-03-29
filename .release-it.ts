@@ -6,7 +6,7 @@ const config = {
   },
   git: {
     requireBranch: 'main',
-    requireCleanWorkingDir: true,
+    requireCleanWorkingDir: false, // we are doing that in hooks and ignore dirty submodules
     commit: true,
     commitArgs: ['--signoff', '--no-verify'],
     commitMessage: 'chore(release): v${version}',
@@ -14,6 +14,12 @@ const config = {
     tagName: 'v${version}',
     push: true,
     pushArgs: ['--follow-tags'],
+  },
+  hooks: {
+    'before:init': [
+      'git update-index -q --refresh',
+      'git diff-index --quiet --ignore-submodules=dirty HEAD --',
+    ],
   },
   github: {
     release: true,
