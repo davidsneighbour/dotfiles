@@ -33,7 +33,6 @@
     ~/.face: configs/system/face.icon
     ~/.config/conky: configs/system/conky
     ~/.config/user-dirs.dirs: configs/system/user-dirs.dirs
-    ~/Downloads/Paperless: /mnt/storage/Paperless/consume
     ~/.config/polybar: configs/system/polybar
     ~/.config/i3: configs/system/i3
     ~/.logs: logs
@@ -86,9 +85,15 @@
     # fixing emojis in chrome tab names (I know, right?)
     ~/.config/fontconfig/conf.d/01-emoji.conf: configs/system/fontconfig/01-emoji.conf
 
-# - shell:
+- shell:
 #     # create autostart folder connection
 #     - ln -f -s ${HOME}/.dotfiles/configs/system/autostart/${HOSTNAME} ${HOME}/.config/autostart
+    -
+      description: Symlinking mounts
+      command: |
+        if [[ "$(hostname)" == "locutus" ]]; then
+          ln -s /mnt/storage/Paperless/consume $HOME/Downloads/Paperless
+        fi
 
 - crontab:
     - cron: 0 0 * * *
