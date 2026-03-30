@@ -1,20 +1,25 @@
 services:
-  openwebui:
-    image: ghcr.io/open-webui/open-webui:main-slim
-    container_name: openwebui
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: open-webui
     restart: unless-stopped
 
     ports:
-      - "3000:8080"
+      - "3200:8080"
 
+    # https://docs.openwebui.com/reference/env-configuration
     environment:
-      - OLLAMA_BASE_URL=http://host.docker.internal:11434
+      OLLAMA_BASE_URL: "http://host.docker.internal:11434"
+      WEBUI_AUTH: "False"
+      ENABLE_SIGNUP: "False"
+      WEBUI_SECRET_KEY: "5aed33e83d131dcdd71efb13952ac4f5bbfbc2eafff615c8a2bced2eb10b8dee"
+      USER_AGENT: "Mozilla/5.0 (Windows NT 11.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.1.7578.115 Safari/537.36"
+      # Lower the timeout (default is 10 seconds) for faster failover
+      # makes sense for local networks, but can be increased for remote servers
+      AIOHTTP_CLIENT_TIMEOUT_MODEL_LIST: 3
 
     volumes:
-      - open-webui:/app/backend/data
+      - ./data:/app/backend/data
 
     extra_hosts:
       - "host.docker.internal:host-gateway"
-
-volumes:
-  open-webui:
