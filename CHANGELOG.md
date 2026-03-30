@@ -1,5 +1,19 @@
 # Changelog
 
+## [3002.8.0](https://github.com/davidsneighbour/dotfiles/compare/v3002.7.0...v3002.8.0) (2026-03-30)
+
+### Features
+
+* dev file synch helper ([1ffeeaf](https://github.com/davidsneighbour/dotfiles/commit/1ffeeaf57724b9ff51f8dd48df3e3c75a0e9c872))
+
+### Bug Fixes
+
+* **containers:** update openwebui container ([5eb6ea7](https://github.com/davidsneighbour/dotfiles/commit/5eb6ea72c707fea0a4a9f1567e0c77329e90fd6d))
+
+### Chore
+
+* **git:** fix submodule configuration ([e65a52a](https://github.com/davidsneighbour/dotfiles/commit/e65a52a3928bbadc3c70bd5d50d02d870b6e5a4d))
+
 ## [3002.7.0](https://github.com/davidsneighbour/dotfiles/compare/v3002.6.0...v3002.7.0) (2026-03-30)
 
 ### Features
