@@ -1,5 +1,26 @@
 # Changelog
 
+## [3002.7.0](https://github.com/davidsneighbour/dotfiles/compare/v3002.6.0...v3002.7.0) (2026-03-30)
+
+### Features
+
+* add color indicator about success age in msgvault indicator ([22ebf5d](https://github.com/davidsneighbour/dotfiles/commit/22ebf5d7a4777f6c21dc5c5102e0f5dfa4ad8fb4))
+* add gits for status and gitst for staged files ([bcac85b](https://github.com/davidsneighbour/dotfiles/commit/bcac85bd0f5a71352f8ef2c6c6cf401c1e7dd2c3))
+* add update script for local LLM setup ([adb96b8](https://github.com/davidsneighbour/dotfiles/commit/adb96b8633aed99c63bbd83f05a257f217d83646))
+
+### Bug Fixes
+
+* add dnbhq github folder to rofi menu and lint script ([469bdaa](https://github.com/davidsneighbour/dotfiles/commit/469bdaa3b0f346825bb6aff68e626bfbbbc6671b))
+* ignore linker script symlink ([03f8762](https://github.com/davidsneighbour/dotfiles/commit/03f8762cef7e2313ff59d8f5953f4699c5a195bf))
+
+### Build
+
+* **fix:** ignore dirty submodules on releases ([2e12ae5](https://github.com/davidsneighbour/dotfiles/commit/2e12ae53b511d7059689a92d4c37366e05c6d547))
+
+### Chore
+
+* **git:** update submodules ([ba1c724](https://github.com/davidsneighbour/dotfiles/commit/ba1c72443a2bf0545044b5ae177d00e34797952a))
+
 ## [3002.6.0](https://github.com/davidsneighbour/dotfiles/compare/v3002.5.0...v3002.6.0) (2026-03-27)
 
 ### Features
