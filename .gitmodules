@@ -1,17 +1,17 @@
 [submodule "dotbot"]
 	path = modules/dotbot
-url = git@github.com:anishathalye/dotbot
-ignore = dirty
+  url = git@github.com:anishathalye/dotbot
+  ignore = dirty
 [submodule "dotbot-plugins/crontab-dotbot"]
 	path = modules/dotbot-plugins/crontab-dotbot
-url = git@github.com:fundor333/crontab-dotbot.git
+  url = git@github.com:fundor333/crontab-dotbot.git
 [submodule "dotbot-aptget"]
 	path = modules/dotbot-plugins/dotbot-aptget
-url = https://github.com/alegsan/dotbot-aptget.git
+  url = https://github.com/alegsan/dotbot-aptget.git
 [submodule "modules/protected"]
 	path = modules/protected
 	url = git@github.com:davidsneighbour/dotfiles-protected.git
-[submodule "modules/ai"]
+[submodule "modules/dotfiles-ai"]
 	path = modules/dotfiles-ai
 	url = https://github.com/davidsneighbour/dotfiles-ai
 [submodule "modules/gmailctl"]
