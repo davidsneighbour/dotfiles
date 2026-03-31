@@ -4,7 +4,7 @@ services:
     image: codeberg.org/readeck/readeck:latest
     container_name: readeck
     ports:
-      - 8000:8000
+      - 3050:8000
     environment:
       # Defines the application log level. Can be error, warn, info, debug.
       READECK_LOG_LEVEL: info
