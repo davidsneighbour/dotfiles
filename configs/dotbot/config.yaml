@@ -46,6 +46,7 @@
     ~/.config/sublime-text: configs/system/sublime-text
     ~/.config/filezilla: configs/system/filezilla
     ~/.config/rofi: configs/system/rofi
+    ~/.barrier-server.config: configs/system/barrier/barrier-server.conf
 
     # autostart
     ~/.config/autostart: configs/system/autostart/${HOSTNAME}
