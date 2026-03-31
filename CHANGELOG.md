@@ -1,5 +1,20 @@
 # Changelog
 
+## [3002.9.0](https://github.com/davidsneighbour/dotfiles/compare/v3002.8.0...v3002.9.0) (2026-03-31)
+
+### Features
+
+* add barriers configuration and adapt autostart and dotbot ([6f26948](https://github.com/davidsneighbour/dotfiles/commit/6f269487ac9c6abc6e37bfee7aef0ca74aa0fd53))
+* gh cli installation ([3d1b110](https://github.com/davidsneighbour/dotfiles/commit/3d1b110085f5095a983b4581f6953133e2a8aeb3))
+
+### Bug Fixes
+
+* add codex alias and integration ([4398827](https://github.com/davidsneighbour/dotfiles/commit/4398827e39cc8583d563a3e483f1dde3d903017e))
+
+### Chore
+
+* cleanup labels file ([c929b41](https://github.com/davidsneighbour/dotfiles/commit/c929b4108b1b6a05190692777dafaa6c776ba85f))
+
 ## [3002.8.0](https://github.com/davidsneighbour/dotfiles/compare/v3002.7.0...v3002.8.0) (2026-03-30)
 
 ### Features
