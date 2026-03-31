@@ -1,0 +1,136 @@
+#!/bin/bash
+
+##
+# explore
+#
+# Opens a folder in the system's default file manager.
+#
+# FEATURES:
+# - Supports positional OR --path argument
+# - Accepts absolute paths or paths relative to $HOME
+# - Resolves ~ and relative paths safely
+# - Detects available file opener (xdg-open, gio)
+#
+# OPTIONS:
+#   --path <path>       Path to open
+#   --verbose           Enable verbose output
+#   --help              Show this help message
+#
+# EXAMPLES:
+#   explore ~/Downloads
+#   explore documents/projects
+#   explore --path /var/log --verbose
+##
+
+explore() {
+  local path=""
+  local verbose="false"
+
+  # --- help ---
+  _help() {
+    cat <<EOF
+Usage: $(basename "$0") [path] [--path <path>] [--verbose]
+
+Arguments:
+  path                Path to open (positional, optional)
+
+Options:
+  --path <path>       Path to open (overrides positional)
+  --verbose           Enable verbose output
+  --help              Show this help message
+EOF
+  }
+
+  # --- logging ---
+  _log() {
+    [[ "${verbose}" == "true" ]] && echo "[INFO] $1"
+  }
+
+  _error() {
+    echo "[ERROR] $1" >&2
+  }
+
+  # --- argument parsing ---
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --path)
+        path="$2"
+        shift 2
+        ;;
+      --verbose)
+        verbose="true"
+        shift
+        ;;
+      --help)
+        _help
+        return 0
+        ;;
+      --*)
+        _error "Unknown argument: $1"
+        _help
+        return 1
+        ;;
+      *)
+        # positional argument (only if path not already set)
+        if [[ -z "${path}" ]]; then
+          path="$1"
+        else
+          _error "Unexpected extra argument: $1"
+          return 1
+        fi
+        shift
+        ;;
+    esac
+  done
+
+  # --- default to HOME if empty ---
+  if [[ -z "${path}" ]]; then
+    path="${HOME}"
+  fi
+
+  # --- resolve path ---
+  local resolved_path=""
+
+  if [[ "${path}" == /* ]]; then
+    resolved_path="${path}"
+  else
+    resolved_path="${HOME}/${path}"
+  fi
+
+  # expand ~
+  resolved_path="${resolved_path/#\~/${HOME}}"
+
+  # normalize
+  resolved_path="$(realpath -m "${resolved_path}" 2>/dev/null)"
+
+  _log "Resolved path: ${resolved_path}"
+
+  # --- validate ---
+  if [[ ! -d "${resolved_path}" ]]; then
+    _error "Directory does not exist: ${resolved_path}"
+    return 1
+  fi
+
+  # --- detect opener ---
+  local opener=""
+  if command -v xdg-open >/dev/null 2>&1; then
+    opener="xdg-open"
+  elif command -v gio >/dev/null 2>&1; then
+    opener="gio open"
+  else
+    _error "No supported file opener found (xdg-open or gio)"
+    return 1
+  fi
+
+  _log "Using opener: ${opener}"
+
+  # --- open ---
+  ${opener} "${resolved_path}" >/dev/null 2>&1 &
+
+  _log "Opened: ${resolved_path}"
+}
+
+# entrypoint guard
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+  explore "$@"
+fi
