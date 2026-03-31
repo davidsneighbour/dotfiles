@@ -1,0 +1,6 @@
+# ignoring ai prose that is linked from dotfiles-ai
+agents
+instructions
+prompts
+skills
+resources
