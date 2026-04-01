@@ -29,52 +29,17 @@ const config: UserConfig = {
     // https://github.com/sindresorhus/xterm-colors
     themeColorCode: '38;2;112;140;169',
     types: [
-      { value: 'feat', name: 'feat:     A new feature', emoji: ':sparkles:' },
-      { value: 'fix', name: 'fix:      A bug fix', emoji: ':bug:' },
-      {
-        value: 'config',
-        name: 'config:   Configuration only changes',
-        emoji: ':wrench:',
-      },
-      {
-        value: 'docs',
-        name: 'docs:     Documentation only changes',
-        emoji: ':memo:',
-      },
-      {
-        value: 'refactor',
-        name: 'refactor: A code change that neither fixes a bug nor adds a feature',
-        emoji: ':recycle:',
-      },
-      {
-        value: 'perf',
-        name: 'perf:     A code change that improves performance',
-        emoji: ':zap:',
-      },
-      {
-        value: 'test',
-        name: 'test:     Adding missing tests or correcting existing tests',
-        emoji: ':white_check_mark:',
-      },
+      { value: 'feat', name: 'feat:     A new feature' },
+      { value: 'fix', name: 'fix:      A bug fix' },
+      { value: 'config', name: 'config:   Configuration only changes' },
+      { value: 'docs', name: 'docs:     Documentation only changes' },
       {
         value: 'build',
         name: 'build:    Changes that affect the build system or external dependencies',
-        emoji: ':package:',
-      },
-      {
-        value: 'ci',
-        name: 'ci:       Changes to our CI configuration files and scripts',
-        emoji: ':ferris_wheel:',
       },
       {
         value: 'chore',
         name: "chore:    Other changes that don't modify src or test files",
-        emoji: ':hammer:',
-      },
-      {
-        value: 'revert',
-        name: 'revert:   Reverts a previous commit',
-        emoji: ':rewind:',
       },
     ],
     useEmoji: false,
