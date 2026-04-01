@@ -33,18 +33,12 @@ const config = {
       preset: {
         name: 'conventionalcommits',
         types: [
-          { type: 'content', section: 'Content' },
           { type: 'feat', section: 'Features' },
           { type: 'fix', section: 'Bug Fixes' },
+          { type: 'config', section: 'Configuration' },
+          { type: 'docs', section: 'Documentation' },
           { type: 'build', section: 'Build' },
           { type: 'chore', section: 'Chore' },
-          { type: 'ci', section: 'CI' },
-          { type: 'docs', section: 'Documentation' },
-          { type: 'perf', section: 'Performance' },
-          { type: 'refactor', section: 'Refactor' },
-          { type: 'revert', section: 'Revert' },
-          { type: 'style', section: 'Style' },
-          { type: 'test', section: 'Test' },
         ],
       },
       whatBump(commits: Array<{ type?: string; notes?: unknown[] }>) {
@@ -61,7 +55,7 @@ const config = {
             };
           }
 
-          if (type === 'feat' || type === 'content') {
+          if (type === 'feat') {
             level = 1;
             continue;
           }
@@ -70,15 +64,10 @@ const config = {
             level === null &&
             [
               'fix',
+              'config',
+              'docs',
               'build',
               'chore',
-              'ci',
-              'docs',
-              'perf',
-              'refactor',
-              'revert',
-              'style',
-              'test',
             ].includes(type)
           ) {
             level = 2;
