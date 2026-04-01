@@ -1,5 +1,26 @@
 # Changelog
 
+## [3002.10.0](https://github.com/davidsneighbour/dotfiles/compare/v3002.9.0...v3002.10.0) (2026-04-01)
+
+### Features
+
+* add explore helper function ([9477659](https://github.com/davidsneighbour/dotfiles/commit/9477659d3ea7380562b5ba6c54ef152998c99687))
+* **containers:** add readeck container on hal2025 ([4afeefc](https://github.com/davidsneighbour/dotfiles/commit/4afeefce3197b3138930d38c4badc9f7526f415e))
+
+### Bug Fixes
+
+* **containers:** move readeck to port 3050 ([120a7a0](https://github.com/davidsneighbour/dotfiles/commit/120a7a02fe049fa92339b9bb830c04411cd4a89c))
+* update package installs ([527dadd](https://github.com/davidsneighbour/dotfiles/commit/527daddcd01543806e0331f9b47f7411a0fe440d))
+
+### Build
+
+* **deps:** update dependencies ([902c135](https://github.com/davidsneighbour/dotfiles/commit/902c13576faa34b19a76000b62b1b5a783a3036e))
+* **git:** update submodules ([7c23f83](https://github.com/davidsneighbour/dotfiles/commit/7c23f838e2e2d1be71a832981f077d660b47c5f3))
+
+### Chore
+
+* ignore ai prose files that are linked from ai prose repo ([7c02be5](https://github.com/davidsneighbour/dotfiles/commit/7c02be51fc64527e7dce3029ad807dadead79428))
+
 ## [3002.9.0](https://github.com/davidsneighbour/dotfiles/compare/v3002.8.0...v3002.9.0) (2026-03-31)
 
 ### Features
