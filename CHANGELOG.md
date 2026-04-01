@@ -1,5 +1,12 @@
 # Changelog
 
+## [3002.10.1](https://github.com/davidsneighbour/dotfiles/compare/v3002.10.0...v3002.10.1) (2026-04-01)
+
+### Configuration
+
+* **commitizen:** update commit configuration ([8eabfda](https://github.com/davidsneighbour/dotfiles/commit/8eabfda44006210c4065eb494096862f5a6c4a67))
+* **release:** update changelog configuration ([1e0dee3](https://github.com/davidsneighbour/dotfiles/commit/1e0dee3a05dd2aa78e0fee9666a37d04e6a62f25))
+
 ## [3002.10.0](https://github.com/davidsneighbour/dotfiles/compare/v3002.9.0...v3002.10.0) (2026-04-01)
 
 ### Features
