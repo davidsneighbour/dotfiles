@@ -2,6 +2,7 @@
 
 sudo add-apt-repository ppa:libreoffice/ppa --yes --no-update
 sudo add-apt-repository ppa:papirus/papirus --yes --no-update
+sudo add-apt-repository ppa:openshot.developers/ppa --yes --no-update
 
 sudo apt update
 sudo apt upgrade --yes
@@ -23,6 +24,7 @@ sudo apt install -y \
   jsonnet \
   golang-go \
   meld \
+  openshot-qt python3-openshot \
   papirus-icon-theme papirus-folders papirus-colors \
   pulseaudio-utils \
   qbittorrent \
