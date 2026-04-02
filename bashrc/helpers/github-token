@@ -1,0 +1,333 @@
+#!/bin/bash
+# shellcheck disable=SC2317
+
+set -euo pipefail
+
+###############################################################################
+# github-token
+#
+# Selects GitHub tokens from environment or .env files based on role and
+# visibility, then either prints the token or runs a command with GH_TOKEN and
+# GITHUB_TOKEN set.
+#
+# Features:
+# - Searches for .env in the current directory first, then in $HOME
+# - Supports explicit --env-file
+# - Supports roles: read, content, admin
+# - Supports visibility: public, private
+# - Supports subcommands:
+#   - get        -> prints token only
+#   - print-env  -> prints export lines for eval
+#   - run        -> runs a command with token injected
+#   - show-config -> shows which variable name would be used
+#
+# Examples:
+#   github-token --help
+#   github-token get --role read --visibility public
+#   github-token print-env --role admin --visibility private
+#   eval "$(github-token print-env --role content --visibility private)"
+#   github-token run --role admin --visibility public -- gh api /user
+#
+# Requirements:
+# - bash
+# - trusted .env file if using --env-file or auto-loading .env
+###############################################################################
+
+SCRIPT_NAME="$(basename "$0")"
+VERBOSE='false'
+ENV_FILE=''
+SUBCOMMAND=''
+
+print_usage() {
+  cat <<EOF
+Usage:
+  ${SCRIPT_NAME} <subcommand> [options]
+  ${SCRIPT_NAME} --help
+
+Subcommands:
+  get          Print the selected token to stdout
+  print-env    Print export lines for GH_TOKEN and GITHUB_TOKEN
+  run          Run a command with GH_TOKEN and GITHUB_TOKEN set
+  show-config  Show selected role, visibility, env file, and variable name
+
+Options:
+  --role <role>              Token role: read | content | admin
+  --visibility <visibility>  Repository visibility: public | private
+  --env-file <path>          Explicit .env file to load
+  --verbose                  Enable verbose output
+  --help                     Show this help message
+
+Examples:
+  ${SCRIPT_NAME} get --role read --visibility public
+  ${SCRIPT_NAME} print-env --role admin --visibility private
+  eval "\$(${SCRIPT_NAME} print-env --role content --visibility private)"
+  ${SCRIPT_NAME} run --role admin --visibility public -- gh api /user
+
+Notes:
+  * The script checks for '.env' in the current directory first, then in \$HOME.
+  * Explicit --env-file takes precedence.
+  * Defaults can be set via:
+      GITHUB_DEFAULT_ROLE
+      GITHUB_DEFAULT_VISIBILITY
+EOF
+}
+
+print_verbose() {
+  if [[ "${VERBOSE}" == 'true' ]]; then
+    printf '[INFO] %s\n' "$*"
+  fi
+}
+
+print_error() {
+  printf '[ERROR] %s\n' "$*" >&2
+}
+
+die() {
+  print_error "$*"
+  exit 1
+}
+
+validate_role() {
+  local role="${1:-}"
+
+  case "${role}" in
+  read | content | admin)
+    return 0
+    ;;
+  *)
+    die "Invalid role: ${role}. Allowed values: read, content, admin"
+    ;;
+  esac
+}
+
+validate_visibility() {
+  local visibility="${1:-}"
+
+  case "${visibility}" in
+  public | private)
+    return 0
+    ;;
+  *)
+    die "Invalid visibility: ${visibility}. Allowed values: public, private"
+    ;;
+  esac
+}
+
+resolve_env_file() {
+  local explicit_env_file="${1:-}"
+
+  if [[ -n "${explicit_env_file}" ]]; then
+    [[ -f "${explicit_env_file}" ]] || die "Specified env file not found: ${explicit_env_file}"
+    printf '%s\n' "${explicit_env_file}"
+    return 0
+  fi
+
+  if [[ -f "${PWD}/.env" ]]; then
+    printf '%s\n' "${PWD}/.env"
+    return 0
+  fi
+
+  if [[ -f "${HOME}/.env" ]]; then
+    printf '%s\n' "${HOME}/.env"
+    return 0
+  fi
+
+  printf '\n'
+}
+
+load_env_file() {
+  local env_file="${1:-}"
+
+  if [[ -z "${env_file}" ]]; then
+    print_verbose "No .env file found. Using current process environment only."
+    return 0
+  fi
+
+  print_verbose "Loading environment from: ${env_file}"
+
+  # Trusted local file loading.
+  # shellcheck disable=SC1090
+  set -a
+  # shellcheck source=/dev/null # this is ~/.env
+  source "${env_file}"
+  set +a
+}
+
+get_default_role() {
+  printf '%s\n' "${GITHUB_DEFAULT_ROLE:-read}"
+}
+
+get_default_visibility() {
+  printf '%s\n' "${GITHUB_DEFAULT_VISIBILITY:-public}"
+}
+
+get_token_variable_name() {
+  local role="${1:-}"
+  local visibility="${2:-}"
+
+  validate_role "${role}"
+  validate_visibility "${visibility}"
+
+  printf 'GITHUB_TOKEN_%s_%s\n' "${role^^}" "${visibility^^}"
+}
+
+get_token_value() {
+  local role="${1:-}"
+  local visibility="${2:-}"
+  local variable_name=''
+  local token_value=''
+
+  variable_name="$(get_token_variable_name "${role}" "${visibility}")"
+  token_value="${!variable_name:-}"
+
+  if [[ -z "${token_value}" ]]; then
+    die "Token variable ${variable_name} is not set or empty"
+  fi
+
+  printf '%s\n' "${token_value}"
+}
+
+cmd_get() {
+  local role="${1:-}"
+  local visibility="${2:-}"
+
+  get_token_value "${role}" "${visibility}"
+}
+
+cmd_print_env() {
+  local role="${1:-}"
+  local visibility="${2:-}"
+  local token=''
+
+  token="$(get_token_value "${role}" "${visibility}")"
+
+  printf "export GH_TOKEN='%s'\n" "${token}"
+  printf "export GITHUB_TOKEN='%s'\n" "${token}"
+}
+
+cmd_show_config() {
+  local role="${1:-}"
+  local visibility="${2:-}"
+  local env_file="${3:-}"
+  local variable_name=''
+
+  variable_name="$(get_token_variable_name "${role}" "${visibility}")"
+
+  printf 'role=%s\n' "${role}"
+  printf 'visibility=%s\n' "${visibility}"
+  printf 'variable=%s\n' "${variable_name}"
+
+  if [[ -n "${env_file}" ]]; then
+    printf 'env_file=%s\n' "${env_file}"
+  else
+    printf 'env_file=<none>\n'
+  fi
+}
+
+cmd_run() {
+  local role="${1:-}"
+  local visibility="${2:-}"
+  shift 2
+
+  local token=''
+
+  [[ $# -gt 0 ]] || die "No command given for 'run'. Use -- to separate the command."
+
+  token="$(get_token_value "${role}" "${visibility}")"
+
+  print_verbose "Running command with GH_TOKEN and GITHUB_TOKEN set"
+  GH_TOKEN="${token}" GITHUB_TOKEN="${token}" "$@"
+}
+
+main() {
+  local role=''
+  local visibility=''
+  local resolved_env_file=''
+  local cmd_args=()
+
+  [[ $# -gt 0 ]] || {
+    print_usage
+    exit 0
+  }
+
+  case "${1:-}" in
+  --help | -h)
+    print_usage
+    exit 0
+    ;;
+  get | print-env | run | show-config)
+    SUBCOMMAND="${1}"
+    shift
+    ;;
+  *)
+    die "Unknown subcommand: ${1}"
+    ;;
+  esac
+
+  role="$(get_default_role)"
+  visibility="$(get_default_visibility)"
+
+  while [[ $# -gt 0 ]]; do
+    case "${1}" in
+    --role)
+      [[ $# -ge 2 ]] || die "Missing value for --role"
+      role="${2}"
+      shift 2
+      ;;
+    --visibility)
+      [[ $# -ge 2 ]] || die "Missing value for --visibility"
+      visibility="${2}"
+      shift 2
+      ;;
+    --env-file)
+      [[ $# -ge 2 ]] || die "Missing value for --env-file"
+      ENV_FILE="${2}"
+      shift 2
+      ;;
+    --verbose)
+      VERBOSE='true'
+      shift
+      ;;
+    --help | -h)
+      print_usage
+      exit 0
+      ;;
+    --)
+      shift
+      while [[ $# -gt 0 ]]; do
+        cmd_args+=("${1}")
+        shift
+      done
+      ;;
+    *)
+      die "Unknown argument: ${1}"
+      ;;
+    esac
+  done
+
+  validate_role "${role}"
+  validate_visibility "${visibility}"
+
+  resolved_env_file="$(resolve_env_file "${ENV_FILE}")"
+  load_env_file "${resolved_env_file}"
+
+  case "${SUBCOMMAND}" in
+  get)
+    cmd_get "${role}" "${visibility}"
+    ;;
+  print-env)
+    cmd_print_env "${role}" "${visibility}"
+    ;;
+  show-config)
+    cmd_show_config "${role}" "${visibility}" "${resolved_env_file}"
+    ;;
+  run)
+    cmd_run "${role}" "${visibility}" "${cmd_args[@]}"
+    ;;
+  *)
+    die "Unhandled subcommand: ${SUBCOMMAND}"
+    ;;
+  esac
+}
+
+main "$@"
