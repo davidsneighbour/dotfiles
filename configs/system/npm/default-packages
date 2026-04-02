@@ -27,6 +27,7 @@ netlify-cli
 npm-check-updates
 pa11y
 playwright
+remark-cli
 remark-lint-frontmatter-schema
 sassdoc
 svgo

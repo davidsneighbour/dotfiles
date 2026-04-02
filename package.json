@@ -44,8 +44,8 @@
     "secretlint": "11.4.0",
     "semver": "7.7.4",
     "simple-git-hooks": "2.13.1",
-    "toml": "3.0.0",
     "smol-toml": "1.6.1",
+    "toml": "3.0.0",
     "wireit": "0.14.12"
   },
   "scripts": {
