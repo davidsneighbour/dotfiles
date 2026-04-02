@@ -20,7 +20,7 @@ updates:
     pull-request-branch-name:
       separator: /
     labels:
-      - "Type: Dependencies"
+      - "type:dependencies"
     cooldown:
       default-days: 5
 
@@ -38,7 +38,7 @@ updates:
     pull-request-branch-name:
       separator: /
     labels:
-      - "Type: Dependencies"
+      - "type:dependencies"
     cooldown:
       default-days: 5
 
@@ -56,7 +56,7 @@ updates:
     pull-request-branch-name:
       separator: /
     labels:
-      - "Type: Dependencies"
+      - "type:dependencies"
     cooldown:
       default-days: 5
 
@@ -74,7 +74,7 @@ updates:
     pull-request-branch-name:
       separator: /
     labels:
-      - "Type: Dependencies"
+      - "type:dependencies"
     cooldown:
       default-days: 5
 
@@ -92,7 +92,7 @@ updates:
     pull-request-branch-name:
       separator: /
     labels:
-      - "Type: Dependencies"
+      - "type:dependencies"
     cooldown:
       default-days: 5
 
@@ -110,7 +110,7 @@ updates:
     pull-request-branch-name:
       separator: /
     labels:
-      - "Type: Dependencies"
+      - "type:dependencies"
     cooldown:
       default-days: 5
 
@@ -128,6 +128,6 @@ updates:
     pull-request-branch-name:
       separator: /
     labels:
-      - "Type: Dependencies"
+      - "type:dependencies"
     cooldown:
       default-days: 5
