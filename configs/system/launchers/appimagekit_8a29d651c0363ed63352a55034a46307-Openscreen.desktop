@@ -1,0 +1,37 @@
+[Desktop Entry]
+Name=Openscreen (1.2.0) (1)
+Exec=/home/patrick/.bin/local/Openscreen-Linux-latest_07d62f44dc3d18b0089f201027c420b1.AppImage --no-sandbox %U
+Terminal=false
+Type=Application
+Icon=appimagekit_8a29d651c0363ed63352a55034a46307_openscreen
+StartupWMClass=Openscreen
+X-AppImage-Version=1.2.0
+Categories=AudioVideo;
+
+TryExec=/home/patrick/.bin/local/Openscreen-Linux-latest_07d62f44dc3d18b0089f201027c420b1.AppImage
+X-AppImage-Old-Icon=openscreen
+X-AppImage-Old-Name=Openscreen
+X-AppImage-Identifier=8a29d651c0363ed63352a55034a46307
+Actions=AppImageLauncher-Remove-AppImage;
+X-AppImageLauncher-Version=3.0.0-beta-2 (git commit 96cb937), built on 2025-10-28 22:31:15 UTC
+
+[Desktop Action AppImageLauncher-Remove-AppImage]
+Name=Delete this AppImage
+Icon=AppImageLauncher
+Exec=/opt/appimagelauncher.AppDir/usr/lib/x86_64-linux-gnu/appimagelauncher/remove "/home/patrick/.bin/local/Openscreen-Linux-latest_07d62f44dc3d18b0089f201027c420b1.AppImage"
+Name[ast]=Desaniciar AppImage del sistema
+Name[cs]=Odebrat AppImage ze systému
+Name[de]=Dieses AppImage löschen
+Name[en]=Delete this AppImage
+Name[es]=Eliminar Appimage del Sistema
+Name[fr]=Supprimer cette AppImage
+Name[it]=Rimuovi questa AppImage
+Name[ko]=이 AppImage 삭제
+Name[nb_NO]=Slett AppImage
+Name[nl]=AppImage deïnstalleren
+Name[pl]=Usuń AppImage z systemu
+Name[pt]=Remover AppImage do sistema
+Name[pt_BR]=Remover AppImage do sistema
+Name[ru]=Удалить AppImage
+Name[tr]=Bu AppImage uygulamasını sil
+Name[zh_Hans]=删除此 AppImage
