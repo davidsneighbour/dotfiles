@@ -129,7 +129,7 @@ function parseArgs(argv: string[]): CliOptions {
     configPath: DEFAULT_CONFIG_PATH,
     logRoot: DEFAULT_LOG_ROOT,
     tempRoot: DEFAULT_TEMP_ROOT,
-    verbose: isVerboseEnv(process.env.DNB_VERBOSE),
+    verbose: isVerboseEnv(process.env['DNB_VERBOSE']),
     dryRun: false,
     help: false,
   };
@@ -271,15 +271,15 @@ function validateConfig(rawConfig: unknown): CleanupConfig {
   }
 
   const configObject = rawConfig as Record<string, unknown>;
-  const defaultPolicyRaw = configObject.default;
+  const defaultPolicyRaw = configObject['default'];
 
   if (!defaultPolicyRaw || typeof defaultPolicyRaw !== 'object') {
     throw new Error('Config must contain a [default] table');
   }
 
   const defaultPolicyObject = defaultPolicyRaw as Record<string, unknown>;
-  const defaultAction = defaultPolicyObject.action;
-  const defaultKeepHours = defaultPolicyObject.keep_hours;
+  const defaultAction = defaultPolicyObject['action'];
+  const defaultKeepHours = defaultPolicyObject['keep_hours'];
 
   if (!isCleanupAction(defaultAction)) {
     throw new Error('default.action must be "delete" or "compress"');
@@ -295,16 +295,16 @@ function validateConfig(rawConfig: unknown): CleanupConfig {
 
   const rules: CleanupRule[] = [];
 
-  if (Array.isArray(configObject.rule)) {
-    for (const item of configObject.rule) {
+  if (Array.isArray(configObject['rule'])) {
+    for (const item of configObject['rule']) {
       if (!item || typeof item !== 'object') {
         throw new Error('Each [[rule]] entry must be an object');
       }
 
       const ruleObject = item as Record<string, unknown>;
-      const folderslug = ruleObject.folderslug;
-      const action = ruleObject.action;
-      const keepHours = ruleObject.keep_hours;
+      const folderslug = ruleObject['folderslug'];
+      const action = ruleObject['action'];
+      const keepHours = ruleObject['keep_hours'];
 
       if (typeof folderslug !== 'string' || folderslug.trim() === '') {
         throw new Error('rule.folderslug must be a non-empty string');
