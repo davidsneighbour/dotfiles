@@ -1,5 +1,12 @@
 # Changelog
 
+## [3002.13.1](https://github.com/davidsneighbour/dotfiles/compare/v3002.13.0...v3002.13.1) (2026-04-02)
+
+### Bug Fixes
+
+* check for existence of symlink before attempting to override ([05d5821](https://github.com/davidsneighbour/dotfiles/commit/05d5821357f29205327863f447ad77996636464a))
+* markdown linting setup ([9284c44](https://github.com/davidsneighbour/dotfiles/commit/9284c44914002081db6f76635fb6fb39ad2c944a))
+
 ## [3002.13.0](https://github.com/davidsneighbour/dotfiles/compare/v3002.12.0...v3002.13.0) (2026-04-02)
 
 ### Features
