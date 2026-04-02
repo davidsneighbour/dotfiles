@@ -6,7 +6,6 @@ version: 2
 enable-beta-ecosystems: true
 
 updates:
-
   - package-ecosystem: cargo
     directory: "/"
     schedule:
@@ -16,14 +15,14 @@ updates:
       timezone: Asia/Bangkok
     assignees:
       - davidsneighbour
-    reviewers:
-      - davidsneighbour
     target-branch: main
     open-pull-requests-limit: 999
     pull-request-branch-name:
       separator: /
     labels:
       - "Type: Dependencies"
+    cooldown:
+      default-days: 5
 
   - package-ecosystem: npm
     directory: /
@@ -34,14 +33,14 @@ updates:
       timezone: Asia/Bangkok
     assignees:
       - davidsneighbour
-    reviewers:
-      - davidsneighbour
     target-branch: main
     open-pull-requests-limit: 999
     pull-request-branch-name:
       separator: /
     labels:
       - "Type: Dependencies"
+    cooldown:
+      default-days: 5
 
   - package-ecosystem: gomod
     directory: /
@@ -52,14 +51,14 @@ updates:
       timezone: Asia/Bangkok
     assignees:
       - davidsneighbour
-    reviewers:
-      - davidsneighbour
     target-branch: main
     open-pull-requests-limit: 999
     pull-request-branch-name:
       separator: /
     labels:
       - "Type: Dependencies"
+    cooldown:
+      default-days: 5
 
   - package-ecosystem: github-actions
     directory: /
@@ -70,14 +69,14 @@ updates:
       timezone: Asia/Bangkok
     assignees:
       - davidsneighbour
-    reviewers:
-      - davidsneighbour
     target-branch: main
     open-pull-requests-limit: 999
     pull-request-branch-name:
       separator: /
     labels:
       - "Type: Dependencies"
+    cooldown:
+      default-days: 5
 
   - package-ecosystem: composer
     directory: /
@@ -88,14 +87,14 @@ updates:
       timezone: Asia/Bangkok
     assignees:
       - davidsneighbour
-    reviewers:
-      - davidsneighbour
     target-branch: main
     open-pull-requests-limit: 999
     pull-request-branch-name:
       separator: /
     labels:
       - "Type: Dependencies"
+    cooldown:
+      default-days: 5
 
   - package-ecosystem: gitsubmodule
     directory: /
@@ -106,14 +105,14 @@ updates:
       timezone: Asia/Bangkok
     assignees:
       - davidsneighbour
-    reviewers:
-      - davidsneighbour
     target-branch: main
     open-pull-requests-limit: 999
     pull-request-branch-name:
       separator: /
     labels:
       - "Type: Dependencies"
+    cooldown:
+      default-days: 5
 
   - package-ecosystem: docker
     directory: /
@@ -124,11 +123,11 @@ updates:
       timezone: Asia/Bangkok
     assignees:
       - davidsneighbour
-    reviewers:
-      - davidsneighbour
     target-branch: main
     open-pull-requests-limit: 999
     pull-request-branch-name:
       separator: /
     labels:
       - "Type: Dependencies"
+    cooldown:
+      default-days: 5
