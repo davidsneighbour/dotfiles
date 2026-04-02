@@ -1,5 +1,15 @@
 # Changelog
 
+## [3002.12.0](https://github.com/davidsneighbour/dotfiles/compare/v3002.11.0...v3002.12.0) (2026-04-02)
+
+### Features
+
+* add github label setup script ([a3b9f5f](https://github.com/davidsneighbour/dotfiles/commit/a3b9f5f7fd58ade49d17b1d0ddfb23442d22ceb9))
+
+### Build
+
+* **fix:** proper label for dependabot updates ([291e525](https://github.com/davidsneighbour/dotfiles/commit/291e525604a3f176be2fef5979c7886001551fe5))
+
 ## [3002.11.0](https://github.com/davidsneighbour/dotfiles/compare/v3002.10.1...v3002.11.0) (2026-04-02)
 
 ### Features
