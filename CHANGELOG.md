@@ -1,5 +1,27 @@
 # Changelog
 
+## [3002.13.0](https://github.com/davidsneighbour/dotfiles/compare/v3002.12.0...v3002.13.0) (2026-04-02)
+
+### Features
+
+* add github token system ([f4104f8](https://github.com/davidsneighbour/dotfiles/commit/f4104f88e1f9e43d5f77af96b3e72121dd1f1d1c))
+* **bashrc:** add searchfor function ([d45ff06](https://github.com/davidsneighbour/dotfiles/commit/d45ff0618997e262c733a1305a7848e4e2b86e8e))
+
+### Bug Fixes
+
+* **bashrc:** add openscreen launcher ([fb0733a](https://github.com/davidsneighbour/dotfiles/commit/fb0733a08443b59f784d54b20e4b28541dd16337))
+
+### Build
+
+* **deps:** bump @biomejs/biome from 2.4.8 to 2.4.9 ([#453](https://github.com/davidsneighbour/dotfiles/issues/453)) ([3cfcf1b](https://github.com/davidsneighbour/dotfiles/commit/3cfcf1bdd5cbab1a03113db29ca5458f0f68a80b))
+* **deps:** bump modules/dotbot from `614c9fb` to `00f319c` ([#444](https://github.com/davidsneighbour/dotfiles/issues/444)) ([243c1a6](https://github.com/davidsneighbour/dotfiles/commit/243c1a69ae9f2463277a50bc731cb1bbda9b70f0))
+* **deps:** bump modules/dotbot-plugins/crontab-dotbot from `f6baf0c` to `16e6556` ([#443](https://github.com/davidsneighbour/dotfiles/issues/443)) ([0fc9ee7](https://github.com/davidsneighbour/dotfiles/commit/0fc9ee7544bc3e74d336f7250243afb9a81020fc))
+* **deps:** bump npm-check-updates from 19.6.5 to 19.6.6 ([#454](https://github.com/davidsneighbour/dotfiles/issues/454)) ([4ea5f2d](https://github.com/davidsneighbour/dotfiles/commit/4ea5f2d9d7657aa3bd30678dced7ef1b0a343fee))
+
+### Chore
+
+* **git:** update submodules ([fe0c68b](https://github.com/davidsneighbour/dotfiles/commit/fe0c68bf3386bdc5859d5f3fc66bc2b5d2615eab))
+
 ## [3002.12.0](https://github.com/davidsneighbour/dotfiles/compare/v3002.11.0...v3002.12.0) (2026-04-02)
 
 ### Features
