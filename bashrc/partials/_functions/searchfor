@@ -1,0 +1,55 @@
+searchfor() {
+  local term=""
+  local path="${HOME}/github.com/davidsneighbour"
+
+  # help
+  if [[ $# -eq 0 ]]; then
+    echo "Usage: $(basename "$0") <SEARCHTERM> [--path <path>] [--help]"
+    echo
+    echo "Options:"
+    echo "  --path <path>   Override search base path (default: ${HOME}/github.com/davidsneighbour)"
+    echo "  --help          Show this help message"
+    return 1
+  fi
+
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+    --path)
+      path="$2"
+      shift 2
+      ;;
+    --help)
+      echo "Usage: $(basename "$0") <SEARCHTERM> [--path <path>] [--help]"
+      return 0
+      ;;
+    *)
+      if [[ -z "${term}" ]]; then
+        term="$1"
+      else
+        echo "[ERROR] Unexpected argument: $1"
+        return 1
+      fi
+      shift
+      ;;
+    esac
+  done
+
+  if [[ -z "${term}" ]]; then
+    echo "[ERROR] Missing SEARCHTERM"
+    return 1
+  fi
+
+  if [[ ! -d "${path}" ]]; then
+    echo "[ERROR] Path does not exist: ${path}"
+    return 1
+  fi
+
+  grep -rIn \
+    --exclude-dir='.git' \
+    --exclude-dir='node_modules' \
+    --exclude-dir='scratch' \
+    --exclude-dir='chatgpt-obsidian-importer' \
+    --color=always \
+    "${term}" \
+    "${path}"
+}
