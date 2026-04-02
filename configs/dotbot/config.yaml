@@ -87,13 +87,18 @@
     ~/.config/fontconfig/conf.d/01-emoji.conf: configs/system/fontconfig/01-emoji.conf
 
 - shell:
-#     # create autostart folder connection
-#     - ln -f -s ${HOME}/.dotfiles/configs/system/autostart/${HOSTNAME} ${HOME}/.config/autostart
-    -
-      description: Symlinking mounts
+    #     # create autostart folder connection
+    #     - ln -f -s ${HOME}/.dotfiles/configs/system/autostart/${HOSTNAME} ${HOME}/.config/autostart
+    - description: Symlinking mounts
       command: |
         if [[ "$(hostname)" == "locutus" ]]; then
-          ln -s /mnt/storage/Paperless/consume $HOME/Downloads/Paperless
+          if [[ -L "$HOME/Downloads/Paperless" ]]; then
+            ln -sfn /mnt/storage/Paperless/consume $HOME/Downloads/Paperless
+          elif [[ ! -e "$HOME/Downloads/Paperless" ]]; then
+            ln -s /mnt/storage/Paperless/consume $HOME/Downloads/Paperless
+          else
+            echo "[ERROR] Exists and is not a symlink: $HOME/Downloads/Paperless"
+          fi
         fi
 
 - crontab:
