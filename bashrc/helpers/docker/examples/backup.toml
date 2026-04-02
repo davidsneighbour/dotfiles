@@ -1,0 +1,23 @@
+# Portable built-in backup task.
+# Put this file into a container directory such as:
+# /srv/docker/portainer/backup.toml
+
+enabled = true
+name = "portainer"
+mode = "compose-copy"
+service_root = "."
+compose_file = "docker-compose.yml"
+data_paths = ["data"]
+stop_timeout_seconds = 30
+compression = "tar.gz"
+ignore_missing_paths = false
+
+# Optional hook before the backup starts.
+# pre_command = "echo Starting ${name} on ${host}"
+
+# Optional hook after the archive was created and the stack is back up.
+# post_command = "echo Finished ${archive}"
+
+# Optional online/off-site copy.
+# Example with rclone:
+# upload_command = "rclone copy ${archive} remote:docker-backups/${host}/"
