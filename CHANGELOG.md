@@ -1,5 +1,29 @@
 # Changelog
 
+## [3002.11.0](https://github.com/davidsneighbour/dotfiles/compare/v3002.10.1...v3002.11.0) (2026-04-02)
+
+### Features
+
+* add bootstrap.sh to set up a couple of folders and symlinks ([9d33c26](https://github.com/davidsneighbour/dotfiles/commit/9d33c262dbd8009ae72fc659d86aaffccf2f6201))
+
+### Bug Fixes
+
+* add launcher for openscreen ([dc7d370](https://github.com/davidsneighbour/dotfiles/commit/dc7d370e1b2a3880df4eaf14199ba50b45818f84))
+* rework helper directory ([5b19403](https://github.com/davidsneighbour/dotfiles/commit/5b194035ab42b0720dfd4ba8c3fe46fc39f208c0))
+
+### Configuration
+
+* **fix:** add cspell configuration ([e4d4721](https://github.com/davidsneighbour/dotfiles/commit/e4d4721baa36b2c473841c18efbad45a912f34a1))
+
+### Build
+
+* **fix:** package configuration ([a3a0e4c](https://github.com/davidsneighbour/dotfiles/commit/a3a0e4c08a43c5d17585fa1d9a73670f854be45d))
+
+### Chore
+
+* **assets:** update skyline stats for 2026 ([4dd0d0f](https://github.com/davidsneighbour/dotfiles/commit/4dd0d0fb1e422d9307047e43c36016069eafd3fb))
+* **git:** update submodules ([aa4bad3](https://github.com/davidsneighbour/dotfiles/commit/aa4bad3f2021aae57cb9abdc0622be531b0257c1))
+
 ## [3002.10.1](https://github.com/davidsneighbour/dotfiles/compare/v3002.10.0...v3002.10.1) (2026-04-01)
 
 ### Configuration
