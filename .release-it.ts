@@ -20,6 +20,9 @@ const config = {
       'git update-index -q --refresh',
       'git diff-index --quiet --ignore-submodules=dirty HEAD --',
     ],
+    'before:git:release': [
+      'if [ -f CITATION.cff ]; then last_commit=$(git rev-parse HEAD); release_date=$(date +%F); sed -Ei "s/^commit: .*/commit: $last_commit/" CITATION.cff; sed -Ei "s/^version: .*/version: ${version}/" CITATION.cff; sed -Ei "s/^date-released: .*/date-released: $release_date/" CITATION.cff; git add CITATION.cff; fi',
+    ],
   },
   github: {
     release: true,
@@ -62,13 +65,7 @@ const config = {
 
           if (
             level === null &&
-            [
-              'fix',
-              'config',
-              'docs',
-              'build',
-              'chore',
-            ].includes(type)
+            ['fix', 'config', 'docs', 'build', 'chore'].includes(type)
           ) {
             level = 2;
           }
