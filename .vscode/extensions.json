@@ -33,5 +33,7 @@
     "ms-azuretools.vscode-containers",
     "mousavian.ssh-config-syntax-highlighter",
     "grafana.vscode-jsonnet",
+    "streetsidesoftware.code-spell-checker",
+    "streetsidesoftware.code-spell-checker-cspell-bundled-dictionaries",
   ]
 }

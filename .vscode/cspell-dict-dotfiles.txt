@@ -21,3 +21,9 @@ remarkrc
 shellcheck
 timezone
 webui
+extensionless
+pixelsize
+Polybar
+roleplay
+sugarcoating
+roleplay

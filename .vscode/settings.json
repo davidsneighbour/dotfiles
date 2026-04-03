@@ -29,12 +29,21 @@
   },
   "markdown.extension.toc.levels": "2..6",
   "deno.enable": false,
-  "cSpell.words": [
-    "extensionless",
-    "offs",
-    "pixelsize",
-    "Polybar",
-    "roleplay",
-    "sugarcoating"
-  ]
+  // https://code.visualstudio.com/api/references/theme-color
+  "cSpell.language": "en-GB",
+  "cSpell.enabled": true,
+  "cSpell.customDictionaries": {
+    
+    "dotfiles": {
+      "name": "dotfiles",
+      "path": "${workspaceFolder:dotfiles}/.vscode/cspell-dict-dotfiles.txt",
+      "description": "Words used in this project",
+      "addWords": true,
+      "scope": "workspace"
+    }
+  },
+  "cSpell.validateDirectives": true,
+  "chat.tools.terminal.autoApprove": {
+    "mkdir": true
+  }
 }
