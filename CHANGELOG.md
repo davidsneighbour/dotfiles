@@ -1,5 +1,15 @@
 # Changelog
 
+## [3002.13.4](https://github.com/davidsneighbour/dotfiles/compare/v3002.13.3...v3002.13.4) (2026-04-03)
+
+### Bug Fixes
+
+* **bashrc:** add completion script for gh cli interface ([83c4571](https://github.com/davidsneighbour/dotfiles/commit/83c45715084d5e7a9d78c3988dbfe3a4c696d986))
+
+### Build
+
+* **deps:** bump lodash from 4.17.23 to 4.18.1 in the npm_and_yarn group across 1 directory ([#455](https://github.com/davidsneighbour/dotfiles/issues/455)) ([80ae171](https://github.com/davidsneighbour/dotfiles/commit/80ae171d5d92530a665e3f9601623feae79cbfa7))
+
 ## [3002.13.3](https://github.com/davidsneighbour/dotfiles/compare/v3002.13.2...v3002.13.3) (2026-04-03)
 
 ### Bug Fixes
