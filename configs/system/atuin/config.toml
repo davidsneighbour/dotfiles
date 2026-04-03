@@ -1,5 +1,4 @@
 # @see https://docs.atuin.sh/cli/configuration/config/
-# @see https://docs.rs/regex/latest/regex/#syntax for regex syntax
 dialect = "uk"
 timezone = "local"
 auto_sync = true
@@ -12,6 +11,7 @@ show_help = false
 ## prevent commands matching any of these regexes from being written to history.
 ## Note that these regular expressions are unanchored, i.e. if they don't start
 ## with ^ or end with $, they'll match anywhere in the command.
+# @see https://docs.rs/regex/latest/regex/#syntax for regex syntax
 history_filter = [
 #   "^secret-cmd",
 #   "^innocuous-cmd .*--secret=.+",
@@ -41,7 +41,7 @@ enabled = true
 autostart = true
 
 [theme]
-name = "dracula"
+name = "dnb-dracula"
 debug = true
 
 [search]

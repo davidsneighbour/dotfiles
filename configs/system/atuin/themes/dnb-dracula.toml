@@ -1,13 +1,13 @@
 [theme]
-name = "dracula"
+name = "dnb-dracula"
 
 [colors]
-AlertInfo = "#FF80BF"
+AlertInfo = "#9580FF"
 AlertWarn = "#FFFF80"
 AlertError = "#FF9580"
 Annotation = "#708CA9"
 Base = "#F8F8F2"
 Guidance = "#8AFF80"
-Important = "#80FFEA"
+Important = "#FFCA80"
 Title = "#414D58"
 Muted = "#708CA9"
