@@ -1,5 +1,11 @@
 # Changelog
 
+## [3002.13.2](https://github.com/davidsneighbour/dotfiles/compare/v3002.13.1...v3002.13.2) (2026-04-03)
+
+### Bug Fixes
+
+* add CITATION.cff update to release pipeline ([527e659](https://github.com/davidsneighbour/dotfiles/commit/527e6591db92bf86646fb3866a7e6183095dd9e4))
+
 ## [3002.13.1](https://github.com/davidsneighbour/dotfiles/compare/v3002.13.0...v3002.13.1) (2026-04-02)
 
 ### Bug Fixes
