@@ -1,5 +1,11 @@
 # Changelog
 
+## [3002.13.3](https://github.com/davidsneighbour/dotfiles/compare/v3002.13.2...v3002.13.3) (2026-04-03)
+
+### Bug Fixes
+
+* proper tokenRef for new GH token system ([c572d2e](https://github.com/davidsneighbour/dotfiles/commit/c572d2efa9c2683bcde9e8de7513962b29041118))
+
 ## [3002.13.2](https://github.com/davidsneighbour/dotfiles/compare/v3002.13.1...v3002.13.2) (2026-04-03)
 
 ### Bug Fixes
