@@ -7,9 +7,12 @@ type: software
 authors:
   - family-names: Kollitsch
     given-names: Patrick
-    orcid: 'https://orcid.org/0000-0001-6250-2135'
-repository-code: 'https://github.com/davidsneighbour/dotfiles'
-url: 'https://github.com/davidsneighbour/dotfiles/#readme'
+    orcid: "https://orcid.org/0000-0001-6250-2135"
+identifiers:
+  - type: url
+    value: "https://github.com/davidsneighbour/dotfiles"
+repository-code: "https://github.com/davidsneighbour/dotfiles"
+url: "https://github.com/davidsneighbour/dotfiles/#readme"
 abstract: >-
   This is @davidsneighbour's dotfiles repository, where I
   keep personalized configurations, scripts, and setup
@@ -20,6 +23,7 @@ keywords:
   - bash
   - node
   - npm
+  - typescript
   - configuration
 license: MIT
 commit: 3bca13235bbbdcdb9f49cde40cc150dc23d1e826
