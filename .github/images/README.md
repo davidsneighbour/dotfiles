@@ -1,7 +1,6 @@
+# Licenses
 
-## Licenses
-
-### Header image
+## Header image
 
 * getty-images-n_a9122kob4-unsplash.jpg
 * header.jpg
