@@ -1,0 +1,51 @@
+#!/bin/bash
+# shellcheck shell=bash
+
+show_help() {
+  local cmd
+  cmd="$(basename "$0")"
+  cat <<EOH
+${cmd} - create a tar archive using the shared DNB library
+
+Usage:
+  ${cmd} [--output <file>] [--method <gzip|xz|zstd>] [--level <N>] [--verbose] <folder>
+EOH
+}
+
+main() {
+  local verbose='false'
+  local -a pass_args=()
+  local file=''
+
+  while [[ "$#" -gt 0 ]]; do
+    case "${1}" in
+    --help)
+      show_help
+      return 0
+      ;;
+    --verbose)
+      verbose='true'
+      ;;
+    *)
+      pass_args+=("${1}")
+      ;;
+    esac
+    shift
+  done
+
+  if [[ -z "${BASHRC_PATH:-}" ]]; then
+    printf 'BASHRC_PATH is not set.\n' >&2
+    return 1
+  fi
+
+  # load the library functions
+  for FILE in "${BASHRC_PATH}"/lib/*/*.bash; do
+    # shellcheck disable=SC1090
+    [[ -f "${FILE}" && -r "${FILE}" ]] && source "${FILE}"
+  done
+
+  [[ "${verbose}" == 'true' ]] && export LOG_LEVEL='skip'
+  dnb_archive_create "${pass_args[@]}"
+}
+
+main "$@"

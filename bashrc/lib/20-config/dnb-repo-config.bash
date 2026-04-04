@@ -3,9 +3,9 @@
 
 # dnb_repo_config_get: Read repo-local TOML config from <repo>/.github/dnb.toml
 # Contract:
-# * Found: prints value, exit 0 (empty string prints empty)
-# * Missing file or key or not a git repo: prints "false", exit 1
-# * Invalid TOML / parser error: prints "false", stderr message, exit 2
+# - Found: prints value, exit 0 (empty string prints empty)
+# - Missing file or key or not a git repo: prints "false", exit 1
+# - Invalid TOML / parser error: prints "false", stderr message, exit 2
 
 dnb_repo_config_get() {
   local func="${FUNCNAME[0]}"
@@ -20,28 +20,28 @@ dnb_repo_config_get() {
     # Parse args: allow "<path> [--help] [--list-keys]" or "--help" / "--list-keys"
     while [[ "${#}" -gt 0 ]]; do
       case "${1}" in
-        --help|-h)
+      --help | -h)
+        opt_help="true"
+        shift
+        ;;
+      --list-keys)
+        opt_list_keys="true"
+        shift
+        ;;
+      -*)
+        printf '%s\n' "Error: Unknown option: ${1}" >&2
+        opt_help="true"
+        shift
+        ;;
+      *)
+        if [[ -z "${query}" ]]; then
+          query="${1}"
+        else
+          printf '%s\n' "Error: Unexpected argument: ${1}" >&2
           opt_help="true"
-          shift
-          ;;
-        --list-keys)
-          opt_list_keys="true"
-          shift
-          ;;
-        -*)
-          printf '%s\n' "Error: Unknown option: ${1}" >&2
-          opt_help="true"
-          shift
-          ;;
-        *)
-          if [[ -z "${query}" ]]; then
-            query="${1}"
-          else
-            printf '%s\n' "Error: Unexpected argument: ${1}" >&2
-            opt_help="true"
-          fi
-          shift
-          ;;
+        fi
+        shift
+        ;;
       esac
     done
   fi
@@ -58,19 +58,19 @@ Description:
   for a dotted key path (for example: launcher.icon or meta.social.bluesky).
 
 Resolution:
-  * Repo root is determined via: git rev-parse --show-toplevel
-  * Config file path: <repo>/.github/dnb.toml
-  * Missing repo/config/key prints "false" and exits 1.
+  - Repo root is determined via: git rev-parse --show-toplevel
+  - Config file path: <repo>/.github/dnb.toml
+  - Missing repo/config/key prints "false" and exits 1.
 
 Path rules:
-  * Path segments are split on "." (dot).
-  * Keys containing literal dots are not supported (avoid quoted TOML keys with dots).
+  - Path segments are split on "." (dot).
+  - Keys containing literal dots are not supported (avoid quoted TOML keys with dots).
 
 Output formatting:
-  * string: printed as-is (empty string prints empty)
-  * int/float/bool: printed as a plain scalar
-  * array: each item printed on its own line
-  * table/object: not returned (prints "false")
+  - string: printed as-is (empty string prints empty)
+  - int/float/bool: printed as a plain scalar
+  - array: each item printed on its own line
+  - table/object: not returned (prints "false")
 
 Schema (documented contract, informational):
   launcher.icon        (string)

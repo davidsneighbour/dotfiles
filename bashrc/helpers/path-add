@@ -1,0 +1,37 @@
+#!/bin/bash
+# shellcheck shell=bash
+
+show_help() {
+  local cmd
+  cmd="$(basename "$0")"
+  cat <<EOH
+${cmd} - add a directory to PATH when missing
+
+Usage:
+  ${cmd} --dir <path> [--prepend|--append] [--verbose]
+EOH
+}
+
+main() {
+  local file=''
+
+  if [[ "${1:-}" == '--help' || "$#" -eq 0 ]]; then
+    show_help
+    return 0
+  fi
+
+  [[ -n "${BASHRC_PATH:-}" ]] || {
+    printf 'BASHRC_PATH is not set.\n' >&2
+    return 1
+  }
+
+  # load the library functions
+  for FILE in "${BASHRC_PATH}"/lib/*/*.bash; do
+    # shellcheck disable=SC1090
+    [[ -f "${FILE}" && -r "${FILE}" ]] && source "${FILE}"
+  done
+
+  dnb_path_add_if_missing "$@"
+}
+
+main "$@"

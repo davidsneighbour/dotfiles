@@ -1,0 +1,20 @@
+#!/bin/bash
+# shellcheck shell=bash
+
+main() {
+  local file=''
+  [[ -n "${BASHRC_PATH:-}" ]] || {
+    printf 'BASHRC_PATH is not set.\n' >&2
+    return 1
+  }
+
+  # load the library functions
+  for FILE in "${BASHRC_PATH}"/lib/*/*.bash; do
+    # shellcheck disable=SC1090
+    [[ -f "${FILE}" && -r "${FILE}" ]] && source "${FILE}"
+  done
+
+  dnb_config_get "$@"
+}
+
+main "$@"
