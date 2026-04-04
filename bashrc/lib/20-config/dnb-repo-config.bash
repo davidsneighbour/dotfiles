@@ -20,28 +20,28 @@ dnb_repo_config_get() {
     # Parse args: allow "<path> [--help] [--list-keys]" or "--help" / "--list-keys"
     while [[ "${#}" -gt 0 ]]; do
       case "${1}" in
-        --help|-h)
+      --help | -h)
+        opt_help="true"
+        shift
+        ;;
+      --list-keys)
+        opt_list_keys="true"
+        shift
+        ;;
+      -*)
+        printf '%s\n' "Error: Unknown option: ${1}" >&2
+        opt_help="true"
+        shift
+        ;;
+      *)
+        if [[ -z "${query}" ]]; then
+          query="${1}"
+        else
+          printf '%s\n' "Error: Unexpected argument: ${1}" >&2
           opt_help="true"
-          shift
-          ;;
-        --list-keys)
-          opt_list_keys="true"
-          shift
-          ;;
-        -*)
-          printf '%s\n' "Error: Unknown option: ${1}" >&2
-          opt_help="true"
-          shift
-          ;;
-        *)
-          if [[ -z "${query}" ]]; then
-            query="${1}"
-          else
-            printf '%s\n' "Error: Unexpected argument: ${1}" >&2
-            opt_help="true"
-          fi
-          shift
-          ;;
+        fi
+        shift
+        ;;
       esac
     done
   fi

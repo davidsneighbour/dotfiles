@@ -1,0 +1,38 @@
+#!/bin/bash
+# shellcheck shell=bash
+
+show_help() {
+  local cmd
+  cmd="$(basename "$0")"
+  cat <<EOH
+${cmd} - remove duplicate and non-existing directories from PATH
+
+Usage:
+  ${cmd}
+EOH
+}
+
+main() {
+  local file=''
+
+  if [[ "${1:-}" == '--help' ]]; then
+    show_help
+    return 0
+  fi
+
+  [[ -n "${BASHRC_PATH:-}" ]] || {
+    printf 'BASHRC_PATH is not set.\n' >&2
+    return 1
+  }
+
+  # load the library functions
+  for FILE in "${BASHRC_PATH}"/lib/*/*.bash; do
+    # shellcheck disable=SC1090
+    [[ -f "${FILE}" && -r "${FILE}" ]] && source "${FILE}"
+  done
+
+  dnb_path_sanitise
+  printf '%s\n' "${PATH}"
+}
+
+main "$@"

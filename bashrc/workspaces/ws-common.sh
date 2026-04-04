@@ -1,7 +1,10 @@
 #!/bin/bash
 
-# shellcheck source=bashrc/_lib/__dnb_log
-source "${HOME}/.dotfiles/bashrc/_lib/__dnb_log" 2>/dev/null || source "/workspace/dotfiles/bashrc/_lib/__dnb_log"
+# load the library functions
+for FILE in "${BASHRC_PATH}"/lib/*/*.bash; do
+  # shellcheck disable=SC1090
+  [[ -f "${FILE}" && -r "${FILE}" ]] && source "${FILE}"
+done
 
 ws_init_logging() {
   local log_path="${1:-workspaces/general}"
@@ -14,18 +17,18 @@ ws_init_logging() {
 ws_parse_verbosity_flag() {
   local arg="${1}"
   case "${arg}" in
-    --verbose)
-      export DNB_VERBOSE=1
-      return 0
-      ;;
-    --quiet)
-      unset DNB_VERBOSE
-      WS_QUIET_MODE=1
-      return 0
-      ;;
-    *)
-      return 1
-      ;;
+  --verbose)
+    export DNB_VERBOSE=1
+    return 0
+    ;;
+  --quiet)
+    unset DNB_VERBOSE
+    WS_QUIET_MODE=1
+    return 0
+    ;;
+  *)
+    return 1
+    ;;
   esac
 }
 

@@ -16,8 +16,7 @@ execute() {
 
   while IFS= read -r line; do
     eval "${cmd} \"${line}\""
-  done < "${file}"
+  done <"${file}"
 }
-
 
 # https://chatgpt.com/c/697ff66a-8198-839b-b758-713e30a68171
