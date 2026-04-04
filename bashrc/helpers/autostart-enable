@@ -6,6 +6,67 @@ DIR_AUTOSTARTS="${HOME}/.dotfiles/configs/system/autostart"
 DIR="${DIR_AUTOSTARTS}/available"
 PROMPT="Select an item:"
 DEST_HOST="${HOSTNAME:-unknown-host}"
+TITLE_COLOR=$'\033[38;2;248;248;242m'
+DESCRIPTION_COLOR=$'\033[38;2;112;140;169m'
+COLOR_RESET=$'\033[0m'
+
+get_desktop_entry_value() {
+  local file_path="$1"
+  local exact_key="$2"
+  local localized_prefix="$3"
+  local line=""
+  local key=""
+  local value=""
+  local in_desktop_entry="false"
+
+  while IFS= read -r line; do
+    if [[ "${line}" == "[Desktop Entry]" ]]; then
+      in_desktop_entry="true"
+      continue
+    fi
+
+    if [[ "${in_desktop_entry}" != "true" ]]; then
+      continue
+    fi
+
+    if [[ "${line}" =~ ^\[.*\]$ ]]; then
+      break
+    fi
+
+    if [[ "${line}" != *=* ]]; then
+      continue
+    fi
+
+    key="${line%%=*}"
+    value="${line#*=}"
+
+    if [[ "${key}" == "${exact_key}" ]]; then
+      printf '%s\n' "${value}"
+      return 0
+    fi
+
+    if [[ "${key}" =~ ^${localized_prefix}\[[^]]+\]$ ]]; then
+      printf '%s\n' "${value}"
+      return 0
+    fi
+  done < "${file_path}"
+
+  return 1
+}
+
+build_select_line() {
+  local index="$1"
+  local title="$2"
+  local description="$3"
+  local line=""
+
+  line="${index}) ${TITLE_COLOR}${title}${COLOR_RESET}"
+  if [[ -n "${description}" ]]; then
+    line="${line} ${DESCRIPTION_COLOR}${description}${COLOR_RESET}"
+  fi
+
+  printf '%s\n' "${line}"
+}
 
 print_help() {
   cat <<EOF
@@ -54,14 +115,32 @@ if (( ${#entries[@]} == 0 )); then
   exit 1
 fi
 
-# Build list of basenames for user-facing selection
-basenames=()
+# Build list of user-facing selection lines
+declare -A selection_by_index=()
+selection_lines=()
+selection_index=1
 for p in "${entries[@]}"; do
-  basenames+=( "$(basename -- "${p}")" )
+  base_name="$(basename -- "${p}")"
+  title="${base_name}"
+  description=""
+
+  if [[ -f "${p}" ]]; then
+    if parsed_title="$(get_desktop_entry_value "${p}" "Name" "Name")"; then
+      title="${parsed_title}"
+    fi
+
+    if parsed_description="$(get_desktop_entry_value "${p}" "Comment" "Comment")"; then
+      description="${parsed_description}"
+    fi
+  fi
+
+  selection_by_index["${selection_index}"]="${base_name}"
+  selection_lines+=( "$(build_select_line "${selection_index}" "${title}" "${description}")" )
+  ((selection_index++))
 done
 
 # gum filter (fuzzy) selection
-if ! selected_out=$(printf '%s\n' "${basenames[@]}" | gum filter --placeholder "${PROMPT}" --no-limit); then
+if ! selected_out=$(printf '%b\n' "${selection_lines[@]}" | gum filter --placeholder "${PROMPT}" --no-limit); then
   echo "No selection made." >&2
   exit 1
 fi
@@ -69,7 +148,11 @@ fi
 # Normalize selections to an array
 selections=()
 while IFS= read -r line; do
-  [[ -n "${line}" ]] && selections+=( "${line}" )
+  [[ -z "${line}" ]] && continue
+  selection_id="${line%%)*}"
+  if [[ "${selection_id}" =~ ^[0-9]+$ ]] && [[ -n "${selection_by_index[${selection_id}]:-}" ]]; then
+    selections+=( "${selection_by_index[${selection_id}]}" )
+  fi
 done <<< "${selected_out}"
 
 # Ensure destination directory exists
