@@ -62,7 +62,7 @@ fi
   echo "------------------------------------------------------------"
 } >>"${LOG_FILE}"
 
-"${MSGVAULT_BIN}" sync >>"${LOG_FILE}" 2>&1
+"${MSGVAULT_BIN}" sync --verbose >>"${LOG_FILE}" 2>&1
 sync_exit_code="$?"
 
 if [[ "${sync_exit_code}" -ne 0 ]]; then

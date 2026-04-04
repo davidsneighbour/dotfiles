@@ -29,17 +29,6 @@ for FILE in "${BASHRC_PATH}"/_lib/*; do
   [[ -f "${FILE}" && -r "${FILE}" ]] && source "${FILE}"
 done
 
-# Add a directory to PATH if it exists and is not already present.
-__dnb_path_prepend() {
-  local dir="${1}"
-  [ -d "${dir}" ] || return 0
-
-  case ":${PATH}:" in
-  *":${dir}:"*) ;;
-  *) PATH="${dir}:${PATH}" ;;
-  esac
-}
-
 # export the .env file
 FILE="${HOME}"/.env
 if [[ -f "${FILE}" && -r "${FILE}" ]]; then
@@ -72,7 +61,7 @@ fi
 
 # bun
 export BUN_INSTALL="${HOME}/.bun"
-export PATH="${BUN_INSTALL}/bin:${PATH}"
+path_add_if_missing --dir "${BUN_INSTALL}/bin"
 
 # Ensure GPG can talk to the current terminal
 GPG_TTY=$(tty)
@@ -127,13 +116,13 @@ if ! shopt -oq posix; then
 fi
 
 # shellcheck disable=SC2154 # we know the variable is initialised
-FILE="${BASHRC_PATH}"/etc/paths
+FILE="${DOTFILES_PATH}/configs/system/paths"
 if test -f "${FILE}"; then
   while IFS= read -r line; do
     [ -n "${line}" ] || continue
     [[ "${line}" == \#* ]] && continue
     if [ -d "${line}" ]; then
-      __dnb_path_prepend "${line}"
+      path_add_if_missing --dir "${line}"
     fi
   done <"${FILE}"
 fi
@@ -141,12 +130,13 @@ fi
 # Android and npm require special treatment
 # @todo recheck if this is still needed
 if [ -d "${HOME}"/.bin/android-sdk ]; then
-  __dnb_path_prepend "${HOME}/.bin/android-sdk/platform-tools"
-  __dnb_path_prepend "${HOME}/.bin/android-sdk/tools"
+  path_add_if_missing --dir "${HOME}/.bin/android-sdk/platform-tools"
+  path_add_if_missing --dir "${HOME}/.bin/android-sdk/tools"
   export ANDROID_HOME="${HOME}"/.bin/android/sdk
 fi
 if [ -d "${HOME}"/.npm ]; then
-  PATH="${PATH}:${HOME}/.npm/bin:${HOME}/.npm/packages/bin"
+  path_add_if_missing --dir "${HOME}/.npm/bin"
+  path_add_if_missing --dir "${HOME}/.npm/packages/bin"
   if [ -n "${NODE_PATH}" ]; then
     export NODE_PATH="${NODE_PATH}:${HOME}/.npm/lib/node_modules"
   else
@@ -154,13 +144,11 @@ if [ -d "${HOME}"/.npm ]; then
   fi
 fi
 
-__dnb_path_prepend "/opt/firefox/firefox"
+path_add_if_missing --dir "/opt/firefox/firefox"
 
 # adding helper commands to PATH
-PATH="${BASHRC_PATH}/helpers:${BASHRC_PATH}/workspaces:${PATH}"
-
-# aaaaand export...
-export PATH
+path_add_if_missing --dir "${BASHRC_PATH}/helpers" --prepend
+path_add_if_missing --dir "${BASHRC_PATH}/workspaces" --prepend
 
 # don't add jrnl entries to bash history
 HISTIGNORE="${HISTIGNORE}:jrnl *"
@@ -206,7 +194,11 @@ export HOSTFILE="${HOME}/.bash_hosts"
 # see https://wiki.archlinux.org/index.php/GTK+#Suppress_warning_about_accessibility_bus
 export NO_AT_BRIDGE=1
 
-export PATH="${DENO_INSTALL}/bin:${PATH}"
+path_add_if_missing --dir "${DENO_INSTALL}/bin"
+
+# cleanup and export the PATH, no more `PATH=...` after this line
+path_sanitise
+export PATH
 
 WM_TILE_POLYBAR_TOP_HEIGHT=40
 WM_TILE_POLYBAR_BOTTOM_HEIGHT=40
