@@ -1,5 +1,11 @@
 # Changelog
 
+## [3002.14.1](https://github.com/davidsneighbour/dotfiles/compare/v3002.14.0...v3002.14.1) (2026-04-04)
+
+### Bug Fixes
+
+* use title and description for autostart list ([f0dbd50](https://github.com/davidsneighbour/dotfiles/commit/f0dbd5085a4c4611a47fab9da5750a005f324d51))
+
 ## [3002.14.0](https://github.com/davidsneighbour/dotfiles/compare/v3002.13.4...v3002.14.0) (2026-04-04)
 
 ### Features
