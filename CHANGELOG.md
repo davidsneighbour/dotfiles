@@ -1,5 +1,30 @@
 # Changelog
 
+## [3002.14.0](https://github.com/davidsneighbour/dotfiles/compare/v3002.13.4...v3002.14.0) (2026-04-04)
+
+### Features
+
+* add commits to obsidian note script ([782e4b0](https://github.com/davidsneighbour/dotfiles/commit/782e4b01dd7d91863800ef2310d27a3878648543))
+* freshrss feed export script ([01fdcc1](https://github.com/davidsneighbour/dotfiles/commit/01fdcc1491977cb7579ef640aa672bb5d88d8041))
+
+### Bug Fixes
+
+* a couple of cleanups in the autostart system ([0eca0e7](https://github.com/davidsneighbour/dotfiles/commit/0eca0e7f1b17c64f6a359c92aaaf07a2c577b861))
+* allow multiple symlinks to be created in autostart scripts ([9722ca8](https://github.com/davidsneighbour/dotfiles/commit/9722ca8b06dfceece41f415545e1eb2020734dce))
+* remove unused container configs ([54cc68c](https://github.com/davidsneighbour/dotfiles/commit/54cc68c8697424e02ab7f623004fe9511df91866))
+* remove wallpaper collection and replace with single wallpaper ([1b6f644](https://github.com/davidsneighbour/dotfiles/commit/1b6f644d604c19d1bed7071646909da9c2f5c85f))
+* update autostart setup for locutus ([d079ef9](https://github.com/davidsneighbour/dotfiles/commit/d079ef98089b5a0edb0d91e8d2b6592c530cc4f4))
+
+### Configuration
+
+* remove obsolete configurations ([a93a189](https://github.com/davidsneighbour/dotfiles/commit/a93a189cede8280428d3675e490ceb3ea52e7879))
+* update cspell configuration ([55971c5](https://github.com/davidsneighbour/dotfiles/commit/55971c5f69a098e936fe10e2b1996a077cc4fc66))
+
+### Documentation
+
+* fix repo image and license readme ([0637b50](https://github.com/davidsneighbour/dotfiles/commit/0637b508207116c830b1e7b1a8d5568965ce18f7))
+* update README.md, LICENSE.md, and docs ([6e354bc](https://github.com/davidsneighbour/dotfiles/commit/6e354bc1c2f1d44b38591976d2d18391bdebce15))
+
 ## [3002.13.4](https://github.com/davidsneighbour/dotfiles/compare/v3002.13.3...v3002.13.4) (2026-04-03)
 
 ### Bug Fixes
