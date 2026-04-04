@@ -5,16 +5,17 @@
 DNB_IS_INTERACTIVE=1
 DNB_NAMESPACE=davidsneighbour
 DOTFILES_PATH="${HOME}/.dotfiles"
+BASHRC_PATH="${DOTFILES_PATH}/bashrc"
 LOG_PATH="bash/bashrc"
-export DNB_IS_INTERACTIVE DNB_NAMESPACE DOTFILES_PATH LOG_PATH
+export DNB_IS_INTERACTIVE DNB_NAMESPACE DOTFILES_PATH BASHRC_PATH LOG_PATH
 
 # set to 0 or 1 to regulate verbosity
 export DNB_VERBOSE=1
 
 # load the library functions
-for FILE in "${DOTFILES_PATH}"/bashrc/_lib/*; do
+for FILE in "${BASHRC_PATH}"/lib/*/*.bash; do
   # shellcheck disable=SC1090
-  [ -f "${FILE}" ] && source "${FILE}"
+  [[ -f "${FILE}" && -r "${FILE}" ]] && source "${FILE}"
 done
 
 # set log file for .bashrc runs
@@ -26,11 +27,11 @@ fi
 # load the bash configuration
 # shellcheck disable=SC1091
 if [[ "${DNB_IS_INTERACTIVE}" == "1" ]]; then
-  source "${DOTFILES_PATH}"/bashrc/bashrc
+  source "${BASHRC_PATH}"/bashrc
 fi
 
 # load the bash programs configuration
-for FILE in "${DOTFILES_PATH}"/bashrc/partials/_programs/*; do
+for FILE in "${BASHRC_PATH}"/partials/_programs/*; do
   # shellcheck disable=SC1090
   [ -f "${FILE}" ] && source "${FILE}"
 done

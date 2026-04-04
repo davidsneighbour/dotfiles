@@ -23,9 +23,9 @@ BASHRC_PATH="${DOTFILES_PATH}/bashrc"
 force_color_prompt=yes
 export force_color_prompt
 
-# load the helper functions
-for FILE in "${BASHRC_PATH}"/_lib/*; do
-  # shellcheck disable=SC1090 # we check the files for existence and read rights
+# load the library functions
+for FILE in "${BASHRC_PATH}"/lib/*/*.bash; do
+  # shellcheck disable=SC1090
   [[ -f "${FILE}" && -r "${FILE}" ]] && source "${FILE}"
 done
 

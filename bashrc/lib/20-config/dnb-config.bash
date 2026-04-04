@@ -3,9 +3,9 @@
 
 # dnb_config_get: Read config values from a TOML file
 # Contract (collision-safe):
-# * Found: prints value, exit 0
-# * Missing/unset/empty: prints nothing (unless --print-fallback), exit 1
-# * Parse error / env error: prints nothing (unless --print-fallback), exit 2
+# - Found: prints value, exit 0
+# - Missing/unset/empty: prints nothing (unless --print-fallback), exit 1
+# - Parse error / env error: prints nothing (unless --print-fallback), exit 2
 
 dnb_config_get() {
   local func="${FUNCNAME[0]}"
@@ -25,26 +25,46 @@ dnb_config_get() {
   else
     while [[ "${#}" -gt 0 ]]; do
       case "${1}" in
-        --help|-h) opt_help="true"; shift ;;
-        --list-keys) opt_list_keys="true"; shift ;;
-        --file)
-          shift
-          [[ "${#}" -eq 0 ]] && opt_help="true" && break
-          file_path="${1}"; shift
-          ;;
-        --fail-on-unset) opt_fail_on_unset="true"; shift ;;
-        --fail-on-empty) opt_fail_on_empty="true"; shift ;;
-        --trim-values) opt_trim_values="true"; shift ;;
-        --print-fallback)
-          shift
-          [[ "${#}" -eq 0 ]] && opt_help="true" && break
-          opt_print_fallback="${1}"; shift
-          ;;
-        -*) opt_help="true"; shift ;;
-        *)
-          [[ -z "${query}" ]] && query="${1}" || opt_help="true"
-          shift
-          ;;
+      --help | -h)
+        opt_help="true"
+        shift
+        ;;
+      --list-keys)
+        opt_list_keys="true"
+        shift
+        ;;
+      --file)
+        shift
+        [[ "${#}" -eq 0 ]] && opt_help="true" && break
+        file_path="${1}"
+        shift
+        ;;
+      --fail-on-unset)
+        opt_fail_on_unset="true"
+        shift
+        ;;
+      --fail-on-empty)
+        opt_fail_on_empty="true"
+        shift
+        ;;
+      --trim-values)
+        opt_trim_values="true"
+        shift
+        ;;
+      --print-fallback)
+        shift
+        [[ "${#}" -eq 0 ]] && opt_help="true" && break
+        opt_print_fallback="${1}"
+        shift
+        ;;
+      -*)
+        opt_help="true"
+        shift
+        ;;
+      *)
+        [[ -z "${query}" ]] && query="${1}" || opt_help="true"
+        shift
+        ;;
       esac
     done
   fi
@@ -59,9 +79,18 @@ EOF
     return 0
   fi
 
-  [[ -z "${file_path}" ]] && { [[ -n "${opt_print_fallback}" ]] && printf '%s\n' "${opt_print_fallback}"; return 1; }
-  [[ "${opt_list_keys}" == "false" && -z "${query}" ]] && { [[ -n "${opt_print_fallback}" ]] && printf '%s\n' "${opt_print_fallback}"; return 1; }
-  [[ ! -f "${file_path}" ]] && { [[ -n "${opt_print_fallback}" ]] && printf '%s\n' "${opt_print_fallback}"; return 1; }
+  [[ -z "${file_path}" ]] && {
+    [[ -n "${opt_print_fallback}" ]] && printf '%s\n' "${opt_print_fallback}"
+    return 1
+  }
+  [[ "${opt_list_keys}" == "false" && -z "${query}" ]] && {
+    [[ -n "${opt_print_fallback}" ]] && printf '%s\n' "${opt_print_fallback}"
+    return 1
+  }
+  [[ ! -f "${file_path}" ]] && {
+    [[ -n "${opt_print_fallback}" ]] && printf '%s\n' "${opt_print_fallback}"
+    return 1
+  }
 
   local py_out=""
   local py_exit="0"

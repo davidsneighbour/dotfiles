@@ -33,7 +33,6 @@
   "cSpell.language": "en-GB",
   "cSpell.enabled": true,
   "cSpell.customDictionaries": {
-    
     "dotfiles": {
       "name": "dotfiles",
       "path": "${workspaceFolder:dotfiles}/.vscode/cspell-dict-dotfiles.txt",
@@ -45,5 +44,34 @@
   "cSpell.validateDirectives": true,
   "chat.tools.terminal.autoApprove": {
     "mkdir": true
-  }
+  },
+  "editor.allowVariableFontsInAccessibilityMode": false,
+  "editor.codeLensFontFamily": "'Monaspace Krypton'",
+  "editor.inlayHints.fontFamily": "'Monaspace Krypton'",
+  "editor.fontFamily": "Monaspace Krypton Var, Fira Code, Monaco, monospace",
+  "editor.fontSize": 15,
+  "editor.fontVariations": "'wght' 250",
+  "editor.fontLigatures": "'calt', 'ss01', 'ss02', 'ss03', 'ss04', 'ss05', 'ss06', 'ss07', 'ss08', 'ss09', 'ss10', 'liga'",
+  "editor.tokenColorCustomizations": {
+    "textMateRules": [
+      {
+        "scope": "comment",
+        "settings": {
+          "fontStyle": "italic"
+        }
+      },
+      {
+        "scope": "storage,entity,variable",
+        "settings": {
+          "fontStyle": ""
+        }
+      }
+    ]
+  },
+  "terminal.integrated.fontFamily": "Monaspace Krypton Var, Fira Code, Monaco, monospace",
+  "terminal.integrated.fontSize": 15,
+  "terminal.integrated.fontWeight": 150,
+  "terminal.integrated.fontWeightBold": 400,
+  "terminal.integrated.fontLigatures.enabled": true,
+  "terminal.integrated.fontLigatures.featureSettings": "'calt' on, 'liga' on, 'ss01' on, 'ss02' on, 'ss03' on, 'ss04' on, 'ss05' on, 'ss06' on, 'ss07' on, 'ss08' on, 'ss09' on, 'ss10' on"
 }
