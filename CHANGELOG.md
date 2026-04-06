@@ -1,5 +1,21 @@
 # Changelog
 
+## [3002.15.0](https://github.com/davidsneighbour/dotfiles/compare/v3002.14.1...v3002.15.0) (2026-04-06)
+
+### Features
+
+* add icon theme and generation tools ([bac85fb](https://github.com/davidsneighbour/dotfiles/commit/bac85fb55e550f9cf1bd3143c475e10693cb052e))
+
+### Bug Fixes
+
+* cleanup, refactor, and workspace config ([b833dc5](https://github.com/davidsneighbour/dotfiles/commit/b833dc507c5d6233cb9a7318e78cbacdead59aaf))
+* move path detection and manipulation around ([d5b0f46](https://github.com/davidsneighbour/dotfiles/commit/d5b0f466567b859190b6ae8663b3e91ae661f586))
+* **wip:** rework bashrc ([f88b6f1](https://github.com/davidsneighbour/dotfiles/commit/f88b6f10e210ecdb152430505ed78eba5127d7f3))
+
+### Chore
+
+* **git:** update submodules ([18b37e1](https://github.com/davidsneighbour/dotfiles/commit/18b37e1568ad49c372eb1dd72ab82665a01d92bf))
+
 ## [3002.14.1](https://github.com/davidsneighbour/dotfiles/compare/v3002.14.0...v3002.14.1) (2026-04-04)
 
 ### Bug Fixes
