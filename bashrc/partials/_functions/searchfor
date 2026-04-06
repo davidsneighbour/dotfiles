@@ -49,6 +49,7 @@ searchfor() {
     --exclude-dir='node_modules' \
     --exclude-dir='scratch' \
     --exclude-dir='chatgpt-obsidian-importer' \
+    --exclude='*/.config/Code/*' \
     --color=always \
     "${term}" \
     "${path}"

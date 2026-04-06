@@ -1,8 +1,0 @@
-# shellcheck shell=bash
-# Bashrc partial (sourced by ~/.bashrc)
-
-# WSL2 GPG TTY
-if grep -qE "(Microsoft|WSL)" /proc/version; then
-  GPG_TTY=$(tty)
-  export GPG_TTY
-fi

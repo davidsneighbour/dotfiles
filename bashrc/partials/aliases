@@ -3,7 +3,7 @@
 
 # load the bashrc helper functions
 # shellcheck disable=SC2154 # defined in bashrc
-__dnb_auto_source "${BASHRC_PATH}"/partials/_aliases/*;
+dnb_auto_source "${BASHRC_PATH}"/partials/_aliases/
 
 # reload the profile
 alias reload='. ~/.bashrc'
@@ -106,7 +106,6 @@ alias vlc-play="dbus-send --type=method_call --dest=org.mpris.MediaPlayer2.vlc /
 alias vlc-stop="dbus-send --type=method_call --dest=org.mpris.MediaPlayer2.vlc /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Stop"
 
 alias cal="ncal"
-
 
 alias check-network="sudo arp-scan --localnet --numeric --quiet --ignoredups"
 

@@ -2,4 +2,4 @@
 # Bashrc partial (sourced by ~/.bashrc)
 
 # load the bashrc functions
-__dnb_auto_source "${BASHRC_PATH}"/partials/_functions/*
+dnb_auto_source "${BASHRC_PATH}"/partials/_functions/

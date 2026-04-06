@@ -39,7 +39,7 @@ if [[ -f "${FILE}" && -r "${FILE}" ]]; then
 fi
 unset FILE
 
-for FILE in "${BASHRC_PATH}"/partials/{eval,bash,functions,exports,aliases,completions,prompt}; do
+for FILE in "${BASHRC_PATH}"/partials/{bash,functions,exports,aliases,completions,prompt}; do
   # this routine ranges through a folder of filenames that we don't explicitly know (@davidsneighbour)
   # shellcheck source=/dev/null
   [[ -f "${FILE}" && -r "${FILE}" ]] && source "${FILE}"

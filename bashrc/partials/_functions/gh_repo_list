@@ -1,0 +1,212 @@
+# List repositories owned by the authenticated GitHub user.
+# Supports JSONL output or URL-only output for piping.
+#
+# Requirements:
+#   * gh
+#   * jq
+#
+# Examples:
+#   gh_repos_list
+#   gh_repos_list --urls-only
+#   gh_repos_list --urls-only --url-kind https
+#   gh_repos_list --format json
+#   gh_repos_list --include-forks false
+#   gh_repos_list --help
+gh_repos_list() {
+  local output_mode="jsonl"
+  local format="jsonl"
+  local url_kind="ssh"
+  local include_forks="true"
+  local affiliation="owner"
+  local include_archived="true"
+
+  gh_repos_list_help() {
+    cat <<EOF
+Usage: ${FUNCNAME[1]} [OPTIONS]
+
+List all repositories owned by the currently authenticated GitHub user.
+
+Options:
+  --urls-only               Print only one clone URL per line.
+  --format FORMAT           Output format: jsonl or json. Default: jsonl
+  --url-kind KIND           URL kind for --urls-only: ssh, https, or html. Default: ssh
+  --include-forks BOOL      Include forked repositories: true or false. Default: true
+  --affiliation VALUE       GitHub affiliation filter. Default: owner
+                            Common values:
+                              owner
+                              owner,collaborator,organization_member
+  --include-archived 		true (default)|false
+  --help                    Show this help.
+
+Output fields in default mode:
+  slug                      owner/repo
+  git_url                   clone URL chosen from ssh_url by default
+  repo_url                  HTML repository URL
+  visibility                public or private
+  source_type               fork or original
+  is_fork                   true or false
+  archived				    true or false
+
+Examples:
+  ${FUNCNAME[1]}
+  ${FUNCNAME[1]} --urls-only
+  ${FUNCNAME[1]} --urls-only --url-kind https
+  ${FUNCNAME[1]} --format json
+  ${FUNCNAME[1]} --include-forks false
+EOF
+  }
+
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --urls-only)
+        output_mode="urls"
+        shift
+        ;;
+      --format)
+        if [[ -z "${2:-}" ]]; then
+          echo "ERROR: --format requires a value: jsonl or json" >&2
+          gh_repos_list_help
+          return 1
+        fi
+        format="$2"
+        shift 2
+        ;;
+      --url-kind)
+        if [[ -z "${2:-}" ]]; then
+          echo "ERROR: --url-kind requires a value: ssh, https, or html" >&2
+          gh_repos_list_help
+          return 1
+        fi
+        url_kind="$2"
+        shift 2
+        ;;
+      --include-forks)
+        if [[ -z "${2:-}" ]]; then
+          echo "ERROR: --include-forks requires a value: true or false" >&2
+          gh_repos_list_help
+          return 1
+        fi
+        include_forks="$2"
+        shift 2
+        ;;
+      --affiliation)
+        if [[ -z "${2:-}" ]]; then
+          echo "ERROR: --affiliation requires a value" >&2
+          gh_repos_list_help
+          return 1
+        fi
+        affiliation="$2"
+        shift 2
+        ;;
+      --help)
+        gh_repos_list_help
+        return 0
+        ;;
+      *)
+        echo "ERROR: Unknown option: $1" >&2
+        gh_repos_list_help
+        return 1
+        ;;
+    esac
+  done
+
+  if ! command -v gh >/dev/null 2>&1; then
+    echo "ERROR: Required command not found: gh" >&2
+    return 1
+  fi
+
+  if ! command -v jq >/dev/null 2>&1; then
+    echo "ERROR: Required command not found: jq" >&2
+    return 1
+  fi
+
+  if ! gh auth status >/dev/null 2>&1; then
+    echo "ERROR: gh is not authenticated. Run: gh auth login" >&2
+    return 1
+  fi
+
+  case "${format}" in
+    jsonl|json) ;;
+    *)
+      echo "ERROR: Invalid --format value: ${format}. Use jsonl or json." >&2
+      return 1
+      ;;
+  esac
+
+  case "${url_kind}" in
+    ssh|https|html) ;;
+    *)
+      echo "ERROR: Invalid --url-kind value: ${url_kind}. Use ssh, https, or html." >&2
+      return 1
+      ;;
+  esac
+
+  case "${include_forks}" in
+    true|false) ;;
+    *)
+      echo "ERROR: Invalid --include-forks value: ${include_forks}. Use true or false." >&2
+      return 1
+      ;;
+  esac
+
+  local endpoint="/user/repos?per_page=100&sort=full_name&affiliation=${affiliation}"
+  local raw_json
+  raw_json="$(
+    gh api \
+      --paginate \
+      -H "Accept: application/vnd.github+json" \
+      -H "X-GitHub-Api-Version: 2022-11-28" \
+      "${endpoint}" 2>/dev/null
+  )"
+
+  if [[ -z "${raw_json}" ]]; then
+    echo "ERROR: No data returned from GitHub API." >&2
+    return 1
+  fi
+
+  local jq_filter
+jq_filter='
+  add
+  | map({
+      slug: .full_name,
+      git_url: .ssh_url,
+      ssh_url: .ssh_url,
+      https_url: .clone_url,
+      repo_url: .html_url,
+      visibility: (if .private then "private" else "public" end),
+      source_type: (if .fork then "fork" else "original" end),
+      is_fork: .fork,
+      archived: .archived
+    })
+'
+
+  if [[ "${include_forks}" == "false" ]]; then
+    jq_filter+=' | map(select(.is_fork == false))'
+  fi
+
+  if [[ "${include_archived}" == "false" ]]; then
+	jq_filter+=' | map(select(.archived == false))'
+  fi
+
+  if [[ "${output_mode}" == "urls" ]]; then
+    case "${url_kind}" in
+      ssh)
+        jq -r -s "${jq_filter} | .[] | .ssh_url" <<<"${raw_json}"
+        ;;
+      https)
+        jq -r -s "${jq_filter} | .[] | .https_url" <<<"${raw_json}"
+        ;;
+      html)
+        jq -r -s "${jq_filter} | .[] | .repo_url" <<<"${raw_json}"
+        ;;
+    esac
+    return $?
+  fi
+
+  if [[ "${format}" == "json" ]]; then
+    jq -s "${jq_filter}" <<<"${raw_json}"
+    return $?
+  fi
+
+  jq -c -s "${jq_filter} | .[]" <<<"${raw_json}"
+}

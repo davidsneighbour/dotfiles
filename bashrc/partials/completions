@@ -1,6 +1,8 @@
 # shellcheck shell=bash
 # Bashrc partial (sourced by ~/.bashrc)
 
+dnb_auto_source "${BASHRC_PATH}"/partials/_completions/
+
 # enable programmable completion features
 if ! shopt -oq posix; then
   if [ -f /usr/share/bash-completion/bash_completion ]; then
@@ -98,14 +100,6 @@ _ssh_hosts_completion() {
     )
   fi
 
-  COMPREPLY=( $(compgen -W "${hosts[*]}" -- "${cur}") )
+  COMPREPLY=($(compgen -W "${hosts[*]}" -- "${cur}"))
 }
 complete -F _ssh_hosts_completion ssh
-
-for FILE in "${BASHRC_PATH}"/partials/_completions/{bootstrap,caniuse,gohugo,netlify,npm,phinx,robo,wp}; do
-  # this routine ranges through a folder of files that we don't explicitly know (@davidsneighbour)
-  # see https://github.com/koalaman/shellcheck/wiki/SC1090
-  # shellcheck source-path=SOURCEDIR/completions
-  [ -r "${FILE}" ] && source "${FILE}"
-done
-unset FILE
