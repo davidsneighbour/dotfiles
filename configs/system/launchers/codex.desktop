@@ -5,5 +5,5 @@ Terminal=false
 Type=Application
 Name=Codex
 Exec=/opt/google/chrome/google-chrome --profile-directory=Default --app=https://chatgpt.com/codex
-Icon=.icons/DNB/codex.png
+Icon=chatgpt
 StartupWMClass=chrome_codex

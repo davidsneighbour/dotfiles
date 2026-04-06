@@ -23,6 +23,7 @@ sudo apt install -y \
   htop \
   jsonnet \
   golang-go \
+  librsvg2-bin \
   meld \
   openshot-qt python3-openshot \
   papirus-icon-theme papirus-folders papirus-colors \

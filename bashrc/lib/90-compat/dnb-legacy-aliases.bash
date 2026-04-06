@@ -2,7 +2,8 @@
 
 # Compatibility aliases for older scripts. Remove once all callers migrated.
 
-__dnb_auto_source() { dnb_auto_source "$@"; }
+# searchfor __dnb_check_requirements --path /home/patrick
+
 __dnb_check_requirements() { dnb_check_requirements "$@"; }
 __dnb_load_env() { dnb_load_env "$@"; }
 __dnb_log() {

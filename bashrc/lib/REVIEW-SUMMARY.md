@@ -1,25 +1,21 @@
-# Review summary
-
-## Main problems fixed or isolated
-
-* Normalised public naming around `dnb_*`.
-* Added compatibility wrappers for older `__dnb_*` and unprefixed names.
-* Replaced the duplicate PATH helper situation with a single canonical implementation.
-* Fixed the logging API direction by using `dnb_log <level> <message>` consistently.
-* Replaced the old eval-based `execute` helper with `dnb_execute_lines`.
-* Moved standalone behaviour into `bashrc/helpers`.
-* Deprecated obsolete release helpers with explicit CLI warnings.
-* Added a source-safe library contract in `_lib/README.md`.
-
-## Notes
-
-* `dnb_config_get` and `dnb_repo_config_get` were retained with minimal change because they were already useful and largely safe.
-* Release helper implementations were not migrated because the requested direction was to deprecate them gracefully rather than modernise them further.
-* Helper wrappers in `bashrc/helpers` intentionally keep logic thin and rely on `_lib` as the implementation layer.
-
-## Next Steps
+# Next Steps
 
 * go through 90-compat
+
+dotfiles on  main [$✘!?⇕] Node 24.14.0 took 1m15s
+
+➜ searchfor __dnb_check_requirements --path /home/patrick
+/home/patrick/github.com/davidsneighbour/copailot/scripts/postrelease:21:__dnb_check_requirements "${REQUIRED_TOOLS[@]}"
+/home/patrick/github.com/davidsneighbour/copailot/scripts/prerelease:20:__dnb_check_requirements "${REQUIRED_TOOLS[@]}"
+/home/patrick/github.com/davidsneighbour/dotfiles/bashrc/lib/90-compat/dnb-legacy-aliases.bash:5:# searchfor __dnb_check_requirements --path /home/patrick
+/home/patrick/github.com/davidsneighbour/dotfiles/bashrc/lib/90-compat/dnb-legacy-aliases.bash:7:__dnb_check_requirements() { dnb_check_requirements "$@"; }
+/home/patrick/github.com/davidsneighbour/dotfiles/logs/package/setup-log-20260404-124425.log:3:  adding: __dnb_check_requirements (deflated 41%)
+/home/patrick/github.com/davidsneighbour/video-social/scripts/postrelease:21:__dnb_check_requirements "${REQUIRED_TOOLS[@]}"
+/home/patrick/github.com/davidsneighbour/video-social/scripts/prerelease:20:__dnb_check_requirements "${REQUIRED_TOOLS[@]}"
+/home/patrick/github.com/davidsneighbour/kollitsch.dev/src/scripts/postrelease:21:__dnb_check_requirements "${REQUIRED_TOOLS[@]}"
+/home/patrick/github.com/davidsneighbour/kollitsch.dev/src/scripts/prerelease:20:__dnb_check_requirements "${REQUIRED_TOOLS[@]}"
+/home/patrick/github.com/davidsneighbour/davids-neighbour.com/src/scripts/postrelease:21:__dnb_check_requirements "${REQUIRED_TOOLS[@]}"
+/home/patrick/github.com/davidsneighbour/davids-neighbour.com/src/scripts/prerelease:20:__dnb_check_requirements "${REQUIRED_TOOLS[@]}"
 
 ## ToDo Checks
 

@@ -2,22 +2,22 @@
 
 ## Purpose
 
-`_lib` contains source-safe reusable functions for Bash scripts.
+`lib` contains source-safe reusable functions for Bash scripts.
 
 ## Rules
 
 * Public reusable functions use the `dnb_*` prefix.
 * Internal helpers use the `__dnb_*` prefix.
-* Files in `_lib` must only define functions and constants.
-* Files in `_lib` must not execute logic on source.
+* Files in `lib` must only define functions and constants.
+* Files in `lib` must not execute logic on source.
 * Library functions should `return`, not `exit`.
 * Standalone command tools belong in `bashrc/helpers`.
-* Deprecated compatibility wrappers live in `_lib/90-compat/`.
+* Deprecated compatibility wrappers live in `lib/90-compat/`.
 
 ## Loader snippet
 
 ```bash
-for FILE in "${BASHRC_PATH}"/_lib/*/*.bash; do
+for FILE in "${BASHRC_PATH}"/lib/*/*.bash; do
   # shellcheck disable=SC1090
   [[ -f "${FILE}" && -r "${FILE}" ]] && source "${FILE}"
 done
