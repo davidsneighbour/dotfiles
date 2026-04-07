@@ -5,7 +5,7 @@ services:
     container_name: freshrss
     volumes:
       - ./config:/config
-      - ./freshrss-theme:/app/www/p/themes/freshrss-theme/
+      - /home/patrick/github.com/davidsneighbour/freshrss-theme:/app/www/p/themes/freshrss-theme/
     ports:
       - 3050:80
     restart: unless-stopped
