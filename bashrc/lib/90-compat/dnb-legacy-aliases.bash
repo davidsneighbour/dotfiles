@@ -16,7 +16,6 @@ __dnb_log() {
 __dnb_init_log() { dnb_log_init; }
 __dnb_error() { dnb_error "$@"; }
 __dnb_create_directory() { dnb_create_directory "$@"; }
-path_add_if_missing() { dnb_path_add_if_missing "$@"; }
 path_sanitise() { dnb_path_sanitise "$@"; }
 execute() {
   printf 'DEPRECATED: execute used eval and was replaced by dnb_execute_lines.\n' >&2
