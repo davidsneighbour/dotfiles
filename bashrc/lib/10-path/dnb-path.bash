@@ -100,9 +100,16 @@ EOF2
     shift
   done
 
-  if [[ -z "${dir}" || ! -d "${dir}" ]]; then
-    dnb_error "Path does not exist or was not provided: ${dir}"
+  if [[ -z "${dir}" ]]; then
+    dnb_error "Path was not provided: ${dir}"
     return 1
+  fi
+
+  if [[ ! -d "${dir}" ]]; then
+    if [[ "${verbose}" == 'true' || "${DNB_VERBOSE:-0}" == '1' || "${DNB_VERBOSE:-false}" == 'true' ]]; then
+      dnb_log info "Path does not exist and was not added: ${dir}"
+    fi
+    return 0
   fi
 
   if dnb_path_contains --dir "${dir}"; then
