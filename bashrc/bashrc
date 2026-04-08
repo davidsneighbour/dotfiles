@@ -61,7 +61,7 @@ fi
 
 # bun
 export BUN_INSTALL="${HOME}/.bun"
-path_add_if_missing --dir "${BUN_INSTALL}/bin"
+dnb_path_add_if_missing --dir "${BUN_INSTALL}/bin"
 
 # Ensure GPG can talk to the current terminal
 GPG_TTY=$(tty)
@@ -122,7 +122,7 @@ if test -f "${FILE}"; then
     [ -n "${line}" ] || continue
     [[ "${line}" == \#* ]] && continue
     if [ -d "${line}" ]; then
-      path_add_if_missing --dir "${line}"
+      dnb_path_add_if_missing --dir "${line}"
     fi
   done <"${FILE}"
 fi
@@ -130,13 +130,13 @@ fi
 # Android and npm require special treatment
 # @todo recheck if this is still needed
 if [ -d "${HOME}"/.bin/android-sdk ]; then
-  path_add_if_missing --dir "${HOME}/.bin/android-sdk/platform-tools"
-  path_add_if_missing --dir "${HOME}/.bin/android-sdk/tools"
+  dnb_path_add_if_missing --dir "${HOME}/.bin/android-sdk/platform-tools"
+  dnb_path_add_if_missing --dir "${HOME}/.bin/android-sdk/tools"
   export ANDROID_HOME="${HOME}"/.bin/android/sdk
 fi
 if [ -d "${HOME}"/.npm ]; then
-  path_add_if_missing --dir "${HOME}/.npm/bin"
-  path_add_if_missing --dir "${HOME}/.npm/packages/bin"
+  dnb_path_add_if_missing --dir "${HOME}/.npm/bin"
+  dnb_path_add_if_missing --dir "${HOME}/.npm/packages/bin"
   if [ -n "${NODE_PATH}" ]; then
     export NODE_PATH="${NODE_PATH}:${HOME}/.npm/lib/node_modules"
   else
@@ -144,11 +144,11 @@ if [ -d "${HOME}"/.npm ]; then
   fi
 fi
 
-path_add_if_missing --dir "/opt/firefox/firefox"
+dnb_path_add_if_missing --dir "/opt/firefox/firefox"
 
 # adding helper commands to PATH
-path_add_if_missing --dir "${BASHRC_PATH}/helpers" --prepend
-path_add_if_missing --dir "${BASHRC_PATH}/workspaces" --prepend
+dnb_path_add_if_missing --dir "${BASHRC_PATH}/helpers" --prepend
+dnb_path_add_if_missing --dir "${BASHRC_PATH}/workspaces" --prepend
 
 # don't add jrnl entries to bash history
 HISTIGNORE="${HISTIGNORE}:jrnl *"
@@ -194,7 +194,7 @@ export HOSTFILE="${HOME}/.bash_hosts"
 # see https://wiki.archlinux.org/index.php/GTK+#Suppress_warning_about_accessibility_bus
 export NO_AT_BRIDGE=1
 
-path_add_if_missing --dir "${DENO_INSTALL}/bin"
+dnb_path_add_if_missing --dir "${DENO_INSTALL}/bin"
 
 # cleanup and export the PATH, no more `PATH=...` after this line
 path_sanitise
