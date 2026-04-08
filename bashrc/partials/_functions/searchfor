@@ -4,7 +4,7 @@ searchfor() {
 
   # help
   if [[ $# -eq 0 ]]; then
-    echo "Usage: $(basename "$0") <SEARCHTERM> [--path <path>] [--help]"
+    echo "Usage: ${FUNCNAME[0]} <SEARCHTERM> [--path <path>] [--help]"
     echo
     echo "Options:"
     echo "  --path <path>   Override search base path (default: ${HOME}/github.com/davidsneighbour)"
@@ -19,7 +19,7 @@ searchfor() {
       shift 2
       ;;
     --help)
-      echo "Usage: $(basename "$0") <SEARCHTERM> [--path <path>] [--help]"
+      echo "Usage: ${FUNCNAME[0]} <SEARCHTERM> [--path <path>] [--help]"
       return 0
       ;;
     *)
