@@ -1,5 +1,15 @@
 # Changelog
 
+## [3002.18.0](https://github.com/davidsneighbour/dotfiles/compare/v3002.17.0...v3002.18.0) (2026-04-10)
+
+### Features
+
+* github manager ([46551e2](https://github.com/davidsneighbour/dotfiles/commit/46551e29bebd294b88f07396a3b52836a1ea5518))
+
+### Configuration
+
+* **fix:** move cspell config to package.json ([1c0631f](https://github.com/davidsneighbour/dotfiles/commit/1c0631f920e052f6760f9ce3cd45a0b343906e06))
+
 ## [3002.17.0](https://github.com/davidsneighbour/dotfiles/compare/v3002.16.0...v3002.17.0) (2026-04-10)
 
 ### Features
