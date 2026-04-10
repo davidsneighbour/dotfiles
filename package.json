@@ -66,5 +66,22 @@
   "simple-git-hooks": {
     "pre-commit": "npm run lint:hook:commit"
   },
-  "type": "module"
+  "type": "module",
+  "cspell": {
+    "version": "0.2",
+    "language": "en-GB",
+    "ignorePaths": [
+      ".vscode/cspell-dict-dotfiles.txt"
+    ],
+    "dictionaryDefinitions": [
+      {
+        "name": "custom",
+        "path": ".vscode/cspell-dict-dotfiles.txt",
+        "addWords": true
+      }
+    ],
+    "dictionaries": [
+      "custom"
+    ]
+  }
 }
