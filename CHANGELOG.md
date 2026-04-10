@@ -1,5 +1,20 @@
 # Changelog
 
+## [3002.17.0](https://github.com/davidsneighbour/dotfiles/compare/v3002.16.0...v3002.17.0) (2026-04-10)
+
+### Features
+
+* add rofi as window switcher ([289e355](https://github.com/davidsneighbour/dotfiles/commit/289e3551b1158e72c87371fae64a738b64d2a88a))
+
+### Bug Fixes
+
+* cleanup lib refactoring and let deprecated functions error out ([5255a6c](https://github.com/davidsneighbour/dotfiles/commit/5255a6c0780ea4b5428aaae69e5ef40c18828f0f))
+* setup workspaces via dotbot ([fa4012d](https://github.com/davidsneighbour/dotfiles/commit/fa4012dc93b634431eb4e6cefc2e03f96fbf00d1))
+
+### Documentation
+
+* update verbosity instructions ([746df45](https://github.com/davidsneighbour/dotfiles/commit/746df455c128d98cd545f108990b346ef25b8553))
+
 ## [3002.16.0](https://github.com/davidsneighbour/dotfiles/compare/v3002.15.0...v3002.16.0) (2026-04-10)
 
 ### Features
