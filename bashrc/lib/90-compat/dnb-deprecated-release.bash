@@ -4,8 +4,8 @@
 __dnb_warn_deprecated_release_helper() {
   local helper_name="${1:-unknown}"
   local message="DEPRECATED: ${helper_name} is obsolete and will be removed from _lib. Move release logic into workflow scripts or standalone helpers under bashrc/helpers."
-  if declare -F dnb_log >/dev/null 2>&1; then
-    dnb_log warn "${message}"
+  if declare -F dnb_error >/dev/null 2>&1; then
+    dnb_error warn "${message}"
   else
     printf '%s\n' "${message}" >&2
   fi

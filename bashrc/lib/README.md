@@ -41,7 +41,3 @@ done
 * `dnb_execute_lines`
 * `dnb_archive_create`
 * `dnb_archive_extract`
-
-## Deprecated
-
-Release-related helpers from the old `_lib` have been deprecated and replaced with warning wrappers. They should be removed from callers and replaced by workflow-specific scripts or standalone helpers.

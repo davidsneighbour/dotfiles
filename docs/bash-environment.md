@@ -107,21 +107,11 @@ export DNB_IS_INTERACTIVE=0
 
 To simplify checks across partial scripts, a helper function is provided.
 
-Location:
-
-```
-bashrc/_lib/__dnb_is_interactive_bash
-```
-
-Implementation:
-
 ```
 dnb_is_interactive() {
   [[ "${DNB_IS_INTERACTIVE:-0}" == "1" ]]
 }
 ```
-
-Usage:
 
 ```
 if dnb_is_interactive; then
@@ -139,12 +129,12 @@ Directory structure:
 
 ```
 bashrc/
-    _lib/
+    lib/
     partials/
         _programs/
 ```
 
-## `_lib`
+## `lib`
 
 Contains reusable shell helpers and functions.
 
