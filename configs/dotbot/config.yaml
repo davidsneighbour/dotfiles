@@ -32,6 +32,11 @@
     ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml: configs/system/xfce/xfce4-keyboard-shortcuts.xml
     ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfwm4.xml: configs/system/xfce/xfwm4.xml
 
+    # workspaces setup
+    ~/github.com/davidsneighbour/dotfiles-ai: modules/dotfiles-ai
+    ~/github.com/davidsneighbour/gmailctl-config: modules/gmailctl
+    ~/github.com/davidsneighbour/dotfiles-protected: modules/protected
+
     # system setup
     ~/.face.icon: configs/system/face.icon
     ~/.face: configs/system/face.icon
