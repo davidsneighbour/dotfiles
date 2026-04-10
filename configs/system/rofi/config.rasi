@@ -13,6 +13,13 @@ configuration {
 	modi: "window,windowcd,drun,combi,keys,run,ssh,filebrowser";
   me-select-entry: "MousePrimary";
   me-accept-entry: "!MousePrimary";
+
+
+
+   /* caching *.desktop entries to speed up drun mode */
+    drun-use-desktop-cache: true;
+
+
 /*	width: 50;*/
 /*	lines: 15;*/
 /*	columns: 1;*/
@@ -36,7 +43,8 @@ configuration {
 /*	drun-match-fields: "name,generic,exec,categories";*/
 /*	drun-show-actions: false;*/
 /*	drun-display-format: "{name} [<span weight='light' size='small'><i>({generic})</i></span>]";*/
-/*	disable-history: false;*/
+disable-history: false;
+max-history-size: 5;
 /*	ignored-prefixes: "";*/
 /*	sort: false;*/
 /*	sorting-method: ;*/
@@ -71,7 +79,6 @@ configuration {
 /*	color-urgent: ;*/
 /*	color-active: ;*/
 /*	color-window: ;*/
-/*	max-history-size: 25;*/
 /*	combi-hide-mode-prefix: false;*/
 /*	matching-negate-char: '-' /* unsupported */;*/
 /*	cache-dir: ;*/
@@ -169,7 +176,7 @@ configuration {
 
 /* kb-entry-history-up or 'kb-entry-history-down keys. (Control-Up, Control-Down`).*/
 	entry  {
-        max-history: 30;
+        max-history: 15;
     }
 
 }
