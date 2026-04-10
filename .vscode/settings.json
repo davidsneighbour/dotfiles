@@ -77,5 +77,8 @@
   "editor.defaultFormatter": "biomejs.biome",
   "[jsonnet]": {
     "editor.defaultFormatter": "Grafana.vscode-jsonnet"
+  },
+  "[shellscript]": {
+    "editor.defaultFormatter": "mkhl.shfmt"
   }
 }
