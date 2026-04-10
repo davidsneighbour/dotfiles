@@ -1,5 +1,29 @@
 # Changelog
 
+## [3002.16.0](https://github.com/davidsneighbour/dotfiles/compare/v3002.15.0...v3002.16.0) (2026-04-10)
+
+### Features
+
+* **config:** add xfce config link to dotbot config ([099b249](https://github.com/davidsneighbour/dotfiles/commit/099b24995576a5dc0c26dc2d72b7beb6ce5b5d76))
+* **containers:** configure n8n container ([2355439](https://github.com/davidsneighbour/dotfiles/commit/2355439aa35b9c1d2512a58573f32eb67fe6513a))
+
+### Bug Fixes
+
+* **bashrc:** deprecated path_add_if_missing to dnb_path_add_is_missing ([e5829c4](https://github.com/davidsneighbour/dotfiles/commit/e5829c4ad34e1ead07bbea657fadb5bb0668ce69))
+* **bashrc:** do not error if path does not exist in dnb_add_path_if_missing ([0b4cb4e](https://github.com/davidsneighbour/dotfiles/commit/0b4cb4efbd9405da663d78757a5d46a892521a08))
+* **bashrc:** proper function name in help ([660b0ec](https://github.com/davidsneighbour/dotfiles/commit/660b0ec8db36d3818e73252bb2ab250d492165c6))
+* **containers:** cleanup freshrss setup ([72789d1](https://github.com/davidsneighbour/dotfiles/commit/72789d177648869f2cd0568c9657eeff1f29585d))
+* **containers:** move metube from locutus to hal2025 ([5691e90](https://github.com/davidsneighbour/dotfiles/commit/5691e9052b0f6da3660b0889c72c7706eb5a4e3e))
+
+### Build
+
+* **deps:** bump defu from 6.1.4 to 6.1.6 in the npm_and_yarn group across 1 directory ([#456](https://github.com/davidsneighbour/dotfiles/issues/456)) ([20e2380](https://github.com/davidsneighbour/dotfiles/commit/20e23805565f392d92b1f97926f7e6498c05337e))
+
+### Chore
+
+* changes and workspace configuration ([fdac7fb](https://github.com/davidsneighbour/dotfiles/commit/fdac7fb6916515e61946d63c6dd92772d3df17ed))
+* **git:** update submodules ([5adb4ea](https://github.com/davidsneighbour/dotfiles/commit/5adb4eaf6c4f13879240a9db4a12b3215a8ac8b5))
+
 ## [3002.15.0](https://github.com/davidsneighbour/dotfiles/compare/v3002.14.1...v3002.15.0) (2026-04-06)
 
 ### Features
