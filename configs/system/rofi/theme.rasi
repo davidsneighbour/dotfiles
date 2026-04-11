@@ -6,31 +6,32 @@ configuration {
 
 * {
     /* Dracula theme colour palette */
-    drac-bgd: #0B0D0F;
-    drac-cur: #414D58;
-    drac-fgd: #F8F8F2;
-    drac-cmt: #708CA9;
-    drac-cya: #80FFEA;
-    drac-grn: #8AFF80;
-    drac-ora: #FFCA80;
-    drac-pnk: #FF80BF;
-    drac-pur: #9580FF;
-    drac-red: #FF9580;
-    drac-yel: #FFFF80;
+    dnb-background: #0B0D0F;
+    dnb-current: #414D58;
+    dnb-foreground: #F8F8F2;
+    dnb-comment: #708CA9;
+    dnb-cyan: #80FFEA;
+    dnb-green: #8AFF80;
+    dnb-orange: #FFCA80;
+    dnb-pink: #FF80BF;
+    dnb-purple: #9580FF;
+    dnb-red: #FF9580;
+    dnb-yellow: #FFFF80;
 
-    font: "Jetbrains Mono 12";
+    /* locate font via `fc-list | grep 'Monaspace Argon'` */
+    font: "Monaspace Argon 12";
 
-    foreground: @drac-fgd;
-    background-color: @drac-bgd;
-    active-background: @drac-red;
-    urgent-background: @drac-pnk;
-    urgent-foreground: @drac-bgd;
+    foreground: @dnb-foreground;
+    background-color: @dnb-background;
+    active-background: @dnb-red;
+    urgent-background: @dnb-pink;
+    urgent-foreground: @dnb-background;
 
     selected-background: @active-background;
     selected-urgent-background: @urgent-background;
     selected-active-background: @active-background;
     separatorcolor: @active-background;
-    bordercolor: @drac-cmt;
+    bordercolor: @dnb-comment;
 }
 
 #window {
@@ -118,6 +119,7 @@ configuration {
     spacing:    0;
     text-color: @foreground;
     padding:    1px ;
+    children:   [ prompt,textbox-prompt-colon,entry,case-indicator ];
 }
 #case-indicator {
     spacing:    0;
@@ -125,20 +127,17 @@ configuration {
 }
 #entry {
     spacing:    0;
-    text-color: @drac-cya;
+    text-color: @dnb-cyan;
 }
 #prompt {
     spacing:    0;
-    text-color: @drac-grn;
-}
-#inputbar {
-    children:   [ prompt,textbox-prompt-colon,entry,case-indicator ];
+    text-color: @dnb-green;
 }
 #textbox-prompt-colon {
     expand:     false;
     str:        ">";
     margin:     0px 0.3em 0em 0em ;
-    text-color: @drac-red;
+    text-color: @dnb-red;
 }
 element-text, element-icon {
     background-color: inherit;
