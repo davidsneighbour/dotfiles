@@ -13,7 +13,7 @@ mkdir -p "${LOG_DIR}"
 usage() {
   cat <<EOF
 Usage:
-  ${SCRIPT_NAME} [--repo OWNER/REPO ...] [--apply] [--verbose]
+  ${SCRIPT_NAME} [--repo OWNER/REPO ...] [--apply] [--clear] [--verbose]
 
 Description:
   Create or update the default GitHub label taxonomy for one or more repositories.
@@ -31,11 +31,13 @@ Options:
   --repo OWNER/REPO   Repository to update. Can be provided multiple times.
                        If omitted, the current repository is detected automatically.
   --apply             Apply changes (disable dry-run).
+  --clear             Remove all existing labels before applying the default taxonomy.
   --verbose           Print detailed progress output.
   --help              Show this help message.
 
 Behaviour:
   * Default is dry-run for safety.
+  * --clear is only executed when combined with --apply (otherwise shown as dry-run output).
   * Uses 'gh label create --force' so exact-name matches are updated in place.
   * Does not rename or delete legacy labels with different names.
   * Label names are matched by exact label name semantics on GitHub.
@@ -44,8 +46,10 @@ Behaviour:
 Examples:
   ${SCRIPT_NAME}
   ${SCRIPT_NAME} --apply
+  ${SCRIPT_NAME} --apply --clear
   ${SCRIPT_NAME} --repo davidsneighbour/dotfiles
   ${SCRIPT_NAME} --repo davidsneighbour/dotfiles --apply
+  ${SCRIPT_NAME} --repo davidsneighbour/dotfiles --apply --clear
   ${SCRIPT_NAME} --repo davidsneighbour/dotfiles --repo davidsneighbour/kollitsch.dev --apply --verbose
 EOF
 }
@@ -236,8 +240,33 @@ apply_labels_to_repo() {
   run_gh_label_create "${repo}" "meta:keep-open" "708CA9" "Keep the issue open intentionally."
 }
 
+run_gh_label_delete() {
+  local repo="$1"
+  local name="$2"
+
+  if [[ "${APPLY}" != "true" ]]; then
+    printf 'DRY-RUN gh label delete %q --repo %q --yes\n' "${name}" "${repo}"
+    return 0
+  fi
+
+  gh label delete "${name}" --repo "${repo}" --yes >/dev/null
+}
+
+clear_labels_for_repo() {
+  local repo="$1"
+  local label_name=""
+
+  info "Clearing existing labels for ${repo}"
+
+  while IFS= read -r label_name; do
+    [[ -n "${label_name}" ]] || continue
+    run_gh_label_delete "${repo}" "${label_name}"
+  done < <(gh api --paginate "repos/${repo}/labels?per_page=100" --jq '.[].name')
+}
+
 VERBOSE="false"
 APPLY="false"
+CLEAR="false"
 declare -a REPOS=()
 
 while [[ $# -gt 0 ]]; do
@@ -249,6 +278,9 @@ while [[ $# -gt 0 ]]; do
       ;;
     --apply)
       APPLY="true"
+      ;;
+    --clear)
+      CLEAR="true"
       ;;
     --verbose)
       VERBOSE="true"
@@ -279,6 +311,7 @@ main() {
 
   verbose "Log file: ${LOG_FILE}"
   verbose "Apply mode: ${APPLY}"
+  verbose "Clear mode: ${CLEAR}"
 
   if [[ "${APPLY}" != "true" ]]; then
     info "Running in DRY-RUN mode. Use --apply to execute changes."
@@ -291,6 +324,9 @@ main() {
   fi
 
   for repo in "${REPOS[@]}"; do
+    if [[ "${CLEAR}" == "true" ]]; then
+      clear_labels_for_repo "${repo}"
+    fi
     apply_labels_to_repo "${repo}"
   done
 
