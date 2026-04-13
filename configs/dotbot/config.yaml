@@ -40,6 +40,7 @@
     # system setup
     ~/.face.icon: configs/system/face.icon
     ~/.face: configs/system/face.icon
+    ~/.fonts: configs/fonts
     ~/.config/conky: configs/system/conky
     ~/.config/user-dirs.dirs: configs/system/user-dirs.dirs
     ~/.config/polybar: configs/system/polybar

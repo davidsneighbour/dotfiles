@@ -18,7 +18,6 @@
     ~/.gnupg: modules/protected/.gnupg
     ~/.npmrc: modules/protected/.npmrc
     ~/.sentryclirc: modules/protected/.sentryclirc
-    ~/.fonts: modules/protected/.fonts
     ~/.ssh: modules/protected/.ssh
     ~/.config/Cryptomator: modules/protected/Cryptomator
     ~/.config/transmission: modules/protected/transmission
@@ -26,6 +25,13 @@
     ~/.config/filezilla/sitemanager.xml: modules/protected/filezilla/sitemanager.xml
     ~/.config/filezilla/trustedcerts.xml: modules/protected/filezilla/trustedcerts.xml
     ~/.crosspost.env: modules/protected/crosspost.env
+
+    # fonts
+    ~/.fonts/AkwePro: modules/protected/fonts/AkwePro
+    ~/.fonts/BahnPro: modules/protected/fonts/BahnPro
+    ~/.fonts/Panton: modules/protected/fonts/Panton
+    ~/.fonts/Tomkin: modules/protected/fonts/Tomkin
+    ~/.fonts/Verb: modules/protected/fonts/Verb
 
 - shell:
     -
