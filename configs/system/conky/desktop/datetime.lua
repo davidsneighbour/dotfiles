@@ -43,6 +43,6 @@ conky.config = {
 
 conky.text = [[
 ${alignc}${color EAEAEA}${font Bahn Pro:pixelsize=180}${time %I:%M}${font}
-${alignc}${color1}${font Bahn Pro:pixelsize=58}${time %d %B %Y}${font}${color}
+${alignc}${color1}${font Bahn Pro:pixelsize=85}${exec date +"%d %B %Y" | tr '[:lower:]' '[:upper:]'}${font}${color}
 ${alignc}${font Bahn Pro:pixelsize=150}${exec date +"%A" | tr '[:lower:]' '[:upper:]'}${font}
 ]];
