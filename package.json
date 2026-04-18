@@ -9,10 +9,10 @@
   "homepage": "https://github.com/davidsneighbour/dotfiles#readme",
   "dependencies": {
     "@biomejs/biome": "2.4.9",
-    "@clack/prompts": "1.1.0",
+    "@clack/prompts": "1.2.0",
     "@commitlint/cli": "20.5.0",
     "@commitlint/config-conventional": "20.5.0",
-    "@davidsneighbour/markdownlint-config": "2026.0.2",
+    "@davidsneighbour/markdownlint-config": "2026.0.3",
     "@humanwhocodes/crosspost": "1.0.3",
     "@j9t/obsohtml": "1.9.5",
     "@release-it/conventional-changelog": "10.0.6",
@@ -24,7 +24,7 @@
     "@secretlint/secretlint-rule-preset-recommend": "11.4.0",
     "@secretlint/secretlint-rule-secp256k1-privatekey": "11.4.0",
     "cross-env": "10.1.0",
-    "cspell": "9.7.0",
+    "cspell": "10.0.0",
     "cz-git": "1.12.0",
     "debug": "4.4.3",
     "deepmerge": "4.3.1",
@@ -46,7 +46,7 @@
     "semver": "7.7.4",
     "simple-git-hooks": "2.13.1",
     "smol-toml": "1.6.1",
-    "toml": "3.0.0",
+    "toml": "4.1.1",
     "wireit": "0.14.12"
   },
   "scripts": {
