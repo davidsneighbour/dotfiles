@@ -1,5 +1,31 @@
 # Changelog
 
+## [3002.18.1](https://github.com/davidsneighbour/dotfiles/compare/v3002.18.0...v3002.18.1) (2026-04-18)
+
+### Bug Fixes
+
+* add --clear option to label manager ([1bd5b22](https://github.com/davidsneighbour/dotfiles/commit/1bd5b22ddc1c9af5ee849c2ceeaaad7880a5c2b5))
+* change wallpaper ([4c63c86](https://github.com/davidsneighbour/dotfiles/commit/4c63c8667bea889ca7c23bf2a0d62cefc9790f69))
+* **conky:** formatting changes for datetime widget ([d79ed82](https://github.com/davidsneighbour/dotfiles/commit/d79ed823482f4125b0f091bb1ebb381361c84c29))
+* **conky:** use uppercase on date line ([9e7a023](https://github.com/davidsneighbour/dotfiles/commit/9e7a0237ddd54751eeace403996815ed62d2fae6))
+* font and color fixes to rofi theme ([c69a203](https://github.com/davidsneighbour/dotfiles/commit/c69a2036abfe8ecb367f95e79c5434dc8699efef))
+* **launcher:** proper URL to Codex Cloud ([acab801](https://github.com/davidsneighbour/dotfiles/commit/acab8013be0a9126e3d4ef31ae29250ddb1e38f0))
+* remove todoist from autostart ([3c33a7e](https://github.com/davidsneighbour/dotfiles/commit/3c33a7e43183e6a27d0504ce464017864c91f944))
+* update webfonts and licenses ([c685632](https://github.com/davidsneighbour/dotfiles/commit/c685632561f7600f4f786c8ec26c4191143808f9))
+
+### Configuration
+
+* add local font setup ([9b6b7d2](https://github.com/davidsneighbour/dotfiles/commit/9b6b7d253212382394494332100e683df71a9595))
+
+### Build
+
+* **deps:** update dependencies ([6d9b876](https://github.com/davidsneighbour/dotfiles/commit/6d9b876fed06255b41976ff5eaa7684fe399a6a0))
+* **fix:** always use latest node version locally ([bef570a](https://github.com/davidsneighbour/dotfiles/commit/bef570ae4989511fc6701684c63d986235e7dc6e))
+
+### Chore
+
+* **git:** update submodules ([d1b46e1](https://github.com/davidsneighbour/dotfiles/commit/d1b46e181c7ad272f1bdb28f9e27e03adf2c5655))
+
 ## [3002.18.0](https://github.com/davidsneighbour/dotfiles/compare/v3002.17.0...v3002.18.0) (2026-04-10)
 
 ### Features
