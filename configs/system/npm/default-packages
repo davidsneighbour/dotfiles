@@ -5,6 +5,7 @@
 @github/copilot
 @google/gemini-cli
 @humanwhocodes/crosspost
+@openai/codex
 act
 better-commits
 bun
