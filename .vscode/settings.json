@@ -24,7 +24,7 @@
   //"peacock.color": "#6272a4",
   "explorer.fileNesting.patterns": {
     "README.md": "SECURITY*, LICENSE*, CITATION.cff, OS_INSTALL_FIRST_STEPS.md, AGENTS.md",
-    "package.json": ".lintstagedrc.*,.commitlintrc.*,.markdownlint.*,.npmrc.*,.nvmrc,.secretlint*,.shellcheck*,biome.*,.yamllint.*,.versionrc.*,eslint.*,jsconfig.*,tsconfig.*,link.config.*,package-lock.json, .fixpackrc, .editorconfig, .release-it.*",
+    "package.json": ".lintstagedrc.*,.commitlintrc.*,.markdownlint.*,.npmrc.*,.nvmrc,.secretlint*,.shellcheck*,biome.*,.yamllint.*,.versionrc.*,eslint.*,jsconfig.*,tsconfig.*,link.config.*,package-lock.json, .fixpackrc, .editorconfig, .release-it.*, .npmrc, typos.toml",
     "actions.sh": "actions.toml"
   },
   "markdown.extension.toc.levels": "2..6",

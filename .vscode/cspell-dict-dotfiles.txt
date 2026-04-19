@@ -1,10 +1,12 @@
 atuin
+automount
 Bibata
 bordercolor
 color
 crosspost
 dotbot
 drun
+exportfs
 extensionless
 fastfetch
 fontconfig
