@@ -24,6 +24,11 @@ EOF
   local ollama_host="${OLLAMA_HOST:-http://localhost:11434}"
   local health_endpoint="${ollama_host%/}/v1/models"
 
+  if [[ ! "${ollama_host}" =~ ^https?:// ]]; then
+    echo "ERROR: OLLAMA_HOST must include scheme (http:// or https://)" >&2
+    return 1
+  fi
+
   # Check availability
   if ! curl -s --fail "${health_endpoint}" >/dev/null 2>&1; then
     echo "ERROR: Ollama not reachable at ${ollama_host}" >&2
