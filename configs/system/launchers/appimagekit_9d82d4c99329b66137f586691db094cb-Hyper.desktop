@@ -1,28 +1,26 @@
 [Desktop Entry]
-Name=LM-Studio (0.4.7+4)
-Exec=/home/patrick/.bin/local/LM-Studio-0.4.7-4-x64_3591f190e80eba627cbac05be200e31c.AppImage --no-sandbox %U
+Name=Hyper (3.4.1)
+Exec=/home/patrick/Downloads/Hyper-3.4.1.AppImage --no-sandbox %U
 Terminal=false
 Type=Application
-Icon=appimagekit_a3a64e99bca61169161f942f066000f6_lm-studio
-StartupWMClass=LM-Studio
-X-AppImage-Version=0.4.7+4
-Comment=Use the chat UI or local server to experiment and develop with local LLMs.
-Keywords=developer;llm;
-category=Development;Utility;
-MimeType=x-scheme-handler/lmstudio;
-Categories=Development;
+Icon=appimagekit_9d82d4c99329b66137f586691db094cb_hyper
+StartupWMClass=Hyper
+X-AppImage-Version=3.4.1
+Comment=A terminal built on web technologies
+MimeType=x-scheme-handler/ssh;
+Categories=TerminalEmulator;
 
-TryExec=/home/patrick/.bin/local/LM-Studio-0.4.7-4-x64_3591f190e80eba627cbac05be200e31c.AppImage
-X-AppImage-Old-Icon=lm-studio
-X-AppImage-Old-Name=LM-Studio
-X-AppImage-Identifier=a3a64e99bca61169161f942f066000f6
+TryExec=/home/patrick/Downloads/Hyper-3.4.1.AppImage
+X-AppImage-Old-Icon=hyper
+X-AppImage-Old-Name=Hyper
+X-AppImage-Identifier=9d82d4c99329b66137f586691db094cb
 Actions=AppImageLauncher-Remove-AppImage;
 X-AppImageLauncher-Version=3.0.0-beta-2 (git commit 96cb937), built on 2025-10-28 22:31:15 UTC
 
 [Desktop Action AppImageLauncher-Remove-AppImage]
 Name=Delete this AppImage
 Icon=AppImageLauncher
-Exec=/opt/appimagelauncher.AppDir/usr/lib/x86_64-linux-gnu/appimagelauncher/remove "/home/patrick/.bin/local/LM-Studio-0.4.7-4-x64_3591f190e80eba627cbac05be200e31c.AppImage"
+Exec=/opt/appimagelauncher.AppDir/usr/lib/x86_64-linux-gnu/appimagelauncher/remove "/home/patrick/Downloads/Hyper-3.4.1.AppImage"
 Name[ast]=Desaniciar AppImage del sistema
 Name[cs]=Odebrat AppImage ze systému
 Name[de]=Dieses AppImage löschen
