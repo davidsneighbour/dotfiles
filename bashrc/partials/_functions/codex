@@ -2,10 +2,34 @@
 # shellcheck shell=bash
 
 codex-local() {
-  if ! curl -s http://localhost:11434/v1/models >/dev/null 2>&1; then
-    echo "ERROR: Ollama not running on localhost:11434" >&2
+  # Help
+  if [[ "${1:-}" == "--help" ]]; then
+    cat <<EOF
+Usage: $(basename "$0") [ARGS...]
+
+Runs codex against a local or configured Ollama instance.
+
+Environment:
+  OLLAMA_HOST   Optional. Example: http://192.168.1.10:11434
+
+Behaviour:
+  - Uses OLLAMA_HOST if set
+  - Falls back to http://localhost:11434
+  - Verifies Ollama availability before execution
+EOF
+    return 0
+  fi
+
+  # Determine host
+  local ollama_host="${OLLAMA_HOST:-http://localhost:11434}"
+  local health_endpoint="${ollama_host%/}/v1/models"
+
+  # Check availability
+  if ! curl -s --fail "${health_endpoint}" >/dev/null 2>&1; then
+    echo "ERROR: Ollama not reachable at ${ollama_host}" >&2
     return 1
   fi
 
+  # Execute
   codex --profile local-ollama "$@"
 }
