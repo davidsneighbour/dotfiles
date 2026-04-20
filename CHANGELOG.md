@@ -1,5 +1,27 @@
 # Changelog
 
+## [3002.19.0](https://github.com/davidsneighbour/dotfiles/compare/v3002.18.1...v3002.19.0) (2026-04-20)
+
+### Features
+
+* nfs-storage setup script ([35e3b44](https://github.com/davidsneighbour/dotfiles/commit/35e3b446432702b42092629864cac4c261fdef17))
+
+### Bug Fixes
+
+* add protocol check to ollama-local ([964a3af](https://github.com/davidsneighbour/dotfiles/commit/964a3af7668dfc4a09f1e24cb1eacfcc2e92c14e))
+* codex-local checks for local or networked ollama ([b289e6f](https://github.com/davidsneighbour/dotfiles/commit/b289e6f840095e87d49e9ec2717a99bf6d0ddbeb))
+* font configuration ([4262ecc](https://github.com/davidsneighbour/dotfiles/commit/4262ecc9dc3408976185e33dd3ecf9356934095f))
+* **launchers:** cleanup launchers ([d25299d](https://github.com/davidsneighbour/dotfiles/commit/d25299d17eeab7a1d975fbb7012836afd6e65cc7))
+* update launchers ([696f854](https://github.com/davidsneighbour/dotfiles/commit/696f8542d65c3f073e1876d44e03ae8db8d05a34))
+
+### Documentation
+
+* add repo-management docs with commit message guide ([b63d566](https://github.com/davidsneighbour/dotfiles/commit/b63d5669b42d2258eb278eb7aad296473920c87e))
+
+### Build
+
+* update workspace configuration ([26de5a9](https://github.com/davidsneighbour/dotfiles/commit/26de5a9c0dc79e90f345de98242cad362c187d99))
+
 ## [3002.18.1](https://github.com/davidsneighbour/dotfiles/compare/v3002.18.0...v3002.18.1) (2026-04-18)
 
 ### Bug Fixes
