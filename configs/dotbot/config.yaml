@@ -40,7 +40,6 @@
     # system setup
     ~/.face.icon: configs/system/face.icon
     ~/.face: configs/system/face.icon
-    ~/.fonts: configs/fonts
     ~/.config/conky: configs/system/conky
     ~/.config/user-dirs.dirs: configs/system/user-dirs.dirs
     ~/.config/polybar: configs/system/polybar
@@ -92,6 +91,9 @@
     # content quality
     ~/.remarkrc.js: configs/content/.remarkrc.js
     ~/.remarkignore: configs/content/.remarkignore
+
+    # fonts
+    ~/.fonts: configs/fonts
 
     # fixing emojis in chrome tab names (I know, right?)
     ~/.config/fontconfig/conf.d/01-emoji.conf: configs/system/fontconfig/01-emoji.conf
