@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# @REFACTOR
+# - check if this is destroying anything locally
+# - needs documentation
+# - should be moved to a more appropriate location (e.g. git/ or sync/)
+
 # sync-devspace.sh
 #
 # Synchronise a local repository root such as ~/github.com/ to a second
@@ -139,7 +144,7 @@ ensure_directory_exists() {
 create_temp_exclude_file() {
   TEMP_EXCLUDE_FILE="$(mktemp)"
 
-  cat > "${TEMP_EXCLUDE_FILE}" <<'EOF'
+  cat >"${TEMP_EXCLUDE_FILE}" <<'EOF'
 node_modules/
 dist/
 build/
@@ -261,71 +266,71 @@ parse_arguments() {
 
   while [[ $# -gt 0 ]]; do
     case "$1" in
-      --source)
-        if [[ $# -lt 2 ]]; then
-          print_error "Missing value for --source"
-          print_usage
-          exit 1
-        fi
-        SOURCE="$2"
-        shift 2
-        ;;
-      --target)
-        if [[ $# -lt 2 ]]; then
-          print_error "Missing value for --target"
-          print_usage
-          exit 1
-        fi
-        TARGET="$2"
-        shift 2
-        ;;
-      --delete)
-        DELETE="true"
-        shift
-        ;;
-      --dry-run)
-        DRY_RUN="true"
-        shift
-        ;;
-      --verbose)
-        VERBOSE="true"
-        shift
-        ;;
-      --exclude-file)
-        if [[ $# -lt 2 ]]; then
-          print_error "Missing value for --exclude-file"
-          print_usage
-          exit 1
-        fi
-        EXCLUDE_FILE="$2"
-        shift 2
-        ;;
-      --ssh-port)
-        if [[ $# -lt 2 ]]; then
-          print_error "Missing value for --ssh-port"
-          print_usage
-          exit 1
-        fi
-        SSH_PORT="$2"
-        shift 2
-        ;;
-      --no-compress)
-        COMPRESS="false"
-        shift
-        ;;
-      --help)
-        print_usage
-        exit 0
-        ;;
-      --version)
-        print_version
-        exit 0
-        ;;
-      *)
-        print_error "Unknown option: $1"
+    --source)
+      if [[ $# -lt 2 ]]; then
+        print_error "Missing value for --source"
         print_usage
         exit 1
-        ;;
+      fi
+      SOURCE="$2"
+      shift 2
+      ;;
+    --target)
+      if [[ $# -lt 2 ]]; then
+        print_error "Missing value for --target"
+        print_usage
+        exit 1
+      fi
+      TARGET="$2"
+      shift 2
+      ;;
+    --delete)
+      DELETE="true"
+      shift
+      ;;
+    --dry-run)
+      DRY_RUN="true"
+      shift
+      ;;
+    --verbose)
+      VERBOSE="true"
+      shift
+      ;;
+    --exclude-file)
+      if [[ $# -lt 2 ]]; then
+        print_error "Missing value for --exclude-file"
+        print_usage
+        exit 1
+      fi
+      EXCLUDE_FILE="$2"
+      shift 2
+      ;;
+    --ssh-port)
+      if [[ $# -lt 2 ]]; then
+        print_error "Missing value for --ssh-port"
+        print_usage
+        exit 1
+      fi
+      SSH_PORT="$2"
+      shift 2
+      ;;
+    --no-compress)
+      COMPRESS="false"
+      shift
+      ;;
+    --help)
+      print_usage
+      exit 0
+      ;;
+    --version)
+      print_version
+      exit 0
+      ;;
+    *)
+      print_error "Unknown option: $1"
+      print_usage
+      exit 1
+      ;;
     esac
   done
 }

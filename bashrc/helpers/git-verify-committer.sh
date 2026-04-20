@@ -1,6 +1,12 @@
 #!/bin/bash
 set -euo pipefail
 
+# @REFACTOR
+# - needs documentation
+# - should be moved to a more appropriate location (e.g. git/)
+# - expect --commit by default (without needing to specify it explicitly)
+# - by default verify last commit (HEAD) if no --commit or hash is given
+
 git_verify_debug() {
   local help="Usage: $(basename "$0") git_verify_debug --commit <sha>
 
