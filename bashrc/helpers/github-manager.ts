@@ -36,6 +36,9 @@ import { type SpawnSyncReturns, spawnSync } from 'node:child_process';
 import { existsSync, readdirSync, statSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { join, resolve } from 'node:path';
+import { ensureNodeVersion } from './_lib/node.ts';
+
+ensureNodeVersion(25);
 
 type LogLevel = 'info' | 'warn' | 'error' | 'debug';
 
@@ -524,7 +527,6 @@ function parseArgs(argv: string[]): CliConfig {
       case '--help':
         printHelp();
         process.exit(0);
-        return config;
 
       default:
         throw new Error(`Unknown option "${token}". Run with --help.`);

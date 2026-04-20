@@ -1,6 +1,11 @@
 #!/bin/bash
 set -euo pipefail
 
+# @REFACTOR
+# - needs documentation
+# - should be moved to a more appropriate location (e.g. git/)
+# - expect --repo by default (without needing to specify it explicitly)
+
 git_identity_audit() {
   local help="Usage: $(basename "$0") git_identity_audit [--repo <path>] [--help]
 
