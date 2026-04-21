@@ -1,5 +1,7 @@
 #!/bin/bash
 
+brew tap dart-lang/dart
+
 # REMINDER: do not install gemini-sli via brew, it messes up nvm
 brew install gum \
   lychee \
@@ -8,4 +10,5 @@ brew install gum \
   osv-scanner \
   snitch \
   typos-cli \
-  yamllint
+  yamllint \
+  sass/sass/sass
