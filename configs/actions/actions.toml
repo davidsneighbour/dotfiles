@@ -19,3 +19,10 @@ cmd = '/usr/bin/dconf dump /org/cinnamon/ > "${DOTFILES}/etc/dconf/cinnamon.conf
 [scopes.cinnamon.activities.import]
 label = "Import Cinnamon settings"
 cmd = 'dconf load /org/cinnamon/ < "${DOTFILES}/etc/dconf/cinnamon.conf"'
+
+[scopes.dotbot]
+label = "Dotbot"
+
+[scopes.dotbot.activities.list]
+label = "List Dotbot setups"
+cmd = 'actions dotbot-list'
