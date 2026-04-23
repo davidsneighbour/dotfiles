@@ -2,17 +2,17 @@
 
 This setup adds Git commit summaries to an existing Obsidian daily note.
 
-It's built around two scripts:
+It's built around two scripts in `bashrc/helpers/daily-reports/`:
 
-* `commit-to-notes.sh`
-  * processes one Git repository
-  * returns one Markdown block for the selected date
-  * prints nothing if there are no commits or the repository cannot be processed
+* `commits-to-notes.sh`
+  * generates Markdown commit reports
+  * supports one repository (`--repo`) or all direct child repositories in a folder (`--dir`)
+  * supports one day (`--date`) or date ranges (`--from` + `--to`)
 
 * `commit-report-to-dailynote.sh`
-  * walks through the direct subfolders of a base directory
-  * calls `commit-to-notes.sh` for each folder
-  * appends each successful repository block to the matching daily note
+  * calls `commits-to-notes.sh`
+  * appends successful output to matching Obsidian daily notes
+  * supports one day (`--date`) or date ranges (`--from` + `--to`)
 
 ## Timezone handling
 
@@ -59,9 +59,7 @@ Each repository block looks like this:
 
 - 10:34 [[83c4571](https://github.com/davidsneighbour/dotfiles/commit/83c4571d1234567890abcdef1234567890abcd)] Fix shell completion
 - 11:12 [[a1b2c3d](https://github.com/davidsneighbour/dotfiles/commit/a1b2c3d4e5f6789012345678901234567890abcd)] Add commit daily note workflow
-
-
-````
+```
 
 Important details:
 
@@ -93,7 +91,7 @@ Repositories without a supported GitHub `origin` are skipped.
 Make both scripts executable:
 
 ```bash
-chmod +x commit-to-notes.sh
+chmod +x commits-to-notes.sh
 chmod +x commit-report-to-dailynote.sh
 ```
 
@@ -101,7 +99,7 @@ Place them somewhere on your `PATH`, or reference them by absolute path.
 
 Example helper path:
 
-* `~/.dotfiles/bashrc/helpers/commit-to-notes.sh`
+* `~/.dotfiles/bashrc/helpers/commits-to-notes.sh`
 * `~/.dotfiles/bashrc/helpers/commit-report-to-dailynote.sh`
 
 ## Usage
@@ -111,13 +109,13 @@ Example helper path:
 Example with your requested sample values:
 
 ```bash
-commit-to-notes.sh --repo ~/github.com/davidsneighbour/dotfiles --date 2026-04-01
+commits-to-notes.sh --repo ~/github.com/davidsneighbour/dotfiles --date 2026-04-01
 ```
 
 Explicit timezone:
 
 ```bash
-commit-to-notes.sh --repo ~/github.com/davidsneighbour/dotfiles --date 2026-04-01 --timezone Asia/Bangkok
+commits-to-notes.sh --repo ~/github.com/davidsneighbour/dotfiles --date 2026-04-01 --timezone Asia/Bangkok
 ```
 
 ### Append reports for all direct subfolders
@@ -192,7 +190,7 @@ Run every morning at 07:15 for the previous day:
 Example:
 
 ```text
-~/.dotfiles/bashrc/helpers/commit-to-notes.sh
+~/.dotfiles/bashrc/helpers/commits-to-notes.sh
 ~/.dotfiles/bashrc/helpers/commit-report-to-dailynote.sh
 ~/.dotfiles/bashrc/helpers/README-commit-to-notes.md
 ```
@@ -202,7 +200,7 @@ Example:
 Generate a single repository block:
 
 ```bash
-commit-to-notes.sh --repo ~/github.com/davidsneighbour/dotfiles --date 2026-04-01 --timezone Asia/Bangkok
+commits-to-notes.sh --repo ~/github.com/davidsneighbour/dotfiles --date 2026-04-01 --timezone Asia/Bangkok
 ```
 
 Append all repository blocks for the same day:
@@ -210,3 +208,10 @@ Append all repository blocks for the same day:
 ```bash
 commit-report-to-dailynote.sh --date 2026-04-01 --dir ~/github.com/davidsneighbour --timezone Asia/Bangkok
 ```
+
+## ToDo
+
+* [ ] add environment variable support for
+  * [ ] default timezone
+  * [ ] default base directory for obsidian notes
+  * [ ] date path format of the daily notes
