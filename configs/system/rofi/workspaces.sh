@@ -24,7 +24,8 @@ fi
 
 # Default configurations
 WORKINGDIR="${HOME}/.config/rofi/"
-PROJECTS_DIRS=("${HOME}/github.com/davidsneighbour" "${HOME}/github.com/dnbhq" "${HOME}/github.com/gohugo-ananke")
+PROJECTS_ROOT="${HOME}/github.com"
+PROJECTS_DIRS=()
 WORKSPACE_FILES_DIRS=()
 FILE_PATTERN="*.code-workspace"
 ROFI_CONFIG="${WORKINGDIR}/config.rasi"
@@ -83,6 +84,17 @@ sanitize_project_dirs() {
     fi
   done
   ((${#out[@]})) && printf '%s\n' "${out[@]}"
+}
+
+discover_project_dirs() {
+  local root="${1}"
+
+  if [[ ! -d "${root}" ]]; then
+    log warn "Projects root '${root}' not found"
+    return 0
+  fi
+
+  find "${root}" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | sort
 }
 
 update_cache() {
@@ -179,6 +191,10 @@ EOF
     ;;
   esac
 done
+
+if ((${#PROJECTS_DIRS[@]} == 0)); then
+  mapfile -t PROJECTS_DIRS < <(discover_project_dirs "${PROJECTS_ROOT}")
+fi
 
 log debug "Parsed options: WORKINGDIR=${WORKINGDIR}, SORT_ORDER=${SORT_ORDER}, CREATE_WORKSPACE=${CREATE_WORKSPACE}, HIDE_EMPTY_PROJECTS=${HIDE_EMPTY_PROJECTS}, NEW_WINDOW=${NEW_WINDOW}"
 
