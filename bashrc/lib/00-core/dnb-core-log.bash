@@ -136,36 +136,34 @@ EOF2
   fi
 
   local color=''
-  local icon='•'
   local reset='\033[0m'
   case "${level}" in
   error)
     color='\033[31m'
-    icon='⛔'
     ;;
   warn)
     color='\033[33m'
-    icon='⚠'
     ;;
   info)
     color='\033[36m'
-    icon='💡'
+    ;;
+  debug)
+    color='\033[36m'
+    ;;
+  trace)
+    color='\033[36m'
     ;;
   success)
     color='\033[32m'
-    icon='✓'
     ;;
   dry)
     color='\033[90m'
-    icon='☂'
     ;;
   skip)
     color='\033[35m'
-    icon='⏭'
     ;;
   esac
 
-  # printf '%b%s [%s %s]%b %s\n' "${color}" "${timestamp}" "${icon}" "${level}" "${reset}" "${msg}"
   printf '%b%s [%s]%b %s\n' "${color}" "${timestamp}" "${level}" "${reset}" "${msg}"
   printf '%s [%s] %s\n' "${timestamp}" "${level}" "${msg}" >>"${logfile}"
 }

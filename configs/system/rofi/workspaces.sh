@@ -2,23 +2,24 @@
 
 set -euo pipefail # Exit on error, undefined var, or pipe failure
 
-# Manual logging
-LOGFILE="${HOME}/.logs/rofi/rofi.log"
-mkdir -p "$(dirname "${LOGFILE}")"
-log() {
-  local level=$1
-  shift
-  printf "[%s][rofi][%s] %s\n" \
-    "$(date +'%Y-%m-%d %H:%M:%S')" "${level}" "$*" \
-    >>"${LOGFILE}"
-}
+# Loading helper scripts
+BASHRC_PATH="${HOME}/.dotfiles/bashrc"
+for FILE in "${BASHRC_PATH}"/lib/*/*.bash; do
+  # shellcheck disable=SC1090
+  [[ -f "${FILE}" && -r "${FILE}" ]] && source "${FILE}"
+done
 
-log info "Starting rofi project selector"
-log debug "PATH=${PATH}"
+# Setup logging
+LOG_LEVEL="debug"
+DNB_SETUP_LOG_FILE="${HOME}/.logs/rofi/rofi.log"
+mkdir -p "$(dirname "${DNB_SETUP_LOG_FILE}")"
+dnb_log_init
+dnb_log info "Starting rofi project selector"
+dnb_log debug "PATH=${PATH}"
 
 # Ensure 'code' CLI is available
 if ! command -v code &>/dev/null; then
-  log error "'code' not found in PATH"
+  dnb_log error "'code' not found in PATH"
   exit 1
 fi
 
@@ -80,7 +81,7 @@ sanitize_project_dirs() {
     if r="$(resolve_dir "${d}")"; then
       out+=("${r}")
     else
-      log warn "Skipping invalid project directory '${d}'"
+      dnb_log warn "Skipping invalid project directory '${d}'"
     fi
   done
   ((${#out[@]})) && printf '%s\n' "${out[@]}"
@@ -90,7 +91,7 @@ discover_project_dirs() {
   local root="${1}"
 
   if [[ ! -d "${root}" ]]; then
-    log warn "Projects root '${root}' not found"
+    dnb_log warn "Projects root '${root}' not found"
     return 0
   fi
 
@@ -99,7 +100,7 @@ discover_project_dirs() {
 
 update_cache() {
   local sel=$1
-  log debug "Updating cache with '${sel}'"
+  dnb_log debug "Updating cache with '${sel}'"
   mkdir -p "$(dirname "${CACHE_FILE}")"
   if [[ -f "${CACHE_FILE}" ]]; then
     grep -v -x "${sel}" "${CACHE_FILE}" >"${CACHE_FILE}.tmp" || true
@@ -113,11 +114,11 @@ update_cache() {
 # Parse --clearcache first
 if [[ "$*" == *--clearcache* ]]; then
   if [[ "$#" -ne 1 ]]; then
-    log error "--clearcache must be used alone"
+    dnb_log error "--clearcache must be used alone"
     exit 1
   fi
   rm -f "${CACHE_FILE}"
-  log info "Cache cleared"
+  dnb_log info "Cache cleared"
   exit 0
 fi
 
@@ -186,7 +187,7 @@ EOF
     exit 0
     ;;
   *)
-    log error "Unknown option: $1"
+    dnb_log error "Unknown option: $1"
     exit 1
     ;;
   esac
@@ -196,17 +197,17 @@ if ((${#PROJECTS_DIRS[@]} == 0)); then
   mapfile -t PROJECTS_DIRS < <(discover_project_dirs "${PROJECTS_ROOT}")
 fi
 
-log debug "Parsed options: WORKINGDIR=${WORKINGDIR}, SORT_ORDER=${SORT_ORDER}, CREATE_WORKSPACE=${CREATE_WORKSPACE}, HIDE_EMPTY_PROJECTS=${HIDE_EMPTY_PROJECTS}, NEW_WINDOW=${NEW_WINDOW}"
+dnb_log debug "Parsed options: WORKINGDIR=${WORKINGDIR}, SORT_ORDER=${SORT_ORDER}, CREATE_WORKSPACE=${CREATE_WORKSPACE}, HIDE_EMPTY_PROJECTS=${HIDE_EMPTY_PROJECTS}, NEW_WINDOW=${NEW_WINDOW}"
 
 # Log resolved directories for debugging
 if ((${#PROJECTS_DIRS[@]} > 0)); then
-  log debug "Resolved PROJECTS_DIRS:"
-  for d in "${PROJECTS_DIRS[@]}"; do log debug "  - ${d}"; done
+  dnb_log debug "Resolved PROJECTS_DIRS:"
+  for d in "${PROJECTS_DIRS[@]}"; do dnb_log debug "  - ${d}"; done
 fi
 
 if ((${#WORKSPACE_FILES_DIRS[@]} > 0)); then
-  log debug "Resolved WORKSPACE_FILES_DIRS:"
-  for d in "${WORKSPACE_FILES_DIRS[@]}"; do log debug "  - ${d}"; done
+  dnb_log debug "Resolved WORKSPACE_FILES_DIRS:"
+  for d in "${WORKSPACE_FILES_DIRS[@]}"; do dnb_log debug "  - ${d}"; done
 fi
 
 # Determine VS Code command
@@ -215,7 +216,7 @@ if [[ "${NEW_WINDOW}" == "true" ]]; then
 else
   CODE_COMMAND=(code -r)
 fi
-log debug "Using CODE_COMMAND='${CODE_COMMAND[*]}'"
+dnb_log debug "Using CODE_COMMAND='${CODE_COMMAND[*]}'"
 
 # Collect project directories
 PROJECT_DIRS=()
@@ -223,13 +224,13 @@ for base in "${PROJECTS_DIRS[@]}"; do
   mapfile -t tmp < <(find "${base}" -mindepth 1 -maxdepth 1 -type d 2>/dev/null)
   PROJECT_DIRS+=("${tmp[@]}")
 done
-log info "Found ${#PROJECT_DIRS[@]} project directories"
+dnb_log info "Found ${#PROJECT_DIRS[@]} project directories"
 
 # Collect workspace files (from explicit dirs)
 WORKSPACE_FILES=()
 if ((${#WORKSPACE_FILES_DIRS[@]})); then
   for d in "${WORKSPACE_FILES_DIRS[@]}"; do
-    log debug "Scanning workspace dir: ${d}"
+    dnb_log debug "Scanning workspace dir: ${d}"
     while IFS= read -r -d '' f; do
       WORKSPACE_FILES+=("${f}")
     done < <(find "${d}" -type f -name "${FILE_PATTERN}" -print0 2>/dev/null || true)
@@ -237,19 +238,19 @@ if ((${#WORKSPACE_FILES_DIRS[@]})); then
 else
   # Optional fallback: if a common default exists, use it
   if [[ -d "${HOME}/.dotfiles/configs/workspaces" ]]; then
-    log warn "No --workspacedirs provided; falling back to ${HOME}/.dotfiles/configs/workspaces"
+    dnb_log warn "No --workspacedirs provided; falling back to ${HOME}/.dotfiles/configs/workspaces"
     WORKSPACE_FILES_DIRS=("${HOME}/.dotfiles/configs/workspaces")
     while IFS= read -r -d '' f; do
       WORKSPACE_FILES+=("${f}")
     done < <(find "${WORKSPACE_FILES_DIRS[0]}" -type f -name "${FILE_PATTERN}" -print0 2>/dev/null || true)
   else
-    log debug "No WORKSPACE_FILES_DIRS provided"
+    dnb_log debug "No WORKSPACE_FILES_DIRS provided"
   fi
 fi
-log info "Found ${#WORKSPACE_FILES[@]} workspace files"
+dnb_log info "Found ${#WORKSPACE_FILES[@]} workspace files"
 
 if ((${#WORKSPACE_FILES_DIRS[@]} > 0)) && ((${#WORKSPACE_FILES[@]} == 0)); then
-  log warn "No *.code-workspace files found in provided --workspacedirs"
+  dnb_log warn "No *.code-workspace files found in provided --workspacedirs"
 fi
 
 # Map names to paths
@@ -267,9 +268,9 @@ done
 CACHED=()
 if [[ -f "${CACHE_FILE}" ]]; then
   mapfile -t CACHED < <(tac "${CACHE_FILE}")
-  log debug "Loaded cache: ${CACHED[*]}"
+  dnb_log debug "Loaded cache: ${CACHED[*]}"
 else
-  log debug "No cache file found"
+  dnb_log debug "No cache file found"
 fi
 
 # Build display entries with Pango markup
@@ -341,26 +342,26 @@ for name in "${sorted[@]}"; do
   MENU_ENTRIES+=("${entry}")
 done
 
-log debug "Resolved PROJECTS_DIRS:"
-for d in "${PROJECTS_DIRS[@]}"; do log debug "  - ${d}"; done || true
+dnb_log debug "Resolved PROJECTS_DIRS:"
+for d in "${PROJECTS_DIRS[@]}"; do dnb_log debug "  - ${d}"; done || true
 
-log debug "Resolved WORKSPACE_FILES_DIRS:"
-for d in "${WORKSPACE_FILES_DIRS[@]}"; do log debug "  - ${d}"; done || true
+dnb_log debug "Resolved WORKSPACE_FILES_DIRS:"
+for d in "${WORKSPACE_FILES_DIRS[@]}"; do dnb_log debug "  - ${d}"; done || true
 
 # Launch rofi with markup (config.rasi must have markup-rows: true)
 PROMPT="${PROMPT} (${#MENU_ENTRIES[@]} available)"
-log debug "Launching rofi"
+dnb_log debug "Launching rofi"
 SELECTED=$(printf '%s\n' "${MENU_ENTRIES[@]}" |
   rofi -x11 -dmenu -i -markup-rows -config "${ROFI_CONFIG}" -p "${PROMPT}")
 if [[ -z "${SELECTED}" ]]; then
-  log info "No selection, exiting"
+  dnb_log info "No selection, exiting"
   exit 1
 fi
 
 # Resolve and log selection
 sel_name=${DISPLAY_TO_NAME[${SELECTED}]}
 sel_target=${DISPLAY_TO_TARGET[${SELECTED}]}
-log info "User selected '${sel_name}' → '${sel_target}'"
+dnb_log info "User selected '${sel_name}' → '${sel_target}'"
 update_cache "${sel_name}"
 
 # Open in VS Code
@@ -380,7 +381,7 @@ if [[ -d "${sel_target}" ]]; then
 }
 EOL
     fi
-    log info "Created workspace: ${new}"
+    dnb_log info "Created workspace: ${new}"
     "${CODE_COMMAND[@]}" "${new}"
   else
     "${CODE_COMMAND[@]}" "${sel_target}"
