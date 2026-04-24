@@ -24,7 +24,7 @@ fi
 
 # Default configurations
 WORKINGDIR="${HOME}/.config/rofi/"
-PROJECTS_DIRS=("${HOME}/github.com/davidsneighbour" "${HOME}/github.com/dnbhq" "${HOME}/github.com/theNewDynamic")
+PROJECTS_DIRS=("${HOME}/github.com/davidsneighbour" "${HOME}/github.com/dnbhq" "${HOME}/github.com/gohugo-ananke")
 WORKSPACE_FILES_DIRS=()
 FILE_PATTERN="*.code-workspace"
 ROFI_CONFIG="${WORKINGDIR}/config.rasi"
