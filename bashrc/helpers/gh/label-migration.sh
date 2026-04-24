@@ -24,7 +24,7 @@ Default behaviour:
     from the local git checkout.
 
 Authentication:
-  * If GITHUB_REPOMANAGEMENT_TOKEN is set, it is exported as GH_TOKEN for this script.
+  * If GITHUB_TOKEN_CONTENT_PRIVATE is set, it is exported as GH_TOKEN for this script.
   * Otherwise gh falls back to GH_TOKEN, GITHUB_TOKEN, or stored gh authentication.
 
 Options:
@@ -98,14 +98,14 @@ verbose() {
 }
 
 configure_gh_auth() {
-  if [[ -n "${GITHUB_REPOMANAGEMENT_TOKEN:-}" ]]; then
-    export GH_TOKEN="${GITHUB_REPOMANAGEMENT_TOKEN}"
-    verbose "Using GH_TOKEN from GITHUB_REPOMANAGEMENT_TOKEN."
+  if [[ -n "${GH_TOKEN:-}" ]]; then
+    verbose "Using existing GH_TOKEN from environment."
     return 0
   fi
 
-  if [[ -n "${GH_TOKEN:-}" ]]; then
-    verbose "Using existing GH_TOKEN from environment."
+  if [[ -n "${GITHUB_TOKEN_CONTENT_PRIVATE:-}" ]]; then
+    export GH_TOKEN="${GITHUB_TOKEN_CONTENT_PRIVATE}"
+    verbose "Using GH_TOKEN from GITHUB_TOKEN_CONTENT_PRIVATE."
     return 0
   fi
 
@@ -130,30 +130,30 @@ parse_github_repo_from_url() {
   local repo=""
 
   case "${remote_url}" in
-    git@github.com:*.git)
-      repo="${remote_url#git@github.com:}"
-      repo="${repo%.git}"
-      ;;
-    git@github.com:*)
-      repo="${remote_url#git@github.com:}"
-      ;;
-    ssh://git@github.com/*/*.git)
-      repo="${remote_url#ssh://git@github.com/}"
-      repo="${repo%.git}"
-      ;;
-    ssh://git@github.com/*/*)
-      repo="${remote_url#ssh://git@github.com/}"
-      ;;
-    https://github.com/*/*.git)
-      repo="${remote_url#https://github.com/}"
-      repo="${repo%.git}"
-      ;;
-    https://github.com/*/*)
-      repo="${remote_url#https://github.com/}"
-      ;;
-    *)
-      return 1
-      ;;
+  git@github.com:*.git)
+    repo="${remote_url#git@github.com:}"
+    repo="${repo%.git}"
+    ;;
+  git@github.com:*)
+    repo="${remote_url#git@github.com:}"
+    ;;
+  ssh://git@github.com/*/*.git)
+    repo="${remote_url#ssh://git@github.com/}"
+    repo="${repo%.git}"
+    ;;
+  ssh://git@github.com/*/*)
+    repo="${remote_url#ssh://git@github.com/}"
+    ;;
+  https://github.com/*/*.git)
+    repo="${remote_url#https://github.com/}"
+    repo="${repo%.git}"
+    ;;
+  https://github.com/*/*)
+    repo="${remote_url#https://github.com/}"
+    ;;
+  *)
+    return 1
+    ;;
   esac
 
   if [[ "${repo}" =~ ^[^/]+/[^/]+$ ]]; then
@@ -271,27 +271,27 @@ declare -a REPOS=()
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --repo)
-      shift
-      [[ $# -gt 0 ]] || die "Missing value for --repo"
-      REPOS+=("$1")
-      ;;
-    --apply)
-      APPLY="true"
-      ;;
-    --clear)
-      CLEAR="true"
-      ;;
-    --verbose)
-      VERBOSE="true"
-      ;;
-    --help)
-      usage
-      exit 0
-      ;;
-    *)
-      die "Unknown option: $1"
-      ;;
+  --repo)
+    shift
+    [[ $# -gt 0 ]] || die "Missing value for --repo"
+    REPOS+=("$1")
+    ;;
+  --apply)
+    APPLY="true"
+    ;;
+  --clear)
+    CLEAR="true"
+    ;;
+  --verbose)
+    VERBOSE="true"
+    ;;
+  --help)
+    usage
+    exit 0
+    ;;
+  *)
+    die "Unknown option: $1"
+    ;;
   esac
   shift
 done
@@ -302,7 +302,7 @@ require_command "git"
 configure_gh_auth
 
 if ! gh auth status >/dev/null 2>&1; then
-  die "GitHub CLI is not authenticated. Set GITHUB_REPOMANAGEMENT_TOKEN, GH_TOKEN, or run 'gh auth login' first."
+  die "GitHub CLI is not authenticated. Set GITHUB_TOKEN_CONTENT_PRIVATE, GH_TOKEN, or run 'gh auth login' first."
 fi
 
 main() {
