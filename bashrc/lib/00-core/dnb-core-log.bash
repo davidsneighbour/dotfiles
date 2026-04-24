@@ -127,7 +127,7 @@ EOF2
     fi
   fi
 
-  timestamp="$(date '+%Y-%m-%d %H:%M:%S')"
+  timestamp="$(date '+%b%d %H:%M:%S')"
 
   if [[ "${json_mode}" == 'true' ]]; then
     printf '{"timestamp":"%s","level":"%s","message":"%s"}\n' "${timestamp}" "${level}" "${msg}"
@@ -164,8 +164,11 @@ EOF2
     ;;
   esac
 
-  printf '%b%s [%s]%b %s\n' "${color}" "${timestamp}" "${level}" "${reset}" "${msg}"
-  printf '%s [%s] %s\n' "${timestamp}" "${level}" "${msg}" >>"${logfile}"
+  local padded_level=''
+  printf -v padded_level '%-7s' "${level}"
+
+  printf '%b%s %s%b %s\n' "${color}" "${timestamp}" "${padded_level}" "${reset}" "${msg}"
+  printf '%s %s %s\n' "${timestamp}" "${padded_level}" "${msg}" >>"${logfile}"
 }
 
 # dnb_error
