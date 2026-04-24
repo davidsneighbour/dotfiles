@@ -13,7 +13,7 @@
     "@commitlint/cli": "20.5.0",
     "@commitlint/config-conventional": "20.5.0",
     "@davidsneighbour/markdownlint-config": "2026.0.3",
-    "@humanwhocodes/crosspost": "1.0.3",
+    "@humanwhocodes/crosspost": "1.0.4",
     "@j9t/obsohtml": "1.9.5",
     "@release-it/conventional-changelog": "10.0.6",
     "@secretlint/secretlint-rule-no-dotenv": "11.4.0",
@@ -28,7 +28,7 @@
     "cz-git": "1.12.0",
     "debug": "4.4.3",
     "deepmerge": "4.3.1",
-    "dotenv": "17.3.1",
+    "dotenv": "17.4.2",
     "fixpack": "4.0.0",
     "fs-extra": "11.3.4",
     "lint-staged": "16.4.0",
@@ -37,7 +37,7 @@
     "markdownlint-cli2": "0.22.0",
     "ncp": "2.0.0",
     "npm-check-updates": "19.6.6",
-    "npm-package-json-lint": "9.1.0",
+    "npm-package-json-lint": "10.2.1",
     "npm-run-all2": "8.0.4",
     "npm-watch": "0.13.0",
     "release-it": "19.2.4",
@@ -71,12 +71,12 @@
     "version": "0.2",
     "language": "en-GB",
     "ignorePaths": [
-      ".vscode/cspell-dict-dotfiles.txt"
+      ".vscode/dictionary.txt"
     ],
     "dictionaryDefinitions": [
       {
         "name": "custom",
-        "path": ".vscode/cspell-dict-dotfiles.txt",
+        "path": ".vscode/dictionary.txt",
         "addWords": true
       }
     ],
