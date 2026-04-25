@@ -8,7 +8,8 @@ dnb_auto_source "${BASHRC_PATH}"/partials/_aliases/
 # reload the profile
 alias reload='. ~/.bashrc'
 
-# change into a directory and run nvm use if .nvmrc is present
+# change into a directory and run nvm and git if present
+# see _functions/change_directory for details
 alias cd='change_directory'
 
 # datetime for filenames
