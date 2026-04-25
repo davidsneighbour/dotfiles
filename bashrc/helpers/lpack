@@ -1,5 +1,6 @@
 #!/bin/bash
 # shellcheck shell=bash
+# dnb-dotfiles v3002.20.0
 
 set -euo pipefail
 
