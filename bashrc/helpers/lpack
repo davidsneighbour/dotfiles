@@ -1,0 +1,316 @@
+#!/bin/bash
+# shellcheck shell=bash
+
+set -euo pipefail
+
+lpack_help() {
+  cat <<EOH
+lpack - package the current directory into a zip archive
+
+Usage:
+  lpack [--exclude <path>]... [--config <path>] [--dry-run] [--output <file>] [--verbose]
+  lpack --help
+
+Options:
+  --exclude <path>   Exclude a file or folder from the package. Can be used multiple times.
+  --config <path>    Read lpack config from a TOML file path.
+  --dry-run          Print the files that would be packaged and do not create a zip.
+  --output <file>    Output zip filename. Default: <cwd>-YYYYMMDD-HHMMSS.zip
+  --verbose          Enable verbose logging.
+  --help             Show this help.
+
+Config key:
+  lpack.exclude      Array of excludes.
+
+Config behaviour:
+  - --config uses only the given file.
+  - Without --config, lpack reads repo-local .github/dnb.toml and
+    ~/.dotfiles/configs/system/config.toml (when available).
+EOH
+}
+
+lpack_source_libs() {
+  local base_path="${BASHRC_PATH:-}"
+
+  if [[ -z "${base_path}" ]]; then
+    local script_dir
+    script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    base_path="$(cd "${script_dir}/.." && pwd)"
+  fi
+
+  local file=''
+  for file in "${base_path}"/lib/*/*.bash; do
+    # shellcheck disable=SC1090
+    [[ -f "${file}" && -r "${file}" ]] && source "${file}"
+  done
+}
+
+lpack_normalize_exclude() {
+  local raw="${1:-}"
+  raw="${raw#./}"
+  raw="${raw%/}"
+  printf '%s\n' "${raw}"
+}
+
+lpack_append_unique() {
+  local value="${1:-}"
+  shift
+
+  local existing=''
+  for existing in "$@"; do
+    if [[ "${existing}" == "${value}" ]]; then
+      return 1
+    fi
+  done
+
+  return 0
+}
+
+lpack_collect_config_excludes() {
+  local config_path="${1:-}"
+  local -n out_ref="${2}"
+
+  local rc=0
+  local -a values=()
+  local item=''
+
+  if [[ -n "${config_path}" ]]; then
+    if mapfile -t values < <(dnb_config_get --file "${config_path}" lpack.exclude 2>/dev/null); then
+      for item in "${values[@]}"; do
+        [[ -z "${item}" ]] && continue
+        out_ref+=("${item}")
+      done
+      return 0
+    fi
+
+    rc="${?}"
+    if [[ "${rc}" -eq 2 ]]; then
+      dnb_log error "Failed to parse config file: ${config_path}"
+      return 1
+    fi
+
+    dnb_log warn "No lpack.exclude in config: ${config_path}"
+    return 0
+  fi
+
+  values=()
+  rc=0
+  if mapfile -t values < <(dnb_repo_config_get lpack.exclude 2>/dev/null); then
+    for item in "${values[@]}"; do
+      [[ -z "${item}" || "${item}" == "false" ]] && continue
+      out_ref+=("${item}")
+    done
+  else
+    rc="${?}"
+    if [[ "${rc}" -eq 2 ]]; then
+      dnb_log error "Failed to parse repo config file .github/dnb.toml"
+      return 1
+    fi
+  fi
+
+  local default_config="${HOME}/.dotfiles/configs/system/config.toml"
+  values=()
+  rc=0
+  if mapfile -t values < <(dnb_config_get --file "${default_config}" lpack.exclude 2>/dev/null); then
+    for item in "${values[@]}"; do
+      [[ -z "${item}" ]] && continue
+      out_ref+=("${item}")
+    done
+  else
+    rc="${?}"
+    if [[ "${rc}" -eq 2 ]]; then
+      dnb_log error "Failed to parse config file: ${default_config}"
+      return 1
+    fi
+  fi
+
+  return 0
+}
+
+main() {
+  lpack_source_libs
+
+  local now
+  now="$(date +'%Y%m%d-%H%M%S')"
+
+  local log_dir="${HOME}/.logs/system"
+  mkdir -p "${log_dir}"
+  __LOGFILE="${log_dir}/lpack-${now}.log"
+
+  local config_path=''
+  local dry_run='false'
+  local verbose='false'
+  local output=''
+
+  local -a cli_excludes=()
+  local -a config_excludes=()
+  local -a excludes=()
+  local -a files=()
+
+  while [[ "$#" -gt 0 ]]; do
+    case "${1}" in
+    --help|-h)
+      lpack_help
+      return 0
+      ;;
+    --exclude)
+      shift
+      if [[ "$#" -eq 0 ]]; then
+        dnb_log error "--exclude requires a value"
+        lpack_help
+        return 2
+      fi
+      cli_excludes+=("${1}")
+      shift
+      ;;
+    --config)
+      shift
+      if [[ "$#" -eq 0 ]]; then
+        dnb_log error "--config requires a value"
+        lpack_help
+        return 2
+      fi
+      config_path="${1}"
+      shift
+      ;;
+    --dry-run)
+      dry_run='true'
+      shift
+      ;;
+    --verbose)
+      verbose='true'
+      shift
+      ;;
+    --output)
+      shift
+      if [[ "$#" -eq 0 ]]; then
+        dnb_log error "--output requires a value"
+        lpack_help
+        return 2
+      fi
+      output="${1}"
+      shift
+      ;;
+    --*)
+      dnb_log error "Unknown option: ${1}"
+      lpack_help
+      return 2
+      ;;
+    *)
+      dnb_log error "Unexpected positional argument: ${1}"
+      lpack_help
+      return 2
+      ;;
+    esac
+  done
+
+  if [[ -z "${output}" ]]; then
+    local dirbase
+    dirbase="$(basename "${PWD}")"
+    output="${dirbase}-${now}.zip"
+  fi
+
+  if ! command -v zip >/dev/null 2>&1; then
+    dnb_log error "Required command not found: zip"
+    return 1
+  fi
+
+  if ! lpack_collect_config_excludes "${config_path}" config_excludes; then
+    return 1
+  fi
+
+  local item=''
+  for item in "${config_excludes[@]}"; do
+    item="$(lpack_normalize_exclude "${item}")"
+    [[ -z "${item}" ]] && continue
+    if lpack_append_unique "${item}" "${excludes[@]}"; then
+      excludes+=("${item}")
+    fi
+  done
+
+  for item in "${cli_excludes[@]}"; do
+    item="$(lpack_normalize_exclude "${item}")"
+    [[ -z "${item}" ]] && continue
+    if lpack_append_unique "${item}" "${excludes[@]}"; then
+      excludes+=("${item}")
+    fi
+  done
+
+  local output_name=''
+  output_name="${output#./}"
+  output_name="${output_name%/}"
+  if [[ -n "${output_name}" ]] && lpack_append_unique "${output_name}" "${excludes[@]}"; then
+    excludes+=("${output_name}")
+  fi
+
+  if [[ "${verbose}" == 'true' ]]; then
+    dnb_log info "Output archive: ${output}"
+    if [[ -n "${config_path}" ]]; then
+      dnb_log info "Using explicit config: ${config_path}"
+    else
+      dnb_log info "Using repo/system default config sources"
+    fi
+
+    if [[ "${#excludes[@]}" -gt 0 ]]; then
+      dnb_log info "Exclude rules: ${excludes[*]}"
+    else
+      dnb_log info "Exclude rules: <none>"
+    fi
+  fi
+
+  local find_cmd=(find .)
+  if [[ "${#excludes[@]}" -gt 0 ]]; then
+    find_cmd+=(\( )
+    local idx=0
+    for item in "${excludes[@]}"; do
+      if [[ "${idx}" -gt 0 ]]; then
+        find_cmd+=(-o)
+      fi
+      find_cmd+=(-path "./${item}" -o -path "./${item}/*")
+      idx=$((idx + 1))
+    done
+    find_cmd+=(\) -prune -o)
+  fi
+  find_cmd+=(-type f -print)
+
+  while IFS= read -r item; do
+    item="${item#./}"
+    [[ -z "${item}" ]] && continue
+    files+=("${item}")
+  done < <("${find_cmd[@]}")
+
+  if [[ "${#files[@]}" -eq 0 ]]; then
+    dnb_log warn "No files selected for packaging"
+    return 1
+  fi
+
+  if [[ "${dry_run}" == 'true' ]]; then
+    dnb_log dry "Dry-run enabled. Files that would be packaged:"
+    printf '%s\n' "${files[@]}"
+    return 0
+  fi
+
+  local tmp_file=''
+  tmp_file="$(mktemp)"
+  printf '%s\n' "${files[@]}" >"${tmp_file}"
+
+  if [[ "${verbose}" == 'true' ]]; then
+    if ! zip --names-stdin "${output}" <"${tmp_file}"; then
+      rm -f "${tmp_file}"
+      dnb_log error "Failed to create archive: ${output}"
+      return 1
+    fi
+  else
+    if ! zip -q --names-stdin "${output}" <"${tmp_file}"; then
+      rm -f "${tmp_file}"
+      dnb_log error "Failed to create archive: ${output}"
+      return 1
+    fi
+  fi
+
+  rm -f "${tmp_file}"
+  dnb_log success "Archive created: ${output}"
+  return 0
+}
+
+main "$@"
