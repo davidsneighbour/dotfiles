@@ -24,7 +24,8 @@ Config key:
 
 Config behaviour:
   - --config uses only the given file.
-  - Without --config, lpack reads repo-local .github/dnb.toml and
+  - Without --config, lpack uses repo-local .github/dnb.toml when present.
+  - If repo-local lpack.exclude is missing, lpack falls back to
     ~/.dotfiles/configs/system/config.toml (when available).
 EOH
 }
@@ -71,11 +72,17 @@ lpack_collect_config_excludes() {
   local -n out_ref="${2}"
 
   local rc=0
+  local getter_output=''
   local -a values=()
   local item=''
+  local use_default_config='true'
 
   if [[ -n "${config_path}" ]]; then
-    if mapfile -t values < <(dnb_config_get --file "${config_path}" lpack.exclude 2>/dev/null); then
+    getter_output="$(dnb_config_get --file "${config_path}" lpack.exclude 2>/dev/null)"
+    rc="${?}"
+
+    if [[ "${rc}" -eq 0 ]]; then
+      mapfile -t values <<< "${getter_output}"
       for item in "${values[@]}"; do
         [[ -z "${item}" ]] && continue
         out_ref+=("${item}")
@@ -83,7 +90,6 @@ lpack_collect_config_excludes() {
       return 0
     fi
 
-    rc="${?}"
     if [[ "${rc}" -eq 2 ]]; then
       dnb_log error "Failed to parse config file: ${config_path}"
       return 1
@@ -93,35 +99,38 @@ lpack_collect_config_excludes() {
     return 0
   fi
 
-  values=()
-  rc=0
-  if mapfile -t values < <(dnb_repo_config_get lpack.exclude 2>/dev/null); then
-    for item in "${values[@]}"; do
-      [[ -z "${item}" || "${item}" == "false" ]] && continue
-      out_ref+=("${item}")
-    done
-  else
-    rc="${?}"
-    if [[ "${rc}" -eq 2 ]]; then
-      dnb_log error "Failed to parse repo config file .github/dnb.toml"
-      return 1
-    fi
-  fi
+  getter_output="$(dnb_repo_config_get lpack.exclude 2>/dev/null)"
+  rc="${?}"
 
-  local default_config="${HOME}/.dotfiles/configs/system/config.toml"
-  values=()
-  rc=0
-  if mapfile -t values < <(dnb_config_get --file "${default_config}" lpack.exclude 2>/dev/null); then
+  if [[ "${rc}" -eq 0 ]]; then
+    mapfile -t values <<< "${getter_output}"
     for item in "${values[@]}"; do
       [[ -z "${item}" ]] && continue
       out_ref+=("${item}")
     done
-  else
-    rc="${?}"
-    if [[ "${rc}" -eq 2 ]]; then
-      dnb_log error "Failed to parse config file: ${default_config}"
-      return 1
-    fi
+    use_default_config='false'
+  elif [[ "${rc}" -eq 2 ]]; then
+    dnb_log error "Failed to parse repo config file .github/dnb.toml"
+    return 1
+  fi
+
+  if [[ "${use_default_config}" != 'true' ]]; then
+    return 0
+  fi
+
+  local default_config="${HOME}/.dotfiles/configs/system/config.toml"
+  getter_output="$(dnb_config_get --file "${default_config}" lpack.exclude 2>/dev/null)"
+  rc="${?}"
+
+  if [[ "${rc}" -eq 0 ]]; then
+    mapfile -t values <<< "${getter_output}"
+    for item in "${values[@]}"; do
+      [[ -z "${item}" ]] && continue
+      out_ref+=("${item}")
+    done
+  elif [[ "${rc}" -eq 2 ]]; then
+    dnb_log error "Failed to parse config file: ${default_config}"
+    return 1
   fi
 
   return 0
