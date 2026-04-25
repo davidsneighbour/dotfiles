@@ -6,4 +6,10 @@ exclude = [
   "node_modules",
   "dist",
   "public",
+  "containers",
+  "modules",
+  "logs",
+  "cache",
+  ".git",
+  "scratch"
 ]
