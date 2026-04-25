@@ -1,0 +1,285 @@
+#!/bin/bash
+# shellcheck shell=bash
+# dnb-dotfiles v3002.20.0
+
+set -euo pipefail
+
+node_run() {
+  local script_path=""
+  local script_abs_path=""
+  local node_version=""
+  local working_directory=""
+  local working_directory_abs=""
+  local dnb_verbose="${DNB_VERBOSE:-0}"
+  local node_default="${DNB_NODE_DEFAULT:-node}"
+  local -a script_args=()
+
+  get_help_node_context() {
+    local default_version="${DNB_NODE_DEFAULT:-node}"
+    local node_binary=""
+    local node_version=""
+    local nvm_output=""
+
+    if ! load_nvm >/dev/null 2>&1; then
+      printf 'Node version that would be used here: unknown (nvm not available)\n'
+      return 0
+    fi
+
+    if nvm_output="$(nvm which 2>&1)"; then
+      node_binary="${nvm_output##*$'\n'}"
+
+      if [[ -x "${node_binary}" ]]; then
+        node_version="$("${node_binary}" --version)"
+      else
+        node_version="unknown"
+      fi
+
+      printf 'Node version that would be used here: %s\n' "${node_version}"
+
+      if [[ "${DNB_VERBOSE:-0}" -ge 1 ]]; then
+        printf 'Resolution details:\n'
+        printf '%s\n' "${nvm_output}"
+      fi
+
+      return 0
+    fi
+
+    printf 'Node version that would be used here: fallback -> %s\n' "${default_version}"
+  }
+
+  usage() {
+    cat <<EOF
+Usage: $(basename "$0") <file> [options] [-- script-args...]
+Usage: $(basename "$0") --script <file> [options] [-- script-args...]
+
+Options:
+  --script <file>         Node script to execute
+  --node-version <ver>    Node version to use
+  -v <ver>                Alias for --node-version
+                          Examples: 22, v22, 22.12.0, v22.12.0, lts/*, node
+  --cwd <dir>             Working directory before execution
+  --verbose               Enable verbose output
+  --debug                 Enable full debug output
+  --help                  Show this help message
+
+Environment:
+  DNB_VERBOSE             Verbosity level: 0, 1, or 2
+  DNB_NODE_DEFAULT        Fallback Node version if nvm use without an explicit version fails.
+                          Defaults to: node
+
+Behaviour:
+  * Explicit versions always use: nvm use <version>
+  * If the version is not installed, the script runs: nvm install <version>
+  * After installation, the script retries: nvm use <version>
+  * Without --node-version, the script first runs plain nvm use so nvm can resolve .nvmrc.
+  * If plain nvm use fails, it falls back to DNB_NODE_DEFAULT or node.
+
+Current context:
+  $(get_help_node_context)
+EOF
+  }
+
+  log_message() {
+    local level="${1}"
+    local message="${2}"
+
+    if declare -F dnb_log >/dev/null 2>&1; then
+      dnb_log "${level}" "${message}"
+      return 0
+    fi
+
+    case "${level}" in
+    error)
+      printf '[error] %s\n' "${message}" >&2
+      ;;
+    warn)
+      printf '[warn] %s\n' "${message}" >&2
+      ;;
+    success)
+      printf '[success] %s\n' "${message}"
+      ;;
+    debug)
+      if [[ "${dnb_verbose}" -ge 2 ]]; then
+        printf '[debug] %s\n' "${message}" >&2
+      fi
+      ;;
+    info)
+      if [[ "${dnb_verbose}" -ge 1 ]]; then
+        printf '[info] %s\n' "${message}"
+      fi
+      ;;
+    *)
+      printf '[%s] %s\n' "${level}" "${message}"
+      ;;
+    esac
+  }
+
+  load_nvm() {
+    export NVM_DIR="${NVM_DIR:-${HOME}/.nvm}"
+
+    if [[ ! -s "${NVM_DIR}/nvm.sh" ]]; then
+      log_message "error" "nvm.sh not found in ${NVM_DIR}"
+      return 1
+    fi
+
+    # shellcheck source=/dev/null
+    source "${NVM_DIR}/nvm.sh"
+  }
+
+  use_or_install_node_version() {
+    local requested_version="${1}"
+
+    if nvm use "${requested_version}" >/dev/null; then
+      log_message "success" "Using Node version: ${requested_version}"
+      return 0
+    fi
+
+    log_message "warn" "Node version is not available locally: ${requested_version}"
+    log_message "info" "Installing Node version: ${requested_version}"
+
+    nvm install "${requested_version}" >/dev/null
+
+    if ! nvm use "${requested_version}" >/dev/null; then
+      log_message "error" "Failed to use Node version after installation: ${requested_version}"
+      return 1
+    fi
+
+    log_message "success" "Installed and selected Node version: ${requested_version}"
+  }
+
+  use_project_or_default_node_version() {
+    if nvm use >/dev/null; then
+      log_message "success" "Using Node version resolved by nvm."
+      return 0
+    fi
+
+    log_message "warn" "Plain nvm use failed. Falling back to: ${node_default}"
+    use_or_install_node_version "${node_default}"
+  }
+
+  while [[ $# -gt 0 ]]; do
+    case "${1}" in
+    --script)
+      if [[ $# -lt 2 ]]; then
+        log_message "error" "--script requires a value."
+        usage
+        return 1
+      fi
+      script_path="${2}"
+      shift 2
+      ;;
+    --node-version | -v)
+      if [[ $# -lt 2 ]]; then
+        log_message "error" "${1} requires a value."
+        usage
+        return 1
+      fi
+      node_version="${2}"
+      shift 2
+      ;;
+    --cwd)
+      if [[ $# -lt 2 ]]; then
+        log_message "error" "--cwd requires a value."
+        usage
+        return 1
+      fi
+      working_directory="${2}"
+      shift 2
+      ;;
+    --verbose)
+      dnb_verbose="1"
+      export DNB_VERBOSE="${dnb_verbose}"
+      shift
+      ;;
+    --debug)
+      dnb_verbose="2"
+      export DNB_VERBOSE="${dnb_verbose}"
+      shift
+      ;;
+    --help)
+      usage
+      return 0
+      ;;
+    --)
+      shift
+      script_args=("${@}")
+      break
+      ;;
+    -*)
+      log_message "error" "Unknown option: ${1}"
+      usage
+      return 1
+      ;;
+    *)
+      if [[ -z "${script_path}" ]]; then
+        script_path="${1}"
+        shift
+      else
+        script_args+=("${1}")
+        shift
+      fi
+      ;;
+    esac
+  done
+
+  export DNB_VERBOSE="${dnb_verbose}"
+
+  if [[ -z "${script_path}" ]]; then
+    log_message "error" "A script path is required."
+    usage
+    return 1
+  fi
+
+  if [[ ! -f "${script_path}" ]]; then
+    log_message "error" "Script not found: ${script_path}"
+    usage
+    return 1
+  fi
+
+  script_abs_path="$(realpath "${script_path}")"
+
+  if [[ -n "${working_directory}" ]]; then
+    if [[ ! -d "${working_directory}" ]]; then
+      log_message "error" "Working directory not found: ${working_directory}"
+      usage
+      return 1
+    fi
+
+    working_directory_abs="$(realpath "${working_directory}")"
+  else
+    working_directory_abs="$(dirname "${script_abs_path}")"
+  fi
+
+  cd "${working_directory_abs}"
+
+  load_nvm
+
+  if [[ -n "${node_version}" ]]; then
+    use_or_install_node_version "${node_version}"
+  else
+    use_project_or_default_node_version
+  fi
+
+  local node_binary=""
+  node_binary="$(command -v node)"
+
+  if [[ -z "${node_binary}" || ! -x "${node_binary}" ]]; then
+    log_message "error" "Failed to resolve a usable node binary."
+    return 1
+  fi
+
+  log_message "info" "Node binary: ${node_binary}"
+  log_message "info" "Node version: $("${node_binary}" --version)"
+  log_message "info" "Working directory: $(pwd)"
+  log_message "info" "Script: ${script_abs_path}"
+
+  if [[ "${dnb_verbose}" -ge 2 ]]; then
+    log_message "debug" "Invoked command: ${node_binary} ${script_abs_path} ${script_args[*]}"
+  fi
+
+  exec "${node_binary}" "${script_abs_path}" "${script_args[@]}"
+}
+
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+  node_run "${@}"
+fi
