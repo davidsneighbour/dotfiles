@@ -1,2 +1,9 @@
 [launcher]
 icon = "terminal"
+
+[lpack]
+exclude = [
+  "node_modules",
+  "dist",
+  "public",
+]

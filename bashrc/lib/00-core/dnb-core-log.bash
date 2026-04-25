@@ -137,32 +137,8 @@ EOF2
 
   local color=''
   local reset='\033[0m'
-  case "${level}" in
-  error)
-    color='\033[31m'
-    ;;
-  warn)
-    color='\033[33m'
-    ;;
-  info)
-    color='\033[36m'
-    ;;
-  debug)
-    color='\033[36m'
-    ;;
-  trace)
-    color='\033[36m'
-    ;;
-  success)
-    color='\033[32m'
-    ;;
-  dry)
-    color='\033[90m'
-    ;;
-  skip)
-    color='\033[35m'
-    ;;
-  esac
+
+  color="$(__dnb_log_color "${level}")"
 
   local padded_level=''
   printf -v padded_level '%-7s' "${level}"
