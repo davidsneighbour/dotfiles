@@ -11,9 +11,6 @@
 [submodule "modules/protected"]
 	path = modules/protected
 	url = git@github.com:davidsneighbour/dotfiles-protected.git
-[submodule "modules/dotfiles-ai"]
-	path = modules/dotfiles-ai
-	url = https://github.com/davidsneighbour/dotfiles-ai
 [submodule "modules/gmailctl"]
 	path = modules/gmailctl
 	url = git@github.com:davidsneighbour/gmailctl-config.git
