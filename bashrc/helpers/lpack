@@ -9,12 +9,13 @@ lpack_help() {
 lpack - package the current directory into a zip archive
 
 Usage:
-  lpack [--exclude <path>]... [--config <path>] [--dry-run] [--output <file>] [--verbose]
+  lpack [--exclude <path>]... [--config <path>] [--no-gitignore] [--dry-run] [--output <file>] [--verbose]
   lpack --help
 
 Options:
   --exclude <path>   Exclude a file or folder from the package. Can be used multiple times.
   --config <path>    Read lpack config from a TOML file path.
+  --no-gitignore     Do not apply excludes from .gitignore.
   --dry-run          Print the files that would be packaged and do not create a zip.
   --output <file>    Output zip filename. Default: <cwd>-YYYYMMDD-HHMMSS.zip
   --verbose          Enable verbose logging.
@@ -149,6 +150,7 @@ main() {
 
   local config_path=''
   local dry_run='false'
+  local include_gitignore='true'
   local verbose='false'
   local output=''
 
@@ -185,6 +187,10 @@ main() {
       ;;
     --dry-run)
       dry_run='true'
+      shift
+      ;;
+    --no-gitignore)
+      include_gitignore='false'
       shift
       ;;
     --verbose)
@@ -266,6 +272,12 @@ main() {
     else
       dnb_log info "Exclude rules: <none>"
     fi
+
+    if [[ "${include_gitignore}" == 'true' ]]; then
+      dnb_log info "Gitignore excludes: enabled"
+    else
+      dnb_log info "Gitignore excludes: disabled"
+    fi
   fi
 
   local find_cmd=(find .)
@@ -283,9 +295,36 @@ main() {
   fi
   find_cmd+=(-type f -print)
 
+  local has_gitignore='false'
+  if [[ -f ".gitignore" ]]; then
+    has_gitignore='true'
+  fi
+
+  local check_gitignore='false'
+  if [[ "${include_gitignore}" == 'true' && "${has_gitignore}" == 'true' ]]; then
+    if command -v git >/dev/null 2>&1; then
+      check_gitignore='true'
+    else
+      dnb_log warn "git command not found; cannot apply .gitignore excludes"
+    fi
+  fi
+
+  local git_check_rc=0
   while IFS= read -r item; do
     item="${item#./}"
     [[ -z "${item}" ]] && continue
+
+    if [[ "${check_gitignore}" == 'true' ]]; then
+      if git check-ignore --no-index -q -- "${item}"; then
+        continue
+      fi
+
+      git_check_rc="${?}"
+      if [[ "${git_check_rc}" -gt 1 ]]; then
+        dnb_log warn "git check-ignore failed for path: ${item}. Keeping file."
+      fi
+    fi
+
     files+=("${item}")
   done < <("${find_cmd[@]}")
 
