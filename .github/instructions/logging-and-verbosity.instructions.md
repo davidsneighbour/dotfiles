@@ -1,8 +1,10 @@
 ---
-name: Global Verbosity Contract (DNB_VERBOSE)
+name: Global Logging and Verbosity Contract (DNB_VERBOSE)
 description: Canonical implementation contract for verbosity in Bash functions, helper commands, and terminal-facing automation.
 applyTo: "bashrc/**,bin/**,modules/**,containers/**,**/*.sh,**/*.bash,**/*.ts,**/*.js"
 ---
+
+# Global Logging and Verbosity Contract (DNB_VERBOSE)
 
 ## Purpose
 
@@ -32,15 +34,29 @@ Use these functions:
 Do not introduce new calls to deprecated compatibility wrappers from `bashrc/lib/90-compat/`.
 If you encounter obsolete calls, use `bashrc/lib/90-compat/` only as a migration map, then refactor callers to the canonical `dnb_*` functions.
 
-## Required behavior
+### Library loading assumption
 
-### 1) Global environment switch
+Assume files in `bashrc/lib` are already loaded at the point where these functions are used, in any terminal context, interactive or non-interactive.
+
+If explicitly told otherwise, load/source them with this exact Bash script:
+
+```bash
+# load the library functions
+for FILE in "${BASHRC_PATH}"/lib/*/*.bash; do
+  # shellcheck disable=SC1090
+  [[ -f "${FILE}" && -r "${FILE}" ]] && source "${FILE}"
+done
+```
+
+## Required behaviour
+
+### 1. Global environment switch
 
 * `DNB_VERBOSE` is the global verbosity switch.
 * Verbosity is enabled when `DNB_VERBOSE=1`.
 * If `DNB_VERBOSE` is unset, default is non-verbose unless `--verbose` is provided.
 
-### 2) CLI flags and precedence
+### 2. CLI flags and precedence
 
 User-facing commands that implement verbosity MUST support:
 
@@ -62,7 +78,7 @@ If `--verbose` is set:
 
 * export `DNB_VERBOSE=1` for child calls in the current process context
 
-### 3) Logging behavior in verbose mode
+### 3. Logging behaviour in verbose mode
 
 When verbosity is enabled:
 
@@ -76,7 +92,7 @@ Preferred environment variables:
 * `DNB_SETUP_LOG_FILE` — shared log file path
 * `__LOGFILE` — optional explicit override for the active process
 
-### 4) Log location defaults
+### 4. Log location defaults
 
 If no script-specific logfile is configured:
 
@@ -140,7 +156,7 @@ When implementing verbosity, agents MUST:
 
 1. Add `--verbose` and `--quiet` parsing.
 2. Apply precedence exactly as defined.
-3. Wire `DNB_VERBOSE` to runtime behavior.
+3. Wire `DNB_VERBOSE` to runtime behaviour.
 4. Use `dnb_log_init` and `dnb_log` from `bashrc/lib/00-core/dnb-core-log.bash`.
 5. Keep `--help` output accurate.
 6. Avoid silent failures; print actionable errors.
