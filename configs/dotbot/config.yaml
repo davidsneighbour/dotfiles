@@ -33,7 +33,6 @@
     ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfwm4.xml: configs/system/xfce/xfwm4.xml
 
     # workspaces setup
-    ~/github.com/davidsneighbour/dotfiles-ai: modules/dotfiles-ai
     ~/github.com/davidsneighbour/gmailctl-config: modules/gmailctl
     ~/github.com/davidsneighbour/dotfiles-protected: modules/protected
 
@@ -132,3 +131,6 @@
     - cron: "0 * * * *"
       comment: "cleanup old logs every hour"
       command: ${HOME}/.dotfiles/bashrc/helpers/logs/cleanup.ts  --config ${HOME}/.dotfiles/bashrc/helpers/logs/config.toml  --verbose >> "$HOME/.logs/cron/cleanup-logs-$(date +\%Y\%m\%d-\%H\%M\%S).log" 2>&1
+    - cron: "15 7,15,23 * * *"
+      comment: "create daily repo log in obsidian for previous day"
+      command: ${HOME}/.dotfiles/bashrc/helpers/daily-reports/commit-report-to-dailynote.sh --usernames "$HOME/github.com" --date "$(date -d 'yesterday' +\%F)"  >> "$HOME/.logs/cron/daily-report-cron.log" 2>&1
