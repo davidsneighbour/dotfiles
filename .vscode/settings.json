@@ -80,5 +80,8 @@
   },
   "[shellscript]": {
     "editor.defaultFormatter": "mkhl.shfmt"
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
   }
 }
