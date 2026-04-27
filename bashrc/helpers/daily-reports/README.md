@@ -1,6 +1,6 @@
 # Daily reports helpers
 
-This folder contains consolidated helpers for generating commit reports and appending them to Obsidian daily notes.
+This folder contains consolidated helpers for generating commit reports and updating daily notes.
 
 ## Scripts
 
@@ -13,7 +13,8 @@ This folder contains consolidated helpers for generating commit reports and appe
     * date ranges for one repository or all repositories in a folder
 
 * `commit-report-to-dailynote.sh`
-  * Generates reports via `commits-to-notes.sh` and replaces the section between `%%daily-repo-logs-start%%` and `%%daily-repo-logs-end%%` in the matching Obsidian daily note.
+  * Generates reports via `commits-to-notes.sh` and replaces the section between `%%daily-repo-logs-start%%` and `%%daily-repo-logs-end%%` in the matching daily note file.
+  * Reads/writes daily notes directly in `~/github.com/davidsneighbour/notes`.
   * Supports one date or a date range.
 
 ## Scope selection
