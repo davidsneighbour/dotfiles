@@ -28,6 +28,7 @@ Date options:
 
 Output options:
   --timezone TZ        IANA timezone for day boundaries (default: Asia/Bangkok).
+  --headline-with-date Include the report date in repository headlines.
   --verbose            Print informational logs to STDERR.
   --help               Show this help output.
 
@@ -35,6 +36,7 @@ Examples:
   ${SCRIPT_NAME}
   ${SCRIPT_NAME} --repo ~/github.com/davidsneighbour/dotfiles --date 2026-04-01
   ${SCRIPT_NAME} --dir ~/github.com/davidsneighbour --date 2026-04-01
+  ${SCRIPT_NAME} --repo ~/github.com/davidsneighbour/dotfiles --date 2026-04-01 --headline-with-date
   ${SCRIPT_NAME} --repo ~/github.com/davidsneighbour/dotfiles --from 2026-04-01 --to 2026-04-07
   ${SCRIPT_NAME} --dir ~/github.com/davidsneighbour --from 2026-04-01 --to 2026-04-07 --timezone UTC
 HELP
@@ -171,6 +173,7 @@ compute_utc_window() {
 collect_repositories() {
   local scope_mode="$1"
   local scope_path="$2"
+  local show_help_for_invalid_repo="${3}"
   local repo_path=""
 
   if [[ "${scope_mode}" == "repo" ]]; then
@@ -181,6 +184,9 @@ collect_repositories() {
 
     if ! is_git_repository "${scope_path}"; then
       log_error "Path is not a Git repository: ${scope_path}"
+      if [[ "${show_help_for_invalid_repo}" == "true" ]]; then
+        show_help >&2
+      fi
       exit 1
     fi
 
@@ -211,6 +217,7 @@ print_report_for_repo_date() {
   local repo_path="$1"
   local report_date="$2"
   local timezone_name="$3"
+  local include_headline_date="$4"
   local start_utc=""
   local end_utc=""
   local git_output=""
@@ -223,6 +230,7 @@ print_report_for_repo_date() {
     env TZ="${timezone_name}" git -C "${repo_path}" log \
       --since="${start_utc} +0000" \
       --until="${end_utc} +0000" \
+      --reverse \
       --date='format-local:%H:%M' \
       --pretty='format:%ad%x09%h%x09%H%x09%s'
   } 2>/dev/null)"; then
@@ -234,12 +242,22 @@ print_report_for_repo_date() {
     return 0
   fi
 
+  git_output="$(printf '%s\n' "${git_output}" | sort -t $'\t' -k1,1)"
+
   read -r repo_label repo_url < <(resolve_repo_label "${repo_path}")
 
-  if [[ -n "${repo_url}" ]]; then
-    printf '### %s · [%s](%s)\n\n' "${report_date}" "${repo_label}" "${repo_url}"
+  if [[ "${include_headline_date}" == "true" ]]; then
+    if [[ -n "${repo_url}" ]]; then
+      printf '### %s · [%s](%s)\n\n' "${report_date}" "${repo_label}" "${repo_url}"
+    else
+      printf '### %s · %s\n\n' "${report_date}" "${repo_label}"
+    fi
   else
-    printf '### %s · %s\n\n' "${report_date}" "${repo_label}"
+    if [[ -n "${repo_url}" ]]; then
+      printf '### [%s](%s)\n\n' "${repo_label}" "${repo_url}"
+    else
+      printf '### %s\n\n' "${repo_label}"
+    fi
   fi
 
   while IFS=$'\t' read -r commit_time short_hash full_hash subject; do
@@ -248,7 +266,7 @@ print_report_for_repo_date() {
     fi
 
     if [[ -n "${repo_url}" ]]; then
-      printf -- '- **%s:** [[%s](%s/commit/%s)] %s\n' \
+      printf -- '- **%s:** [%s](%s/commit/%s) %s\n' \
         "${commit_time}" \
         "${short_hash}" \
         "${repo_url}" \
@@ -284,8 +302,11 @@ main() {
   local single_date=""
   local from_date=""
   local to_date=""
+  local include_headline_date="false"
   local report_date=""
   local repo_path=""
+  local repos_output=""
+  local show_help_for_invalid_repo="false"
   local -a repos=()
   local -a dates=()
 
@@ -353,6 +374,10 @@ main() {
       timezone_name="$2"
       shift 2
       ;;
+    --headline-with-date)
+      include_headline_date="true"
+      shift
+      ;;
     --verbose)
       VERBOSE="true"
       shift
@@ -373,7 +398,7 @@ main() {
   require_command date
   validate_timezone "${timezone_name}"
 
-  if [[ -n "${single_date}" && ( -n "${from_date}" || -n "${to_date}" ) ]]; then
+  if [[ -n "${single_date}" && (-n "${from_date}" || -n "${to_date}") ]]; then
     log_error "Use either --date or --from/--to, not both"
     show_help
     exit 1
@@ -404,9 +429,24 @@ main() {
     dates+=("$(env TZ="${timezone_name}" date '+%Y-%m-%d')")
   fi
 
+  if [[ "${scope_mode}" == "repo" && "${scope_path}" == "." ]]; then
+    show_help_for_invalid_repo="true"
+  fi
+
+  if ! repos_output="$(
+    collect_repositories \
+      "${scope_mode}" \
+      "${scope_path}" \
+      "${show_help_for_invalid_repo}"
+  )"; then
+    exit 1
+  fi
+
   while IFS= read -r repo_path; do
-    repos+=("${repo_path}")
-  done < <(collect_repositories "${scope_mode}" "${scope_path}")
+    if [[ -n "${repo_path}" ]]; then
+      repos+=("${repo_path}")
+    fi
+  done <<<"${repos_output}"
 
   if [[ "${#repos[@]}" -eq 0 ]]; then
     log_warn "No repositories found in: ${scope_path}"
@@ -419,7 +459,7 @@ main() {
 
   for report_date in "${dates[@]}"; do
     for repo_path in "${repos[@]}"; do
-      print_report_for_repo_date "${repo_path}" "${report_date}" "${timezone_name}"
+      print_report_for_repo_date "${repo_path}" "${report_date}" "${timezone_name}" "${include_headline_date}"
     done
   done
 }

@@ -6,13 +6,14 @@ This folder contains consolidated helpers for generating commit reports and appe
 
 * `commits-to-notes.sh`
   * Generate Markdown commit reports.
+  * Headlines default to repository name/link only; use `--headline-with-date` to include the date.
   * Supports:
     * one repository for one day
     * all repositories in a folder for one day
     * date ranges for one repository or all repositories in a folder
 
 * `commit-report-to-dailynote.sh`
-  * Generates reports via `commits-to-notes.sh` and appends them to the matching Obsidian daily note.
+  * Generates reports via `commits-to-notes.sh` and replaces the section between `%%daily-repo-logs-start%%` and `%%daily-repo-logs-end%%` in the matching Obsidian daily note.
   * Supports one date or a date range.
 
 ## Scope selection

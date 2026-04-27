@@ -30,6 +30,7 @@ Date options:
 
 Obsidian options:
   --timezone TZ        IANA timezone for day boundaries (default: Asia/Bangkok).
+  --headline-with-date Include the report date in repository headlines.
   --verbose            Print informational logs to STDERR.
   --help               Show this help output.
 
@@ -37,6 +38,7 @@ Examples:
   ${SCRIPT_NAME}
   ${SCRIPT_NAME} --repo ~/github.com/davidsneighbour/dotfiles --date 2026-04-01
   ${SCRIPT_NAME} --dir ~/github.com/davidsneighbour --date 2026-04-01
+  ${SCRIPT_NAME} --date 2026-04-01 --headline-with-date
   ${SCRIPT_NAME} --dir ~/github.com/davidsneighbour --from 2026-04-01 --to 2026-04-07 --timezone UTC
 HELP
 }
@@ -90,6 +92,11 @@ validate_timezone() {
   fi
 }
 
+is_git_repository() {
+  local repo_path="$1"
+  git -C "${repo_path}" rev-parse --is-inside-work-tree >/dev/null 2>&1
+}
+
 build_note_path() {
   local input_date="$1"
   local year=""
@@ -123,30 +130,85 @@ print_date_sequence() {
   done
 }
 
-append_for_day() {
+replace_section_for_day() {
   local scope_flag="$1"
   local scope_path="$2"
   local report_date="$3"
   local timezone_name="$4"
+  local include_headline_date="$5"
   local note_path=""
   local report_content=""
+  local note_content=""
+  local updated_note_content=""
+  local section_start='%%daily-repo-logs-start%%'
+  local section_end='%%daily-repo-logs-end%%'
+  local -a formatter_args=()
 
   note_path="$(build_note_path "${report_date}")"
 
-  if ! report_content="$(${FORMATTER_PATH} "${scope_flag}" "${scope_path}" --date "${report_date}" --timezone "${timezone_name}")"; then
+  formatter_args=(
+    "${scope_flag}"
+    "${scope_path}"
+    --date "${report_date}"
+    --timezone "${timezone_name}"
+  )
+
+  if [[ "${include_headline_date}" == "true" ]]; then
+    formatter_args+=(--headline-with-date)
+  fi
+
+  if ! report_content="$(${FORMATTER_PATH} "${formatter_args[@]}")"; then
     log_warn "Formatter failed for ${report_date}"
     return 0
   fi
 
-  if [[ -z "${report_content}" ]]; then
-    log_info "No commits found for ${report_date}; skipping append"
+  if ! note_content="$(obsidian read path="${note_path}")"; then
+    log_warn "Failed to read note content from ${note_path}"
     return 0
   fi
 
-  if obsidian append path="${note_path}" content="${report_content}"; then
-    log_info "Appended report to ${note_path}"
+  if ! updated_note_content="$(
+    NOTE_CONTENT="${note_content}" \
+      REPORT_CONTENT="${report_content}" \
+      SECTION_START="${section_start}" \
+      SECTION_END="${section_end}" \
+      python3 - <<'PY'
+import os
+import re
+import sys
+
+note_content = os.environ["NOTE_CONTENT"]
+report_content = os.environ["REPORT_CONTENT"].strip("\n")
+section_start = os.environ["SECTION_START"]
+section_end = os.environ["SECTION_END"]
+
+pattern = re.compile(
+    rf"(^[ \t]*{re.escape(section_start)}[ \t]*\n)(.*?)(^[ \t]*{re.escape(section_end)}[ \t]*$)",
+    re.MULTILINE | re.DOTALL,
+)
+
+replacement = (
+    f"\n{section_start}\n\n"
+    f"{report_content}\n\n"
+    f"{section_end}\n"
+)
+
+updated_content, replacements = pattern.subn(replacement, note_content, count=1)
+if replacements == 0:
+    print("Markers not found", file=sys.stderr)
+    sys.exit(1)
+
+print(updated_content, end="")
+PY
+  )"; then
+    log_warn "Failed to replace repository work section for ${note_path}"
+    return 0
+  fi
+
+  if obsidian create overwrite path="${note_path}" content="${updated_note_content}"; then
+    log_info "Replaced repository work section in ${note_path}"
   else
-    log_warn "Failed to append report to ${note_path}"
+    log_warn "Failed to write updated note to ${note_path}"
   fi
 }
 
@@ -157,6 +219,7 @@ main() {
   local single_date=""
   local from_date=""
   local to_date=""
+  local include_headline_date="false"
   local report_date=""
   local -a dates=()
 
@@ -220,6 +283,10 @@ main() {
       timezone_name="$2"
       shift 2
       ;;
+    --headline-with-date)
+      include_headline_date="true"
+      shift
+      ;;
     --verbose)
       VERBOSE="true"
       shift
@@ -237,12 +304,22 @@ main() {
   done
 
   require_command obsidian
+  require_command git
   require_command date
+  require_command python3
   validate_timezone "${timezone_name}"
 
   if [[ ! -x "${FORMATTER_PATH}" ]]; then
     log_error "Formatter not found or not executable: ${FORMATTER_PATH}"
     exit 1
+  fi
+
+  if [[ "${scope_flag}" == "--repo" && "${scope_path}" == "." ]]; then
+    if ! is_git_repository "${scope_path}"; then
+      log_error "Current directory is not a Git repository"
+      show_help
+      exit 1
+    fi
   fi
 
   if [[ -n "${single_date}" && (-n "${from_date}" || -n "${to_date}") ]]; then
@@ -279,7 +356,7 @@ main() {
   log_info "Log file: ${LOG_FILE}"
 
   for report_date in "${dates[@]}"; do
-    append_for_day "${scope_flag}" "${scope_path}" "${report_date}" "${timezone_name}"
+    replace_section_for_day "${scope_flag}" "${scope_path}" "${report_date}" "${timezone_name}" "${include_headline_date}"
   done
 }
 
