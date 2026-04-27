@@ -22,6 +22,8 @@ Description:
 Scope options (choose one; default is --repo .):
   --repo PATH          Use one repository.
   --dir PATH           Use all direct child repositories of PATH.
+  --usernames PATH     Use all username directories under PATH. Each username
+                       directory is handled like --dir.
 
 Date options:
   --date YYYY-MM-DD    One day (default: today in --timezone).
@@ -38,6 +40,7 @@ Examples:
   ${SCRIPT_NAME}
   ${SCRIPT_NAME} --repo ~/github.com/davidsneighbour/dotfiles --date 2026-04-01
   ${SCRIPT_NAME} --dir ~/github.com/davidsneighbour --date 2026-04-01
+  ${SCRIPT_NAME} --usernames ~/github.com --date 2026-04-01
   ${SCRIPT_NAME} --date 2026-04-01 --headline-with-date
   ${SCRIPT_NAME} --dir ~/github.com/davidsneighbour --from 2026-04-01 --to 2026-04-07 --timezone UTC
 HELP
@@ -130,6 +133,82 @@ print_date_sequence() {
   done
 }
 
+print_username_directories() {
+  local root_path="$1"
+  local username_path=""
+
+  if [[ ! -d "${root_path}" ]]; then
+    log_error "Usernames root path does not exist: ${root_path}"
+    return 1
+  fi
+
+  shopt -s nullglob
+  for username_path in "${root_path}"/*; do
+    if [[ -d "${username_path}" ]]; then
+      printf '%s\n' "${username_path}"
+    fi
+  done
+}
+
+build_report_content() {
+  local scope_flag="$1"
+  local scope_path="$2"
+  local report_date="$3"
+  local timezone_name="$4"
+  local include_headline_date="$5"
+  local report_content=""
+  local username_path=""
+  local username_report=""
+  local -a formatter_args=()
+
+  if [[ "${scope_flag}" != "--usernames" ]]; then
+    formatter_args=(
+      "${scope_flag}"
+      "${scope_path}"
+      --date "${report_date}"
+      --timezone "${timezone_name}"
+    )
+
+    if [[ "${include_headline_date}" == "true" ]]; then
+      formatter_args+=(--headline-with-date)
+    fi
+
+    "${FORMATTER_PATH}" "${formatter_args[@]}"
+    return $?
+  fi
+
+  while IFS= read -r username_path; do
+    formatter_args=(
+      --dir
+      "${username_path}"
+      --date "${report_date}"
+      --timezone "${timezone_name}"
+    )
+
+    if [[ "${include_headline_date}" == "true" ]]; then
+      formatter_args+=(--headline-with-date)
+    fi
+
+    if ! username_report="$(${FORMATTER_PATH} "${formatter_args[@]}")"; then
+      log_warn "Formatter failed for username directory ${username_path} on ${report_date}"
+      continue
+    fi
+
+    if [[ -n "${username_report}" ]]; then
+      if [[ -n "${report_content}" ]]; then
+        report_content+=$'\n\n'
+      fi
+      report_content+="${username_report}"
+    fi
+  done < <(print_username_directories "${scope_path}")
+
+  if [[ -z "${report_content}" ]]; then
+    log_warn "No reports generated from usernames root ${scope_path} for ${report_date}"
+  fi
+
+  printf '%s\n' "${report_content}"
+}
+
 replace_section_for_day() {
   local scope_flag="$1"
   local scope_path="$2"
@@ -142,22 +221,10 @@ replace_section_for_day() {
   local updated_note_content=""
   local section_start='%%daily-repo-logs-start%%'
   local section_end='%%daily-repo-logs-end%%'
-  local -a formatter_args=()
 
   note_path="$(build_note_path "${report_date}")"
 
-  formatter_args=(
-    "${scope_flag}"
-    "${scope_path}"
-    --date "${report_date}"
-    --timezone "${timezone_name}"
-  )
-
-  if [[ "${include_headline_date}" == "true" ]]; then
-    formatter_args+=(--headline-with-date)
-  fi
-
-  if ! report_content="$(${FORMATTER_PATH} "${formatter_args[@]}")"; then
+  if ! report_content="$(build_report_content "${scope_flag}" "${scope_path}" "${report_date}" "${timezone_name}" "${include_headline_date}")"; then
     log_warn "Formatter failed for ${report_date}"
     return 0
   fi
@@ -244,6 +311,16 @@ main() {
         exit 1
       fi
       scope_flag="--dir"
+      scope_path="$2"
+      shift 2
+      ;;
+    --usernames)
+      if [[ $# -lt 2 ]]; then
+        log_error "Missing value for --usernames"
+        show_help
+        exit 1
+      fi
+      scope_flag="--usernames"
       scope_path="$2"
       shift 2
       ;;
