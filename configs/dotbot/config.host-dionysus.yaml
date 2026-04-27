@@ -1,0 +1,31 @@
+---
+################################################################################
+# Setup configuration for Dotbot
+#
+# @see https://github.com/anishathalye/dotbot for more info
+################################################################################
+- description: Main workstation dotfiles setup (links, tools, cronjobs, and host-specific configs).
+
+- plugins:
+    - modules/dotbot-plugins/crontab-dotbot/
+
+- crontab:
+    - cron: 0 0 * * *
+      command: ${HOME}/github.com/davidsneighbour/dotfiles/bashrc/helpers/update-npm.sh >> "$HOME/.logs/cron/job-$(date +\%Y\%m\%d-\%H\%M\%S).log" 2>&1
+    - cron: 30 */4 * * *
+      command: ${HOME}/github.com/davidsneighbour/dotfiles/bashrc/helpers/filespace-discord.sh >> "$HOME/.logs/cron/job-$(date +\%Y\%m\%d-\%H\%M\%S).log" 2>&1
+    - cron: 0 6,12,18 * * *
+      command: ${HOME}/github.com/davidsneighbour/lighthousing/cronjob.sh >> "$HOME/.logs/cron/job-$(date +\%Y\%m\%d-\%H\%M\%S).log" 2>&1
+    - cron: "@reboot"
+      command: ${HOME}/github.com/davidsneighbour/lighthousing/cronjob.sh >> "$HOME/.logs/cron/job-$(date +\%Y\%m\%d-\%H\%M\%S).log" 2>&1
+    - cron: 0 * * * *
+      command: ${HOME}/.dotfiles/bashrc/helpers/cronjobs/synch_downloads.sh
+    - cron: 5 */6 * * *
+      command: ${HOME}/.dotfiles/bashrc/cronjobs/git_updates.sh --config ${HOME}/.dotfiles/configs/system/repository_updates.toml --verbose >> "$HOME/.logs/cron/repo-update-$(date +\%Y\%m\%d-\%H\%M\%S).log" 2>&1
+
+    - cron: "0 * * * *"
+      comment: "cleanup old logs every hour"
+      command: ${HOME}/.dotfiles/bashrc/helpers/logs/cleanup.ts  --config ${HOME}/.dotfiles/bashrc/helpers/logs/config.toml  --verbose >> "$HOME/.logs/cron/cleanup-logs-$(date +\%Y\%m\%d-\%H\%M\%S).log" 2>&1
+    - cron: "15 7,15,23 * * *"
+      comment: "create daily repo log in obsidian for previous day"
+      command: ${HOME}/.dotfiles/bashrc/helpers/daily-reports/commit-report-to-dailynote.sh --usernames "$HOME/github.com" --date "$(date -d 'yesterday' +\%F)"  >> "$HOME/.logs/cron/daily-report-cron.log" 2>&1
