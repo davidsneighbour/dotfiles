@@ -1,20 +1,21 @@
+---
 name: Generate GitHub Skyline
 
-on:
+on:  # yamllint disable-line rule:truthy
   schedule:
-    - cron: '0 0 2 * *' # Runs at midnight UTC on the 2nd day of every month
-  workflow_dispatch: # Allows manual triggering of the workflow
+    - cron: '0 0 2 * *'  # Runs at midnight UTC on the 2nd day of every month
+  workflow_dispatch:  # Allows manual triggering of the workflow
 
 jobs:
   generate-skyline:
     runs-on: ubuntu-latest
     permissions:
-      contents: write # To push changes to the repository
-      actions: read   # To use actions/checkout
+      contents: write  # To push changes to the repository
+      actions: read    # To use actions/checkout
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6 # zizmor: ignore[artipacked] required later
+        uses: actions/checkout@v6  # zizmor: ignore[artipacked] required later
 
       - name: Set up Node.js
         uses: actions/setup-node@v6
@@ -23,21 +24,21 @@ jobs:
 
       - name: Install GitHub CLI
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Provides authentication for GitHub CLI
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Provides authentication for GitHub CLI
         run: |
           sudo apt update
           sudo apt install -y gh
 
       - name: Install gh-skyline extension
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Provides authentication for installing extensions
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Provides authentication for installing extensions
         run: |
           gh extension install github/gh-skyline
 
       - name: Calculate year and run command
         id: skyline
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Provides authentication for GitHub CLI commands
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Provides authentication for GitHub CLI commands
         run: |
           YEAR=$(date --date="$(date +%Y-%m-02) -1 month" +%Y)
           MONTH_NAME=$(date --date="$(date +%Y-%m-02)" +%B)
@@ -49,16 +50,16 @@ jobs:
 
       - name: Set up Git user from repo
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Provides authentication for GitHub CLI commands
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Provides authentication for GitHub CLI commands
         run: |
           REPO_OWNER=$(gh repo view --json owner --jq '.owner.login')
           USER_EMAIL="${REPO_OWNER}@users.noreply.github.com"
           git config user.name "$REPO_OWNER"
           git config user.email "$USER_EMAIL"
 
-      - name: Commit and push changes # zizmor: ignore[excessive-permissions]
+      - name: Commit and push changes  # zizmor: ignore[excessive-permissions]
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Provides authentication for GitHub CLI commands
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Provides authentication for GitHub CLI commands
         run: |
           if [ -n "$(git status --porcelain)" ]; then
             git add $FILENAME

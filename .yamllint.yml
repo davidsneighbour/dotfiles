@@ -5,6 +5,16 @@ yaml-files:
   - '*.yml'
   - '.yamllint'
 
+ignore:
+  - configs/system/vale/styles/alex/
+  - configs/system/vale/styles/Google/
+  - configs/system/vale/styles/Joblint/
+  - configs/system/vale/styles/Microsoft/
+  - configs/system/vale/styles/proselint/
+  - configs/system/vale/styles/write-good/
+  - node_modules
+  - modules
+
 rules:
   # anchors: enable
   braces: enable
