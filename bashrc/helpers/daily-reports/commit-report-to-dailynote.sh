@@ -6,11 +6,27 @@ SCRIPT_NAME="$(basename "$0")"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 FORMATTER_PATH="${SCRIPT_DIR}/commits-to-notes.sh"
 NOTES_ROOT="${HOME}/github.com/davidsneighbour/notes"
-LOG_DIR="${HOME}/.logs/daily-reports"
-TIMESTAMP="$(date '+%Y%m%d-%H%M%S')"
-LOG_FILE="${LOG_DIR}/setup-log-${TIMESTAMP}.log"
 
-mkdir -p "${LOG_DIR}"
+source_core_libs() {
+  local base_path="${BASHRC_PATH:-}"
+  local file=""
+
+  if [[ -z "${base_path}" ]]; then
+    base_path="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+  fi
+
+  for file in "${base_path}"/lib/00-core/*.bash; do
+    [[ -f "${file}" && -r "${file}" ]] || continue
+    # shellcheck disable=SC1090
+    source "${file}"
+  done
+}
+
+init_logging() {
+  local log_dir="${HOME}/.logs/daily-reports"
+  __LOGFILE="${log_dir}/setup-log-$(date '+%Y%m%d-%H%M%S').log"
+  export __LOGFILE
+}
 
 show_help() {
   cat <<HELP
@@ -49,32 +65,22 @@ Examples:
 HELP
 }
 
-log_line() {
-  local level="$1"
-  local message="$2"
-  printf '%s %s\n' "${level}" "${message}" >>"${LOG_FILE}"
-
-  if [[ "${level}" == "ERROR" || "${level}" == "WARN" || "${VERBOSE}" == "true" ]]; then
-    printf '%s %s\n' "${level}" "${message}" >&2
-  fi
-}
-
 log_info() {
-  log_line "INFO" "$1"
+  dnb_log info "$*"
 }
 
 log_warn() {
-  log_line "WARN" "$1"
+  dnb_log warn "$*"
 }
 
 log_error() {
-  log_line "ERROR" "$1"
+  dnb_error "$*"
 }
 
 require_command() {
   local command_name="$1"
 
-  if ! command -v "${command_name}" >/dev/null 2>&1; then
+  if ! dnb_check_requirements "${command_name}" >/dev/null 2>&1; then
     log_error "Required command not found: ${command_name}"
     exit 1
   fi
@@ -290,6 +296,9 @@ PY
 }
 
 main() {
+  source_core_libs
+  init_logging
+
   local scope_flag="--repo"
   local scope_path="."
   local timezone_name="Asia/Bangkok"
@@ -300,7 +309,7 @@ main() {
   local report_date=""
   local -a dates=()
 
-  VERBOSE="false"
+  export LOG_LEVEL="warn"
 
   while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -375,7 +384,7 @@ main() {
       shift
       ;;
     --verbose)
-      VERBOSE="true"
+      export LOG_LEVEL="info"
       shift
       ;;
     --help)
@@ -445,7 +454,7 @@ main() {
     dates+=("$(env TZ="${timezone_name}" date '+%Y-%m-%d')")
   fi
 
-  log_info "Log file: ${LOG_FILE}"
+  log_info "Log file: ${__LOGFILE}"
 
   for report_date in "${dates[@]}"; do
     replace_section_for_day "${scope_flag}" "${scope_path}" "${report_date}" "${timezone_name}" "${include_headline_date}"
