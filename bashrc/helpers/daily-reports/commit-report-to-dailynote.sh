@@ -5,6 +5,7 @@ set -euo pipefail
 SCRIPT_NAME="$(basename "$0")"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 FORMATTER_PATH="${SCRIPT_DIR}/commits-to-notes.sh"
+NOTES_ROOT="${HOME}/github.com/davidsneighbour/notes"
 LOG_DIR="${HOME}/.logs/daily-reports"
 TIMESTAMP="$(date '+%Y%m%d-%H%M%S')"
 LOG_FILE="${LOG_DIR}/setup-log-${TIMESTAMP}.log"
@@ -14,10 +15,12 @@ mkdir -p "${LOG_DIR}"
 show_help() {
   cat <<HELP
 Usage:
-  ${SCRIPT_NAME} [scope] [date options] [obsidian options]
+  ${SCRIPT_NAME} [scope] [date options] [output options]
 
 Description:
-  Generate commit reports and append them to Obsidian daily notes.
+  Generate commit reports and replace the daily logs section in daily notes.
+  Notes are read/written directly in:
+    ${NOTES_ROOT}
 
 Scope options (choose one; default is --repo .):
   --repo PATH          Use one repository.
@@ -30,7 +33,7 @@ Date options:
   --from YYYY-MM-DD    Start date for date range (inclusive).
   --to YYYY-MM-DD      End date for date range (inclusive).
 
-Obsidian options:
+Output options:
   --timezone TZ        IANA timezone for day boundaries (default: Asia/Bangkok).
   --headline-with-date Include the report date in repository headlines.
   --verbose            Print informational logs to STDERR.
@@ -216,6 +219,7 @@ replace_section_for_day() {
   local timezone_name="$4"
   local include_headline_date="$5"
   local note_path=""
+  local note_absolute_path=""
   local report_content=""
   local note_content=""
   local updated_note_content=""
@@ -223,14 +227,20 @@ replace_section_for_day() {
   local section_end='%%daily-repo-logs-end%%'
 
   note_path="$(build_note_path "${report_date}")"
+  note_absolute_path="${NOTES_ROOT}/${note_path}"
 
   if ! report_content="$(build_report_content "${scope_flag}" "${scope_path}" "${report_date}" "${timezone_name}" "${include_headline_date}")"; then
     log_warn "Formatter failed for ${report_date}"
     return 0
   fi
 
-  if ! note_content="$(obsidian read path="${note_path}")"; then
-    log_warn "Failed to read note content from ${note_path}"
+  if [[ ! -f "${note_absolute_path}" ]]; then
+    log_warn "Daily note file not found: ${note_absolute_path}"
+    return 0
+  fi
+
+  if ! note_content="$(cat "${note_absolute_path}")"; then
+    log_warn "Failed to read note content from ${note_absolute_path}"
     return 0
   fi
 
@@ -272,10 +282,10 @@ PY
     return 0
   fi
 
-  if obsidian create overwrite path="${note_path}" content="${updated_note_content}"; then
-    log_info "Replaced repository work section in ${note_path}"
+  if printf '%s' "${updated_note_content}" >"${note_absolute_path}"; then
+    log_info "Replaced repository work section in ${note_absolute_path}"
   else
-    log_warn "Failed to write updated note to ${note_path}"
+    log_warn "Failed to write updated note to ${note_absolute_path}"
   fi
 }
 
@@ -380,7 +390,6 @@ main() {
     esac
   done
 
-  require_command obsidian
   require_command git
   require_command date
   require_command python3
@@ -388,6 +397,12 @@ main() {
 
   if [[ ! -x "${FORMATTER_PATH}" ]]; then
     log_error "Formatter not found or not executable: ${FORMATTER_PATH}"
+    exit 1
+  fi
+
+  if [[ ! -d "${NOTES_ROOT}" ]]; then
+    log_error "Notes root directory does not exist: ${NOTES_ROOT}"
+    show_help
     exit 1
   fi
 
