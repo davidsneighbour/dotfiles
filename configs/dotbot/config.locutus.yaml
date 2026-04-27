@@ -1,0 +1,27 @@
+---
+################################################################################
+# Setup configuration for Dotbot
+#
+# @see https://github.com/anishathalye/dotbot for more info
+################################################################################
+- description: Main workstation dotfiles setup (links, tools, cronjobs, and host-specific configs).
+
+- plugins:
+    - modules/dotbot-plugins/crontab-dotbot/
+
+- defaults:
+    link:
+      create: true
+      relink: true
+      force: true
+
+- crontab:
+    - cron: "*/2 * * * *"
+      comment: load emails every 2 minutes
+      command: ${HOME}/.dotfiles/bashrc/cronjobs/msgvault.sh
+    - cron: "15 15 * * *"
+      comment: "daily docker container backup"
+      command: ${HOME}/.dotfiles/bashrc/cronjobs/docker-backup.sh --apply >> "${HOME}/.logs/docker-backup.log" 2>&1
+    - cron: "20 15 * * 0"
+      comment: "weekly docker container backup to keep"
+      command: ${HOME}/.dotfiles/bashrc/cronjobs/docker-backup.sh --keep --apply >> "${HOME}/.logs/docker-backup.log" 2>&1
