@@ -22,6 +22,9 @@ Default scope is the current working directory as one repository.
 
 * Single repository: `--repo PATH`
 * All direct child repositories in a directory: `--dir PATH`
+* All username directories under a parent directory: `--usernames PATH`
+  * Each direct child directory under `PATH` is treated like `--dir`.
+  * Example: `--usernames ~/github.com` processes `~/github.com/<username>` folders.
 
 ## Date selection
 

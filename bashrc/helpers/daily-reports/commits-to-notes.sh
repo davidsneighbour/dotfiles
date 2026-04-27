@@ -20,6 +20,8 @@ Description:
 Scope options (choose one; default is --repo .):
   --repo PATH          Report for a single repository.
   --dir PATH           Report for all direct child Git repositories in PATH.
+  --usernames PATH     Report for all username folders in PATH, where each
+                       username folder is handled like --dir.
 
 Date options:
   --date YYYY-MM-DD    Report for a single day (default: today in --timezone).
@@ -36,6 +38,7 @@ Examples:
   ${SCRIPT_NAME}
   ${SCRIPT_NAME} --repo ~/github.com/davidsneighbour/dotfiles --date 2026-04-01
   ${SCRIPT_NAME} --dir ~/github.com/davidsneighbour --date 2026-04-01
+  ${SCRIPT_NAME} --usernames ~/github.com --date 2026-04-01
   ${SCRIPT_NAME} --repo ~/github.com/davidsneighbour/dotfiles --date 2026-04-01 --headline-with-date
   ${SCRIPT_NAME} --repo ~/github.com/davidsneighbour/dotfiles --from 2026-04-01 --to 2026-04-07
   ${SCRIPT_NAME} --dir ~/github.com/davidsneighbour --from 2026-04-01 --to 2026-04-07 --timezone UTC
@@ -175,6 +178,7 @@ collect_repositories() {
   local scope_path="$2"
   local show_help_for_invalid_repo="${3}"
   local repo_path=""
+  local username_path=""
 
   if [[ "${scope_mode}" == "repo" ]]; then
     if [[ ! -d "${scope_path}" ]]; then
@@ -200,16 +204,38 @@ collect_repositories() {
   fi
 
   shopt -s nullglob
-  for repo_path in "${scope_path}"/*; do
-    if [[ ! -d "${repo_path}" ]]; then
+  if [[ "${scope_mode}" == "dir" ]]; then
+    for repo_path in "${scope_path}"/*; do
+      if [[ ! -d "${repo_path}" ]]; then
+        continue
+      fi
+
+      if is_git_repository "${repo_path}"; then
+        printf '%s\n' "${repo_path}"
+      else
+        log_info "Skipping non-repository directory: ${repo_path}"
+      fi
+    done
+    return 0
+  fi
+
+  for username_path in "${scope_path}"/*; do
+    if [[ ! -d "${username_path}" ]]; then
       continue
     fi
 
-    if is_git_repository "${repo_path}"; then
-      printf '%s\n' "${repo_path}"
-    else
-      log_info "Skipping non-repository directory: ${repo_path}"
-    fi
+    log_info "Collecting repositories for username directory: ${username_path}"
+    for repo_path in "${username_path}"/*; do
+      if [[ ! -d "${repo_path}" ]]; then
+        continue
+      fi
+
+      if is_git_repository "${repo_path}"; then
+        printf '%s\n' "${repo_path}"
+      else
+        log_info "Skipping non-repository directory: ${repo_path}"
+      fi
+    done
   done
 }
 
@@ -335,6 +361,16 @@ main() {
         exit 1
       fi
       scope_mode="dir"
+      scope_path="$2"
+      shift 2
+      ;;
+    --usernames)
+      if [[ $# -lt 2 ]]; then
+        log_error "Missing value for --usernames"
+        show_help
+        exit 1
+      fi
+      scope_mode="usernames"
       scope_path="$2"
       shift 2
       ;;
