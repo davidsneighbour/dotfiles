@@ -10,8 +10,8 @@ DOCKER_PATH="${DEFAULT_DOCKER_PATH}"
 BACKUP_PATH="${DEFAULT_BACKUP_PATH}"
 KEEP_COUNT="${DEFAULT_KEEP_COUNT}"
 KEEP_BACKUP="false"
-DRY_RUN="false"
-VERBOSE="false"
+DRY_RUN="true"
+VERBOSE="true"
 
 SCRIPT_NAME="$(basename "$0")"
 TODAY="$(date +%Y%m%d)"
@@ -36,7 +36,8 @@ Options:
   --keep                 Create a keep backup named yyyymmdd-keep.
                          Keep backups are excluded from rotation.
 
-  --dry-run              Print actions without changing containers or files.
+  --apply                Actually execute the backup.
+                         Default behaviour is dry-run.
 
   --verbose              Print detailed progress.
 
@@ -45,7 +46,13 @@ Options:
 Examples:
   ${SCRIPT_NAME}
 
-  ${SCRIPT_NAME} --keep
+  ${SCRIPT_NAME} --apply --keep
+
+  ${SCRIPT_NAME}
+  # Preview only (default)
+
+  ${SCRIPT_NAME} --apply
+  # Execute backup
 
   ${SCRIPT_NAME} --docker-path "${HOME}/.dotfiles/containers/locutus" \\
     --backup-path "/mnt/storage/Backup/Docker/Locutus" \\
@@ -135,6 +142,13 @@ backup_container_folder() {
   local container_backup_root
   local container_backup_path
 
+  local rsync_args
+  rsync_args=(-aHAX --numeric-ids --delete)
+
+  if [[ "${VERBOSE}" == "true" ]]; then
+    rsync_args+=(--verbose --itemize-changes)
+  fi
+
   container_name="$(basename "${container_path}")"
 
   if [[ "${KEEP_BACKUP}" == "true" ]]; then
@@ -162,9 +176,7 @@ backup_container_folder() {
 
     log_verbose "Running rsync into ${container_backup_path}"
     run_command rsync \
-      -aHAX \
-      --numeric-ids \
-      --delete \
+      "${rsync_args[@]}" \
       "${container_path}/" \
       "${container_backup_path}/"
   } || {
@@ -199,8 +211,8 @@ parse_args() {
       KEEP_COUNT="${2:-}"
       shift 2
       ;;
-    --keep)
-      KEEP_BACKUP="true"
+    --apply)
+      DRY_RUN="false"
       shift
       ;;
     --dry-run)
@@ -226,6 +238,12 @@ parse_args() {
 
 main() {
   parse_args "$@"
+
+  if [[ "${DRY_RUN}" == "true" ]]; then
+    log_warn "Running in dry-run mode. Use --apply to execute changes."
+  else
+    log_info "Running in apply mode."
+  fi
 
   require_command docker
   require_command rsync
