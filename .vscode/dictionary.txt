@@ -3,6 +3,7 @@ automount
 Bibata
 bordercolor
 color
+combi
 createworkspace
 crosspost
 dmenu
@@ -39,6 +40,7 @@ powermenu
 prio
 projectsdirs
 rasi
+recursivebrowser
 remarkignore
 remarkrc
 rofi
@@ -49,5 +51,6 @@ sortorder
 sugarcoating
 timezone
 webui
+windowcd
 WORKINGDIR
 workspacedirs
