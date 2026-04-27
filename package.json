@@ -8,7 +8,7 @@
   "bugs": "https://github.com/davidsneighbour/dotfiles/issues",
   "homepage": "https://github.com/davidsneighbour/dotfiles#readme",
   "dependencies": {
-    "@biomejs/biome": "2.4.9",
+    "@biomejs/biome": "2.4.12",
     "@clack/prompts": "1.2.0",
     "@commitlint/cli": "20.5.0",
     "@commitlint/config-conventional": "20.5.0",
