@@ -14,6 +14,13 @@
 
 - clean: ["~"]
 
+- shell:
+    - description: Create logs directory if it doesn't exist
+      command: |
+        if [ ! -d "logs" ]; then
+          mkdir -p "logs"
+        fi
+
 - link:
     ~/.dotfiles: ""
 
