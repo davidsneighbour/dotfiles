@@ -21,6 +21,8 @@ humanwhocodes
 inputbar
 inspectable
 journalctl
+jsonnet
+jsonnetfmt
 lighthousing
 listview
 LOGLEVEL
