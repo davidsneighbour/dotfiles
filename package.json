@@ -20,7 +20,7 @@
     "@secretlint/secretlint-rule-no-homedir": "11.4.0",
     "@secretlint/secretlint-rule-no-k8s-kind-secret": "11.4.0",
     "@secretlint/secretlint-rule-openai": "12.2.0",
-    "@secretlint/secretlint-rule-pattern": "11.4.0",
+    "@secretlint/secretlint-rule-pattern": "12.2.0",
     "@secretlint/secretlint-rule-preset-recommend": "12.2.0",
     "@secretlint/secretlint-rule-secp256k1-privatekey": "11.4.0",
     "cross-env": "10.1.0",
