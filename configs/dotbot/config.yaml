@@ -115,4 +115,3 @@
             echo "[ERROR] Exists and is not a symlink: $HOME/Downloads/Paperless"
           fi
         fi
-
