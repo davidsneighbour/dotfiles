@@ -52,7 +52,7 @@
   "scripts": {
     "clean": "rimraf logs/*.log",
     "link:prepare": "wireit",
-    "lint:config": "yamllint -c .yamllint.yml etc/*.yaml",
+    "lint:config": "yamllint -c .yamllint.yml configs bashrc",
     "lint:hook:commit": "lint-staged --quiet",
     "lint:hook:commit:loud": "lint-staged --debug --verbose",
     "release": "release-it --config .release-it.ts --verbose --only-version"
