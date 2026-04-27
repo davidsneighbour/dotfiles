@@ -102,6 +102,7 @@ resolve_config_path() {
 
 run_dotbot_with_config() {
   local config_path="${1}"
+  local dotbot_verbosity_flag=''
 
   if [[ ! -f "${config_path}" ]]; then
     dnb_error "Config file not found: ${config_path}"
@@ -116,11 +117,18 @@ run_dotbot_with_config() {
 
   dnb_log info "Running Dotbot with config: ${config_path}"
 
+  if [[ -n "${DNB_VERBOSE:-}" ]]; then
+    dotbot_verbosity_flag='-vv'
+  else
+    dotbot_verbosity_flag='--quiet'
+  fi
+
   cd "${REPO_ROOT}"
   "${DOTBOT_BIN}" \
     --base-directory "${REPO_ROOT}" \
     --config-file "${config_path}" \
     --force-color \
+    "${dotbot_verbosity_flag}" \
     --exit-on-failure
 }
 
