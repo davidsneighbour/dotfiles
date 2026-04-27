@@ -14,10 +14,19 @@
       relink: true
       force: true
 
-- clean: ["~"]
+- create:
+    logs:
+      mode: 0777
+
+- clean:
+    ~/:
+      force: true
+    ~/.config:
+      recursive: true
 
 - link:
     ~/.dotfiles: ""
+    ~/.logs: logs
 
     # bashrc setup
     ~/.bash_logout: bashrc/.bash_logout
@@ -109,6 +118,11 @@
         else
           echo "[ERROR] Exists and is not a symlink: $HOME/.logs"
         fi
+      quiet: true
+      stdin: false   # Allow a command to read from standard input (default: false)
+      stdout: false  # Show a command's output from stdout (default: false)
+      stderr: false  # Show a command's output from stderr (default: false)
+
     #     # create autostart folder connection
     #     - ln -f -s ${HOME}/.dotfiles/configs/system/autostart/${HOSTNAME} ${HOME}/.config/autostart
     - description: "\e[1;38;5;103mSymlinking mounts:\e[0m\e[1;38;5;66m"
@@ -122,3 +136,4 @@
             echo "[ERROR] Exists and is not a symlink: $HOME/Downloads/Paperless"
           fi
         fi
+      quiet: true
