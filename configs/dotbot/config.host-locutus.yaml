@@ -16,19 +16,8 @@
 
     - cron: "15 15 * * *"
       comment: "daily docker container backup"
-      command:  |
-        ${HOME}/.dotfiles/bashrc/cronjobs/docker-backup.sh --apply \
-        --docker-path ${HOME}/.dotfiles/containers/locutus \
-        --backup-path /mnt/storage/Backup/Docker/Locutus \
-        --verbose \
-        >> "${HOME}/.logs/cron/docker-backup.log" 2>&1
+      command: ${HOME}/.dotfiles/bashrc/cronjobs/docker-backup.sh --apply --docker-path ${HOME}/.dotfiles/containers/locutus --backup-path /mnt/storage/Backup/Docker/Locutus --verbose >> "${HOME}/.logs/cron/docker-backup.log" 2>&1
 
     - cron: "20 15 * * 0"
       comment: "weekly docker container backup to keep"
-      command: |
-        ${HOME}/.dotfiles/bashrc/cronjobs/docker-backup.sh --keep --apply \
-        --docker-path ${HOME}/.dotfiles/containers/locutus \
-        --backup-path /mnt/storage/Backup/Docker/Locutus \
-        --keep-count 10 \
-        --verbose \
-        >> "${HOME}/.logs/cron/docker-backup.log" 2>&1
+      command: ${HOME}/.dotfiles/bashrc/cronjobs/docker-backup.sh --keep --apply --docker-path ${HOME}/.dotfiles/containers/locutus --backup-path /mnt/storage/Backup/Docker/Locutus --keep-count 10 --verbose >> "${HOME}/.logs/cron/docker-backup.log" 2>&1
