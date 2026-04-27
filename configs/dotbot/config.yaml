@@ -3,8 +3,10 @@
 # Setup configuration for Dotbot
 #
 # @see https://github.com/anishathalye/dotbot for more info
+#
+# @description Main workstation dotfiles setup (links, tools, cronjobs, and host-specific configs).
+#
 ################################################################################
-- description: Main workstation dotfiles setup (links, tools, cronjobs, and host-specific configs).
 
 - defaults:
     link:
@@ -13,13 +15,6 @@
       force: true
 
 - clean: ["~"]
-
-- shell:
-    - description: Create logs directory if it doesn't exist
-      command: |
-        if [ ! -d "logs" ]; then
-          mkdir -p "logs"
-        fi
 
 - link:
     ~/.dotfiles: ""
@@ -102,9 +97,21 @@
     ~/.config/fontconfig/conf.d/01-emoji.conf: configs/system/fontconfig/01-emoji.conf
 
 - shell:
+    - description: "\e[1;38;5;103mCreate logs directory if it doesn't exist:\e[0m\e[1;38;5;66m"
+      command: |
+        if [ ! -d "$HOME/.dotfiles/logs" ]; then
+          mkdir -p "$HOME/.dotfiles/logs"
+        fi
+        if [[ -L "$HOME/.logs" ]]; then
+          ln -sfn $HOME/.dotfiles/logs $HOME/.logs
+        elif [[ ! -e "$HOME/.logs" ]]; then
+          ln -s $HOME/.dotfiles/logs $HOME/.logs
+        else
+          echo "[ERROR] Exists and is not a symlink: $HOME/.logs"
+        fi
     #     # create autostart folder connection
     #     - ln -f -s ${HOME}/.dotfiles/configs/system/autostart/${HOSTNAME} ${HOME}/.config/autostart
-    - description: Symlinking mounts
+    - description: "\e[1;38;5;103mSymlinking mounts:\e[0m\e[1;38;5;66m"
       command: |
         if [[ "$(hostname)" == "locutus" ]]; then
           if [[ -L "$HOME/Downloads/Paperless" ]]; then
