@@ -1,5 +1,61 @@
 # Changelog
 
+## [3002.20.0](https://github.com/davidsneighbour/dotfiles/compare/v3002.19.0...v3002.20.0) (2026-04-27)
+
+### Features
+
+* **lpack:** ignore files in gitignore file, add CLI param to disable ([9056721](https://github.com/davidsneighbour/dotfiles/commit/905672116f774e39e3a004180f72f75f576c66e1))
+* rework actions script and add dotbot to actions script ([69fd49b](https://github.com/davidsneighbour/dotfiles/commit/69fd49b995a70fcd9c17f9babe56c4c8f922c473))
+* rework lpack and add colors to log lib ([38b7693](https://github.com/davidsneighbour/dotfiles/commit/38b76937c4b596e0e7f23a77b28f6194b9adcd46))
+* rework lpack and node-run ([b474dc1](https://github.com/davidsneighbour/dotfiles/commit/b474dc1a5451e980ae0e853940c56566e4e5ad59))
+
+### Bug Fixes
+
+* add ensureNodeVersion for node scripts ([ec159d5](https://github.com/davidsneighbour/dotfiles/commit/ec159d5e7bdd62110d445655b46e680dd4dd34e6))
+* add gohugo-ananke to workspace starter script ([fb18aab](https://github.com/davidsneighbour/dotfiles/commit/fb18aabf6008d939cd240c169c12bff811f7cdde))
+* **ai:** add .mcp.json configuration for copilot ([dfde295](https://github.com/davidsneighbour/dotfiles/commit/dfde295d0fc90257ba55dd8fef0415e7e62b138a))
+* **ai:** add codex CLI to default packages for npm ([08cccd3](https://github.com/davidsneighbour/dotfiles/commit/08cccd3478821d82af088aca332510ce5f59e9fc))
+* cleanup bashrc partials ([0c95d39](https://github.com/davidsneighbour/dotfiles/commit/0c95d39cf49b468fad3cbdefaf3c76929fa47de6))
+* consolidate commit report ([c72c711](https://github.com/davidsneighbour/dotfiles/commit/c72c71116fabacb1dbd96d2573a4d65d63f53c0a))
+* **container:** remove n8n container ([ca97672](https://github.com/davidsneighbour/dotfiles/commit/ca97672d670adf808da8cc1e80108ff95dc5e8f1))
+* **containers:** cleanup obsolete files ([d50a949](https://github.com/davidsneighbour/dotfiles/commit/d50a949d859a727af2000c1519dd0aecb2522452))
+* daily reports can recurse over user directories ([2a36503](https://github.com/davidsneighbour/dotfiles/commit/2a3650367debc15873a2e99df404883b4808543a))
+* daily reports without obsidian cli ([81d5b28](https://github.com/davidsneighbour/dotfiles/commit/81d5b287373b56f677153a5fd2f302f0ea9832fe))
+* **dotbot:** remove dotfiles-ai and add daily note cronjob ([0a96e29](https://github.com/davidsneighbour/dotfiles/commit/0a96e29e361bfe1959e6c1d00b5e1e1cfc4aa50f))
+* GH_TOKEN not accepted ([aecaf49](https://github.com/davidsneighbour/dotfiles/commit/aecaf49f9221406fc8c7c4d1358e58919c9919dc))
+* **installs:** add sass to installed brew packages ([db2c5b3](https://github.com/davidsneighbour/dotfiles/commit/db2c5b300729dfe14845ad44f1dbb086126893ed))
+* proper handling of existence of config per repo ([f8717f9](https://github.com/davidsneighbour/dotfiles/commit/f8717f985293b7219ecdfb870ab1c27c3a258fb2))
+* remove icons from logging, add logging to workspace selector ([096d194](https://github.com/davidsneighbour/dotfiles/commit/096d194df26d07c1d449535338f4a7a7d977b37c))
+* remove phinx autocompletions ([60ca583](https://github.com/davidsneighbour/dotfiles/commit/60ca583b46c77688488310a6593260b0c6447ff1))
+* rework change_directory script to be less resource hungry ([b65e08a](https://github.com/davidsneighbour/dotfiles/commit/b65e08a79b9f7c5fd618aa5a6576b89c488f8f69))
+* rework output of daily-report script ([39f5c6c](https://github.com/davidsneighbour/dotfiles/commit/39f5c6c52837c3fea7b12e555c5928cec146e42e))
+* **rofi:** cleanup rofi configuration ([58b1879](https://github.com/davidsneighbour/dotfiles/commit/58b1879eef15b582fc2fa7e789d95181760b6438))
+* **rofi:** update workspace evaluation ([844c2a2](https://github.com/davidsneighbour/dotfiles/commit/844c2a263f3b8aad60203c43d0025a94ece8da01))
+* spacing in log lines ([748cc35](https://github.com/davidsneighbour/dotfiles/commit/748cc356218185766909e384f163daef32ce16d3))
+
+### Documentation
+
+* add setup notes ([4998e27](https://github.com/davidsneighbour/dotfiles/commit/4998e27372506f678a284d65824899059c4ca748))
+* some chaotic updates of docs (wip) ([53a6b5c](https://github.com/davidsneighbour/dotfiles/commit/53a6b5c97210a5333ea28431b9d59fab11ddb80b))
+
+### Build
+
+* **dotbot:** update script for dotbot ([b96e426](https://github.com/davidsneighbour/dotfiles/commit/b96e426ee067124bbf2bd6c0b93f9cdba0b736ba))
+* **vscode:** update workspace configuration ([4685d33](https://github.com/davidsneighbour/dotfiles/commit/4685d33e35fb55cd542b56a3030952fdbac6e2a9))
+* **vscode:** update workspace configuration ([4701eaf](https://github.com/davidsneighbour/dotfiles/commit/4701eaf5eaacecb2a5a7145dc0e72b4b076f5488))
+
+### Chore
+
+* add executable bit to node-run.sh ([90a63ca](https://github.com/davidsneighbour/dotfiles/commit/90a63caead7563d65bf4dd53a9ecfdacde353b12))
+* **config:** add lpack config to dnb.toml ([e36b824](https://github.com/davidsneighbour/dotfiles/commit/e36b824fc20049569025d16b7cdbde64ec3ad83f))
+* **git:** remove dotfiles-ai module ([aa40bb0](https://github.com/davidsneighbour/dotfiles/commit/aa40bb0a14c5b07cb4d3ef6fca8b50bb67b9e5ec))
+* **git:** update container configurations ([614a4c3](https://github.com/davidsneighbour/dotfiles/commit/614a4c3a878fcb56d02269459e7aa1d7b5abc2c2))
+* **git:** update dotbot submodules ([4a0d555](https://github.com/davidsneighbour/dotfiles/commit/4a0d5558d289b5f6eccaa4e968d6bb0955aba2d1))
+* **git:** update protected submodule ([3adbaa0](https://github.com/davidsneighbour/dotfiles/commit/3adbaa0a107bd3817dd87bcf7424375b7fd94f36))
+* **git:** update protected submodule ([fa07228](https://github.com/davidsneighbour/dotfiles/commit/fa072288e6bd89b51c12fa59691f55f0b444cbc2))
+* **git:** update submodules ([04e8014](https://github.com/davidsneighbour/dotfiles/commit/04e8014f4c8c10b55ea8155fe439540b1f7a8c92))
+* **vscode:** add awesome workspace ([6c0e243](https://github.com/davidsneighbour/dotfiles/commit/6c0e243e20c63c12ed0226d86afd1beffc03c074))
+
 ## [3002.19.0](https://github.com/davidsneighbour/dotfiles/compare/v3002.18.1...v3002.19.0) (2026-04-20)
 
 ### Features
