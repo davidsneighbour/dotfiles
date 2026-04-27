@@ -1,3 +1,4 @@
+aptget
 atuin
 automount
 Bibata
@@ -39,6 +40,7 @@ Polybar
 powermenu
 prio
 projectsdirs
+pyyaml
 rasi
 recursivebrowser
 remarkignore
