@@ -29,6 +29,15 @@ source_core_libs() {
 
 init_logging() {
   local log_dir="${HOME}/.logs/dotbot"
+
+  if [[ ! -d "${HOME}/.logs" ]]; then
+    printf '[error] Log directory is unavailable: %s\n' "${HOME}/.logs" >&2
+    printf '[error] Run the dotfiles bootstrap setup first.\n' >&2
+    exit 1
+  fi
+
+  mkdir -p "${log_dir}"
+
   __LOGFILE="${log_dir}/setup-log-$(date +%Y%m%d-%H%M%S).log"
   export __LOGFILE
 }
@@ -93,7 +102,6 @@ resolve_config_path() {
 
 run_dotbot_with_config() {
   local config_path="${1}"
-  local sanitized_config
 
   if [[ ! -f "${config_path}" ]]; then
     dnb_error "Config file not found: ${config_path}"
@@ -103,11 +111,6 @@ run_dotbot_with_config() {
 
   ensure_dotbot_ready
 
-  sanitized_config="$(mktemp)"
-  trap 'rm -f "${sanitized_config}"' RETURN
-
-  grep -v -E '^- description:[[:space:]]*' "${config_path}" >"${sanitized_config}"
-
   export HOSTNAME
   HOSTNAME="$(hostname)"
 
@@ -116,7 +119,7 @@ run_dotbot_with_config() {
   cd "${REPO_ROOT}"
   "${DOTBOT_BIN}" \
     --base-directory "${REPO_ROOT}" \
-    --config-file "${sanitized_config}" \
+    --config-file "${config_path}" \
     --force-color \
     --exit-on-failure
 }
@@ -147,7 +150,7 @@ pick_config_with_gum() {
   local config_file
   for config_file in "${config_files[@]}"; do
     config_names+=("${config_file#config.}")
-    config_names[${#config_names[@]}-1]="${config_names[${#config_names[@]}-1]%.yaml}"
+    config_names[${#config_names[@]} - 1]="${config_names[${#config_names[@]} - 1]%.yaml}"
   done
 
   gum choose --header "Select Dotbot config to run" "${config_names[@]}"
