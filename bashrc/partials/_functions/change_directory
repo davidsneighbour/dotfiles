@@ -1,5 +1,10 @@
 #!/bin/bash
 # shellcheck shell=bash
+# dnb-dotfiles v3002.20.0
+
+# Changes directory and then:
+#   - switches Node.js via nvm when the effective .nvmrc changes
+#   - shows git status when the repository has local changes
 
 _cd_effective_nvmrc() {
   local dir="${PWD}"
