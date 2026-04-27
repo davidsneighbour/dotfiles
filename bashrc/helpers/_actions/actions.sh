@@ -8,10 +8,6 @@ SCRIPT_NAME="$(basename "${0}")"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DOTFILES_ROOT="$(cd "${SCRIPT_DIR}/../../.." && pwd)"
 
-LOG_DIR="${HOME}/.logs/actions"
-TIMESTAMP="$(date '+%Y%m%d-%H%M%S')"
-LOG_FILE="${LOG_DIR}/setup-log-${TIMESTAMP}.log"
-
 DEFAULT_ACTIONS_CONFIG="${DOTFILES_ROOT}/configs/actions/actions.toml"
 DEFAULT_AUTOSTART_DIR="${DOTFILES_ROOT}/configs/system/autostart"
 DEFAULT_DOTBOT_CONFIGS_DIR="${DOTFILES_ROOT}/configs/dotbot"
@@ -20,23 +16,39 @@ DOTBOT_HELPER="${DOTFILES_ROOT}/bashrc/helpers/dotbot"
 VERBOSE="false"
 DRY_RUN="false"
 
-mkdir -p "${LOG_DIR}"
+source_core_libs() {
+  local base_path="${BASHRC_PATH:-${DOTFILES_ROOT}/bashrc}"
+  local file=""
+
+  for file in "${base_path}"/lib/00-core/*.bash; do
+    [[ -f "${file}" && -r "${file}" ]] || continue
+    # shellcheck disable=SC1090
+    source "${file}"
+  done
+}
+
+init_logging() {
+  local log_dir="${HOME}/.logs/actions"
+  __LOGFILE="${log_dir}/setup-log-$(date '+%Y%m%d-%H%M%S').log"
+  export __LOGFILE
+}
 
 log_msg() {
-  local level="${1:-INFO}"
+  local level="${1:-info}"
   shift || true
   local msg="${*:-}"
-  printf '%s [%s] %s\n' "$(date '+%Y-%m-%d %H:%M:%S')" "${level}" "${msg}" | tee -a "${LOG_FILE}" >/dev/null
+  level="${level,,}"
+  dnb_log "${level}" "${msg}"
 }
 
 log_debug() {
   if [[ "${VERBOSE}" == "true" ]]; then
-    log_msg "DEBUG" "$*"
+    log_msg "info" "$*"
   fi
 }
 
 log_error() {
-  log_msg "ERROR" "$*" >&2
+  dnb_error "$*"
 }
 
 print_help() {
@@ -67,13 +79,13 @@ Examples:
   ${SCRIPT_NAME} dotbot-run --profile protected
 
 Logs:
-  ${LOG_FILE}
+  ${__LOGFILE:-<not-initialized>}
 EOF_HELP
 }
 
 require_cmd() {
   local cmd="${1}"
-  if ! command -v "${cmd}" >/dev/null 2>&1; then
+  if ! dnb_check_requirements "${cmd}" >/dev/null 2>&1; then
     log_error "Required command '${cmd}' was not found in PATH."
     exit 1
   fi
@@ -303,7 +315,7 @@ menu_run_activity() {
   fi
 
   log_msg "INFO" "Selected action ${scope}/${activity}."
-  expanded_cmd="$(eval "echo \"${cmd}\"")"
+  expanded_cmd="$(eval "printf '%s' \"${cmd}\"")"
   colored_cmd="$(colorize_expanded "${cmd}" "${expanded_cmd}")"
 
   gum style --border double --padding "1 2" --margin "1 0" "📜 Template:" "${cmd}" "" "🔍 Expanded:" "${colored_cmd}"
@@ -705,7 +717,7 @@ extract_dotbot_description() {
   description_line="${description_line%\"}"
   description_line="${description_line#\'}"
   description_line="${description_line%\'}"
-  description_line="$(echo "${description_line}" | sed -E 's/^[[:space:]]+//;s/[[:space:]]+$//')"
+  description_line="$(printf '%s' "${description_line}" | sed -E 's/^[[:space:]]+//;s/[[:space:]]+$//')"
 
   if [[ -z "${description_line}" ]]; then
     printf '%s\n' "(no description)"
@@ -871,6 +883,9 @@ EOF_HELP
 }
 
 main() {
+  source_core_libs
+  init_logging
+
   if (($# == 0)); then
     set -- menu
   fi
