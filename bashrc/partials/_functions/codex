@@ -1,40 +1,103 @@
 #!/bin/bash
 # shellcheck shell=bash
+# dnb-dotfiles v3002.20.0
 
 codex-local() {
-  # Help
-  if [[ "${1:-}" == "--help" ]]; then
-    cat <<EOF
-Usage: $(basename "$0") [ARGS...]
+  local verbose=0
+  local curl_verbose=()
+  local codex_args=()
+  local codex_profile="${CODEX_PROFILE:-ollama-launch}"
+
+  while [[ "$#" -gt 0 ]]; do
+    case "${1}" in
+    --help)
+      cat <<EOF
+Usage: ${FUNCNAME[0]} [--verbose] [ARGS...]
 
 Runs codex against a local or configured Ollama instance.
 
+Options:
+  --help      Show this help message.
+  --verbose   Print health-check and execution progress.
+
 Environment:
-  OLLAMA_HOST   Optional. Example: http://192.168.1.10:11434
+  OLLAMA_HOST    Optional. Example: http://192.168.1.10:11434
+  CODEX_PROFILE  Optional. Defaults to ollama-launch.
 
 Behaviour:
-  - Uses OLLAMA_HOST if set
-  - Falls back to http://localhost:11434
-  - Verifies Ollama availability before execution
+  - Uses OLLAMA_HOST if set.
+  - Falls back to http://localhost:11434.
+  - Uses CODEX_PROFILE if set.
+  - Falls back to ollama-launch.
+  - Verifies Ollama availability before execution.
+  - Verifies the Codex profile before execution.
+  - Fails quickly if Ollama does not respond.
 EOF
-    return 0
-  fi
+      return 0
+      ;;
+    --verbose)
+      verbose=1
+      ;;
+    *)
+      codex_args+=("${1}")
+      ;;
+    esac
 
-  # Determine host
+    shift
+  done
+
   local ollama_host="${OLLAMA_HOST:-http://localhost:11434}"
   local health_endpoint="${ollama_host%/}/v1/models"
+  local codex_config="${HOME}/.codex/config.toml"
 
   if [[ ! "${ollama_host}" =~ ^https?:// ]]; then
-    echo "ERROR: OLLAMA_HOST must include scheme (http:// or https://)" >&2
+    dnb_log error "OLLAMA_HOST must include scheme (http:// or https://)."
     return 1
   fi
 
-  # Check availability
-  if ! curl -s --fail "${health_endpoint}" >/dev/null 2>&1; then
-    echo "ERROR: Ollama not reachable at ${ollama_host}" >&2
+  if [[ "${verbose}" -eq 1 ]]; then
+    dnb_log info "Using Ollama host: ${ollama_host}"
+    dnb_log info "Checking endpoint: ${health_endpoint}"
+    curl_verbose=(--verbose)
+  fi
+
+  if ! curl \
+    --fail \
+    --silent \
+    --show-error \
+    --connect-timeout 3 \
+    --max-time 10 \
+    "${curl_verbose[@]}" \
+    "${health_endpoint}" >/dev/null; then
+    dnb_log error "Ollama not reachable at ${ollama_host}."
     return 1
   fi
 
-  # Execute
-  codex --profile local-ollama "$@"
+  if [[ "${verbose}" -eq 1 ]]; then
+    dnb_log success "Ollama is reachable."
+  fi
+
+  if [[ ! -f "${codex_config}" ]]; then
+    dnb_log error "Codex config not found: ${codex_config}"
+    return 1
+  fi
+
+  if ! grep -q "^\[profiles\.${codex_profile}\]$" "${codex_config}"; then
+    dnb_log error "Codex profile not found: ${codex_profile}"
+    dnb_log warn "Available profiles:"
+
+    grep '^\[profiles\.' "${codex_config}" | while IFS= read -r profile_line; do
+      dnb_log info "${profile_line}"
+    done
+
+    return 1
+  fi
+
+  if ! command -v codex >/dev/null 2>&1; then
+    dnb_log error "codex command not found."
+    return 1
+  fi
+
+  dnb_log info "Starting codex with profile: ${codex_profile}"
+  command codex --profile "${codex_profile}" "${codex_args[@]}"
 }
