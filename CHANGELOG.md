@@ -1,5 +1,42 @@
 # Changelog
 
+## [3002.21.0](https://github.com/davidsneighbour/dotfiles/compare/v3002.20.0...v3002.21.0) (2026-04-27)
+
+### Features
+
+* docker backup cronjob ([afc9b9b](https://github.com/davidsneighbour/dotfiles/commit/afc9b9b3abd8049b4ef9abe1be91279f33c8bed1))
+* rework dotbot script ([12bd8b4](https://github.com/davidsneighbour/dotfiles/commit/12bd8b434eadf3596c307275c1b7f131273654d6))
+
+### Bug Fixes
+
+* check yaml and yml files with yamllint in lintstaged ([94e9e64](https://github.com/davidsneighbour/dotfiles/commit/94e9e64c062cf283cce1e60c65b248dd956729e2))
+* cronjob commands can be multiline ([ec2acd6](https://github.com/davidsneighbour/dotfiles/commit/ec2acd6703ae35b40fcd8932ca832f8c62d613e8))
+* cronjob commands can be multiline ([6cdbf1e](https://github.com/davidsneighbour/dotfiles/commit/6cdbf1e1f840fae421d1ddc513a5512f77204435))
+* cronjob commands can be multiline ([a7c8672](https://github.com/davidsneighbour/dotfiles/commit/a7c86724d0f3caefb5e8e5e57246a766c023af3d))
+* linting yaml formatting ([38723b7](https://github.com/davidsneighbour/dotfiles/commit/38723b7f9f6aecdd48ffd77e162cd89b512594b8))
+* log directory handling via dotbot ([9201718](https://github.com/davidsneighbour/dotfiles/commit/9201718129e741015ce73edf4a123615791669e2))
+* proper cronjobs per host configuration ([d62a791](https://github.com/davidsneighbour/dotfiles/commit/d62a791196c64a1d21bb0718340a69c9061d6b2e))
+* proper setup for cronjobs and locutus setup ([1fad34f](https://github.com/davidsneighbour/dotfiles/commit/1fad34f919e170c2d7b19a168e47440a0da5cb49))
+* refactoring scripts to use lib-log functions ([e58e798](https://github.com/davidsneighbour/dotfiles/commit/e58e798f336dc30cfee7113999d18055b84ebdcb))
+* yaml linting refactoring ([ba52935](https://github.com/davidsneighbour/dotfiles/commit/ba52935e4fb865545e7666312cde49415180a2c6))
+
+### Build
+
+* **deps:** bump @biomejs/biome from 2.4.9 to 2.4.12 ([#463](https://github.com/davidsneighbour/dotfiles/issues/463)) ([c439f89](https://github.com/davidsneighbour/dotfiles/commit/c439f895c24ee9980303580b979b0b6adf0450f9))
+* **deps:** bump @secretlint/secretlint-rule-no-dotenv from 11.4.0 to 12.2.0 ([#460](https://github.com/davidsneighbour/dotfiles/issues/460)) ([744052b](https://github.com/davidsneighbour/dotfiles/commit/744052b50b3317a0eccb3f168e529d3237ea92d9))
+* **deps:** bump @secretlint/secretlint-rule-no-homedir from 11.4.0 to 12.2.0 ([#458](https://github.com/davidsneighbour/dotfiles/issues/458)) ([a7c9180](https://github.com/davidsneighbour/dotfiles/commit/a7c91803818cf262982ee34c6da8c37cb026d088))
+* **deps:** bump @secretlint/secretlint-rule-no-k8s-kind-secret from 11.4.0 to 12.2.0 ([#457](https://github.com/davidsneighbour/dotfiles/issues/457)) ([0e26b00](https://github.com/davidsneighbour/dotfiles/commit/0e26b00c7fee0376d5d031f4d64001e755fa8b34))
+* **deps:** bump @secretlint/secretlint-rule-openai from 11.4.0 to 12.2.0 ([#468](https://github.com/davidsneighbour/dotfiles/issues/468)) ([10cf53b](https://github.com/davidsneighbour/dotfiles/commit/10cf53b4232805ebc4c655766f15a52713d600c7))
+* **deps:** bump @secretlint/secretlint-rule-pattern from 11.4.0 to 12.2.0 ([#459](https://github.com/davidsneighbour/dotfiles/issues/459)) ([c3a3648](https://github.com/davidsneighbour/dotfiles/commit/c3a3648d7c637ed7d30183e2f0c73f8ce3c01c02))
+* **deps:** bump @secretlint/secretlint-rule-preset-recommend from 11.4.0 to 12.2.0 ([#467](https://github.com/davidsneighbour/dotfiles/issues/467)) ([8b2ef1e](https://github.com/davidsneighbour/dotfiles/commit/8b2ef1e1b6a96fb71db0bdafadd62ddbca1f87f4))
+* **deps:** bump @secretlint/secretlint-rule-secp256k1-privatekey from 11.4.0 to 12.2.0 ([#466](https://github.com/davidsneighbour/dotfiles/issues/466)) ([c2b08c3](https://github.com/davidsneighbour/dotfiles/commit/c2b08c3d7aa34f5fcf74f009cd128d3699f595f6))
+* **deps:** bump markdownlint-cli2 from 0.22.0 to 0.22.1 ([#465](https://github.com/davidsneighbour/dotfiles/issues/465)) ([abf0679](https://github.com/davidsneighbour/dotfiles/commit/abf06791f37e34c0148ca30ad7a0169b82988f6f))
+* **deps:** bump npm-check-updates from 19.6.6 to 21.0.3 ([#461](https://github.com/davidsneighbour/dotfiles/issues/461)) ([22556ea](https://github.com/davidsneighbour/dotfiles/commit/22556eacfc18ace25e1199a59bfa0b74bb43b7ad))
+* **deps:** bump release-it from 19.2.4 to 20.0.0 ([#462](https://github.com/davidsneighbour/dotfiles/issues/462)) ([6664b47](https://github.com/davidsneighbour/dotfiles/commit/6664b47205513558c08fc328bd9daf10d66b4bbd))
+* **deps:** bump secretlint from 11.4.0 to 12.2.0 ([#464](https://github.com/davidsneighbour/dotfiles/issues/464)) ([372f0c1](https://github.com/davidsneighbour/dotfiles/commit/372f0c1e7341e20eda4f6060463dd1a7e5c848e5))
+* **deps:** bump the npm_and_yarn group across 1 directory with 2 updates ([#469](https://github.com/davidsneighbour/dotfiles/issues/469)) ([adc2ea0](https://github.com/davidsneighbour/dotfiles/commit/adc2ea0f0fca20a889b83e73d19a78f664da1891))
+* **fix:** update release-it packages ([997ef83](https://github.com/davidsneighbour/dotfiles/commit/997ef832c96cbbff48b3d2e9f0434ae6f206df22))
+
 ## [3002.20.0](https://github.com/davidsneighbour/dotfiles/compare/v3002.19.0...v3002.20.0) (2026-04-27)
 
 ### Features
