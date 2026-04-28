@@ -37,7 +37,7 @@ dnb_log_init() {
 
   if [[ -z "${DNB_SETUP_LOG_FILE:-}" ]]; then
     mkdir -p "${log_dir}"
-    DNB_SETUP_LOG_FILE="${log_dir}/setup-log-$(date +%Y%m%d-%H%M%S).log"
+    DNB_SETUP_LOG_FILE="${log_dir}/default-$(date +%Y%m%d-%H%M%S).log"
   fi
 
   printf '%s\n' "${DNB_SETUP_LOG_FILE}"
@@ -58,7 +58,7 @@ dnb_log_init() {
 # Behaviour:
 #   - Writes to console and to the shared logfile.
 #   - Uses LOG_LEVEL filtering when set.
-#   - Defaults to `~/.logs/setup-log-YYYYMMDD-HHMMSS.log`.
+#   - Defaults to `~/.logs/default-YYYYMMDD-HHMMSS.log`.
 #
 # Examples:
 #   dnb_log info "Loaded local environment"

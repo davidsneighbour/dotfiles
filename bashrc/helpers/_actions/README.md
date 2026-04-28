@@ -42,11 +42,11 @@ Logs are written under:
 
 with filenames following:
 
-* `setup-log-YYYYMMDD-HHMMSS.log`
+* `actions-YYYYMMDD-HHMMSS.log`
 
 Example:
 
-* `~/.logs/actions/setup-log-20260422-201355.log`
+* `~/.logs/actions/actions-20260422-201355.log`
 
 ---
 

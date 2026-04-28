@@ -24,7 +24,7 @@ source_core_libs() {
 
 init_logging() {
   local log_dir="${HOME}/.logs/daily-reports"
-  __LOGFILE="${log_dir}/setup-log-$(date '+%Y%m%d-%H%M%S').log"
+  __LOGFILE="${log_dir}/report-$(date '+%Y%m%d-%H%M%S').log"
   export __LOGFILE
 }
 

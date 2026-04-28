@@ -47,7 +47,7 @@ log_init() {
   mkdir -p "${HOME}/.logs"
   local ts
   ts="$(date +"%Y%m%d-%H%M%S")"
-  LOG_FILE="${HOME}/.logs/setup-log-${ts}.log"
+  LOG_FILE="${HOME}/.logs/web-mirror-${ts}.log"
   touch "${LOG_FILE}"
 }
 

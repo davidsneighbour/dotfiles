@@ -14,7 +14,7 @@ DEFAULT_CONFIG_FILE="config.yaml"
 
 DOTBOT_DIR="${REPO_ROOT}/modules/dotbot"
 DOTBOT_BIN="${DOTBOT_DIR}/bin/dotbot"
-__LOGFILE="${HOME}/.logs/dotbot/setup-log-$(date +%Y%m%d-%H%M%S).log"
+__LOGFILE="${HOME}/.logs/dotbot/dotbot-$(date +%Y%m%d-%H%M%S).log"
 
 source_core_libs() {
   local base_path="${BASHRC_PATH:-${REPO_ROOT}/bashrc}"

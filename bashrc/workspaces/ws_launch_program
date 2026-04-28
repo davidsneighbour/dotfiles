@@ -62,7 +62,7 @@ EOF_USAGE
 
 init_logging() {
   mkdir -p "${LOG_DIR}"
-  LOG_FILE="${LOG_DIR}/setup-log-$(date +%Y%m%d-%H%M%S).log"
+  LOG_FILE="${LOG_DIR}/$(date +%Y%m%d-%H%M%S).log"
   touch "${LOG_FILE}"
 }
 

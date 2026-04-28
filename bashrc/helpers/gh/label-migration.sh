@@ -6,7 +6,7 @@ set -euo pipefail
 SCRIPT_NAME="$(basename "$0")"
 LOG_DIR="${HOME}/.logs/github"
 TIMESTAMP="$(date '+%Y%m%d-%H%M%S')"
-LOG_FILE="${LOG_DIR}/setup-log-${TIMESTAMP}.log"
+LOG_FILE="${LOG_DIR}/label-migration-${TIMESTAMP}.log"
 
 mkdir -p "${LOG_DIR}"
 

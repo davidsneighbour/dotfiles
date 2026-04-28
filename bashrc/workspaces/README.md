@@ -12,7 +12,7 @@ This folder provides CLI-first workspace automation for XFCE on Xubuntu 25.10 wi
 
 * `--verbose` enables verbose logging (`DNB_VERBOSE=1`).
 * `--quiet` disables verbose logging.
-* Logs are written to `~/.logs/workspaces/<command>/setup-log-YYYYMMDD-HHMMSS.log`.
+* Logs are written to `~/.logs/workspaces/<command>/YYYYMMDD-HHMMSS.log`.
 
 ## Command namespace (`ws_*`)
 
@@ -77,6 +77,7 @@ This folder provides CLI-first workspace automation for XFCE on Xubuntu 25.10 wi
 ### `ws_rofi_actions`
 
 Unified rofi entry point:
+
 * `--mode start`
   * rofi prompt to start a program
   * optional `--workspace <N|NAME>`

@@ -9,7 +9,7 @@ done
 ws_init_logging() {
   local log_path="${1:-workspaces/general}"
   LOG_PATH="${log_path}"
-  LOG_FILE="${HOME}/.logs/${LOG_PATH}/setup-log-$(date +'%Y%m%d-%H%M%S').log"
+  LOG_FILE="${HOME}/.logs/${LOG_PATH}/$(date +'%Y%m%d-%H%M%S').log"
   mkdir -p "$(dirname "${LOG_FILE}")"
   export __LOGFILE="${LOG_FILE}"
 }
