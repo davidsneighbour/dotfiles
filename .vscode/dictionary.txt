@@ -1,3 +1,4 @@
+APIKEY
 aptget
 atuin
 automount
@@ -10,6 +11,7 @@ crosspost
 dmenu
 dotbot
 drun
+esac
 exportfs
 extensionless
 fastfetch
@@ -39,6 +41,7 @@ pipefail
 pixelsize
 polybar
 Polybar
+PORKBUN
 powermenu
 prio
 projectsdirs
@@ -49,6 +52,8 @@ remarkignore
 remarkrc
 rofi
 roleplay
+SECKEY
+secretapikey
 separatorcolor
 shellcheck
 sortorder
