@@ -197,7 +197,7 @@ export NO_AT_BRIDGE=1
 dnb_path_add_if_missing --dir "${DENO_INSTALL}/bin"
 
 # cleanup and export the PATH, no more `PATH=...` after this line
-path_sanitise
+dnb_path_sanitise
 export PATH
 
 WM_TILE_POLYBAR_TOP_HEIGHT=40
