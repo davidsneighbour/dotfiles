@@ -6,6 +6,10 @@
  * Logs raw JSON output to file and prints a human-readable summary.
  */
 
+/**
+ * @see https://porkbun.com/api/json/v3/documentation
+ */
+
 import https from 'https';
 import { URL } from 'url';
 import { writeFile } from 'fs/promises';
@@ -13,8 +17,8 @@ import path from 'path';
 
 const API_BASE = 'https://api.porkbun.com/api/json/v3';
 
-const API_KEY = process.env.PORKBUN_APIKEY;
-const SECRET_KEY = process.env.PORKBUN_SECKEY;
+const API_KEY = process.env['PORKBUN_APIKEY'];
+const SECRET_KEY = process.env['PORKBUN_SECKEY'];
 
 if (!API_KEY || !SECRET_KEY) {
   console.error('Error: PORKBUN_APIKEY and PORKBUN_SECKEY environment variables must be set.');
