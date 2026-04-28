@@ -424,7 +424,7 @@ async function writeRunArtifacts(
 ): Promise<{ logFile: string; jsonDumpFile: string }> {
   await ensureLogDir();
   const ts = timestampNow();
-  const logFile = path.join(LOG_DIR, `setup-log-${ts}.log`);
+  const logFile = path.join(LOG_DIR, `porkbun-${ts}.log`);
   const jsonDumpFile = path.join(LOG_DIR, `porkbun-dump-${ts}.json`);
 
   await writeFile(jsonDumpFile, JSON.stringify(data, null, 2), 'utf8');

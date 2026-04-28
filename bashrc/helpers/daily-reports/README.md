@@ -44,4 +44,4 @@ Use `--verbose` to print informational logs to STDERR.
 
 Both helpers always write logs to:
 
-* `~/.logs/daily-reports/setup-log-YYYYMMDD-HHMMSS.log`
+* `~/.logs/daily-reports/report-YYYYMMDD-HHMMSS.log`

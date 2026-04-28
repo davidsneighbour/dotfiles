@@ -13,7 +13,7 @@ Scope: this directory tree.
   * `--quiet`
 * Respect global verbosity contract via `DNB_VERBOSE`.
 * Use `bashrc/workspaces/ws-common.sh` for logging setup when possible.
-* Keep logs under `~/.logs/workspaces/<command>/setup-log-YYYYMMDD-HHMMSS.log`.
+* Keep logs under `~/.logs/workspaces/<command>/YYYYMMDD-HHMMSS.log`.
 * Do not remove existing comments.
 * Prefer explicit named flags; avoid positional-only APIs.
 

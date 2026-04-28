@@ -50,7 +50,7 @@ log_setup() {
   mkdir -p "${logs_dir}"
   local ts
   ts="$(date +'%Y%m%d-%H%M%S')"
-  LOG_FILE="${logs_dir}/setup-log-${ts}.log"
+  LOG_FILE="${logs_dir}/package-into-zip-${ts}.log"
   printf "[%s] %s\n" "$(date -Is)" "start ${SCRIPT_NAME} ${*}" >>"${LOG_FILE}"
 }
 
