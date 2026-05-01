@@ -10,7 +10,7 @@
   "dependencies": {
     "@biomejs/biome": "2.4.13",
     "@clack/prompts": "1.2.0",
-    "@commitlint/cli": "20.5.0",
+    "@commitlint/cli": "20.5.2",
     "@commitlint/config-conventional": "20.5.0",
     "@davidsneighbour/markdownlint-config": "2026.0.3",
     "@humanwhocodes/crosspost": "1.0.4",
