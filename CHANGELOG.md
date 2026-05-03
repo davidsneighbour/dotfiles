@@ -1,5 +1,11 @@
 # Changelog
 
+## [3002.21.3](https://github.com/davidsneighbour/dotfiles/compare/v3002.21.2...v3002.21.3) (2026-05-03)
+
+### Build
+
+* **deps:** update dependencies ([11e42cb](https://github.com/davidsneighbour/dotfiles/commit/11e42cbe749bb141fa9368cddfff3ba745225120))
+
 ## [3002.21.2](https://github.com/davidsneighbour/dotfiles/compare/v3002.21.0...v3002.21.2) (2026-05-03)
 
 ### Bug Fixes
