@@ -1,5 +1,30 @@
 # Changelog
 
+## [3002.21.1](https://github.com/davidsneighbour/dotfiles/compare/v3002.21.0...v3002.21.1) (2026-05-03)
+
+### Bug Fixes
+
+* **api:** add list-domains and fix loggging in porkbun API ([6ab4ec8](https://github.com/davidsneighbour/dotfiles/commit/6ab4ec8b3141d4b9e6cc9352656ead9e864f3e5b))
+* **containers:** move --remove-orphans from pull to up command ([4c15294](https://github.com/davidsneighbour/dotfiles/commit/4c15294fdd8c3a5a9a7a587867fe6d89b9b35f54))
+* **dotbot:** add DNB_VERBOSE to dotbot wrapper ([a152c07](https://github.com/davidsneighbour/dotfiles/commit/a152c07df26e8d054779582f9621960da02da20b))
+* logging and log setup in dotbot ([64d8d36](https://github.com/davidsneighbour/dotfiles/commit/64d8d369d47c2ec867440d9d11bf61cc9265af91))
+* move porkbun API script to new location ([0831b43](https://github.com/davidsneighbour/dotfiles/commit/0831b43de038825e326ca7d5a9cff1fbc41a8070))
+* proper log file names ([2001f31](https://github.com/davidsneighbour/dotfiles/commit/2001f31c9f6109f2ed8c95dcceb51d8b4adb3acd))
+* proper name for sanitise_path ([0259936](https://github.com/davidsneighbour/dotfiles/commit/0259936d9bb3ca8a2710303e2bb6024b9fc3b155))
+* remove jsconfig - this is done by tsconfig these days ([fdef133](https://github.com/davidsneighbour/dotfiles/commit/fdef1337266dd911b8f7d386103dac88b0177a72))
+* various dotbot fixes (color, logs directory issues) ([da37f0c](https://github.com/davidsneighbour/dotfiles/commit/da37f0c5b1a7320725de3e1eebfb2e9d2116b40c))
+* work through deprecated and legacy functions ([278e17c](https://github.com/davidsneighbour/dotfiles/commit/278e17cb43451948453b70be39fe5d62c430baa0))
+
+### Documentation
+
+* update verbosity instructions ([3035c2c](https://github.com/davidsneighbour/dotfiles/commit/3035c2c49f7b1b7bfe9717deee34bdcc68a79e95))
+
+### Build
+
+* **deps:** update dependencies ([d8e3609](https://github.com/davidsneighbour/dotfiles/commit/d8e3609954c2125b573e22741d47748b85cdb281))
+* **vscode:** remove unused workspaces ([87d0ba8](https://github.com/davidsneighbour/dotfiles/commit/87d0ba897548fcd7822e4484f5b2425417610de2))
+* **vscode:** update workspace configuration ([672cb72](https://github.com/davidsneighbour/dotfiles/commit/672cb7296bd19cd4c2ad86596f2f3e8c90646549))
+
 ## [3002.21.0](https://github.com/davidsneighbour/dotfiles/compare/v3002.20.0...v3002.21.0) (2026-04-27)
 
 ### Features
