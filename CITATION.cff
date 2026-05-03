@@ -26,6 +26,6 @@ keywords:
   - typescript
   - configuration
 license: MIT
-commit: 997ef832c96cbbff48b3d2e9f0434ae6f206df22
-version: 3002.21.0
-date-released: 2026-04-27
+commit: 4c15294fdd8c3a5a9a7a587867fe6d89b9b35f54
+version: 3002.21.1
+date-released: 2026-05-03
