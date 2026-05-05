@@ -22,6 +22,6 @@ export default {
   ],
   "!(CHANGELOG)**/*.{md,markdown}": ["markdownlint-cli2"],
   "**/*.ts?(x)": () => ["tsc -p tsconfig.json --noEmit", "prettier --write"],
-  "**/*.*": ["npx secretlint"],
+  "**/*.*": ["secretlint --no-glob"],
   "*.jsonnet": ["jsonnetfmt -i *.jsonnet"],
 };
