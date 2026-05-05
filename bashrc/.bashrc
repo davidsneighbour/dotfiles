@@ -35,3 +35,4 @@ for FILE in "${BASHRC_PATH}"/partials/_programs/*; do
   # shellcheck disable=SC1090
   [ -f "${FILE}" ] && source "${FILE}"
 done
+export PLAYWRIGHT_HOST_PLATFORM_OVERRIDE=ubuntu24.04-x64
