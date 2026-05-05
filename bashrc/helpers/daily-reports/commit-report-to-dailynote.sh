@@ -7,6 +7,9 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 FORMATTER_PATH="${SCRIPT_DIR}/commits-to-notes.sh"
 NOTES_ROOT="${HOME}/github.com/davidsneighbour/notes"
 
+OBSIDIAN_VAULT="${OBSIDIAN_VAULT:-notes}"
+OBSIDIAN_DAILY_TEMPLATE="${OBSIDIAN_DAILY_TEMPLATE:-templater/daily-day}"
+
 source_core_libs() {
   local base_path="${BASHRC_PATH:-}"
   local file=""
@@ -50,10 +53,13 @@ Date options:
   --to YYYY-MM-DD      End date for date range (inclusive).
 
 Output options:
-  --timezone TZ        IANA timezone for day boundaries (default: Asia/Bangkok).
-  --headline-with-date Include the report date in repository headlines.
-  --verbose            Print informational logs to STDERR.
-  --help               Show this help output.
+  --timezone TZ          IANA timezone for day boundaries (default: Asia/Bangkok).
+  --headline-with-date   Include the report date in repository headlines.
+  --verbose              Print informational logs to STDERR.
+  --help                 Show this help output.
+  --obsidian-vault NAME  Obsidian vault name or id (default: ${OBSIDIAN_VAULT}).
+  --daily-template NAME  Obsidian template name for new daily notes
+                         (default: ${OBSIDIAN_DAILY_TEMPLATE}).
 
 Examples:
   ${SCRIPT_NAME}
@@ -65,16 +71,24 @@ Examples:
 HELP
 }
 
+log_timestamp() {
+  date '+%b%d %H:%M:%S'
+}
+
 log_info() {
-  dnb_log info "$*"
+  if [[ "${LOG_LEVEL:-warn}" != "info" ]]; then
+    return 0
+  fi
+
+  printf '%s info    %s\n' "$(log_timestamp)" "$*" >&2
 }
 
 log_warn() {
-  dnb_log warn "$*"
+  printf '%s warn    %s\n' "$(log_timestamp)" "$*" >&2
 }
 
 log_error() {
-  dnb_error "$*"
+  printf '%s error   %s\n' "$(log_timestamp)" "$*" >&2
 }
 
 require_command() {
@@ -159,6 +173,70 @@ print_username_directories() {
   done
 }
 
+strip_ansi() {
+  python3 -c 'import re, sys; print(re.sub(r"\x1b\[[0-9;]*m", "", sys.stdin.read()), end="")'
+}
+
+build_note_title() {
+  local input_date="$1"
+  local weekday=""
+
+  weekday="$(date -d "${input_date}" '+%A')"
+
+  printf '%s-%s\n' "${input_date}" "${weekday}"
+}
+
+ensure_daily_note_exists() {
+  local report_date="$1"
+  local note_path="$2"
+  local note_absolute_path="$3"
+  local note_title=""
+  local note_parent_dir=""
+
+  if [[ -f "${note_absolute_path}" ]]; then
+    log_info "Daily note exists: ${note_absolute_path}"
+    return 0
+  fi
+
+  note_title="$(build_note_title "${report_date}")"
+  note_parent_dir="$(dirname "${note_absolute_path}")"
+
+  log_warn "Daily note does not exist yet: ${note_absolute_path}"
+
+  if [[ ! -d "${note_parent_dir}" ]]; then
+    log_info "Creating missing daily note directory: ${note_parent_dir}"
+
+    if ! mkdir -p "${note_parent_dir}"; then
+      log_error "Failed to create daily note directory: ${note_parent_dir}"
+      return 1
+    fi
+  fi
+
+  log_info "Creating daily note via Obsidian CLI"
+  log_info "Obsidian vault: ${OBSIDIAN_VAULT}"
+  log_info "Obsidian template: ${OBSIDIAN_DAILY_TEMPLATE}"
+  log_info "Obsidian path: ${note_path}"
+
+  if ! obsidian \
+    "vault=${OBSIDIAN_VAULT}" \
+    create \
+    "path=${note_path}" \
+    "name=${note_title}" \
+    "template=${OBSIDIAN_DAILY_TEMPLATE}" \
+    >>"${__LOGFILE}" 2>&1; then
+    log_error "Obsidian CLI failed while creating daily note: ${note_path}"
+    log_error "See log file: ${__LOGFILE}"
+    return 1
+  fi
+
+  if [[ ! -f "${note_absolute_path}" ]]; then
+    log_error "Obsidian CLI returned success, but the note still does not exist: ${note_absolute_path}"
+    return 1
+  fi
+
+  log_info "Created daily note: ${note_absolute_path}"
+}
+
 build_report_content() {
   local scope_flag="$1"
   local scope_path="$2"
@@ -239,10 +317,10 @@ replace_section_for_day() {
     log_warn "Formatter failed for ${report_date}"
     return 0
   fi
+  report_content="$(printf '%s' "${report_content}" | strip_ansi)"
 
-  if [[ ! -f "${note_absolute_path}" ]]; then
-    log_warn "Daily note file not found: ${note_absolute_path}"
-    return 0
+  if ! ensure_daily_note_exists "${report_date}" "${note_path}" "${note_absolute_path}"; then
+    return 1
   fi
 
   if ! note_content="$(cat "${note_absolute_path}")"; then
@@ -383,6 +461,24 @@ main() {
       include_headline_date="true"
       shift
       ;;
+    --obsidian-vault)
+      if [[ $# -lt 2 ]]; then
+        log_error "Missing value for --obsidian-vault"
+        show_help
+        exit 1
+      fi
+      OBSIDIAN_VAULT="$2"
+      shift 2
+      ;;
+    --daily-template)
+      if [[ $# -lt 2 ]]; then
+        log_error "Missing value for --daily-template"
+        show_help
+        exit 1
+      fi
+      OBSIDIAN_DAILY_TEMPLATE="$2"
+      shift 2
+      ;;
     --verbose)
       export LOG_LEVEL="info"
       shift
@@ -402,6 +498,7 @@ main() {
   require_command git
   require_command date
   require_command python3
+  require_command obsidian
   validate_timezone "${timezone_name}"
 
   if [[ ! -x "${FORMATTER_PATH}" ]]; then

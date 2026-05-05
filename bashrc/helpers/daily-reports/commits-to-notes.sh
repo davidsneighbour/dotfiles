@@ -61,16 +61,24 @@ Examples:
 HELP
 }
 
+log_timestamp() {
+  date '+%b%d %H:%M:%S'
+}
+
 log_info() {
-  dnb_log info "$*"
+  if [[ "${LOG_LEVEL:-warn}" != "info" ]]; then
+    return 0
+  fi
+
+  printf '%s info    %s\n' "$(log_timestamp)" "$*" >&2
 }
 
 log_warn() {
-  dnb_log warn "$*"
+  printf '%s warn    %s\n' "$(log_timestamp)" "$*" >&2
 }
 
 log_error() {
-  dnb_error "$*"
+  printf '%s error   %s\n' "$(log_timestamp)" "$*" >&2
 }
 
 require_command() {
