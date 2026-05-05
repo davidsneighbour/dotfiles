@@ -3,4 +3,4 @@
 # dnb-dotfiles v3002.20.0
 
 # loads a local codex profile, with optional verbose output and health checks
-alias codex="codex-local"
+# alias codex="codex-local"
