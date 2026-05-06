@@ -51,7 +51,6 @@
     ~/.config/user-dirs.dirs: configs/system/user-dirs.dirs
     ~/.config/polybar: configs/system/polybar
     ~/.config/i3: configs/system/i3
-    ~/.logs: logs
     ~/.nvmrc: .nvmrc
     ~/.editorconfig: .editorconfig
     ~/.fixpackrc: .fixpackrc

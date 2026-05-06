@@ -4,7 +4,7 @@
 #
 # @see https://github.com/anishathalye/dotbot for more info
 ################################################################################
-- description: AI tooling bootstrap (Ollama and related activation/install commands).
+# AI tooling bootstrap (Ollama and related activation/install commands).
 
 - defaults:
     link:

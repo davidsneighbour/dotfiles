@@ -2,7 +2,7 @@
 ################################################################################
 # Setup configuration for the protected repository
 ################################################################################
-- description: Protected/private symlinks for secrets, credentials, and local secure assets.
+# Protected/private symlinks for secrets, credentials, and local secure assets.
 
 - defaults:
     link:
