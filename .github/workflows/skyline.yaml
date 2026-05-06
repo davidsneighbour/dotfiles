@@ -3,67 +3,79 @@ name: Generate GitHub Skyline
 
 on:  # yamllint disable-line rule:truthy
   schedule:
-    - cron: '0 0 2 * *'  # Runs at midnight UTC on the 2nd day of every month
-  workflow_dispatch:  # Allows manual triggering of the workflow
+    - cron: '0 0 2 * *'
+  workflow_dispatch:
+
+permissions: {}
 
 jobs:
   generate-skyline:
+    name: Generate GitHub Skyline STL
     runs-on: ubuntu-latest
+
+    concurrency:
+      group: skyline-generation
+      cancel-in-progress: true
+
     permissions:
       contents: write  # To push changes to the repository
-      actions: read    # To use actions/checkout
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6  # zizmor: ignore[artipacked] required later
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          persist-credentials: true
 
       - name: Set up Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
         with:
           node-version: 24
 
-      - name: Install GitHub CLI
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Provides authentication for GitHub CLI
-        run: |
-          sudo apt update
-          sudo apt install -y gh
-
       - name: Install gh-skyline extension
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Provides authentication for installing extensions
+          GH_TOKEN: ${{ github.token }}
         run: |
           gh extension install github/gh-skyline
 
-      - name: Calculate year and run command
-        id: skyline
+      - name: Calculate year and generate skyline
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Provides authentication for GitHub CLI commands
+          GH_TOKEN: ${{ github.token }}
         run: |
-          YEAR=$(date --date="$(date +%Y-%m-02) -1 month" +%Y)
-          MONTH_NAME=$(date --date="$(date +%Y-%m-02)" +%B)
-          FILENAME="assets/gh-stl/davidsneighbour-${YEAR}-github-skyline.stl"
-          REPO_OWNER=$(gh repo view --json owner --jq '.owner.login')
-          gh skyline --user $REPO_OWNER --output $FILENAME --year $YEAR
-          echo "FILENAME=$FILENAME" >> $GITHUB_ENV
-          echo "YEAR=$YEAR" >> $GITHUB_ENV
+          set -euo pipefail
+
+          year="$(date --date="$(date +%Y-%m-02) -1 month" +%Y)"
+          filename="assets/gh-stl/davidsneighbour-${year}-github-skyline.stl"
+          repo_owner="$(gh repo view --json owner --jq '.owner.login')"
+
+          mkdir -p "$(dirname "${filename}")"
+
+          gh skyline \
+            --user "${repo_owner}" \
+            --output "${filename}" \
+            --year "${year}"
+
+          {
+            echo "FILENAME=${filename}"
+            echo "YEAR=${year}"
+            echo "REPO_OWNER=${repo_owner}"
+          } >> "${GITHUB_ENV}"
 
       - name: Set up Git user from repo
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Provides authentication for GitHub CLI commands
         run: |
-          REPO_OWNER=$(gh repo view --json owner --jq '.owner.login')
-          USER_EMAIL="${REPO_OWNER}@users.noreply.github.com"
-          git config user.name "$REPO_OWNER"
-          git config user.email "$USER_EMAIL"
+          set -euo pipefail
 
-      - name: Commit and push changes  # zizmor: ignore[excessive-permissions]
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Provides authentication for GitHub CLI commands
+          user_email="${REPO_OWNER}@users.noreply.github.com"
+
+          git config user.name "${REPO_OWNER}"
+          git config user.email "${user_email}"
+
+      - name: Commit and push changes
         run: |
-          if [ -n "$(git status --porcelain)" ]; then
-            git add $FILENAME
-            git commit -m "chore(assets): update skyline stats for $YEAR"
+          set -euo pipefail
+
+          if [[ -n "$(git status --porcelain)" ]]; then
+            git add "${FILENAME}"
+            git commit -m "chore(assets): update skyline stats for ${YEAR}"
             git push
           else
             echo "No changes to commit. Exiting."

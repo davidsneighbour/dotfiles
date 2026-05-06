@@ -11,4 +11,5 @@ brew install gum \
   snitch \
   typos-cli \
   yamllint \
-  sass/sass/sass
+  sass/sass/sass \
+  zizmor

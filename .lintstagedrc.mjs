@@ -6,9 +6,7 @@
  */
 export default {
   "*.{json,jsonc}": ["biome check --write --staged"],
-  // ".github/workflows/**/*.y(a?)ml": [
-  //   "zizmor --no-exit-codes",
-  // ],
+  ".github/workflows/**/*.y(a?)ml": ["zizmor --no-exit-codes --fix"],
   "package-lock.json": [
     "lockfile-lint --path package-lock.json --validate-https --allowed-hosts npm",
   ],
