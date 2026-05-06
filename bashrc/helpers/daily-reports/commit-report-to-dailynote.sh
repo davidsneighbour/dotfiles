@@ -7,8 +7,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 FORMATTER_PATH="${SCRIPT_DIR}/commits-to-notes.sh"
 NOTES_ROOT="${HOME}/github.com/davidsneighbour/notes"
 
-OBSIDIAN_VAULT="${OBSIDIAN_VAULT:-notes}"
-OBSIDIAN_DAILY_TEMPLATE="${OBSIDIAN_DAILY_TEMPLATE:-templater/daily-day}"
+DAILY_NOTE_TEMPLATE="${DAILY_NOTE_TEMPLATE:-${HOME}/github.com/davidsneighbour/notes/Meta/templates/templater/daily-day.md}"
 
 source_core_libs() {
   local base_path="${BASHRC_PATH:-}"
@@ -57,9 +56,8 @@ Output options:
   --headline-with-date   Include the report date in repository headlines.
   --verbose              Print informational logs to STDERR.
   --help                 Show this help output.
-  --obsidian-vault NAME  Obsidian vault name or id (default: ${OBSIDIAN_VAULT}).
-  --daily-template NAME  Obsidian template name for new daily notes
-                         (default: ${OBSIDIAN_DAILY_TEMPLATE}).
+  --daily-template PATH  Markdown template copied when a daily note does not exist
+                         (default: ${DAILY_NOTE_TEMPLATE}).
 
 Examples:
   ${SCRIPT_NAME}
@@ -188,20 +186,27 @@ build_note_title() {
 
 ensure_daily_note_exists() {
   local report_date="$1"
-  local note_path="$2"
-  local note_absolute_path="$3"
-  local note_title=""
+  local note_absolute_path="$2"
   local note_parent_dir=""
 
   if [[ -f "${note_absolute_path}" ]]; then
-    log_info "Daily note exists: ${note_absolute_path}"
+    log_info "Daily note exists, assuming template is already present: ${note_absolute_path}"
     return 0
   fi
 
-  note_title="$(build_note_title "${report_date}")"
-  note_parent_dir="$(dirname "${note_absolute_path}")"
-
   log_warn "Daily note does not exist yet: ${note_absolute_path}"
+
+  if [[ ! -f "${DAILY_NOTE_TEMPLATE}" ]]; then
+    log_error "Daily note template does not exist: ${DAILY_NOTE_TEMPLATE}"
+    return 1
+  fi
+
+  if [[ ! -r "${DAILY_NOTE_TEMPLATE}" ]]; then
+    log_error "Daily note template is not readable: ${DAILY_NOTE_TEMPLATE}"
+    return 1
+  fi
+
+  note_parent_dir="$(dirname "${note_absolute_path}")"
 
   if [[ ! -d "${note_parent_dir}" ]]; then
     log_info "Creating missing daily note directory: ${note_parent_dir}"
@@ -212,25 +217,12 @@ ensure_daily_note_exists() {
     fi
   fi
 
-  log_info "Creating daily note via Obsidian CLI"
-  log_info "Obsidian vault: ${OBSIDIAN_VAULT}"
-  log_info "Obsidian template: ${OBSIDIAN_DAILY_TEMPLATE}"
-  log_info "Obsidian path: ${note_path}"
+  log_info "Creating daily note from template"
+  log_info "Template: ${DAILY_NOTE_TEMPLATE}"
+  log_info "Target: ${note_absolute_path}"
 
-  if ! obsidian \
-    "vault=${OBSIDIAN_VAULT}" \
-    create \
-    "path=${note_path}" \
-    "name=${note_title}" \
-    "template=${OBSIDIAN_DAILY_TEMPLATE}" \
-    >>"${__LOGFILE}" 2>&1; then
-    log_error "Obsidian CLI failed while creating daily note: ${note_path}"
-    log_error "See log file: ${__LOGFILE}"
-    return 1
-  fi
-
-  if [[ ! -f "${note_absolute_path}" ]]; then
-    log_error "Obsidian CLI returned success, but the note still does not exist: ${note_absolute_path}"
+  if ! cp -- "${DAILY_NOTE_TEMPLATE}" "${note_absolute_path}"; then
+    log_error "Failed to copy daily note template to: ${note_absolute_path}"
     return 1
   fi
 
@@ -319,7 +311,7 @@ replace_section_for_day() {
   fi
   report_content="$(printf '%s' "${report_content}" | strip_ansi)"
 
-  if ! ensure_daily_note_exists "${report_date}" "${note_path}" "${note_absolute_path}"; then
+  if ! ensure_daily_note_exists "${report_date}" "${note_absolute_path}"; then
     return 1
   fi
 
@@ -461,15 +453,6 @@ main() {
       include_headline_date="true"
       shift
       ;;
-    --obsidian-vault)
-      if [[ $# -lt 2 ]]; then
-        log_error "Missing value for --obsidian-vault"
-        show_help
-        exit 1
-      fi
-      OBSIDIAN_VAULT="$2"
-      shift 2
-      ;;
     --daily-template)
       if [[ $# -lt 2 ]]; then
         log_error "Missing value for --daily-template"
@@ -498,7 +481,6 @@ main() {
   require_command git
   require_command date
   require_command python3
-  require_command obsidian
   validate_timezone "${timezone_name}"
 
   if [[ ! -x "${FORMATTER_PATH}" ]]; then
