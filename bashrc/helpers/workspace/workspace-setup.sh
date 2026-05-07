@@ -1,5 +1,4 @@
 #!/bin/bash
-# xfce-workspaces.sh
 # Configure XFCE (xfwm4) workspaces and optionally start apps on specific workspaces.
 
 set -Eeuo pipefail

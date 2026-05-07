@@ -1,0 +1,13 @@
+paths=[
+    "_actions",
+    "_lib",
+    "api",
+    "daily-reports",
+    "docker",
+    "freshrss",
+    "gh",
+    "kando",
+    "logs",
+    "remarkable",
+    "workspace",
+]

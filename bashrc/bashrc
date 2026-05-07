@@ -49,11 +49,11 @@ unset FILE
 export NVM_DIR="${HOME}/.nvm"
 
 # hack to disable error messages about max listeners
-if [ -n "${NODE_OPTIONS}" ]; then
-  export NODE_OPTIONS="--require ${BASHRC_PATH}/helpers/set_max_listeners.cjs ${NODE_OPTIONS}"
-else
-  export NODE_OPTIONS="--require ${BASHRC_PATH}/helpers/set_max_listeners.cjs"
-fi
+# if [ -n "${NODE_OPTIONS}" ]; then
+#   export NODE_OPTIONS="--require ${BASHRC_PATH}/helpers/set_max_listeners.cjs ${NODE_OPTIONS}"
+# else
+#   export NODE_OPTIONS="--require ${BASHRC_PATH}/helpers/set_max_listeners.cjs"
+# fi
 
 if command -v zoxide >/dev/null 2>&1; then
   eval "$(zoxide init bash)"
