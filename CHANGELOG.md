@@ -1,5 +1,33 @@
 # Changelog
 
+## [3002.22.0](https://github.com/davidsneighbour/dotfiles/compare/v3002.21.3...v3002.22.0) (2026-05-07)
+
+### Features
+
+* add remarkable transfer function in Node ([155ed79](https://github.com/davidsneighbour/dotfiles/commit/155ed7956a4def459b25f0bd50849d52f1a842f0))
+* **linting:** add Zizmor for static analysis for workflows ([27cd788](https://github.com/davidsneighbour/dotfiles/commit/27cd788628effbdbdf6492a45ed8f6083644a523))
+
+### Bug Fixes
+
+* add codex bash support ([6910dad](https://github.com/davidsneighbour/dotfiles/commit/6910dad8def3471d9df7a7cd2e441d5d6f7faf56))
+* **ai:** let codex do network by default ([ee35e59](https://github.com/davidsneighbour/dotfiles/commit/ee35e5933b469e04864e9c6d10f5b63192e07c17))
+* create daily note before reporting into it ([927463d](https://github.com/davidsneighbour/dotfiles/commit/927463d663dd354e94821d6f86fd33eb7b316eca))
+* **dotbot:** move description into file comments ([290040e](https://github.com/davidsneighbour/dotfiles/commit/290040e8c230a6fb8cfae962b15a8995c9ebab45))
+* hack for playwright setup, pretend we are on Ubuntu 24 ([9cf6f07](https://github.com/davidsneighbour/dotfiles/commit/9cf6f07969e10a8530c9310e1e2f8d97987c2f82))
+* **secretlint:** ignore homedir in files in launchers ([71b3f61](https://github.com/davidsneighbour/dotfiles/commit/71b3f61640e2722a92a374073965c17f0ec2384f))
+* set version via nvm instead of 'default' option on bash start ([24eef10](https://github.com/davidsneighbour/dotfiles/commit/24eef10805aa11b0e02f68a1af1fe255b45a1805))
+* **tracking:** create daily note manually not via obsidian if missing ([e3bbbba](https://github.com/davidsneighbour/dotfiles/commit/e3bbbba9fb8dffa06bbc6dc3d83b77f5fdc89f46))
+
+### Configuration
+
+* **lint-staged:** update secretlint call ([2dc3771](https://github.com/davidsneighbour/dotfiles/commit/2dc37712805e9915a94ef6a015a61fc795aedf6c))
+* **workspace:** update workspace configuration ([bcfce16](https://github.com/davidsneighbour/dotfiles/commit/bcfce16b80e1e13c23c723780faf3c714af92e93))
+
+### Chore
+
+* **assets:** update skyline stats for 2026 ([e28477f](https://github.com/davidsneighbour/dotfiles/commit/e28477f02a6af298ba099d4cec21fce3b1fc9e42))
+* **git:** update submodules ([d073239](https://github.com/davidsneighbour/dotfiles/commit/d073239c62ee8d8e7ddd6fced523aa4615c18857))
+
 ## [3002.21.3](https://github.com/davidsneighbour/dotfiles/compare/v3002.21.2...v3002.21.3) (2026-05-03)
 
 ### Build
