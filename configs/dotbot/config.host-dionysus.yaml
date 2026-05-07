@@ -13,7 +13,7 @@
     - cron: 0 0 * * *
       command: ${HOME}/github.com/davidsneighbour/dotfiles/bashrc/helpers/update-npm.sh >> "$HOME/.logs/cron/job-$(date +\%Y\%m\%d-\%H\%M\%S).log" 2>&1
     - cron: 30 */4 * * *
-      command: ${HOME}/github.com/davidsneighbour/dotfiles/bashrc/helpers/filespace-discord.sh >> "$HOME/.logs/cron/job-$(date +\%Y\%m\%d-\%H\%M\%S).log" 2>&1
+      command: ${HOME}/github.com/davidsneighbour/dotfiles/bashrc/cronjobs/filespace-discord.sh >> "$HOME/.logs/cron/job-$(date +\%Y\%m\%d-\%H\%M\%S).log" 2>&1
     - cron: 0 6,12,18 * * *
       command: ${HOME}/github.com/davidsneighbour/lighthousing/cronjob.sh >> "$HOME/.logs/cron/job-$(date +\%Y\%m\%d-\%H\%M\%S).log" 2>&1
     - cron: "@reboot"
