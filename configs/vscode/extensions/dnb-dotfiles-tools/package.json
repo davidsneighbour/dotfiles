@@ -1,0 +1,52 @@
+{
+  "name": "dnb-dotfiles-tools",
+  "displayName": "DNB Dotfiles Tools",
+  "description": "Local VS Code tools for David's Neighbour dotfiles workflows.",
+  "version": "0.3.0",
+  "publisher": "davidsneighbour",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "dnb-dotfiles-tools.insertNextVersion",
+        "title": "DNB: Insert Next Version"
+      },
+      {
+        "command": "dnb-dotfiles-tools.insertNextMajorVersion",
+        "title": "DNB: Insert Next Major Version"
+      },
+      {
+        "command": "dnb-dotfiles-tools.insertNextMinorVersion",
+        "title": "DNB: Insert Next Minor Version"
+      },
+      {
+        "command": "dnb-dotfiles-tools.insertNextPatchVersion",
+        "title": "DNB: Insert Next Patch Version"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "dnb-dotfiles-tools.insertNextVersion",
+        "key": "ctrl+alt+v",
+        "when": "editorTextFocus"
+      }
+    ]
+  },
+  "scripts": {
+    "build": "tsc --project tsconfig.json",
+    "watch": "tsc --watch --project tsconfig.json"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/vscode": "^1.74.0",
+    "typescript": "^5.0.0"
+  },
+  "type": "module"
+}
