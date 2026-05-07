@@ -1,5 +1,21 @@
 # Changelog
 
+## [3002.23.0](https://github.com/davidsneighbour/dotfiles/compare/v3002.22.0...v3002.23.0) (2026-05-07)
+
+### Features
+
+* add dotfiles function ([67c78aa](https://github.com/davidsneighbour/dotfiles/commit/67c78aad19848daf2cfaa3338b7be8ffcdebb95d))
+
+### Bug Fixes
+
+* add headers to actions file ([c32e444](https://github.com/davidsneighbour/dotfiles/commit/c32e44497cd1343c92171b517b8703508fc82069))
+* cleanup and reorganise helper functions ([29d03d3](https://github.com/davidsneighbour/dotfiles/commit/29d03d3bf3221cd38b6acc4606c1a1c149e90bea))
+* move actions command into aliases ([1951182](https://github.com/davidsneighbour/dotfiles/commit/1951182e4f199b6f2a1dc07fa626f5375c867787))
+* move filespace cronjob to cronjobs ([792ba3e](https://github.com/davidsneighbour/dotfiles/commit/792ba3e689df429c846e3e25784c4592d5c848cb))
+* open current location by default in explorer function ([08a374b](https://github.com/davidsneighbour/dotfiles/commit/08a374ba35dabcfb49947354ee0062e74a796b63))
+* remove archive-create and archive-extract (available as dnb_ functions) ([780f78f](https://github.com/davidsneighbour/dotfiles/commit/780f78fb8a784434619ae9c7cbfc717ccc21ceb9))
+* remove more deprecated functions (that are available via dnb_ functions) ([f132c43](https://github.com/davidsneighbour/dotfiles/commit/f132c43fec4a005d83fada954d99f68ef3cca4ad))
+
 ## [3002.22.0](https://github.com/davidsneighbour/dotfiles/compare/v3002.21.3...v3002.22.0) (2026-05-07)
 
 ### Features
