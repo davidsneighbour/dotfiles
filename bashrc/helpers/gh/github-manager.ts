@@ -36,7 +36,7 @@ import { type SpawnSyncReturns, spawnSync } from 'node:child_process';
 import { existsSync, readdirSync, statSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { join, resolve } from 'node:path';
-import { ensureNodeVersion } from './_lib/node.ts';
+import { ensureNodeVersion } from '../_lib/node.ts';
 
 ensureNodeVersion(25);
 
