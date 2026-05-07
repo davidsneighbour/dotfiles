@@ -6,6 +6,8 @@
 # Opens a folder in the system's default file manager.
 #
 # FEATURES:
+# - Opens the current working directory when no path is provided
+# - Falls back to $HOME when the current working directory cannot be determined
 # - Supports positional OR --path argument
 # - Accepts absolute paths or paths relative to $HOME
 # - Resolves ~ and relative paths safely
@@ -17,6 +19,7 @@
 #   --help              Show this help message
 #
 # EXAMPLES:
+#   explore
 #   explore ~/Downloads
 #   explore documents/projects
 #   explore --path /var/log --verbose
@@ -32,7 +35,8 @@ explore() {
 Usage: $(basename "$0") [path] [--path <path>] [--verbose]
 
 Arguments:
-  path                Path to open (positional, optional)
+  path                Path to open (positional, optional). Defaults to the current directory,
+                      or HOME if the current directory cannot be determined.
 
 Options:
   --path <path>       Path to open (overrides positional)
@@ -50,10 +54,31 @@ EOF
     echo "[ERROR] $1" >&2
   }
 
+  _default_path() {
+    local current_path=""
+
+    if [[ -n "${PWD}" && -d "${PWD}" ]]; then
+      printf '%s\n' "${PWD}"
+      return 0
+    fi
+
+    if current_path="$(pwd -P 2>/dev/null)" && [[ -d "${current_path}" ]]; then
+      printf '%s\n' "${current_path}"
+      return 0
+    fi
+
+    printf '%s\n' "${HOME}"
+  }
+
   # --- argument parsing ---
   while [[ $# -gt 0 ]]; do
     case "$1" in
       --path)
+        if [[ $# -lt 2 ]]; then
+          _error "Missing value for --path"
+          _help
+          return 1
+        fi
         path="$2"
         shift 2
         ;;
@@ -83,9 +108,9 @@ EOF
     esac
   done
 
-  # --- default to HOME if empty ---
+  # --- default to current working directory if empty ---
   if [[ -z "${path}" ]]; then
-    path="${HOME}"
+    path="$(_default_path)"
   fi
 
   # --- resolve path ---
@@ -112,20 +137,20 @@ EOF
   fi
 
   # --- detect opener ---
-  local opener=""
+  local -a opener=()
   if command -v xdg-open >/dev/null 2>&1; then
-    opener="xdg-open"
+    opener=(xdg-open)
   elif command -v gio >/dev/null 2>&1; then
-    opener="gio open"
+    opener=(gio open)
   else
     _error "No supported file opener found (xdg-open or gio)"
     return 1
   fi
 
-  _log "Using opener: ${opener}"
+  _log "Using opener: ${opener[*]}"
 
   # --- open ---
-  ${opener} "${resolved_path}" >/dev/null 2>&1 &
+  "${opener[@]}" "${resolved_path}" >/dev/null 2>&1 &
 
   _log "Opened: ${resolved_path}"
 }
