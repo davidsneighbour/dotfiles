@@ -8,6 +8,6 @@ if dnb_is_interactive; then
 
   # Ensure default Node version has its global npm binaries/completions available
   if command -v nvm >/dev/null 2>&1; then
-    nvm use --silent default >/dev/null 2>&1
+    nvm use --silent >/dev/null 2>&1
   fi
 fi
