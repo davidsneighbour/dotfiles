@@ -1,5 +1,12 @@
 # Changelog
 
+## [3002.24.0](https://github.com/davidsneighbour/dotfiles/compare/v3002.23.0...v3002.24.0) (2026-05-08)
+
+### Features
+
+* add application icon theme ([683bc3a](https://github.com/davidsneighbour/dotfiles/commit/683bc3a4067e470ce8e8099efe4581885e5290ef))
+* vscode extension to insert next version number ([9f33783](https://github.com/davidsneighbour/dotfiles/commit/9f337836ecc4b18a63999a69e6b872eb864adfb2))
+
 ## [3002.23.0](https://github.com/davidsneighbour/dotfiles/compare/v3002.22.0...v3002.23.0) (2026-05-07)
 
 ### Features
