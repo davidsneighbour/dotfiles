@@ -50,11 +50,13 @@
     "wireit": "0.14.12"
   },
   "scripts": {
+    "postinstall": "run-p *:postinstall",
+    "lint:postinstall": "npx simple-git-hooks",
+    "biome:postinstall": "npx @biomejs/biome migrate --write",
     "clean": "rimraf logs/*.log",
-    "link:prepare": "wireit",
     "lint:config": "yamllint -c .yamllint.yml configs bashrc",
-    "lint:hook:commit": "lint-staged --quiet",
-    "lint:hook:commit:loud": "lint-staged --debug --verbose",
+    "lint:hook:commit": "lint-staged --quiet --config lint-staged.config.ts",
+    "lint:hook:commit:loud": "lint-staged --debug --verbose --config lint-staged.config.ts",
     "release": "release-it --config .release-it.ts --verbose --only-version"
   },
   "wireit": {
@@ -83,5 +85,9 @@
     "dictionaries": [
       "custom"
     ]
+  },
+  "devDependencies": {
+    "npm-run-all": "4.1.5",
+    "tsc-files": "1.1.4"
   }
 }

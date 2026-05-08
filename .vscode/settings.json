@@ -84,5 +84,7 @@
   "[markdown]": {
     "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
   },
-  "yaml.validate": true
+  "yaml.validate": true,
+  "files.insertFinalNewline": true,
+  "evenBetterToml.formatter.trailingNewline": true
 }
