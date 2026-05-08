@@ -13,20 +13,11 @@
     "allowJs": true,
     "checkJs": true,
     "resolveJsonModule": true,
-    "types": [
-      "node"
-    ],
+    "types": ["node"],
     "noEmit": true,
     // This allows importing .ts files from .js files, which is useful for the mixed codebase of this project.
-    "allowImportingTsExtensions": true,
+    "allowImportingTsExtensions": true
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.js"
-  ],
-  "exclude": [
-    "node_modules",
-    "**/node_modules/*"
-  ]
+  "include": ["**/*.ts", "**/*.tsx", "**/*.js", "lint-staged.config.ts"],
+  "exclude": ["node_modules", "**/node_modules/*"]
 }
