@@ -12,18 +12,18 @@
  *  - ffmpeg + ffprobe in PATH
  */
 
-import { spawn } from "node:child_process";
-import fs from "node:fs";
-import os from "node:os";
-import path from "node:path";
-import process from "node:process";
+import { spawn } from 'node:child_process';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import process from 'node:process';
 
 const DEFAULTS = {
   screens: 10,
   padding: 20,
   outdir: null,
-  format: "png", // png | jpg | webp
-  mode: "single", // single | multi
+  format: 'png' as ImageFormat, // png | jpg | webp
+  mode: 'single' as Mode, // single | multi
   jobs: 1,
   overwrite: false,
   verbose: false,
@@ -46,17 +46,101 @@ const EXIT = {
   RUNTIME: 5,
 };
 
+type RunOptions = { verbose: boolean; dryRun: boolean };
+type RunResult = { code: number; stdout: string; stderr: string };
+type Mode = 'single' | 'multi';
+type ImageFormat = 'png' | 'jpg' | 'webp';
+type SamplingPlan = {
+  start: number;
+  end: number;
+  effective: number;
+  step: number;
+  timestamps: number[];
+  endAdjustmentSeconds: number;
+};
+type QualityArgs = {
+  format: ImageFormat;
+  jpgQuality: number;
+  pngCompression: number;
+  webpLossless: boolean;
+  webpQuality: number;
+};
+type SingleRunParams = {
+  videoPath: string;
+  outDir: string;
+  ext: ImageFormat;
+  padWidth: number;
+  start: number;
+  effective: number;
+  step: number;
+  screens: number;
+  overwrite: boolean;
+  verbose: boolean;
+  dryRun: boolean;
+  scale: string | null;
+  jpgQuality: number;
+  pngCompression: number;
+  webpLossless: boolean;
+  webpQuality: number;
+};
+type MultiRunParams = Omit<
+  SingleRunParams,
+  'start' | 'effective' | 'step' | 'screens'
+> & {
+  timestamps: number[];
+};
+type RawFlags = {
+  video?: string | boolean;
+  screens?: string | boolean;
+  padding?: string | boolean;
+  outdir?: string | boolean;
+  mode?: string | boolean;
+  format?: string | boolean;
+  jobs?: string | boolean;
+  scale?: string | boolean;
+  'jpg-quality'?: string | boolean;
+  'png-compression'?: string | boolean;
+  'webp-lossless'?: string | boolean;
+  'webp-quality'?: string | boolean;
+  overwrite?: string | boolean;
+  verbose?: string | boolean;
+  'dry-run'?: string | boolean;
+  dryRun?: string | boolean;
+  plan?: string | boolean;
+  help?: string | boolean;
+  [key: string]: string | boolean | undefined;
+};
+type ParsedArgs = {
+  video: string | null;
+  screens: number;
+  padding: number;
+  outdir: string | null;
+  format: ImageFormat;
+  mode: Mode;
+  jobs: number;
+  overwrite: boolean;
+  verbose: boolean;
+  dryRun: boolean;
+  plan: boolean;
+  scale: string | null;
+  jpgQuality: number;
+  pngCompression: number;
+  webpLossless: boolean;
+  webpQuality: number;
+  help: boolean;
+};
+
 /**
  * @param {string} msg
  */
-function log(msg) {
+function log(msg: string): void {
   process.stdout.write(`${msg}\n`);
 }
 
 /**
  * @param {string} msg
  */
-function logErr(msg) {
+function logErr(msg: string): void {
   process.stderr.write(`${msg}\n`);
 }
 
@@ -64,20 +148,20 @@ function logErr(msg) {
  * @param {unknown} v
  * @returns {v is string}
  */
-function isString(v) {
-  return typeof v === "string";
+function isString(v: unknown): v is string {
+  return typeof v === 'string';
 }
 
 /**
  * @param {string} name
  * @returns {Promise<boolean>}
  */
-async function commandExists(name) {
-  const whichCmd = process.platform === "win32" ? "where" : "which";
+async function commandExists(name: string): Promise<boolean> {
+  const whichCmd = process.platform === 'win32' ? 'where' : 'which';
   return new Promise((resolve) => {
-    const child = spawn(whichCmd, [name], { stdio: "ignore" });
-    child.on("close", (code) => resolve(code === 0));
-    child.on("error", () => resolve(false));
+    const child = spawn(whichCmd, [name], { stdio: 'ignore' });
+    child.on('close', (code) => resolve(code === 0));
+    child.on('error', () => resolve(false));
   });
 }
 
@@ -87,30 +171,34 @@ async function commandExists(name) {
  * @param {{verbose:boolean, dryRun:boolean}} opts
  * @returns {Promise<{code:number, stdout:string, stderr:string}>}
  */
-async function run(cmd, args, opts) {
+async function run(
+  cmd: string,
+  args: string[],
+  opts: RunOptions,
+): Promise<RunResult> {
   if (opts.dryRun) {
-    log(`[dry-run] ${cmd} ${args.map((a) => JSON.stringify(a)).join(" ")}`);
-    return { code: 0, stdout: "", stderr: "" };
+    log(`[dry-run] ${cmd} ${args.map((a) => JSON.stringify(a)).join(' ')}`);
+    return { code: 0, stdout: '', stderr: '' };
   }
 
   return new Promise((resolve) => {
-    const child = spawn(cmd, args, { stdio: ["ignore", "pipe", "pipe"] });
-    let stdout = "";
-    let stderr = "";
+    const child = spawn(cmd, args, { stdio: ['ignore', 'pipe', 'pipe'] });
+    let stdout = '';
+    let stderr = '';
 
-    child.stdout.on("data", (d) => {
+    child.stdout.on('data', (d) => {
       const s = String(d);
       stdout += s;
       if (opts.verbose) process.stdout.write(s);
     });
-    child.stderr.on("data", (d) => {
+    child.stderr.on('data', (d) => {
       const s = String(d);
       stderr += s;
       if (opts.verbose) process.stderr.write(s);
     });
 
-    child.on("close", (code) => resolve({ code: code ?? 1, stdout, stderr }));
-    child.on("error", (e) => resolve({ code: 1, stdout, stderr: String(e) }));
+    child.on('close', (code) => resolve({ code: code ?? 1, stdout, stderr }));
+    child.on('error', (e) => resolve({ code: 1, stdout, stderr: String(e) }));
   });
 }
 
@@ -119,18 +207,21 @@ async function run(cmd, args, opts) {
  * @param {{verbose:boolean, dryRun:boolean}} opts
  * @returns {Promise<number>}
  */
-async function getDurationSeconds(videoPath, opts) {
+async function getDurationSeconds(
+  videoPath: string,
+  opts: RunOptions,
+): Promise<number> {
   const args = [
-    "-v",
-    "error",
-    "-show_entries",
-    "format=duration",
-    "-of",
-    "default=nw=1:nk=1",
+    '-v',
+    'error',
+    '-show_entries',
+    'format=duration',
+    '-of',
+    'default=nw=1:nk=1',
     videoPath,
   ];
 
-  const res = await run("ffprobe", args, opts);
+  const res = await run('ffprobe', args, opts);
   if (res.code !== 0) throw new Error(`ffprobe failed (exit ${res.code}).`);
 
   const raw = res.stdout.trim();
@@ -152,7 +243,11 @@ async function getDurationSeconds(videoPath, opts) {
  * @param {number} padding
  * @returns {{start:number, end:number, effective:number, step:number, timestamps:number[], endAdjustmentSeconds:number}}
  */
-function buildSamplingPlan(duration, screens, padding) {
+function buildSamplingPlan(
+  duration: number,
+  screens: number,
+  padding: number,
+): SamplingPlan {
   if (!Number.isFinite(duration) || duration <= 0) {
     throw new Error(`Invalid duration: ${String(duration)}`);
   }
@@ -164,7 +259,8 @@ function buildSamplingPlan(duration, screens, padding) {
   }
 
   const start = padding;
-  const endAdjustmentSeconds = padding === 0 ? (duration > 1 ? 1 : 0.001) : padding;
+  const endAdjustmentSeconds =
+    padding === 0 ? (duration > 1 ? 1 : 0.001) : padding;
 
   const end = duration - endAdjustmentSeconds;
   const effective = end - start;
@@ -186,9 +282,12 @@ function buildSamplingPlan(duration, screens, padding) {
   }
 
   if (padding === 0) {
-    const last = timestamps[timestamps.length - 1];
-    if (Math.abs(last - duration) < 1e-6) {
-      timestamps[timestamps.length - 1] = Math.max(0, duration - endAdjustmentSeconds);
+    const last = timestamps.at(-1);
+    if (last !== undefined && Math.abs(last - duration) < 1e-6) {
+      timestamps[timestamps.length - 1] = Math.max(
+        0,
+        duration - endAdjustmentSeconds,
+      );
     }
   }
 
@@ -199,17 +298,17 @@ function buildSamplingPlan(duration, screens, padding) {
  * @param {number} t
  * @returns {string}
  */
-function fmtTimeLabel(t) {
-  return t.toFixed(3).replace(/\.?0+$/, "");
+function fmtTimeLabel(t: number): string {
+  return t.toFixed(3).replace(/\.?0+$/, '');
 }
 
 /**
  * @param {string} s
  * @returns {"single"|"multi"}
  */
-function parseMode(s) {
+function parseMode(s: string): Mode {
   const v = s.toLowerCase();
-  if (v === "single" || v === "multi") return v;
+  if (v === 'single' || v === 'multi') return v;
   throw new Error(`Invalid --mode "${s}" (use "single" or "multi").`);
 }
 
@@ -217,10 +316,10 @@ function parseMode(s) {
  * @param {string} s
  * @returns {"png"|"jpg"|"webp"}
  */
-function parseFormat(s) {
+function parseFormat(s: string): ImageFormat {
   const v = s.toLowerCase();
-  if (v === "jpeg") return "jpg";
-  if (v === "png" || v === "jpg" || v === "webp") return v;
+  if (v === 'jpeg') return 'jpg';
+  if (v === 'png' || v === 'jpg' || v === 'webp') return v;
   throw new Error(`Invalid --format "${s}" (use png|jpg|webp).`);
 }
 
@@ -228,7 +327,7 @@ function parseFormat(s) {
  * @param {string} s
  * @returns {number}
  */
-function parseNumberStrict(s) {
+function parseNumberStrict(s: string): number {
   const n = Number(s);
   if (!Number.isFinite(n)) throw new Error(`Invalid number: "${s}"`);
   return n;
@@ -238,9 +337,10 @@ function parseNumberStrict(s) {
  * @param {string} s
  * @returns {number}
  */
-function parseIntStrict(s) {
+function parseIntStrict(s: string): number {
   const n = Number(s);
-  if (!Number.isFinite(n) || !Number.isInteger(n)) throw new Error(`Invalid integer: "${s}"`);
+  if (!Number.isFinite(n) || !Number.isInteger(n))
+    throw new Error(`Invalid integer: "${s}"`);
   return n;
 }
 
@@ -248,9 +348,9 @@ function parseIntStrict(s) {
  * @param {string} s
  * @returns {number}
  */
-function parseJobs(s) {
+function parseJobs(s: string): number {
   const v = s.toLowerCase();
-  if (v === "auto") {
+  if (v === 'auto') {
     const cores = os.cpus().length;
     return Math.max(1, Math.min(cores, 4));
   }
@@ -269,11 +369,12 @@ function parseJobs(s) {
  * }} q
  * @returns {string[]}
  */
-function buildQualityArgs(q) {
-  if (q.format === "jpg") return ["-q:v", String(q.jpgQuality)];
-  if (q.format === "png") return ["-compression_level", String(q.pngCompression)];
-  if (q.webpLossless) return ["-lossless", "1"];
-  return ["-q:v", String(q.webpQuality)];
+function buildQualityArgs(q: QualityArgs): string[] {
+  if (q.format === 'jpg') return ['-q:v', String(q.jpgQuality)];
+  if (q.format === 'png')
+    return ['-compression_level', String(q.pngCompression)];
+  if (q.webpLossless) return ['-lossless', '1'];
+  return ['-q:v', String(q.webpQuality)];
 }
 
 /**
@@ -281,7 +382,7 @@ function buildQualityArgs(q) {
  * @param {string} vf
  * @returns {string}
  */
-function mergeScaleFilter(scale, vf) {
+function mergeScaleFilter(scale: string | null, vf: string): string {
   if (!scale) return vf;
   if (vf.trim().length === 0) return `scale=${scale}`;
   return `${vf},scale=${scale}`;
@@ -310,23 +411,23 @@ function mergeScaleFilter(scale, vf) {
  *  webpQuality:number
  * }} p
  */
-async function extractSingleRun(p) {
+async function extractSingleRun(p: SingleRunParams): Promise<void> {
   const outPattern = path.join(p.outDir, `frame_%0${p.padWidth}d.${p.ext}`);
 
   if (p.dryRun) {
-    const argsPreview = [];
-    argsPreview.push(p.overwrite ? "-y" : "-n");
-    argsPreview.push("-hide_banner", "-loglevel", p.verbose ? "info" : "error");
-    argsPreview.push("-progress", "pipe:2");
-    argsPreview.push("-ss", String(p.start));
-    argsPreview.push("-t", String(p.effective));
-    argsPreview.push("-i", p.videoPath);
+    const argsPreview: string[] = [];
+    argsPreview.push(p.overwrite ? '-y' : '-n');
+    argsPreview.push('-hide_banner', '-loglevel', p.verbose ? 'info' : 'error');
+    argsPreview.push('-progress', 'pipe:2');
+    argsPreview.push('-ss', String(p.start));
+    argsPreview.push('-t', String(p.effective));
+    argsPreview.push('-i', p.videoPath);
 
     let vf = `fps=1/${p.step}`;
     vf = mergeScaleFilter(p.scale, vf);
 
-    argsPreview.push("-vf", vf);
-    argsPreview.push("-frames:v", String(p.screens));
+    argsPreview.push('-vf', vf);
+    argsPreview.push('-frames:v', String(p.screens));
     argsPreview.push(
       ...buildQualityArgs({
         format: p.ext,
@@ -338,27 +439,27 @@ async function extractSingleRun(p) {
     );
     argsPreview.push(outPattern);
 
-    await run("ffmpeg", argsPreview, { verbose: p.verbose, dryRun: p.dryRun });
+    await run('ffmpeg', argsPreview, { verbose: p.verbose, dryRun: p.dryRun });
     return;
   }
 
-  return new Promise((resolve, reject) => {
-    const args = [];
-    args.push(p.overwrite ? "-y" : "-n");
-    args.push("-hide_banner", "-loglevel", p.verbose ? "info" : "error");
+  return new Promise<void>((resolve, reject) => {
+    const args: string[] = [];
+    args.push(p.overwrite ? '-y' : '-n');
+    args.push('-hide_banner', '-loglevel', p.verbose ? 'info' : 'error');
 
     // Progress output as key=value pairs
-    args.push("-progress", "pipe:2");
+    args.push('-progress', 'pipe:2');
 
-    args.push("-ss", String(p.start));
-    args.push("-t", String(p.effective));
-    args.push("-i", p.videoPath);
+    args.push('-ss', String(p.start));
+    args.push('-t', String(p.effective));
+    args.push('-i', p.videoPath);
 
     let vf = `fps=1/${p.step}`;
     vf = mergeScaleFilter(p.scale, vf);
 
-    args.push("-vf", vf);
-    args.push("-frames:v", String(p.screens));
+    args.push('-vf', vf);
+    args.push('-frames:v', String(p.screens));
 
     args.push(
       ...buildQualityArgs({
@@ -372,15 +473,17 @@ async function extractSingleRun(p) {
 
     args.push(outPattern);
 
-    const child = spawn("ffmpeg", args, { stdio: ["ignore", "ignore", "pipe"] });
+    const child = spawn('ffmpeg', args, {
+      stdio: ['ignore', 'ignore', 'pipe'],
+    });
 
     /** @type {number} */
     let lastFrame = 0;
 
-    child.stderr.setEncoding("utf8");
-    child.stderr.on("data", (chunk) => {
+    child.stderr.setEncoding('utf8');
+    child.stderr.on('data', (chunk) => {
       // chunk contains key=value lines, e.g. "frame=12"
-      const lines = chunk.split("\n");
+      const lines = chunk.split('\n');
       for (const line of lines) {
         const m = line.match(/^frame=(\d+)\s*$/);
         if (!m) continue;
@@ -389,17 +492,22 @@ async function extractSingleRun(p) {
           // Each produced frame is one screencap in our workflow
           // Print exactly once per completed frame.
           for (let i = lastFrame + 1; i <= f; i += 1) {
-            const idx = String(i).padStart(p.padWidth, "0");
-            log(`[${idx}/${String(p.screens).padStart(p.padWidth, "0")}] screencap done`);
+            const idx = String(i).padStart(p.padWidth, '0');
+            log(
+              `[${idx}/${String(p.screens).padStart(p.padWidth, '0')}] screencap done`,
+            );
           }
           lastFrame = f;
         }
       }
     });
 
-    child.on("error", (e) => reject(e));
-    child.on("close", (code) => {
-      if (code !== 0) return reject(new Error(`ffmpeg failed (single-run mode, exit ${code ?? 1}).`));
+    child.on('error', (e) => reject(e));
+    child.on('close', (code) => {
+      if (code !== 0)
+        return reject(
+          new Error(`ffmpeg failed (single-run mode, exit ${code ?? 1}).`),
+        );
       resolve();
     });
   });
@@ -426,28 +534,28 @@ async function extractSingleRun(p) {
  * }} p
  * @param {number} jobs
  */
-async function extractMultiRun(p, jobs) {
+async function extractMultiRun(p: MultiRunParams, jobs: number): Promise<void> {
   /**
    * @param {number} index
    * @param {number} t
    */
-  async function one(index, t) {
-    const idx = String(index + 1).padStart(p.padWidth, "0");
+  async function one(index: number, t: number): Promise<string> {
+    const idx = String(index + 1).padStart(p.padWidth, '0');
     const tLabel = fmtTimeLabel(t);
     const outFile = path.join(p.outDir, `frame_${idx}_t${tLabel}.${p.ext}`);
 
-    const args = [];
-    args.push(p.overwrite ? "-y" : "-n");
-    args.push("-hide_banner", "-loglevel", p.verbose ? "info" : "error");
+    const args: string[] = [];
+    args.push(p.overwrite ? '-y' : '-n');
+    args.push('-hide_banner', '-loglevel', p.verbose ? 'info' : 'error');
 
-    args.push("-i", p.videoPath);
-    args.push("-ss", String(t));
+    args.push('-i', p.videoPath);
+    args.push('-ss', String(t));
 
-    let vf = "";
+    let vf = '';
     vf = mergeScaleFilter(p.scale, vf);
-    if (vf.trim().length > 0) args.push("-vf", vf);
+    if (vf.trim().length > 0) args.push('-vf', vf);
 
-    args.push("-frames:v", "1");
+    args.push('-frames:v', '1');
 
     args.push(
       ...buildQualityArgs({
@@ -461,10 +569,16 @@ async function extractMultiRun(p, jobs) {
 
     args.push(outFile);
 
-    const res = await run("ffmpeg", args, { verbose: p.verbose, dryRun: p.dryRun });
-    if (res.code !== 0) throw new Error(`ffmpeg failed for t=${t}s (exit ${res.code}).`);
+    const res = await run('ffmpeg', args, {
+      verbose: p.verbose,
+      dryRun: p.dryRun,
+    });
+    if (res.code !== 0)
+      throw new Error(`ffmpeg failed for t=${t}s (exit ${res.code}).`);
 
-    log(`[${idx}/${String(p.timestamps.length).padStart(p.padWidth, "0")}] screencap done`);
+    log(
+      `[${idx}/${String(p.timestamps.length).padStart(p.padWidth, '0')}] screencap done`,
+    );
     return outFile;
   }
 
@@ -477,7 +591,7 @@ async function extractMultiRun(p, jobs) {
 /**
  * @returns {string}
  */
-function helpText() {
+function helpText(): string {
   return `
 Usage:
   extract --video <file> [options]
@@ -535,34 +649,37 @@ UX / debugging:
  *  help:boolean
  * }}
  */
-function parseArgs(argv) {
+function parseArgs(argv: string[]): ParsedArgs {
   /** @type {Record<string, string | boolean>} */
-  const flags = {};
+  const flags: RawFlags = {};
   /** @type {string[]} */
-  const positional = [];
+  const positional: string[] = [];
 
   for (let i = 0; i < argv.length; i += 1) {
     const a = argv[i];
+    if (a === undefined) {
+      continue;
+    }
 
-    if (a === "--help" || a === "-h") {
+    if (a === '--help' || a === '-h') {
       flags.help = true;
       continue;
     }
 
-    if (a === "--no-webp-lossless") {
-      flags["webp-lossless"] = false;
+    if (a === '--no-webp-lossless') {
+      flags['webp-lossless'] = false;
       continue;
     }
 
-    if (a === "--webp-lossless") {
-      flags["webp-lossless"] = true;
+    if (a === '--webp-lossless') {
+      flags['webp-lossless'] = true;
       continue;
     }
 
-    if (a.startsWith("--")) {
+    if (a.startsWith('--')) {
       const key = a.slice(2);
       const next = argv[i + 1];
-      const isBool = next == null || next.startsWith("--");
+      const isBool = next == null || next.startsWith('--');
       if (isBool) {
         flags[key] = true;
       } else {
@@ -575,34 +692,43 @@ function parseArgs(argv) {
     positional.push(a);
   }
 
+  const firstPositional = positional[0];
   const video =
     (isString(flags.video) && flags.video) ||
-    (positional.length > 0 ? positional[0] : null);
+    (firstPositional !== undefined ? firstPositional : null);
 
-  const screens = isString(flags.screens) ? parseIntStrict(flags.screens) : DEFAULTS.screens;
-  const padding = isString(flags.padding) ? parseNumberStrict(flags.padding) : DEFAULTS.padding;
+  const screens = isString(flags.screens)
+    ? parseIntStrict(flags.screens)
+    : DEFAULTS.screens;
+  const padding = isString(flags.padding)
+    ? parseNumberStrict(flags.padding)
+    : DEFAULTS.padding;
   const outdir = isString(flags.outdir) ? flags.outdir : null;
 
   const mode = isString(flags.mode) ? parseMode(flags.mode) : DEFAULTS.mode;
-  const format = isString(flags.format) ? parseFormat(flags.format) : DEFAULTS.format;
+  const format = isString(flags.format)
+    ? parseFormat(flags.format)
+    : DEFAULTS.format;
 
   const jobs = isString(flags.jobs) ? parseJobs(flags.jobs) : DEFAULTS.jobs;
 
   const scale = isString(flags.scale) ? flags.scale : null;
 
-  const jpgQuality = isString(flags["jpg-quality"])
-    ? parseIntStrict(flags["jpg-quality"])
+  const jpgQuality = isString(flags['jpg-quality'])
+    ? parseIntStrict(flags['jpg-quality'])
     : DEFAULTS.jpgQuality;
 
-  const pngCompression = isString(flags["png-compression"])
-    ? parseIntStrict(flags["png-compression"])
+  const pngCompression = isString(flags['png-compression'])
+    ? parseIntStrict(flags['png-compression'])
     : DEFAULTS.pngCompression;
 
   const webpLossless =
-    typeof flags["webp-lossless"] === "boolean" ? flags["webp-lossless"] : DEFAULTS.webpLossless;
+    typeof flags['webp-lossless'] === 'boolean'
+      ? flags['webp-lossless']
+      : DEFAULTS.webpLossless;
 
-  const webpQuality = isString(flags["webp-quality"])
-    ? parseIntStrict(flags["webp-quality"])
+  const webpQuality = isString(flags['webp-quality'])
+    ? parseIntStrict(flags['webp-quality'])
     : DEFAULTS.webpQuality;
 
   return {
@@ -615,7 +741,7 @@ function parseArgs(argv) {
     jobs,
     overwrite: flags.overwrite === true,
     verbose: flags.verbose === true,
-    dryRun: flags["dry-run"] === true || flags.dryRun === true,
+    dryRun: flags['dry-run'] === true || flags.dryRun === true,
     plan: flags.plan === true,
     scale,
     jpgQuality,
@@ -630,12 +756,12 @@ function parseArgs(argv) {
  * @param {unknown} e
  * @returns {string}
  */
-function errToString(e) {
+function errToString(e: unknown): string {
   if (e instanceof Error) return e.stack ?? e.message;
   return String(e);
 }
 
-async function main() {
+async function main(): Promise<void> {
   const args = parseArgs(process.argv.slice(2));
 
   if (args.help || !args.video) {
@@ -650,9 +776,11 @@ async function main() {
     process.exit(EXIT.INVALID_INPUT);
   }
 
-  if (!(await commandExists("ffmpeg")) || !(await commandExists("ffprobe"))) {
-    logErr("ERROR: missing dependency. This script requires ffmpeg and ffprobe in PATH.");
-    logErr("Install on Ubuntu/Debian: sudo apt-get install -y ffmpeg");
+  if (!(await commandExists('ffmpeg')) || !(await commandExists('ffprobe'))) {
+    logErr(
+      'ERROR: missing dependency. This script requires ffmpeg and ffprobe in PATH.',
+    );
+    logErr('Install on Ubuntu/Debian: sudo apt-get install -y ffmpeg');
     process.exit(EXIT.MISSING_DEP);
   }
 
@@ -665,19 +793,21 @@ async function main() {
     process.exit(EXIT.INVALID_INPUT);
   }
 
-  if (args.format === "jpg") {
+  if (args.format === 'jpg') {
     if (args.jpgQuality < 1 || args.jpgQuality > 31) {
       logErr(`ERROR: --jpg-quality must be 1..31 (got ${args.jpgQuality}).`);
       process.exit(EXIT.INVALID_INPUT);
     }
   }
-  if (args.format === "png") {
+  if (args.format === 'png') {
     if (args.pngCompression < 0 || args.pngCompression > 9) {
-      logErr(`ERROR: --png-compression must be 0..9 (got ${args.pngCompression}).`);
+      logErr(
+        `ERROR: --png-compression must be 0..9 (got ${args.pngCompression}).`,
+      );
       process.exit(EXIT.INVALID_INPUT);
     }
   }
-  if (args.format === "webp" && !args.webpLossless) {
+  if (args.format === 'webp' && !args.webpLossless) {
     if (args.webpQuality < 0 || args.webpQuality > 100) {
       logErr(`ERROR: --webp-quality must be 0..100 (got ${args.webpQuality}).`);
       process.exit(EXIT.INVALID_INPUT);
@@ -686,47 +816,61 @@ async function main() {
 
   const baseName = path.basename(videoPath, path.extname(videoPath));
   const outDir =
-    args.outdir != null ? path.resolve(args.outdir) : path.resolve(`${baseName}_screens`);
+    args.outdir != null
+      ? path.resolve(args.outdir)
+      : path.resolve(`${baseName}_screens`);
   if (!args.dryRun) fs.mkdirSync(outDir, { recursive: true });
 
-  const duration = await getDurationSeconds(videoPath, { verbose: args.verbose, dryRun: args.dryRun });
+  const duration = await getDurationSeconds(videoPath, {
+    verbose: args.verbose,
+    dryRun: args.dryRun,
+  });
   const plan = buildSamplingPlan(duration, args.screens, args.padding);
   const padWidth = String(args.screens).length;
 
   const qualitySummary =
-    args.format === "jpg"
+    args.format === 'jpg'
       ? `jpg q=${args.jpgQuality}`
-      : args.format === "png"
+      : args.format === 'png'
         ? `png compression=${args.pngCompression} (lossless)`
         : args.webpLossless
-          ? "webp lossless"
+          ? 'webp lossless'
           : `webp lossy q=${args.webpQuality}`;
 
   log(`Video:    ${videoPath}`);
   log(`Duration: ${duration.toFixed(3)}s`);
-  log(`Mode:     ${args.mode}${args.mode === "multi" ? ` (jobs=${args.jobs})` : ""}`);
+  log(
+    `Mode:     ${args.mode}${args.mode === 'multi' ? ` (jobs=${args.jobs})` : ''}`,
+  );
   log(`Format:   ${args.format} (${qualitySummary})`);
   log(`Screens:  ${args.screens}`);
   log(`Padding:  ${args.padding}s`);
-  log(`Range:    ${plan.start.toFixed(3)}s .. ${plan.end.toFixed(3)}s (effective ${plan.effective.toFixed(3)}s)`);
+  log(
+    `Range:    ${plan.start.toFixed(3)}s .. ${plan.end.toFixed(3)}s (effective ${plan.effective.toFixed(3)}s)`,
+  );
   log(`Step:     ${plan.step.toFixed(3)}s`);
   if (args.padding === 0) {
-    log(`Note:     padding=0 -> end adjusted by ${plan.endAdjustmentSeconds}s to avoid end-of-file capture failure`);
+    log(
+      `Note:     padding=0 -> end adjusted by ${plan.endAdjustmentSeconds}s to avoid end-of-file capture failure`,
+    );
   }
   if (args.scale) log(`Scale:    ${args.scale}`);
   log(`Output:   ${outDir}`);
-  log("");
+  log('');
 
-  log("Planned captures:");
+  log('Planned captures:');
   for (let i = 0; i < plan.timestamps.length; i += 1) {
-    const idx = String(i + 1).padStart(padWidth, "0");
+    const idx = String(i + 1).padStart(padWidth, '0');
     const t = plan.timestamps[i];
+    if (t === undefined) {
+      throw new Error(`Missing planned timestamp at index ${i}.`);
+    }
     const tLabel = fmtTimeLabel(t);
     const file = path.join(outDir, `frame_${idx}_t${tLabel}.${args.format}`);
     log(`  ${idx}: t~${t.toFixed(3)}s -> ${file}`);
   }
 
-  const metaFile = path.join(outDir, "extract-meta.json");
+  const metaFile = path.join(outDir, 'extract-meta.json');
   if (!args.dryRun) {
     fs.writeFileSync(
       metaFile,
@@ -756,7 +900,7 @@ async function main() {
         null,
         2,
       )}\n`,
-      "utf8",
+      'utf8',
     );
   }
 
@@ -765,11 +909,11 @@ async function main() {
     process.exit(EXIT.OK);
   }
 
-  log("");
+  log('');
 
   try {
-    if (args.mode === "single") {
-      log("Extracting (single-run mode)...");
+    if (args.mode === 'single') {
+      log('Extracting (single-run mode)...');
       await extractSingleRun({
         videoPath,
         outDir,
@@ -792,10 +936,17 @@ async function main() {
       // Rename outputs to include planned timestamps
       if (!args.dryRun) {
         for (let i = 0; i < plan.timestamps.length; i += 1) {
-          const idx = String(i + 1).padStart(padWidth, "0");
+          const idx = String(i + 1).padStart(padWidth, '0');
           const src = path.join(outDir, `frame_${idx}.${args.format}`);
-          const tLabel = fmtTimeLabel(plan.timestamps[i]);
-          const dst = path.join(outDir, `frame_${idx}_t${tLabel}.${args.format}`);
+          const timestamp = plan.timestamps[i];
+          if (timestamp === undefined) {
+            throw new Error(`Missing planned timestamp at index ${i}.`);
+          }
+          const tLabel = fmtTimeLabel(timestamp);
+          const dst = path.join(
+            outDir,
+            `frame_${idx}_t${tLabel}.${args.format}`,
+          );
           if (fs.existsSync(src)) {
             fs.renameSync(src, dst);
             // Progress note for rename completion (optional)
@@ -833,7 +984,7 @@ async function main() {
   process.exit(EXIT.OK);
 }
 
-main().catch((e) => {
+main().catch((e: unknown) => {
   logErr(`ERROR: ${errToString(e)}`);
   process.exit(EXIT.RUNTIME);
 });

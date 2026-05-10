@@ -2,7 +2,16 @@
 
 import { spawn } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { access, constants, mkdir, readdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
+import {
+  access,
+  constants,
+  mkdir,
+  readdir,
+  readFile,
+  rm,
+  stat,
+  writeFile,
+} from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { basename, dirname, join, relative, resolve } from 'node:path';
 
@@ -65,8 +74,24 @@ interface BackupTomlConfig {
   ignore_missing_paths?: boolean;
 }
 
-const SCRIPT_CANDIDATES = ['backup.toml', 'backup.sh', 'backup.ts', 'backup.js', 'backup.mjs', 'backup.cjs'];
-const SKIP_DIRS = new Set(['.git', 'node_modules', '.cache', '.next', 'dist', 'build', '.idea', '.vscode']);
+const SCRIPT_CANDIDATES = [
+  'backup.toml',
+  'backup.sh',
+  'backup.ts',
+  'backup.js',
+  'backup.mjs',
+  'backup.cjs',
+];
+const SKIP_DIRS = new Set([
+  '.git',
+  'node_modules',
+  '.cache',
+  '.next',
+  'dist',
+  'build',
+  '.idea',
+  '.vscode',
+]);
 
 function printHelp(): void {
   const commandName = basename(process.argv[1] ?? 'backup-runner.ts');
@@ -200,18 +225,34 @@ async function isExecutable(targetPath: string): Promise<boolean> {
 }
 
 function safeName(value: string): string {
-  return value.toLowerCase().replace(/[^a-z0-9._-]+/g, '-').replace(/^-+|-+$/g, '');
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9._-]+/g, '-')
+    .replace(/^-+|-+$/g, '');
 }
 
 function createTimestamp(): string {
-  return new Date().toISOString().replace(/[:]/g, '-').replace(/\.\d{3}Z$/, 'Z');
+  return new Date()
+    .toISOString()
+    .replace(/[:]/g, '-')
+    .replace(/\.\d{3}Z$/, 'Z');
 }
 
-function interpolate(template: string, variables: Record<string, string>): string {
-  return template.replace(/\$\{([a-zA-Z0-9_]+)\}/g, (_match, name: string) => variables[name] ?? '');
+function interpolate(
+  template: string,
+  variables: Record<string, string>,
+): string {
+  return template.replace(
+    /\$\{([a-zA-Z0-9_]+)\}/g,
+    (_match, name: string) => variables[name] ?? '',
+  );
 }
 
-async function execCommand(command: string, cwd: string, options: { dryRun: boolean; verbose: boolean; env?: NodeJS.ProcessEnv }): Promise<void> {
+async function execCommand(
+  command: string,
+  cwd: string,
+  options: { dryRun: boolean; verbose: boolean; env?: NodeJS.ProcessEnv },
+): Promise<void> {
   if (options.dryRun) {
     log('INFO', `[dry-run] ${cwd}: ${command}`, options.verbose);
     return;
@@ -236,12 +277,17 @@ async function execCommand(command: string, cwd: string, options: { dryRun: bool
         resolvePromise();
         return;
       }
-      rejectPromise(new Error(`Command failed with exit code ${code}: ${command}`));
+      rejectPromise(
+        new Error(`Command failed with exit code ${code}: ${command}`),
+      );
     });
   });
 }
 
-async function findTasks(rootDirectory: string, verbose: boolean): Promise<string[]> {
+async function findTasks(
+  rootDirectory: string,
+  verbose: boolean,
+): Promise<string[]> {
   const results: string[] = [];
 
   async function walk(currentDirectory: string): Promise<void> {
@@ -251,7 +297,11 @@ async function findTasks(rootDirectory: string, verbose: boolean): Promise<strin
     for (const candidate of SCRIPT_CANDIDATES) {
       if (entryNames.has(candidate)) {
         results.push(join(currentDirectory, candidate));
-        log('DEBUG', `Found task file: ${join(currentDirectory, candidate)}`, verbose);
+        log(
+          'DEBUG',
+          `Found task file: ${join(currentDirectory, candidate)}`,
+          verbose,
+        );
         return;
       }
     }
@@ -286,7 +336,10 @@ function parseTomlValue(rawValue: string): unknown {
   if (/^-?\d+\.\d+$/.test(value)) {
     return Number.parseFloat(value);
   }
-  if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
+  if (
+    (value.startsWith('"') && value.endsWith('"')) ||
+    (value.startsWith("'") && value.endsWith("'"))
+  ) {
     return value.slice(1, -1);
   }
   if (value.startsWith('[') && value.endsWith(']')) {
@@ -303,19 +356,29 @@ function parseTomlValue(rawValue: string): unknown {
   return value;
 }
 
-function setNestedValue(target: Record<string, unknown>, keyPath: string[], value: unknown): void {
+function setNestedValue(
+  target: Record<string, unknown>,
+  keyPath: string[],
+  value: unknown,
+): void {
   let current: Record<string, unknown> = target;
 
-  for (let index = 0; index < keyPath.length - 1; index += 1) {
-    const key = keyPath[index];
+  for (const key of keyPath.slice(0, -1)) {
     const existing = current[key];
-    if (typeof existing !== 'object' || existing === null || Array.isArray(existing)) {
+    if (
+      typeof existing !== 'object' ||
+      existing === null ||
+      Array.isArray(existing)
+    ) {
       current[key] = {};
     }
     current = current[key] as Record<string, unknown>;
   }
 
-  const lastKey = keyPath[keyPath.length - 1];
+  const lastKey = keyPath.at(-1);
+  if (lastKey === undefined) {
+    throw new Error('Cannot set a TOML value without a key path.');
+  }
   current[lastKey] = value;
 }
 
@@ -331,7 +394,11 @@ function parseToml(content: string): Record<string, unknown> {
     }
 
     if (line.startsWith('[') && line.endsWith(']')) {
-      currentPath = line.slice(1, -1).split('.').map((part) => part.trim()).filter(Boolean);
+      currentPath = line
+        .slice(1, -1)
+        .split('.')
+        .map((part) => part.trim())
+        .filter(Boolean);
       continue;
     }
 
@@ -351,12 +418,18 @@ function parseToml(content: string): Record<string, unknown> {
 function toBackupTomlConfig(data: Record<string, unknown>): BackupTomlConfig {
   const config = data as BackupTomlConfig;
 
-  if (config.mode && config.mode !== 'compose-copy' && config.mode !== 'command') {
+  if (
+    config.mode &&
+    config.mode !== 'compose-copy' &&
+    config.mode !== 'command'
+  ) {
     throw new Error(`Unsupported mode in backup.toml: ${String(config.mode)}`);
   }
 
   if (config.compression && config.compression !== 'tar.gz') {
-    throw new Error(`Unsupported compression in backup.toml: ${String(config.compression)}`);
+    throw new Error(
+      `Unsupported compression in backup.toml: ${String(config.compression)}`,
+    );
   }
 
   if (config.data_paths && !Array.isArray(config.data_paths)) {
@@ -368,22 +441,37 @@ function toBackupTomlConfig(data: Record<string, unknown>): BackupTomlConfig {
 
 async function detectComposeCommand(): Promise<string> {
   try {
-    await execCommand('docker compose version >/dev/null 2>&1', process.cwd(), { dryRun: false, verbose: false });
+    await execCommand('docker compose version >/dev/null 2>&1', process.cwd(), {
+      dryRun: false,
+      verbose: false,
+    });
     return 'docker compose';
   } catch {
-    await execCommand('docker-compose version >/dev/null 2>&1', process.cwd(), { dryRun: false, verbose: false });
+    await execCommand('docker-compose version >/dev/null 2>&1', process.cwd(), {
+      dryRun: false,
+      verbose: false,
+    });
     return 'docker-compose';
   }
 }
 
-async function createTarGzFromPaths(cwd: string, archivePath: string, relativePaths: string[], options: { dryRun: boolean; verbose: boolean }): Promise<void> {
+async function createTarGzFromPaths(
+  cwd: string,
+  archivePath: string,
+  relativePaths: string[],
+  options: { dryRun: boolean; verbose: boolean },
+): Promise<void> {
   const quotedArchive = shellQuote(archivePath);
   const quotedItems = relativePaths.map((item) => shellQuote(item)).join(' ');
   const command = `tar -czf ${quotedArchive} ${quotedItems}`;
   await execCommand(command, cwd, options);
 }
 
-async function createTarGzFromDirectory(sourceDirectory: string, archivePath: string, options: { dryRun: boolean; verbose: boolean }): Promise<void> {
+async function createTarGzFromDirectory(
+  sourceDirectory: string,
+  archivePath: string,
+  options: { dryRun: boolean; verbose: boolean },
+): Promise<void> {
   const command = `tar -czf ${shellQuote(archivePath)} -C ${shellQuote(sourceDirectory)} .`;
   await execCommand(command, sourceDirectory, options);
 }
@@ -392,14 +480,21 @@ function shellQuote(value: string): string {
   return `'${value.replaceAll("'", `'"'"'`)}'`;
 }
 
-async function executeTomlTask(taskPath: string, options: CliOptions, hostName: string): Promise<TaskResult> {
+async function executeTomlTask(
+  taskPath: string,
+  options: CliOptions,
+  hostName: string,
+): Promise<TaskResult> {
   const startedAt = Date.now();
   const taskDirectory = dirname(taskPath);
   const configContent = await readFile(taskPath, 'utf8');
   const config = toBackupTomlConfig(parseToml(configContent));
   const name = config.name ?? basename(taskDirectory);
   const timestamp = createTimestamp();
-  const outputDirectory = join(resolve(options.destination), safeName(hostName));
+  const outputDirectory = join(
+    resolve(options.destination),
+    safeName(hostName),
+  );
   const archiveName = `${safeName(name)}-${timestamp}.tar.gz`;
   const archivePath = join(outputDirectory, archiveName);
   const serviceRoot = resolve(taskDirectory, config.service_root ?? '.');
@@ -427,12 +522,19 @@ async function executeTomlTask(taskPath: string, options: CliOptions, hostName: 
     await ensureDirectory(outputDirectory);
 
     if (config.pre_command) {
-      await execCommand(interpolate(config.pre_command, variables), serviceRoot, options);
+      await execCommand(
+        interpolate(config.pre_command, variables),
+        serviceRoot,
+        options,
+      );
     }
 
     if ((config.mode ?? 'compose-copy') === 'compose-copy') {
       const composeCommand = await detectComposeCommand();
-      const composeFile = resolve(serviceRoot, config.compose_file ?? 'docker-compose.yml');
+      const composeFile = resolve(
+        serviceRoot,
+        config.compose_file ?? 'docker-compose.yml',
+      );
       const dataPaths = config.data_paths ?? ['data'];
       const relativePaths: string[] = [];
 
@@ -441,10 +543,16 @@ async function executeTomlTask(taskPath: string, options: CliOptions, hostName: 
         const exists = await pathExists(absolutePath);
         if (!exists) {
           if (config.ignore_missing_paths) {
-            log('WARN', `Skipping missing path for ${name}: ${absolutePath}`, options.verbose);
+            log(
+              'WARN',
+              `Skipping missing path for ${name}: ${absolutePath}`,
+              options.verbose,
+            );
             continue;
           }
-          throw new Error(`Configured data path does not exist: ${absolutePath}`);
+          throw new Error(
+            `Configured data path does not exist: ${absolutePath}`,
+          );
         }
         relativePaths.push(relative(serviceRoot, absolutePath));
       }
@@ -454,26 +562,53 @@ async function executeTomlTask(taskPath: string, options: CliOptions, hostName: 
       }
 
       const stopTimeout = config.stop_timeout_seconds ?? 30;
-      await execCommand(`${composeCommand} -f ${shellQuote(composeFile)} down --timeout ${stopTimeout}`, serviceRoot, options);
+      await execCommand(
+        `${composeCommand} -f ${shellQuote(composeFile)} down --timeout ${stopTimeout}`,
+        serviceRoot,
+        options,
+      );
 
       try {
-        await createTarGzFromPaths(serviceRoot, archivePath, relativePaths, options);
+        await createTarGzFromPaths(
+          serviceRoot,
+          archivePath,
+          relativePaths,
+          options,
+        );
       } finally {
-        await execCommand(`${composeCommand} -f ${shellQuote(composeFile)} up -d`, serviceRoot, options);
+        await execCommand(
+          `${composeCommand} -f ${shellQuote(composeFile)} up -d`,
+          serviceRoot,
+          options,
+        );
       }
     } else {
       if (!config.command) {
-        throw new Error(`backup.toml in ${taskDirectory} uses mode=command but command is missing`);
+        throw new Error(
+          `backup.toml in ${taskDirectory} uses mode=command but command is missing`,
+        );
       }
-      await execCommand(interpolate(config.command, variables), serviceRoot, options);
+      await execCommand(
+        interpolate(config.command, variables),
+        serviceRoot,
+        options,
+      );
     }
 
     if (config.post_command) {
-      await execCommand(interpolate(config.post_command, variables), serviceRoot, options);
+      await execCommand(
+        interpolate(config.post_command, variables),
+        serviceRoot,
+        options,
+      );
     }
 
     if (config.upload_command) {
-      await execCommand(interpolate(config.upload_command, variables), serviceRoot, options);
+      await execCommand(
+        interpolate(config.upload_command, variables),
+        serviceRoot,
+        options,
+      );
     }
 
     return {
@@ -503,16 +638,29 @@ function detectScriptType(taskPath: string): ScriptType {
   return 'node';
 }
 
-async function executeScriptTask(taskPath: string, options: CliOptions, hostName: string): Promise<TaskResult> {
+async function executeScriptTask(
+  taskPath: string,
+  options: CliOptions,
+  hostName: string,
+): Promise<TaskResult> {
   const startedAt = Date.now();
   const taskDirectory = dirname(taskPath);
   const name = basename(taskDirectory);
   const timestamp = createTimestamp();
-  const outputDirectory = join(resolve(options.destination), safeName(hostName));
+  const outputDirectory = join(
+    resolve(options.destination),
+    safeName(hostName),
+  );
   const archiveName = `${safeName(name)}-${timestamp}.tar.gz`;
   const archivePath = join(outputDirectory, archiveName);
-  const unique = createHash('sha1').update(`${taskPath}:${timestamp}`).digest('hex').slice(0, 12);
-  const workDirectory = join(tmpdir(), `backup-runner-${safeName(name)}-${unique}`);
+  const unique = createHash('sha1')
+    .update(`${taskPath}:${timestamp}`)
+    .digest('hex')
+    .slice(0, 12);
+  const workDirectory = join(
+    tmpdir(),
+    `backup-runner-${safeName(name)}-${unique}`,
+  );
 
   try {
     await ensureDirectory(outputDirectory);
@@ -538,7 +686,10 @@ async function executeScriptTask(taskPath: string, options: CliOptions, hostName
     };
 
     const scriptType = detectScriptType(taskPath);
-    const command = scriptType === 'bash' ? `${shellQuote(taskPath)}` : `node ${shellQuote(taskPath)}`;
+    const command =
+      scriptType === 'bash'
+        ? `${shellQuote(taskPath)}`
+        : `node ${shellQuote(taskPath)}`;
     await execCommand(command, taskDirectory, { ...options, env });
 
     const archiveAlreadyCreated = await pathExists(archivePath);
@@ -570,7 +721,12 @@ async function executeScriptTask(taskPath: string, options: CliOptions, hostName
   }
 }
 
-async function runAfterCommand(commandTemplate: string, result: TaskResult, options: CliOptions, hostName: string): Promise<void> {
+async function runAfterCommand(
+  commandTemplate: string,
+  result: TaskResult,
+  options: CliOptions,
+  hostName: string,
+): Promise<void> {
   if (!result.archivePath) {
     return;
   }
@@ -584,7 +740,11 @@ async function runAfterCommand(commandTemplate: string, result: TaskResult, opti
     timestamp: createTimestamp(),
   };
 
-  await execCommand(interpolate(commandTemplate, variables), result.folder, options);
+  await execCommand(
+    interpolate(commandTemplate, variables),
+    result.folder,
+    options,
+  );
 }
 
 async function getHostName(): Promise<string> {
@@ -592,7 +752,7 @@ async function getHostName(): Promise<string> {
     const content = await readFile('/etc/hostname', 'utf8');
     return content.trim() || 'unknown-host';
   } catch {
-    return process.env.HOSTNAME || 'unknown-host';
+    return process.env['HOSTNAME'] || 'unknown-host';
   }
 }
 
@@ -617,7 +777,9 @@ function printSummary(results: TaskResult[]): void {
     const state = result.ok ? 'OK' : 'FAIL';
     const archive = result.archivePath ? ` -> ${result.archivePath}` : '';
     const error = result.error ? ` (${result.error})` : '';
-    console.log(`  [${state}] ${result.name} [${result.type}]${archive}${error}`);
+    console.log(
+      `  [${state}] ${result.name} [${result.type}]${archive}${error}`,
+    );
   }
 }
 
@@ -656,12 +818,25 @@ async function main(): Promise<void> {
     results.push(result);
 
     if (result.ok) {
-      log('SUCCESS', `Completed ${result.name} in ${result.durationMs} ms`, options.verbose);
+      log(
+        'SUCCESS',
+        `Completed ${result.name} in ${result.durationMs} ms`,
+        options.verbose,
+      );
       if (options.afterEachCommand) {
-        await runAfterCommand(options.afterEachCommand, result, options, hostName);
+        await runAfterCommand(
+          options.afterEachCommand,
+          result,
+          options,
+          hostName,
+        );
       }
     } else {
-      log('ERROR', `Failed ${result.name}: ${result.error ?? 'unknown error'}`, options.verbose);
+      log(
+        'ERROR',
+        `Failed ${result.name}: ${result.error ?? 'unknown error'}`,
+        options.verbose,
+      );
       if (!options.continueOnError) {
         break;
       }
@@ -670,7 +845,10 @@ async function main(): Promise<void> {
 
   const successfulResults = results.filter((result) => result.ok);
   if (options.afterAllCommand && successfulResults.length > 0) {
-    const archiveListPath = join(resolve(options.destination), `${hostName}-archives-${createTimestamp()}.txt`);
+    const archiveListPath = join(
+      resolve(options.destination),
+      `${hostName}-archives-${createTimestamp()}.txt`,
+    );
     const archiveList = successfulResults
       .map((result) => result.archivePath)
       .filter((value): value is string => typeof value === 'string')
@@ -690,7 +868,11 @@ async function main(): Promise<void> {
       timestamp: createTimestamp(),
     };
 
-    await execCommand(interpolate(options.afterAllCommand, variables), resolve(options.destination), options);
+    await execCommand(
+      interpolate(options.afterAllCommand, variables),
+      resolve(options.destination),
+      options,
+    );
   }
 
   printSummary(results);

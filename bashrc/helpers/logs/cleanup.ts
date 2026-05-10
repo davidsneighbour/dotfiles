@@ -565,8 +565,13 @@ async function compressGroup(
     return;
   }
 
-  const targetDirectory = path.dirname(files[0].absolutePath);
-  const archiveDay = files[0].archiveDay;
+  const firstFile = files[0];
+  if (firstFile === undefined) {
+    return;
+  }
+
+  const targetDirectory = path.dirname(firstFile.absolutePath);
+  const archiveDay = firstFile.archiveDay;
   const archivePath = archivePathFor(targetDirectory, archiveDay);
 
   await ensureDir(tempRoot);

@@ -23,10 +23,10 @@
  * - node freshrss-export.ts --label=dnb-entertainment --output=/tmp/entertainment.xml
  */
 
+import { randomUUID } from 'node:crypto';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import process from 'node:process';
-import { randomUUID } from 'node:crypto';
 
 type CliOptions = {
   help: boolean;
@@ -144,7 +144,8 @@ function hasText(value: string | null | undefined): value is string {
 function printHelp(): void {
   const scriptName = process.argv[1]?.split('/').pop() ?? 'freshrss-export.ts';
 
-  console.log(`
+  console.log(
+    `
 ${scriptName}
 
 Export FreshRSS starred items or labelled items as RSS.
@@ -170,7 +171,8 @@ Examples:
   node ${scriptName} --starred
   node ${scriptName} --label=dnb-webdev
   node ${scriptName} --label=dnb-entertainment --output=./feeds/entertainment.xml
-`.trim());
+`.trim(),
+  );
 }
 
 /**
@@ -239,10 +241,13 @@ function parseArgs(argv: string[]): CliOptions {
     throw new Error(`Unknown argument: ${arg}`);
   }
 
-  const selectedModes = Number(options.starred) + Number(options.label !== null);
+  const selectedModes =
+    Number(options.starred) + Number(options.label !== null);
 
   if (!options.help && selectedModes !== 1) {
-    throw new Error('Choose exactly one mode: either --starred or --label=NAME');
+    throw new Error(
+      'Choose exactly one mode: either --starred or --label=NAME',
+    );
   }
 
   return options;
@@ -255,16 +260,18 @@ function parseArgs(argv: string[]): CliOptions {
  * @returns Validated config.
  */
 function getConfig(options: CliOptions): Config {
-  const baseUrl = process.env.FRESHRSS_BASE_URL?.trim() ?? DEFAULTS.baseUrl;
-  const username = process.env.FRESHRSS_USERNAME?.trim() ?? '';
-  const apiPassword = process.env.FRESHRSS_API_PASSWORD?.trim() ?? '';
+  const baseUrl = process.env['FRESHRSS_BASE_URL']?.trim() ?? DEFAULTS.baseUrl;
+  const username = process.env['FRESHRSS_USERNAME']?.trim() ?? '';
+  const apiPassword = process.env['FRESHRSS_API_PASSWORD']?.trim() ?? '';
 
   if (!hasText(username)) {
     throw new Error('Missing required environment variable: FRESHRSS_USERNAME');
   }
 
   if (!hasText(apiPassword)) {
-    throw new Error('Missing required environment variable: FRESHRSS_API_PASSWORD');
+    throw new Error(
+      'Missing required environment variable: FRESHRSS_API_PASSWORD',
+    );
   }
 
   return {
@@ -320,7 +327,11 @@ function buildChannelTitle(options: CliOptions): string {
  * @param timeoutMs - Timeout in milliseconds.
  * @returns HTTP response.
  */
-async function fetchWithTimeout(input: string | URL, init: RequestInit, timeoutMs: number): Promise<Response> {
+async function fetchWithTimeout(
+  input: string | URL,
+  init: RequestInit,
+  timeoutMs: number,
+): Promise<Response> {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
 
@@ -350,7 +361,11 @@ async function login(config: Config): Promise<ClientLoginResult> {
   url.searchParams.set('Email', config.username);
   url.searchParams.set('Passwd', config.apiPassword);
 
-  const response = await fetchWithTimeout(url, { method: 'GET' }, config.timeoutMs);
+  const response = await fetchWithTimeout(
+    url,
+    { method: 'GET' },
+    config.timeoutMs,
+  );
 
   if (!response.ok) {
     const body = await response.text();
@@ -406,7 +421,9 @@ async function fetchStreamPage(
     .map((segment) => encodeURIComponent(segment))
     .join('/');
 
-  const url = new URL(`${config.baseUrl}/api/greader.php/reader/api/0/stream/contents/${encodedStreamId}`);
+  const url = new URL(
+    `${config.baseUrl}/api/greader.php/reader/api/0/stream/contents/${encodedStreamId}`,
+  );
   url.searchParams.set('output', 'json');
   url.searchParams.set('n', String(maxItems));
 
@@ -428,7 +445,9 @@ async function fetchStreamPage(
 
   if (!response.ok) {
     const body = await response.text();
-    throw new Error(`Fetching stream failed with HTTP ${response.status}: ${body}`);
+    throw new Error(
+      `Fetching stream failed with HTTP ${response.status}: ${body}`,
+    );
   }
 
   const json = (await response.json()) as GoogleReaderStreamResponse;
@@ -482,12 +501,16 @@ async function fetchStreamItems(
  * @returns Chosen URL or empty string.
  */
 function getItemLink(item: GoogleReaderItem): string {
-  const canonicalLink = item.canonical?.find((entry) => hasText(entry.href))?.href;
+  const canonicalLink = item.canonical?.find((entry) =>
+    hasText(entry.href),
+  )?.href;
   if (hasText(canonicalLink)) {
     return canonicalLink;
   }
 
-  const alternateLink = item.alternate?.find((entry) => hasText(entry.href))?.href;
+  const alternateLink = item.alternate?.find((entry) =>
+    hasText(entry.href),
+  )?.href;
   if (hasText(alternateLink)) {
     return alternateLink;
   }
@@ -508,22 +531,39 @@ function getItemLink(item: GoogleReaderItem): string {
  */
 function toRssItem(item: GoogleReaderItem): RssItem {
   const link = getItemLink(item);
-  const title = hasText(item.title) ? item.title.trim() : (hasText(link) ? link : 'Untitled');
-  const publishedEpoch = item.published ?? item.updated ?? Math.floor(Date.now() / 1000);
+  const title = hasText(item.title)
+    ? item.title.trim()
+    : hasText(link)
+      ? link
+      : 'Untitled';
+  const publishedEpoch =
+    item.published ?? item.updated ?? Math.floor(Date.now() / 1000);
   const pubDate = new Date(publishedEpoch * 1000).toUTCString();
   const html = item.content?.content ?? item.summary?.content ?? '';
-  const guid = hasText(item.id) ? item.id.trim() : (hasText(link) ? link : randomUUID());
+  const guid = hasText(item.id)
+    ? item.id.trim()
+    : hasText(link)
+      ? link
+      : randomUUID();
 
-  return {
+  const rssItem: RssItem = {
     guid,
     title,
     link,
     pubDate,
     description: html,
     contentEncoded: html,
-    author: hasText(item.author) ? item.author.trim() : undefined,
-    sourceTitle: hasText(item.origin?.title) ? item.origin.title.trim() : undefined,
   };
+
+  if (hasText(item.author)) {
+    rssItem.author = item.author.trim();
+  }
+
+  if (hasText(item.origin?.title)) {
+    rssItem.sourceTitle = item.origin.title.trim();
+  }
+
+  return rssItem;
 }
 
 /**
@@ -534,7 +574,11 @@ function toRssItem(item: GoogleReaderItem): RssItem {
  * @param items - Stream items.
  * @returns RSS 2.0 XML string.
  */
-function buildRssXml(config: Config, channelTitle: string, items: GoogleReaderItem[]): string {
+function buildRssXml(
+  config: Config,
+  channelTitle: string,
+  items: GoogleReaderItem[],
+): string {
   const rssItems = items.map(toRssItem);
   const channelLink = `${config.baseUrl}/`;
   const channelDescription = `${channelTitle} for FreshRSS user ${config.username}`;
@@ -550,9 +594,10 @@ function buildRssXml(config: Config, channelTitle: string, items: GoogleReaderIt
         ? `<author>${escapeXml(item.author)}</author>`
         : '';
 
-      const sourceXml = hasText(item.sourceTitle) && hasText(item.link)
-        ? `<source url="${escapeXml(item.link)}">${escapeXml(item.sourceTitle)}</source>`
-        : '';
+      const sourceXml =
+        hasText(item.sourceTitle) && hasText(item.link)
+          ? `<source url="${escapeXml(item.link)}">${escapeXml(item.sourceTitle)}</source>`
+          : '';
 
       return [
         '<item>',
@@ -592,7 +637,10 @@ function buildRssXml(config: Config, channelTitle: string, items: GoogleReaderIt
  * @param outputPath - Destination path.
  * @param content - File content.
  */
-async function writeOutputFile(outputPath: string, content: string): Promise<void> {
+async function writeOutputFile(
+  outputPath: string,
+  content: string,
+): Promise<void> {
   const absolutePath = resolve(outputPath);
   await mkdir(dirname(absolutePath), { recursive: true });
   await writeFile(absolutePath, content, 'utf8');

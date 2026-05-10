@@ -303,7 +303,7 @@ const commandRegistry: Record<CommandName, CommandDefinition> = {
         }
 
         if (requiresManualIntervention(result.value)) {
-          console.log(result.value.name);
+          console.log(result.value['name']);
         }
       }
     },
@@ -527,6 +527,7 @@ function parseArgs(argv: string[]): CliConfig {
       case '--help':
         printHelp();
         process.exit(0);
+        return config;
 
       default:
         throw new Error(`Unknown option "${token}". Run with --help.`);
@@ -1438,15 +1439,15 @@ function isGhRepositorySummary(value: unknown): value is GhRepositorySummary {
   }
 
   return (
-    isString(value.name) &&
-    isString(value.nameWithOwner) &&
-    isNullableString(value.description) &&
-    isNullableString(value.homepageUrl) &&
-    isBoolean(value.isArchived) &&
-    isBoolean(value.isFork) &&
-    isString(value.url) &&
-    isNullableString(value.pushedAt) &&
-    isString(value.visibility)
+    isString(value['name']) &&
+    isString(value['nameWithOwner']) &&
+    isNullableString(value['description']) &&
+    isNullableString(value['homepageUrl']) &&
+    isBoolean(value['isArchived']) &&
+    isBoolean(value['isFork']) &&
+    isString(value['url']) &&
+    isNullableString(value['pushedAt']) &&
+    isString(value['visibility'])
   );
 }
 
@@ -1464,20 +1465,20 @@ function isGhRepositoryTag(value: unknown): value is GhRepositoryTag {
   }
 
   if (
-    !isString(value.name) ||
-    !isString(value.zipball_url) ||
-    !isString(value.tarball_url)
+    !isString(value['name']) ||
+    !isString(value['zipball_url']) ||
+    !isString(value['tarball_url'])
   ) {
     return false;
   }
 
-  const commit = value.commit;
+  const commit = value['commit'];
 
   if (!isRecord(commit)) {
     return false;
   }
 
-  return isString(commit.sha) && isString(commit.url);
+  return isString(commit['sha']) && isString(commit['url']);
 }
 
 function isGhRepositoryTagArray(value: unknown): value is GhRepositoryTag[] {
