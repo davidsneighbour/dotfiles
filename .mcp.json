@@ -3,6 +3,14 @@
     "dotfiles Docs": {
       "type": "sse",
       "url": "https://gitmcp.io/davidsneighbour/dotfiles"
+    },
+    "raindrop.io": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://api.raindrop.io/rest/v2/ai/mcp"
+      ]
     }
   }
 }
