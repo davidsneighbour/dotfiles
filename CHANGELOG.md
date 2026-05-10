@@ -1,5 +1,16 @@
 # Changelog
 
+## [3003.0.1](https://github.com/davidsneighbour/dotfiles/compare/v3003.0.0...v3003.0.1) (2026-05-10)
+
+### Bug Fixes
+
+* **typescript:** refactor type check issues and add typescript agent docs ([aabf911](https://github.com/davidsneighbour/dotfiles/commit/aabf9117ae32eec823385eaead273d7903cb70e1))
+
+### Build
+
+* **deps:** bump fast-uri from 3.1.0 to 3.1.2 in the npm_and_yarn group across 1 directory ([#483](https://github.com/davidsneighbour/dotfiles/issues/483)) ([6d65c5f](https://github.com/davidsneighbour/dotfiles/commit/6d65c5f0929b3042d87ac2a706fa07204dc139a6))
+* **deps:** update dependency typescript to v6 ([#482](https://github.com/davidsneighbour/dotfiles/issues/482)) ([61061a5](https://github.com/davidsneighbour/dotfiles/commit/61061a516b7d750df6bbf5e575ecfc3699a0a08d))
+
 ## 3003.0.0 (2026-05-10)
 
 ### ⚠ BREAKING CHANGES
