@@ -2,12 +2,11 @@
 Encoding=UTF-8
 Version=0.9.4
 Type=Application
-Name=Barrier
-Comment=Starting Barrier client
-Exec=/usr/bin/barrierc -f --debug INFO --name dionysus 192.168.1.201
+Name=Barrier KVM
+Comment=
+Exec=barrier -f --debug INFO --name locutus -c /home/patrick/.barrier-server.conf
 OnlyShowIn=XFCE;
 RunHook=0
 StartupNotify=false
 Terminal=false
 Hidden=false
-
