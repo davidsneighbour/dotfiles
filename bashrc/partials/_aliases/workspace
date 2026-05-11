@@ -2,4 +2,6 @@
 # shellcheck shell=bash
 # dnb-dotfiles v3002.23.0
 
-alias actions='exec "${HOME}/.dotfiles/bashrc/helpers/_actions/actions.sh" "$@"'
+actions() {
+  "${HOME}/.dotfiles/bashrc/helpers/_actions/actions.sh" "$@"
+}

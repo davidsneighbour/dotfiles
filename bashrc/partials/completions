@@ -3,6 +3,9 @@
 
 dnb_auto_source "${BASHRC_PATH}"/partials/_completions/
 
+# codex completion
+eval "$(codex completion bash)"
+
 # enable programmable completion features
 if ! shopt -oq posix; then
   if [ -f /usr/share/bash-completion/bash_completion ]; then
