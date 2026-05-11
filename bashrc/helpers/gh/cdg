@@ -1,0 +1,443 @@
+#!/bin/bash
+# shellcheck shell=bash
+
+set -Eeuo pipefail
+
+CDG_CONTEXT='cdg'
+CDG_DEFAULT_CACHE_MINUTES='240'
+CDG_DEFAULT_CACHE_PATH="${HOME}/.dotfiles/cache"
+# shellcheck disable=SC2088 # Display-only default; cdg_expand_path handles literal tilde values.
+CDG_DEFAULT_CACHE_PATH_DISPLAY='~/.dotfiles/cache'
+CDG_DEFAULT_GITHUB_USER="${DNB_CDG_GITHUB_USER:-${DNB_NAMESPACE:-davidsneighbour}}"
+
+cdg_script_name() {
+  basename "${BASH_SOURCE[0]}"
+}
+
+cdg_source_libs() {
+  local script_dir=''
+  local bashrc_path=''
+
+  script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+  bashrc_path="${BASHRC_PATH:-$(cd "${script_dir}/../.." && pwd -P)}"
+
+  # shellcheck source=/dev/null
+  source "${bashrc_path}/lib/00-core/dnb-core-colors.bash"
+  # shellcheck source=/dev/null
+  source "${bashrc_path}/lib/00-core/dnb-core-log.bash"
+  # shellcheck source=/dev/null
+  source "${bashrc_path}/lib/00-core/dnb-core-requirements.bash"
+}
+
+cdg_init_logging() {
+  local log_dir="${HOME}/.logs/${CDG_CONTEXT}"
+
+  if [[ -z "${DNB_SETUP_LOG_FILE:-}" ]]; then
+    DNB_SETUP_LOG_FILE="${log_dir}/setup-log-$(date +%Y%m%d-%H%M%S).log"
+    export DNB_SETUP_LOG_FILE
+  fi
+
+  mkdir -p "${log_dir}"
+  dnb_log_init >/dev/null
+}
+
+cdg_log_verbose() {
+  if [[ "${DNB_VERBOSE:-0}" != '0' && -n "${DNB_VERBOSE:-}" ]]; then
+    dnb_log info "${CDG_CONTEXT}: ${*}" >&2
+  fi
+}
+
+cdg_error() {
+  dnb_log error "${CDG_CONTEXT}: ${*}" >&2
+}
+
+cdg_usage() {
+  local cmd=''
+  cmd="$(cdg_script_name)"
+
+  cat <<EOF_USAGE
+${cmd} - select a GitHub repository with gum and print its local path
+
+Usage:
+  ${cmd} [options]
+  eval "\$(${cmd} --print-cd-command)"
+
+Options:
+  --github-user <user>      GitHub account to list. Default: ${CDG_DEFAULT_GITHUB_USER}
+  --repo-path <template>    Local repository path template or owner directory.
+                            Default: ~/github.com/<github-user>/{repo}
+                            Supported placeholders: {owner}, {repo}, {full_name},
+                            {repo_path}, REPONAME, REPOPATH.
+                            Values without placeholders are treated as an owner
+                            directory and the selected repository name is appended.
+  --cache-path <dir>        Directory for cached GitHub REST responses.
+                            Default: ${CDG_DEFAULT_CACHE_PATH_DISPLAY}
+  --cache-minutes <number>  Refresh cache after this many minutes. Default: ${CDG_DEFAULT_CACHE_MINUTES}
+  --refresh                 Ignore the repository cache and fetch from GitHub.
+  --print-cd-command        Print a shell-quoted cd command instead of only the path.
+  --verbose                 Enable verbose logging and export DNB_VERBOSE=1.
+  --quiet                   Disable verbose logging for this helper process.
+  --help                    Show this help.
+
+Environment:
+  DNB_CDG_GITHUB_USER       Default GitHub account when --github-user is omitted.
+  DNB_CDG_REPO_PATH         Default local path template when --repo-path is omitted.
+  DNB_CDG_CACHE_PATH        Default cache directory when --cache-path is omitted.
+  DNB_CDG_CACHE_MINUTES     Default cache age in minutes when --cache-minutes is omitted.
+  DNB_VERBOSE               Non-zero enables verbose logging unless --quiet is used.
+
+Behaviour:
+  * Repositories are loaded through GitHub's REST API via the gh CLI.
+  * Repository data is cached as JSON below --cache-path.
+  * gum filter provides the interactive fuzzy, type-ahead selector.
+  * If the selected repository directory exists, this helper prints that path.
+  * If the directory is missing, this helper runs: glone owner/repo
+
+Examples:
+  ${cmd}
+  ${cmd} --github-user davidsneighbour --refresh
+  ${cmd} --repo-path '~/github.com/davidsneighbour/{repo}'
+  ${cmd} --repo-path '~/github.com/davidsneighbour'
+  cd "\$(${cmd})"
+EOF_USAGE
+}
+
+cdg_die() {
+  cdg_error "${1}"
+  printf '\n' >&2
+  cdg_usage >&2
+  exit "${2:-1}"
+}
+
+cdg_expand_path() {
+  local raw="${1:-}"
+
+  case "${raw}" in
+    \~)
+      printf '%s\n' "${HOME}"
+      ;;
+    \~/*)
+      printf '%s/%s\n' "${HOME}" "${raw#\~/}"
+      ;;
+    *)
+      printf '%s\n' "${raw}"
+      ;;
+  esac
+}
+
+cdg_is_positive_int() {
+  [[ "${1:-}" =~ ^[0-9]+$ ]]
+}
+
+cdg_cache_file() {
+  local cache_path="${1}"
+  local github_user="${2}"
+  local safe_user=''
+
+  safe_user="$(printf '%s' "${github_user}" | tr -c '[:alnum:]_.-' '_')"
+  printf '%s/cdg-github-%s-repositories.json\n' "${cache_path}" "${safe_user}"
+}
+
+cdg_cache_is_fresh() {
+  local cache_file="${1}"
+  local cache_minutes="${2}"
+  local now=''
+  local modified=''
+  local max_age=''
+
+  [[ -s "${cache_file}" ]] || return 1
+
+  now="$(date +%s)"
+  modified="$(stat -c '%Y' "${cache_file}")"
+  max_age="$((cache_minutes * 60))"
+
+  ((now - modified < max_age))
+}
+
+cdg_repo_path_template_has_placeholder() {
+  local template="${1:-}"
+
+  case "${template}" in
+    *'{owner}'* | *'{repo}'* | *'{full_name}'* | *'{repo_path}'* | *REPONAME* | *REPOPATH*)
+      return 0
+      ;;
+    *)
+      return 1
+      ;;
+  esac
+}
+
+cdg_normalize_repo_path_template() {
+  local template="${1}"
+
+  if cdg_repo_path_template_has_placeholder "${template}"; then
+    printf '%s\n' "${template}"
+    return 0
+  fi
+
+  printf '%s/{repo}\n' "${template%/}"
+}
+
+cdg_fetch_repositories() {
+  local github_user="${1}"
+  local cache_file="${2}"
+  local temp_file=''
+  local endpoint=''
+  local current_user=''
+
+  temp_file="${cache_file}.$$"
+  current_user="$(gh api user --jq '.login')"
+
+  if [[ "${github_user}" == "${current_user}" ]]; then
+    endpoint="/user/repos?per_page=100&sort=full_name&affiliation=owner"
+  else
+    endpoint="/users/${github_user}/repos?per_page=100&type=owner&sort=full_name"
+  fi
+
+  cdg_log_verbose "Fetching repositories for ${github_user} from GitHub REST API endpoint ${endpoint}"
+
+  if ! gh api \
+    --paginate \
+    -H 'Accept: application/vnd.github+json' \
+    -H 'X-GitHub-Api-Version: 2022-11-28' \
+    "${endpoint}" \
+    | jq --arg github_user "${github_user}" -s '
+        add
+        | map(select(.owner.login == $github_user))
+        | sort_by(.full_name)
+        | map({
+            full_name: .full_name,
+            owner: .owner.login,
+            repo: .name,
+            ssh_url: .ssh_url,
+            https_url: .clone_url,
+            html_url: .html_url,
+            private: .private,
+            archived: .archived,
+            fork: .fork
+          })
+      ' >"${temp_file}"; then
+    rm -f "${temp_file}"
+    return 1
+  fi
+
+  if [[ ! -s "${temp_file}" ]]; then
+    rm -f "${temp_file}"
+    return 1
+  fi
+
+  mv "${temp_file}" "${cache_file}"
+}
+
+cdg_repository_count() {
+  local cache_file="${1}"
+  jq 'length' "${cache_file}"
+}
+
+cdg_select_repository() {
+  local cache_file="${1}"
+  local selected=''
+
+  if ! selected="$(jq -r '.[].full_name' "${cache_file}" | gum filter --no-strict --placeholder 'Type to fuzzy-search repositories...' --height 20 --prompt 'Repository > ')"; then
+    return 1
+  fi
+
+  if [[ -z "${selected}" ]]; then
+    return 1
+  fi
+
+  printf '%s\n' "${selected}"
+}
+
+cdg_repo_field() {
+  local cache_file="${1}"
+  local full_name="${2}"
+  local field="${3}"
+
+  jq -r --arg full_name "${full_name}" --arg field "${field}" '.[] | select(.full_name == $full_name) | .[$field]' "${cache_file}"
+}
+
+cdg_render_repo_path() {
+  local template="${1}"
+  local owner="${2}"
+  local repo="${3}"
+  local full_name="${4}"
+  local rendered=''
+
+  template="$(cdg_normalize_repo_path_template "${template}")"
+  rendered="${template//\{owner\}/${owner}}"
+  rendered="${rendered//\{repo\}/${repo}}"
+  rendered="${rendered//\{repo_path\}/${repo}}"
+  rendered="${rendered//\{full_name\}/${full_name}}"
+  rendered="${rendered//REPONAME/${repo}}"
+  rendered="${rendered//REPOPATH/${repo}}"
+  rendered="$(cdg_expand_path "${rendered}")"
+
+  printf '%s\n' "${rendered}"
+}
+
+cdg_source_glone() {
+  local script_dir=''
+  local bashrc_path=''
+
+  if declare -F glone >/dev/null 2>&1 || command -v glone >/dev/null 2>&1; then
+    return 0
+  fi
+
+  script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+  bashrc_path="${BASHRC_PATH:-$(cd "${script_dir}/../.." && pwd -P)}"
+
+  if [[ -r "${bashrc_path}/partials/_functions/git-clone" ]]; then
+    # shellcheck source=/dev/null
+    source "${bashrc_path}/partials/_functions/git-clone"
+  fi
+
+  declare -F glone >/dev/null 2>&1 || command -v glone >/dev/null 2>&1
+}
+
+cdg_clone_if_missing() {
+  local full_name="${1}"
+  local repo_path="${2}"
+
+  if [[ -d "${repo_path}" ]]; then
+    cdg_log_verbose "Repository already exists at ${repo_path}"
+    return 0
+  fi
+
+  cdg_log_verbose "Repository missing at ${repo_path}; running glone ${full_name}"
+
+  if ! cdg_source_glone; then
+    cdg_error "glone is not available. Load the Bash functions or ensure glone is in PATH."
+    return 1
+  fi
+
+  if ! glone "${full_name}" >&2; then
+    cdg_error "glone failed for ${full_name}"
+    return 1
+  fi
+
+  if [[ ! -d "${repo_path}" ]]; then
+    cdg_error "glone completed, but expected directory does not exist: ${repo_path}"
+    return 1
+  fi
+}
+
+cdg_main() {
+  local github_user="${CDG_DEFAULT_GITHUB_USER}"
+  local repo_path_template="${DNB_CDG_REPO_PATH:-}"
+  local cache_path="${DNB_CDG_CACHE_PATH:-${CDG_DEFAULT_CACHE_PATH}}"
+  local cache_minutes="${DNB_CDG_CACHE_MINUTES:-${CDG_DEFAULT_CACHE_MINUTES}}"
+  local refresh='false'
+  local print_cd_command='false'
+  local cache_file=''
+  local repository_count=''
+  local selected_full_name=''
+  local owner=''
+  local repo=''
+  local repo_path=''
+
+  cdg_source_libs
+  cdg_init_logging
+
+  while [[ "$#" -gt 0 ]]; do
+    case "${1}" in
+      --github-user)
+        [[ -n "${2:-}" ]] || cdg_die '--github-user requires a value.' 1
+        github_user="${2}"
+        shift 2
+        ;;
+      --repo-path)
+        [[ -n "${2:-}" ]] || cdg_die '--repo-path requires a value.' 1
+        repo_path_template="${2}"
+        shift 2
+        ;;
+      --cache-path)
+        [[ -n "${2:-}" ]] || cdg_die '--cache-path requires a value.' 1
+        cache_path="${2}"
+        shift 2
+        ;;
+      --cache-minutes)
+        [[ -n "${2:-}" ]] || cdg_die '--cache-minutes requires a value.' 1
+        cache_minutes="${2}"
+        shift 2
+        ;;
+      --refresh)
+        refresh='true'
+        shift
+        ;;
+      --print-cd-command)
+        print_cd_command='true'
+        shift
+        ;;
+      --verbose)
+        export DNB_VERBOSE='1'
+        shift
+        ;;
+      --quiet)
+        unset DNB_VERBOSE
+        shift
+        ;;
+      --help)
+        cdg_usage
+        return 0
+        ;;
+      --*)
+        cdg_die "Unknown option: ${1}" 1
+        ;;
+      *)
+        cdg_die "Unexpected positional argument: ${1}" 1
+        ;;
+    esac
+  done
+
+  if [[ -z "${github_user}" ]]; then
+    cdg_die 'GitHub user is empty.' 1
+  fi
+
+  if [[ -z "${repo_path_template}" ]]; then
+    repo_path_template="${HOME}/github.com/${github_user}/{repo}"
+  fi
+
+  if ! cdg_is_positive_int "${cache_minutes}"; then
+    cdg_die "--cache-minutes must be a positive integer: ${cache_minutes}" 1
+  fi
+
+  cache_path="$(cdg_expand_path "${cache_path}")"
+  mkdir -p "${cache_path}" || cdg_die "Unable to create cache directory: ${cache_path}" 1
+  cache_file="$(cdg_cache_file "${cache_path}" "${github_user}")"
+
+  if ! dnb_check_requirements gh jq gum stat date tr basename >/dev/null; then
+    cdg_die 'Missing one or more required commands.' 1
+  fi
+
+  if ! gh auth status >/dev/null 2>&1; then
+    cdg_die 'gh is not authenticated. Run: gh auth login' 1
+  fi
+
+  if [[ "${refresh}" == 'true' ]] || ! cdg_cache_is_fresh "${cache_file}" "${cache_minutes}"; then
+    cdg_fetch_repositories "${github_user}" "${cache_file}" || cdg_die "Failed to fetch repositories for ${github_user}." 1
+  else
+    cdg_log_verbose "Using fresh repository cache: ${cache_file}"
+  fi
+
+  repository_count="$(cdg_repository_count "${cache_file}")"
+  if [[ "${repository_count}" -eq 0 ]]; then
+    cdg_die "No repositories found for ${github_user}." 1
+  fi
+
+  selected_full_name="$(cdg_select_repository "${cache_file}")" || cdg_die 'No repository selected.' 1
+  owner="$(cdg_repo_field "${cache_file}" "${selected_full_name}" 'owner')"
+  repo="$(cdg_repo_field "${cache_file}" "${selected_full_name}" 'repo')"
+  repo_path="$(cdg_render_repo_path "${repo_path_template}" "${owner}" "${repo}" "${selected_full_name}")"
+
+  cdg_clone_if_missing "${selected_full_name}" "${repo_path}" || exit 1
+
+  if [[ "${print_cd_command}" == 'true' ]]; then
+    printf 'cd %q\n' "${repo_path}"
+    return 0
+  fi
+
+  printf '%s\n' "${repo_path}"
+}
+
+cdg_main "$@"
