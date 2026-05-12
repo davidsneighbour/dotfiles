@@ -1,5 +1,19 @@
 # Changelog
 
+## [3003.1.0](https://github.com/davidsneighbour/dotfiles/compare/v3003.0.1...v3003.1.0) (2026-05-12)
+
+### Features
+
+* add bash trace profiler ([33cfe3f](https://github.com/davidsneighbour/dotfiles/commit/33cfe3fd62c677a319d5e69ae60d548b9f8946d1))
+* add cdg helper ([66cc701](https://github.com/davidsneighbour/dotfiles/commit/66cc7013afc034ab39859ea97e7e0482b7d6bf84))
+* add color steps functions ([322b874](https://github.com/davidsneighbour/dotfiles/commit/322b874190dfef8b6fe9aac92abc54fc57157f56))
+
+### Bug Fixes
+
+* add barrierc/barriers startup scripts ([e62a642](https://github.com/davidsneighbour/dotfiles/commit/e62a642657e9250d637a17a5f5bb6ee2ce4a2122))
+* cleanup bash completions ([b621d51](https://github.com/davidsneighbour/dotfiles/commit/b621d51f080cf5562f9572654af9bb54aae6402c))
+* refactor code for autostarts ([b24126e](https://github.com/davidsneighbour/dotfiles/commit/b24126ed1817fecde0c8d18a78e04a793f93b086))
+
 ## [3003.0.1](https://github.com/davidsneighbour/dotfiles/compare/v3003.0.0...v3003.0.1) (2026-05-10)
 
 ### Bug Fixes
