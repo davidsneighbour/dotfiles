@@ -17,6 +17,7 @@
 ## Loader snippet
 
 ```bash
+: "${BASHRC_PATH:?BASHRC_PATH must be set before loading Bash helper files}"
 for FILE in "${BASHRC_PATH}"/lib/*/*.bash; do
   # shellcheck disable=SC1090
   [[ -f "${FILE}" && -r "${FILE}" ]] && source "${FILE}"

@@ -17,6 +17,12 @@
 
 set -euo pipefail
 
+: "${BASHRC_PATH:?BASHRC_PATH must be set before loading Bash helper files}"
+for FILE in "${BASHRC_PATH}"/lib/*/*.bash; do
+  # shellcheck disable=SC1090
+  [[ -f "${FILE}" && -r "${FILE}" ]] && source "${FILE}"
+done
+
 print_help() {
   cat <<'EOF'
 wm-detect.sh - detect current X11 window manager (EWMH)
@@ -29,8 +35,8 @@ Options:
       Print debugging details to stderr.
 
   --validate <wm-name>
-      Validate that the detected window manager matches <wm-name>,
-      case-insensitively. Example: --validate i3 matches "I3" and "i3".
+      Validate that the detected window manager matches <wm-name>, case-
+      insensitively. Example: --validate i3 matches "I3" and "i3".
 
   --help
       Show this help.
@@ -45,25 +51,7 @@ Exit codes:
 EOF
 }
 
-log_verbose() {
-  if [[ "${VERBOSE}" == "1" ]]; then
-    # shellcheck disable=SC2154
-    printf '%s\n' "${*}" >&2
-  fi
-}
-
-to_lower() {
-  # Locale-stable lowercase conversion
-  LC_ALL=C tr '[:upper:]' '[:lower:]'
-}
-
-require_cmd() {
-  local cmd="${1}"
-  if ! command -v "${cmd}" >/dev/null 2>&1; then
-    printf 'ERROR: required command not found: %s\n' "${cmd}" >&2
-    return 1
-  fi
-}
+dnb_log_init "wm"
 
 get_wm_name() {
   # Method 1: xprop on root window using EWMH.
@@ -71,18 +59,18 @@ get_wm_name() {
   local wm_name_line=""
   local wm_name=""
 
-  require_cmd xprop
+  dnb_check_requirements xprop
 
-  log_verbose "Querying _NET_SUPPORTING_WM_CHECK on root window..."
+  dnb_log info "Querying _NET_SUPPORTING_WM_CHECK on root window..."
   wm_window="$(xprop -root _NET_SUPPORTING_WM_CHECK 2>/dev/null | awk '{print $5}' || true)"
 
   if [[ -z "${wm_window}" || "${wm_window}" == "0x0" ]]; then
-    log_verbose "No WM window id found (wm_window='${wm_window}')."
+    dnb_log info "No WM window id found (wm_window='${wm_window}')."
     return 1
   fi
 
-  log_verbose "WM window id: ${wm_window}"
-  log_verbose "Querying _NET_WM_NAME for WM window id..."
+  dnb_log info "WM window id: ${wm_window}"
+  dnb_log info "Querying _NET_WM_NAME for WM window id..."
 
   wm_name_line="$(xprop -id "${wm_window}" _NET_WM_NAME 2>/dev/null || true)"
 
@@ -93,15 +81,15 @@ get_wm_name() {
   wm_name="$(printf '%s' "${wm_name_line}" | sed -E 's/.*= "([^"]+)".*/\1/' || true)"
 
   if [[ -z "${wm_name}" || "${wm_name}" == "${wm_name_line}" ]]; then
-    log_verbose "Failed to parse WM name from line: ${wm_name_line}"
+    dnb_log info "Failed to parse WM name from line: ${wm_name_line}"
     return 1
   fi
 
-  log_verbose "Detected WM name: ${wm_name}"
+  dnb_log info "Detected WM name: ${wm_name}"
   printf '%s\n' "${wm_name}"
 }
 
-VERBOSE="0"
+DNB_VERBOSE="0"
 VALIDATE=""
 
 # Arg parsing
@@ -115,7 +103,7 @@ else
       exit 0
       ;;
     --verbose)
-      VERBOSE="1"
+      DNB_VERBOSE="1"
       shift
       ;;
     --validate)
@@ -146,10 +134,10 @@ WM="$(get_wm_name)" || {
 printf '%s\n' "${WM}"
 
 if [[ -n "${VALIDATE}" ]]; then
-  WM_LC="$(printf '%s' "${WM}" | to_lower)"
-  VALIDATE_LC="$(printf '%s' "${VALIDATE}" | to_lower)"
+  WM_LC="$(printf '%s' "${WM}" | dnb_to_lower)"
+  VALIDATE_LC="$(printf '%s' "${VALIDATE}" | dnb_to_lower)"
 
-  log_verbose "Validating: detected='${WM_LC}' expected='${VALIDATE_LC}'"
+  dnb_log info "Validating: detected='${WM_LC}' expected='${VALIDATE_LC}'"
 
   if [[ "${WM_LC}" == "${VALIDATE_LC}" ]]; then
     exit 0

@@ -1,7 +1,13 @@
 #!/bin/bash
 # Configure XFCE (xfwm4) workspaces and optionally start apps on specific workspaces.
 
-set -Eeuo pipefail
+set -euo pipefail
+
+: "${BASHRC_PATH:?BASHRC_PATH must be set before loading Bash helper files}"
+for FILE in "${BASHRC_PATH}"/lib/*/*.bash; do
+  # shellcheck disable=SC1090
+  [[ -f "${FILE}" && -r "${FILE}" ]] && source "${FILE}"
+done
 
 SCRIPT_NAME="$(basename "$0")"
 
@@ -26,12 +32,6 @@ die() {
 
 have_cmd() {
   command -v "$1" >/dev/null 2>&1
-}
-
-require_cmd() {
-  if ! have_cmd "$1"; then
-    die "Missing dependency: ${1}. Install it (apt): sudo apt install ${1}"
-  fi
 }
 
 print_help() {
@@ -185,7 +185,7 @@ split_csv_to_array() {
 
   local i
   for i in "${!_out[@]}"; do
-    _out[$i]="$(printf '%s' "${_out[$i]}" | sed -E 's/^[[:space:]]+//; s/[[:space:]]+$//')"
+    _out[i]="$(printf '%s' "${_out[${i}]}" | sed -E 's/^[[:space:]]+//; s/[[:space:]]+$//')"
   done
 }
 
@@ -272,7 +272,7 @@ move_first_matching_window_to_workspace() {
 main() {
   parse_args "$@"
 
-  require_cmd xfconf-query
+  dnb_check_requirements xfconf-query
 
   if [[ -n "${WORKSPACE_COUNT}" ]]; then
     is_int "${WORKSPACE_COUNT}" || die "--count must be an integer"
@@ -280,7 +280,7 @@ main() {
 
   # Only require wmctrl if we actually need it
   if ((${#START_SPECS[@]} > 0 || ${#MOVE_SPECS[@]} > 0)); then
-    require_cmd wmctrl
+    dnb_check_requirements wmctrl
   fi
 
   # Apply workspace count if requested
@@ -295,6 +295,7 @@ main() {
     local_count="$(xfconf_get_count)"
     is_int "${local_count}" || die "Could not read current workspace count from xfconf"
 
+    # shellcheck disable=SC2034  # variable is actually used in the called functions
     declare -a names=()
     split_csv_to_array "${WORKSPACE_NAMES_CSV}" names
     ensure_names_length "${local_count}" names
