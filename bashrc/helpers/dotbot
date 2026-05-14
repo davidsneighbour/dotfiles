@@ -57,7 +57,7 @@ ensure_dotbot_ready() {
   fi
 
   if [[ ! -x "${DOTBOT_BIN}" ]]; then
-    dnb_error "Dotbot binary not found or not executable at '${DOTBOT_BIN}'."
+    dnb_log error "Dotbot binary not found or not executable at '${DOTBOT_BIN}'."
     exit 1
   fi
 }
@@ -91,7 +91,7 @@ run_dotbot_with_config() {
   local dotbot_verbosity_flag=''
 
   if [[ ! -f "${config_path}" ]]; then
-    dnb_error "Config file not found: ${config_path}"
+    dnb_log error "Config file not found: ${config_path}"
     print_help
     exit 1
   fi
@@ -120,7 +120,7 @@ run_dotbot_with_config() {
 
 pick_config_with_gum() {
   if ! command -v gum >/dev/null 2>&1; then
-    dnb_error "--list requires 'gum' (https://github.com/charmbracelet/gum)."
+    dnb_log error "--list requires 'gum' (https://github.com/charmbracelet/gum)."
     exit 1
   fi
 
@@ -134,7 +134,7 @@ pick_config_with_gum() {
   shopt -u nullglob
 
   if [[ "${#config_files[@]}" -eq 0 ]]; then
-    dnb_error "No selectable config files found in ${CONFIGS_DIR}."
+    dnb_log error "No selectable config files found in ${CONFIGS_DIR}."
     exit 1
   fi
 
@@ -162,7 +162,7 @@ main() {
     --config)
       config_arg="${2-}"
       if [[ -z "${config_arg}" ]]; then
-        dnb_error "--config requires a value."
+        dnb_log error "--config requires a value."
         print_help
         exit 2
       fi
@@ -177,13 +177,13 @@ main() {
       exit 0
       ;;
     --*)
-      dnb_error "Unknown option '$1'."
+      dnb_log error "Unknown option '$1'."
       print_help
       exit 2
       ;;
     *)
       if [[ -n "${positional_config}" ]]; then
-        dnb_error "Only one config name is supported."
+        dnb_log error "Only one config name is supported."
         print_help
         exit 2
       fi
@@ -197,7 +197,7 @@ main() {
 
   if [[ "${list_mode}" -eq 1 ]]; then
     if [[ -n "${config_arg}" || -n "${positional_config}" ]]; then
-      dnb_error "--list cannot be combined with a config argument."
+      dnb_log error "--list cannot be combined with a config argument."
       print_help
       exit 2
     fi

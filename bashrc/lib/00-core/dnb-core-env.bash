@@ -60,7 +60,7 @@ EOF2
     # shellcheck disable=SC1090
     source "${home_env}" || {
       set +a
-      dnb_error "Failed to source ${home_env}"
+      dnb_log error "Failed to source ${home_env}"
       return 1
     }
     set +a
@@ -72,7 +72,7 @@ EOF2
     # shellcheck disable=SC1090
     source "${local_env}" || {
       set +a
-      dnb_error "Failed to source ${local_env}"
+      dnb_log error "Failed to source ${local_env}"
       return 1
     }
     set +a

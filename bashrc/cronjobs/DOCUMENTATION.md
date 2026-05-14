@@ -1,6 +1,6 @@
 # bashrc/cronjobs documentation
 
-This folder contains standalone automation intended for cron or scheduled execution. Cron entries should redirect output into timestamped logs under `~/.logs/<functionality>/setup-log-YYYYMMDD-HHMMSS.log` when installed.
+This folder contains standalone automation intended for cron or scheduled execution. Cron entries should redirect output into timestamped logs under `~/.logs/<functionality>/YYYYMMDD-HHMMSS.log` when installed.
 
 ## `docker-backup.sh`
 

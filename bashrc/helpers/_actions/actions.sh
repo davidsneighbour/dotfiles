@@ -48,7 +48,7 @@ log_debug() {
 }
 
 log_error() {
-  dnb_error "$*"
+  dnb_log error "$*"
 }
 
 print_help() {

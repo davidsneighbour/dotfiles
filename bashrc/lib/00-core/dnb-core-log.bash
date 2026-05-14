@@ -136,31 +136,16 @@ EOF2
   fi
 
   local color=''
-  local reset='\033[0m'
-
   color="$(__dnb_log_color "${level}")"
+
+  local color2=''
+  color2="$(__dnb_log_color "debug")"
+
+  local reset='\033[0m'
 
   local padded_level=''
   printf -v padded_level '%-7s' "${level}"
 
-  printf '%b%s %s%b %s\n' "${color}" "${timestamp}" "${padded_level}" "${reset}" "${msg}"
+  printf '%b%s %b%s%b %s\n' "${color2}" "${timestamp}" "${color}" "${padded_level}" "${reset}" "${msg}"
   printf '%s %s %s\n' "${timestamp}" "${padded_level}" "${msg}" >>"${logfile}"
-}
-
-# dnb_error
-#
-# Convenience wrapper for error logging.
-#
-# Parameters:
-#   message  Error message.
-#
-# Examples:
-#   dnb_error "Failed to create directory"
-#
-# Requirements:
-#   - bash
-
-dnb_error() {
-  local message="${*:-Unknown error}"
-  dnb_log error "${message}"
 }

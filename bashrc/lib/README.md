@@ -12,7 +12,6 @@
 * Files in `lib` must not execute logic on source.
 * Library functions should `return`, not `exit`.
 * Standalone command tools belong in `bashrc/helpers`.
-* Deprecated compatibility wrappers live in `lib/90-compat/`.
 
 ## Loader snippet
 
@@ -31,7 +30,6 @@ done
 * `dnb_check_requirements`
 * `dnb_log_init`
 * `dnb_log`
-* `dnb_error`
 * `dnb_load_env`
 * `dnb_path_contains`
 * `dnb_path_add_if_missing`

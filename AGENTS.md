@@ -95,8 +95,9 @@ For all Bash and shell-related code, including every file within bashrc/ and any
 
 ### Logging
 
-* All logs go to `~/.logs/$FUNCTIONALITY` where the $FUNCTIONALITY is displayed in the foldername
-* Log files **MUST** be named: `setup-log-YYYYMMDD-HHMMSS.log`
+* All logs go to `~/.logs/` into a subdirectory that reflects the functionality being logged (e.g. `~/.logs/cron/` for cronjob logs)
+* If you are able to use `dnb_log_init` the folder will be created for you, otherwise you must ensure the folder exists before writing logs
+* Log files **MUST** be named: `YYYYMMDD-HHMMSS.log`
 
 No per-error or per-script log naming.
 

@@ -22,7 +22,7 @@ dnb_create_directory() {
   local dir_path="${1:-}"
 
   if [[ -z "${dir_path}" ]]; then
-    dnb_error "dnb_create_directory called with empty path"
+    dnb_log error "dnb_create_directory called with empty path"
     return 1
   fi
 
@@ -36,7 +36,7 @@ dnb_create_directory() {
     return 0
   fi
 
-  dnb_error "Failed to create directory: ${dir_path}"
+  dnb_log error "Failed to create directory: ${dir_path}"
   return 1
 }
 

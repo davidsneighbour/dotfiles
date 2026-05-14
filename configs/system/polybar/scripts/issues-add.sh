@@ -30,7 +30,7 @@ die() {
 
 log_setup() {
   LOG_DIR="${HOME}/.logs/polybar-issues"
-  LOG_FILE="${LOG_DIR}/setup-log-$(date +%Y%m%d-%H%M%S).log"
+  LOG_FILE="${LOG_DIR}/$(date +%Y%m%d-%H%M%S).log"
   mkdir -p "${LOG_DIR}"
   touch "${LOG_FILE}"
 }

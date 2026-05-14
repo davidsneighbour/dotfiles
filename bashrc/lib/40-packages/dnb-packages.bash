@@ -21,7 +21,7 @@ EOF_HELP
   fi
 
   if [[ -z "${config_file}" || ! -f "${config_file}" ]]; then
-    dnb_error "Package config file not found: ${config_file}"
+    dnb_log error "Package config file not found: ${config_file}"
     return 1
   fi
 
@@ -57,12 +57,12 @@ EOF_HELP
   fi
 
   if [[ -z "${config_file}" || ! -f "${config_file}" ]]; then
-    dnb_error "Package config file not found: ${config_file}"
+    dnb_log error "Package config file not found: ${config_file}"
     return 1
   fi
 
   if [[ -z "${package_name}" ]]; then
-    dnb_error 'Package name is required.'
+    dnb_log error 'Package name is required.'
     return 1
   fi
 

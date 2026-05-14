@@ -101,7 +101,7 @@ EOF2
   done
 
   if [[ -z "${dir}" ]]; then
-    dnb_error "Path was not provided: ${dir}"
+    dnb_log error "Path was not provided: --path <dir>"
     return 1
   fi
 
@@ -136,12 +136,6 @@ EOF2
 #
 # Parameters:
 #   none
-#
-# Examples:
-#   dnb_path_sanitise
-#
-# Requirements:
-#   - bash
 
 dnb_path_sanitise() {
   local old_path="${PATH:-}"
@@ -164,5 +158,5 @@ dnb_path_sanitise() {
     printf '%s' "${clean[*]}"
   )"
   export PATH
-  dnb_log success "PATH sanitised"
+  dnb_log info "PATH sanitised"
 }

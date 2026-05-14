@@ -29,7 +29,7 @@ EOF_USAGE
 }
 
 die() {
-  ws_log_error "${1}"
+  dnb_log error "${1}"
   echo "ERROR: ${1}" >&2
   echo >&2
   usage >&2
@@ -103,7 +103,7 @@ main() {
     target_ws="${current_ws}"
   fi
 
-  ws_log_verbose "Rendering mode=${OUTPUT_MODE}, target_workspace=$((target_ws + 1))"
+  dnb_log info "Rendering mode=${OUTPUT_MODE}, target_workspace=$((target_ws + 1))"
 
   case "${OUTPUT_MODE}" in
   programs)

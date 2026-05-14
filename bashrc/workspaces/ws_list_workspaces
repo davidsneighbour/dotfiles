@@ -28,7 +28,7 @@ EOF_USAGE
 }
 
 die() {
-  ws_log_error "${1}"
+  dnb_log error "${1}"
   echo "ERROR: ${1}" >&2
   echo >&2
   usage >&2
@@ -86,7 +86,7 @@ main() {
   workspace_lines="$(parse_workspace_lines)"
   [[ -n "${workspace_lines}" ]] || die "No [[workspace]] entries with title were found in ${CONFIG_FILE}"
 
-  ws_log_verbose "Loaded $(printf '%s\n' "${workspace_lines}" | wc -l | tr -d ' ') workspace definitions"
+  dnb_log info "Loaded $(printf '%s\n' "${workspace_lines}" | wc -l | tr -d ' ') workspace definitions"
 
   if [[ "${NAME_ONLY}" == "1" ]]; then
     printf '%s\n' "${workspace_lines}" | awk -F $'\t' '{ print $2 }'

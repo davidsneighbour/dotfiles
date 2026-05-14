@@ -29,10 +29,6 @@ Use these functions:
 
 * `dnb_log_init`
 * `dnb_log`
-* `dnb_error`
-
-Do not introduce new calls to deprecated compatibility wrappers from `bashrc/lib/90-compat/`.
-If you encounter obsolete calls, use `bashrc/lib/90-compat/` only as a migration map, then refactor callers to the canonical `dnb_*` functions.
 
 ### Library loading assumption
 
@@ -96,7 +92,7 @@ Preferred environment variables:
 
 If no script-specific logfile is configured:
 
-* `dnb_log_init` writes to `~/.logs/setup-log-YYYYMMDD-HHMMSS.log`
+* `dnb_log_init` writes to `~/.logs/YYYYMMDD-HHMMSS.log`
 
 This aligns with repository logging requirements.
 
@@ -136,19 +132,6 @@ if [[ "${DNB_VERBOSE:-}" == '1' ]]; then
   dnb_log info 'Verbose logging enabled'
 fi
 ```
-
-## Refactor guide for deprecated calls
-
-When existing code uses obsolete names, migrate as follows:
-
-* `__dnb_log` -> `dnb_log`
-* `__dnb_init_log` -> `dnb_log_init`
-* `__dnb_error` -> `dnb_error`
-* `__dnb_check_requirements` -> `dnb_check_requirements`
-* `__dnb_load_env` -> `dnb_load_env`
-
-Reference: `bashrc/lib/90-compat/dnb-legacy-aliases.bash`.
-Do not preserve deprecated names in new or updated implementations.
 
 ## Agent checklist
 

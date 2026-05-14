@@ -77,7 +77,7 @@ init_verbose_logging() {
   local log_dir="${HOME}/.logs/${LOG_CONTEXT}"
 
   if [[ -z "${DNB_SETUP_LOG_FILE:-}" ]]; then
-    DNB_SETUP_LOG_FILE="${log_dir}/setup-log-$(date +%Y%m%d-%H%M%S).log"
+    DNB_SETUP_LOG_FILE="${log_dir}/$(date +%Y%m%d-%H%M%S).log"
     export DNB_SETUP_LOG_FILE
   fi
 
@@ -97,7 +97,7 @@ print_error() {
     if [[ -z "${DNB_SETUP_LOG_FILE:-}" ]]; then
       init_verbose_logging
     fi
-    dnb_error "${LOG_CONTEXT}: ${*}"
+    dnb_log error "${LOG_CONTEXT}: ${*}"
   fi
 }
 

@@ -88,12 +88,12 @@ EOF2
   done
 
   [[ -n "${folder}" && -d "${folder}" ]] || {
-    dnb_error "Folder does not exist: ${folder}"
+    dnb_log error "Folder does not exist: ${folder}"
     return 1
   }
 
   __dnb_archive_require_method "${method}" || {
-    dnb_error "Unsupported or unavailable archive method: ${method}"
+    dnb_log error "Unsupported or unavailable archive method: ${method}"
     return 1
   }
 
@@ -138,14 +138,14 @@ EOF2
   tar -cvf "${base_tar}" "${folder}"
   tar_status=$?
   if [[ "${tar_status}" -ne 0 ]]; then
-    dnb_error "Tar step failed with exit code ${tar_status}"
+    dnb_log error "Tar step failed with exit code ${tar_status}"
     return "${tar_status}"
   fi
 
   "${comp_cmd[@]}" "${base_tar}"
   compressor_status=$?
   if [[ "${compressor_status}" -ne 0 ]]; then
-    dnb_error "Compression step failed with exit code ${compressor_status}"
+    dnb_log error "Compression step failed with exit code ${compressor_status}"
     return "${compressor_status}"
   fi
 
@@ -216,7 +216,7 @@ EOF2
   done
 
   [[ -n "${input}" && -f "${input}" ]] || {
-    dnb_error "Archive file does not exist: ${input}"
+    dnb_log error "Archive file does not exist: ${input}"
     return 1
   }
 
@@ -240,7 +240,7 @@ EOF2
     tar_args=(-xvf "${input}")
     ;;
   *)
-    dnb_error "Unsupported archive type: ${input}"
+    dnb_log error "Unsupported archive type: ${input}"
     return 1
     ;;
   esac
@@ -250,7 +250,7 @@ EOF2
   tar "${tar_args[@]}"
   status=$?
   if [[ "${status}" -ne 0 ]]; then
-    dnb_error "Extraction failed with exit code ${status}"
+    dnb_log error "Extraction failed with exit code ${status}"
     return "${status}"
   fi
 

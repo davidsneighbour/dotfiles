@@ -7,7 +7,7 @@
   "author": "Patrick Kollitsch <davidsneighbourdev+gh@gmail.com>",
   "bugs": "https://github.com/davidsneighbour/dotfiles/issues",
   "homepage": "https://github.com/davidsneighbour/dotfiles#readme",
-  "dependencies": {
+  "devDependencies": {
     "@biomejs/biome": "2.4.15",
     "@clack/prompts": "1.4.0",
     "@commitlint/cli": "21.0.1",
@@ -38,6 +38,7 @@
     "ncp": "2.0.0",
     "npm-check-updates": "22.2.0",
     "npm-package-json-lint": "10.4.0",
+    "npm-run-all": "4.1.5",
     "npm-run-all2": "8.0.4",
     "npm-watch": "0.13.0",
     "release-it": "20.0.1",
@@ -47,16 +48,17 @@
     "simple-git-hooks": "2.13.1",
     "smol-toml": "1.6.1",
     "toml": "4.1.1",
+    "tsc-files": "1.1.4",
     "wireit": "0.14.12"
   },
   "scripts": {
-    "postinstall": "run-p *:postinstall",
-    "lint:postinstall": "npx simple-git-hooks",
     "biome:postinstall": "npx @biomejs/biome migrate --write",
     "clean": "rimraf logs/*.log",
     "lint:config": "yamllint -c .yamllint.yml configs bashrc",
     "lint:hook:commit": "lint-staged --quiet --config lint-staged.config.ts",
     "lint:hook:commit:loud": "lint-staged --debug --verbose --config lint-staged.config.ts",
+    "lint:postinstall": "npx simple-git-hooks",
+    "postinstall": "run-p *:postinstall",
     "release": "release-it --config .release-it.ts --verbose --only-version"
   },
   "wireit": {
@@ -64,11 +66,6 @@
       "command": "npx link"
     }
   },
-  "main": "index.js",
-  "simple-git-hooks": {
-    "pre-commit": "npm run lint:hook:commit"
-  },
-  "type": "module",
   "cspell": {
     "version": "0.2",
     "language": "en-GB",
@@ -86,8 +83,8 @@
       "custom"
     ]
   },
-  "devDependencies": {
-    "npm-run-all": "4.1.5",
-    "tsc-files": "1.1.4"
-  }
+  "simple-git-hooks": {
+    "pre-commit": "npm run lint:hook:commit"
+  },
+  "type": "module"
 }

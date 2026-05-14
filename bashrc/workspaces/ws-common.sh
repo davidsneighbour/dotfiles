@@ -31,13 +31,3 @@ ws_parse_verbosity_flag() {
     ;;
   esac
 }
-
-ws_log_verbose() {
-  if [[ "${DNB_VERBOSE:-}" == "1" ]]; then
-    __dnb_log "${1}" info
-  fi
-}
-
-ws_log_error() {
-  __dnb_log "${1}" error
-}
