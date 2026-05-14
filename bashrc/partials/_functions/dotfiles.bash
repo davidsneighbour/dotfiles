@@ -1,6 +1,6 @@
 #!/bin/bash
 # shellcheck shell=bash
-# dnb-dotfiles v3002.20.0
+# dnb-dotfiles 3003.2.0
 
 dotfiles() {
   # Manage and open the user's dotfiles repository.

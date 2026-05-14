@@ -1,3 +1,7 @@
+#!/bin/bash
+# shellcheck shell=bash
+# dnb-dotfiles 3003.2.0
+
 glone() {
   local input_url=""
   local force_https=false

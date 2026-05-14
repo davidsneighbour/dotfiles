@@ -1,4 +1,6 @@
+#!/bin/bash
 # shellcheck shell=bash
+# dnb-dotfiles 3003.2.0
 
 #   # Define the path to the custom status hook file
 #   FILE=.git/hooks/status

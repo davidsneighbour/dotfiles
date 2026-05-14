@@ -1,4 +1,6 @@
+#!/bin/bash
 # shellcheck shell=bash
+# dnb-dotfiles 3003.2.0
 
 # insert_first_line
 # Adds a string as the first line to each file in a directory (recursively).

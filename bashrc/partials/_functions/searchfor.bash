@@ -1,3 +1,7 @@
+#!/bin/bash
+# shellcheck shell=bash
+# dnb-dotfiles 3003.2.0
+
 searchfor() {
   local term=""
   local path="${HOME}/github.com/davidsneighbour"
