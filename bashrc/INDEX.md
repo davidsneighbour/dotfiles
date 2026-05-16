@@ -1,985 +1,987 @@
 # bashrc index
 
-Alphabetical index of every file under `bashrc` plus detected Bash functions, aliases, completion targets, and TypeScript/JavaScript functions or methods. Documentation links point to the nearest documentation file for the feature.
+Alphabetical index of every file under `bashrc` plus detected Bash functions, aliases, completion targets, and TypeScript/JavaScript functions or methods. Source links point to the indexed file and line, and documentation links point to the nearest documentation file for the feature.
 
-* `.bash_logout` (file) — documented in [./DOCUMENTATION.md](./DOCUMENTATION.md)
-* `.bash_profile` (file) — documented in [./DOCUMENTATION.md](./DOCUMENTATION.md)
-* `.bashrc` (file) — documented in [./DOCUMENTATION.md](./DOCUMENTATION.md)
-* `.profile` (file) — documented in [./DOCUMENTATION.md](./DOCUMENTATION.md)
-* `__dnb_256` (function, `lib/00-core/dnb-core-colors.bash`) — documented in [./lib/README.md](./lib/README.md)
-* `__dnb_archive_require_method` (function, `lib/30-filesystem/dnb-archive.bash`) — documented in [./lib/README.md](./lib/README.md)
-* `__dnb_basic_color` (function, `lib/00-core/dnb-core-colors.bash`) — documented in [./lib/README.md](./lib/README.md)
-* `__dnb_color_mode` (function, `lib/00-core/dnb-core-colors.bash`) — documented in [./lib/README.md](./lib/README.md)
-* `__dnb_log_color` (function, `lib/00-core/dnb-core-colors.bash`) — documented in [./lib/README.md](./lib/README.md)
-* `__dnb_log_level_to_priority` (function, `lib/00-core/dnb-core-log.bash`) — documented in [./lib/README.md](./lib/README.md)
-* `__dnb_rgb` (function, `lib/00-core/dnb-core-colors.bash`) — documented in [./lib/README.md](./lib/README.md)
-* `__gh_debug` (function, `partials/_completions/gh`) — documented in [./partials/_completions/DOCUMENTATION.md](./partials/_completions/DOCUMENTATION.md)
-* `__gh_extract_activeHelp` (function, `partials/_completions/gh`) — documented in [./partials/_completions/DOCUMENTATION.md](./partials/_completions/DOCUMENTATION.md)
-* `__gh_format_comp_descriptions` (function, `partials/_completions/gh`) — documented in [./partials/_completions/DOCUMENTATION.md](./partials/_completions/DOCUMENTATION.md)
-* `__gh_get_completion_results` (function, `partials/_completions/gh`) — documented in [./partials/_completions/DOCUMENTATION.md](./partials/_completions/DOCUMENTATION.md)
-* `__gh_handle_activeHelp` (function, `partials/_completions/gh`) — documented in [./partials/_completions/DOCUMENTATION.md](./partials/_completions/DOCUMENTATION.md)
-* `__gh_handle_completion_types` (function, `partials/_completions/gh`) — documented in [./partials/_completions/DOCUMENTATION.md](./partials/_completions/DOCUMENTATION.md)
-* `__gh_handle_special_char` (function, `partials/_completions/gh`) — documented in [./partials/_completions/DOCUMENTATION.md](./partials/_completions/DOCUMENTATION.md)
-* `__gh_handle_standard_completion_case` (function, `partials/_completions/gh`) — documented in [./partials/_completions/DOCUMENTATION.md](./partials/_completions/DOCUMENTATION.md)
-* `__gh_init_completion` (function, `partials/_completions/gh`) — documented in [./partials/_completions/DOCUMENTATION.md](./partials/_completions/DOCUMENTATION.md)
-* `__gh_process_completion_results` (function, `partials/_completions/gh`) — documented in [./partials/_completions/DOCUMENTATION.md](./partials/_completions/DOCUMENTATION.md)
-* `__gh_reprint_commandLine` (function, `partials/_completions/gh`) — documented in [./partials/_completions/DOCUMENTATION.md](./partials/_completions/DOCUMENTATION.md)
-* `__hugo_debug` (function, `partials/_completions/gohugo`) — documented in [./partials/_completions/DOCUMENTATION.md](./partials/_completions/DOCUMENTATION.md)
-* `__hugo_extract_activeHelp` (function, `partials/_completions/gohugo`) — documented in [./partials/_completions/DOCUMENTATION.md](./partials/_completions/DOCUMENTATION.md)
-* `__hugo_format_comp_descriptions` (function, `partials/_completions/gohugo`) — documented in [./partials/_completions/DOCUMENTATION.md](./partials/_completions/DOCUMENTATION.md)
-* `__hugo_get_completion_results` (function, `partials/_completions/gohugo`) — documented in [./partials/_completions/DOCUMENTATION.md](./partials/_completions/DOCUMENTATION.md)
-* `__hugo_handle_completion_types` (function, `partials/_completions/gohugo`) — documented in [./partials/_completions/DOCUMENTATION.md](./partials/_completions/DOCUMENTATION.md)
-* `__hugo_handle_special_char` (function, `partials/_completions/gohugo`) — documented in [./partials/_completions/DOCUMENTATION.md](./partials/_completions/DOCUMENTATION.md)
-* `__hugo_handle_standard_completion_case` (function, `partials/_completions/gohugo`) — documented in [./partials/_completions/DOCUMENTATION.md](./partials/_completions/DOCUMENTATION.md)
-* `__hugo_init_completion` (function, `partials/_completions/gohugo`) — documented in [./partials/_completions/DOCUMENTATION.md](./partials/_completions/DOCUMENTATION.md)
-* `__hugo_process_completion_results` (function, `partials/_completions/gohugo`) — documented in [./partials/_completions/DOCUMENTATION.md](./partials/_completions/DOCUMENTATION.md)
-* `__robo_list_cmds` (function, `partials/_completions/robo`) — documented in [./partials/_completions/DOCUMENTATION.md](./partials/_completions/DOCUMENTATION.md)
-* `__robo_list_opts` (function, `partials/_completions/robo`) — documented in [./partials/_completions/DOCUMENTATION.md](./partials/_completions/DOCUMENTATION.md)
-* `__start_gh` (function, `partials/_completions/gh`) — documented in [./partials/_completions/DOCUMENTATION.md](./partials/_completions/DOCUMENTATION.md)
-* `__start_hugo` (function, `partials/_completions/gohugo`) — documented in [./partials/_completions/DOCUMENTATION.md](./partials/_completions/DOCUMENTATION.md)
-* `_bootstrap_class_lookup_completions` (function, `partials/_completions/bootstrap`) — documented in [./partials/_completions/DOCUMENTATION.md](./partials/_completions/DOCUMENTATION.md)
-* `_caniuse_completion` (function, `partials/_completions/caniuse`) — documented in [./partials/_completions/DOCUMENTATION.md](./partials/_completions/DOCUMENTATION.md)
-* `_cd_effective_nvmrc` (function, `partials/_functions/change_directory`) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `_cd_maybe_show_git_status` (function, `partials/_functions/change_directory`) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `_cd_maybe_use_nvm` (function, `partials/_functions/change_directory`) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `_codex` (function, `partials/_completions/codex`) — documented in [./partials/_completions/DOCUMENTATION.md](./partials/_completions/DOCUMENTATION.md)
-* `_default_path` (function, `helpers/explore`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `_error` (function, `helpers/explore`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `_git_find_commitlint_config` (function, `partials/_functions/git`) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `_git_get_root` (function, `partials/_functions/git`) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `_git_has_commitlint_config` (function, `partials/_functions/git`) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `_git_should_use_cz` (function, `partials/_functions/git`) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `_help` (function, `helpers/explore`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `_log` (function, `helpers/explore`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `_npm_completion` (function, `partials/_completions/npm`) — documented in [./partials/_completions/DOCUMENTATION.md](./partials/_completions/DOCUMENTATION.md)
-* `_robo` (function, `partials/_completions/robo`) — documented in [./partials/_completions/DOCUMENTATION.md](./partials/_completions/DOCUMENTATION.md)
-* `_ssh_hosts_completion` (function, `partials/completions`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `_stem` (function, `partials/_completions/robo`) — documented in [./partials/_completions/DOCUMENTATION.md](./partials/_completions/DOCUMENTATION.md)
-* `_wp_complete` (function, `partials/_completions/wp`) — documented in [./partials/_completions/DOCUMENTATION.md](./partials/_completions/DOCUMENTATION.md)
-* `acquireLock` (method/function, `helpers/logs/cleanup.ts`) — documented in [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md)
-* `actions` (function, `partials/_aliases/workspace`) — documented in [./partials/_aliases/DOCUMENTATION.md](./partials/_aliases/DOCUMENTATION.md)
-* `add_config_file` (function, `helpers/packages/create.sh`) — documented in [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md)
-* `add_polybar_issue` (function, `cronjobs/msgvault.sh`) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `ahead_behind_counts` (function, `cronjobs/git_updates.sh`) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `alert` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `apply_labels_to_repo` (function, `helpers/gh/label-migration.sh`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `apply_template` (function, `workspaces/ws_tile_window`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `apply_wallpaper` (function, `helpers/set-wallpaper.sh`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `applyCorrections` (method/function, `helpers/theme/color-steps.ts`) — documented in [./helpers/theme/DOCUMENTATION.md](./helpers/theme/DOCUMENTATION.md)
-* `archivePathFor` (method/function, `helpers/logs/cleanup.ts`) — documented in [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md)
-* `auditRepository` (method/function, `helpers/gh/github-manager.ts`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `backup_container_folder` (function, `cronjobs/docker-backup.sh`) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `bashrc` (file) — documented in [./DOCUMENTATION.md](./DOCUMENTATION.md)
-* `build_note_path` (function, `helpers/daily-reports/commit-report-to-dailynote.sh`) — documented in [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md)
-* `build_note_title` (function, `helpers/daily-reports/commit-report-to-dailynote.sh`) — documented in [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md)
-* `build_report_content` (function, `helpers/daily-reports/commit-report-to-dailynote.sh`) — documented in [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md)
-* `build_rsync_command` (function, `helpers/synch-devspace.sh`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `build_select_line` (function, `helpers/_actions/actions.sh`) — documented in [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md)
-* `buildChannelTitle` (method/function, `helpers/freshrss/export.ts`) — documented in [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md)
-* `buildOutputPath` (method/function, `helpers/remarkable/transfer.ts`) — documented in [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md)
-* `buildQualityArgs` (method/function, `helpers/screencaps.ts`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `buildRssXml` (method/function, `helpers/freshrss/export.ts`) — documented in [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md)
-* `buildSamplingPlan` (method/function, `helpers/screencaps.ts`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `buildStreamId` (method/function, `helpers/freshrss/export.ts`) — documented in [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md)
-* `cal` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `captureCommand` (method/function, `helpers/remarkable/transfer.ts`) — documented in [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md)
-* `cd` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `cdg` (function, `partials/_functions/cdg`) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `cdg_cache_file` (function, `helpers/gh/cdg`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `cdg_cache_is_fresh` (function, `helpers/gh/cdg`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `cdg_clone_if_missing` (function, `helpers/gh/cdg`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `cdg_die` (function, `helpers/gh/cdg`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `cdg_error` (function, `helpers/gh/cdg`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `cdg_expand_path` (function, `helpers/gh/cdg`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `cdg_fetch_repositories` (function, `helpers/gh/cdg`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `cdg_init_logging` (function, `helpers/gh/cdg`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `cdg_is_positive_int` (function, `helpers/gh/cdg`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `cdg_log_verbose` (function, `helpers/gh/cdg`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `cdg_main` (function, `helpers/gh/cdg`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `cdg_normalize_repo_path_template` (function, `helpers/gh/cdg`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `cdg_render_repo_path` (function, `helpers/gh/cdg`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `cdg_repo_field` (function, `helpers/gh/cdg`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `cdg_repo_path_template_has_placeholder` (function, `helpers/gh/cdg`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `cdg_repository_count` (function, `helpers/gh/cdg`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `cdg_script_name` (function, `helpers/gh/cdg`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `cdg_select_repository` (function, `helpers/gh/cdg`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `cdg_source_glone` (function, `helpers/gh/cdg`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `cdg_source_libs` (function, `helpers/gh/cdg`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `cdg_usage` (function, `helpers/gh/cdg`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `change_directory` (function, `partials/_functions/change_directory`) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `check-network` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `clamp` (method/function, `helpers/theme/color-steps.ts`) — documented in [./helpers/theme/DOCUMENTATION.md](./helpers/theme/DOCUMENTATION.md)
-* `clean_json` (function, `installs/50-obsidian.sh`) — documented in [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md)
-* `cleanup` (function, `helpers/synch-devspace.sh`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `clear_labels_for_repo` (function, `helpers/gh/label-migration.sh`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `clearWorkDirectory` (method/function, `helpers/remarkable/transfer.ts`) — documented in [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md)
-* `clone_repo_if_missing` (function, `cronjobs/git_updates.sh`) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `cloneRepositoryIfMissing` (method/function, `helpers/gh/github-manager.ts`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `cmd_get` (function, `helpers/github-token`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `cmd_print_env` (function, `helpers/github-token`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `cmd_run` (function, `helpers/github-token`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `cmd_show_config` (function, `helpers/github-token`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `code` (function, `partials/_functions/vscode`) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `codex-local` (function, `partials/_functions/codex`) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `codex-update` (alias, `partials/_aliases/tools`) — documented in [./partials/_aliases/DOCUMENTATION.md](./partials/_aliases/DOCUMENTATION.md)
-* `collect_repositories` (function, `helpers/daily-reports/commits-to-notes.sh`) — documented in [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md)
-* `colorize_expanded` (function, `helpers/_actions/actions.sh`) — documented in [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md)
-* `command_exists` (function, `helpers/gh/label-migration.sh`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `commandExists` (method/function, `helpers/screencaps.ts`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `compressGroup` (method/function, `helpers/logs/cleanup.ts`) — documented in [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md)
-* `compute_utc_window` (function, `helpers/daily-reports/commits-to-notes.sh`) — documented in [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md)
-* `configure_gh_auth` (function, `helpers/gh/label-migration.sh`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `consoleVerbose` (method/function, `helpers/logs/cleanup.ts`) — documented in [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md)
-* `constructor` (method/function, `helpers/remarkable/transfer.ts`) — documented in [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md)
-* `countfiles` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `cp` (alias, `partials/_aliases/system`) — documented in [./partials/_aliases/DOCUMENTATION.md](./partials/_aliases/DOCUMENTATION.md)
-* `create_temp_exclude_file` (function, `helpers/synch-devspace.sh`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `createConfig` (method/function, `helpers/remarkable/transfer.ts`) — documented in [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md)
-* `createContent` (method/function, `helpers/remarkable/transfer.ts`) — documented in [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md)
-* `createMetadata` (method/function, `helpers/remarkable/transfer.ts`) — documented in [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md)
-* `createTarGzFromDirectory` (method/function, `helpers/docker/backup-runner.mjs`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `createTarGzFromDirectory` (method/function, `helpers/docker/backup-runner.ts`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `createTarGzFromPaths` (method/function, `helpers/docker/backup-runner.mjs`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `createTarGzFromPaths` (method/function, `helpers/docker/backup-runner.ts`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `createTimestamp` (function, `helpers/docker/backup-runner.mjs`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `createTimestamp` (function, `helpers/docker/backup-runner`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `createTimestamp` (method/function, `helpers/docker/backup-runner.mjs`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `createTimestamp` (method/function, `helpers/docker/backup-runner.ts`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `cronjobs/docker-backup.sh` (file) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `cronjobs/DOCUMENTATION.md` (file) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `cronjobs/filespace-discord.sh` (file) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `cronjobs/git_updates.sh` (file) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `cronjobs/msgvault.sh` (file) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `cronjobs/synch_downloads.json` (file) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `cronjobs/synch_downloads.sh` (file) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `current_branch` (function, `cronjobs/git_updates.sh`) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `d` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `default_config_file` (function, `helpers/packages/create.sh`) — documented in [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md)
-* `deleteFiles` (method/function, `helpers/logs/cleanup.ts`) — documented in [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md)
-* `derive_defaults` (function, `cronjobs/git_updates.sh`) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `deriveArchiveDay` (method/function, `helpers/logs/cleanup.ts`) — documented in [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md)
-* `detect_current_repo` (function, `helpers/gh/label-migration.sh`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `detect_mode` (function, `helpers/set-wallpaper.sh`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `detectComposeCommand` (method/function, `helpers/docker/backup-runner.mjs`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `detectComposeCommand` (method/function, `helpers/docker/backup-runner.ts`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `detectScriptType` (method/function, `helpers/docker/backup-runner.mjs`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `detectScriptType` (method/function, `helpers/docker/backup-runner.ts`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `die` (function, `cronjobs/git_updates.sh`) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `die` (function, `helpers/gh/git-sync.sh`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `die` (function, `helpers/gh/label-migration.sh`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `die` (function, `helpers/github-token`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `die` (function, `helpers/packages/create.sh`) — documented in [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md)
-* `die` (function, `helpers/web-mirror.sh`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `die` (function, `helpers/workspace/ws-setup.sh`) — documented in [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md)
-* `die` (function, `workspaces/ws_generate_tile_svgs`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `die` (function, `workspaces/ws_launch_program`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `die` (function, `workspaces/ws_list_windows`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `die` (function, `workspaces/ws_list_workspaces`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `die` (function, `workspaces/ws_menu_window_move`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `die` (function, `workspaces/ws_menu_window_tile_target`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `die` (function, `workspaces/ws_menu_window_tile`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `die` (function, `workspaces/ws_move_active_window`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `die` (function, `workspaces/ws_open_on_workspace`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `die` (function, `workspaces/ws_tile_window`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `dir` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `dnb_archive_create` (function, `lib/30-filesystem/dnb-archive.bash`) — documented in [./lib/README.md](./lib/README.md)
-* `dnb_archive_extract` (function, `lib/30-filesystem/dnb-archive.bash`) — documented in [./lib/README.md](./lib/README.md)
-* `dnb_auto_source` (function, `lib/00-core/dnb-core-source.bash`) — documented in [./lib/README.md](./lib/README.md)
-* `dnb_check_requirements` (function, `lib/00-core/dnb-core-requirements.bash`) — documented in [./lib/README.md](./lib/README.md)
-* `dnb_config_get` (function, `lib/20-config/dnb-config.bash`) — documented in [./lib/README.md](./lib/README.md)
-* `dnb_create_directory` (function, `lib/30-filesystem/dnb-fs.bash`) — documented in [./lib/README.md](./lib/README.md)
-* `dnb_execute_lines` (function, `lib/30-filesystem/dnb-fs.bash`) — documented in [./lib/README.md](./lib/README.md)
-* `dnb_is_interactive` (function, `lib/00-core/dnb-core-interactive.bash`) — documented in [./lib/README.md](./lib/README.md)
-* `dnb_load_env` (function, `lib/00-core/dnb-core-env.bash`) — documented in [./lib/README.md](./lib/README.md)
-* `dnb_log` (function, `lib/00-core/dnb-core-log.bash`) — documented in [./lib/README.md](./lib/README.md)
-* `dnb_log_init` (function, `lib/00-core/dnb-core-log.bash`) — documented in [./lib/README.md](./lib/README.md)
-* `dnb_package_list_sections` (function, `lib/40-packages/dnb-packages.bash`) — documented in [./lib/README.md](./lib/README.md)
-* `dnb_package_read_paths` (function, `lib/40-packages/dnb-packages.bash`) — documented in [./lib/README.md](./lib/README.md)
-* `dnb_path_add_if_missing` (function, `lib/10-path/dnb-path.bash`) — documented in [./lib/README.md](./lib/README.md)
-* `dnb_path_contains` (function, `lib/10-path/dnb-path.bash`) — documented in [./lib/README.md](./lib/README.md)
-* `dnb_path_expand` (function, `lib/30-filesystem/dnb-path-patterns.bash`) — documented in [./lib/README.md](./lib/README.md)
-* `dnb_path_has_glob` (function, `lib/30-filesystem/dnb-path-patterns.bash`) — documented in [./lib/README.md](./lib/README.md)
-* `dnb_path_resolve_pattern` (function, `lib/30-filesystem/dnb-path-patterns.bash`) — documented in [./lib/README.md](./lib/README.md)
-* `dnb_path_sanitise` (function, `lib/10-path/dnb-path.bash`) — documented in [./lib/README.md](./lib/README.md)
-* `dnb_path_trim` (function, `lib/30-filesystem/dnb-path-patterns.bash`) — documented in [./lib/README.md](./lib/README.md)
-* `dnb_repo_config_get` (function, `lib/20-config/dnb-repo-config.bash`) — documented in [./lib/README.md](./lib/README.md)
-* `dnb_to_lower` (function, `lib/50-variables/dnb-strings.bash`) — documented in [./lib/README.md](./lib/README.md)
-* `DOCUMENTATION.md` (file) — documented in [./DOCUMENTATION.md](./DOCUMENTATION.md)
-* `dotfiles` (function, `partials/_functions/dotfiles`) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `dotfiles_get_next_version` (function, `partials/_functions/dotfiles`) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `dotfiles_get_version` (function, `partials/_functions/dotfiles`) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `dotfiles_git_status` (function, `partials/_functions/dotfiles`) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `dotfiles_open_repository` (function, `partials/_functions/dotfiles`) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `dotfiles_print_help` (function, `partials/_functions/dotfiles`) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `dotfiles_require_directory` (function, `partials/_functions/dotfiles`) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `dotfiles_require_package_file` (function, `partials/_functions/dotfiles`) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `downloadFromRemarkable` (method/function, `helpers/remarkable/transfer.ts`) — documented in [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md)
-* `egrep` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `emit_row` (function, `workspaces/ws_launch_program`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `emit_row` (function, `workspaces/ws_list_workspaces`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `ensure_config_files` (function, `helpers/packages/create.sh`) — documented in [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md)
-* `ensure_daily_note_exists` (function, `helpers/daily-reports/commit-report-to-dailynote.sh`) — documented in [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md)
-* `ensure_directory_exists` (function, `helpers/synch-devspace.sh`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `ensure_dotbot_ready` (function, `helpers/dotbot`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `ensure_git_repo` (function, `cronjobs/git_updates.sh`) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `ensure_log_dir` (function, `helpers/bash/startup-profiler.sh`) — documented in [./helpers/bash/DOCUMENTATION.md](./helpers/bash/DOCUMENTATION.md)
-* `ensure_names_length` (function, `helpers/workspace/ws-setup.sh`) — documented in [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md)
-* `ensure_parent_dir` (function, `cronjobs/git_updates.sh`) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `ensureBinaryAvailable` (method/function, `helpers/logs/cleanup.ts`) — documented in [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md)
-* `ensureCommandAvailable` (method/function, `helpers/gh/github-manager.ts`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `ensureDir` (method/function, `helpers/logs/cleanup.ts`) — documented in [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md)
-* `ensureDirectory` (method/function, `helpers/docker/backup-runner.mjs`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `ensureDirectory` (method/function, `helpers/docker/backup-runner.ts`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `ensureGhAuthenticated` (method/function, `helpers/gh/github-manager.ts`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `ensureLogDir` (method/function, `helpers/api/porkbun-api.ts`) — documented in [./helpers/api/DOCUMENTATION.md](./helpers/api/DOCUMENTATION.md)
-* `ensureUniquePath` (method/function, `helpers/logs/cleanup.ts`) — documented in [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md)
-* `error` (function, `helpers/gh/label-migration.sh`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `errToString` (method/function, `helpers/screencaps.ts`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `escapeXml` (method/function, `helpers/freshrss/export.ts`) — documented in [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md)
-* `execCommand` (method/function, `helpers/docker/backup-runner.mjs`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `execCommand` (method/function, `helpers/docker/backup-runner.ts`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `execCommand` (method/function, `helpers/gh/github-manager.ts`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `executeScriptTask` (method/function, `helpers/docker/backup-runner.mjs`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `executeScriptTask` (method/function, `helpers/docker/backup-runner.ts`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `executeTomlTask` (method/function, `helpers/docker/backup-runner.mjs`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `executeTomlTask` (method/function, `helpers/docker/backup-runner.ts`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `expand_path` (function, `cronjobs/git_updates.sh`) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `expand_tilde` (function, `cronjobs/synch_downloads.sh`) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `expandHome` (method/function, `helpers/kando/kando-vscode-menu-creator.ts`) — documented in [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md)
-* `expandHomeDirectory` (method/function, `helpers/gh/github-manager.ts`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `explore` (function, `helpers/explore`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `export_keybindings` (function, `partials/_functions/keybindings`) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `extract_asset_url_fallback` (function, `installs/50-obsidian.sh`) — documented in [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md)
-* `extract_asset_url_with_jq` (function, `installs/50-obsidian.sh`) — documented in [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md)
-* `extract_dotbot_description` (function, `helpers/_actions/actions.sh`) — documented in [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md)
-* `extract_github_slug` (function, `helpers/daily-reports/commits-to-notes.sh`) — documented in [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md)
-* `extract_repo_name` (function, `helpers/daily-reports/commits-to-notes.sh`) — documented in [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md)
-* `extractMultiRun` (method/function, `helpers/screencaps.ts`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `extractSingleRun` (method/function, `helpers/screencaps.ts`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `fail` (function, `cronjobs/synch_downloads.sh`) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `fail` (function, `helpers/bash/startup-profiler.sh`) — documented in [./helpers/bash/DOCUMENTATION.md](./helpers/bash/DOCUMENTATION.md)
-* `fail` (method/function, `helpers/theme/color-steps.ts`) — documented in [./helpers/theme/DOCUMENTATION.md](./helpers/theme/DOCUMENTATION.md)
-* `fail_with_help` (function, `helpers/set-wallpaper.sh`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `fast_forward_possible` (function, `cronjobs/git_updates.sh`) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `fetch_all_complete` (function, `cronjobs/git_updates.sh`) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `fetch_latest_release_json` (function, `installs/50-obsidian.sh`) — documented in [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md)
-* `fetchRaindropTags` (method/function, `helpers/raindrop.io/getTags.ts`) — documented in [./helpers/raindrop.io/DOCUMENTATION.md](./helpers/raindrop.io/DOCUMENTATION.md)
-* `fetchRemoteRepositories` (method/function, `helpers/gh/github-manager.ts`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `fetchRemoteRepositoryInventory` (method/function, `helpers/gh/github-manager.ts`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `fetchRepository` (method/function, `helpers/gh/github-manager.ts`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `fetchRepositoryTags` (method/function, `helpers/gh/github-manager.ts`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `fetchStreamItems` (method/function, `helpers/freshrss/export.ts`) — documented in [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md)
-* `fetchStreamPage` (method/function, `helpers/freshrss/export.ts`) — documented in [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md)
-* `fetchWithTimeout` (method/function, `helpers/freshrss/export.ts`) — documented in [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md)
-* `fgrep` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `fileExists` (method/function, `helpers/logs/cleanup.ts`) — documented in [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md)
-* `filterRemoteDocuments` (method/function, `helpers/remarkable/transfer.ts`) — documented in [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md)
-* `filterRepositoriesByTopics` (method/function, `helpers/gh/github-manager.ts`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `findLogCandidates` (method/function, `helpers/logs/cleanup.ts`) — documented in [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md)
-* `findTasks` (method/function, `helpers/docker/backup-runner.mjs`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `findTasks` (method/function, `helpers/docker/backup-runner.ts`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `fmtTimeLabel` (method/function, `helpers/screencaps.ts`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `formatCurrentDay` (method/function, `helpers/logs/cleanup.ts`) — documented in [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md)
-* `ftail` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `fullps` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `functions` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `g_one_commit` (function, `partials/_functions/g_one_commit`) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `gatherDomainInfo` (method/function, `helpers/api/porkbun-api.ts`) — documented in [./helpers/api/DOCUMENTATION.md](./helpers/api/DOCUMENTATION.md)
-* `generate_keybindings_page` (function, `partials/_functions/keybindings`) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `generate_report` (function, `helpers/bash/startup-profiler.sh`) — documented in [./helpers/bash/DOCUMENTATION.md](./helpers/bash/DOCUMENTATION.md)
-* `get_current_desktop_idx` (function, `workspaces/ws_tile_window`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `get_current_desktop_index` (function, `workspaces/ws_menu_window_tile_target`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `get_current_desktop_wmctrl` (function, `workspaces/ws_move_active_window`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `get_current_desktop_xdotool` (function, `workspaces/ws_move_active_window`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `get_current_monitor_geometry` (function, `workspaces/ws_menu_window_tile_target`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `get_current_workspace_num` (function, `workspaces/ws_launch_program`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `get_default_role` (function, `helpers/github-token`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `get_default_visibility` (function, `helpers/github-token`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `get_desktop_entry_value` (function, `helpers/_actions/actions.sh`) — documented in [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md)
-* `get_desktop_workarea` (function, `workspaces/ws_tile_window`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `get_feh_style_flag` (function, `helpers/set-wallpaper.sh`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `get_help_node_context` (function, `helpers/node-run`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `get_origin_url` (function, `helpers/gh/label-migration.sh`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `get_remote_connection_parts` (function, `helpers/synch-devspace.sh`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `get_remote_default_branch` (function, `helpers/gh/git-sync.sh`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `get_token_value` (function, `helpers/github-token`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `get_token_variable_name` (function, `helpers/github-token`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `get_total_desktops_wmctrl` (function, `workspaces/ws_move_active_window`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `get_total_desktops_xdotool` (function, `workspaces/ws_move_active_window`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `get_total_workspaces` (function, `workspaces/ws_launch_program`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `get_total_workspaces_wmctrl` (function, `workspaces/ws_open_on_workspace`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `get_total_workspaces_xdotool` (function, `workspaces/ws_open_on_workspace`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `get_window_frame_extents` (function, `workspaces/ws_tile_window`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `get_wm_name` (function, `helpers/workspace/wm-detect.sh`) — documented in [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md)
-* `get_xfce_style_value` (function, `helpers/set-wallpaper.sh`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `getAheadBehind` (method/function, `helpers/gh/github-manager.ts`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `getCommandName` (method/function, `helpers/gh/github-manager.ts`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `getConfig` (method/function, `helpers/freshrss/export.ts`) — documented in [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md)
-* `getConflictFiles` (method/function, `helpers/gh/github-manager.ts`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `getCurrentBranch` (method/function, `helpers/gh/github-manager.ts`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `getDefaultRemoteName` (method/function, `helpers/gh/github-manager.ts`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `getDirtyFiles` (method/function, `helpers/gh/github-manager.ts`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `getDurationSeconds` (method/function, `helpers/screencaps.ts`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `getGitMetadataPath` (method/function, `helpers/gh/github-manager.ts`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `getHostName` (method/function, `helpers/docker/backup-runner.mjs`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `getHostName` (method/function, `helpers/docker/backup-runner.ts`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `getItemLink` (method/function, `helpers/freshrss/export.ts`) — documented in [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md)
-* `getRemoteOnlyCommits` (method/function, `helpers/gh/github-manager.ts`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `getSupportedExtension` (method/function, `helpers/remarkable/transfer.ts`) — documented in [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md)
-* `getUpstreamRef` (method/function, `helpers/gh/github-manager.ts`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `gh_repos_list` (function, `partials/_functions/gh_repo_list`) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `gh_repos_list_help` (function, `partials/_functions/gh_repo_list`) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `git` (function, `partials/_functions/git`) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `git-orphan` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `git_identity_audit` (function, `helpers/gh/git-verify-identity.sh`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `git_sig_lint` (function, `helpers/gh/git-sig-lint.sh`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `git_verify_debug` (function, `helpers/gh/git-verify-committer.sh`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `github_feed_releases` (function, `partials/_functions/github_feed_releases`) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `gits` (alias, `partials/_aliases/git`) — documented in [./partials/_aliases/DOCUMENTATION.md](./partials/_aliases/DOCUMENTATION.md)
-* `gitst` (alias, `partials/_aliases/git`) — documented in [./partials/_aliases/DOCUMENTATION.md](./partials/_aliases/DOCUMENTATION.md)
-* `glone` (function, `partials/_functions/git-clone`) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `glone_clone_one` (function, `partials/_functions/git-clone`) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `grep` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `groupCandidatesForCompression` (method/function, `helpers/logs/cleanup.ts`) — documented in [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md)
-* `h` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `handle_autostart_disable` (function, `helpers/_actions/actions.sh`) — documented in [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md)
-* `handle_autostart_enable` (function, `helpers/_actions/actions.sh`) — documented in [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md)
-* `handle_dotbot_list` (function, `helpers/_actions/actions.sh`) — documented in [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md)
-* `handle_dotbot_run` (function, `helpers/_actions/actions.sh`) — documented in [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md)
-* `handle_menu` (function, `helpers/_actions/actions.sh`) — documented in [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md)
-* `has_compose_file` (function, `cronjobs/docker-backup.sh`) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `has_upstream` (function, `cronjobs/git_updates.sh`) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `hasText` (method/function, `helpers/freshrss/export.ts`) — documented in [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md)
-* `have_cmd` (function, `helpers/workspace/ws-setup.sh`) — documented in [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md)
-* `have_command` (function, `helpers/set-wallpaper.sh`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `helpers/_actions/actions.sh` (file) — documented in [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md)
-* `helpers/_actions/DOCUMENTATION.md` (file) — documented in [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md)
-* `helpers/_actions/README.md` (file) — documented in [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md)
-* `helpers/_lib/DOCUMENTATION.md` (file) — documented in [./helpers/_lib/DOCUMENTATION.md](./helpers/_lib/DOCUMENTATION.md)
-* `helpers/_lib/node.ts` (file) — documented in [./helpers/_lib/DOCUMENTATION.md](./helpers/_lib/DOCUMENTATION.md)
-* `helpers/api/DOCUMENTATION.md` (file) — documented in [./helpers/api/DOCUMENTATION.md](./helpers/api/DOCUMENTATION.md)
-* `helpers/api/porkbun-api.ts` (file) — documented in [./helpers/api/DOCUMENTATION.md](./helpers/api/DOCUMENTATION.md)
-* `helpers/bash/DOCUMENTATION.md` (file) — documented in [./helpers/bash/DOCUMENTATION.md](./helpers/bash/DOCUMENTATION.md)
-* `helpers/bash/startup-profiler.sh` (file) — documented in [./helpers/bash/DOCUMENTATION.md](./helpers/bash/DOCUMENTATION.md)
-* `helpers/daily-reports/commit-report-to-dailynote.sh` (file) — documented in [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md)
-* `helpers/daily-reports/commits-to-notes.sh` (file) — documented in [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md)
-* `helpers/daily-reports/DOCUMENTATION.md` (file) — documented in [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md)
-* `helpers/daily-reports/README.md` (file) — documented in [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md)
-* `helpers/docker/backup-runner` (file) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `helpers/docker/backup-runner.mjs` (file) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `helpers/docker/backup-runner.ts` (file) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `helpers/docker/DOCUMENTATION.md` (file) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `helpers/docker/examples/backup.sh` (file) — documented in [./helpers/docker/examples/DOCUMENTATION.md](./helpers/docker/examples/DOCUMENTATION.md)
-* `helpers/docker/examples/backup.toml` (file) — documented in [./helpers/docker/examples/DOCUMENTATION.md](./helpers/docker/examples/DOCUMENTATION.md)
-* `helpers/docker/examples/backup.ts` (file) — documented in [./helpers/docker/examples/DOCUMENTATION.md](./helpers/docker/examples/DOCUMENTATION.md)
-* `helpers/docker/examples/DOCUMENTATION.md` (file) — documented in [./helpers/docker/examples/DOCUMENTATION.md](./helpers/docker/examples/DOCUMENTATION.md)
-* `helpers/docker/README.md` (file) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `helpers/DOCUMENTATION.md` (file) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `helpers/dotbot` (file) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `helpers/explore` (file) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `helpers/freshrss/DOCUMENTATION.md` (file) — documented in [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md)
-* `helpers/freshrss/export.ts` (file) — documented in [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md)
-* `helpers/gh/cdg` (file) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `helpers/gh/DOCUMENTATION.md` (file) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `helpers/gh/git-sig-lint.sh` (file) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `helpers/gh/git-sync.sh` (file) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `helpers/gh/git-verify-committer.sh` (file) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `helpers/gh/git-verify-identity.sh` (file) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `helpers/gh/github-manager.md` (file) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `helpers/gh/github-manager.ts` (file) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `helpers/gh/label-migration.sh` (file) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `helpers/github-token` (file) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `helpers/INDEX.md` (file) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `helpers/interface-restart` (file) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `helpers/kando/DOCUMENTATION.md` (file) — documented in [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md)
-* `helpers/kando/kando-vscode-menu-creator.ts` (file) — documented in [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md)
-* `helpers/logs/cleanup.ts` (file) — documented in [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md)
-* `helpers/logs/config.toml` (file) — documented in [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md)
-* `helpers/logs/DOCUMENTATION.md` (file) — documented in [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md)
-* `helpers/logs/log-cleanup.config.schema.json` (file) — documented in [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md)
-* `helpers/logs/ToDo.md` (file) — documented in [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md)
-* `helpers/lpack` (file) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `helpers/node-run` (file) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `helpers/packages/create.sh` (file) — documented in [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md)
-* `helpers/packages/DOCUMENTATION.md` (file) — documented in [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md)
-* `helpers/packages/README.md` (file) — documented in [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md)
-* `helpers/raindrop.io/DOCUMENTATION.md` (file) — documented in [./helpers/raindrop.io/DOCUMENTATION.md](./helpers/raindrop.io/DOCUMENTATION.md)
-* `helpers/raindrop.io/getTags.ts` (file) — documented in [./helpers/raindrop.io/DOCUMENTATION.md](./helpers/raindrop.io/DOCUMENTATION.md)
-* `helpers/registry.toml` (file) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `helpers/remarkable/DOCUMENTATION.md` (file) — documented in [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md)
-* `helpers/remarkable/README.md` (file) — documented in [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md)
-* `helpers/remarkable/transfer.ts` (file) — documented in [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md)
-* `helpers/screencaps.ts` (file) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `helpers/set-wallpaper.sh` (file) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `helpers/set_max_listeners.cjs` (file) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `helpers/synch-devspace.sh` (file) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `helpers/theme/color-steps.md` (file) — documented in [./helpers/theme/DOCUMENTATION.md](./helpers/theme/DOCUMENTATION.md)
-* `helpers/theme/color-steps.todo.md` (file) — documented in [./helpers/theme/DOCUMENTATION.md](./helpers/theme/DOCUMENTATION.md)
-* `helpers/theme/color-steps.ts` (file) — documented in [./helpers/theme/DOCUMENTATION.md](./helpers/theme/DOCUMENTATION.md)
-* `helpers/theme/DOCUMENTATION.md` (file) — documented in [./helpers/theme/DOCUMENTATION.md](./helpers/theme/DOCUMENTATION.md)
-* `helpers/update-npm.sh` (file) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `helpers/web-mirror.sh` (file) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `helpers/workspace/DOCUMENTATION.md` (file) — documented in [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md)
-* `helpers/workspace/wm-detect.sh` (file) — documented in [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md)
-* `helpers/workspace/ws-name.sh` (file) — documented in [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md)
-* `helpers/workspace/ws-setup.sh` (file) — documented in [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md)
-* `helpText` (method/function, `helpers/screencaps.ts`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `hostname_lc` (function, `helpers/packages/create.sh`) — documented in [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md)
-* `igrep` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `import_keybindings` (function, `partials/_functions/keybindings`) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `INDEX.md` (file) — documented in [./INDEX.md](./INDEX.md)
-* `info` (function, `helpers/gh/label-migration.sh`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `init_logging` (function, `helpers/_actions/actions.sh`) — documented in [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md)
-* `init_logging` (function, `helpers/daily-reports/commit-report-to-dailynote.sh`) — documented in [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md)
-* `init_logging` (function, `helpers/daily-reports/commits-to-notes.sh`) — documented in [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md)
-* `init_logging` (function, `workspaces/ws_launch_program`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `init_verbose_logging` (function, `helpers/packages/create.sh`) — documented in [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md)
-* `insert_first_line` (function, `partials/_functions/insert_first_line`) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `install_deb` (function, `installs/50-obsidian.sh`) — documented in [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md)
-* `installs/10-system.sh` (file) — documented in [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md)
-* `installs/20-brew.sh` (file) — documented in [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md)
-* `installs/20-cargo.sh` (file) — documented in [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md)
-* `installs/50-atuin.sh` (file) — documented in [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md)
-* `installs/50-chrome.sh` (file) — documented in [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md)
-* `installs/50-github.sh` (file) — documented in [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md)
-* `installs/50-obsidian.sh` (file) — documented in [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md)
-* `installs/50-ollama.sh` (file) — documented in [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md)
-* `installs/50-signal.sh` (file) — documented in [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md)
-* `installs/50-sublime.sh` (file) — documented in [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md)
-* `installs/50.gum.sh` (file) — documented in [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md)
-* `installs/90-brew-packages.sh` (file) — documented in [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md)
-* `installs/90-cargo-packages.sh` (file) — documented in [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md)
-* `installs/DOCUMENTATION.md` (file) — documented in [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md)
-* `interpolate` (method/function, `helpers/docker/backup-runner.mjs`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `interpolate` (method/function, `helpers/docker/backup-runner.ts`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `interpolate` (method/function, `helpers/theme/color-steps.ts`) — documented in [./helpers/theme/DOCUMENTATION.md](./helpers/theme/DOCUMENTATION.md)
-* `inventoryLocalRepositories` (method/function, `helpers/gh/github-manager.ts`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `is_clean_worktree` (function, `cronjobs/git_updates.sh`) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `is_git_repository` (function, `helpers/daily-reports/commit-report-to-dailynote.sh`) — documented in [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md)
-* `is_git_repository` (function, `helpers/daily-reports/commits-to-notes.sh`) — documented in [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md)
-* `is_git_repository` (function, `helpers/gh/label-migration.sh`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `is_int` (function, `helpers/workspace/ws-setup.sh`) — documented in [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md)
-* `is_positive_int` (function, `helpers/gh/git-sync.sh`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `is_remote_target` (function, `helpers/synch-devspace.sh`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `isBoolean` (method/function, `helpers/gh/github-manager.ts`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `isCherryPickInProgress` (method/function, `helpers/gh/github-manager.ts`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `isCleanupAction` (method/function, `helpers/logs/cleanup.ts`) — documented in [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md)
-* `isCommandName` (method/function, `helpers/gh/github-manager.ts`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `isDirectRun` (method/function, `helpers/theme/color-steps.ts`) — documented in [./helpers/theme/DOCUMENTATION.md](./helpers/theme/DOCUMENTATION.md)
-* `isExecutable` (method/function, `helpers/docker/backup-runner.mjs`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `isExecutable` (method/function, `helpers/docker/backup-runner.ts`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `isGhRepositorySummary` (method/function, `helpers/gh/github-manager.ts`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `isGhRepositorySummaryArray` (method/function, `helpers/gh/github-manager.ts`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `isGhRepositoryTag` (method/function, `helpers/gh/github-manager.ts`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `isGhRepositoryTagArray` (method/function, `helpers/gh/github-manager.ts`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `isMenuObject` (method/function, `helpers/kando/kando-vscode-menu-creator.ts`) — documented in [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md)
-* `isMenuRootObject` (method/function, `helpers/kando/kando-vscode-menu-creator.ts`) — documented in [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md)
-* `isMergeInProgress` (method/function, `helpers/gh/github-manager.ts`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `isNullableString` (method/function, `helpers/gh/github-manager.ts`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `isRatioInZone` (method/function, `helpers/theme/color-steps.ts`) — documented in [./helpers/theme/DOCUMENTATION.md](./helpers/theme/DOCUMENTATION.md)
-* `isRebaseInProgress` (method/function, `helpers/gh/github-manager.ts`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `isRecord` (method/function, `helpers/gh/github-manager.ts`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `isRecord` (method/function, `helpers/raindrop.io/getTags.ts`) — documented in [./helpers/raindrop.io/DOCUMENTATION.md](./helpers/raindrop.io/DOCUMENTATION.md)
-* `isRecord` (method/function, `helpers/remarkable/transfer.ts`) — documented in [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md)
-* `isRevertInProgress` (method/function, `helpers/gh/github-manager.ts`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `isString` (method/function, `helpers/gh/github-manager.ts`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `isString` (method/function, `helpers/screencaps.ts`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `isVerboseEnv` (method/function, `helpers/logs/cleanup.ts`) — documented in [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md)
-* `jobdepends` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `jobhist` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `jobhold` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `jobice` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `jobkill` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `jobll` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `jobls` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `joboffhold` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `joboffice` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `jobstart` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `jobsu` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `jobterm` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `json` (method/function, `helpers/freshrss/export.ts`) — documented in [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md)
-* `json_has_key` (function, `cronjobs/synch_downloads.sh`) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `keybindingsmanager` (function, `partials/_functions/keybindings`) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `l` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `la` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `lal` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `lasttag` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `ldir` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `less` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `lib/00-core/dnb-core-colors.bash` (file) — documented in [./lib/README.md](./lib/README.md)
-* `lib/00-core/dnb-core-env.bash` (file) — documented in [./lib/README.md](./lib/README.md)
-* `lib/00-core/dnb-core-interactive.bash` (file) — documented in [./lib/README.md](./lib/README.md)
-* `lib/00-core/dnb-core-log.bash` (file) — documented in [./lib/README.md](./lib/README.md)
-* `lib/00-core/dnb-core-requirements.bash` (file) — documented in [./lib/README.md](./lib/README.md)
-* `lib/00-core/dnb-core-source.bash` (file) — documented in [./lib/README.md](./lib/README.md)
-* `lib/10-path/dnb-path.bash` (file) — documented in [./lib/README.md](./lib/README.md)
-* `lib/20-config/dnb-config.bash` (file) — documented in [./lib/README.md](./lib/README.md)
-* `lib/20-config/dnb-repo-config.bash` (file) — documented in [./lib/README.md](./lib/README.md)
-* `lib/30-filesystem/dnb-archive.bash` (file) — documented in [./lib/README.md](./lib/README.md)
-* `lib/30-filesystem/dnb-fs.bash` (file) — documented in [./lib/README.md](./lib/README.md)
-* `lib/30-filesystem/dnb-path-patterns.bash` (file) — documented in [./lib/README.md](./lib/README.md)
-* `lib/40-packages/dnb-packages.bash` (file) — documented in [./lib/README.md](./lib/README.md)
-* `lib/50-variables/dnb-strings.bash` (file) — documented in [./lib/README.md](./lib/README.md)
-* `lib/README.md` (file) — documented in [./lib/README.md](./lib/README.md)
-* `list_dotbot_profiles` (function, `helpers/_actions/actions.sh`) — documented in [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md)
-* `list_packages` (function, `helpers/packages/create.sh`) — documented in [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md)
-* `listDownloadableRemoteDocuments` (method/function, `helpers/remarkable/transfer.ts`) — documented in [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md)
-* `listWorkspaceFiles` (method/function, `helpers/kando/kando-vscode-menu-creator.ts`) — documented in [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md)
-* `ll` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `lla` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `load_env` (function, `cronjobs/git_updates.sh`) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `load_env_config_files` (function, `helpers/packages/create.sh`) — documented in [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md)
-* `load_env_file` (function, `helpers/github-token`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `load_nvm` (function, `helpers/node-run`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `loadConfig` (method/function, `helpers/logs/cleanup.ts`) — documented in [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md)
-* `log` (function, `cronjobs/git_updates.sh`) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `log` (function, `cronjobs/synch_downloads.sh`) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `log` (function, `helpers/gh/git-sync.sh`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `log` (function, `helpers/gh/label-migration.sh`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `log` (function, `helpers/web-mirror.sh`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `log` (function, `helpers/workspace/ws-setup.sh`) — documented in [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md)
-* `log` (function, `installs/50-obsidian.sh`) — documented in [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md)
-* `log` (method/function, `helpers/docker/backup-runner.mjs`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `log` (method/function, `helpers/docker/backup-runner.ts`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `log` (method/function, `helpers/gh/github-manager.ts`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `log` (method/function, `helpers/screencaps.ts`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `log_debug` (function, `helpers/_actions/actions.sh`) — documented in [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md)
-* `log_error` (function, `cronjobs/docker-backup.sh`) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `log_error` (function, `helpers/_actions/actions.sh`) — documented in [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md)
-* `log_error` (function, `helpers/daily-reports/commit-report-to-dailynote.sh`) — documented in [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md)
-* `log_error` (function, `helpers/daily-reports/commits-to-notes.sh`) — documented in [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md)
-* `log_error` (function, `helpers/docker/examples/backup.sh`) — documented in [./helpers/docker/examples/DOCUMENTATION.md](./helpers/docker/examples/DOCUMENTATION.md)
-* `log_info` (function, `cronjobs/docker-backup.sh`) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `log_info` (function, `helpers/daily-reports/commit-report-to-dailynote.sh`) — documented in [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md)
-* `log_info` (function, `helpers/daily-reports/commits-to-notes.sh`) — documented in [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md)
-* `log_info` (function, `helpers/docker/examples/backup.sh`) — documented in [./helpers/docker/examples/DOCUMENTATION.md](./helpers/docker/examples/DOCUMENTATION.md)
-* `log_init` (function, `helpers/web-mirror.sh`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `log_line` (function, `workspaces/ws_launch_program`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `log_message` (function, `helpers/node-run`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `log_message` (function, `helpers/set-wallpaper.sh`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `log_msg` (function, `helpers/_actions/actions.sh`) — documented in [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md)
-* `log_timestamp` (function, `helpers/daily-reports/commit-report-to-dailynote.sh`) — documented in [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md)
-* `log_timestamp` (function, `helpers/daily-reports/commits-to-notes.sh`) — documented in [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md)
-* `log_verbose` (function, `cronjobs/docker-backup.sh`) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `log_verbose` (function, `helpers/packages/create.sh`) — documented in [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md)
-* `log_warn` (function, `cronjobs/docker-backup.sh`) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `log_warn` (function, `helpers/daily-reports/commit-report-to-dailynote.sh`) — documented in [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md)
-* `log_warn` (function, `helpers/daily-reports/commits-to-notes.sh`) — documented in [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md)
-* `logErr` (method/function, `helpers/screencaps.ts`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `login` (method/function, `helpers/freshrss/export.ts`) — documented in [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md)
-* `logv` (function, `workspaces/ws_generate_tile_svgs`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `logv` (function, `workspaces/ws_menu_window_move`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `logv` (function, `workspaces/ws_menu_window_tile_target`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `logv` (function, `workspaces/ws_menu_window_tile`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `logv` (function, `workspaces/ws_move_active_window`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `logv` (function, `workspaces/ws_open_on_workspace`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `logv` (function, `workspaces/ws_tile_window`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `lpack_append_unique` (function, `helpers/lpack`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `lpack_collect_config_excludes` (function, `helpers/lpack`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `lpack_help` (function, `helpers/lpack`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `lpack_normalize_exclude` (function, `helpers/lpack`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `lpack_source_libs` (function, `helpers/lpack`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `lt` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `lu` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `main` (function, `cronjobs/docker-backup.sh`) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `main` (function, `cronjobs/git_updates.sh`) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `main` (function, `cronjobs/synch_downloads.sh`) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `main` (function, `helpers/_actions/actions.sh`) — documented in [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md)
-* `main` (function, `helpers/bash/startup-profiler.sh`) — documented in [./helpers/bash/DOCUMENTATION.md](./helpers/bash/DOCUMENTATION.md)
-* `main` (function, `helpers/daily-reports/commit-report-to-dailynote.sh`) — documented in [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md)
-* `main` (function, `helpers/daily-reports/commits-to-notes.sh`) — documented in [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md)
-* `main` (function, `helpers/docker/examples/backup.sh`) — documented in [./helpers/docker/examples/DOCUMENTATION.md](./helpers/docker/examples/DOCUMENTATION.md)
-* `main` (function, `helpers/dotbot`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `main` (function, `helpers/gh/label-migration.sh`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `main` (function, `helpers/github-token`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `main` (function, `helpers/lpack`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `main` (function, `helpers/packages/create.sh`) — documented in [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md)
-* `main` (function, `helpers/set-wallpaper.sh`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `main` (function, `helpers/synch-devspace.sh`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `main` (function, `helpers/workspace/ws-setup.sh`) — documented in [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md)
-* `main` (function, `installs/50-obsidian.sh`) — documented in [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md)
-* `main` (function, `workspaces/ws_launch_program`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `main` (function, `workspaces/ws_list_windows`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `main` (function, `workspaces/ws_list_workspaces`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `main` (method/function, `helpers/api/porkbun-api.ts`) — documented in [./helpers/api/DOCUMENTATION.md](./helpers/api/DOCUMENTATION.md)
-* `main` (method/function, `helpers/docker/backup-runner.mjs`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `main` (method/function, `helpers/docker/backup-runner.ts`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `main` (method/function, `helpers/docker/examples/backup.ts`) — documented in [./helpers/docker/examples/DOCUMENTATION.md](./helpers/docker/examples/DOCUMENTATION.md)
-* `main` (method/function, `helpers/freshrss/export.ts`) — documented in [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md)
-* `main` (method/function, `helpers/gh/github-manager.ts`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `main` (method/function, `helpers/kando/kando-vscode-menu-creator.ts`) — documented in [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md)
-* `main` (method/function, `helpers/logs/cleanup.ts`) — documented in [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md)
-* `main` (method/function, `helpers/raindrop.io/getTags.ts`) — documented in [./helpers/raindrop.io/DOCUMENTATION.md](./helpers/raindrop.io/DOCUMENTATION.md)
-* `main` (method/function, `helpers/remarkable/transfer.ts`) — documented in [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md)
-* `main` (method/function, `helpers/screencaps.ts`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `main` (method/function, `helpers/theme/color-steps.ts`) — documented in [./helpers/theme/DOCUMENTATION.md](./helpers/theme/DOCUMENTATION.md)
-* `make_zip_name` (function, `helpers/packages/create.sh`) — documented in [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md)
-* `makeChildEntry` (method/function, `helpers/kando/kando-vscode-menu-creator.ts`) — documented in [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md)
-* `menu_choose_activity` (function, `helpers/_actions/actions.sh`) — documented in [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md)
-* `menu_choose_scope` (function, `helpers/_actions/actions.sh`) — documented in [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md)
-* `menu_extract_id` (function, `helpers/_actions/actions.sh`) — documented in [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md)
-* `menu_py_toml` (function, `helpers/_actions/actions.sh`) — documented in [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md)
-* `menu_run_activity` (function, `helpers/_actions/actions.sh`) — documented in [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md)
-* `menus` (method/function, `helpers/kando/kando-vscode-menu-creator.ts`) — documented in [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md)
-* `mergeScaleFilter` (method/function, `helpers/screencaps.ts`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `move_active_to_desktop_wmctrl` (function, `workspaces/ws_move_active_window`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `move_active_to_desktop_xdotool` (function, `workspaces/ws_move_active_window`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `move_first_matching_window_to_workspace` (function, `helpers/workspace/ws-setup.sh`) — documented in [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md)
-* `moveFile` (method/function, `helpers/logs/cleanup.ts`) — documented in [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md)
-* `mv` (alias, `partials/_aliases/system`) — documented in [./partials/_aliases/DOCUMENTATION.md](./partials/_aliases/DOCUMENTATION.md)
-* `need_cmd` (function, `workspaces/ws_generate_tile_svgs`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `need_cmd` (function, `workspaces/ws_launch_program`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `need_cmd` (function, `workspaces/ws_menu_window_move`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `need_cmd` (function, `workspaces/ws_menu_window_tile_target`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `need_cmd` (function, `workspaces/ws_menu_window_tile`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `need_cmd` (function, `workspaces/ws_move_active_window`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `need_cmd` (function, `workspaces/ws_open_on_workspace`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `need_cmd` (function, `workspaces/ws_tile_window`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `node_run` (function, `helpers/node-run`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `normalisedEmail` (method/function, `helpers/gh/github-manager.ts`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `normalize_config_to_filename` (function, `helpers/dotbot`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `normalize_workspace_key` (function, `workspaces/ws_launch_program`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `normalizeTagEntry` (method/function, `helpers/raindrop.io/getTags.ts`) — documented in [./helpers/raindrop.io/DOCUMENTATION.md](./helpers/raindrop.io/DOCUMENTATION.md)
-* `notify_discord` (function, `cronjobs/git_updates.sh`) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `npm-check-updates` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `one` (method/function, `helpers/screencaps.ts`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `package_exists` (function, `helpers/packages/create.sh`) — documented in [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md)
-* `padVariableIndex` (method/function, `helpers/theme/color-steps.ts`) — documented in [./helpers/theme/DOCUMENTATION.md](./helpers/theme/DOCUMENTATION.md)
-* `parse_args` (function, `cronjobs/docker-backup.sh`) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `parse_args` (function, `helpers/packages/create.sh`) — documented in [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md)
-* `parse_args` (function, `helpers/set-wallpaper.sh`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `parse_args` (function, `helpers/workspace/ws-setup.sh`) — documented in [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md)
-* `parse_arguments` (function, `helpers/synch-devspace.sh`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `parse_config` (function, `cronjobs/git_updates.sh`) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `parse_desktop_selections` (function, `helpers/_actions/actions.sh`) — documented in [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md)
-* `parse_github_repo_from_url` (function, `helpers/gh/label-migration.sh`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `parse_workspace_lines` (function, `workspaces/ws_launch_program`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `parse_workspace_lines` (function, `workspaces/ws_list_workspaces`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `parseArgs` (method/function, `helpers/api/porkbun-api.ts`) — documented in [./helpers/api/DOCUMENTATION.md](./helpers/api/DOCUMENTATION.md)
-* `parseArgs` (method/function, `helpers/docker/backup-runner.mjs`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `parseArgs` (method/function, `helpers/docker/backup-runner.ts`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `parseArgs` (method/function, `helpers/freshrss/export.ts`) — documented in [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md)
-* `parseArgs` (method/function, `helpers/gh/github-manager.ts`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `parseArgs` (method/function, `helpers/kando/kando-vscode-menu-creator.ts`) — documented in [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md)
-* `parseArgs` (method/function, `helpers/logs/cleanup.ts`) — documented in [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md)
-* `parseArgs` (method/function, `helpers/raindrop.io/getTags.ts`) — documented in [./helpers/raindrop.io/DOCUMENTATION.md](./helpers/raindrop.io/DOCUMENTATION.md)
-* `parseArgs` (method/function, `helpers/screencaps.ts`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `parseArguments` (method/function, `helpers/remarkable/transfer.ts`) — documented in [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md)
-* `parseBooleanEnv` (method/function, `helpers/remarkable/transfer.ts`) — documented in [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md)
-* `parseCliArgs` (method/function, `helpers/theme/color-steps.ts`) — documented in [./helpers/theme/DOCUMENTATION.md](./helpers/theme/DOCUMENTATION.md)
-* `parseCommaList` (method/function, `helpers/kando/kando-vscode-menu-creator.ts`) — documented in [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md)
-* `parseFormat` (method/function, `helpers/screencaps.ts`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `parseInteger` (method/function, `helpers/theme/color-steps.ts`) — documented in [./helpers/theme/DOCUMENTATION.md](./helpers/theme/DOCUMENTATION.md)
-* `parseIntStrict` (method/function, `helpers/screencaps.ts`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `parseJobs` (method/function, `helpers/screencaps.ts`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `parseJson` (method/function, `helpers/gh/github-manager.ts`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `parseMode` (method/function, `helpers/screencaps.ts`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `parseNumber` (method/function, `helpers/theme/color-steps.ts`) — documented in [./helpers/theme/DOCUMENTATION.md](./helpers/theme/DOCUMENTATION.md)
-* `parseNumberStrict` (method/function, `helpers/screencaps.ts`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `parseRemoteMetadata` (method/function, `helpers/remarkable/transfer.ts`) — documented in [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md)
-* `parseRotateChannel` (method/function, `helpers/theme/color-steps.ts`) — documented in [./helpers/theme/DOCUMENTATION.md](./helpers/theme/DOCUMENTATION.md)
-* `parseThemeMode` (method/function, `helpers/theme/color-steps.ts`) — documented in [./helpers/theme/DOCUMENTATION.md](./helpers/theme/DOCUMENTATION.md)
-* `parseToml` (method/function, `helpers/docker/backup-runner.mjs`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `parseToml` (method/function, `helpers/docker/backup-runner.ts`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `parseTomlValue` (method/function, `helpers/docker/backup-runner.mjs`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `parseTomlValue` (method/function, `helpers/docker/backup-runner.ts`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `partials/_aliases/DOCUMENTATION.md` (file) — documented in [./partials/_aliases/DOCUMENTATION.md](./partials/_aliases/DOCUMENTATION.md)
-* `partials/_aliases/folderwork` (file) — documented in [./partials/_aliases/DOCUMENTATION.md](./partials/_aliases/DOCUMENTATION.md)
-* `partials/_aliases/git` (file) — documented in [./partials/_aliases/DOCUMENTATION.md](./partials/_aliases/DOCUMENTATION.md)
-* `partials/_aliases/integrated` (file) — documented in [./partials/_aliases/DOCUMENTATION.md](./partials/_aliases/DOCUMENTATION.md)
-* `partials/_aliases/media` (file) — documented in [./partials/_aliases/DOCUMENTATION.md](./partials/_aliases/DOCUMENTATION.md)
-* `partials/_aliases/system` (file) — documented in [./partials/_aliases/DOCUMENTATION.md](./partials/_aliases/DOCUMENTATION.md)
-* `partials/_aliases/tools` (file) — documented in [./partials/_aliases/DOCUMENTATION.md](./partials/_aliases/DOCUMENTATION.md)
-* `partials/_aliases/workspace` (file) — documented in [./partials/_aliases/DOCUMENTATION.md](./partials/_aliases/DOCUMENTATION.md)
-* `partials/_completions/bootstrap` (file) — documented in [./partials/_completions/DOCUMENTATION.md](./partials/_completions/DOCUMENTATION.md)
-* `partials/_completions/caniuse` (file) — documented in [./partials/_completions/DOCUMENTATION.md](./partials/_completions/DOCUMENTATION.md)
-* `partials/_completions/codex` (file) — documented in [./partials/_completions/DOCUMENTATION.md](./partials/_completions/DOCUMENTATION.md)
-* `partials/_completions/DOCUMENTATION.md` (file) — documented in [./partials/_completions/DOCUMENTATION.md](./partials/_completions/DOCUMENTATION.md)
-* `partials/_completions/gh` (file) — documented in [./partials/_completions/DOCUMENTATION.md](./partials/_completions/DOCUMENTATION.md)
-* `partials/_completions/gohugo` (file) — documented in [./partials/_completions/DOCUMENTATION.md](./partials/_completions/DOCUMENTATION.md)
-* `partials/_completions/netlify` (file) — documented in [./partials/_completions/DOCUMENTATION.md](./partials/_completions/DOCUMENTATION.md)
-* `partials/_completions/npm` (file) — documented in [./partials/_completions/DOCUMENTATION.md](./partials/_completions/DOCUMENTATION.md)
-* `partials/_completions/robo` (file) — documented in [./partials/_completions/DOCUMENTATION.md](./partials/_completions/DOCUMENTATION.md)
-* `partials/_completions/wp` (file) — documented in [./partials/_completions/DOCUMENTATION.md](./partials/_completions/DOCUMENTATION.md)
-* `partials/_functions/cdg` (file) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `partials/_functions/change_directory` (file) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `partials/_functions/codex` (file) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `partials/_functions/DOCUMENTATION.md` (file) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `partials/_functions/dotfiles` (file) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `partials/_functions/g_one_commit` (file) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `partials/_functions/gh_repo_list` (file) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `partials/_functions/git` (file) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `partials/_functions/git-clone` (file) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `partials/_functions/git_branch_creator` (file) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `partials/_functions/github` (file) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `partials/_functions/github_feed_releases` (file) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `partials/_functions/insert_first_line` (file) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `partials/_functions/keybindings` (file) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `partials/_functions/searchfor` (file) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `partials/_functions/vscode` (file) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `partials/_programs/100-brew.sh` (file) — documented in [./partials/_programs/DOCUMENTATION.md](./partials/_programs/DOCUMENTATION.md)
-* `partials/_programs/110-nvm.sh` (file) — documented in [./partials/_programs/DOCUMENTATION.md](./partials/_programs/DOCUMENTATION.md)
-* `partials/_programs/900-gpg-on-console.sh` (file) — documented in [./partials/_programs/DOCUMENTATION.md](./partials/_programs/DOCUMENTATION.md)
-* `partials/_programs/DOCUMENTATION.md` (file) — documented in [./partials/_programs/DOCUMENTATION.md](./partials/_programs/DOCUMENTATION.md)
-* `partials/aliases` (file) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `partials/completions` (file) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `partials/DOCUMENTATION.md` (file) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `partials/exports` (file) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `partials/functions` (file) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `partials/prompt` (file) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `pathExists` (method/function, `helpers/docker/backup-runner.mjs`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `pathExists` (method/function, `helpers/docker/backup-runner.ts`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `pathExists` (method/function, `helpers/kando/kando-vscode-menu-creator.ts`) — documented in [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md)
-* `pi-reboot` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `pi-shutdown` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `pick_archiver` (function, `helpers/web-mirror.sh`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `pick_config_with_gum` (function, `helpers/dotbot`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `pick_filename_from_url` (function, `installs/50-obsidian.sh`) — documented in [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md)
-* `post_checks` (function, `helpers/synch-devspace.sh`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `prepareUploadDocument` (method/function, `helpers/remarkable/transfer.ts`) — documented in [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md)
-* `print_date_sequence` (function, `helpers/daily-reports/commit-report-to-dailynote.sh`) — documented in [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md)
-* `print_date_sequence` (function, `helpers/daily-reports/commits-to-notes.sh`) — documented in [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md)
-* `print_debug` (function, `helpers/synch-devspace.sh`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `print_error` (function, `helpers/github-token`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `print_error` (function, `helpers/packages/create.sh`) — documented in [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md)
-* `print_error` (function, `helpers/synch-devspace.sh`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `print_help` (function, `cronjobs/docker-backup.sh`) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `print_help` (function, `cronjobs/git_updates.sh`) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `print_help` (function, `cronjobs/synch_downloads.sh`) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `print_help` (function, `helpers/_actions/actions.sh`) — documented in [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md)
-* `print_help` (function, `helpers/bash/startup-profiler.sh`) — documented in [./helpers/bash/DOCUMENTATION.md](./helpers/bash/DOCUMENTATION.md)
-* `print_help` (function, `helpers/dotbot`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `print_help` (function, `helpers/gh/git-sync.sh`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `print_help` (function, `helpers/set-wallpaper.sh`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `print_help` (function, `helpers/web-mirror.sh`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `print_help` (function, `helpers/workspace/wm-detect.sh`) — documented in [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md)
-* `print_help` (function, `helpers/workspace/ws-setup.sh`) — documented in [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md)
-* `print_info` (function, `helpers/synch-devspace.sh`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `print_report_for_repo_date` (function, `helpers/daily-reports/commits-to-notes.sh`) — documented in [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md)
-* `print_top_results` (function, `helpers/bash/startup-profiler.sh`) — documented in [./helpers/bash/DOCUMENTATION.md](./helpers/bash/DOCUMENTATION.md)
-* `print_usage` (function, `helpers/github-token`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `print_usage` (function, `helpers/synch-devspace.sh`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `print_username_directories` (function, `helpers/daily-reports/commit-report-to-dailynote.sh`) — documented in [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md)
-* `print_verbose` (function, `helpers/github-token`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `print_version` (function, `helpers/synch-devspace.sh`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `print_warn` (function, `helpers/synch-devspace.sh`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `printAuditResult` (method/function, `helpers/gh/github-manager.ts`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `printBrokenAuditResult` (method/function, `helpers/gh/github-manager.ts`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `printDomainList` (method/function, `helpers/api/porkbun-api.ts`) — documented in [./helpers/api/DOCUMENTATION.md](./helpers/api/DOCUMENTATION.md)
-* `printHelp` (function, `helpers/docker/backup-runner.mjs`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `printHelp` (function, `helpers/docker/backup-runner`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `printHelp` (method/function, `helpers/docker/backup-runner.mjs`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `printHelp` (method/function, `helpers/docker/backup-runner.ts`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `printHelp` (method/function, `helpers/freshrss/export.ts`) — documented in [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md)
-* `printHelp` (method/function, `helpers/gh/github-manager.ts`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `printHelp` (method/function, `helpers/kando/kando-vscode-menu-creator.ts`) — documented in [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md)
-* `printHelp` (method/function, `helpers/logs/cleanup.ts`) — documented in [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md)
-* `printHelp` (method/function, `helpers/remarkable/transfer.ts`) — documented in [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md)
-* `printSummary` (method/function, `helpers/api/porkbun-api.ts`) — documented in [./helpers/api/DOCUMENTATION.md](./helpers/api/DOCUMENTATION.md)
-* `printSummary` (method/function, `helpers/docker/backup-runner.mjs`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `printSummary` (method/function, `helpers/docker/backup-runner.ts`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `process_repo` (function, `cronjobs/git_updates.sh`) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `pullRepository` (method/function, `helpers/gh/github-manager.ts`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `py-activate` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `r` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `rawBackupFromRemarkable` (method/function, `helpers/remarkable/transfer.ts`) — documented in [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md)
-* `read_and_resolve_package_paths` (function, `helpers/packages/create.sh`) — documented in [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md)
-* `read_json_bool` (function, `cronjobs/synch_downloads.sh`) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `read_json_str` (function, `cronjobs/synch_downloads.sh`) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `readMenuJson` (method/function, `helpers/kando/kando-vscode-menu-creator.ts`) — documented in [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md)
-* `readOptionValue` (method/function, `helpers/remarkable/transfer.ts`) — documented in [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md)
-* `readRequiredValue` (method/function, `helpers/theme/color-steps.ts`) — documented in [./helpers/theme/DOCUMENTATION.md](./helpers/theme/DOCUMENTATION.md)
-* `releaseLock` (method/function, `helpers/logs/cleanup.ts`) — documented in [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md)
-* `reload` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `remote_branch_exists` (function, `helpers/gh/git-sync.sh`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `remoteFileExists` (method/function, `helpers/remarkable/transfer.ts`) — documented in [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md)
-* `replace_section_for_day` (function, `helpers/daily-reports/commit-report-to-dailynote.sh`) — documented in [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md)
-* `require_cmd` (function, `cronjobs/synch_downloads.sh`) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `require_cmd` (function, `helpers/_actions/actions.sh`) — documented in [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md)
-* `require_cmd` (function, `helpers/web-mirror.sh`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `require_cmd` (function, `installs/50-obsidian.sh`) — documented in [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md)
-* `require_command` (function, `cronjobs/docker-backup.sh`) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `require_command` (function, `helpers/daily-reports/commit-report-to-dailynote.sh`) — documented in [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md)
-* `require_command` (function, `helpers/daily-reports/commits-to-notes.sh`) — documented in [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md)
-* `require_command` (function, `helpers/gh/label-migration.sh`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `require_command` (function, `helpers/synch-devspace.sh`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `require_integer_in_range` (function, `workspaces/ws_tile_window`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `require_positive_integer` (function, `workspaces/ws_generate_tile_svgs`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `requireEnv` (method/function, `helpers/docker/examples/backup.ts`) — documented in [./helpers/docker/examples/DOCUMENTATION.md](./helpers/docker/examples/DOCUMENTATION.md)
-* `requiresManualIntervention` (method/function, `helpers/gh/github-manager.ts`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `resolve_config_path` (function, `helpers/dotbot`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `resolve_env_file` (function, `helpers/github-token`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `resolve_package_path` (function, `helpers/packages/create.sh`) — documented in [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md)
-* `resolve_repo_label` (function, `helpers/daily-reports/commits-to-notes.sh`) — documented in [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md)
-* `resolve_wallpaper_path` (function, `helpers/set-wallpaper.sh`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `resolve_workspace_number` (function, `workspaces/ws_launch_program`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `resolvePolicy` (method/function, `helpers/logs/cleanup.ts`) — documented in [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md)
-* `rgrep` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `rotate_backups` (function, `cronjobs/docker-backup.sh`) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `round` (method/function, `helpers/theme/color-steps.ts`) — documented in [./helpers/theme/DOCUMENTATION.md](./helpers/theme/DOCUMENTATION.md)
-* `rsync_job` (function, `cronjobs/synch_downloads.sh`) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `run` (function, `helpers/gh/git-sync.sh`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `run` (method/function, `helpers/remarkable/transfer.ts`) — documented in [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md)
-* `run` (method/function, `helpers/screencaps.ts`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `run_command` (function, `cronjobs/docker-backup.sh`) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `run_dotbot_with_config` (function, `helpers/dotbot`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `run_gh_label_create` (function, `helpers/gh/label-migration.sh`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `run_gh_label_delete` (function, `helpers/gh/label-migration.sh`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `run_remote_github_check` (function, `helpers/synch-devspace.sh`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `run_trace` (function, `helpers/bash/startup-profiler.sh`) — documented in [./helpers/bash/DOCUMENTATION.md](./helpers/bash/DOCUMENTATION.md)
-* `runAfterCommand` (method/function, `helpers/docker/backup-runner.mjs`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `runAfterCommand` (method/function, `helpers/docker/backup-runner.ts`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `runCommand` (method/function, `helpers/logs/cleanup.ts`) — documented in [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md)
-* `runCommand` (method/function, `helpers/remarkable/transfer.ts`) — documented in [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md)
-* `safe_slug` (function, `helpers/web-mirror.sh`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `safeJsonPreview` (method/function, `helpers/kando/kando-vscode-menu-creator.ts`) — documented in [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md)
-* `safeName` (method/function, `helpers/docker/backup-runner.mjs`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `safeName` (method/function, `helpers/docker/backup-runner.ts`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `sanitiseFileName` (method/function, `helpers/remarkable/transfer.ts`) — documented in [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md)
-* `scp` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `searchfor` (function, `partials/_functions/searchfor`) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `set_wallpaper_feh` (function, `helpers/set-wallpaper.sh`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `set_wallpaper_gnome` (function, `helpers/set-wallpaper.sh`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `set_wallpaper_hyprland` (function, `helpers/set-wallpaper.sh`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `set_wallpaper_kde` (function, `helpers/set-wallpaper.sh`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `set_wallpaper_sway` (function, `helpers/set-wallpaper.sh`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `set_wallpaper_xfce` (function, `helpers/set-wallpaper.sh`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `setNestedValue` (method/function, `helpers/docker/backup-runner.mjs`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `setNestedValue` (method/function, `helpers/docker/backup-runner.ts`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `shellQuote` (method/function, `helpers/docker/backup-runner.mjs`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `shellQuote` (method/function, `helpers/docker/backup-runner.ts`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `shellQuote` (method/function, `helpers/remarkable/transfer.ts`) — documented in [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md)
-* `show_help` (function, `helpers/daily-reports/commit-report-to-dailynote.sh`) — documented in [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md)
-* `show_help` (function, `helpers/daily-reports/commits-to-notes.sh`) — documented in [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md)
-* `show_help` (function, `helpers/docker/examples/backup.sh`) — documented in [./helpers/docker/examples/DOCUMENTATION.md](./helpers/docker/examples/DOCUMENTATION.md)
-* `show_summary` (function, `helpers/synch-devspace.sh`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `showHelp` (method/function, `helpers/raindrop.io/getTags.ts`) — documented in [./helpers/raindrop.io/DOCUMENTATION.md](./helpers/raindrop.io/DOCUMENTATION.md)
-* `showRepositoryChanges` (method/function, `helpers/gh/github-manager.ts`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `sortRemoteDocuments` (method/function, `helpers/remarkable/transfer.ts`) — documented in [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md)
-* `source_core_libs` (function, `helpers/_actions/actions.sh`) — documented in [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md)
-* `source_core_libs` (function, `helpers/daily-reports/commit-report-to-dailynote.sh`) — documented in [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md)
-* `source_core_libs` (function, `helpers/daily-reports/commits-to-notes.sh`) — documented in [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md)
-* `source_core_libs` (function, `helpers/dotbot`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `split_csv_to_array` (function, `helpers/workspace/ws-setup.sh`) — documented in [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md)
-* `start_on_workspace` (function, `helpers/workspace/ws-setup.sh`) — documented in [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md)
-* `strip_ansi` (function, `helpers/daily-reports/commit-report-to-dailynote.sh`) — documented in [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md)
-* `subl` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `sudo` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `summariseChange` (method/function, `helpers/kando/kando-vscode-menu-creator.ts`) — documented in [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md)
-* `switch_to_desktop_wmctrl` (function, `workspaces/ws_move_active_window`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `switch_to_desktop_xdotool` (function, `workspaces/ws_move_active_window`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `switch_to_workspace` (function, `workspaces/ws_launch_program`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `switch_to_workspace_wmctrl` (function, `workspaces/ws_open_on_workspace`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `switch_to_workspace_xdotool` (function, `workspaces/ws_open_on_workspace`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `sysinfo` (alias, `partials/_aliases/system`) — documented in [./partials/_aliases/DOCUMENTATION.md](./partials/_aliases/DOCUMENTATION.md)
-* `sysinfo-cpu` (alias, `partials/_aliases/system`) — documented in [./partials/_aliases/DOCUMENTATION.md](./partials/_aliases/DOCUMENTATION.md)
-* `sysinfo-full` (alias, `partials/_aliases/system`) — documented in [./partials/_aliases/DOCUMENTATION.md](./partials/_aliases/DOCUMENTATION.md)
-* `sysinfo-gpu` (alias, `partials/_aliases/system`) — documented in [./partials/_aliases/DOCUMENTATION.md](./partials/_aliases/DOCUMENTATION.md)
-* `sysinfo-mem` (alias, `partials/_aliases/system`) — documented in [./partials/_aliases/DOCUMENTATION.md](./partials/_aliases/DOCUMENTATION.md)
-* `syslog` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `tail` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `timestampNow` (method/function, `helpers/api/porkbun-api.ts`) — documented in [./helpers/api/DOCUMENTATION.md](./helpers/api/DOCUMENTATION.md)
-* `toBackupTomlConfig` (method/function, `helpers/docker/backup-runner.mjs`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `toBackupTomlConfig` (method/function, `helpers/docker/backup-runner.ts`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `toCdata` (method/function, `helpers/freshrss/export.ts`) — documented in [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md)
-* `toFolderSlug` (method/function, `helpers/logs/cleanup.ts`) — documented in [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md)
-* `toHslString` (method/function, `helpers/theme/color-steps.ts`) — documented in [./helpers/theme/DOCUMENTATION.md](./helpers/theme/DOCUMENTATION.md)
-* `topics` (method/function, `helpers/gh/github-manager.ts`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `toRssItem` (method/function, `helpers/freshrss/export.ts`) — documented in [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md)
-* `updateTargetMenu` (method/function, `helpers/kando/kando-vscode-menu-creator.ts`) — documented in [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md)
-* `uploadDocument` (method/function, `helpers/remarkable/transfer.ts`) — documented in [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md)
-* `uploadToRemarkable` (method/function, `helpers/remarkable/transfer.ts`) — documented in [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md)
-* `usage` (function, `helpers/gh/label-migration.sh`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `usage` (function, `helpers/node-run`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `usage` (function, `helpers/packages/create.sh`) — documented in [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md)
-* `usage` (function, `installs/50-obsidian.sh`) — documented in [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md)
-* `usage` (function, `workspaces/ws_generate_tile_svgs`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `usage` (function, `workspaces/ws_launch_program`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `usage` (function, `workspaces/ws_list_windows`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `usage` (function, `workspaces/ws_list_workspaces`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `usage` (function, `workspaces/ws_menu_window_move`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `usage` (function, `workspaces/ws_menu_window_tile_target`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `usage` (function, `workspaces/ws_menu_window_tile`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `usage` (function, `workspaces/ws_move_active_window`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `usage` (function, `workspaces/ws_open_on_workspace`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `usage` (function, `workspaces/ws_rofi_actions`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `usage` (function, `workspaces/ws_tile_window`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `usage` (method/function, `helpers/api/porkbun-api.ts`) — documented in [./helpers/api/DOCUMENTATION.md](./helpers/api/DOCUMENTATION.md)
-* `use_or_install_node_version` (function, `helpers/node-run`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `use_project_or_default_node_version` (function, `helpers/node-run`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `validate_arguments` (function, `helpers/synch-devspace.sh`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `validate_config` (function, `helpers/set-wallpaper.sh`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `validate_date` (function, `helpers/daily-reports/commit-report-to-dailynote.sh`) — documented in [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md)
-* `validate_date` (function, `helpers/daily-reports/commits-to-notes.sh`) — documented in [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md)
-* `validate_role` (function, `helpers/github-token`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `validate_timezone` (function, `helpers/daily-reports/commit-report-to-dailynote.sh`) — documented in [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md)
-* `validate_timezone` (function, `helpers/daily-reports/commits-to-notes.sh`) — documented in [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md)
-* `validate_visibility` (function, `helpers/github-token`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `validateConfig` (method/function, `helpers/logs/cleanup.ts`) — documented in [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md)
-* `validateConfig` (method/function, `helpers/remarkable/transfer.ts`) — documented in [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md)
-* `validateRootDirectory` (method/function, `helpers/docker/backup-runner.mjs`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `validateRootDirectory` (method/function, `helpers/docker/backup-runner.ts`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `verbose` (function, `helpers/gh/label-migration.sh`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `video` (method/function, `helpers/screencaps.ts`) — documented in [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md)
-* `vlc-next` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `vlc-pause` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `vlc-play` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `vlc-prev` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `vlc-stop` (alias, `partials/aliases`) — documented in [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md)
-* `vlog` (function, `cronjobs/git_updates.sh`) — documented in [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md)
-* `vlog` (method/function, `helpers/kando/kando-vscode-menu-creator.ts`) — documented in [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md)
-* `vscode_add_mcp` (function, `partials/_functions/vscode`) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `vscode_setup` (function, `partials/_functions/vscode`) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `wait_for_window_id_by_pid` (function, `workspaces/ws_launch_program`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `walk` (method/function, `helpers/docker/backup-runner.mjs`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `walk` (method/function, `helpers/docker/backup-runner.ts`) — documented in [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md)
-* `walk` (method/function, `helpers/logs/cleanup.ts`) — documented in [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md)
-* `warn` (function, `helpers/gh/label-migration.sh`) — documented in [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md)
-* `warn` (function, `workspaces/ws_tile_window`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `who_created_branches` (function, `partials/_functions/git_branch_creator`) — documented in [./partials/_functions/DOCUMENTATION.md](./partials/_functions/DOCUMENTATION.md)
-* `window_has_allowed_type` (function, `workspaces/ws_menu_window_tile_target`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `window_is_excluded_by_title` (function, `workspaces/ws_menu_window_tile_target`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `wmctrl_current_desktop` (function, `helpers/workspace/ws-setup.sh`) — documented in [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md)
-* `wmctrl_switch_desktop` (function, `helpers/workspace/ws-setup.sh`) — documented in [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md)
-* `workspace_window_rows` (function, `workspaces/ws_list_windows`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `workspaces/AGENTS.md` (file) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `workspaces/config.schema.json` (file) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `workspaces/config.toml` (file) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `workspaces/DOCUMENTATION.md` (file) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `workspaces/README.md` (file) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `workspaces/tiles/generated/full.svg` (file) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `workspaces/tiles/generated/left-70.svg` (file) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `workspaces/tiles/generated/left-half-spaced.svg` (file) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `workspaces/tiles/generated/left-half.svg` (file) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `workspaces/tiles/generated/quarter-bottom-left.svg` (file) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `workspaces/tiles/generated/quarter-bottom-right.svg` (file) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `workspaces/tiles/generated/quarter-top-left.svg` (file) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `workspaces/tiles/generated/quarter-top-right.svg` (file) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `workspaces/tiles/generated/right-70.svg` (file) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `workspaces/tiles/generated/right-half-spaced.svg` (file) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `workspaces/tiles/generated/right-half.svg` (file) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `workspaces/ToDo.txt` (file) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `workspaces/ws-common.sh` (file) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `workspaces/ws_generate_tile_svgs` (file) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `workspaces/ws_launch_program` (file) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `workspaces/ws_list_windows` (file) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `workspaces/ws_list_workspaces` (file) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `workspaces/ws_menu_window_move` (file) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `workspaces/ws_menu_window_tile` (file) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `workspaces/ws_menu_window_tile_target` (file) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `workspaces/ws_move_active_window` (file) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `workspaces/ws_open_on_workspace` (file) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `workspaces/ws_rofi_actions` (file) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `workspaces/ws_tile_window` (file) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `writeBackup` (method/function, `helpers/kando/kando-vscode-menu-creator.ts`) — documented in [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md)
-* `writeOutputFile` (method/function, `helpers/freshrss/export.ts`) — documented in [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md)
-* `writeRunArtifacts` (method/function, `helpers/api/porkbun-api.ts`) — documented in [./helpers/api/DOCUMENTATION.md](./helpers/api/DOCUMENTATION.md)
-* `writeTaskLog` (method/function, `helpers/logs/cleanup.ts`) — documented in [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md)
-* `writeUpdatedMenu` (method/function, `helpers/kando/kando-vscode-menu-creator.ts`) — documented in [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md)
-* `ws_init_logging` (function, `workspaces/ws-common.sh`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `ws_parse_verbosity_flag` (function, `workspaces/ws-common.sh`) — documented in [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md)
-* `xfconf_get_count` (function, `helpers/workspace/ws-setup.sh`) — documented in [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md)
-* `xfconf_get_names_list` (function, `helpers/workspace/ws-setup.sh`) — documented in [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md)
-* `xfconf_get_names_raw` (function, `helpers/workspace/ws-setup.sh`) — documented in [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md)
-* `xfconf_set_count` (function, `helpers/workspace/ws-setup.sh`) — documented in [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md)
-* `xfconf_set_names_from_array` (function, `helpers/workspace/ws-setup.sh`) — documented in [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md)
+| Function or file name | Type | Documentation |
+| --- | --- | --- |
+| [`.bash_logout`](./.bash_logout#L1) | file | [./DOCUMENTATION.md](./DOCUMENTATION.md#L35) |
+| [`.bash_profile`](./.bash_profile#L1) | file | [./DOCUMENTATION.md](./DOCUMENTATION.md#L27) |
+| [`.bashrc`](./.bashrc#L1) | file | [./DOCUMENTATION.md](./DOCUMENTATION.md#L23) |
+| [`.profile`](./.profile#L1) | file | [./DOCUMENTATION.md](./DOCUMENTATION.md#L31) |
+| [`__dnb_256`](./lib/00-core/dnb-core-colors.bash#L48) | function | [./lib/README.md](./lib/README.md#L1) |
+| [`__dnb_archive_require_method`](./lib/30-filesystem/dnb-archive.bash#L4) | function | [./lib/README.md](./lib/README.md#L1) |
+| [`__dnb_basic_color`](./lib/00-core/dnb-core-colors.bash#L56) | function | [./lib/README.md](./lib/README.md#L1) |
+| [`__dnb_color_mode`](./lib/00-core/dnb-core-colors.bash#L11) | function | [./lib/README.md](./lib/README.md#L1) |
+| [`__dnb_log_color`](./lib/00-core/dnb-core-colors.bash#L100) | function | [./lib/README.md](./lib/README.md#L1) |
+| [`__dnb_log_level_to_priority`](./lib/00-core/dnb-core-log.bash#L6) | function | [./lib/README.md](./lib/README.md#L1) |
+| [`__dnb_rgb`](./lib/00-core/dnb-core-colors.bash#L40) | function | [./lib/README.md](./lib/README.md#L1) |
+| [`__gh_debug`](./partials/_completions/gh#L1) | function | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L39) |
+| [`__gh_extract_activeHelp`](./partials/_completions/gh#L1) | function | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L39) |
+| [`__gh_format_comp_descriptions`](./partials/_completions/gh#L1) | function | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L39) |
+| [`__gh_get_completion_results`](./partials/_completions/gh#L1) | function | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L39) |
+| [`__gh_handle_activeHelp`](./partials/_completions/gh#L1) | function | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L39) |
+| [`__gh_handle_completion_types`](./partials/_completions/gh#L1) | function | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L39) |
+| [`__gh_handle_special_char`](./partials/_completions/gh#L1) | function | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L39) |
+| [`__gh_handle_standard_completion_case`](./partials/_completions/gh#L1) | function | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L39) |
+| [`__gh_init_completion`](./partials/_completions/gh#L1) | function | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L39) |
+| [`__gh_process_completion_results`](./partials/_completions/gh#L1) | function | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L39) |
+| [`__gh_reprint_commandLine`](./partials/_completions/gh#L1) | function | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L39) |
+| [`__hugo_debug`](./partials/_completions/gohugo#L1) | function | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L45) |
+| [`__hugo_extract_activeHelp`](./partials/_completions/gohugo#L1) | function | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L45) |
+| [`__hugo_format_comp_descriptions`](./partials/_completions/gohugo#L1) | function | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L45) |
+| [`__hugo_get_completion_results`](./partials/_completions/gohugo#L1) | function | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L45) |
+| [`__hugo_handle_completion_types`](./partials/_completions/gohugo#L1) | function | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L45) |
+| [`__hugo_handle_special_char`](./partials/_completions/gohugo#L1) | function | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L45) |
+| [`__hugo_handle_standard_completion_case`](./partials/_completions/gohugo#L1) | function | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L45) |
+| [`__hugo_init_completion`](./partials/_completions/gohugo#L1) | function | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L45) |
+| [`__hugo_process_completion_results`](./partials/_completions/gohugo#L1) | function | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L45) |
+| [`__robo_list_cmds`](./partials/_completions/robo#L1) | function | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L63) |
+| [`__robo_list_opts`](./partials/_completions/robo#L1) | function | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L63) |
+| [`__start_gh`](./partials/_completions/gh#L1) | function | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L39) |
+| [`__start_hugo`](./partials/_completions/gohugo#L1) | function | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L45) |
+| [`_bootstrap_class_lookup_completions`](./partials/_completions/bootstrap#L1) | function | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L21) |
+| [`_caniuse_completion`](./partials/_completions/caniuse#L1) | function | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L27) |
+| [`_cd_effective_nvmrc`](./partials/_functions/change_directory.bash#L9) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L21) |
+| [`_cd_maybe_show_git_status`](./partials/_functions/change_directory.bash#L52) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L21) |
+| [`_cd_maybe_use_nvm`](./partials/_functions/change_directory.bash#L29) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L21) |
+| [`_codex`](./partials/_completions/codex#L1) | function | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L33) |
+| [`_default_path`](./helpers/explore#L57) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L76) |
+| [`_error`](./helpers/explore#L53) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L75) |
+| [`_git_find_commitlint_config`](./partials/_functions/git.bash#L33) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L85) |
+| [`_git_get_root`](./partials/_functions/git.bash#L29) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L85) |
+| [`_git_has_commitlint_config`](./partials/_functions/git.bash#L63) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L85) |
+| [`_git_should_use_cz`](./partials/_functions/git.bash#L67) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L85) |
+| [`_help`](./helpers/explore#L33) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L73) |
+| [`_log`](./helpers/explore#L49) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L74) |
+| [`_npm_completion`](./partials/_completions/npm#L1) | function | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L57) |
+| [`_robo`](./partials/_completions/robo#L1) | function | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L63) |
+| [`_ssh_hosts_completion`](./partials/completions#L82) | function | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L66) |
+| [`_stem`](./partials/_completions/robo#L1) | function | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L63) |
+| [`_wp_complete`](./partials/_completions/wp#L1) | function | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L69) |
+| [`acquireLock`](./helpers/logs/cleanup.ts#L468) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L51) |
+| [`actions`](./partials/_aliases/workspace.bash#L5) | function | [./partials/DOCUMENTATION_aliases.md](./partials/DOCUMENTATION_aliases.md#L54) |
+| [`add_config_file`](./helpers/packages/create.sh#L132) | function | [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md#L42) |
+| [`add_polybar_issue`](./cronjobs/msgvault.sh#L22) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L59) |
+| [`ahead_behind_counts`](./cronjobs/git_updates.sh#L366) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L33) |
+| [`alert`](./partials/aliases#L38) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L22) |
+| [`apply_labels_to_repo`](./helpers/gh/label-migration.sh#L207) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L225) |
+| [`apply_template`](./workspaces/ws_tile_window#L89) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L70) |
+| [`apply_wallpaper`](./helpers/set-wallpaper.sh#L498) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L275) |
+| [`applyCorrections`](./helpers/theme/color-steps.ts#L214) | method/function | [./helpers/theme/DOCUMENTATION.md](./helpers/theme/DOCUMENTATION.md#L57) |
+| [`archivePathFor`](./helpers/logs/cleanup.ts#L512) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L54) |
+| [`auditRepository`](./helpers/gh/github-manager.ts#L1074) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L171) |
+| [`backup_container_folder`](./cronjobs/docker-backup.sh#L138) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L5) |
+| [`bashrc`](./bashrc#L1) | file | [./DOCUMENTATION.md](./DOCUMENTATION.md#L9) |
+| [`build_note_path`](./helpers/daily-reports/commit-report-to-dailynote.sh#L124) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L50) |
+| [`build_note_title`](./helpers/daily-reports/commit-report-to-dailynote.sh#L178) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L54) |
+| [`build_report_content`](./helpers/daily-reports/commit-report-to-dailynote.sh#L232) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L56) |
+| [`build_rsync_command`](./helpers/synch-devspace.sh#L179) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L320) |
+| [`build_select_line`](./helpers/_actions/actions.sh#L138) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L50) |
+| [`buildChannelTitle`](./helpers/freshrss/export.ts#L310) | method/function | [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md#L31) |
+| [`buildOutputPath`](./helpers/remarkable/transfer.ts#L1013) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L65) |
+| [`buildQualityArgs`](./helpers/screencaps.ts#L372) | method/function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L229) |
+| [`buildRssXml`](./helpers/freshrss/export.ts#L577) | method/function | [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md#L38) |
+| [`buildSamplingPlan`](./helpers/screencaps.ts#L246) | method/function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L222) |
+| [`buildStreamId`](./helpers/freshrss/export.ts#L292) | method/function | [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md#L30) |
+| [`cal`](./partials/aliases#L109) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L39) |
+| [`captureCommand`](./helpers/remarkable/transfer.ts#L498) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L49) |
+| [`cd`](./partials/aliases#L13) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L18) |
+| [`cdg`](./partials/_functions/cdg.bash#L10) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L5) |
+| [`cdg_cache_file`](./helpers/gh/cdg#L132) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L40) |
+| [`cdg_cache_is_fresh`](./helpers/gh/cdg#L141) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L41) |
+| [`cdg_clone_if_missing`](./helpers/gh/cdg#L298) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L50) |
+| [`cdg_die`](./helpers/gh/cdg#L105) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L37) |
+| [`cdg_error`](./helpers/gh/cdg#L50) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L35) |
+| [`cdg_expand_path`](./helpers/gh/cdg#L112) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L38) |
+| [`cdg_fetch_repositories`](./helpers/gh/cdg#L181) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L44) |
+| [`cdg_init_logging`](./helpers/gh/cdg#L32) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L33) |
+| [`cdg_is_positive_int`](./helpers/gh/cdg#L128) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L39) |
+| [`cdg_log_verbose`](./helpers/gh/cdg#L44) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L34) |
+| [`cdg_main`](./helpers/gh/cdg#L325) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L51) |
+| [`cdg_normalize_repo_path_template`](./helpers/gh/cdg#L170) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L43) |
+| [`cdg_render_repo_path`](./helpers/gh/cdg#L260) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L48) |
+| [`cdg_repo_field`](./helpers/gh/cdg#L252) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L47) |
+| [`cdg_repo_path_template_has_placeholder`](./helpers/gh/cdg#L157) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L42) |
+| [`cdg_repository_count`](./helpers/gh/cdg#L232) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L45) |
+| [`cdg_script_name`](./helpers/gh/cdg#L13) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L31) |
+| [`cdg_select_repository`](./helpers/gh/cdg#L237) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L46) |
+| [`cdg_source_glone`](./helpers/gh/cdg#L279) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L49) |
+| [`cdg_source_libs`](./helpers/gh/cdg#L17) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L32) |
+| [`cdg_usage`](./helpers/gh/cdg#L54) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L36) |
+| [`change_directory`](./partials/_functions/change_directory.bash#L61) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L19) |
+| [`check-network`](./partials/aliases#L111) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L40) |
+| [`clamp`](./helpers/theme/color-steps.ts#L138) | method/function | [./helpers/theme/DOCUMENTATION.md](./helpers/theme/DOCUMENTATION.md#L48) |
+| [`clean_json`](./installs/50-obsidian.sh#L86) | function | [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md#L41) |
+| [`cleanup`](./helpers/synch-devspace.sh#L173) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L319) |
+| [`clear_labels_for_repo`](./helpers/gh/label-migration.sh#L255) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L227) |
+| [`clearWorkDirectory`](./helpers/remarkable/transfer.ts#L683) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L54) |
+| [`clone_repo_if_missing`](./cronjobs/git_updates.sh#L284) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L49) |
+| [`cloneRepositoryIfMissing`](./helpers/gh/github-manager.ts#L1387) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L179) |
+| [`cmd_get`](./helpers/github-token#L190) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L112) |
+| [`cmd_print_env`](./helpers/github-token#L197) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L113) |
+| [`cmd_run`](./helpers/github-token#L227) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L115) |
+| [`cmd_show_config`](./helpers/github-token#L208) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L114) |
+| [`code`](./partials/_functions/vscode.bash#L224) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L193) |
+| [`codex-local`](./partials/_functions/codex.bash#L5) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L33) |
+| [`codex-update`](./partials/_aliases/tools.bash#L7) | alias | [./partials/DOCUMENTATION_aliases.md](./partials/DOCUMENTATION_aliases.md#L46) |
+| [`collect_repositories`](./helpers/daily-reports/commits-to-notes.sh#L190) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L98) |
+| [`colorize_expanded`](./helpers/_actions/actions.sh#L224) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L53) |
+| [`command_exists`](./helpers/gh/label-migration.sh#L82) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L216) |
+| [`commandExists`](./helpers/screencaps.ts#L159) | method/function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L219) |
+| [`compressGroup`](./helpers/logs/cleanup.ts#L556) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L57) |
+| [`compute_utc_window`](./helpers/daily-reports/commits-to-notes.sh#L178) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L97) |
+| [`configure_gh_auth`](./helpers/gh/label-migration.sh#L100) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L219) |
+| [`consoleVerbose`](./helpers/logs/cleanup.ts#L113) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L35) |
+| [`constructor`](./helpers/remarkable/transfer.ts#L70) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L19) |
+| [`countfiles`](./partials/aliases#L78) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L31) |
+| [`cp`](./partials/_aliases/system.bash#L14) | alias | [./partials/DOCUMENTATION_aliases.md](./partials/DOCUMENTATION_aliases.md#L38) |
+| [`create_temp_exclude_file`](./helpers/synch-devspace.sh#L144) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L318) |
+| [`createConfig`](./helpers/remarkable/transfer.ts#L387) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L46) |
+| [`createContent`](./helpers/remarkable/transfer.ts#L605) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L52) |
+| [`createMetadata`](./helpers/remarkable/transfer.ts#L575) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L51) |
+| [`createTarGzFromDirectory`](./helpers/docker/backup-runner.mjs#L341) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L55) |
+| [`createTarGzFromDirectory`](./helpers/docker/backup-runner.ts#L470) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L55) |
+| [`createTarGzFromPaths`](./helpers/docker/backup-runner.mjs#L334) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L54) |
+| [`createTarGzFromPaths`](./helpers/docker/backup-runner.ts#L458) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L54) |
+| [`createTimestamp`](./helpers/docker/backup-runner.mjs#L149) | function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L43) |
+| [`createTimestamp`](./helpers/docker/backup-runner#L149) | function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L43) |
+| [`createTimestamp`](./helpers/docker/backup-runner.mjs#L149) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L43) |
+| [`createTimestamp`](./helpers/docker/backup-runner.ts#L234) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L43) |
+| [`cronjobs/docker-backup.sh`](./cronjobs/docker-backup.sh#L1) | file | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L5) |
+| [`cronjobs/DOCUMENTATION.md`](./cronjobs/DOCUMENTATION.md#L1) | file | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L1) |
+| [`cronjobs/filespace-discord.sh`](./cronjobs/filespace-discord.sh#L1) | file | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L22) |
+| [`cronjobs/git_updates.sh`](./cronjobs/git_updates.sh#L1) | file | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L33) |
+| [`cronjobs/msgvault.sh`](./cronjobs/msgvault.sh#L1) | file | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L59) |
+| [`cronjobs/synch_downloads.json`](./cronjobs/synch_downloads.json#L1) | file | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L71) |
+| [`cronjobs/synch_downloads.sh`](./cronjobs/synch_downloads.sh#L1) | file | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L61) |
+| [`current_branch`](./cronjobs/git_updates.sh#L354) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L33) |
+| [`d`](./partials/aliases#L16) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L19) |
+| [`default_config_file`](./helpers/packages/create.sh#L126) | function | [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md#L41) |
+| [`deleteFiles`](./helpers/logs/cleanup.ts#L534) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L56) |
+| [`derive_defaults`](./cronjobs/git_updates.sh#L150) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L33) |
+| [`deriveArchiveDay`](./helpers/logs/cleanup.ts#L385) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L47) |
+| [`detect_current_repo`](./helpers/gh/label-migration.sh#L167) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L223) |
+| [`detect_mode`](./helpers/set-wallpaper.sh#L380) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L272) |
+| [`detectComposeCommand`](./helpers/docker/backup-runner.mjs#L320) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L52) |
+| [`detectComposeCommand`](./helpers/docker/backup-runner.ts#L442) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L52) |
+| [`detectScriptType`](./helpers/docker/backup-runner.mjs#L450) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L57) |
+| [`detectScriptType`](./helpers/docker/backup-runner.ts#L634) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L57) |
+| [`die`](./cronjobs/git_updates.sh#L45) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L33) |
+| [`die`](./helpers/gh/git-sync.sh#L76) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L88) |
+| [`die`](./helpers/gh/label-migration.sh#L76) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L88) |
+| [`die`](./helpers/github-token#L85) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L103) |
+| [`die`](./helpers/packages/create.sh#L104) | function | [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md#L39) |
+| [`die`](./helpers/web-mirror.sh#L64) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L103) |
+| [`die`](./helpers/workspace/ws-setup.sh#L26) | function | [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md#L59) |
+| [`die`](./workspaces/ws_generate_tile_svgs#L38) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L105) |
+| [`die`](./workspaces/ws_launch_program#L82) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L52) |
+| [`die`](./workspaces/ws_list_windows#L31) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L46) |
+| [`die`](./workspaces/ws_list_workspaces#L30) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L40) |
+| [`die`](./workspaces/ws_menu_window_move#L44) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L82) |
+| [`die`](./workspaces/ws_menu_window_tile_target#L41) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L94) |
+| [`die`](./workspaces/ws_menu_window_tile#L35) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L88) |
+| [`die`](./workspaces/ws_move_active_window#L50) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L58) |
+| [`die`](./workspaces/ws_open_on_workspace#L27) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L64) |
+| [`die`](./workspaces/ws_tile_window#L55) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L70) |
+| [`dir`](./partials/aliases#L33) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L21) |
+| [`dnb_archive_create`](./lib/30-filesystem/dnb-archive.bash#L36) | function | [./lib/README.md](./lib/README.md#L41) |
+| [`dnb_archive_extract`](./lib/30-filesystem/dnb-archive.bash#L173) | function | [./lib/README.md](./lib/README.md#L42) |
+| [`dnb_auto_source`](./lib/00-core/dnb-core-source.bash#L33) | function | [./lib/README.md](./lib/README.md#L28) |
+| [`dnb_check_requirements`](./lib/00-core/dnb-core-requirements.bash#L23) | function | [./lib/README.md](./lib/README.md#L30) |
+| [`dnb_config_get`](./lib/20-config/dnb-config.bash#L10) | function | [./lib/README.md](./lib/README.md#L37) |
+| [`dnb_create_directory`](./lib/30-filesystem/dnb-fs.bash#L21) | function | [./lib/README.md](./lib/README.md#L39) |
+| [`dnb_execute_lines`](./lib/30-filesystem/dnb-fs.bash#L63) | function | [./lib/README.md](./lib/README.md#L40) |
+| [`dnb_is_interactive`](./lib/00-core/dnb-core-interactive.bash#L22) | function | [./lib/README.md](./lib/README.md#L29) |
+| [`dnb_load_env`](./lib/00-core/dnb-core-env.bash#L28) | function | [./lib/README.md](./lib/README.md#L33) |
+| [`dnb_log`](./lib/00-core/dnb-core-log.bash#L72) | function | [./lib/README.md](./lib/README.md#L32) |
+| [`dnb_log_init`](./lib/00-core/dnb-core-log.bash#L35) | function | [./lib/README.md](./lib/README.md#L31) |
+| [`dnb_package_list_sections`](./lib/40-packages/dnb-packages.bash#L10) | function | [./lib/README.md](./lib/README.md#L1) |
+| [`dnb_package_read_paths`](./lib/40-packages/dnb-packages.bash#L45) | function | [./lib/README.md](./lib/README.md#L1) |
+| [`dnb_path_add_if_missing`](./lib/10-path/dnb-path.bash#L66) | function | [./lib/README.md](./lib/README.md#L35) |
+| [`dnb_path_contains`](./lib/10-path/dnb-path.bash#L16) | function | [./lib/README.md](./lib/README.md#L34) |
+| [`dnb_path_expand`](./lib/30-filesystem/dnb-path-patterns.bash#L40) | function | [./lib/README.md](./lib/README.md#L1) |
+| [`dnb_path_has_glob`](./lib/30-filesystem/dnb-path-patterns.bash#L83) | function | [./lib/README.md](./lib/README.md#L1) |
+| [`dnb_path_resolve_pattern`](./lib/30-filesystem/dnb-path-patterns.bash#L116) | function | [./lib/README.md](./lib/README.md#L1) |
+| [`dnb_path_sanitise`](./lib/10-path/dnb-path.bash#L140) | function | [./lib/README.md](./lib/README.md#L36) |
+| [`dnb_path_trim`](./lib/30-filesystem/dnb-path-patterns.bash#L10) | function | [./lib/README.md](./lib/README.md#L1) |
+| [`dnb_repo_config_get`](./lib/20-config/dnb-repo-config.bash#L10) | function | [./lib/README.md](./lib/README.md#L38) |
+| [`dnb_to_lower`](./lib/50-variables/dnb-strings.bash#L3) | function | [./lib/README.md](./lib/README.md#L1) |
+| [`DOCUMENTATION.md`](./DOCUMENTATION.md#L1) | file | [./DOCUMENTATION.md](./DOCUMENTATION.md#L49) |
+| [`dotfiles`](./partials/_functions/dotfiles.bash#L5) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L50) |
+| [`dotfiles_get_next_version`](./partials/_functions/dotfiles.bash#L117) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L50) |
+| [`dotfiles_get_version`](./partials/_functions/dotfiles.bash#L92) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L50) |
+| [`dotfiles_git_status`](./partials/_functions/dotfiles.bash#L164) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L50) |
+| [`dotfiles_open_repository`](./partials/_functions/dotfiles.bash#L153) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L50) |
+| [`dotfiles_print_help`](./partials/_functions/dotfiles.bash#L49) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L50) |
+| [`dotfiles_require_directory`](./partials/_functions/dotfiles.bash#L76) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L50) |
+| [`dotfiles_require_package_file`](./partials/_functions/dotfiles.bash#L84) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L50) |
+| [`downloadFromRemarkable`](./helpers/remarkable/transfer.ts#L1037) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L66) |
+| [`egrep`](./partials/aliases#L22) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L20) |
+| [`emit_row`](./workspaces/ws_launch_program#L110) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L52) |
+| [`emit_row`](./workspaces/ws_list_workspaces#L40) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L40) |
+| [`ensure_config_files`](./helpers/packages/create.sh#L160) | function | [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md#L44) |
+| [`ensure_daily_note_exists`](./helpers/daily-reports/commit-report-to-dailynote.sh#L187) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L55) |
+| [`ensure_directory_exists`](./helpers/synch-devspace.sh#L135) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L317) |
+| [`ensure_dotbot_ready`](./helpers/dotbot#L53) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L47) |
+| [`ensure_git_repo`](./cronjobs/git_updates.sh#L334) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L50) |
+| [`ensure_log_dir`](./helpers/bash/startup-profiler.sh#L71) | function | [./helpers/bash/DOCUMENTATION.md](./helpers/bash/DOCUMENTATION.md#L26) |
+| [`ensure_names_length`](./helpers/workspace/ws-setup.sh#L192) | function | [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md#L70) |
+| [`ensure_parent_dir`](./cronjobs/git_updates.sh#L143) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L33) |
+| [`ensureBinaryAvailable`](./helpers/logs/cleanup.ts#L672) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L59) |
+| [`ensureCommandAvailable`](./helpers/gh/github-manager.ts#L630) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L152) |
+| [`ensureDir`](./helpers/logs/cleanup.ts#L191) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L38) |
+| [`ensureDirectory`](./helpers/docker/backup-runner.mjs#L132) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L40) |
+| [`ensureDirectory`](./helpers/docker/backup-runner.ts#L214) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L40) |
+| [`ensureGhAuthenticated`](./helpers/gh/github-manager.ts#L641) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L153) |
+| [`ensureLogDir`](./helpers/api/porkbun-api.ts#L124) | method/function | [./helpers/api/DOCUMENTATION.md](./helpers/api/DOCUMENTATION.md#L23) |
+| [`ensureUniquePath`](./helpers/logs/cleanup.ts#L516) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L55) |
+| [`error`](./helpers/gh/label-migration.sh#L72) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L214) |
+| [`errToString`](./helpers/screencaps.ts#L759) | method/function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L236) |
+| [`escapeXml`](./helpers/freshrss/export.ts#L112) | method/function | [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md#L24) |
+| [`execCommand`](./helpers/docker/backup-runner.mjs#L157) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L45) |
+| [`execCommand`](./helpers/docker/backup-runner.ts#L251) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L45) |
+| [`execCommand`](./helpers/gh/github-manager.ts#L654) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L154) |
+| [`executeScriptTask`](./helpers/docker/backup-runner.mjs#L457) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L58) |
+| [`executeScriptTask`](./helpers/docker/backup-runner.ts#L641) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L58) |
+| [`executeTomlTask`](./helpers/docker/backup-runner.mjs#L346) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L56) |
+| [`executeTomlTask`](./helpers/docker/backup-runner.ts#L483) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L56) |
+| [`expand_path`](./cronjobs/git_updates.sh#L135) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L33) |
+| [`expand_tilde`](./cronjobs/synch_downloads.sh#L38) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L61) |
+| [`expandHome`](./helpers/kando/kando-vscode-menu-creator.ts#L119) | method/function | [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md#L28) |
+| [`expandHomeDirectory`](./helpers/gh/github-manager.ts#L600) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L150) |
+| [`explore`](./helpers/explore#L28) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L59) |
+| [`export_keybindings`](./partials/_functions/keybindings.bash#L5) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L159) |
+| [`extract_asset_url_fallback`](./installs/50-obsidian.sh#L104) | function | [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md#L41) |
+| [`extract_asset_url_with_jq`](./installs/50-obsidian.sh#L91) | function | [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md#L41) |
+| [`extract_dotbot_description`](./helpers/_actions/actions.sh#L711) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L61) |
+| [`extract_github_slug`](./helpers/daily-reports/commits-to-notes.sh#L121) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L95) |
+| [`extract_repo_name`](./helpers/daily-reports/commits-to-notes.sh#L116) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L94) |
+| [`extractMultiRun`](./helpers/screencaps.ts#L537) | method/function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L232) |
+| [`extractSingleRun`](./helpers/screencaps.ts#L414) | method/function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L231) |
+| [`fail`](./cronjobs/synch_downloads.sh#L31) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L61) |
+| [`fail`](./helpers/bash/startup-profiler.sh#L65) | function | [./helpers/bash/DOCUMENTATION.md](./helpers/bash/DOCUMENTATION.md#L25) |
+| [`fail`](./helpers/theme/color-steps.ts#L131) | method/function | [./helpers/theme/DOCUMENTATION.md](./helpers/theme/DOCUMENTATION.md#L47) |
+| [`fail_with_help`](./helpers/set-wallpaper.sh#L53) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L260) |
+| [`fast_forward_possible`](./cronjobs/git_updates.sh#L361) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L33) |
+| [`fetch_all_complete`](./cronjobs/git_updates.sh#L371) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L33) |
+| [`fetch_latest_release_json`](./installs/50-obsidian.sh#L60) | function | [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md#L41) |
+| [`fetchRaindropTags`](./helpers/raindrop.io/getTags.ts#L169) | method/function | [./helpers/raindrop.io/DOCUMENTATION.md](./helpers/raindrop.io/DOCUMENTATION.md#L27) |
+| [`fetchRemoteRepositories`](./helpers/gh/github-manager.ts#L1252) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L175) |
+| [`fetchRemoteRepositoryInventory`](./helpers/gh/github-manager.ts#L1306) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L176) |
+| [`fetchRepository`](./helpers/gh/github-manager.ts#L914) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L161) |
+| [`fetchRepositoryTags`](./helpers/gh/github-manager.ts#L1330) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L177) |
+| [`fetchStreamItems`](./helpers/freshrss/export.ts#L465) | method/function | [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md#L35) |
+| [`fetchStreamPage`](./helpers/freshrss/export.ts#L412) | method/function | [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md#L34) |
+| [`fetchWithTimeout`](./helpers/freshrss/export.ts#L330) | method/function | [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md#L32) |
+| [`fgrep`](./partials/aliases#L21) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L20) |
+| [`fileExists`](./helpers/logs/cleanup.ts#L195) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L39) |
+| [`filterRemoteDocuments`](./helpers/remarkable/transfer.ts#L962) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L63) |
+| [`filterRepositoriesByTopics`](./helpers/gh/github-manager.ts#L1360) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L178) |
+| [`findLogCandidates`](./helpers/logs/cleanup.ts#L399) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L48) |
+| [`findTasks`](./helpers/docker/backup-runner.mjs#L189) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L46) |
+| [`findTasks`](./helpers/docker/backup-runner.ts#L287) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L46) |
+| [`fmtTimeLabel`](./helpers/screencaps.ts#L301) | method/function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L223) |
+| [`formatCurrentDay`](./helpers/logs/cleanup.ts#L664) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L58) |
+| [`ftail`](./partials/aliases#L51) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L26) |
+| [`fullps`](./partials/aliases#L60) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L28) |
+| [`functions`](./partials/aliases#L63) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L49) |
+| [`g_one_commit`](./partials/_functions/g_one_commit.bash#L7) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L1) |
+| [`gatherDomainInfo`](./helpers/api/porkbun-api.ts#L266) | method/function | [./helpers/api/DOCUMENTATION.md](./helpers/api/DOCUMENTATION.md#L26) |
+| [`generate_keybindings_page`](./partials/_functions/keybindings.bash#L164) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L159) |
+| [`generate_report`](./helpers/bash/startup-profiler.sh#L97) | function | [./helpers/bash/DOCUMENTATION.md](./helpers/bash/DOCUMENTATION.md#L28) |
+| [`get_current_desktop_idx`](./workspaces/ws_tile_window#L172) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L70) |
+| [`get_current_desktop_index`](./workspaces/ws_menu_window_tile_target#L60) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L94) |
+| [`get_current_desktop_wmctrl`](./workspaces/ws_move_active_window#L62) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L58) |
+| [`get_current_desktop_xdotool`](./workspaces/ws_move_active_window#L80) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L58) |
+| [`get_current_monitor_geometry`](./workspaces/ws_menu_window_tile_target#L101) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L94) |
+| [`get_current_workspace_num`](./workspaces/ws_launch_program#L95) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L52) |
+| [`get_default_role`](./helpers/github-token#L156) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L108) |
+| [`get_default_visibility`](./helpers/github-token#L160) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L109) |
+| [`get_desktop_entry_value`](./helpers/_actions/actions.sh#L94) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L49) |
+| [`get_desktop_workarea`](./workspaces/ws_tile_window#L176) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L70) |
+| [`get_feh_style_flag`](./helpers/set-wallpaper.sh#L120) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L264) |
+| [`get_help_node_context`](./helpers/node-run#L17) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L174) |
+| [`get_origin_url`](./helpers/gh/label-migration.sh#L124) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L221) |
+| [`get_remote_connection_parts`](./helpers/synch-devspace.sh#L338) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L324) |
+| [`get_remote_default_branch`](./helpers/gh/git-sync.sh#L99) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L91) |
+| [`get_token_value`](./helpers/github-token#L174) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L111) |
+| [`get_token_variable_name`](./helpers/github-token#L164) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L110) |
+| [`get_total_desktops_wmctrl`](./workspaces/ws_move_active_window#L66) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L58) |
+| [`get_total_desktops_xdotool`](./workspaces/ws_move_active_window#L84) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L58) |
+| [`get_total_workspaces`](./workspaces/ws_launch_program#L104) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L52) |
+| [`get_total_workspaces_wmctrl`](./workspaces/ws_open_on_workspace#L56) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L64) |
+| [`get_total_workspaces_xdotool`](./workspaces/ws_open_on_workspace#L60) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L64) |
+| [`get_window_frame_extents`](./workspaces/ws_tile_window#L197) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L70) |
+| [`get_wm_name`](./helpers/workspace/wm-detect.sh#L56) | function | [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md#L25) |
+| [`get_xfce_style_value`](./helpers/set-wallpaper.sh#L151) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L265) |
+| [`getAheadBehind`](./helpers/gh/github-manager.ts#L1004) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L169) |
+| [`getCommandName`](./helpers/gh/github-manager.ts#L585) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L148) |
+| [`getConfig`](./helpers/freshrss/export.ts#L262) | method/function | [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md#L29) |
+| [`getConflictFiles`](./helpers/gh/github-manager.ts#L947) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L163) |
+| [`getCurrentBranch`](./helpers/gh/github-manager.ts#L785) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L156) |
+| [`getDefaultRemoteName`](./helpers/gh/github-manager.ts#L819) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L158) |
+| [`getDirtyFiles`](./helpers/gh/github-manager.ts#L968) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L164) |
+| [`getDurationSeconds`](./helpers/screencaps.ts#L210) | method/function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L221) |
+| [`getGitMetadataPath`](./helpers/gh/github-manager.ts#L933) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L162) |
+| [`getHostName`](./helpers/docker/backup-runner.mjs#L541) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L60) |
+| [`getHostName`](./helpers/docker/backup-runner.ts#L750) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L60) |
+| [`getItemLink`](./helpers/freshrss/export.ts#L503) | method/function | [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md#L36) |
+| [`getRemoteOnlyCommits`](./helpers/gh/github-manager.ts#L1034) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L170) |
+| [`getSupportedExtension`](./helpers/remarkable/transfer.ts#L556) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L50) |
+| [`getUpstreamRef`](./helpers/gh/github-manager.ts#L800) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L157) |
+| [`gh_repos_list`](./partials/_functions/gh_repo_list.bash#L19) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L67) |
+| [`gh_repos_list_help`](./partials/_functions/gh_repo_list.bash#L27) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L65) |
+| [`git`](./partials/_functions/git.bash#L79) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L83) |
+| [`git-orphan`](./partials/aliases#L100) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L37) |
+| [`git_identity_audit`](./helpers/gh/git-verify-identity.sh#L9) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L118) |
+| [`git_sig_lint`](./helpers/gh/git-sig-lint.sh#L4) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L65) |
+| [`git_verify_debug`](./helpers/gh/git-verify-committer.sh#L10) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L105) |
+| [`github_feed_releases`](./partials/_functions/github_feed_releases.bash#L5) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L131) |
+| [`gits`](./partials/_aliases/git.bash#L5) | alias | [./partials/DOCUMENTATION_aliases.md](./partials/DOCUMENTATION_aliases.md#L15) |
+| [`gitst`](./partials/_aliases/git.bash#L6) | alias | [./partials/DOCUMENTATION_aliases.md](./partials/DOCUMENTATION_aliases.md#L16) |
+| [`glone`](./partials/_functions/git-clone.bash#L5) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L98) |
+| [`glone_clone_one`](./partials/_functions/git-clone.bash#L35) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L96) |
+| [`grep`](./partials/aliases#L20) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L20) |
+| [`groupCandidatesForCompression`](./helpers/logs/cleanup.ts#L493) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L53) |
+| [`h`](./partials/aliases#L43) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L24) |
+| [`handle_autostart_disable`](./helpers/_actions/actions.sh#L573) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L60) |
+| [`handle_autostart_enable`](./helpers/_actions/actions.sh#L402) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L59) |
+| [`handle_dotbot_list`](./helpers/_actions/actions.sh#L758) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L63) |
+| [`handle_dotbot_run`](./helpers/_actions/actions.sh#L794) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L64) |
+| [`handle_menu`](./helpers/_actions/actions.sh#L339) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L58) |
+| [`has_compose_file`](./cronjobs/docker-backup.sh#L90) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L5) |
+| [`has_upstream`](./cronjobs/git_updates.sh#L356) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L33) |
+| [`hasText`](./helpers/freshrss/export.ts#L137) | method/function | [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md#L26) |
+| [`have_cmd`](./helpers/workspace/ws-setup.sh#L33) | function | [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md#L60) |
+| [`have_command`](./helpers/set-wallpaper.sh#L110) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L263) |
+| [`helpers/_actions/actions.sh`](./helpers/_actions/actions.sh#L1) | file | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L15) |
+| [`helpers/_actions/DOCUMENTATION.md`](./helpers/_actions/DOCUMENTATION.md#L1) | file | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L1) |
+| [`helpers/_actions/README.md`](./helpers/_actions/README.md#L1) | file | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L9) |
+| [`helpers/_lib/DOCUMENTATION.md`](./helpers/_lib/DOCUMENTATION.md#L1) | file | [./helpers/_lib/DOCUMENTATION.md](./helpers/_lib/DOCUMENTATION.md#L1) |
+| [`helpers/_lib/node.ts`](./helpers/_lib/node.ts#L1) | file | [./helpers/_lib/DOCUMENTATION.md](./helpers/_lib/DOCUMENTATION.md#L9) |
+| [`helpers/api/DOCUMENTATION.md`](./helpers/api/DOCUMENTATION.md#L1) | file | [./helpers/api/DOCUMENTATION.md](./helpers/api/DOCUMENTATION.md#L1) |
+| [`helpers/api/porkbun-api.ts`](./helpers/api/porkbun-api.ts#L1) | file | [./helpers/api/DOCUMENTATION.md](./helpers/api/DOCUMENTATION.md#L9) |
+| [`helpers/bash/DOCUMENTATION.md`](./helpers/bash/DOCUMENTATION.md#L1) | file | [./helpers/bash/DOCUMENTATION.md](./helpers/bash/DOCUMENTATION.md#L1) |
+| [`helpers/bash/startup-profiler.sh`](./helpers/bash/startup-profiler.sh#L1) | file | [./helpers/bash/DOCUMENTATION.md](./helpers/bash/DOCUMENTATION.md#L9) |
+| [`helpers/daily-reports/commit-report-to-dailynote.sh`](./helpers/daily-reports/commit-report-to-dailynote.sh#L1) | file | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L19) |
+| [`helpers/daily-reports/commits-to-notes.sh`](./helpers/daily-reports/commits-to-notes.sh#L1) | file | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L64) |
+| [`helpers/daily-reports/DOCUMENTATION.md`](./helpers/daily-reports/DOCUMENTATION.md#L1) | file | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L1) |
+| [`helpers/daily-reports/README.md`](./helpers/daily-reports/README.md#L1) | file | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L9) |
+| [`helpers/docker/backup-runner`](./helpers/docker/backup-runner#L1) | file | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L19) |
+| [`helpers/docker/backup-runner.mjs`](./helpers/docker/backup-runner.mjs#L1) | file | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L19) |
+| [`helpers/docker/backup-runner.ts`](./helpers/docker/backup-runner.ts#L1) | file | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L19) |
+| [`helpers/docker/DOCUMENTATION.md`](./helpers/docker/DOCUMENTATION.md#L1) | file | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L1) |
+| [`helpers/docker/examples/backup.sh`](./helpers/docker/examples/backup.sh#L1) | file | [./helpers/docker/examples/DOCUMENTATION.md](./helpers/docker/examples/DOCUMENTATION.md#L9) |
+| [`helpers/docker/examples/backup.toml`](./helpers/docker/examples/backup.toml#L1) | file | [./helpers/docker/examples/DOCUMENTATION.md](./helpers/docker/examples/DOCUMENTATION.md#L9) |
+| [`helpers/docker/examples/backup.ts`](./helpers/docker/examples/backup.ts#L1) | file | [./helpers/docker/examples/DOCUMENTATION.md](./helpers/docker/examples/DOCUMENTATION.md#L9) |
+| [`helpers/docker/examples/DOCUMENTATION.md`](./helpers/docker/examples/DOCUMENTATION.md#L1) | file | [./helpers/docker/examples/DOCUMENTATION.md](./helpers/docker/examples/DOCUMENTATION.md#L1) |
+| [`helpers/docker/README.md`](./helpers/docker/README.md#L1) | file | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L9) |
+| [`helpers/DOCUMENTATION.md`](./helpers/DOCUMENTATION.md#L1) | file | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L13) |
+| [`helpers/dotbot`](./helpers/dotbot#L1) | file | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L32) |
+| [`helpers/explore`](./helpers/explore#L1) | file | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L59) |
+| [`helpers/freshrss/DOCUMENTATION.md`](./helpers/freshrss/DOCUMENTATION.md#L1) | file | [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md#L1) |
+| [`helpers/freshrss/export.ts`](./helpers/freshrss/export.ts#L1) | file | [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md#L9) |
+| [`helpers/gh/cdg`](./helpers/gh/cdg#L1) | file | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L13) |
+| [`helpers/gh/DOCUMENTATION.md`](./helpers/gh/DOCUMENTATION.md#L1) | file | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L1) |
+| [`helpers/gh/git-sig-lint.sh`](./helpers/gh/git-sig-lint.sh#L1) | file | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L53) |
+| [`helpers/gh/git-sync.sh`](./helpers/gh/git-sync.sh#L1) | file | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L67) |
+| [`helpers/gh/git-verify-committer.sh`](./helpers/gh/git-verify-committer.sh#L1) | file | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L94) |
+| [`helpers/gh/git-verify-identity.sh`](./helpers/gh/git-verify-identity.sh#L1) | file | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L107) |
+| [`helpers/gh/github-manager.md`](./helpers/gh/github-manager.md#L1) | file | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L9) |
+| [`helpers/gh/github-manager.ts`](./helpers/gh/github-manager.ts#L1) | file | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L9) |
+| [`helpers/gh/label-migration.sh`](./helpers/gh/label-migration.sh#L1) | file | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L196) |
+| [`helpers/github-token`](./helpers/github-token#L1) | file | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L82) |
+| [`helpers/INDEX.md`](./helpers/INDEX.md#L1) | file | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L1) |
+| [`helpers/interface-restart`](./helpers/interface-restart#L1) | file | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L122) |
+| [`helpers/kando/DOCUMENTATION.md`](./helpers/kando/DOCUMENTATION.md#L1) | file | [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md#L1) |
+| [`helpers/kando/kando-vscode-menu-creator.ts`](./helpers/kando/kando-vscode-menu-creator.ts#L1) | file | [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md#L9) |
+| [`helpers/logs/cleanup.ts`](./helpers/logs/cleanup.ts#L1) | file | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L15) |
+| [`helpers/logs/config.toml`](./helpers/logs/config.toml#L1) | file | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L25) |
+| [`helpers/logs/DOCUMENTATION.md`](./helpers/logs/DOCUMENTATION.md#L1) | file | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L1) |
+| [`helpers/logs/log-cleanup.config.schema.json`](./helpers/logs/log-cleanup.config.schema.json#L1) | file | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L66) |
+| [`helpers/logs/ToDo.md`](./helpers/logs/ToDo.md#L1) | file | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L9) |
+| [`helpers/lpack`](./helpers/lpack#L1) | file | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L130) |
+| [`helpers/node-run`](./helpers/node-run#L1) | file | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L157) |
+| [`helpers/packages/create.sh`](./helpers/packages/create.sh#L1) | file | [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md#L19) |
+| [`helpers/packages/DOCUMENTATION.md`](./helpers/packages/DOCUMENTATION.md#L1) | file | [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md#L1) |
+| [`helpers/packages/README.md`](./helpers/packages/README.md#L1) | file | [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md#L9) |
+| [`helpers/raindrop.io/DOCUMENTATION.md`](./helpers/raindrop.io/DOCUMENTATION.md#L1) | file | [./helpers/raindrop.io/DOCUMENTATION.md](./helpers/raindrop.io/DOCUMENTATION.md#L1) |
+| [`helpers/raindrop.io/getTags.ts`](./helpers/raindrop.io/getTags.ts#L1) | file | [./helpers/raindrop.io/DOCUMENTATION.md](./helpers/raindrop.io/DOCUMENTATION.md#L9) |
+| [`helpers/registry.toml`](./helpers/registry.toml#L1) | file | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L185) |
+| [`helpers/remarkable/DOCUMENTATION.md`](./helpers/remarkable/DOCUMENTATION.md#L1) | file | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L1) |
+| [`helpers/remarkable/README.md`](./helpers/remarkable/README.md#L1) | file | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L9) |
+| [`helpers/remarkable/transfer.ts`](./helpers/remarkable/transfer.ts#L1) | file | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L19) |
+| [`helpers/screencaps.ts`](./helpers/screencaps.ts#L1) | file | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L189) |
+| [`helpers/set-wallpaper.sh`](./helpers/set-wallpaper.sh#L1) | file | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L244) |
+| [`helpers/set_max_listeners.cjs`](./helpers/set_max_listeners.cjs#L1) | file | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L282) |
+| [`helpers/synch-devspace.sh`](./helpers/synch-devspace.sh#L1) | file | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L290) |
+| [`helpers/theme/color-steps.md`](./helpers/theme/color-steps.md#L1) | file | [./helpers/theme/DOCUMENTATION.md](./helpers/theme/DOCUMENTATION.md#L9) |
+| [`helpers/theme/color-steps.todo.md`](./helpers/theme/color-steps.todo.md#L1) | file | [./helpers/theme/DOCUMENTATION.md](./helpers/theme/DOCUMENTATION.md#L10) |
+| [`helpers/theme/color-steps.ts`](./helpers/theme/color-steps.ts#L1) | file | [./helpers/theme/DOCUMENTATION.md](./helpers/theme/DOCUMENTATION.md#L9) |
+| [`helpers/theme/DOCUMENTATION.md`](./helpers/theme/DOCUMENTATION.md#L1) | file | [./helpers/theme/DOCUMENTATION.md](./helpers/theme/DOCUMENTATION.md#L1) |
+| [`helpers/update-npm.sh`](./helpers/update-npm.sh#L1) | file | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L335) |
+| [`helpers/web-mirror.sh`](./helpers/web-mirror.sh#L1) | file | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L343) |
+| [`helpers/workspace/DOCUMENTATION.md`](./helpers/workspace/DOCUMENTATION.md#L1) | file | [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md#L1) |
+| [`helpers/workspace/wm-detect.sh`](./helpers/workspace/wm-detect.sh#L1) | file | [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md#L12) |
+| [`helpers/workspace/ws-name.sh`](./helpers/workspace/ws-name.sh#L1) | file | [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md#L31) |
+| [`helpers/workspace/ws-setup.sh`](./helpers/workspace/ws-setup.sh#L1) | file | [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md#L43) |
+| [`helpText`](./helpers/screencaps.ts#L594) | method/function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L234) |
+| [`hostname_lc`](./helpers/packages/create.sh#L112) | function | [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md#L40) |
+| [`igrep`](./partials/aliases#L49) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L20) |
+| [`import_keybindings`](./partials/_functions/keybindings.bash#L57) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L159) |
+| [`INDEX.md`](./INDEX.md#L1) | file | [./INDEX.md](./INDEX.md#L432) |
+| [`info`](./helpers/gh/label-migration.sh#L64) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L212) |
+| [`init_logging`](./helpers/_actions/actions.sh#L30) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L43) |
+| [`init_logging`](./helpers/daily-reports/commit-report-to-dailynote.sh#L27) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L40) |
+| [`init_logging`](./helpers/daily-reports/commits-to-notes.sh#L22) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L40) |
+| [`init_logging`](./workspaces/ws_launch_program#L63) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L52) |
+| [`init_verbose_logging`](./helpers/packages/create.sh#L76) | function | [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md#L36) |
+| [`insert_first_line`](./partials/_functions/insert_first_line.bash#L13) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L143) |
+| [`install_deb`](./installs/50-obsidian.sh#L116) | function | [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md#L41) |
+| [`installs/10-system.sh`](./installs/10-system.sh#L1) | file | [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md#L5) |
+| [`installs/20-brew.sh`](./installs/20-brew.sh#L1) | file | [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md#L11) |
+| [`installs/20-cargo.sh`](./installs/20-cargo.sh#L1) | file | [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md#L17) |
+| [`installs/50-atuin.sh`](./installs/50-atuin.sh#L1) | file | [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md#L23) |
+| [`installs/50-chrome.sh`](./installs/50-chrome.sh#L1) | file | [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md#L29) |
+| [`installs/50-github.sh`](./installs/50-github.sh#L1) | file | [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md#L35) |
+| [`installs/50-obsidian.sh`](./installs/50-obsidian.sh#L1) | file | [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md#L41) |
+| [`installs/50-ollama.sh`](./installs/50-ollama.sh#L1) | file | [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md#L57) |
+| [`installs/50-signal.sh`](./installs/50-signal.sh#L1) | file | [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md#L63) |
+| [`installs/50-sublime.sh`](./installs/50-sublime.sh#L1) | file | [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md#L69) |
+| [`installs/50.gum.sh`](./installs/50.gum.sh#L1) | file | [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md#L75) |
+| [`installs/90-brew-packages.sh`](./installs/90-brew-packages.sh#L1) | file | [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md#L81) |
+| [`installs/90-cargo-packages.sh`](./installs/90-cargo-packages.sh#L1) | file | [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md#L87) |
+| [`installs/DOCUMENTATION.md`](./installs/DOCUMENTATION.md#L1) | file | [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md#L1) |
+| [`interpolate`](./helpers/docker/backup-runner.mjs#L153) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L44) |
+| [`interpolate`](./helpers/docker/backup-runner.ts#L241) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L44) |
+| [`interpolate`](./helpers/theme/color-steps.ts#L242) | method/function | [./helpers/theme/DOCUMENTATION.md](./helpers/theme/DOCUMENTATION.md#L58) |
+| [`inventoryLocalRepositories`](./helpers/gh/github-manager.ts#L735) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L155) |
+| [`is_clean_worktree`](./cronjobs/git_updates.sh#L352) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L33) |
+| [`is_git_repository`](./helpers/daily-reports/commit-report-to-dailynote.sh#L119) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L49) |
+| [`is_git_repository`](./helpers/daily-reports/commits-to-notes.sh#L111) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L49) |
+| [`is_git_repository`](./helpers/gh/label-migration.sh#L120) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L220) |
+| [`is_int`](./helpers/workspace/ws-setup.sh#L129) | function | [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md#L63) |
+| [`is_positive_int`](./helpers/gh/git-sync.sh#L93) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L90) |
+| [`is_remote_target`](./helpers/synch-devspace.sh#L129) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L316) |
+| [`isBoolean`](./helpers/gh/github-manager.ts#L1428) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L183) |
+| [`isCherryPickInProgress`](./helpers/gh/github-manager.ts#L996) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L167) |
+| [`isCleanupAction`](./helpers/logs/cleanup.ts#L264) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L42) |
+| [`isCommandName`](./helpers/gh/github-manager.ts#L596) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L149) |
+| [`isDirectRun`](./helpers/theme/color-steps.ts#L431) | method/function | [./helpers/theme/DOCUMENTATION.md](./helpers/theme/DOCUMENTATION.md#L62) |
+| [`isExecutable`](./helpers/docker/backup-runner.mjs#L136) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L41) |
+| [`isExecutable`](./helpers/docker/backup-runner.ts#L218) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L41) |
+| [`isGhRepositorySummary`](./helpers/gh/github-manager.ts#L1436) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L185) |
+| [`isGhRepositorySummaryArray`](./helpers/gh/github-manager.ts#L1454) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L186) |
+| [`isGhRepositoryTag`](./helpers/gh/github-manager.ts#L1462) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L187) |
+| [`isGhRepositoryTagArray`](./helpers/gh/github-manager.ts#L1484) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L188) |
+| [`isMenuObject`](./helpers/kando/kando-vscode-menu-creator.ts#L280) | method/function | [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md#L38) |
+| [`isMenuRootObject`](./helpers/kando/kando-vscode-menu-creator.ts#L272) | method/function | [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md#L37) |
+| [`isMergeInProgress`](./helpers/gh/github-manager.ts#L985) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L165) |
+| [`isNullableString`](./helpers/gh/github-manager.ts#L1432) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L184) |
+| [`isRatioInZone`](./helpers/theme/color-steps.ts#L206) | method/function | [./helpers/theme/DOCUMENTATION.md](./helpers/theme/DOCUMENTATION.md#L56) |
+| [`isRebaseInProgress`](./helpers/gh/github-manager.ts#L989) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L166) |
+| [`isRecord`](./helpers/gh/github-manager.ts#L1420) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L181) |
+| [`isRecord`](./helpers/raindrop.io/getTags.ts#L32) | method/function | [./helpers/raindrop.io/DOCUMENTATION.md](./helpers/raindrop.io/DOCUMENTATION.md#L23) |
+| [`isRecord`](./helpers/remarkable/transfer.ts#L783) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L58) |
+| [`isRevertInProgress`](./helpers/gh/github-manager.ts#L1000) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L168) |
+| [`isString`](./helpers/gh/github-manager.ts#L1424) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L182) |
+| [`isString`](./helpers/screencaps.ts#L151) | method/function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L218) |
+| [`isVerboseEnv`](./helpers/logs/cleanup.ts#L119) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L36) |
+| [`jobdepends`](./partials/aliases#L75) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L30) |
+| [`jobhist`](./partials/aliases#L74) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L30) |
+| [`jobhold`](./partials/aliases#L69) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L30) |
+| [`jobice`](./partials/aliases#L70) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L30) |
+| [`jobkill`](./partials/aliases#L71) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L30) |
+| [`jobll`](./partials/aliases#L67) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L30) |
+| [`jobls`](./partials/aliases#L66) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L30) |
+| [`joboffhold`](./partials/aliases#L72) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L30) |
+| [`joboffice`](./partials/aliases#L73) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L30) |
+| [`jobstart`](./partials/aliases#L68) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L30) |
+| [`jobsu`](./partials/aliases#L76) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L30) |
+| [`jobterm`](./partials/aliases#L77) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L30) |
+| [`json`](./helpers/freshrss/export.ts#L453) | method/function | [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md#L9) |
+| [`json_has_key`](./cronjobs/synch_downloads.sh#L71) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L61) |
+| [`keybindingsmanager`](./partials/_functions/keybindings.bash#L109) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L159) |
+| [`l`](./partials/aliases#L26) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L21) |
+| [`la`](./partials/aliases#L27) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L21) |
+| [`lal`](./partials/aliases#L32) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L21) |
+| [`lasttag`](./partials/aliases#L83) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L33) |
+| [`ldir`](./partials/aliases#L34) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L21) |
+| [`less`](./partials/aliases#L41) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L23) |
+| [`lib/00-core/dnb-core-colors.bash`](./lib/00-core/dnb-core-colors.bash#L1) | file | [./lib/README.md](./lib/README.md#L1) |
+| [`lib/00-core/dnb-core-env.bash`](./lib/00-core/dnb-core-env.bash#L1) | file | [./lib/README.md](./lib/README.md#L1) |
+| [`lib/00-core/dnb-core-interactive.bash`](./lib/00-core/dnb-core-interactive.bash#L1) | file | [./lib/README.md](./lib/README.md#L1) |
+| [`lib/00-core/dnb-core-log.bash`](./lib/00-core/dnb-core-log.bash#L1) | file | [./lib/README.md](./lib/README.md#L1) |
+| [`lib/00-core/dnb-core-requirements.bash`](./lib/00-core/dnb-core-requirements.bash#L1) | file | [./lib/README.md](./lib/README.md#L1) |
+| [`lib/00-core/dnb-core-source.bash`](./lib/00-core/dnb-core-source.bash#L1) | file | [./lib/README.md](./lib/README.md#L1) |
+| [`lib/10-path/dnb-path.bash`](./lib/10-path/dnb-path.bash#L1) | file | [./lib/README.md](./lib/README.md#L1) |
+| [`lib/20-config/dnb-config.bash`](./lib/20-config/dnb-config.bash#L1) | file | [./lib/README.md](./lib/README.md#L1) |
+| [`lib/20-config/dnb-repo-config.bash`](./lib/20-config/dnb-repo-config.bash#L1) | file | [./lib/README.md](./lib/README.md#L1) |
+| [`lib/30-filesystem/dnb-archive.bash`](./lib/30-filesystem/dnb-archive.bash#L1) | file | [./lib/README.md](./lib/README.md#L1) |
+| [`lib/30-filesystem/dnb-fs.bash`](./lib/30-filesystem/dnb-fs.bash#L1) | file | [./lib/README.md](./lib/README.md#L1) |
+| [`lib/30-filesystem/dnb-path-patterns.bash`](./lib/30-filesystem/dnb-path-patterns.bash#L1) | file | [./lib/README.md](./lib/README.md#L1) |
+| [`lib/40-packages/dnb-packages.bash`](./lib/40-packages/dnb-packages.bash#L1) | file | [./lib/README.md](./lib/README.md#L1) |
+| [`lib/50-variables/dnb-strings.bash`](./lib/50-variables/dnb-strings.bash#L1) | file | [./lib/README.md](./lib/README.md#L1) |
+| [`lib/README.md`](./lib/README.md#L1) | file | [./lib/README.md](./lib/README.md#L1) |
+| [`list_dotbot_profiles`](./helpers/_actions/actions.sh#L730) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L62) |
+| [`list_packages`](./helpers/packages/create.sh#L180) | function | [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md#L45) |
+| [`listDownloadableRemoteDocuments`](./helpers/remarkable/transfer.ts#L891) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L62) |
+| [`listWorkspaceFiles`](./helpers/kando/kando-vscode-menu-creator.ts#L216) | method/function | [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md#L35) |
+| [`ll`](./partials/aliases#L30) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L21) |
+| [`lla`](./partials/aliases#L28) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L21) |
+| [`load_env`](./cronjobs/git_updates.sh#L94) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L33) |
+| [`load_env_config_files`](./helpers/packages/create.sh#L144) | function | [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md#L43) |
+| [`load_env_file`](./helpers/github-token#L138) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L107) |
+| [`load_nvm`](./helpers/node-run#L117) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L177) |
+| [`loadConfig`](./helpers/logs/cleanup.ts#L346) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L44) |
+| [`log`](./cronjobs/git_updates.sh#L36) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L3) |
+| [`log`](./cronjobs/synch_downloads.sh#L25) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L3) |
+| [`log`](./helpers/gh/git-sync.sh#L70) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L87) |
+| [`log`](./helpers/gh/label-migration.sh#L57) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L87) |
+| [`log`](./helpers/web-mirror.sh#L54) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L216) |
+| [`log`](./helpers/workspace/ws-setup.sh#L20) | function | [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md#L58) |
+| [`log`](./installs/50-obsidian.sh#L17) | function | [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md#L41) |
+| [`log`](./helpers/docker/backup-runner.mjs#L115) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L38) |
+| [`log`](./helpers/docker/backup-runner.ts#L197) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L38) |
+| [`log`](./helpers/gh/github-manager.ts#L612) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L87) |
+| [`log`](./helpers/screencaps.ts#L136) | method/function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L216) |
+| [`log_debug`](./helpers/_actions/actions.sh#L44) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L45) |
+| [`log_error`](./cronjobs/docker-backup.sh#L71) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L5) |
+| [`log_error`](./helpers/_actions/actions.sh#L50) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L46) |
+| [`log_error`](./helpers/daily-reports/commit-report-to-dailynote.sh#L88) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L45) |
+| [`log_error`](./helpers/daily-reports/commits-to-notes.sh#L80) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L45) |
+| [`log_error`](./helpers/docker/examples/backup.sh#L36) | function | [./helpers/docker/examples/DOCUMENTATION.md](./helpers/docker/examples/DOCUMENTATION.md#L17) |
+| [`log_info`](./cronjobs/docker-backup.sh#L63) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L5) |
+| [`log_info`](./helpers/daily-reports/commit-report-to-dailynote.sh#L76) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L43) |
+| [`log_info`](./helpers/daily-reports/commits-to-notes.sh#L68) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L43) |
+| [`log_info`](./helpers/docker/examples/backup.sh#L32) | function | [./helpers/docker/examples/DOCUMENTATION.md](./helpers/docker/examples/DOCUMENTATION.md#L16) |
+| [`log_init`](./helpers/web-mirror.sh#L46) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L359) |
+| [`log_line`](./workspaces/ws_launch_program#L69) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L52) |
+| [`log_message`](./helpers/node-run#L82) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L176) |
+| [`log_message`](./helpers/set-wallpaper.sh#L68) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L176) |
+| [`log_msg`](./helpers/_actions/actions.sh#L36) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L44) |
+| [`log_timestamp`](./helpers/daily-reports/commit-report-to-dailynote.sh#L72) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L42) |
+| [`log_timestamp`](./helpers/daily-reports/commits-to-notes.sh#L64) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L42) |
+| [`log_verbose`](./cronjobs/docker-backup.sh#L75) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L5) |
+| [`log_verbose`](./helpers/packages/create.sh#L88) | function | [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md#L37) |
+| [`log_warn`](./cronjobs/docker-backup.sh#L67) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L5) |
+| [`log_warn`](./helpers/daily-reports/commit-report-to-dailynote.sh#L84) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L44) |
+| [`log_warn`](./helpers/daily-reports/commits-to-notes.sh#L76) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L44) |
+| [`logErr`](./helpers/screencaps.ts#L143) | method/function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L217) |
+| [`login`](./helpers/freshrss/export.ts#L359) | method/function | [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md#L33) |
+| [`logv`](./workspaces/ws_generate_tile_svgs#L46) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L105) |
+| [`logv`](./workspaces/ws_menu_window_move#L52) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L82) |
+| [`logv`](./workspaces/ws_menu_window_tile_target#L49) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L94) |
+| [`logv`](./workspaces/ws_menu_window_tile#L43) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L88) |
+| [`logv`](./workspaces/ws_move_active_window#L43) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L58) |
+| [`logv`](./workspaces/ws_open_on_workspace#L35) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L64) |
+| [`logv`](./workspaces/ws_tile_window#L68) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L70) |
+| [`lpack_append_unique`](./helpers/lpack#L58) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L149) |
+| [`lpack_collect_config_excludes`](./helpers/lpack#L72) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L150) |
+| [`lpack_help`](./helpers/lpack#L7) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L146) |
+| [`lpack_normalize_exclude`](./helpers/lpack#L51) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L148) |
+| [`lpack_source_libs`](./helpers/lpack#L35) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L147) |
+| [`lt`](./partials/aliases#L29) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L21) |
+| [`lu`](./partials/aliases#L31) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L21) |
+| [`main`](./cronjobs/docker-backup.sh#L239) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L5) |
+| [`main`](./cronjobs/git_updates.sh#L503) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L33) |
+| [`main`](./cronjobs/synch_downloads.sh#L131) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L61) |
+| [`main`](./helpers/_actions/actions.sh#L885) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L65) |
+| [`main`](./helpers/bash/startup-profiler.sh#L163) | function | [./helpers/bash/DOCUMENTATION.md](./helpers/bash/DOCUMENTATION.md#L30) |
+| [`main`](./helpers/daily-reports/commit-report-to-dailynote.sh#L368) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L58) |
+| [`main`](./helpers/daily-reports/commits-to-notes.sh#L338) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L58) |
+| [`main`](./helpers/docker/examples/backup.sh#L40) | function | [./helpers/docker/examples/DOCUMENTATION.md](./helpers/docker/examples/DOCUMENTATION.md#L18) |
+| [`main`](./helpers/dotbot#L153) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L52) |
+| [`main`](./helpers/gh/label-migration.sh#L308) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L145) |
+| [`main`](./helpers/github-token#L242) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L52) |
+| [`main`](./helpers/lpack#L141) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L52) |
+| [`main`](./helpers/packages/create.sh#L313) | function | [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md#L51) |
+| [`main`](./helpers/set-wallpaper.sh#L536) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L52) |
+| [`main`](./helpers/synch-devspace.sh#L383) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L52) |
+| [`main`](./helpers/workspace/ws-setup.sh#L272) | function | [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md#L75) |
+| [`main`](./installs/50-obsidian.sh#L127) | function | [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md#L41) |
+| [`main`](./workspaces/ws_launch_program#L215) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L52) |
+| [`main`](./workspaces/ws_list_windows#L56) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L46) |
+| [`main`](./workspaces/ws_list_workspaces#L59) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L40) |
+| [`main`](./helpers/api/porkbun-api.ts#L440) | method/function | [./helpers/api/DOCUMENTATION.md](./helpers/api/DOCUMENTATION.md#L30) |
+| [`main`](./helpers/docker/backup-runner.mjs#L575) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L63) |
+| [`main`](./helpers/docker/backup-runner.ts#L786) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L63) |
+| [`main`](./helpers/docker/examples/backup.ts#L26) | method/function | [./helpers/docker/examples/DOCUMENTATION.md](./helpers/docker/examples/DOCUMENTATION.md#L18) |
+| [`main`](./helpers/freshrss/export.ts#L652) | method/function | [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md#L40) |
+| [`main`](./helpers/gh/github-manager.ts#L423) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L145) |
+| [`main`](./helpers/kando/kando-vscode-menu-creator.ts#L417) | method/function | [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md#L43) |
+| [`main`](./helpers/logs/cleanup.ts#L682) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L60) |
+| [`main`](./helpers/raindrop.io/getTags.ts#L240) | method/function | [./helpers/raindrop.io/DOCUMENTATION.md](./helpers/raindrop.io/DOCUMENTATION.md#L28) |
+| [`main`](./helpers/remarkable/transfer.ts#L1163) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L69) |
+| [`main`](./helpers/screencaps.ts#L764) | method/function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L52) |
+| [`main`](./helpers/theme/color-steps.ts#L441) | method/function | [./helpers/theme/DOCUMENTATION.md](./helpers/theme/DOCUMENTATION.md#L63) |
+| [`make_zip_name`](./helpers/packages/create.sh#L239) | function | [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md#L49) |
+| [`makeChildEntry`](./helpers/kando/kando-vscode-menu-creator.ts#L247) | method/function | [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md#L36) |
+| [`menu_choose_activity`](./helpers/_actions/actions.sh#L274) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L55) |
+| [`menu_choose_scope`](./helpers/_actions/actions.sh#L250) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L54) |
+| [`menu_extract_id`](./helpers/_actions/actions.sh#L299) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L56) |
+| [`menu_py_toml`](./helpers/_actions/actions.sh#L170) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L52) |
+| [`menu_run_activity`](./helpers/_actions/actions.sh#L304) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L57) |
+| [`menus`](./helpers/kando/kando-vscode-menu-creator.ts#L300) | method/function | [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md#L15) |
+| [`mergeScaleFilter`](./helpers/screencaps.ts#L385) | method/function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L230) |
+| [`move_active_to_desktop_wmctrl`](./workspaces/ws_move_active_window#L70) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L58) |
+| [`move_active_to_desktop_xdotool`](./workspaces/ws_move_active_window#L88) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L58) |
+| [`move_first_matching_window_to_workspace`](./helpers/workspace/ws-setup.sh#L241) | function | [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md#L74) |
+| [`moveFile`](./helpers/logs/cleanup.ts#L245) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L41) |
+| [`mv`](./partials/_aliases/system.bash#L13) | alias | [./partials/DOCUMENTATION_aliases.md](./partials/DOCUMENTATION_aliases.md#L37) |
+| [`need_cmd`](./workspaces/ws_generate_tile_svgs#L53) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L105) |
+| [`need_cmd`](./workspaces/ws_launch_program#L91) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L52) |
+| [`need_cmd`](./workspaces/ws_menu_window_move#L59) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L82) |
+| [`need_cmd`](./workspaces/ws_menu_window_tile_target#L56) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L94) |
+| [`need_cmd`](./workspaces/ws_menu_window_tile#L50) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L88) |
+| [`need_cmd`](./workspaces/ws_move_active_window#L58) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L58) |
+| [`need_cmd`](./workspaces/ws_open_on_workspace#L42) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L64) |
+| [`need_cmd`](./workspaces/ws_tile_window#L75) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L70) |
+| [`node_run`](./helpers/node-run#L7) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L173) |
+| [`normalisedEmail`](./helpers/gh/github-manager.ts#L1062) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L9) |
+| [`normalize_config_to_filename`](./helpers/dotbot#L65) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L48) |
+| [`normalize_workspace_key`](./workspaces/ws_launch_program#L144) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L52) |
+| [`normalizeTagEntry`](./helpers/raindrop.io/getTags.ts#L132) | method/function | [./helpers/raindrop.io/DOCUMENTATION.md](./helpers/raindrop.io/DOCUMENTATION.md#L26) |
+| [`notify_discord`](./cronjobs/git_updates.sh#L111) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L47) |
+| [`npm-check-updates`](./partials/aliases#L93) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L36) |
+| [`one`](./helpers/screencaps.ts#L542) | method/function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L233) |
+| [`package_exists`](./helpers/packages/create.sh#L189) | function | [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md#L46) |
+| [`padVariableIndex`](./helpers/theme/color-steps.ts#L201) | method/function | [./helpers/theme/DOCUMENTATION.md](./helpers/theme/DOCUMENTATION.md#L55) |
+| [`parse_args`](./cronjobs/docker-backup.sh#L199) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L5) |
+| [`parse_args`](./helpers/packages/create.sh#L247) | function | [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md#L50) |
+| [`parse_args`](./helpers/set-wallpaper.sh#L426) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L273) |
+| [`parse_args`](./helpers/workspace/ws-setup.sh#L86) | function | [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md#L62) |
+| [`parse_arguments`](./helpers/synch-devspace.sh#L257) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L323) |
+| [`parse_config`](./cronjobs/git_updates.sh#L191) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L48) |
+| [`parse_desktop_selections`](./helpers/_actions/actions.sh#L154) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L51) |
+| [`parse_github_repo_from_url`](./helpers/gh/label-migration.sh#L128) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L222) |
+| [`parse_workspace_lines`](./workspaces/ws_launch_program#L108) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L52) |
+| [`parse_workspace_lines`](./workspaces/ws_list_workspaces#L38) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L40) |
+| [`parseArgs`](./helpers/api/porkbun-api.ts#L146) | method/function | [./helpers/api/DOCUMENTATION.md](./helpers/api/DOCUMENTATION.md#L25) |
+| [`parseArgs`](./helpers/docker/backup-runner.mjs#L43) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L37) |
+| [`parseArgs`](./helpers/docker/backup-runner.ts#L127) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L37) |
+| [`parseArgs`](./helpers/freshrss/export.ts#L184) | method/function | [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md#L28) |
+| [`parseArgs`](./helpers/gh/github-manager.ts#L439) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L146) |
+| [`parseArgs`](./helpers/kando/kando-vscode-menu-creator.ts#L148) | method/function | [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md#L31) |
+| [`parseArgs`](./helpers/logs/cleanup.ts#L127) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L37) |
+| [`parseArgs`](./helpers/raindrop.io/getTags.ts#L80) | method/function | [./helpers/raindrop.io/DOCUMENTATION.md](./helpers/raindrop.io/DOCUMENTATION.md#L25) |
+| [`parseArgs`](./helpers/screencaps.ts#L652) | method/function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L235) |
+| [`parseArguments`](./helpers/remarkable/transfer.ts#L230) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L45) |
+| [`parseBooleanEnv`](./helpers/remarkable/transfer.ts#L179) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L43) |
+| [`parseCliArgs`](./helpers/theme/color-steps.ts#L321) | method/function | [./helpers/theme/DOCUMENTATION.md](./helpers/theme/DOCUMENTATION.md#L61) |
+| [`parseCommaList`](./helpers/kando/kando-vscode-menu-creator.ts#L137) | method/function | [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md#L30) |
+| [`parseFormat`](./helpers/screencaps.ts#L319) | method/function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L225) |
+| [`parseInteger`](./helpers/theme/color-steps.ts#L165) | method/function | [./helpers/theme/DOCUMENTATION.md](./helpers/theme/DOCUMENTATION.md#L51) |
+| [`parseIntStrict`](./helpers/screencaps.ts#L340) | method/function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L227) |
+| [`parseJobs`](./helpers/screencaps.ts#L351) | method/function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L228) |
+| [`parseJson`](./helpers/gh/github-manager.ts#L1411) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L180) |
+| [`parseMode`](./helpers/screencaps.ts#L309) | method/function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L224) |
+| [`parseNumber`](./helpers/theme/color-steps.ts#L155) | method/function | [./helpers/theme/DOCUMENTATION.md](./helpers/theme/DOCUMENTATION.md#L50) |
+| [`parseNumberStrict`](./helpers/screencaps.ts#L330) | method/function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L226) |
+| [`parseRemoteMetadata`](./helpers/remarkable/transfer.ts#L794) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L59) |
+| [`parseRotateChannel`](./helpers/theme/color-steps.ts#L183) | method/function | [./helpers/theme/DOCUMENTATION.md](./helpers/theme/DOCUMENTATION.md#L53) |
+| [`parseThemeMode`](./helpers/theme/color-steps.ts#L175) | method/function | [./helpers/theme/DOCUMENTATION.md](./helpers/theme/DOCUMENTATION.md#L52) |
+| [`parseToml`](./helpers/docker/backup-runner.mjs#L275) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L50) |
+| [`parseToml`](./helpers/docker/backup-runner.ts#L385) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L50) |
+| [`parseTomlValue`](./helpers/docker/backup-runner.mjs#L227) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L48) |
+| [`parseTomlValue`](./helpers/docker/backup-runner.ts#L324) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L48) |
+| [`partials/_aliases/DOCUMENTATION.md`](./partials/_aliases/DOCUMENTATION.md#L1) | file | [./partials/DOCUMENTATION_aliases.md](./partials/DOCUMENTATION_aliases.md#L56) |
+| [`partials/_aliases/folderwork`](./partials/_aliases/folderwork.bash#L1) | file | [./partials/DOCUMENTATION_aliases.md](./partials/DOCUMENTATION_aliases.md#L7) |
+| [`partials/_aliases/git`](./partials/_aliases/git.bash#L1) | file | [./partials/DOCUMENTATION_aliases.md](./partials/DOCUMENTATION_aliases.md#L11) |
+| [`partials/_aliases/integrated`](./partials/_aliases/integrated.bash#L1) | file | [./partials/DOCUMENTATION_aliases.md](./partials/DOCUMENTATION_aliases.md#L20) |
+| [`partials/_aliases/media`](./partials/_aliases/media.bash#L1) | file | [./partials/DOCUMENTATION_aliases.md](./partials/DOCUMENTATION_aliases.md#L24) |
+| [`partials/_aliases/system`](./partials/_aliases/system.bash#L1) | file | [./partials/DOCUMENTATION_aliases.md](./partials/DOCUMENTATION_aliases.md#L28) |
+| [`partials/_aliases/tools`](./partials/_aliases/tools.bash#L1) | file | [./partials/DOCUMENTATION_aliases.md](./partials/DOCUMENTATION_aliases.md#L42) |
+| [`partials/_aliases/workspace`](./partials/_aliases/workspace.bash#L1) | file | [./partials/DOCUMENTATION_aliases.md](./partials/DOCUMENTATION_aliases.md#L50) |
+| [`partials/_completions/bootstrap`](./partials/_completions/bootstrap#L1) | file | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L21) |
+| [`partials/_completions/caniuse`](./partials/_completions/caniuse#L1) | file | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L27) |
+| [`partials/_completions/codex`](./partials/_completions/codex#L1) | file | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L33) |
+| [`partials/_completions/DOCUMENTATION.md`](./partials/_completions/DOCUMENTATION.md#L1) | file | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L1) |
+| [`partials/_completions/gh`](./partials/_completions/gh#L1) | file | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L39) |
+| [`partials/_completions/gohugo`](./partials/_completions/gohugo#L1) | file | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L45) |
+| [`partials/_completions/netlify`](./partials/_completions/netlify#L1) | file | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L51) |
+| [`partials/_completions/npm`](./partials/_completions/npm#L1) | file | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L57) |
+| [`partials/_completions/robo`](./partials/_completions/robo#L1) | file | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L63) |
+| [`partials/_completions/wp`](./partials/_completions/wp#L1) | file | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L69) |
+| [`partials/_functions/cdg`](./partials/_functions/cdg.bash#L1) | file | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L5) |
+| [`partials/_functions/change_directory`](./partials/_functions/change_directory.bash#L1) | file | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L19) |
+| [`partials/_functions/codex`](./partials/_functions/codex.bash#L1) | file | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L31) |
+| [`partials/_functions/DOCUMENTATION.md`](./partials/_functions/DOCUMENTATION.md#L1) | file | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L17) |
+| [`partials/_functions/dotfiles`](./partials/_functions/dotfiles.bash#L1) | file | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L50) |
+| [`partials/_functions/g_one_commit`](./partials/_functions/g_one_commit.bash#L1) | file | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L1) |
+| [`partials/_functions/gh_repo_list`](./partials/_functions/gh_repo_list.bash#L1) | file | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L65) |
+| [`partials/_functions/git`](./partials/_functions/git.bash#L1) | file | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L83) |
+| [`partials/_functions/git-clone`](./partials/_functions/git-clone.bash#L1) | file | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L96) |
+| [`partials/_functions/git_branch_creator`](./partials/_functions/git_branch_creator.bash#L1) | file | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L113) |
+| [`partials/_functions/github`](./partials/_functions/github#L1) | file | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L127) |
+| [`partials/_functions/github_feed_releases`](./partials/_functions/github_feed_releases.bash#L1) | file | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L131) |
+| [`partials/_functions/insert_first_line`](./partials/_functions/insert_first_line.bash#L1) | file | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L143) |
+| [`partials/_functions/keybindings`](./partials/_functions/keybindings.bash#L1) | file | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L157) |
+| [`partials/_functions/searchfor`](./partials/_functions/searchfor.bash#L1) | file | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L177) |
+| [`partials/_functions/vscode`](./partials/_functions/vscode.bash#L1) | file | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L191) |
+| [`partials/_programs/100-brew.sh`](./partials/_programs/100-brew.sh#L1) | file | [./partials/DOCUMENTATION_programs.md](./partials/DOCUMENTATION_programs.md#L7) |
+| [`partials/_programs/110-nvm.sh`](./partials/_programs/110-nvm.sh#L1) | file | [./partials/DOCUMENTATION_programs.md](./partials/DOCUMENTATION_programs.md#L13) |
+| [`partials/_programs/900-gpg-on-console.sh`](./partials/_programs/900-gpg-on-console.sh#L1) | file | [./partials/DOCUMENTATION_programs.md](./partials/DOCUMENTATION_programs.md#L19) |
+| [`partials/_programs/DOCUMENTATION.md`](./partials/_programs/DOCUMENTATION.md#L1) | file | [./partials/DOCUMENTATION_programs.md](./partials/DOCUMENTATION_programs.md#L1) |
+| [`partials/aliases`](./partials/aliases#L1) | file | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L9) |
+| [`partials/completions`](./partials/completions#L1) | file | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L66) |
+| [`partials/DOCUMENTATION.md`](./partials/DOCUMENTATION.md#L1) | file | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L13) |
+| [`partials/exports`](./partials/exports#L1) | file | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L55) |
+| [`partials/functions`](./partials/functions#L1) | file | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L49) |
+| [`partials/prompt`](./partials/prompt#L1) | file | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L72) |
+| [`pathExists`](./helpers/docker/backup-runner.mjs#L123) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L39) |
+| [`pathExists`](./helpers/docker/backup-runner.ts#L205) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L39) |
+| [`pathExists`](./helpers/kando/kando-vscode-menu-creator.ts#L182) | method/function | [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md#L33) |
+| [`pi-reboot`](./partials/aliases#L116) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L41) |
+| [`pi-shutdown`](./partials/aliases#L115) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L41) |
+| [`pick_archiver`](./helpers/web-mirror.sh#L87) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L364) |
+| [`pick_config_with_gum`](./helpers/dotbot#L121) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L51) |
+| [`pick_filename_from_url`](./installs/50-obsidian.sh#L111) | function | [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md#L41) |
+| [`post_checks`](./helpers/synch-devspace.sh#L377) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L326) |
+| [`prepareUploadDocument`](./helpers/remarkable/transfer.ts#L650) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L53) |
+| [`print_date_sequence`](./helpers/daily-reports/commit-report-to-dailynote.sh#L146) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L51) |
+| [`print_date_sequence`](./helpers/daily-reports/commits-to-notes.sh#L327) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L51) |
+| [`print_debug`](./helpers/synch-devspace.sh#L114) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L314) |
+| [`print_error`](./helpers/github-token#L81) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L102) |
+| [`print_error`](./helpers/packages/create.sh#L94) | function | [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md#L38) |
+| [`print_error`](./helpers/synch-devspace.sh#L110) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L102) |
+| [`print_help`](./cronjobs/docker-backup.sh#L20) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L5) |
+| [`print_help`](./cronjobs/git_updates.sh#L47) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L33) |
+| [`print_help`](./cronjobs/synch_downloads.sh#L8) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L61) |
+| [`print_help`](./helpers/_actions/actions.sh#L54) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L47) |
+| [`print_help`](./helpers/bash/startup-profiler.sh#L10) | function | [./helpers/bash/DOCUMENTATION.md](./helpers/bash/DOCUMENTATION.md#L24) |
+| [`print_help`](./helpers/dotbot#L31) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L46) |
+| [`print_help`](./helpers/gh/git-sync.sh#L16) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L86) |
+| [`print_help`](./helpers/set-wallpaper.sh#L22) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L46) |
+| [`print_help`](./helpers/web-mirror.sh#L13) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L46) |
+| [`print_help`](./helpers/workspace/wm-detect.sh#L26) | function | [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md#L24) |
+| [`print_help`](./helpers/workspace/ws-setup.sh#L37) | function | [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md#L24) |
+| [`print_info`](./helpers/synch-devspace.sh#L102) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L311) |
+| [`print_report_for_repo_date`](./helpers/daily-reports/commits-to-notes.sh#L256) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L99) |
+| [`print_top_results`](./helpers/bash/startup-profiler.sh#L147) | function | [./helpers/bash/DOCUMENTATION.md](./helpers/bash/DOCUMENTATION.md#L29) |
+| [`print_usage`](./helpers/github-token#L41) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L100) |
+| [`print_usage`](./helpers/synch-devspace.sh#L45) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L100) |
+| [`print_username_directories`](./helpers/daily-reports/commit-report-to-dailynote.sh#L157) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L52) |
+| [`print_verbose`](./helpers/github-token#L75) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L101) |
+| [`print_version`](./helpers/synch-devspace.sh#L98) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L310) |
+| [`print_warn`](./helpers/synch-devspace.sh#L106) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L312) |
+| [`printAuditResult`](./helpers/gh/github-manager.ts#L1178) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L173) |
+| [`printBrokenAuditResult`](./helpers/gh/github-manager.ts#L1161) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L172) |
+| [`printDomainList`](./helpers/api/porkbun-api.ts#L409) | method/function | [./helpers/api/DOCUMENTATION.md](./helpers/api/DOCUMENTATION.md#L28) |
+| [`printHelp`](./helpers/docker/backup-runner.mjs#L12) | function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L36) |
+| [`printHelp`](./helpers/docker/backup-runner#L12) | function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L36) |
+| [`printHelp`](./helpers/docker/backup-runner.mjs#L12) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L36) |
+| [`printHelp`](./helpers/docker/backup-runner.ts#L96) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L36) |
+| [`printHelp`](./helpers/freshrss/export.ts#L144) | method/function | [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md#L27) |
+| [`printHelp`](./helpers/gh/github-manager.ts#L540) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L147) |
+| [`printHelp`](./helpers/kando/kando-vscode-menu-creator.ts#L75) | method/function | [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md#L27) |
+| [`printHelp`](./helpers/logs/cleanup.ts#L79) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L34) |
+| [`printHelp`](./helpers/remarkable/transfer.ts#L81) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L42) |
+| [`printSummary`](./helpers/api/porkbun-api.ts#L340) | method/function | [./helpers/api/DOCUMENTATION.md](./helpers/api/DOCUMENTATION.md#L27) |
+| [`printSummary`](./helpers/docker/backup-runner.mjs#L557) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L62) |
+| [`printSummary`](./helpers/docker/backup-runner.ts#L766) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L62) |
+| [`process_repo`](./cronjobs/git_updates.sh#L389) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L51) |
+| [`pullRepository`](./helpers/gh/github-manager.ts#L850) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L159) |
+| [`py-activate`](./partials/aliases#L119) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L42) |
+| [`r`](./partials/aliases#L47) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L25) |
+| [`rawBackupFromRemarkable`](./helpers/remarkable/transfer.ts#L1077) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L67) |
+| [`read_and_resolve_package_paths`](./helpers/packages/create.sh#L219) | function | [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md#L48) |
+| [`read_json_bool`](./cronjobs/synch_downloads.sh#L60) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L61) |
+| [`read_json_str`](./cronjobs/synch_downloads.sh#L54) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L61) |
+| [`readMenuJson`](./helpers/kando/kando-vscode-menu-creator.ts#L195) | method/function | [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md#L34) |
+| [`readOptionValue`](./helpers/remarkable/transfer.ts#L210) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L44) |
+| [`readRequiredValue`](./helpers/theme/color-steps.ts#L191) | method/function | [./helpers/theme/DOCUMENTATION.md](./helpers/theme/DOCUMENTATION.md#L54) |
+| [`releaseLock`](./helpers/logs/cleanup.ts#L487) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L52) |
+| [`reload`](./partials/aliases#L9) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L17) |
+| [`remote_branch_exists`](./helpers/gh/git-sync.sh#L112) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L92) |
+| [`remoteFileExists`](./helpers/remarkable/transfer.ts#L860) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L61) |
+| [`replace_section_for_day`](./helpers/daily-reports/commit-report-to-dailynote.sh#L291) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L57) |
+| [`require_cmd`](./cronjobs/synch_downloads.sh#L49) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L61) |
+| [`require_cmd`](./helpers/_actions/actions.sh#L86) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L48) |
+| [`require_cmd`](./helpers/web-mirror.sh#L73) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L362) |
+| [`require_cmd`](./installs/50-obsidian.sh#L52) | function | [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md#L41) |
+| [`require_command`](./cronjobs/docker-backup.sh#L81) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L5) |
+| [`require_command`](./helpers/daily-reports/commit-report-to-dailynote.sh#L92) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L46) |
+| [`require_command`](./helpers/daily-reports/commits-to-notes.sh#L84) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L46) |
+| [`require_command`](./helpers/gh/label-migration.sh#L87) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L217) |
+| [`require_command`](./helpers/synch-devspace.sh#L120) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L315) |
+| [`require_integer_in_range`](./workspaces/ws_tile_window#L79) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L70) |
+| [`require_positive_integer`](./workspaces/ws_generate_tile_svgs#L57) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L105) |
+| [`requireEnv`](./helpers/docker/examples/backup.ts#L18) | method/function | [./helpers/docker/examples/DOCUMENTATION.md](./helpers/docker/examples/DOCUMENTATION.md#L30) |
+| [`requiresManualIntervention`](./helpers/gh/github-manager.ts#L1248) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L174) |
+| [`resolve_config_path`](./helpers/dotbot#L76) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L49) |
+| [`resolve_env_file`](./helpers/github-token#L116) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L106) |
+| [`resolve_package_path`](./helpers/packages/create.sh#L201) | function | [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md#L47) |
+| [`resolve_repo_label`](./helpers/daily-reports/commits-to-notes.sh#L164) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L96) |
+| [`resolve_wallpaper_path`](./helpers/set-wallpaper.sh#L88) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L262) |
+| [`resolve_workspace_number`](./workspaces/ws_launch_program#L151) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L52) |
+| [`resolvePolicy`](./helpers/logs/cleanup.ts#L360) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L46) |
+| [`rgrep`](./partials/aliases#L50) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L20) |
+| [`rotate_backups`](./cronjobs/docker-backup.sh#L110) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L5) |
+| [`round`](./helpers/theme/color-steps.ts#L146) | method/function | [./helpers/theme/DOCUMENTATION.md](./helpers/theme/DOCUMENTATION.md#L49) |
+| [`rsync_job`](./cronjobs/synch_downloads.sh#L77) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L61) |
+| [`run`](./helpers/gh/git-sync.sh#L83) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L89) |
+| [`run`](./helpers/remarkable/transfer.ts#L1120) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L68) |
+| [`run`](./helpers/screencaps.ts#L174) | method/function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L157) |
+| [`run_command`](./cronjobs/docker-backup.sh#L99) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L5) |
+| [`run_dotbot_with_config`](./helpers/dotbot#L89) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L50) |
+| [`run_gh_label_create`](./helpers/gh/label-migration.sh#L188) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L224) |
+| [`run_gh_label_delete`](./helpers/gh/label-migration.sh#L243) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L226) |
+| [`run_remote_github_check`](./helpers/synch-devspace.sh#L343) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L325) |
+| [`run_trace`](./helpers/bash/startup-profiler.sh#L82) | function | [./helpers/bash/DOCUMENTATION.md](./helpers/bash/DOCUMENTATION.md#L27) |
+| [`runAfterCommand`](./helpers/docker/backup-runner.mjs#L524) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L59) |
+| [`runAfterCommand`](./helpers/docker/backup-runner.ts#L724) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L59) |
+| [`runCommand`](./helpers/logs/cleanup.ts#L204) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L40) |
+| [`runCommand`](./helpers/remarkable/transfer.ts#L456) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L48) |
+| [`safe_slug`](./helpers/web-mirror.sh#L81) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L363) |
+| [`safeJsonPreview`](./helpers/kando/kando-vscode-menu-creator.ts#L129) | method/function | [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md#L29) |
+| [`safeName`](./helpers/docker/backup-runner.mjs#L145) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L42) |
+| [`safeName`](./helpers/docker/backup-runner.ts#L227) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L42) |
+| [`sanitiseFileName`](./helpers/remarkable/transfer.ts#L838) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L60) |
+| [`scp`](./partials/aliases#L57) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L27) |
+| [`searchfor`](./partials/_functions/searchfor.bash#L5) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L177) |
+| [`set_wallpaper_feh`](./helpers/set-wallpaper.sh#L360) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L271) |
+| [`set_wallpaper_gnome`](./helpers/set-wallpaper.sh#L237) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L267) |
+| [`set_wallpaper_hyprland`](./helpers/set-wallpaper.sh#L343) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L270) |
+| [`set_wallpaper_kde`](./helpers/set-wallpaper.sh#L268) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L268) |
+| [`set_wallpaper_sway`](./helpers/set-wallpaper.sh#L304) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L269) |
+| [`set_wallpaper_xfce`](./helpers/set-wallpaper.sh#L179) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L266) |
+| [`setNestedValue`](./helpers/docker/backup-runner.mjs#L259) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L49) |
+| [`setNestedValue`](./helpers/docker/backup-runner.ts#L359) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L49) |
+| [`shellQuote`](./helpers/docker/backup-runner.mjs#L330) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L53) |
+| [`shellQuote`](./helpers/docker/backup-runner.ts#L479) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L53) |
+| [`shellQuote`](./helpers/remarkable/transfer.ts#L773) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L57) |
+| [`show_help`](./helpers/daily-reports/commit-report-to-dailynote.sh#L33) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L41) |
+| [`show_help`](./helpers/daily-reports/commits-to-notes.sh#L28) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L41) |
+| [`show_help`](./helpers/docker/examples/backup.sh#L6) | function | [./helpers/docker/examples/DOCUMENTATION.md](./helpers/docker/examples/DOCUMENTATION.md#L15) |
+| [`show_summary`](./helpers/synch-devspace.sh#L239) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L322) |
+| [`showHelp`](./helpers/raindrop.io/getTags.ts#L48) | method/function | [./helpers/raindrop.io/DOCUMENTATION.md](./helpers/raindrop.io/DOCUMENTATION.md#L24) |
+| [`showRepositoryChanges`](./helpers/gh/github-manager.ts#L888) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L160) |
+| [`sortRemoteDocuments`](./helpers/remarkable/transfer.ts#L993) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L64) |
+| [`source_core_libs`](./helpers/_actions/actions.sh#L19) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L42) |
+| [`source_core_libs`](./helpers/daily-reports/commit-report-to-dailynote.sh#L12) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L39) |
+| [`source_core_libs`](./helpers/daily-reports/commits-to-notes.sh#L7) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L39) |
+| [`source_core_libs`](./helpers/dotbot#L19) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L45) |
+| [`split_csv_to_array`](./helpers/workspace/ws-setup.sh#L178) | function | [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md#L69) |
+| [`start_on_workspace`](./helpers/workspace/ws-setup.sh#L215) | function | [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md#L73) |
+| [`strip_ansi`](./helpers/daily-reports/commit-report-to-dailynote.sh#L174) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L53) |
+| [`subl`](./partials/aliases#L81) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L32) |
+| [`sudo`](./partials/aliases#L91) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L35) |
+| [`summariseChange`](./helpers/kando/kando-vscode-menu-creator.ts#L394) | method/function | [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md#L42) |
+| [`switch_to_desktop_wmctrl`](./workspaces/ws_move_active_window#L75) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L58) |
+| [`switch_to_desktop_xdotool`](./workspaces/ws_move_active_window#L95) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L58) |
+| [`switch_to_workspace`](./workspaces/ws_launch_program#L189) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L52) |
+| [`switch_to_workspace_wmctrl`](./workspaces/ws_open_on_workspace#L46) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L64) |
+| [`switch_to_workspace_xdotool`](./workspaces/ws_open_on_workspace#L51) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L64) |
+| [`sysinfo`](./partials/_aliases/system.bash#L6) | alias | [./partials/DOCUMENTATION_aliases.md](./partials/DOCUMENTATION_aliases.md#L32) |
+| [`sysinfo-cpu`](./partials/_aliases/system.bash#L8) | alias | [./partials/DOCUMENTATION_aliases.md](./partials/DOCUMENTATION_aliases.md#L34) |
+| [`sysinfo-full`](./partials/_aliases/system.bash#L7) | alias | [./partials/DOCUMENTATION_aliases.md](./partials/DOCUMENTATION_aliases.md#L33) |
+| [`sysinfo-gpu`](./partials/_aliases/system.bash#L9) | alias | [./partials/DOCUMENTATION_aliases.md](./partials/DOCUMENTATION_aliases.md#L35) |
+| [`sysinfo-mem`](./partials/_aliases/system.bash#L10) | alias | [./partials/DOCUMENTATION_aliases.md](./partials/DOCUMENTATION_aliases.md#L36) |
+| [`syslog`](./partials/aliases#L54) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L26) |
+| [`tail`](./partials/aliases#L79) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L22) |
+| [`timestampNow`](./helpers/api/porkbun-api.ts#L113) | method/function | [./helpers/api/DOCUMENTATION.md](./helpers/api/DOCUMENTATION.md#L22) |
+| [`toBackupTomlConfig`](./helpers/docker/backup-runner.mjs#L304) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L51) |
+| [`toBackupTomlConfig`](./helpers/docker/backup-runner.ts#L418) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L51) |
+| [`toCdata`](./helpers/freshrss/export.ts#L127) | method/function | [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md#L25) |
+| [`toFolderSlug`](./helpers/logs/cleanup.ts#L352) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L45) |
+| [`toHslString`](./helpers/theme/color-steps.ts#L246) | method/function | [./helpers/theme/DOCUMENTATION.md](./helpers/theme/DOCUMENTATION.md#L59) |
+| [`topics`](./helpers/gh/github-manager.ts#L319) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L9) |
+| [`toRssItem`](./helpers/freshrss/export.ts#L532) | method/function | [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md#L37) |
+| [`updateTargetMenu`](./helpers/kando/kando-vscode-menu-creator.ts#L291) | method/function | [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md#L39) |
+| [`uploadDocument`](./helpers/remarkable/transfer.ts#L701) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L55) |
+| [`uploadToRemarkable`](./helpers/remarkable/transfer.ts#L738) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L56) |
+| [`usage`](./helpers/gh/label-migration.sh#L13) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L210) |
+| [`usage`](./helpers/node-run#L50) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L175) |
+| [`usage`](./helpers/packages/create.sh#L23) | function | [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md#L35) |
+| [`usage`](./installs/50-obsidian.sh#L31) | function | [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md#L41) |
+| [`usage`](./workspaces/ws_generate_tile_svgs#L10) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L15) |
+| [`usage`](./workspaces/ws_launch_program#L17) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L15) |
+| [`usage`](./workspaces/ws_list_windows#L14) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L15) |
+| [`usage`](./workspaces/ws_list_workspaces#L14) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L15) |
+| [`usage`](./workspaces/ws_menu_window_move#L18) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L15) |
+| [`usage`](./workspaces/ws_menu_window_tile_target#L11) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L15) |
+| [`usage`](./workspaces/ws_menu_window_tile#L11) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L15) |
+| [`usage`](./workspaces/ws_move_active_window#L17) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L15) |
+| [`usage`](./workspaces/ws_open_on_workspace#L7) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L15) |
+| [`usage`](./workspaces/ws_rofi_actions#L11) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L15) |
+| [`usage`](./workspaces/ws_tile_window#L9) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L15) |
+| [`usage`](./helpers/api/porkbun-api.ts#L128) | method/function | [./helpers/api/DOCUMENTATION.md](./helpers/api/DOCUMENTATION.md#L24) |
+| [`use_or_install_node_version`](./helpers/node-run#L129) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L178) |
+| [`use_project_or_default_node_version`](./helpers/node-run#L150) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L179) |
+| [`validate_arguments`](./helpers/synch-devspace.sh#L224) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L321) |
+| [`validate_config`](./helpers/set-wallpaper.sh#L469) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L274) |
+| [`validate_date`](./helpers/daily-reports/commit-report-to-dailynote.sh#L101) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L47) |
+| [`validate_date`](./helpers/daily-reports/commits-to-notes.sh#L93) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L47) |
+| [`validate_role`](./helpers/github-token#L90) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L104) |
+| [`validate_timezone`](./helpers/daily-reports/commit-report-to-dailynote.sh#L110) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L48) |
+| [`validate_timezone`](./helpers/daily-reports/commits-to-notes.sh#L102) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L48) |
+| [`validate_visibility`](./helpers/github-token#L103) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L105) |
+| [`validateConfig`](./helpers/logs/cleanup.ts#L268) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L43) |
+| [`validateConfig`](./helpers/remarkable/transfer.ts#L421) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L47) |
+| [`validateRootDirectory`](./helpers/docker/backup-runner.mjs#L550) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L61) |
+| [`validateRootDirectory`](./helpers/docker/backup-runner.ts#L759) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L61) |
+| [`verbose`](./helpers/gh/label-migration.sh#L94) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L218) |
+| [`video`](./helpers/screencaps.ts#L696) | method/function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L191) |
+| [`vlc-next`](./partials/aliases#L104) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L38) |
+| [`vlc-pause`](./partials/aliases#L103) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L38) |
+| [`vlc-play`](./partials/aliases#L106) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L38) |
+| [`vlc-prev`](./partials/aliases#L105) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L38) |
+| [`vlc-stop`](./partials/aliases#L107) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L38) |
+| [`vlog`](./cronjobs/git_updates.sh#L43) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L33) |
+| [`vlog`](./helpers/kando/kando-vscode-menu-creator.ts#L175) | method/function | [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md#L32) |
+| [`vscode_add_mcp`](./partials/_functions/vscode.bash#L7) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L193) |
+| [`vscode_setup`](./partials/_functions/vscode.bash#L117) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L193) |
+| [`wait_for_window_id_by_pid`](./workspaces/ws_launch_program#L195) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L52) |
+| [`walk`](./helpers/docker/backup-runner.mjs#L193) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L47) |
+| [`walk`](./helpers/docker/backup-runner.ts#L293) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L47) |
+| [`walk`](./helpers/logs/cleanup.ts#L405) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L49) |
+| [`warn`](./helpers/gh/label-migration.sh#L68) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L213) |
+| [`warn`](./workspaces/ws_tile_window#L63) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L70) |
+| [`who_created_branches`](./partials/_functions/git_branch_creator.bash#L6) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L115) |
+| [`window_has_allowed_type`](./workspaces/ws_menu_window_tile_target#L70) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L94) |
+| [`window_is_excluded_by_title`](./workspaces/ws_menu_window_tile_target#L87) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L94) |
+| [`wmctrl_current_desktop`](./helpers/workspace/ws-setup.sh#L206) | function | [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md#L71) |
+| [`wmctrl_switch_desktop`](./helpers/workspace/ws-setup.sh#L210) | function | [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md#L72) |
+| [`workspace_window_rows`](./workspaces/ws_list_windows#L39) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L46) |
+| [`workspaces/AGENTS.md`](./workspaces/AGENTS.md#L1) | file | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L9) |
+| [`workspaces/config.schema.json`](./workspaces/config.schema.json#L1) | file | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L25) |
+| [`workspaces/config.toml`](./workspaces/config.toml#L1) | file | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L11) |
+| [`workspaces/DOCUMENTATION.md`](./workspaces/DOCUMENTATION.md#L1) | file | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L1) |
+| [`workspaces/README.md`](./workspaces/README.md#L1) | file | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L3) |
+| [`workspaces/tiles/generated/full.svg`](./workspaces/tiles/generated/full.svg#L1) | file | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L50) |
+| [`workspaces/tiles/generated/left-70.svg`](./workspaces/tiles/generated/left-70.svg#L1) | file | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L113) |
+| [`workspaces/tiles/generated/left-half-spaced.svg`](./workspaces/tiles/generated/left-half-spaced.svg#L1) | file | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L113) |
+| [`workspaces/tiles/generated/left-half.svg`](./workspaces/tiles/generated/left-half.svg#L1) | file | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L113) |
+| [`workspaces/tiles/generated/quarter-bottom-left.svg`](./workspaces/tiles/generated/quarter-bottom-left.svg#L1) | file | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L113) |
+| [`workspaces/tiles/generated/quarter-bottom-right.svg`](./workspaces/tiles/generated/quarter-bottom-right.svg#L1) | file | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L113) |
+| [`workspaces/tiles/generated/quarter-top-left.svg`](./workspaces/tiles/generated/quarter-top-left.svg#L1) | file | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L113) |
+| [`workspaces/tiles/generated/quarter-top-right.svg`](./workspaces/tiles/generated/quarter-top-right.svg#L1) | file | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L113) |
+| [`workspaces/tiles/generated/right-70.svg`](./workspaces/tiles/generated/right-70.svg#L1) | file | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L113) |
+| [`workspaces/tiles/generated/right-half-spaced.svg`](./workspaces/tiles/generated/right-half-spaced.svg#L1) | file | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L113) |
+| [`workspaces/tiles/generated/right-half.svg`](./workspaces/tiles/generated/right-half.svg#L1) | file | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L113) |
+| [`workspaces/ToDo.txt`](./workspaces/ToDo.txt#L1) | file | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L17) |
+| [`workspaces/ws-common.sh`](./workspaces/ws-common.sh#L1) | file | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L5) |
+| [`workspaces/ws_generate_tile_svgs`](./workspaces/ws_generate_tile_svgs#L1) | file | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L105) |
+| [`workspaces/ws_launch_program`](./workspaces/ws_launch_program#L1) | file | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L52) |
+| [`workspaces/ws_list_windows`](./workspaces/ws_list_windows#L1) | file | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L46) |
+| [`workspaces/ws_list_workspaces`](./workspaces/ws_list_workspaces#L1) | file | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L40) |
+| [`workspaces/ws_menu_window_move`](./workspaces/ws_menu_window_move#L1) | file | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L82) |
+| [`workspaces/ws_menu_window_tile`](./workspaces/ws_menu_window_tile#L1) | file | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L88) |
+| [`workspaces/ws_menu_window_tile_target`](./workspaces/ws_menu_window_tile_target#L1) | file | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L94) |
+| [`workspaces/ws_move_active_window`](./workspaces/ws_move_active_window#L1) | file | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L58) |
+| [`workspaces/ws_open_on_workspace`](./workspaces/ws_open_on_workspace#L1) | file | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L64) |
+| [`workspaces/ws_rofi_actions`](./workspaces/ws_rofi_actions#L1) | file | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L76) |
+| [`workspaces/ws_tile_window`](./workspaces/ws_tile_window#L1) | file | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L70) |
+| [`writeBackup`](./helpers/kando/kando-vscode-menu-creator.ts#L359) | method/function | [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md#L40) |
+| [`writeOutputFile`](./helpers/freshrss/export.ts#L640) | method/function | [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md#L39) |
+| [`writeRunArtifacts`](./helpers/api/porkbun-api.ts#L422) | method/function | [./helpers/api/DOCUMENTATION.md](./helpers/api/DOCUMENTATION.md#L29) |
+| [`writeTaskLog`](./helpers/logs/cleanup.ts#L453) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L50) |
+| [`writeUpdatedMenu`](./helpers/kando/kando-vscode-menu-creator.ts#L380) | method/function | [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md#L41) |
+| [`ws_init_logging`](./workspaces/ws-common.sh#L9) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L5) |
+| [`ws_parse_verbosity_flag`](./workspaces/ws-common.sh#L17) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L5) |
+| [`xfconf_get_count`](./helpers/workspace/ws-setup.sh#L133) | function | [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md#L64) |
+| [`xfconf_get_names_list`](./helpers/workspace/ws-setup.sh#L147) | function | [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md#L67) |
+| [`xfconf_get_names_raw`](./helpers/workspace/ws-setup.sh#L142) | function | [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md#L66) |
+| [`xfconf_set_count`](./helpers/workspace/ws-setup.sh#L137) | function | [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md#L65) |
+| [`xfconf_set_names_from_array`](./helpers/workspace/ws-setup.sh#L162) | function | [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md#L68) |
