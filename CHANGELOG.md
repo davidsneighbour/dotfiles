@@ -1,5 +1,31 @@
 # Changelog
 
+## [3003.2.0](https://github.com/davidsneighbour/dotfiles/compare/v3003.1.0...v3003.2.0) (2026-05-16)
+
+### Features
+
+* add dnb_log_header function ([de36af8](https://github.com/davidsneighbour/dotfiles/commit/de36af8cdc3ec3a345bfc29adc1e3a02bb9a8e51))
+* add globbing to dnb_auto_source and move aliases to *.bash files ([f33cb91](https://github.com/davidsneighbour/dotfiles/commit/f33cb91fcddb302cb0715a19478de727d27e1952))
+* add installer script for gum ([e9bc7e5](https://github.com/davidsneighbour/dotfiles/commit/e9bc7e54441e2eb7ed5c0d937a8e645ac60a153e))
+
+### Bug Fixes
+
+* bashrc cleanup and logging fixes ([91ad0e0](https://github.com/davidsneighbour/dotfiles/commit/91ad0e053e3c3e6dc0a3a74f1cdd142d7a5b2c4e))
+* move partials to *.bash files and remove completions for now ([277b725](https://github.com/davidsneighbour/dotfiles/commit/277b72523d33a8045fcb5e1109bcfa21c0da5306))
+* rework workspace helper scripts ([20fd628](https://github.com/davidsneighbour/dotfiles/commit/20fd62841babb3b99a5c441af7f023726f3604d9))
+
+### Documentation
+
+* add documentation for bashrc helper scripts ([30caadd](https://github.com/davidsneighbour/dotfiles/commit/30caadd19af2965e63b81d7e820b3ecfd0da5a70))
+* **ai:** add instructions for bash scripts ([b5236c5](https://github.com/davidsneighbour/dotfiles/commit/b5236c5598cff26b7d81b84f922c3ac9816fa143))
+* more documentation inside of bashrc ([776ef1d](https://github.com/davidsneighbour/dotfiles/commit/776ef1d168178d5376d6699b5d377e5d4c471595))
+* move markdown files out of partial files ([3e59e59](https://github.com/davidsneighbour/dotfiles/commit/3e59e597f4a13c19db197bd11328393720c03804))
+
+### Build
+
+* **deps:** update dependencies ([cbaa2a4](https://github.com/davidsneighbour/dotfiles/commit/cbaa2a4039069be3b47fc2bb1f6c880c14385f8e))
+* **deps:** update dependencies ([f41875e](https://github.com/davidsneighbour/dotfiles/commit/f41875e81f88cebe5edda0bbc21ff9086d7385df))
+
 ## [3003.1.0](https://github.com/davidsneighbour/dotfiles/compare/v3003.0.1...v3003.1.0) (2026-05-12)
 
 ### Features
