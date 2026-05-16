@@ -1,6 +1,5 @@
 #!/bin/bash
 # shellcheck shell=bash
-# dnb-dotfiles 3003.2.0
 
 # executed by the command interpreter for non-interactive login shells
 

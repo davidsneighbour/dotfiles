@@ -1,6 +1,5 @@
 #!/bin/bash
 # shellcheck shell=bash
-# dnb-dotfiles 3003.2.0
 
 # Changes directory and then:
 #   - switches Node.js via nvm when the effective .nvmrc changes
