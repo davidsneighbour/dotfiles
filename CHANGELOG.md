@@ -1,5 +1,16 @@
 # Changelog
 
+## [3003.2.1](https://github.com/davidsneighbour/dotfiles/compare/v3003.2.0...v3003.2.1) (2026-05-19)
+
+### Documentation
+
+* **fix:** remove version number from file headers ([6f1c15d](https://github.com/davidsneighbour/dotfiles/commit/6f1c15d0374636628b02a1b60f488c444414245f))
+* update bashrc/INDEX.md ([9041d4b](https://github.com/davidsneighbour/dotfiles/commit/9041d4ba02176e208506f77aa82c0fc17ddb875a))
+
+### Build
+
+* **deps:** update dependencies ([db03c79](https://github.com/davidsneighbour/dotfiles/commit/db03c7965d384736bbd0a844a945a9a18880ad8e))
+
 ## [3003.2.0](https://github.com/davidsneighbour/dotfiles/compare/v3003.1.0...v3003.2.0) (2026-05-16)
 
 ### Features
