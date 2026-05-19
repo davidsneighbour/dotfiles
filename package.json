@@ -14,7 +14,6 @@
     "@commitlint/config-conventional": "21.0.1",
     "@davidsneighbour/markdownlint-config": "2026.0.4",
     "@humanwhocodes/crosspost": "1.0.4",
-    "obsohtml": "1.9.5",
     "@release-it/conventional-changelog": "11.0.0",
     "@secretlint/secretlint-rule-no-dotenv": "13.0.2",
     "@secretlint/secretlint-rule-no-homedir": "13.0.2",
