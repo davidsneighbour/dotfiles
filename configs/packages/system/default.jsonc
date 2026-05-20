@@ -1,0 +1,35 @@
+{
+  "name": "@davidsneighbour/dotfiles",
+  "description": "David's Neighbour's .dotfiles",
+  "version": "3003.2.1",
+  "license": "MIT",
+  "repository": "https://github.com/davidsneighbour/dotfiles",
+  "author": "Patrick Kollitsch <davidsneighbourdev+gh@gmail.com>",
+  "bugs": "https://github.com/davidsneighbour/dotfiles/issues",
+  "homepage": "https://github.com/davidsneighbour/dotfiles#readme",
+  "wireit": {
+    "link:prepare": {
+      "command": "npx link"
+    },
+    "postinstall": {
+      "dependencies": ["biome:postinstall", "lint:postinstall"]
+    }
+  },
+  "cspell": {
+    "version": "0.2",
+    "language": "en-GB",
+    "ignorePaths": [".vscode/dictionary.txt"],
+    "dictionaryDefinitions": [
+      {
+        "name": "custom",
+        "path": ".vscode/dictionary.txt",
+        "addWords": true
+      }
+    ],
+    "dictionaries": ["custom"]
+  },
+  "simple-git-hooks": {
+    "pre-commit": "npm run lint:hook:commit"
+  },
+  "type": "module"
+}

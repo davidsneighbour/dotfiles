@@ -1,5 +1,6 @@
 @bramus/caniuse-cli
 @charmland/crush
+@davidsneighbour/nanny
 @davidsneighbour/remark-config
 @dotenvx/dotenvx
 @github/copilot
@@ -21,8 +22,6 @@ http-server
 hyouji
 jshint
 jsonnet
-lerna-wizard
-lerna
 lighthouse
 netlify-cli
 npm-check-updates

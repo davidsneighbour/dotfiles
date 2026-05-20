@@ -1,13 +1,4 @@
 {
-  "name": "@davidsneighbour/dotfiles",
-  "description": "David's Neighbour's .dotfiles",
-  "version": "3003.2.1",
-  "author": "Patrick Kollitsch <davidsneighbourdev+gh@gmail.com>",
-  "bugs": "https://github.com/davidsneighbour/dotfiles/issues",
-  "homepage": "https://github.com/davidsneighbour/dotfiles#readme",
-  "license": "MIT",
-  "repository": "https://github.com/davidsneighbour/dotfiles",
-  "type": "module",
   "scripts": {
     "postinstall": "wireit",
     "biome:postinstall": "npx @biomejs/biome migrate --write",
@@ -59,36 +50,5 @@
     "toml": "4.1.1",
     "tsc-files": "1.1.4",
     "wireit": "0.14.12"
-  },
-  "wireit": {
-    "link:prepare": {
-      "command": "npx link"
-    },
-    "postinstall": {
-      "dependencies": [
-        "biome:postinstall",
-        "lint:postinstall"
-      ]
-    }
-  },
-  "cspell": {
-    "version": "0.2",
-    "language": "en-GB",
-    "ignorePaths": [
-      ".vscode/dictionary.txt"
-    ],
-    "dictionaryDefinitions": [
-      {
-        "name": "custom",
-        "path": ".vscode/dictionary.txt",
-        "addWords": true
-      }
-    ],
-    "dictionaries": [
-      "custom"
-    ]
-  },
-  "simple-git-hooks": {
-    "pre-commit": "npm run lint:hook:commit"
   }
 }
