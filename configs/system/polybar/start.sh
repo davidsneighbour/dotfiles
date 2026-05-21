@@ -8,6 +8,7 @@ export BASHRC_PATH
 # Polybar startup for XFCE session
 # - waits for xfwm4
 # - stops existing polybar instances for this user
+# - restarts the Eww daemon used by Polybar companion widgets
 # - writes daily logs to ~/.logs/polybar/
 # - starts top and bottom bars
 
@@ -41,6 +42,8 @@ DATE="$(date +%Y%m%d)"
 GENERAL_LOGFILE="${LOG_DIR}/general-${DATE}.log"
 TOP_LOGFILE="${LOG_DIR}/top-${DATE}.log"
 BOTTOM_LOGFILE="${LOG_DIR}/bottom-${DATE}.log"
+EWW_LOGFILE="${LOG_DIR}/eww-${DATE}.log"
+EWW_CONFIG_DIR="${HOME}/.dotfiles/configs/system/eww"
 
 mkdir -p "${LOG_DIR}"
 
@@ -49,6 +52,15 @@ exec >>"${GENERAL_LOGFILE}" 2>&1
 
 echo "start at $(date)"
 echo "script=${SCRIPT_DIR}"
+
+# Stop existing Eww daemon for this config. Missing Eww should not prevent Polybar from starting.
+if command -v eww >/dev/null 2>&1; then
+  echo "restarting eww daemon with config=${EWW_CONFIG_DIR}"
+  eww --config "${EWW_CONFIG_DIR}" kill >/dev/null 2>&1 || true
+  eww --config "${EWW_CONFIG_DIR}" daemon >>"${EWW_LOGFILE}" 2>&1 &
+else
+  echo "eww executable not found, skipping eww daemon startup"
+fi
 
 # Stop existing polybar instances for this user only
 if pgrep -u "${UID}" -x polybar >/dev/null 2>&1; then
