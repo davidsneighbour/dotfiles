@@ -1,5 +1,16 @@
 # Changelog
 
+## [3003.4.1](https://github.com/davidsneighbour/dotfiles/compare/v3003.4.0...v3003.4.1) (2026-05-21)
+
+### Bug Fixes
+
+* make lintstaged fail loudly-er ([7742ee3](https://github.com/davidsneighbour/dotfiles/commit/7742ee3b931d2c5c673f45e8e98af0f623dcf567))
+* move icons to theme config instead of system config ([545817f](https://github.com/davidsneighbour/dotfiles/commit/545817f151a2c60b024439578c7a28514ccb4a3e))
+
+### Build
+
+* **fix:** add gitmark after successful release ([20bf152](https://github.com/davidsneighbour/dotfiles/commit/20bf152d7b22a309c37f30b87df53568aef120c8))
+
 ## [3003.4.0](https://github.com/davidsneighbour/dotfiles/compare/v3003.3.0...v3003.4.0) (2026-05-21)
 
 ### Features
