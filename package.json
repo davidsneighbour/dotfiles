@@ -2,29 +2,18 @@
   "name": "@davidsneighbour/dotfiles",
   "description": "David's Neighbour's .dotfiles",
   "version": "3003.2.2",
+  "license": "MIT",
+  "repository": "https://github.com/davidsneighbour/dotfiles",
   "author": "Patrick Kollitsch <davidsneighbourdev+gh@gmail.com>",
   "bugs": "https://github.com/davidsneighbour/dotfiles/issues",
   "homepage": "https://github.com/davidsneighbour/dotfiles#readme",
-  "license": "MIT",
-  "repository": "https://github.com/davidsneighbour/dotfiles",
-  "type": "module",
-  "scripts": {
-    "postinstall": "wireit",
-    "biome:postinstall": "npx @biomejs/biome migrate --write",
-    "clean": "rimraf logs/*.log",
-    "lint:config": "yamllint -c .yamllint.yml configs bashrc",
-    "lint:hook:commit": "lint-staged --quiet --config lint-staged.config.ts",
-    "lint:hook:commit:loud": "lint-staged --debug --verbose --config lint-staged.config.ts",
-    "lint:postinstall": "npx simple-git-hooks",
-    "release": "release-it --config .release-it.ts --verbose --only-version"
-  },
   "devDependencies": {
-    "@davidsneighbour/nanny": "0.3.0",
     "@biomejs/biome": "2.4.15",
     "@clack/prompts": "1.4.0",
     "@commitlint/cli": "21.0.1",
     "@commitlint/config-conventional": "21.0.1",
     "@davidsneighbour/markdownlint-config": "2026.0.4",
+    "@davidsneighbour/nanny": "0.4.0",
     "@humanwhocodes/crosspost": "1.0.4",
     "@release-it/conventional-changelog": "11.0.0",
     "@secretlint/secretlint-rule-no-dotenv": "13.0.2",
@@ -53,12 +42,22 @@
     "release-it": "20.0.1",
     "rimraf": "6.1.3",
     "secretlint": "13.0.2",
-    "semver": "7.8.0",
+    "semver": "7.8.1",
     "simple-git-hooks": "2.13.1",
     "smol-toml": "1.6.1",
     "toml": "4.1.1",
     "tsc-files": "1.1.4",
     "wireit": "0.14.12"
+  },
+  "scripts": {
+    "biome:postinstall": "npx @biomejs/biome migrate --write",
+    "clean": "rimraf logs/*.log",
+    "lint:config": "yamllint -c .yamllint.yml configs bashrc",
+    "lint:hook:commit": "lint-staged --quiet --config lint-staged.config.ts",
+    "lint:hook:commit:loud": "lint-staged --debug --verbose --config lint-staged.config.ts",
+    "lint:postinstall": "npx simple-git-hooks",
+    "postinstall": "wireit",
+    "release": "release-it --config .release-it.ts --verbose --only-version"
   },
   "wireit": {
     "link:prepare": {
@@ -90,5 +89,6 @@
   },
   "simple-git-hooks": {
     "pre-commit": "npm run lint:hook:commit"
-  }
+  },
+  "type": "module"
 }
