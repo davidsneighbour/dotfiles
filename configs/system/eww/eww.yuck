@@ -1,0 +1,33 @@
+(defwindow dnb-session-menu
+  :monitor 0
+  :geometry (geometry
+    :x "10px"
+    :y "36px"
+    :width "220px"
+    :height "160px"
+    :anchor "top left")
+  :stacking "fg"
+  :exclusive false
+  :focusable true
+  (dnb-session-menu-widget))
+
+(defwidget dnb-session-menu-widget []
+  (box
+    :class "dnb-popup"
+    :orientation "v"
+    :space-evenly false
+    (label
+      :class "dnb-popup-title"
+      :text "Session menu")
+    (button
+      :class "dnb-popup-button"
+      :onclick "bash ~/.dotfiles/configs/system/eww/scripts/session-menu-action.sh --action logout --verbose"
+      "Log off")
+    (button
+      :class "dnb-popup-button"
+      :onclick "bash ~/.dotfiles/configs/system/eww/scripts/session-menu-action.sh --action restart --verbose"
+      "Restart")
+    (button
+      :class "dnb-popup-button dnb-popup-danger"
+      :onclick "bash ~/.dotfiles/configs/system/eww/scripts/session-menu-action.sh --action stop --verbose"
+      "Stop")))
