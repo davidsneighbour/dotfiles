@@ -2,6 +2,9 @@
 
 set -Eeuo pipefail
 
+BASHRC_PATH="${HOME}/.dotfiles/bashrc"
+export BASHRC_PATH
+
 # Polybar startup for XFCE session
 # - waits for xfwm4
 # - stops existing polybar instances for this user
@@ -65,7 +68,7 @@ echo "launching bars"
 
 # Read docs/workspaces.md for details on how to configure workspaces and tile templates.
 WORKSPACE_CONFIG_FILE="${HOME}/.dotfiles/bashrc/workspaces/config.toml"
-WORKSPACE_SETUP_COMMAND="${HOME}/.dotfiles/bashrc/helpers/workspace-setup.sh"
+WORKSPACE_SETUP_COMMAND="${HOME}/.dotfiles/bashrc/helpers/workspace/ws-setup.sh"
 
 if [[ ! -f "${WORKSPACE_CONFIG_FILE}" ]]; then
   echo "workspace config not found: ${WORKSPACE_CONFIG_FILE}"
@@ -104,7 +107,10 @@ if [[ "${WORKSPACE_COUNT}" -eq 0 ]]; then
   exit 1
 fi
 
-WORKSPACE_NAMES="$(IFS=,; echo "${WORKSPACE_TITLES[*]}")"
+WORKSPACE_NAMES="$(
+  IFS=,
+  echo "${WORKSPACE_TITLES[*]}"
+)"
 
 "${WORKSPACE_SETUP_COMMAND}" --count "${WORKSPACE_COUNT}" --names "${WORKSPACE_NAMES}"
 

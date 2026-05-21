@@ -29,7 +29,7 @@
   "editor.defaultFormatter": "biomejs.biome",
   "editor.fontFamily": "Monaspace Argon ExtraLight, Fira Code, Monaco, monospace",
   "editor.fontLigatures": "'calt', 'ss01', 'ss02', 'ss03', 'ss04', 'ss05', 'ss06', 'ss07', 'ss08', 'ss09', 'ss10', 'liga'",
-  "editor.fontSize": 15,
+  "editor.fontSize": 12,
   "editor.fontVariations": "'wght' 250",
   "editor.inlayHints.fontFamily": "'Monaspace Argon ExtraLight'",
   "editor.tokenColorCustomizations": {
@@ -60,7 +60,6 @@
   "terminal.integrated.fontFamily": "Monaspace Argon ExtraLight, Fira Code, Monaco, monospace",
   "terminal.integrated.fontLigatures.enabled": true,
   "terminal.integrated.fontLigatures.featureSettings": "'calt' on, 'liga' on, 'ss01' on, 'ss02' on, 'ss03' on, 'ss04' on, 'ss05' on, 'ss06' on, 'ss07' on, 'ss08' on, 'ss09' on, 'ss10' on",
-  "terminal.integrated.fontSize": 15,
   "terminal.integrated.fontWeight": 150,
   "terminal.integrated.fontWeightBold": 500,
   // https://code.visualstudio.com/api/references/theme-color
