@@ -9,6 +9,12 @@ export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:${HOME
 # Creates a timestamped log file in ~/.logs/msgvault/
 # ------------------------------------------------------------
 
+: "${BASHRC_PATH:?BASHRC_PATH must be set before loading Bash helper files}"
+for FILE in "${BASHRC_PATH}"/lib/*/*.bash; do
+  # shellcheck disable=SC1090
+  [[ -f "${FILE}" && -r "${FILE}" ]] && source "${FILE}"
+done
+
 LOG_BASE_DIR="${HOME}/.logs/msgvault"
 LOG_FILE="${LOG_BASE_DIR}/$(date +%Y%m%d-%H%M%S).log"
 MSGVAULT_BIN="${HOME}/.local/bin/msgvault"
