@@ -1,5 +1,17 @@
 # Changelog
 
+## [3003.4.0](https://github.com/davidsneighbour/dotfiles/compare/v3003.3.0...v3003.4.0) (2026-05-21)
+
+### Features
+
+* add git marker script ([53266dd](https://github.com/davidsneighbour/dotfiles/commit/53266ddb75dce15865e4fb4c41c0614692ea7afa))
+* **config:** add dasel-backed config write helpers ([90a3e0d](https://github.com/davidsneighbour/dotfiles/commit/90a3e0dd61e1b81fe1828d6ff4176cecf8ea9c3d))
+
+### Documentation
+
+* **config:** add config helper instructions ([313d588](https://github.com/davidsneighbour/dotfiles/commit/313d58810e05f53f8feb23899b0c89ef10923d49))
+* **config:** reference config helper API ([e40c4f1](https://github.com/davidsneighbour/dotfiles/commit/e40c4f1592364a85bc86ca1604e7d619f339ac83))
+
 ## [3003.3.0](https://github.com/davidsneighbour/dotfiles/compare/v3003.2.2...v3003.3.0) (2026-05-21)
 
 ### Features
