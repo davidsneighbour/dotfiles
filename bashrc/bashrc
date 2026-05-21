@@ -233,4 +233,10 @@ else
   fi
 fi
 
+## This is the "add this snippet to your .bashrc" part of the workspace
+## @todo move where it belongs
+. "$HOME/.cargo/env"
+export DO_NOT_TRACK=1
+## end of workspace snippets
+
 return 0
