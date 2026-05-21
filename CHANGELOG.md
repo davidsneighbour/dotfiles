@@ -1,5 +1,35 @@
 # Changelog
 
+## [3003.3.0](https://github.com/davidsneighbour/dotfiles/compare/v3003.2.2...v3003.3.0) (2026-05-21)
+
+### Features
+
+* add eww to polybar setup ([933a393](https://github.com/davidsneighbour/dotfiles/commit/933a39329851b3fc8361425db081e85fcd87c058))
+* **eww:** add companion popup widget ([456a70b](https://github.com/davidsneighbour/dotfiles/commit/456a70b77f3f4414fb12af95ac1e0a9676fb4d77))
+* **eww:** add popup styles ([b88b031](https://github.com/davidsneighbour/dotfiles/commit/b88b031163522de8a448d3a06401292c18e778af))
+* **eww:** add session menu action helper ([0126349](https://github.com/davidsneighbour/dotfiles/commit/01263490909ab42149e2a9d409b66cda6a6b2ccc))
+* **eww:** add session menu toggle command ([0ded674](https://github.com/davidsneighbour/dotfiles/commit/0ded67481068f3133736233db8e6dbdf040f4667))
+* **eww:** add test file ([9184998](https://github.com/davidsneighbour/dotfiles/commit/91849984e5649ed9743498508c0a1197099b327d))
+* **polybar:** start eww daemon with bars ([12fac82](https://github.com/davidsneighbour/dotfiles/commit/12fac82d5b34ed5c566d8b41e1431126147ab9ce))
+* **polybar:** toggle eww power menu ([c10ef3b](https://github.com/davidsneighbour/dotfiles/commit/c10ef3b94dd567a5dd9a8849cc05bcc2345d8916))
+
+### Bug Fixes
+
+* **installs:** update cargo/rust install and add eww to cargo packages ([a925b4b](https://github.com/davidsneighbour/dotfiles/commit/a925b4b16ea33ffda9befb728dad30cbae7dc6e4))
+* **polybar:** point power menu to eww helper ([0e89cf7](https://github.com/davidsneighbour/dotfiles/commit/0e89cf71a7b8e32dad4b8841d90932cd97a4d300))
+
+### Documentation
+
+* **eww:** add install and usage notes ([363c5f6](https://github.com/davidsneighbour/dotfiles/commit/363c5f6f160585c5020c8480be662212d2797704))
+
+### Build
+
+* **deps:** update dependencies ([1d59fe5](https://github.com/davidsneighbour/dotfiles/commit/1d59fe57eb034ee70ad5949672afaf5fd55eed68))
+
+### Chore
+
+* **eww:** remove temporary placeholder ([e9aeea7](https://github.com/davidsneighbour/dotfiles/commit/e9aeea797bfdde21176cd7df8e19f686e9bdc7b1))
+
 ## [3003.2.2](https://github.com/davidsneighbour/dotfiles/compare/v3003.2.1...v3003.2.2) (2026-05-21)
 
 ### Bug Fixes
