@@ -35,7 +35,7 @@ done
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-LOGLEVEL="trace" # {trace, info, notice, warning, error}
+LOGLEVEL="info" # {trace, info, notice, warning, error}
 LOG_DIR="${HOME}/.logs/polybar"
 DATE="$(date +%Y%m%d)"
 
