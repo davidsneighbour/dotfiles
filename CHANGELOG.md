@@ -1,5 +1,22 @@
 # Changelog
 
+## [3003.2.2](https://github.com/davidsneighbour/dotfiles/compare/v3003.2.1...v3003.2.2) (2026-05-21)
+
+### Bug Fixes
+
+* load lib on cronjob start for msgvault ([06080f2](https://github.com/davidsneighbour/dotfiles/commit/06080f256268539dcaddc9a2631fd986a730a54d))
+* one logfile per day for ccronjob ([8cb81b0](https://github.com/davidsneighbour/dotfiles/commit/8cb81b04296bd664a2fd5f6946a9266001330daf))
+* polybar setup changes ([146ba6a](https://github.com/davidsneighbour/dotfiles/commit/146ba6ac7125f7edd5f20813567cbf70ff3e06e6))
+* refactor polybar issues generation ([5006d6a](https://github.com/davidsneighbour/dotfiles/commit/5006d6a197f03e289c684f62f0997f1087e93bf8))
+
+### Build
+
+* **deps:** remove obsohtml ([391213c](https://github.com/davidsneighbour/dotfiles/commit/391213c8f7b66b6b4f17913afa03b08bf90f3232))
+
+### Chore
+
+* **git:** update dotbot submodules ([15e1964](https://github.com/davidsneighbour/dotfiles/commit/15e19646a55fd3273ef7f560d452f736e9e60ffe))
+
 ## [3003.2.1](https://github.com/davidsneighbour/dotfiles/compare/v3003.2.0...v3003.2.1) (2026-05-19)
 
 ### Documentation
