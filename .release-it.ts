@@ -23,6 +23,9 @@ const config = {
     'before:git:release': [
       'if [ -f CITATION.cff ]; then last_commit=$(git rev-parse HEAD); release_date=$(date +%F); sed -Ei "s/^commit: .*/commit: $last_commit/" CITATION.cff; sed -Ei "s/^version: .*/version: ${version}/" CITATION.cff; sed -Ei "s/^date-released: .*/date-released: $release_date/" CITATION.cff; git add CITATION.cff; fi',
     ],
+    'after:release': [
+      'if command -v gitmark-set >/dev/null 2>&1; then gitmark-set; else echo "gitmark-set not found in PATH; skipping."; fi',
+    ],
   },
   github: {
     release: true,
