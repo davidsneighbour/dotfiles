@@ -4,46 +4,13 @@ set -uo pipefail
 
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:${HOME}/.local/bin"
 
-# ------------------------------------------------------------
-# msgvault cron wrapper
-# Creates a timestamped log file in ~/.logs/msgvault/
-# ------------------------------------------------------------
-
-: "${BASHRC_PATH:?BASHRC_PATH must be set before loading Bash helper files}"
-for FILE in "${BASHRC_PATH}"/lib/*/*.bash; do
-  # shellcheck disable=SC1090
-  [[ -f "${FILE}" && -r "${FILE}" ]] && source "${FILE}"
-done
-
 LOG_BASE_DIR="${HOME}/.logs/msgvault"
 LOG_FILE="${LOG_BASE_DIR}/$(date +%Y%m%d).log"
 MSGVAULT_BIN="${HOME}/.local/bin/msgvault"
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-DOTFILES_PATH="$(cd "${SCRIPT_DIR}/../.." && pwd)"
-ISSUES_ADD_SCRIPT="${DOTFILES_PATH}/configs/system/polybar/scripts/issues-add.sh"
-ISSUE_ID="msgvault-sync"
+POLYBAR_ISSUES_FILE="${DNB_POLYBAR_ISSUES_FILE:-${HOME}/.config/polybar/issues.toml}"
+POLYBAR_ISSUE_ID="${DNB_MSGVAULT_POLYBAR_ISSUE_ID:-msgvault-sync}"
 
 mkdir -p "${LOG_BASE_DIR}"
-
-add_polybar_issue() {
-  local failure_reason="$1"
-
-  if [[ ! -x "${ISSUES_ADD_SCRIPT}" ]]; then
-    {
-      echo "WARN: polybar issue script not executable: ${ISSUES_ADD_SCRIPT}"
-      echo "WARN: original failure: ${failure_reason}"
-    } >>"${LOG_FILE}"
-    return
-  fi
-
-  "${ISSUES_ADD_SCRIPT}" \
-    --id "${ISSUE_ID}" \
-    --prio 1 \
-    --label "msgvault sync failed" \
-    --description "${failure_reason}. Log: ${LOG_FILE}" >>"${LOG_FILE}" 2>&1 || {
-    echo "WARN: failed to add polybar issue for msgvault sync failure" >>"${LOG_FILE}"
-  }
-}
 
 if [[ ! -x "${MSGVAULT_BIN}" ]]; then
   failure_reason="msgvault binary not found or not executable: ${MSGVAULT_BIN}"
@@ -57,7 +24,13 @@ if [[ ! -x "${MSGVAULT_BIN}" ]]; then
     echo
   } >>"${LOG_FILE}"
 
-  add_polybar_issue "${failure_reason}"
+  if ! dnb_msgvault_add_polybar_issue \
+    --reason "${failure_reason}" \
+    --log-file "${LOG_FILE}" \
+    --issue-id "${POLYBAR_ISSUE_ID}" \
+    --issues-file "${POLYBAR_ISSUES_FILE}"; then
+    echo "WARN: failed to add polybar issue for msgvault sync failure" >>"${LOG_FILE}"
+  fi
   exit 1
 fi
 
@@ -82,7 +55,13 @@ if [[ "${sync_exit_code}" -ne 0 ]]; then
     echo
   } >>"${LOG_FILE}"
 
-  add_polybar_issue "${failure_reason}"
+  if ! dnb_msgvault_add_polybar_issue \
+    --reason "${failure_reason}" \
+    --log-file "${LOG_FILE}" \
+    --issue-id "${POLYBAR_ISSUE_ID}" \
+    --issues-file "${POLYBAR_ISSUES_FILE}"; then
+    echo "WARN: failed to add polybar issue for msgvault sync failure" >>"${LOG_FILE}"
+  fi
   exit "${sync_exit_code}"
 fi
 
