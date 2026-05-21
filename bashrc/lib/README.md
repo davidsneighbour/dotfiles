@@ -35,11 +35,17 @@ done
 * `dnb_path_add_if_missing`
 * `dnb_path_sanitise`
 * `dnb_config_get`
+* `dnb_config_set`
+* `dnb_config_delete`
+* `dnb_config_has`
+* `dnb_config_list_keys`
 * `dnb_repo_config_get`
 * `dnb_create_directory`
 * `dnb_execute_lines`
 * `dnb_archive_create`
 * `dnb_archive_extract`
+
+Config helper rules and examples are documented in [`../../docs/dnb-config.md`](../../docs/dnb-config.md).
 
 ## Add errors and warnings to polybar issue plugin
 
