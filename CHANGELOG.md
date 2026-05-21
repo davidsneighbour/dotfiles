@@ -1,5 +1,11 @@
 # Changelog
 
+## [3003.4.2](https://github.com/davidsneighbour/dotfiles/compare/v3003.4.1...v3003.4.2) (2026-05-21)
+
+### Build
+
+* **fix:** source gitmarker script for after release hook ([d4d88d2](https://github.com/davidsneighbour/dotfiles/commit/d4d88d2d9dff0ab4016073f711ac508f58f26dee))
+
 ## [3003.4.1](https://github.com/davidsneighbour/dotfiles/compare/v3003.4.0...v3003.4.1) (2026-05-21)
 
 ### Bug Fixes
