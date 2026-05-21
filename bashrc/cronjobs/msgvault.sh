@@ -16,7 +16,7 @@ for FILE in "${BASHRC_PATH}"/lib/*/*.bash; do
 done
 
 LOG_BASE_DIR="${HOME}/.logs/msgvault"
-LOG_FILE="${LOG_BASE_DIR}/$(date +%Y%m%d-%H%M%S).log"
+LOG_FILE="${LOG_BASE_DIR}/$(date +%Y%m%d).log"
 MSGVAULT_BIN="${HOME}/.local/bin/msgvault"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DOTFILES_PATH="$(cd "${SCRIPT_DIR}/../.." && pwd)"
