@@ -1,0 +1,28 @@
+.dnb-popup {
+  background: #282a36;
+  border: 1px solid #44475a;
+  border-radius: 8px;
+  color: #f8f8f2;
+  padding: 10px;
+}
+
+.dnb-popup-title {
+  color: #ffb86c;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.dnb-popup-button {
+  background: #44475a;
+  border-radius: 5px;
+  margin-top: 6px;
+  padding: 8px 10px;
+}
+
+.dnb-popup-button:hover {
+  background: #6272a4;
+}
+
+.dnb-popup-danger {
+  color: #ff5555;
+}
