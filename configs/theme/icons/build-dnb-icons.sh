@@ -146,47 +146,47 @@ generate_icons() {
   fi
 }
 
-source_dir="${HOME}/github.com/davidsneighbour/dotfiles/configs/system/icons/dnb"
+source_dir="${HOME}/github.com/davidsneighbour/dotfiles/configs/theme/icons/dnb"
 sizes_csv="16,24,32,48,64,128,512"
 verbose="false"
 
 while [[ "$#" -gt 0 ]]; do
   case "${1}" in
-    --source-dir)
-      shift
-      if [[ "$#" -eq 0 ]]; then
-        log_error "Missing value for --source-dir"
-        show_help
-        exit 1
-      fi
-      source_dir="${1}"
-      ;;
-    --sizes)
-      shift
-      if [[ "$#" -eq 0 ]]; then
-        log_error "Missing value for --sizes"
-        show_help
-        exit 1
-      fi
-      sizes_csv="${1}"
-      ;;
-    --verbose)
-      verbose="true"
-      ;;
-    --help)
-      show_help
-      exit 0
-      ;;
-    *)
-      log_error "Unknown option: ${1}"
+  --source-dir)
+    shift
+    if [[ "$#" -eq 0 ]]; then
+      log_error "Missing value for --source-dir"
       show_help
       exit 1
-      ;;
+    fi
+    source_dir="${1}"
+    ;;
+  --sizes)
+    shift
+    if [[ "$#" -eq 0 ]]; then
+      log_error "Missing value for --sizes"
+      show_help
+      exit 1
+    fi
+    sizes_csv="${1}"
+    ;;
+  --verbose)
+    verbose="true"
+    ;;
+  --help)
+    show_help
+    exit 0
+    ;;
+  *)
+    log_error "Unknown option: ${1}"
+    show_help
+    exit 1
+    ;;
   esac
   shift
 done
 
-IFS=',' read -r -a sizes <<< "${sizes_csv}"
+IFS=',' read -r -a sizes <<<"${sizes_csv}"
 
 require_command "mkdir"
 require_command "rsvg-convert"

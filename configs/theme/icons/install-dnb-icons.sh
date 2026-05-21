@@ -22,7 +22,7 @@ Usage:
 
 Options:
   --source-dir PATH   Source theme directory.
-                      Default: ${HOME}/github.com/davidsneighbour/dotfiles/configs/system/icons/dnb
+                      Default: ${HOME}/github.com/davidsneighbour/dotfiles/configs/theme/icons/dnb
   --target-dir PATH   Target theme directory.
                       Default: ${HOME}/.local/share/icons/dnb
   --copy              Copy files instead of creating a symlink.
@@ -173,7 +173,7 @@ refresh_caches() {
   fi
 }
 
-source_dir="${HOME}/github.com/davidsneighbour/dotfiles/configs/system/icons/dnb"
+source_dir="${HOME}/github.com/davidsneighbour/dotfiles/configs/theme/icons/dnb"
 target_dir="${HOME}/.local/share/icons/dnb"
 copy_mode="false"
 force="false"
