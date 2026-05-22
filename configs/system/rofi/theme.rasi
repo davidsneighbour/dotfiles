@@ -69,7 +69,7 @@ configuration {
     dnb-yellow: #FFFF80;
 
     /* locate font via `fc-list | grep 'Monaspace Argon'` */
-    font: "Monaspace Argon 10";
+    font: "Monaspace Argon 11";
 
     foreground: @dnb-foreground;
     background-color: transparent;
