@@ -25,9 +25,8 @@
       path: ${HOME}/github.com/davidsneighbour/ai/configs/codex
     ~/.copilot:
       path: ${HOME}/github.com/davidsneighbour/ai/configs/copilot   
-    ~/.gemini:
-      path: ${HOME}/github.com/davidsneighbour/ai/configs/gemini   
-    ~/.hermes:
-      path: ${HOME}/github.com/davidsneighbour/ai/configs/hermes    
-    ~/.ollama:
-      path: ${HOME}/github.com/davidsneighbour/ai/configs/ollama   
+
+- shell:
+    - curl -fsSL "https://ollama.com/install.sh" | bash
+    - curl -fsSL "https://animations.dev/api/activate-design-engineering?email=pkollitsch%40gmail.com" | bash
+    - curl -fsSL "https://animations.dev/api/activate?email=pkollitsch@gmail.com" | bash
