@@ -1,5 +1,16 @@
 # Changelog
 
+## [3003.5.0](https://github.com/davidsneighbour/dotfiles/compare/v3003.4.3...v3003.5.0) (2026-05-22)
+
+### Features
+
+* add monitor configuration and check scripts ([5924ce0](https://github.com/davidsneighbour/dotfiles/commit/5924ce0d898729b2607f4dd66f67d1f178e9c033))
+* synch home functions ([a364f0b](https://github.com/davidsneighbour/dotfiles/commit/a364f0bcc85aacb4ba4790d95c45c01b48f4cc69))
+
+### Bug Fixes
+
+* ai dotbot setup ([c11dcd6](https://github.com/davidsneighbour/dotfiles/commit/c11dcd6b29b4909589f06052491610ba492e1bb8))
+
 ## [3003.4.3](https://github.com/davidsneighbour/dotfiles/compare/v3003.4.2...v3003.4.3) (2026-05-22)
 
 ### Bug Fixes
