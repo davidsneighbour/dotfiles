@@ -1,5 +1,11 @@
 # Changelog
 
+## [3003.4.3](https://github.com/davidsneighbour/dotfiles/compare/v3003.4.2...v3003.4.3) (2026-05-22)
+
+### Bug Fixes
+
+* **polybar:** proper font setup for workspace interface ([18a5fd1](https://github.com/davidsneighbour/dotfiles/commit/18a5fd1fdb15c1b67d0d2a6ec7405dd1d616543c))
+
 ## [3003.4.2](https://github.com/davidsneighbour/dotfiles/compare/v3003.4.1...v3003.4.2) (2026-05-21)
 
 ### Build
