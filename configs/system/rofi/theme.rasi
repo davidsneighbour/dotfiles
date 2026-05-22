@@ -56,7 +56,7 @@ configuration {
 * {
 
     dnb-background: #0B0D0F;
-    dnb-background2: #0B0D0F99;
+    dnb-background2: #0B0D0Fcc;
     dnb-current: #414D58;
     dnb-foreground: #F8F8F2;
     dnb-comment: #708CA9;
@@ -69,7 +69,7 @@ configuration {
     dnb-yellow: #FFFF80;
 
     /* locate font via `fc-list | grep 'Monaspace Argon'` */
-    font: "Monaspace Argon 14";
+    font: "Monaspace Argon 10";
 
     foreground: @dnb-foreground;
     background-color: transparent;
