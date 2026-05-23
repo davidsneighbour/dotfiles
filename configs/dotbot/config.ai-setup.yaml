@@ -16,15 +16,21 @@
 
 - link:
     ~/.agents:
-      path: ${HOME}/github.com/davidsneighbour/ai/configs/agents
+      path: ${HOME}/github.com/davidsneighbour/dotfiles-protected/ai-configs/agents
     ~/.claude.json:
-      path: ${HOME}/github.com/davidsneighbour/ai/configs/claude.json
+      path: ${HOME}/github.com/davidsneighbour/dotfiles-protected/ai-configs/claude.json
     ~/.claude:
-      path: ${HOME}/github.com/davidsneighbour/ai/configs/claude
+      path: ${HOME}/github.com/davidsneighbour/dotfiles-protected/ai-configs/claude
     ~/.codex:
-      path: ${HOME}/github.com/davidsneighbour/ai/configs/codex
+      path: ${HOME}/github.com/davidsneighbour/dotfiles-protected/ai-configs/codex
     ~/.copilot:
-      path: ${HOME}/github.com/davidsneighbour/ai/configs/copilot   
+      path: ${HOME}/github.com/davidsneighbour/dotfiles-protected/ai-configs/copilot   
+    ~/.gemini:
+      path: ${HOME}/github.com/davidsneighbour/dotfiles-protected/ai-configs/gemini   
+    ~/.hermes:
+      path: ${HOME}/github.com/davidsneighbour/dotfiles-protected/ai-configs/hermes    
+    ~/.ollama:
+      path: ${HOME}/github.com/davidsneighbour/dotfiles-protected/ai-configs/ollama   
 
 - shell:
     - curl -fsSL "https://ollama.com/install.sh" | bash

@@ -25,6 +25,7 @@
     ~/.config/filezilla/sitemanager.xml: modules/protected/filezilla/sitemanager.xml
     ~/.config/filezilla/trustedcerts.xml: modules/protected/filezilla/trustedcerts.xml
     ~/.crosspost.env: modules/protected/crosspost.env
+    ~/.clockify-cli.yaml: modules/protected/clockify-cli.yaml
 
     # fonts
     ~/.fonts/AkwePro: modules/protected/fonts/AkwePro
