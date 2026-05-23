@@ -1,5 +1,19 @@
 # Changelog
 
+## [3003.5.1](https://github.com/davidsneighbour/dotfiles/compare/v3003.5.0...v3003.5.1) (2026-05-23)
+
+### Bug Fixes
+
+* **dotbot:** update configurations ([aa5a9bb](https://github.com/davidsneighbour/dotfiles/commit/aa5a9bbac2e8dae6de36ad4c9bffb087343b1654))
+* font size in rofi theme ([241f42e](https://github.com/davidsneighbour/dotfiles/commit/241f42e63820f9a8d051278a13db68b7c650d6c7))
+* **launchers:** remove app image launcher file ([4badffa](https://github.com/davidsneighbour/dotfiles/commit/4badffa70e10a7817a5387c63b346723c69adfbc))
+* remove over eager setup file ([3faf57c](https://github.com/davidsneighbour/dotfiles/commit/3faf57c2a2eefb39cfc230f14d81b54263c970f6))
+* smaller font sizes for rofi ([154d3cb](https://github.com/davidsneighbour/dotfiles/commit/154d3cb9292da6aa44cbb0e1b18690b1a5807710))
+
+### Chore
+
+* **git:** update submodules ([893d728](https://github.com/davidsneighbour/dotfiles/commit/893d72876d1db01967bc9a966a204d0633c848a5))
+
 ## [3003.5.0](https://github.com/davidsneighbour/dotfiles/compare/v3003.4.3...v3003.5.0) (2026-05-22)
 
 ### Features
