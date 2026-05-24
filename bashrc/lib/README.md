@@ -44,6 +44,7 @@ done
 * `dnb_execute_lines`
 * `dnb_archive_create`
 * `dnb_archive_extract`
+* `getopts_long`
 
 Config helper rules and examples are documented in [`../../docs/dnb-config.md`](../../docs/dnb-config.md).
 

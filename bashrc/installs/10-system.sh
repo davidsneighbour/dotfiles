@@ -39,3 +39,5 @@ sudo apt install -y \
   yamllint
 
 sudo snap install vale
+
+cp --remove-destination /usr/etc/bash-completion/completions/git-extras /home/patrick/github.com/davidsneighbour/dotfiles/bashrc/partials/_completions/
