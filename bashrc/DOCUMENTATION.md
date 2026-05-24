@@ -96,12 +96,6 @@ Folder documentation: [`cronjobs/DOCUMENTATION.md`](./cronjobs/DOCUMENTATION.md)
 
 This folder contains scheduled automation for Docker backups, disk-space Discord alerts, repository updates, msgvault sync, and download synchronisation. These are standalone commands/config files, not sourced shell definitions.
 
-## Install snippets
-
-Folder documentation: [`installs/DOCUMENTATION.md`](./installs/DOCUMENTATION.md).
-
-This folder contains workstation provisioning snippets for system packages, Homebrew, Cargo/Rust, Atuin, Chrome, GitHub CLI, Obsidian, Ollama, Signal, Sublime Text, Gum, Homebrew packages, and Cargo packages.
-
 ## Documentation coverage note
 
 Every file currently under `bashrc` is listed in [`INDEX.md`](./INDEX.md). Markdown files next to a feature remain the detailed documentation for that feature; this top-level document links to them instead of duplicating their full content.

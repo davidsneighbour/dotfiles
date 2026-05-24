@@ -34,6 +34,7 @@ sudo apt install -y \
   unzip \
   vlc \
   wget \
+  wtmpdb \
   wmctrl \
   yad \
   yamllint
