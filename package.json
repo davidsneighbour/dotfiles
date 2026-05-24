@@ -12,6 +12,7 @@
     "@clack/prompts": "1.4.0",
     "@commitlint/cli": "21.0.1",
     "@commitlint/config-conventional": "21.0.1",
+    "@davidsneighbour/imagemin-lint-staged": "2.0.0",
     "@davidsneighbour/markdownlint-config": "2026.0.4",
     "@davidsneighbour/nanny": "0.4.0",
     "@humanwhocodes/crosspost": "1.0.4",
