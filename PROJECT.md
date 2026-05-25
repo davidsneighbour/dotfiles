@@ -4,7 +4,7 @@ These are instructions for agents working on this repository.
 
 * You are working in [https://github.com/davidsneighbour/dotfiles](https://github.com/davidsneighbour/dotfiles).
 * Read and understand AGENTS.md before you do anything else.
-* If available read and understand all instructions under `.vscode/instructions` and apply them to files as per `applyTo` field in the instruction files.
+* If available read and understand all instructions under `.github/instructions` and apply them to files as per `applyTo` field in the instruction files.
 * Update your references and content files of this repository before you begin with work
 * If a filename/path is used without full path, assume it is relative to the root of this repository.
 * Packages referred to by @davidsneighbour/PACKAGENAME can be found at [https://github.com/davidsneighbour/PACKAGENAME](https://github.com/davidsneighbour/PACKAGENAME). If you need to use a package that is not found there ask for a clear location for the latest version of the package.
