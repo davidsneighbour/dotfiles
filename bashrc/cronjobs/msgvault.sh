@@ -385,8 +385,10 @@ if [[ "${sync_exit_code}" -ne 0 ]]; then
   exit "${sync_exit_code}"
 fi
 
-if ! dnb_msgvault_maybe_run_backup; then
-  backup_exit_code="$?"
+dnb_msgvault_maybe_run_backup
+backup_exit_code="$?"
+
+if [[ "${backup_exit_code}" -ne 0 ]]; then
   failure_reason="msgvault backup failed with exit code ${backup_exit_code}"
 
   {
