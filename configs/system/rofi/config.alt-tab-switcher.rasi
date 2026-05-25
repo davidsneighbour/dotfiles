@@ -1,0 +1,13 @@
+/**
+ * manual:  https://davatorium.github.io/rofi/2.0.0/rofi.1/
+ * applets: https://github.com/adi1090x/rofi
+ */
+
+@import "config.rasi"
+
+configuration {
+
+    //kb-row-tab: "Tab";
+    kb-accept-entry: "Control+j,Control+m,Return,KP_Enter";
+
+}

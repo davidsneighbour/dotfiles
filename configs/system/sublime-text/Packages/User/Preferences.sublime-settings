@@ -1,12 +1,12 @@
 {
 	"theme": "Adaptive.sublime-theme",
-	"color_scheme": "auto",
+	"color_scheme": "Packages/Dracula Color Scheme/Dracula.tmTheme",
 	"ignored_packages":
 	[
 		"Vintage",
 	],
 	"index_files": false,
-	"font_size": 16,
+	"font_size": 12,
 	"open_files_in_new_window": "never",
 	"dark_color_scheme": "Mariana.sublime-color-scheme",
 	"light_color_scheme": "Packages/Dracula Color Scheme/Dracula.tmTheme",

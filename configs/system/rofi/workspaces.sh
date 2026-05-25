@@ -321,11 +321,9 @@ done
 
 # sort names
 if [[ "${SORT_ORDER}" == "ASC" ]]; then
-  IFS=$'\n' sorted=($(sort <<<"${NAMES[*]}"))
-  unset IFS
+  mapfile -t sorted < <(printf '%s\n' "${NAMES[@]}" | sort)
 else
-  IFS=$'\n' sorted=($(sort -r <<<"${NAMES[*]}"))
-  unset IFS
+  mapfile -t sorted < <(printf '%s\n' "${NAMES[@]}" | sort -r)
 fi
 
 for name in "${sorted[@]}"; do
@@ -341,12 +339,6 @@ for name in "${sorted[@]}"; do
   DISPLAY_TO_NAME["${entry}"]=${name}
   MENU_ENTRIES+=("${entry}")
 done
-
-dnb_log debug "Resolved PROJECTS_DIRS:"
-for d in "${PROJECTS_DIRS[@]}"; do dnb_log debug "  - ${d}"; done || true
-
-dnb_log debug "Resolved WORKSPACE_FILES_DIRS:"
-for d in "${WORKSPACE_FILES_DIRS[@]}"; do dnb_log debug "  - ${d}"; done || true
 
 # Launch rofi with markup (config.rasi must have markup-rows: true)
 PROMPT="${PROMPT} (${#MENU_ENTRIES[@]} available)"

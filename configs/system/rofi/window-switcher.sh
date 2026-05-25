@@ -127,6 +127,7 @@ EOF
   }
 
   rofi \
+    -config config.alt-tab-switcher.rasi \
     -show window \
     -window-format "{w:10} {c:18} {t}" \
     "${rofi_args[@]}"
