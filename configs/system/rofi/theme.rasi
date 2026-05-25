@@ -46,10 +46,9 @@
 // │ └─────────────────────────────────────────────────────────────────────────────┘  │
 // └──────────────────────────────────────────────────────────────────────────────────┘
 
-
 configuration {
-    show-icons:      true;
-    display-drun:    "select program to start";
+    show-icons: true;
+    display-drun: "select program to start";
     disable-history: false;
 }
 
@@ -80,117 +79,142 @@ configuration {
     selected-background: @active-background;
     selected-urgent-background: @urgent-background;
     selected-active-background: @active-background;
-    selected-foreground: @dnb-background;
+    selected-foreground: @dnb-background2;
     separatorcolor: @active-background;
     bordercolor: @dnb-comment;
 }
 
 #window {
     background-color: @dnb-background2;
-    border:           1;
-    border-radius:    0; /* border-radius:    15; */
-    border-color:     @bordercolor;
-    padding:          15;
+    border: 1;
+    border-radius: 0;
+    /* border-radius:    15; */
+    border-color: @bordercolor;
+    padding: 15;
 }
+
 #mainbox {
-    border:  0;
+    border: 0;
     padding: 0;
 }
+
 #message {
-    border:       0px;
+    border: 0px;
     border-color: @separatorcolor;
-    padding:      1px ;
+    padding: 1px;
 }
+
 #textbox {
     text-color: @foreground;
 }
+
 #listview {
     fixed-height: 0;
-    border:       0px;
+    border: 0px;
     border-color: @bordercolor;
-    spacing:      2px ;
-    scrollbar:    false;
-    padding:      2px 0px 0px ;
+    spacing: 2px;
+    scrollbar: false;
+    padding: 2px 0px 0px;
 }
+
 #element {
-    border:  0;
-    padding: 3px ;
+    border: 0;
+    padding: 3px;
 }
+
 #element.normal.normal {
     background-color: @background-color;
-    text-color:       @foreground;
+    text-color: @foreground;
 }
+
 #element.normal.urgent {
     background-color: @urgent-background;
-    text-color:       @urgent-foreground;
+    text-color: @urgent-foreground;
 }
+
 #element.normal.active {
     background-color: @active-background;
-    text-color:       @background-color;
+    text-color: @dnb-background2;
 }
+
 #element.selected.normal {
     background-color: @selected-background;
-    text-color:       @selected-foreground;
+    text-color: @selected-foreground;
 }
+
 #element.selected.urgent {
     background-color: @selected-urgent-background;
-    text-color:       @foreground;
+    text-color: @dnb-background2;
 }
+
 #element.selected.active {
     background-color: @selected-active-background;
-    text-color:       @background-color;
+    text-color: @dnb-background2;
 }
+
 #element.alternate.normal {
     background-color: @background-color;
-    text-color:       @foreground;
+    text-color: @foreground;
 }
+
 #element.alternate.urgent {
     background-color: @urgent-background;
-    text-color:       @foreground;
+    text-color: @dnb-background2;
 }
+
 #element.alternate.active {
     background-color: @active-background;
-    text-color:       @foreground;
+    text-color: @foreground;
 }
+
 #scrollbar {
-    width:        2px ;
-    border:       0;
-    handle-width: 8px ;
-    padding:      0;
+    width: 2px;
+    border: 0;
+    handle-width: 8px;
+    padding: 0;
 }
+
 #sidebar {
-    border:       2px dash 0px 0px ;
+    border: 2px dash 0px 0px;
     border-color: @separatorcolor;
 }
+
 #button.selected {
     background-color: @selected-background;
-    text-color:       @foreground;
+    text-color: @dnb-background2;
 }
+
 #inputbar {
-    spacing:    0;
-    text-color: @foreground;
-    padding:    1px ;
-    children:   [ prompt,textbox-prompt-colon,entry,case-indicator ];
+    spacing: 0;
+    text-color: @dnb-background2;
+    padding: 1px;
+    children: [ prompt, textbox-prompt-colon, entry, case-indicator];
 }
+
 #case-indicator {
-    spacing:    0;
-    text-color: @foreground;
+    spacing: 0;
+    text-color: @dnb-background2;
 }
+
 #entry {
-    spacing:    0;
+    spacing: 0;
     text-color: @dnb-cyan;
 }
+
 #prompt {
-    spacing:    0;
+    spacing: 0;
     text-color: @dnb-green;
 }
+
 #textbox-prompt-colon {
-    expand:     false;
-    str:        ">";
-    margin:     0px 0.3em 0em 0em ;
+    expand: false;
+    str: ">";
+    margin: 0px 0.3em 0em 0em;
     text-color: @dnb-red;
 }
-element-text, element-icon {
+
+element-text,
+element-icon {
     background-color: inherit;
     text-color: inherit;
 }
