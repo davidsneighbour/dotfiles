@@ -23,7 +23,7 @@ updates:
     labels:
       - "type:dependencies"
     cooldown:
-      default-days: 5
+      default-days: 7
 
   - package-ecosystem: npm
     directory: /
@@ -41,7 +41,7 @@ updates:
     labels:
       - "type:dependencies"
     cooldown:
-      default-days: 5
+      default-days: 7
 
   - package-ecosystem: gomod
     directory: /
@@ -59,7 +59,7 @@ updates:
     labels:
       - "type:dependencies"
     cooldown:
-      default-days: 5
+      default-days: 7
 
   - package-ecosystem: github-actions
     directory: /
@@ -77,7 +77,7 @@ updates:
     labels:
       - "type:dependencies"
     cooldown:
-      default-days: 5
+      default-days: 7
 
   - package-ecosystem: composer
     directory: /
@@ -95,7 +95,7 @@ updates:
     labels:
       - "type:dependencies"
     cooldown:
-      default-days: 5
+      default-days: 7
 
   - package-ecosystem: gitsubmodule
     directory: /
@@ -113,7 +113,7 @@ updates:
     labels:
       - "type:dependencies"
     cooldown:
-      default-days: 5
+      default-days: 7
 
   - package-ecosystem: docker
     directory: /
@@ -131,4 +131,4 @@ updates:
     labels:
       - "type:dependencies"
     cooldown:
-      default-days: 5
+      default-days: 7
