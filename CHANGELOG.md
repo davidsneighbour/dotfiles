@@ -1,5 +1,20 @@
 # Changelog
 
+## [3003.7.0](https://github.com/davidsneighbour/dotfiles/compare/v3003.6.1...v3003.7.0) (2026-05-25)
+
+### Features
+
+* add node version requirement updater ([f6b4b2e](https://github.com/davidsneighbour/dotfiles/commit/f6b4b2e6c54b84bd63958a846d724bb2aa3578cd))
+
+### Bug Fixes
+
+* **rofi:** update foreground color in active items ([a6cc218](https://github.com/davidsneighbour/dotfiles/commit/a6cc2187079a619fb476d7e8c038c296b476176e))
+
+### Build
+
+* **fix:** add ai as changelog item ([8179740](https://github.com/davidsneighbour/dotfiles/commit/817974086e1efbc779e67a901247ca7d5b9c02c4))
+* **fix:** update tsconfig to use @dnbhq/tsconfig ([f472d99](https://github.com/davidsneighbour/dotfiles/commit/f472d99012ff01d0e395a37bff305d04002aca59))
+
 ## [3003.6.1](https://github.com/davidsneighbour/dotfiles/compare/v3003.6.0...v3003.6.1) (2026-05-25)
 
 ### Bug Fixes
