@@ -1,5 +1,11 @@
 # Changelog
 
+## [3003.6.1](https://github.com/davidsneighbour/dotfiles/compare/v3003.6.0...v3003.6.1) (2026-05-25)
+
+### Bug Fixes
+
+* add stl files for 2023 to 2016 ([01c54cf](https://github.com/davidsneighbour/dotfiles/commit/01c54cfe49ca0faf7fa0e6b063c26aba75b53839))
+
 ## [3003.6.0](https://github.com/davidsneighbour/dotfiles/compare/v3003.5.1...v3003.6.0) (2026-05-25)
 
 ### Features
