@@ -1,5 +1,27 @@
 # Changelog
 
+## [3003.6.0](https://github.com/davidsneighbour/dotfiles/compare/v3003.5.1...v3003.6.0) (2026-05-25)
+
+### Features
+
+* add getopts_long ([88e9ccc](https://github.com/davidsneighbour/dotfiles/commit/88e9cccb9bd223a2183263b3dfafc65c175e1f2c))
+
+### Bug Fixes
+
+* icon theme doubled ([9111254](https://github.com/davidsneighbour/dotfiles/commit/91112546def6ae08ec9071c75f732fb3f7311694))
+* move installs from bashrc to configs ([77b6967](https://github.com/davidsneighbour/dotfiles/commit/77b69671e5eb105e81ffe118f75ca32dd2fade1c))
+* **msgvault:** add cron lock and periodic backup ([95af360](https://github.com/davidsneighbour/dotfiles/commit/95af360f274cae9cca064ec8065af03bc0fed211))
+* **msgvault:** preserve backup failure exit code ([7ea0749](https://github.com/davidsneighbour/dotfiles/commit/7ea07496d1df3c8515af9ea15177f98a10665de4))
+* **npm:** update default packages ([50b495b](https://github.com/davidsneighbour/dotfiles/commit/50b495b5919d11ebb6212724b37c17a08f43b8ea))
+* rework wallpaper setup ([9c3d616](https://github.com/davidsneighbour/dotfiles/commit/9c3d6168c4ef6439ec461ad1fb0ea78e4faf1ef5))
+* rofi theme fixes and cleanups ([a16c5a3](https://github.com/davidsneighbour/dotfiles/commit/a16c5a34ec4f49908db47c5a3b328232176b2957))
+* update default wallpaper ([a898319](https://github.com/davidsneighbour/dotfiles/commit/a8983197e5279fad22a308cc3df7d516db71a33a))
+
+### Build
+
+* **deps:** update dependencies ([5f44900](https://github.com/davidsneighbour/dotfiles/commit/5f44900403586d54c3485ef44d3b170b456edb5a))
+* **deps:** update dependencies ([312f4d0](https://github.com/davidsneighbour/dotfiles/commit/312f4d08ce3006a50c46dffb0767b84dc0b69749))
+
 ## [3003.5.1](https://github.com/davidsneighbour/dotfiles/compare/v3003.5.0...v3003.5.1) (2026-05-23)
 
 ### Bug Fixes
