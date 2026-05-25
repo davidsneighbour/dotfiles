@@ -1,24 +1,8 @@
 {
-  "compilerOptions": {
-    "target": "ES2022",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "strict": true,
-    "exactOptionalPropertyTypes": true,
-    "noUncheckedIndexedAccess": true,
-    "noImplicitOverride": true,
-    "noPropertyAccessFromIndexSignature": true,
-    "useUnknownInCatchVariables": true,
-    "noFallthroughCasesInSwitch": true,
-    "allowJs": true,
-    "checkJs": true,
-    "resolveJsonModule": true,
-    "types": ["node"],
-    "noEmit": true,
-    // This allows importing .ts files from .js files, which is useful for the mixed codebase of this project.
-    "allowImportingTsExtensions": true
-  },
+  "extends": "@dnbhq/tsconfig/strict",
+  // @todo move included files into strict config
   "include": ["**/*.ts", "**/*.tsx", "**/*.js", "lint-staged.config.ts"],
+  // @todo rework the excluded files list
   "exclude": [
     "node_modules",
     "**/node_modules/*",

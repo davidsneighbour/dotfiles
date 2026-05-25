@@ -7,6 +7,9 @@
   "author": "Patrick Kollitsch <davidsneighbourdev+gh@gmail.com>",
   "bugs": "https://github.com/davidsneighbour/dotfiles/issues",
   "homepage": "https://github.com/davidsneighbour/dotfiles#readme",
+  "dependencies": {
+    "@dnbhq/tsconfig": "0.1.5"
+  },
   "devDependencies": {
     "@biomejs/biome": "2.4.15",
     "@clack/prompts": "1.4.0",
