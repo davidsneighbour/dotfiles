@@ -52,13 +52,15 @@
   },
   "scripts": {
     "biome:postinstall": "npx @biomejs/biome migrate --write",
+    "check:node-engines": "node --experimental-strip-types scripts/update-node-engines.ts --check",
     "clean": "rimraf logs/*.log",
     "lint:config": "yamllint -c .yamllint.yml configs bashrc",
     "lint:hook:commit": "lint-staged --quiet --config lint-staged.config.ts",
     "lint:hook:commit:loud": "lint-staged --debug --verbose --config lint-staged.config.ts",
     "lint:postinstall": "npx simple-git-hooks",
     "postinstall": "wireit",
-    "release": "release-it --config .release-it.ts --verbose --only-version"
+    "release": "release-it --config .release-it.ts --verbose --only-version",
+    "update:node-engines": "node --experimental-strip-types scripts/update-node-engines.ts"
   },
   "wireit": {
     "link:prepare": {
@@ -70,6 +72,9 @@
         "lint:postinstall"
       ]
     }
+  },
+  "engines": {
+    "node": "^22.0.0 || ^24.0.0 || ^25.0.0 || ^26.0.0"
   },
   "cspell": {
     "version": "0.2",

@@ -1,0 +1,47 @@
+name: Update Node.js engines
+
+on:
+  schedule:
+    - cron: "0 22 * * 5"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-node-engines:
+    name: Update package.json engines.node
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          persist-credentials: true
+
+      - name: Set up Node.js
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
+        with:
+          node-version: 26
+
+      - name: Update engines.node
+        run: node --experimental-strip-types scripts/update-node-engines.ts
+
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1
+        with:
+          branch: chore/update-node-engines
+          delete-branch: true
+          title: "chore: update Node.js engines range"
+          commit-message: "chore: update Node.js engines range"
+          body: |
+            Updates `package.json#engines.node` from the official Node.js release schedule.
+
+            Policy:
+            - Include every released Node.js major that is not EOL.
+            - Include odd-numbered majors while they are still supported.
+            - Include Current, Active LTS, and Maintenance release lines.
+            - Do not cap the newest supported major artificially.
+          labels: dependencies
