@@ -45,6 +45,7 @@ const config = {
           { type: 'docs', section: 'Documentation' },
           { type: 'build', section: 'Build' },
           { type: 'chore', section: 'Chore' },
+          { type: 'ai', section: 'AI' },
         ],
       },
       whatBump(commits: Array<{ type?: string; notes?: unknown[] }>) {
