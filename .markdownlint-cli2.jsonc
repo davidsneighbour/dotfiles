@@ -1,0 +1,24 @@
+{
+  "$schema": "https://raw.githubusercontent.com/DavidAnson/markdownlint-cli2/v0.22.1/schema/markdownlint-cli2-config-schema.json",
+  "config": {
+    "extends": "./node_modules/@dnbhq/markdownlint-config/rules.jsonc",
+    "relative-links": {
+      "root_path": "."
+    }
+  },
+  "customRules": [
+    "./node_modules/@dnbhq/markdownlint-config/rules/markdownlint-github.cjs",
+    "./node_modules/@dnbhq/markdownlint-config/rules/relative-links.cjs",
+    "./node_modules/@dnbhq/markdownlint-config/rules/search.cjs",
+    "./node_modules/@dnbhq/markdownlint-config/rules/extended-ascii.cjs",
+    "./node_modules/@dnbhq/markdownlint-config/rules/title-case-style.cjs",
+    "./node_modules/@dnbhq/markdownlint-config/rules/list-duplicates.cjs"
+  ],
+  "ignores": [
+    "node_modules",
+    "CHANGELOG.md"
+  ],
+  "globs": [
+    "**/*.{md,mdx}"
+  ]
+}
