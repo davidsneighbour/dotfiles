@@ -16,7 +16,9 @@ export default {
   '*.{png,jpeg,jpg,gif,svg}': [
     'imagemin-lint-staged', // @davidsneighbour/imagemin-lint-staged
   ],
-  '!(CHANGELOG)**/*.{md,markdown}': ['markdownlint-cli2'],
+  '!(CHANGELOG)**/*.{md,markdown}': [
+    'markdownlint-cli2 --config .markdownlint-cli2.jsonc --no-globs',
+  ],
   '**/*.ts?(x)': () => ['tsc-files --noEmit --pretty'],
   '**/*.*': ['secretlint --no-glob'],
   '*.jsonnet': ['jsonnetfmt -i *.jsonnet'],
