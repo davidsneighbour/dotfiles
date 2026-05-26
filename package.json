@@ -17,7 +17,7 @@
     "@commitlint/config-conventional": "21.0.1",
     "@davidsneighbour/imagemin-lint-staged": "2.0.0",
     "@davidsneighbour/nanny": "0.4.0",
-    "@dnbhq/markdownlint-config": "0.2.2",
+    "@dnbhq/markdownlint-config": "0.2.3",
     "@humanwhocodes/crosspost": "1.0.4",
     "@release-it/conventional-changelog": "11.0.0",
     "@secretlint/secretlint-rule-no-dotenv": "13.0.2",
