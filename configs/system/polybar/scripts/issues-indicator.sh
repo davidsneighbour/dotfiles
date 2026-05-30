@@ -18,7 +18,7 @@ Options:
 USAGE
 }
 
-CONFIG_FILE="${HOME}/.dotfiles/configs/system/polybar/configs/01-settings.ini"
+CONFIG_FILE="${HOME}/.dotfiles/configs/system/polybar/configs/01-colours.ini"
 
 get_colour() {
   local key="$1"
