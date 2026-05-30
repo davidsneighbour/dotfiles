@@ -1,5 +1,5 @@
 #!/bin/bash
-
+# shellcheck shell=bash
 set -euo pipefail
 
 SCRIPT_NAME="$(basename "$0")"
@@ -13,8 +13,7 @@ Usage:
 
 Description:
   Checks for a default wallpaper at:
-    ${DOTFILES_PATH}/assets/wallpaper.jpg
-    ${DOTFILES_PATH}/assets/wallpaper.png
+    ${DOTFILES_PATH}/assets/wallpaper.{jpg,png}
 
   If one exists, it calls:
     ${WALLPAPER_HELPER} --wallpaper <file>

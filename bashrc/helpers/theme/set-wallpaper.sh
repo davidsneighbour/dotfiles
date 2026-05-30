@@ -1,5 +1,5 @@
 #!/bin/bash
-
+# shellcheck shell=bash
 set -euo pipefail
 
 SCRIPT_NAME="$(basename "$0")"

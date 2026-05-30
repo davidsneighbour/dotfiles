@@ -4,6 +4,7 @@ brew tap dart-lang/dart
 
 # REMINDER: do not install gemini-sli via brew, it messes up nvm
 brew install gum \
+  biome \
   lychee \
   gmailctl \
   llmfit \
