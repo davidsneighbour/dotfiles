@@ -7,6 +7,7 @@ glone() {
   local verbose=false
   local quiet=false
   local open_repo=false
+  local go_repo=false
 
   if [[ -n "${DNB_VERBOSE:-}" ]]; then
     verbose=true
@@ -24,7 +25,8 @@ Usage:
 Options:
   --repo <value>     Repository location.
   --force-https      Clone using HTTPS instead of SSH.
-  --open             Change directory into cloned repository.
+  --go               Change directory into cloned repository.
+  --open             Open cloned repository in VS Code.
   --verbose          Enable verbose output.
   --quiet            Disable verbose output (overrides --verbose and DNB_VERBOSE).
   --help             Show this help text.
@@ -184,9 +186,28 @@ EOF
     fi
 
     if [[ "${open_repo}" == true ]]; then
-    if [[ "${quiet}" != true ]]; then
-      echo "Entering ${repo_path}"
+      if ! command -v code >/dev/null 2>&1; then
+        echo "Error: Cloned successfully, but 'code' is not available in PATH." >&2
+        return 1
+      fi
+
+      if [[ "${quiet}" != true ]]; then
+        echo "Opening ${repo_path} in VS Code"
+      fi
+
+      (
+        cd "${repo_path}" || exit 1
+        code .
+      ) || {
+        echo "Error: Cloned successfully, but failed to open '${repo_path}' in VS Code." >&2
+        return 1
+      }
     fi
+
+    if [[ "${go_repo}" == true ]]; then
+      if [[ "${quiet}" != true ]]; then
+        echo "Entering ${repo_path}"
+      fi
 
       cd "${repo_path}" || {
         echo "Warning: Cloned successfully, but failed to enter '${repo_path}'." >&2
@@ -207,6 +228,10 @@ EOF
         ;;
       --open)
         open_repo=true
+        shift
+        ;;
+      --go)
+        go_repo=true
         shift
         ;;
       --verbose)
@@ -247,8 +272,8 @@ EOF
     local line=""
     local exit_code=0
 
-    if [[ "${open_repo}" == true ]]; then
-      echo "Error: --open is not supported when reading multiple repositories from stdin." >&2
+    if [[ "${open_repo}" == true || "${go_repo}" == true ]]; then
+      echo "Error: --go and --open are not supported when reading multiple repositories from stdin." >&2
       return 1
     fi
 

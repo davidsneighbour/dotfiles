@@ -97,13 +97,14 @@ Requirements: `git`. Commitizen mode additionally requires a commitlint config, 
 
 Function: `glone`.
 
-Clones one repository from `--repo` or multiple repositories from stdin, normalising GitHub URLs and optionally opening the cloned directory.
+Clones one repository from `--repo` or multiple repositories from stdin, normalising GitHub URLs and optionally entering or opening the cloned directory.
 
 Options:
 
 * `--repo VALUE` — repository location.
 * `--force-https` — clone using HTTPS instead of SSH.
-* `--open` — change into the cloned repository; only supported for a single repository.
+* `--go` — change into the cloned repository; only supported for a single repository.
+* `--open` — open the cloned repository in VS Code; only supported for a single repository.
 * `--verbose` — enable verbose output.
 * `--quiet` — disable verbose output; overrides `--verbose` and `DNB_VERBOSE`.
 * `--help` — show help.
