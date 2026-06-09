@@ -38,3 +38,10 @@ for FILE in "${BASHRC_PATH}"/partials/_programs/*; do
   [ -f "${FILE}" ] && source "${FILE}"
 done
 export PLAYWRIGHT_HOST_PLATFORM_OVERRIDE=ubuntu24.04-x64
+
+# opencode
+export PATH=/home/patrick/.opencode/bin:$PATH
+
+
+# Added by Antigravity CLI installer
+export PATH="/home/patrick/.local/bin:$PATH"

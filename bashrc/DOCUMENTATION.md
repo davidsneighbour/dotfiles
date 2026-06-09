@@ -1,4 +1,4 @@
-# bashrc documentation
+# Bashrc documentation
 
 This document is the top-level map for everything under `bashrc`. The implementation remains authoritative; where a feature already has adjacent Markdown documentation, this file links to it and only adds enough context to explain how it fits into Bash startup.
 
@@ -36,7 +36,7 @@ Login profile for shells/display managers that read `.profile`. It sets up user-
 
 Logout hook for Bash login shells. It performs logout-time cleanup according to the file contents.
 
-## Shared Bash library
+## Shared bash library
 
 Folder: [`lib/`](./lib/README.md).
 

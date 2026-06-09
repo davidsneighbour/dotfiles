@@ -1,4 +1,4 @@
-# Bash Environment Architecture
+# Bash environment architecture
 
 * [Architecture Notes](#architecture-notes)
 * [Shell Startup Model](#shell-startup-model)
@@ -27,7 +27,7 @@
 * [Cron Usage Example](#cron-usage-example)
 * [TypeScript Support](#typescript-support)
 
-## Architecture Notes
+## Architecture notes
 
 This repository implements a structured Bash environment that separates:
 
@@ -46,7 +46,7 @@ The goal is predictable shell behaviour across:
 
 This document explains how the environment is structured and how scripts integrate with it.
 
-## Shell Startup Model
+## Shell startup model
 
 The environment follows the standard Bash startup sequence.
 
@@ -86,7 +86,7 @@ Examples:
 
 Scripts should bootstrap their environment explicitly if required.
 
-## Interactive Detection
+## Interactive detection
 
 The environment defines the variable: `DNB_IS_INTERACTIVE`.
 
@@ -98,7 +98,7 @@ The environment defines the variable: `DNB_IS_INTERACTIVE`.
 * `.bashrc`: `export DNB_IS_INTERACTIVE=1`
 * `.profile`: `export DNB_IS_INTERACTIVE=0`
 
-## Interactive Detection Helper
+## Interactive detection helper
 
 To simplify checks across partial scripts, a helper function is provided.
 
@@ -114,7 +114,7 @@ fi
 
 This avoids repeated direct variable comparisons and ensures consistent behaviour.
 
-## Partial Script Architecture
+## Partial script architecture
 
 Shell configuration is split into reusable partial scripts.
 
@@ -164,7 +164,7 @@ if dnb_is_interactive; then
 fi
 ```
 
-## Runtime Initialisation Strategy
+## Runtime initialisation strategy
 
 Programs fall into three categories.
 
@@ -195,7 +195,7 @@ These must be guarded:
 if dnb_is_interactive; then
 ```
 
-## Node Execution Wrapper
+## Node execution wrapper
 
 Cron jobs and automation scripts often require Node from `nvm`.
 
@@ -215,7 +215,7 @@ This script:
 * optionally selects a Node version
 * executes a script
 
-## Node Wrapper Behaviour
+## Node wrapper behaviour
 
 The wrapper supports:
 
@@ -224,7 +224,7 @@ The wrapper supports:
 * automatic fallback to `nvm`
 * fast resolution when possible
 
-## Fast Node Resolution
+## Fast node resolution
 
 When the requested version is simple, the wrapper resolves Node directly.
 
@@ -251,7 +251,7 @@ Benefits:
 * reduced shell overhead
 * ideal for cron jobs
 
-## Automatic Fallback
+## Automatic fallback
 
 For complex selectors, the wrapper loads `nvm`.
 
@@ -266,15 +266,15 @@ aliases
 
 This guarantees compatibility with full `nvm` behaviour.
 
-## Wrapper Usage
+## Wrapper usage
 
-### Run script with default Node
+### Run script with default node
 
 ```bash
 node-run.sh --script /path/job.ts
 ```
 
-### Specify Node version
+### Specify node version
 
 ```bash
 node-run.sh --script /path/job.ts --node-version 22
@@ -292,7 +292,7 @@ node-run.sh --script job.ts --cwd /path/project
 node-run.sh --script job.ts --verbose
 ```
 
-## Cron Usage Example
+## Cron usage example
 
 Example cron job:
 
@@ -305,7 +305,7 @@ This ensures:
 * the correct Node version is used
 * runtime resolution does not depend on shell startup files
 
-## TypeScript Support
+## TypeScript support
 
 Modern Node versions (v24+) include built-in TypeScript typing support. And we assume that support baked in. No special treatment of `node` calls is done when we work with TypeScript files.
 

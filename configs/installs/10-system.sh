@@ -25,6 +25,7 @@ sudo apt install -y \
   golang-go \
   librsvg2-bin \
   meld \
+  nmap arp-scan net-tools \
   openshot-qt python3-openshot \
   papirus-icon-theme papirus-folders papirus-colors \
   pulseaudio-utils \

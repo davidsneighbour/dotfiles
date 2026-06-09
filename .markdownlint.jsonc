@@ -1,7 +1,0 @@
-{
-  "$schema": "https://github.com/DavidAnson/markdownlint/blob/main/schema/markdownlint-config-schema.json",
-  "$id": "https://raw.githubusercontent.com/davidsneighbour/kollitsch.dev/refs/heads/main/src/config/.markdownlint.jsonc",
-  "config": {
-    "extends": "./node_modules/@dnbhq/markdownlint-config/config.jsonc"
-  }
-}

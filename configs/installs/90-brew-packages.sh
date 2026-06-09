@@ -13,4 +13,5 @@ brew install gum \
   typos-cli \
   yamllint \
   sass/sass/sass \
+  shellcheck \
   zizmor

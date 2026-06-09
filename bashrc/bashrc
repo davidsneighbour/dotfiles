@@ -13,9 +13,9 @@ if [ -z "${DOTFILES_PATH}" ]; then
     DOTFILES_PATH="${HOME}/.dotfiles"
   else
     # Fallback: derive path from this bashrc file's location
-    thisrc="$(dirname "${BASH_SOURCE[0]:-$0}")"
-    thisrc="$(cd "${thisrc}" && pwd)" # absolute path of directory containing this file
-    DOTFILES_PATH="$(dirname "${thisrc}")"
+    LOCAL_DOTFILES_PATH="$(dirname "${BASH_SOURCE[0]:-$0}")"
+    LOCAL_DOTFILES_PATH="$(cd "${LOCAL_DOTFILES_PATH}" && pwd)" # absolute path of directory containing _this_ file
+    DOTFILES_PATH="$(dirname "${LOCAL_DOTFILES_PATH}")"
   fi
   export DOTFILES_PATH
 fi
@@ -35,30 +35,27 @@ done
 FILE="${HOME}"/.env
 if [[ -f "${FILE}" && -r "${FILE}" ]]; then
   set -a
-  # shellcheck source=/dev/null
+  # shellcheck source=/dev/null # we know the file is there and readable
   source "${FILE}"
   set +a
 fi
 unset FILE
 
-for FILE in "${BASHRC_PATH}"/partials/{bash,functions,exports,aliases,completions,prompt,topical}; do
+# load the partials
+for FILE in "${BASHRC_PATH}"/partials/{functions,exports,aliases,completions,prompt,topical}; do
   # this routine ranges through a folder of filenames that we don't explicitly know (@davidsneighbour)
-  # shellcheck source=/dev/null
+  # shellcheck source=/dev/null # we know the file is there from the loop above and readable
   [[ -f "${FILE}" && -r "${FILE}" ]] && source "${FILE}"
 done
 unset FILE
 
 export NVM_DIR="${HOME}/.nvm"
 
-# hack to disable error messages about max listeners
-# if [ -n "${NODE_OPTIONS}" ]; then
-#   export NODE_OPTIONS="--require ${BASHRC_PATH}/helpers/set_max_listeners.cjs ${NODE_OPTIONS}"
-# else
-#   export NODE_OPTIONS="--require ${BASHRC_PATH}/helpers/set_max_listeners.cjs"
-# fi
-
+# Zoxide
 if command -v zoxide >/dev/null 2>&1; then
   eval "$(zoxide init bash)"
+else
+  dnb_log info "zoxide is not installed. Skipping zoxide initialization."
 fi
 
 # bun
@@ -77,23 +74,24 @@ fi
 umask 022
 
 # bash (and history) config
+# @see https://www.gnu.org/software/bash/manual/html_node/The-Shopt-Builtin.html
 export HISTCONTROL=ignoreboth:erasedups # remove duplicate lines or lines starting with space from history
-export HISTFILESIZE=                    # unlimited history size
-export HISTSIZE=
-shopt -s histappend              # append to the history file, don't overwrite it
-shopt -s histverify              # don't execute history searched lines, put them in the shell
-shopt -s extglob                 # extended pattern matching features (required for bash completion)
-shopt -s dotglob                 # for considering dot files (turn on dot files)
-shopt -s cdspell                 # correct dir spelling errors on cd
-shopt -s lithist                 # save multi-line commands with newlines
+export HISTFILESIZE=-1                  # unlimited history size
+export HISTSIZE=-1                      # unlimited history size
+
 shopt -s autocd                  # if a command is a dir name, cd to it
+shopt -s cdspell                 # correct dir spelling errors on cd
+shopt -s checkhash               # check the hash table for commands before searching PATH
 shopt -s checkjobs               # print warning if jobs are running on shell exit
 shopt -s dirspell                # correct dir spelling errors on completion
-shopt -s globstar                # ** matches all files, dirs and subdirs
-shopt -s cmdhist                 # save multi-line commands in a single hist entry
-shopt -s cdable_vars             # if cd arg is not a dir, assume it is a var
-shopt -s checkwinsize            # check the window size after each command
+shopt -s extglob                 # extended pattern matching features (for bash completion)
+shopt -s globstar                # ** matches all files, and dirs and sub dirs if followed by a /
+shopt -s histappend              # append to the history file, don't overwrite it
+shopt -s histreedit              # immediately re-edit a failed history substitution
+shopt -s histverify              # don't execute history searched lines, put them in the shell
+shopt -s lithist                 # save multi-line commands with newlines
 shopt -s no_empty_cmd_completion # don't try to complete empty cmds
+shopt -s progcomp_alias          # allow alias expansion in programmable completion
 
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
@@ -188,7 +186,7 @@ export NONE=$'\033[m'
 export GREP_COLORS="mt=1;38;2;255;85;85:fn=38;2;255;121;198:ln=38;2;80;250;123:bn=38;2;80;250;123:se=38;2;139;233;253"
 
 # path for directories
-export CDPATH=".:..:../..:~/:~/dev/"
+export CDPATH=".:..:../..:~/"
 
 # file containing hosts
 export HOSTFILE="${HOME}/.bash_hosts"
@@ -215,7 +213,6 @@ unset FILE
 
 # starship setup
 # see https://starship.rs/config
-# export STARSHIP_CONFIG=~/example/non/default/path/starship.toml
 export STARSHIP_CACHE="${HOME}/.cache/starship"
 export STARSHIP_CONFIG="${HOME}/.config/starship.toml"
 
@@ -234,8 +231,8 @@ else
 fi
 
 ## This is the "add this snippet to your .bashrc" part of the workspace
-## @todo move where it belongs
-. "$HOME/.cargo/env"
+## @todo move stuff where it belongs
+. "${HOME}/.cargo/env"
 export DO_NOT_TRACK=1
 ## end of workspace snippets
 

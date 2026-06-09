@@ -24,7 +24,8 @@ no=''
 
 # Rofi CMD
 rofi_cmd() {
-  rofi -dmenu \
+  rofi \
+    -dmenu \
     -p " $USER@$host" \
     -mesg " Last Login: $lastLogin |  Uptime: $uptime" \
     -theme ${theme}
@@ -32,7 +33,8 @@ rofi_cmd() {
 
 # Confirmation CMD
 confirm_cmd() {
-  rofi -theme-str 'window {location: center; anchor: center; fullscreen: false; width: 350px;}' \
+  rofi \
+    -theme-str 'window {location: center; anchor: center; fullscreen: false; width: 350px;}' \
     -theme-str 'mainbox {children: [ "message", "listview" ];}' \
     -theme-str 'listview {columns: 2; lines: 1;}' \
     -theme-str 'element-text {horizontal-align: 0.5;}' \
@@ -45,7 +47,7 @@ confirm_cmd() {
 
 # Ask for confirmation
 confirm_exit() {
-  echo -e "$yes\n$no" | confirm_cmd
+  echo -e "$no\n$yes" | confirm_cmd
 }
 
 # Pass variables to rofi dmenu

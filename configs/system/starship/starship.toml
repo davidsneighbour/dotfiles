@@ -1,9 +1,7 @@
 # Get editor completions based on the config schema
 "$schema" = 'https://starship.rs/config-schema.json'
-
 palette = "dracula"
-
-format = "$all\n$character"
+format = "$all$character"
 
 # Inserts a blank line between shell prompts
 add_newline = true
@@ -65,22 +63,6 @@ fi
 '''
 when = 'git rev-parse --is-inside-work-tree >/dev/null 2>&1'
 format = '( $output)'
-
-[custom.gh_links]
-description = "Clickable GitHub path"
-shell   = ["bash", "--noprofile", "--norc", "-c"]
-# when    = "true"
-command = '''
-source "$HOME/github.com/davidsneighbour/dotfiles/configs/starship/github-linker.sh"
-if _gh_after_root "$PWD" >/dev/null 2>&1; then
-  _gh_prompt_links
-else
-  exit 1
-fi
-'''
-# keep raw OSC-8 first; add style later
-format  = "$output($style)"
-style   = "bold cyan"
 
 # Palette definitions
 [palettes.dracula]
