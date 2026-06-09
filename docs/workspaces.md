@@ -63,6 +63,60 @@ and derives:
 
 You do **not** need to manually edit `--count`/`--names` in `start.sh` anymore.
 
+## 4) Temporary workspaces (runtime only)
+
+The sources above define **permanent** workspaces. To add a throwaway workspace at runtime, use:
+
+* `bashrc/workspaces/ws_add_workspace`
+
+It appends one workspace to the live xfwm4 state and prints the new 1-based index to stdout. It never edits `config.toml`. The next restart re-applies the permanent set and drops the temporary workspace.
+
+Interactive use opens a rofi input box:
+
+```bash
+ws_add_workspace
+```
+
+The rofi dispatcher exposes the same flow:
+
+```bash
+ws_rofi_actions --mode add
+```
+
+### Scripted use: launch a program on a fresh workspace
+
+Capture the printed index and pass it to `ws_launch_program`. Reference the temporary workspace by index, because `ws_launch_program --workspace NAME` resolves names from `config.toml` and does not see temporary names.
+
+```bash
+#!/bin/bash
+set -euo pipefail
+
+ws_num="$(ws_add_workspace "Obsidian")"
+ws_launch_program --workspace "${ws_num}" --switch --exec "obsidian"
+```
+
+### Icons on temporary workspaces
+
+Polybar maps icons by workspace name in `configs/system/polybar/configs/07-module-workspaces.ini`, and that map loads at Polybar start. A temporary name is absent from the map, so Polybar shows `icon-default` for it.
+
+There are two ways to get an icon:
+
+1. Embed a Nerd Font glyph in the name. The glyph shows in the active-workspace label via the `%name%` token. Pick a glyph from the Lucide reference at `file:///home/patrick/.fonts/Lucide/unicode.html`.
+
+   ```bash
+   # Replace <glyph> with a Nerd Font icon from the Lucide reference.
+   ws_num="$(ws_add_workspace "<glyph> Obsidian")"
+   ws_launch_program --workspace "${ws_num}" --switch --exec "obsidian"
+   ```
+
+2. Make the workspace permanent for a fully mapped icon. Add a `[[workspace]]` block plus a matching `icon-N` entry, as described in sections 1 and 2, then launch by name:
+
+   ```bash
+   ws_launch_program --workspace Obsidian --switch --exec "obsidian"
+   ```
+
+   Choose this when a program should always live on its own labelled workspace.
+
 ## Quick verification checklist
 
 After changing workspaces:

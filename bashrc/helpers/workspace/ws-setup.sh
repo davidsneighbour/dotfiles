@@ -166,13 +166,18 @@ xfconf_set_names_from_array() {
   local args=()
   local name
 
-  # Set the whole array in one go (xfconf-query stores it as an array if multiple -s are used).
+  # Build (-t string -s NAME) pairs so the array is recreated with explicit
+  # types. xfconf-query refuses to resize an existing array when the number of
+  # values differs from the stored length, so we reset the property first and
+  # then create it fresh. This makes the names list safe to grow or shrink
+  # (e.g. after a temporary workspace was added via ws_add_workspace).
   for name in "${_names_ref[@]}"; do
-    args+=(-s "${name}")
+    args+=(-t string -s "${name}")
   done
 
   log "Setting workspace names: ${_names_ref[*]}"
-  xfconf-query -c xfwm4 -p /general/workspace_names "${args[@]}"
+  xfconf-query -c xfwm4 -p /general/workspace_names --reset 2>/dev/null || true
+  xfconf-query -c xfwm4 -p /general/workspace_names --create "${args[@]}"
 }
 
 split_csv_to_array() {

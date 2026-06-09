@@ -23,6 +23,17 @@ This folder provides CLI-first workspace automation for XFCE on Xubuntu 25.10 wi
 * `--quiet`
 * `--help`
 
+### `ws_add_workspace`
+
+Adds a temporary workspace to the live xfwm4 list. Prompts via rofi when no name is given.
+
+* `[NAME]` (optional; prompts via rofi when omitted)
+* `--verbose`
+* `--quiet`
+* `--help`
+
+The change lives in xfconf, never in `config.toml`, so the next restart removes it. The new workspace's 1-based index is printed to stdout for scripting.
+
 ### `ws_list_windows`
 
 * `--workspace-full`
@@ -85,6 +96,8 @@ Unified rofi entry point:
   * select workspace and move active window
 * `--mode tile-move`
   * select tile template and apply to active window
+* `--mode add`
+  * rofi prompt for a name, then add a temporary workspace via `ws_add_workspace`
 * `--mode select-tile-workspace-program`
   * select workspace, then select running program/window and apply tile flow
 * Also supports: `--verbose`, `--quiet`, `--help`
