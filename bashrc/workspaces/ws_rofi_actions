@@ -11,12 +11,14 @@ MODE=""
 usage() {
   cat <<EOF_USAGE
 Usage:
-  ws_rofi_actions --mode <start|move|tile-move|select-tile-workspace-program> [options] [--verbose|--quiet]
+  ws_rofi_actions --mode <start|move|tile-move|add|select-tile-workspace-program> [options] [--verbose|--quiet]
 
 Modes:
   start     Use rofi to enter and run a command via ws_launch_program --exec.
   move      Use rofi to select target workspace for active window.
   tile-move Use rofi to select tile template and apply to active window.
+  add       Use rofi to enter a name and add a temporary workspace
+            via ws_add_workspace (reset on next restart).
   select-tile-workspace-program
             First select tile + workspace, then pick running window and apply both.
 
@@ -56,6 +58,9 @@ case "${MODE}" in
     ;;
   tile-move)
     exec "${SCRIPT_DIR}/ws_menu_window_tile"
+    ;;
+  add)
+    exec "${SCRIPT_DIR}/ws_add_workspace"
     ;;
   select-tile-workspace-program)
     selection="$(

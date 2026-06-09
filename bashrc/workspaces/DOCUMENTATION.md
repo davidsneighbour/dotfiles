@@ -43,6 +43,19 @@ Lists available workspaces, optionally as names only.
 
 Options: `-n`, `--name`, `--verbose`, `--quiet`, `--help`.
 
+### `ws_add_workspace`
+
+Adds a **temporary** workspace to the live XFCE (xfwm4) workspace list. If no name is given on the command line, a rofi input box prompts for one. The change touches just the live xfconf state (`/general/workspace_count` and `/general/workspace_names`) and never `config.toml`. The next restart re-applies the configured workspaces via `configs/system/polybar/start.sh`, so the temporary workspace disappears.
+
+On success the new workspace's 1-based index is printed to stdout (all diagnostics go to stderr), which makes it composable with `ws_launch_program`:
+
+```bash
+ws_num="$(ws_add_workspace "Obsidian")"
+ws_launch_program --workspace "${ws_num}" --switch --exec "obsidian"
+```
+
+Options: `[NAME]`, `--verbose`, `--quiet`, `--help`.
+
 ### `ws_list_windows`
 
 Lists windows from `wmctrl`, with workspace filtering and sticky-window control.
@@ -77,7 +90,7 @@ Options: `--width 20-100`, `--height 20-100`, `--horizontal-anchor left|right`, 
 
 Unified rofi entry point for start/move/tile flows.
 
-Options: `--mode start|move|tile-move|select-tile-workspace-program`, optional `--workspace N|NAME` for supported flows, `--verbose`, `--quiet`, `--help`.
+Options: `--mode start|move|tile-move|add|select-tile-workspace-program`, optional `--workspace N|NAME` for supported flows, `--verbose`, `--quiet`, `--help`. The `add` mode runs `ws_add_workspace` to create a temporary workspace.
 
 ### `ws_menu_window_move`
 

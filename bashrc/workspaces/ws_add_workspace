@@ -1,0 +1,123 @@
+#!/bin/bash
+
+set -Eeuo pipefail
+
+SCRIPT_NAME="$(basename "$0")"
+SCRIPT_DIR="$(CDPATH="" cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck disable=SC2034  # Used by ws_parse_verbosity_flag from ws-common.sh.
+WS_QUIET_MODE=0
+NEW_NAME=""
+
+# shellcheck source=bashrc/workspaces/ws-common.sh
+source "${SCRIPT_DIR}/ws-common.sh"
+
+usage() {
+  cat <<EOF_USAGE
+Usage:
+  ${SCRIPT_NAME} [NAME] [--verbose|--quiet]
+  ${SCRIPT_NAME} --help
+
+Add a temporary workspace to the live XFCE (xfwm4) workspace list.
+
+If NAME is omitted, a rofi input box prompts for it.
+
+On success the new workspace's 1-based index is printed to stdout, so it can be
+captured for scripting, for example:
+
+  ws_num="\$(${SCRIPT_NAME} "Obsidian")"
+  ws_launch_program --workspace "\${ws_num}" --switch --exec "obsidian"
+
+The new workspace is written only to the live xfconf state
+(/general/workspace_count and /general/workspace_names). It is NOT written to
+config.toml, so the next restart re-applies the configured workspaces via
+configs/system/polybar/start.sh and the temporary workspace disappears.
+
+Options:
+  --verbose        Enable verbose logging and set DNB_VERBOSE=1.
+  --quiet          Disable verbose logging.
+  --help           Show this help.
+EOF_USAGE
+}
+
+die() {
+  dnb_log error "${1}" >&2
+  echo "ERROR: ${1}" >&2
+  echo >&2
+  usage >&2
+  exit 1
+}
+
+main() {
+  ws_init_logging "workspaces/ws_add_workspace"
+
+  while [[ $# -gt 0 ]]; do
+    if ws_parse_verbosity_flag "$1"; then
+      shift
+      continue
+    fi
+
+    case "$1" in
+      --help)
+        usage
+        exit 0
+        ;;
+      -*)
+        die "Unknown option: $1"
+        ;;
+      *)
+        [[ -z "${NEW_NAME}" ]] || die "Only one workspace name may be given"
+        NEW_NAME="$1"
+        shift
+        ;;
+    esac
+  done
+
+  dnb_check_requirements xfconf-query || die "xfconf-query is required"
+
+  # Prompt for a name when none was supplied on the command line.
+  if [[ -z "${NEW_NAME}" ]]; then
+    dnb_check_requirements rofi || die "rofi is required to prompt for a name"
+    NEW_NAME="$(printf '' | rofi -dmenu -p 'New workspace name')"
+  fi
+
+  # Cancelled or empty input: nothing to do.
+  if [[ -z "${NEW_NAME}" ]]; then
+    dnb_log info "No workspace name provided; nothing to add" >&2
+    exit 0
+  fi
+
+  local count
+  count="$(xfconf-query -c xfwm4 -p /general/workspace_count)"
+  [[ "${count}" =~ ^[0-9]+$ ]] || die "Could not read current workspace count from xfconf"
+
+  local -a names=()
+  if ! mapfile -t names < <(xfconf-query -c xfwm4 -p /general/workspace_names | tail -n +3); then
+    die "Could not read current workspace names from xfconf"
+  fi
+
+  names+=("${NEW_NAME}")
+
+  # Build (-t string -s NAME) pairs and recreate the array. xfconf-query refuses
+  # to resize an existing array when the value count changes, so reset first and
+  # then create the property fresh with explicit types.
+  local -a set_args=()
+  local name
+  for name in "${names[@]}"; do
+    set_args+=(-t string -s "${name}")
+  done
+
+  local new_count=$((count + 1))
+
+  dnb_log info "Adding temporary workspace '${NEW_NAME}' (new count: ${new_count})" >&2
+
+  xfconf-query -c xfwm4 -p /general/workspace_count -s "${new_count}"
+  xfconf-query -c xfwm4 -p /general/workspace_names --reset 2>/dev/null || true
+  xfconf-query -c xfwm4 -p /general/workspace_names --create "${set_args[@]}"
+
+  dnb_log info "Temporary workspace '${NEW_NAME}' added at index ${new_count}" >&2
+
+  # Machine-readable result: the new workspace's 1-based index.
+  printf '%s\n' "${new_count}"
+}
+
+main "$@"
