@@ -1,12 +1,13 @@
-# Setup Notes
+# Setup notes
 
 * [Installation](#installation)
+* [Shell actor environment variables](#shell-actor-environment-variables)
 * [Update](#update)
 * [Automatic functionality after setup](#automatic-functionality-after-setup)
   * [Installed programs and systems](#installed-programs-and-systems)
   * [Shortcuts/Keybindings](#shortcutskeybindings)
-    * [Import/Export Shortcuts](#importexport-shortcuts)
-    * [Custom Shortcuts that are set up (work in progress)](#custom-shortcuts-that-are-set-up-work-in-progress)
+    * [Import/Export shortcuts](#importexport-shortcuts)
+    * [Custom shortcuts that are set up (work in progress)](#custom-shortcuts-that-are-set-up-work-in-progress)
 * [Installation notes for programs](#installation-notes-for-programs)
   * [Development tools](#development-tools)
   * [Communication tools](#communication-tools)
@@ -19,7 +20,7 @@
 
 ## Installation
 
-* Setup Github folder
+* Setup GitHub folder
 
   ```bash
   mkdir -p ~/github.com/davidsneighbour
@@ -114,11 +115,11 @@ git checkout main
 
 ### Shortcuts/Keybindings
 
-#### Import/Export Shortcuts
+#### Import/Export shortcuts
 
 ~~Dotfiles set up adds a cronjob that exports the keybindings at 6pm daily to `etc/keybindings.csv`. This file is imported when running dotbot.sh.~~
 
-#### Custom Shortcuts that are set up (work in progress)
+#### Custom shortcuts that are set up (work in progress)
 
 | key binding | function |
 | ---: | --- |
