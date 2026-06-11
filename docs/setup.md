@@ -48,15 +48,6 @@
    npm install
    ```
 
-* Run `sudo ./dotbot.sh setup` to install system-level packages and dependencies.
-
-   ```bash
-   sudo ./dotbot.sh setup
-   ```
-
-   > [!WARNING]
-   > This MUST run with `sudo`, so make sure to check the `configs/dotbot/config.setup.yaml` file and adjust depending on the requirements.
-
 * Run `./dotbot.sh` to set up symlinks and `./dotbot.sh protected` to set up protected symlinks.
 
    ```bash
