@@ -13,6 +13,7 @@ image/webp=google-chrome-beta.desktop;google-chrome-canary.desktop;google-chrome
 text/html=google-chrome-beta.desktop;google-chrome-canary.desktop;google-chrome-unstable.desktop;google-chrome.desktop;netflix.desktop;
 text/plain=dev.zed.Zed.desktop;
 text/xml=google-chrome-beta.desktop;google-chrome-canary.desktop;google-chrome-unstable.desktop;google-chrome.desktop;netflix.desktop;
+x-scheme-handler/claude-cli=claude-code-url-handler.desktop;
 x-scheme-handler/gh=appimagekit_6075fcafabc134ebb611fe7f55f82c4a-GitHub_Copilot.desktop;
 x-scheme-handler/ghapp=appimagekit_6075fcafabc134ebb611fe7f55f82c4a-GitHub_Copilot.desktop;
 x-scheme-handler/github-app=appimagekit_6075fcafabc134ebb611fe7f55f82c4a-GitHub_Copilot.desktop;
