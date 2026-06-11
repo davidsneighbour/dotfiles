@@ -20,8 +20,16 @@ source_core_libs() {
   local base_path="${BASHRC_PATH:-${DOTFILES_ROOT}/bashrc}"
   local file=""
 
+  if [[ ! -d "${base_path}/lib/00-core" ]]; then
+    echo "Error: Core library directory not found: ${base_path}/lib/00-core" >&2
+    exit 1
+  fi
+
   for file in "${base_path}"/lib/00-core/*.bash; do
-    [[ -f "${file}" && -r "${file}" ]] || continue
+    if [[ ! -f "${file}" || ! -r "${file}" ]]; then
+      echo "Error: Core library missing or unreadable: ${file}" >&2
+      exit 1
+    fi
     # shellcheck disable=SC1090
     source "${file}"
   done
