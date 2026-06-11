@@ -1,5 +1,46 @@
 # Changelog
 
+## [3003.8.0](https://github.com/davidsneighbour/dotfiles/compare/v3003.7.0...v3003.8.0) (2026-06-11)
+
+### Features
+
+* add custom temporary workspace ([29a2a55](https://github.com/davidsneighbour/dotfiles/commit/29a2a5577c3b97e0309af7d8996c1c9bd0213fd6))
+* add nano-lint config ([a671ba6](https://github.com/davidsneighbour/dotfiles/commit/a671ba65094b86518c4e648666e8f880fd9a9005))
+* add release hash retriever ([d5781fe](https://github.com/davidsneighbour/dotfiles/commit/d5781fec7d8ee168c416555e3cbc5252f77c40b6))
+* **launchers:** add claude-cli url scheme and Recordly desktop entry ([d31d6f6](https://github.com/davidsneighbour/dotfiles/commit/d31d6f64427f366d94f3adf771861af76b3cc75a))
+* rework polybar workspace configuration ([b94d8c8](https://github.com/davidsneighbour/dotfiles/commit/b94d8c8ed58c8b9a54223e303c6187857e438f84))
+
+### Bug Fixes
+
+* add glone post-clone actions ([4c29fd8](https://github.com/davidsneighbour/dotfiles/commit/4c29fd8f3db856559146c53c2bf89fb01fe08995))
+* update wallpaper scripts ([dc770f6](https://github.com/davidsneighbour/dotfiles/commit/dc770f6858dc67257d343704230c13e0fc0054a6))
+
+### Configuration
+
+* **markdownlint:** add shared cli2 configuration ([1ad6b8e](https://github.com/davidsneighbour/dotfiles/commit/1ad6b8ec0a5e10a815fe4d646e22f6929f5413e4))
+* **markdownlint:** use cli2 config in lint-staged ([de11b14](https://github.com/davidsneighbour/dotfiles/commit/de11b142fa570504c6180b35b59f1f8aee07efda))
+* **markdownlint:** use dnbhq shared cli2 config ([4e54d24](https://github.com/davidsneighbour/dotfiles/commit/4e54d2440b925f3a86c658b90140adf3ab72f4dd))
+* **markdownlint:** use fixed shared config version ([5e0db29](https://github.com/davidsneighbour/dotfiles/commit/5e0db294c8ecc3f66525970303cd5c6fbd2abf80))
+
+### Documentation
+
+* add documentation ([1c4995a](https://github.com/davidsneighbour/dotfiles/commit/1c4995ae7a8cd991ddac83f734da8e5279c1178b))
+
+### Build
+
+* **deps-dev:** bump hono from 4.12.19 to 4.12.23 in the npm_and_yarn group across 1 directory ([#485](https://github.com/davidsneighbour/dotfiles/issues/485)) ([ffb94eb](https://github.com/davidsneighbour/dotfiles/commit/ffb94eb41ec17c69a672d73f61a8dee950aa28ce))
+* **deps:** update dependencies ([bfb7a60](https://github.com/davidsneighbour/dotfiles/commit/bfb7a60dd564a7c7867c28321b0dfc5fba85f930))
+* **deps:** update dependencies ([70177ed](https://github.com/davidsneighbour/dotfiles/commit/70177edd7f754e6bad6451fcd7cda25d882d00fc))
+* update launcher files ([207234c](https://github.com/davidsneighbour/dotfiles/commit/207234c0d34a38166180b87ee80c3dc6e1798c56))
+
+### Chore
+
+* **assets:** update skyline stats for 2026 ([cef8234](https://github.com/davidsneighbour/dotfiles/commit/cef8234c2ab48a31c3750da13ea9496dc9f4a5d4))
+* **deps:** update protected submodule to latest ([f5b3644](https://github.com/davidsneighbour/dotfiles/commit/f5b36447c0d5274e611370fb8ae90a818e710cde))
+* recent changes ([71b8c4b](https://github.com/davidsneighbour/dotfiles/commit/71b8c4b596dbdffda8f7a79bd4ea1a0bac66fa8d))
+* update Node.js engines range ([#486](https://github.com/davidsneighbour/dotfiles/issues/486)) ([cb9136c](https://github.com/davidsneighbour/dotfiles/commit/cb9136cacad47786d7885c37f95f556510d7cd0c))
+* **vscode:** replace todo-tree with better-todo-tree extension ([e72573e](https://github.com/davidsneighbour/dotfiles/commit/e72573e08d03b7da0447ca4ffc2a2823da23dc17))
+
 ## [3003.7.0](https://github.com/davidsneighbour/dotfiles/compare/v3003.6.1...v3003.7.0) (2026-05-25)
 
 ### Features
