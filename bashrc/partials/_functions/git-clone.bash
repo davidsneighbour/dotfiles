@@ -1,6 +1,188 @@
 #!/bin/bash
 # shellcheck shell=bash
 
+_glone_clone_one() {
+  local current_input_url="$1"
+  local force_https="${2:-false}"
+  local verbose="${3:-false}"
+  local quiet="${4:-false}"
+  local open_repo="${5:-false}"
+  local go_repo="${6:-false}"
+
+  local provider=""
+  local owner=""
+  local repo=""
+  local ssh_clone_url=""
+  local https_clone_url=""
+  local clone_url=""
+  local base_dir=""
+  local repo_path=""
+
+  current_input_url="${current_input_url%.git}"
+
+  if [[ "${current_input_url}" =~ ^github:([^/]+)/([^/]+)$ ]]; then
+    provider="github"
+    owner="${BASH_REMATCH[1]}"
+    repo="${BASH_REMATCH[2]}"
+
+  elif [[ "${current_input_url}" =~ ^gitlab:([^/]+)/([^/]+)$ ]]; then
+    provider="gitlab"
+    owner="${BASH_REMATCH[1]}"
+    repo="${BASH_REMATCH[2]}"
+
+  elif [[ "${current_input_url}" =~ ^github\.com/([^/]+)/([^/]+)$ ]]; then
+    provider="github"
+    owner="${BASH_REMATCH[1]}"
+    repo="${BASH_REMATCH[2]}"
+
+  elif [[ "${current_input_url}" =~ ^gitlab\.com/([^/]+)/([^/]+)$ ]]; then
+    provider="gitlab"
+    owner="${BASH_REMATCH[1]}"
+    repo="${BASH_REMATCH[2]}"
+
+  elif [[ "${current_input_url}" =~ ^https://github\.com/([^/]+)/([^/]+)$ ]]; then
+    provider="github"
+    owner="${BASH_REMATCH[1]}"
+    repo="${BASH_REMATCH[2]}"
+
+  elif [[ "${current_input_url}" =~ ^https://gitlab\.com/([^/]+)/([^/]+)$ ]]; then
+    provider="gitlab"
+    owner="${BASH_REMATCH[1]}"
+    repo="${BASH_REMATCH[2]}"
+
+  elif [[ "${current_input_url}" =~ ^git@github\.com:([^/]+)/([^/]+)$ ]]; then
+    provider="github"
+    owner="${BASH_REMATCH[1]}"
+    repo="${BASH_REMATCH[2]}"
+
+  elif [[ "${current_input_url}" =~ ^git@gitlab\.com:([^/]+)/([^/]+)$ ]]; then
+    provider="gitlab"
+    owner="${BASH_REMATCH[1]}"
+    repo="${BASH_REMATCH[2]}"
+
+  elif [[ "${current_input_url}" =~ ^([^/]+)/([^/]+)$ ]]; then
+    provider="github"
+    owner="${BASH_REMATCH[1]}"
+    repo="${BASH_REMATCH[2]}"
+
+  elif [[ "${current_input_url}" =~ ^([^/]+)$ ]]; then
+    if [[ -z "${DNB_NAMESPACE:-}" ]]; then
+      echo "Error: DNB_NAMESPACE is not set for shorthand repository usage." >&2
+      return 1
+    fi
+    provider="github"
+    owner="${DNB_NAMESPACE}"
+    repo="${BASH_REMATCH[1]}"
+
+  else
+    echo "Error: Unsupported repository format '${current_input_url}'." >&2
+    return 1
+  fi
+
+  case "${provider}" in
+    github)
+      base_dir="${HOME}/github.com"
+      ssh_clone_url="git@github.com:${owner}/${repo}.git"
+      https_clone_url="https://github.com/${owner}/${repo}.git"
+      ;;
+    gitlab)
+      base_dir="${HOME}/gitlab.com"
+      ssh_clone_url="git@gitlab.com:${owner}/${repo}.git"
+      https_clone_url="https://gitlab.com/${owner}/${repo}.git"
+      ;;
+    *)
+      echo "Error: Provider resolution failed." >&2
+      return 1
+      ;;
+  esac
+
+  repo_path="${base_dir}/${owner}/${repo}"
+
+  mkdir -p "${base_dir}" || {
+    echo "Error: Could not create ${base_dir}" >&2
+    return 1
+  }
+
+  [[ -w "${base_dir}" ]] || {
+    echo "Error: No write permission for ${base_dir}" >&2
+    return 1
+  }
+
+  if [[ "${force_https}" == true ]]; then
+    clone_url="${https_clone_url}"
+    timeout 10 git ls-remote "${clone_url}" &>/dev/null || {
+      echo "Error: Cannot access repository via HTTPS: ${current_input_url}" >&2
+      return 1
+    }
+  else
+    if timeout 5 git ls-remote "${ssh_clone_url}" &>/dev/null; then
+      clone_url="${ssh_clone_url}"
+    elif timeout 10 git ls-remote "${https_clone_url}" &>/dev/null; then
+      clone_url="${https_clone_url}"
+    else
+      echo "Error: Cannot access repository via SSH or HTTPS: ${current_input_url}" >&2
+      return 1
+    fi
+  fi
+
+  if [[ "${verbose}" == true ]]; then
+    echo "Provider: ${provider}"
+    echo "Owner: ${owner}"
+    echo "Repository: ${repo}"
+    echo "Clone URL: ${clone_url}"
+    echo "Target path: ${repo_path}"
+  fi
+
+  mkdir -p "${base_dir}/${owner}" || {
+    echo "Error: Could not create ${base_dir}/${owner}" >&2
+    return 1
+  }
+
+  if [[ -e "${repo_path}" ]]; then
+    echo "Error: Target path already exists: ${repo_path}" >&2
+    return 1
+  fi
+
+  git clone "${clone_url}" "${repo_path}" || {
+    echo "Error: git clone failed for ${current_input_url}" >&2
+    return 1
+  }
+
+  if [[ "${quiet}" != true ]]; then
+    echo "Cloned ${owner}/${repo} -> ${repo_path}"
+  fi
+
+  if [[ "${open_repo}" == true ]]; then
+    if ! command -v code >/dev/null 2>&1; then
+      echo "Error: Cloned successfully, but 'code' is not available in PATH." >&2
+      return 1
+    fi
+
+    if [[ "${quiet}" != true ]]; then
+      echo "Opening ${repo_path} in VS Code"
+    fi
+
+    (
+      cd "${repo_path}" || exit 1
+      code .
+    ) || {
+      echo "Error: Cloned successfully, but failed to open '${repo_path}' in VS Code." >&2
+      return 1
+    }
+  fi
+
+  if [[ "${go_repo}" == true ]]; then
+    if [[ "${quiet}" != true ]]; then
+      echo "Entering ${repo_path}"
+    fi
+
+    cd "${repo_path}" || {
+      echo "Warning: Cloned successfully, but failed to enter '${repo_path}'." >&2
+      return 1
+    }
+  fi
+}
+
 glone() {
   local input_url=""
   local force_https=false
@@ -32,189 +214,6 @@ Options:
   --help             Show this help text.
 EOF
   )
-
-  glone_clone_one() {
-    local current_input_url="$1"
-    local provider=""
-    local owner=""
-    local repo=""
-    local ssh_clone_url=""
-    local https_clone_url=""
-    local clone_url=""
-    local base_dir=""
-    local repo_path=""
-
-    current_input_url="${current_input_url%.git}"
-
-    if [[ "${current_input_url}" =~ ^github:([^/]+)/([^/]+)$ ]]; then
-      provider="github"
-      owner="${BASH_REMATCH[1]}"
-      repo="${BASH_REMATCH[2]}"
-
-    elif [[ "${current_input_url}" =~ ^gitlab:([^/]+)/([^/]+)$ ]]; then
-      provider="gitlab"
-      owner="${BASH_REMATCH[1]}"
-      repo="${BASH_REMATCH[2]}"
-
-    elif [[ "${current_input_url}" =~ ^github\.com/([^/]+)/([^/]+)$ ]]; then
-      provider="github"
-      owner="${BASH_REMATCH[1]}"
-      repo="${BASH_REMATCH[2]}"
-
-    elif [[ "${current_input_url}" =~ ^gitlab\.com/([^/]+)/([^/]+)$ ]]; then
-      provider="gitlab"
-      owner="${BASH_REMATCH[1]}"
-      repo="${BASH_REMATCH[2]}"
-
-    elif [[ "${current_input_url}" =~ ^https://github\.com/([^/]+)/([^/]+)$ ]]; then
-      provider="github"
-      owner="${BASH_REMATCH[1]}"
-      repo="${BASH_REMATCH[2]}"
-
-    elif [[ "${current_input_url}" =~ ^https://gitlab\.com/([^/]+)/([^/]+)$ ]]; then
-      provider="gitlab"
-      owner="${BASH_REMATCH[1]}"
-      repo="${BASH_REMATCH[2]}"
-
-    elif [[ "${current_input_url}" =~ ^git@github\.com:([^/]+)/([^/]+)$ ]]; then
-      provider="github"
-      owner="${BASH_REMATCH[1]}"
-      repo="${BASH_REMATCH[2]}"
-
-    elif [[ "${current_input_url}" =~ ^git@gitlab\.com:([^/]+)/([^/]+)$ ]]; then
-      provider="gitlab"
-      owner="${BASH_REMATCH[1]}"
-      repo="${BASH_REMATCH[2]}"
-
-    elif [[ "${current_input_url}" =~ ^([^/]+)/([^/]+)$ ]]; then
-      provider="github"
-      owner="${BASH_REMATCH[1]}"
-      repo="${BASH_REMATCH[2]}"
-
-    elif [[ "${current_input_url}" =~ ^([^/]+)$ ]]; then
-      if [[ -z "${DNB_NAMESPACE:-}" ]]; then
-        echo "Error: DNB_NAMESPACE is not set for shorthand repository usage." >&2
-        return 1
-      fi
-      provider="github"
-      owner="${DNB_NAMESPACE}"
-      repo="${BASH_REMATCH[1]}"
-
-    else
-      echo "Error: Unsupported repository format '${current_input_url}'." >&2
-      return 1
-    fi
-
-    case "${provider}" in
-      github)
-        base_dir="${HOME}/github.com"
-        ssh_clone_url="git@github.com:${owner}/${repo}.git"
-        https_clone_url="https://github.com/${owner}/${repo}.git"
-        ;;
-      gitlab)
-        base_dir="${HOME}/gitlab.com"
-        ssh_clone_url="git@gitlab.com:${owner}/${repo}.git"
-        https_clone_url="https://gitlab.com/${owner}/${repo}.git"
-        ;;
-      *)
-        echo "Error: Provider resolution failed." >&2
-        return 1
-        ;;
-    esac
-
-    repo_path="${base_dir}/${owner}/${repo}"
-
-    mkdir -p "${base_dir}" || {
-      echo "Error: Could not create ${base_dir}" >&2
-      return 1
-    }
-
-    [[ -w "${base_dir}" ]] || {
-      echo "Error: No write permission for ${base_dir}" >&2
-      return 1
-    }
-
-  # NOTE:
-  # The SSH availability check below uses `git ls-remote`. If SSH authentication
-  # is misconfigured (missing keys, SSH agent issues, etc.), this call may pause
-  # briefly while SSH attempts authentication. If this ever becomes noticeably
-  # slow in daily use, a future improvement would be wrapping the SSH check in a
-  # short timeout before falling back to HTTPS.
-
-    if [[ "${force_https}" == true ]]; then
-      clone_url="${https_clone_url}"
-      git ls-remote "${clone_url}" &>/dev/null || {
-        echo "Error: Cannot access repository via HTTPS: ${current_input_url}" >&2
-        return 1
-      }
-    else
-      if git ls-remote "${ssh_clone_url}" &>/dev/null; then
-        clone_url="${ssh_clone_url}"
-      elif git ls-remote "${https_clone_url}" &>/dev/null; then
-        clone_url="${https_clone_url}"
-      else
-        echo "Error: Cannot access repository via SSH or HTTPS: ${current_input_url}" >&2
-        return 1
-      fi
-    fi
-
-    if [[ "${verbose}" == true ]]; then
-      echo "Provider: ${provider}"
-      echo "Owner: ${owner}"
-      echo "Repository: ${repo}"
-      echo "Clone URL: ${clone_url}"
-      echo "Target path: ${repo_path}"
-    fi
-
-    mkdir -p "${base_dir}/${owner}" || {
-      echo "Error: Could not create ${base_dir}/${owner}" >&2
-      return 1
-    }
-
-    if [[ -e "${repo_path}" ]]; then
-      echo "Error: Target path already exists: ${repo_path}" >&2
-      return 1
-    fi
-
-    git clone "${clone_url}" "${repo_path}" || {
-      echo "Error: git clone failed for ${current_input_url}" >&2
-      return 1
-    }
-
-    if [[ "${quiet}" != true ]]; then
-      echo "Cloned ${owner}/${repo} -> ${repo_path}"
-    fi
-
-    if [[ "${open_repo}" == true ]]; then
-      if ! command -v code >/dev/null 2>&1; then
-        echo "Error: Cloned successfully, but 'code' is not available in PATH." >&2
-        return 1
-      fi
-
-      if [[ "${quiet}" != true ]]; then
-        echo "Opening ${repo_path} in VS Code"
-      fi
-
-      (
-        cd "${repo_path}" || exit 1
-        code .
-      ) || {
-        echo "Error: Cloned successfully, but failed to open '${repo_path}' in VS Code." >&2
-        return 1
-      }
-    fi
-
-    if [[ "${go_repo}" == true ]]; then
-      if [[ "${quiet}" != true ]]; then
-        echo "Entering ${repo_path}"
-      fi
-
-      cd "${repo_path}" || {
-        echo "Warning: Cloned successfully, but failed to enter '${repo_path}'." >&2
-        return 1
-      }
-    fi
-  }
 
   while [[ $# -gt 0 ]]; do
     case "${1}" in
@@ -264,7 +263,7 @@ EOF
   fi
 
   if [[ -n "${input_url}" ]]; then
-    glone_clone_one "${input_url}"
+    _glone_clone_one "${input_url}" "${force_https}" "${verbose}" "${quiet}" "${open_repo}" "${go_repo}"
     return $?
   fi
 
@@ -280,7 +279,7 @@ EOF
     while IFS= read -r line; do
       [[ -z "${line}" ]] && continue
 
-      if ! glone_clone_one "${line}"; then
+      if ! _glone_clone_one "${line}" "${force_https}" "${verbose}" "${quiet}" "${open_repo}" "${go_repo}"; then
         exit_code=1
       fi
     done

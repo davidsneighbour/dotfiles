@@ -328,8 +328,8 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`github_feed_releases`](./partials/_functions/github_feed_releases.bash#L5) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L131) |
 | [`gits`](./partials/_aliases/git.bash#L5) | alias | [./partials/DOCUMENTATION_aliases.md](./partials/DOCUMENTATION_aliases.md#L15) |
 | [`gitst`](./partials/_aliases/git.bash#L6) | alias | [./partials/DOCUMENTATION_aliases.md](./partials/DOCUMENTATION_aliases.md#L16) |
-| [`glone`](./partials/_functions/git-clone.bash#L5) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L98) |
-| [`glone_clone_one`](./partials/_functions/git-clone.bash#L36) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L96) |
+| [`_glone_clone_one`](./partials/_functions/git-clone.bash#L4) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L96) |
+| [`glone`](./partials/_functions/git-clone.bash#L186) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L98) |
 | [`grep`](./partials/aliases#L20) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L20) |
 | [`groupCandidatesForCompression`](./helpers/logs/cleanup.ts#L493) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L53) |
 | [`h`](./partials/aliases#L43) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L24) |
