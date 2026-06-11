@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env -S node --experimental-strip-types
 
 import { spawn } from 'node:child_process';
 import { createHash } from 'node:crypto';
@@ -287,8 +287,12 @@ async function execCommand(
 async function findTasks(
   rootDirectory: string,
   verbose: boolean,
+  options: { ignoredDirectories?: string[] } = {},
 ): Promise<string[]> {
   const results: string[] = [];
+  const ignoredDirectories = new Set(
+    (options.ignoredDirectories ?? []).map((value) => resolve(value)),
+  );
 
   async function walk(currentDirectory: string): Promise<void> {
     const entries = await readdir(currentDirectory, { withFileTypes: true });
@@ -313,7 +317,12 @@ async function findTasks(
       if (SKIP_DIRS.has(entry.name)) {
         continue;
       }
-      await walk(join(currentDirectory, entry.name));
+      const childDirectory = join(currentDirectory, entry.name);
+      if (ignoredDirectories.has(resolve(childDirectory))) {
+        log('DEBUG', `Skipping ignored directory: ${childDirectory}`, verbose);
+        continue;
+      }
+      await walk(childDirectory);
     }
   }
 
@@ -799,7 +808,10 @@ async function main(): Promise<void> {
   await ensureDirectory(destinationDirectory);
 
   log('INFO', `Scanning ${rootDirectory} for backup tasks`, options.verbose);
-  const tasks = await findTasks(rootDirectory, options.verbose);
+  log('INFO', `Writing archives to ${destinationDirectory}`, options.verbose);
+  const tasks = await findTasks(rootDirectory, options.verbose, {
+    ignoredDirectories: [destinationDirectory],
+  });
 
   if (tasks.length === 0) {
     log('WARN', 'No backup tasks found.', options.verbose);

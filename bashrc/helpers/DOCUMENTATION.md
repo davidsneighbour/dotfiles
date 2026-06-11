@@ -1,9 +1,10 @@
-# bashrc/helpers documentation
+# Bashrc/helpers documentation
 
 This file is the central documentation map for every helper command, support file, and grouped helper under `bashrc/helpers`.
 
 The implementation remains authoritative. Existing README or Markdown files are referenced from the relevant sections, and undocumented implementation details are summarised here.
 
+<!-- markdownlint-disable-next-line title-case-style -->
 ## Execution and TypeScript note
 
 Bash helpers are standalone helper commands unless noted otherwise. Several TypeScript files have Node shebangs but are still `.ts` source files; run them with the repository `node-run` helper, a Node version that supports direct type stripping, `ts-node`, or an equivalent TypeScript runner. Do not assume plain `node file.ts` works on older Node releases.
@@ -241,7 +242,6 @@ Requirements:
 * Node.js with TypeScript execution support.
 * ffmpeg and ffprobe.
 
-
 ### `set_max_listeners.cjs`
 
 Node preload/snippet that raises EventEmitter.defaultMaxListeners to 20.
@@ -370,9 +370,7 @@ See [`daily-reports/DOCUMENTATION.md`](./daily-reports/DOCUMENTATION.md).
 See [`docker/DOCUMENTATION.md`](./docker/DOCUMENTATION.md).
 
 * `docker/README.md`: Existing Docker backup runner guide; documents backup task formats and examples.
-* `docker/backup-runner`: Executable wrapper/source for the Docker backup runner.
-* `docker/backup-runner.mjs`: JavaScript copy of the Docker backup runner source.
-* `docker/backup-runner.ts`: TypeScript source for the Docker backup runner.
+* `docker/backup-runner.ts`: Executable TypeScript orchestrator for the docker backup runner.
 
 ### `docker/examples/`
 

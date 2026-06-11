@@ -1,4 +1,6 @@
-# bashrc index
+<!-- markdownlint-disable relative-links -->
+
+# Bashrc index
 
 Alphabetical index of every file under `bashrc` plus detected Bash functions, aliases, completion targets, and TypeScript/JavaScript functions or methods. Source links point to the indexed file and line, and documentation links point to the nearest documentation file for the feature.
 
@@ -139,13 +141,8 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`createConfig`](./helpers/remarkable/transfer.ts#L387) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L46) |
 | [`createContent`](./helpers/remarkable/transfer.ts#L605) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L52) |
 | [`createMetadata`](./helpers/remarkable/transfer.ts#L575) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L51) |
-| [`createTarGzFromDirectory`](./helpers/docker/backup-runner.mjs#L341) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L55) |
 | [`createTarGzFromDirectory`](./helpers/docker/backup-runner.ts#L470) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L55) |
-| [`createTarGzFromPaths`](./helpers/docker/backup-runner.mjs#L334) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L54) |
 | [`createTarGzFromPaths`](./helpers/docker/backup-runner.ts#L458) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L54) |
-| [`createTimestamp`](./helpers/docker/backup-runner.mjs#L149) | function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L43) |
-| [`createTimestamp`](./helpers/docker/backup-runner#L149) | function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L43) |
-| [`createTimestamp`](./helpers/docker/backup-runner.mjs#L149) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L43) |
 | [`createTimestamp`](./helpers/docker/backup-runner.ts#L234) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L43) |
 | [`cronjobs/docker-backup.sh`](./cronjobs/docker-backup.sh#L1) | file | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L5) |
 | [`cronjobs/DOCUMENTATION.md`](./cronjobs/DOCUMENTATION.md#L1) | file | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L1) |
@@ -162,9 +159,7 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`deriveArchiveDay`](./helpers/logs/cleanup.ts#L385) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L47) |
 | [`detect_current_repo`](./helpers/gh/label-migration.sh#L167) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L223) |
 | [`detect_mode`](./helpers/set-wallpaper.sh#L380) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L272) |
-| [`detectComposeCommand`](./helpers/docker/backup-runner.mjs#L320) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L52) |
 | [`detectComposeCommand`](./helpers/docker/backup-runner.ts#L442) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L52) |
-| [`detectScriptType`](./helpers/docker/backup-runner.mjs#L450) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L57) |
 | [`detectScriptType`](./helpers/docker/backup-runner.ts#L634) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L57) |
 | [`die`](./cronjobs/git_updates.sh#L45) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L33) |
 | [`die`](./helpers/gh/git-sync.sh#L76) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L88) |
@@ -230,7 +225,6 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`ensureBinaryAvailable`](./helpers/logs/cleanup.ts#L672) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L59) |
 | [`ensureCommandAvailable`](./helpers/gh/github-manager.ts#L630) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L152) |
 | [`ensureDir`](./helpers/logs/cleanup.ts#L191) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L38) |
-| [`ensureDirectory`](./helpers/docker/backup-runner.mjs#L132) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L40) |
 | [`ensureDirectory`](./helpers/docker/backup-runner.ts#L214) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L40) |
 | [`ensureGhAuthenticated`](./helpers/gh/github-manager.ts#L641) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L153) |
 | [`ensureLogDir`](./helpers/api/porkbun-api.ts#L124) | method/function | [./helpers/api/DOCUMENTATION.md](./helpers/api/DOCUMENTATION.md#L23) |
@@ -238,12 +232,9 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`error`](./helpers/gh/label-migration.sh#L72) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L214) |
 | [`errToString`](./helpers/screencaps.ts#L759) | method/function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L236) |
 | [`escapeXml`](./helpers/freshrss/export.ts#L112) | method/function | [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md#L24) |
-| [`execCommand`](./helpers/docker/backup-runner.mjs#L157) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L45) |
 | [`execCommand`](./helpers/docker/backup-runner.ts#L251) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L45) |
 | [`execCommand`](./helpers/gh/github-manager.ts#L654) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L154) |
-| [`executeScriptTask`](./helpers/docker/backup-runner.mjs#L457) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L58) |
 | [`executeScriptTask`](./helpers/docker/backup-runner.ts#L641) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L58) |
-| [`executeTomlTask`](./helpers/docker/backup-runner.mjs#L346) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L56) |
 | [`executeTomlTask`](./helpers/docker/backup-runner.ts#L483) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L56) |
 | [`expand_path`](./cronjobs/git_updates.sh#L135) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L33) |
 | [`expand_tilde`](./cronjobs/synch_downloads.sh#L38) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L61) |
@@ -278,7 +269,6 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`filterRemoteDocuments`](./helpers/remarkable/transfer.ts#L962) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L63) |
 | [`filterRepositoriesByTopics`](./helpers/gh/github-manager.ts#L1360) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L178) |
 | [`findLogCandidates`](./helpers/logs/cleanup.ts#L399) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L48) |
-| [`findTasks`](./helpers/docker/backup-runner.mjs#L189) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L46) |
 | [`findTasks`](./helpers/docker/backup-runner.ts#L287) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L46) |
 | [`fmtTimeLabel`](./helpers/screencaps.ts#L301) | method/function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L223) |
 | [`formatCurrentDay`](./helpers/logs/cleanup.ts#L664) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L58) |
@@ -323,7 +313,6 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`getDirtyFiles`](./helpers/gh/github-manager.ts#L968) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L164) |
 | [`getDurationSeconds`](./helpers/screencaps.ts#L210) | method/function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L221) |
 | [`getGitMetadataPath`](./helpers/gh/github-manager.ts#L933) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L162) |
-| [`getHostName`](./helpers/docker/backup-runner.mjs#L541) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L60) |
 | [`getHostName`](./helpers/docker/backup-runner.ts#L750) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L60) |
 | [`getItemLink`](./helpers/freshrss/export.ts#L503) | method/function | [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md#L36) |
 | [`getRemoteOnlyCommits`](./helpers/gh/github-manager.ts#L1034) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L170) |
@@ -367,8 +356,6 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`helpers/daily-reports/commits-to-notes.sh`](./helpers/daily-reports/commits-to-notes.sh#L1) | file | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L64) |
 | [`helpers/daily-reports/DOCUMENTATION.md`](./helpers/daily-reports/DOCUMENTATION.md#L1) | file | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L1) |
 | [`helpers/daily-reports/README.md`](./helpers/daily-reports/README.md#L1) | file | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L9) |
-| [`helpers/docker/backup-runner`](./helpers/docker/backup-runner#L1) | file | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L19) |
-| [`helpers/docker/backup-runner.mjs`](./helpers/docker/backup-runner.mjs#L1) | file | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L19) |
 | [`helpers/docker/backup-runner.ts`](./helpers/docker/backup-runner.ts#L1) | file | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L19) |
 | [`helpers/docker/DOCUMENTATION.md`](./helpers/docker/DOCUMENTATION.md#L1) | file | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L1) |
 | [`helpers/docker/examples/backup.sh`](./helpers/docker/examples/backup.sh#L1) | file | [./helpers/docker/examples/DOCUMENTATION.md](./helpers/docker/examples/DOCUMENTATION.md#L9) |
@@ -452,7 +439,6 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`installs/90-brew-packages.sh`](./installs/90-brew-packages.sh#L1) | file | [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md#L81) |
 | [`installs/90-cargo-packages.sh`](./installs/90-cargo-packages.sh#L1) | file | [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md#L87) |
 | [`installs/DOCUMENTATION.md`](./installs/DOCUMENTATION.md#L1) | file | [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md#L1) |
-| [`interpolate`](./helpers/docker/backup-runner.mjs#L153) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L44) |
 | [`interpolate`](./helpers/docker/backup-runner.ts#L241) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L44) |
 | [`interpolate`](./helpers/theme/color-steps.ts#L242) | method/function | [./helpers/theme/DOCUMENTATION.md](./helpers/theme/DOCUMENTATION.md#L58) |
 | [`inventoryLocalRepositories`](./helpers/gh/github-manager.ts#L735) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L155) |
@@ -468,7 +454,6 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`isCleanupAction`](./helpers/logs/cleanup.ts#L264) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L42) |
 | [`isCommandName`](./helpers/gh/github-manager.ts#L596) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L149) |
 | [`isDirectRun`](./helpers/theme/color-steps.ts#L431) | method/function | [./helpers/theme/DOCUMENTATION.md](./helpers/theme/DOCUMENTATION.md#L62) |
-| [`isExecutable`](./helpers/docker/backup-runner.mjs#L136) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L41) |
 | [`isExecutable`](./helpers/docker/backup-runner.ts#L218) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L41) |
 | [`isGhRepositorySummary`](./helpers/gh/github-manager.ts#L1436) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L185) |
 | [`isGhRepositorySummaryArray`](./helpers/gh/github-manager.ts#L1454) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L186) |
@@ -541,7 +526,6 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`log`](./helpers/web-mirror.sh#L54) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L216) |
 | [`log`](./helpers/workspace/ws-setup.sh#L20) | function | [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md#L58) |
 | [`log`](./installs/50-obsidian.sh#L17) | function | [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md#L41) |
-| [`log`](./helpers/docker/backup-runner.mjs#L115) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L38) |
 | [`log`](./helpers/docker/backup-runner.ts#L197) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L38) |
 | [`log`](./helpers/gh/github-manager.ts#L612) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L87) |
 | [`log`](./helpers/screencaps.ts#L136) | method/function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L216) |
@@ -604,7 +588,6 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`main`](./workspaces/ws_list_windows#L56) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L46) |
 | [`main`](./workspaces/ws_list_workspaces#L59) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L40) |
 | [`main`](./helpers/api/porkbun-api.ts#L440) | method/function | [./helpers/api/DOCUMENTATION.md](./helpers/api/DOCUMENTATION.md#L30) |
-| [`main`](./helpers/docker/backup-runner.mjs#L575) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L63) |
 | [`main`](./helpers/docker/backup-runner.ts#L786) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L63) |
 | [`main`](./helpers/docker/examples/backup.ts#L26) | method/function | [./helpers/docker/examples/DOCUMENTATION.md](./helpers/docker/examples/DOCUMENTATION.md#L18) |
 | [`main`](./helpers/freshrss/export.ts#L652) | method/function | [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md#L40) |
@@ -658,7 +641,6 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`parse_workspace_lines`](./workspaces/ws_launch_program#L108) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L52) |
 | [`parse_workspace_lines`](./workspaces/ws_list_workspaces#L38) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L40) |
 | [`parseArgs`](./helpers/api/porkbun-api.ts#L146) | method/function | [./helpers/api/DOCUMENTATION.md](./helpers/api/DOCUMENTATION.md#L25) |
-| [`parseArgs`](./helpers/docker/backup-runner.mjs#L43) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L37) |
 | [`parseArgs`](./helpers/docker/backup-runner.ts#L127) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L37) |
 | [`parseArgs`](./helpers/freshrss/export.ts#L184) | method/function | [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md#L28) |
 | [`parseArgs`](./helpers/gh/github-manager.ts#L439) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L146) |
@@ -681,9 +663,7 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`parseRemoteMetadata`](./helpers/remarkable/transfer.ts#L794) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L59) |
 | [`parseRotateChannel`](./helpers/theme/color-steps.ts#L183) | method/function | [./helpers/theme/DOCUMENTATION.md](./helpers/theme/DOCUMENTATION.md#L53) |
 | [`parseThemeMode`](./helpers/theme/color-steps.ts#L175) | method/function | [./helpers/theme/DOCUMENTATION.md](./helpers/theme/DOCUMENTATION.md#L52) |
-| [`parseToml`](./helpers/docker/backup-runner.mjs#L275) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L50) |
 | [`parseToml`](./helpers/docker/backup-runner.ts#L385) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L50) |
-| [`parseTomlValue`](./helpers/docker/backup-runner.mjs#L227) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L48) |
 | [`parseTomlValue`](./helpers/docker/backup-runner.ts#L324) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L48) |
 | [`partials/_aliases/DOCUMENTATION.md`](./partials/_aliases/DOCUMENTATION.md#L1) | file | [./partials/DOCUMENTATION_aliases.md](./partials/DOCUMENTATION_aliases.md#L56) |
 | [`partials/_aliases/folderwork`](./partials/_aliases/folderwork.bash#L1) | file | [./partials/DOCUMENTATION_aliases.md](./partials/DOCUMENTATION_aliases.md#L7) |
@@ -729,7 +709,6 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`partials/exports`](./partials/exports#L1) | file | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L55) |
 | [`partials/functions`](./partials/functions#L1) | file | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L49) |
 | [`partials/prompt`](./partials/prompt#L1) | file | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L72) |
-| [`pathExists`](./helpers/docker/backup-runner.mjs#L123) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L39) |
 | [`pathExists`](./helpers/docker/backup-runner.ts#L205) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L39) |
 | [`pathExists`](./helpers/kando/kando-vscode-menu-creator.ts#L182) | method/function | [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md#L33) |
 | [`pi-reboot`](./partials/aliases#L116) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L41) |
@@ -768,9 +747,6 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`printAuditResult`](./helpers/gh/github-manager.ts#L1178) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L173) |
 | [`printBrokenAuditResult`](./helpers/gh/github-manager.ts#L1161) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L172) |
 | [`printDomainList`](./helpers/api/porkbun-api.ts#L409) | method/function | [./helpers/api/DOCUMENTATION.md](./helpers/api/DOCUMENTATION.md#L28) |
-| [`printHelp`](./helpers/docker/backup-runner.mjs#L12) | function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L36) |
-| [`printHelp`](./helpers/docker/backup-runner#L12) | function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L36) |
-| [`printHelp`](./helpers/docker/backup-runner.mjs#L12) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L36) |
 | [`printHelp`](./helpers/docker/backup-runner.ts#L96) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L36) |
 | [`printHelp`](./helpers/freshrss/export.ts#L144) | method/function | [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md#L27) |
 | [`printHelp`](./helpers/gh/github-manager.ts#L540) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L147) |
@@ -778,7 +754,6 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`printHelp`](./helpers/logs/cleanup.ts#L79) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L34) |
 | [`printHelp`](./helpers/remarkable/transfer.ts#L81) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L42) |
 | [`printSummary`](./helpers/api/porkbun-api.ts#L340) | method/function | [./helpers/api/DOCUMENTATION.md](./helpers/api/DOCUMENTATION.md#L27) |
-| [`printSummary`](./helpers/docker/backup-runner.mjs#L557) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L62) |
 | [`printSummary`](./helpers/docker/backup-runner.ts#L766) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L62) |
 | [`process_repo`](./cronjobs/git_updates.sh#L389) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L51) |
 | [`pullRepository`](./helpers/gh/github-manager.ts#L850) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L159) |
@@ -829,13 +804,11 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`run_gh_label_delete`](./helpers/gh/label-migration.sh#L243) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L226) |
 | [`run_remote_github_check`](./helpers/synch-devspace.sh#L343) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L325) |
 | [`run_trace`](./helpers/bash/startup-profiler.sh#L82) | function | [./helpers/bash/DOCUMENTATION.md](./helpers/bash/DOCUMENTATION.md#L27) |
-| [`runAfterCommand`](./helpers/docker/backup-runner.mjs#L524) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L59) |
 | [`runAfterCommand`](./helpers/docker/backup-runner.ts#L724) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L59) |
 | [`runCommand`](./helpers/logs/cleanup.ts#L204) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L40) |
 | [`runCommand`](./helpers/remarkable/transfer.ts#L456) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L48) |
 | [`safe_slug`](./helpers/web-mirror.sh#L81) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L363) |
 | [`safeJsonPreview`](./helpers/kando/kando-vscode-menu-creator.ts#L129) | method/function | [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md#L29) |
-| [`safeName`](./helpers/docker/backup-runner.mjs#L145) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L42) |
 | [`safeName`](./helpers/docker/backup-runner.ts#L227) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L42) |
 | [`sanitiseFileName`](./helpers/remarkable/transfer.ts#L838) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L60) |
 | [`scp`](./partials/aliases#L57) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L27) |
@@ -846,9 +819,7 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`set_wallpaper_kde`](./helpers/set-wallpaper.sh#L268) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L268) |
 | [`set_wallpaper_sway`](./helpers/set-wallpaper.sh#L304) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L269) |
 | [`set_wallpaper_xfce`](./helpers/set-wallpaper.sh#L179) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L266) |
-| [`setNestedValue`](./helpers/docker/backup-runner.mjs#L259) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L49) |
 | [`setNestedValue`](./helpers/docker/backup-runner.ts#L359) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L49) |
-| [`shellQuote`](./helpers/docker/backup-runner.mjs#L330) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L53) |
 | [`shellQuote`](./helpers/docker/backup-runner.ts#L479) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L53) |
 | [`shellQuote`](./helpers/remarkable/transfer.ts#L773) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L57) |
 | [`show_help`](./helpers/daily-reports/commit-report-to-dailynote.sh#L33) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L41) |
@@ -881,7 +852,6 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`syslog`](./partials/aliases#L54) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L26) |
 | [`tail`](./partials/aliases#L79) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L22) |
 | [`timestampNow`](./helpers/api/porkbun-api.ts#L113) | method/function | [./helpers/api/DOCUMENTATION.md](./helpers/api/DOCUMENTATION.md#L22) |
-| [`toBackupTomlConfig`](./helpers/docker/backup-runner.mjs#L304) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L51) |
 | [`toBackupTomlConfig`](./helpers/docker/backup-runner.ts#L418) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L51) |
 | [`toCdata`](./helpers/freshrss/export.ts#L127) | method/function | [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md#L25) |
 | [`toFolderSlug`](./helpers/logs/cleanup.ts#L352) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L45) |
@@ -919,7 +889,6 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`validate_visibility`](./helpers/github-token#L103) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L105) |
 | [`validateConfig`](./helpers/logs/cleanup.ts#L268) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L43) |
 | [`validateConfig`](./helpers/remarkable/transfer.ts#L421) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L47) |
-| [`validateRootDirectory`](./helpers/docker/backup-runner.mjs#L550) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L61) |
 | [`validateRootDirectory`](./helpers/docker/backup-runner.ts#L759) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L61) |
 | [`verbose`](./helpers/gh/label-migration.sh#L94) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L218) |
 | [`video`](./helpers/screencaps.ts#L696) | method/function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L191) |
@@ -933,7 +902,6 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`vscode_add_mcp`](./partials/_functions/vscode.bash#L7) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L193) |
 | [`vscode_setup`](./partials/_functions/vscode.bash#L117) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L193) |
 | [`wait_for_window_id_by_pid`](./workspaces/ws_launch_program#L195) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L52) |
-| [`walk`](./helpers/docker/backup-runner.mjs#L193) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L47) |
 | [`walk`](./helpers/docker/backup-runner.ts#L293) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L47) |
 | [`walk`](./helpers/logs/cleanup.ts#L405) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L49) |
 | [`warn`](./helpers/gh/label-migration.sh#L68) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L213) |

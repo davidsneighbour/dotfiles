@@ -4,7 +4,7 @@ This is a portable backup system for Docker Compose based hosts.
 
 It consists of:
 
-* `backup-runner` as the orchestration script (extensionless executable, with `backup-runner.mjs` kept as the same source)
+* `backup-runner.ts` as the orchestration script (executable TypeScript, runs directly via Node.js 22+ with `--experimental-strip-types`)
 * one backup definition per container folder, using either:
   * `backup.toml` for the built-in backup engine
   * `backup.sh` for a custom Bash backup
@@ -212,6 +212,8 @@ Example cron entry for a daily backup at 03:15:
 15 3 * * * cd /srv/docker && /usr/local/bin/backup-runner --verbose >> /var/log/docker-backups.log 2>&1
 ```
 
+The `backup-runner.ts` file can be installed as `backup-runner` (drop the extension) on the target host.
+
 Recommended workflow:
 
 * first run with `--dry-run`
@@ -230,8 +232,7 @@ This setup is designed to stay portable across Linux hosts.
 
 ## Suggested installation
 
-* copy `backup-runner` to a shared location such as `/usr/local/bin/`
-* or keep `backup-runner.mjs` and symlink `backup-runner` to it
+* copy `backup-runner.ts` to `/usr/local/bin/backup-runner` (drop the extension)
 * store your stacks under a common root such as `/srv/docker/`
 * place one `backup.toml`, `backup.sh`, or `backup.ts` into each stack directory
 * store backups under a separate path such as `/srv/backups/docker/`
@@ -259,8 +260,7 @@ Rsync to another machine:
 
 ## Files included
 
-* `backup-runner`: the orchestrator
-* `backup-runner.mjs`: same source kept with extension for editing/reference
+* `backup-runner.ts`: the orchestrator (executable TypeScript)
 * `examples/backup.toml`: built-in task example
 * `examples/backup.sh`: custom Bash task example
 * `examples/backup.ts`: custom TypeScript task example
