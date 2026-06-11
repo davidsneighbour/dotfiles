@@ -6,7 +6,7 @@ Recommendations and improvements identified during codebase review. Pick items f
 
 ## Documentation
 
-* [ ] `docs/setup.md` — strip empty stubs (Discord, Signal, Telegram, Dropbox, Todoist sections), remove crossed-out entries, complete sparse sections
+* [x] `docs/setup.md` — strip empty stubs (Discord, Signal, Telegram, Dropbox, Todoist sections), remove crossed-out entries, complete sparse sections
 * [ ] `configs/actions/` — add `DOCUMENTATION.md` explaining TOML schema: scopes, activities, `label`, `cmd`, variable expansion
 * [ ] `configs/system/autostart/` — add `README.md` explaining `available/` pool, per-host symlink structure, and how `actions autostart-enable` connects
 * [ ] `bashrc/lib/00-core/` through `bashrc/lib/50-variables/` — add `DOCUMENTATION.md` per numbered tier explaining what each layer provides and its load-order position

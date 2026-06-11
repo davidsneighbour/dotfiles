@@ -6,16 +6,11 @@
 * [Automatic functionality after setup](#automatic-functionality-after-setup)
   * [Installed programs and systems](#installed-programs-and-systems)
   * [Shortcuts/Keybindings](#shortcutskeybindings)
-    * [Import/Export shortcuts](#importexport-shortcuts)
     * [Custom shortcuts that are set up (work in progress)](#custom-shortcuts-that-are-set-up-work-in-progress)
 * [Installation notes for programs](#installation-notes-for-programs)
-  * [Development tools](#development-tools)
   * [Communication tools](#communication-tools)
     * [Discord](#discord)
-    * [Signal](#signal)
-    * [Telegram](#telegram)
   * [Productivity tools](#productivity-tools)
-    * [Dropbox](#dropbox)
     * [Todoist](#todoist)
 
 ## Installation
@@ -47,23 +42,22 @@
    git clone --recurse-submodules git@github.com:davidsneighbour/dotfiles.git
    ```
 
-* ~~Clone the `protected` repository into `protected/`.~~
 * Install dependencies with `npm install`.
 
    ```bash
    npm install
    ```
 
-* Run `./dotbot.sh install` to set up the environment.
+* Run `sudo ./dotbot.sh setup` to install system-level packages and dependencies.
 
    ```bash
    sudo ./dotbot.sh setup
    ```
 
    > [!WARNING]
-   > This MUST run with `sudo`, so make sure to check the `etc/config.setup.yaml` file and adjust depending on the requirements.
+   > This MUST run with `sudo`, so make sure to check the `configs/dotbot/config.setup.yaml` file and adjust depending on the requirements.
 
-* Run `./dotbot.sh` to setup symlinks and programs and `./dotbot.sh protected` to setup protected symlinks.
+* Run `./dotbot.sh` to set up symlinks and `./dotbot.sh protected` to set up protected symlinks.
 
    ```bash
    ./dotbot.sh
@@ -115,9 +109,7 @@ git checkout main
 
 ### Shortcuts/Keybindings
 
-#### Import/Export shortcuts
-
-~~Dotfiles set up adds a cronjob that exports the keybindings at 6pm daily to `etc/keybindings.csv`. This file is imported when running dotbot.sh.~~
+Keybindings are managed via `actions` → `keybindings` scope. Run `actions menu` and select the keybindings scope to export or import the current Cinnamon keybinding configuration.
 
 #### Custom shortcuts that are set up (work in progress)
 
@@ -135,21 +127,13 @@ git checkout main
 
 ## Installation notes for programs
 
-### Development tools
-
 ### Communication tools
 
 #### Discord
 
-Install flatpak version instead of the snap or deb version. The deb version requires manual installation of a downloaded *.deb file to update the app.
-
-#### Signal
-
-#### Telegram
+Install the Flatpak version instead of the snap or deb version. The deb version requires manual installation of a downloaded `.deb` file to update the app.
 
 ### Productivity tools
-
-#### Dropbox
 
 #### Todoist
 
