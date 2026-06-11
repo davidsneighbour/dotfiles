@@ -18,10 +18,10 @@ Recommendations and improvements identified during codebase review. Pick items f
 
 ## Code quality
 
-* [ ] `glone` — wrap the `git ls-remote` SSH availability check in a short timeout; the code has a `# NOTE:` flagging it as a potential hang with misconfigured SSH agents
-* [ ] `glone_clone_one` — promote nested inner function to a `_glone_clone_one` top-level private function for testability and clarity
-* [ ] `bashrc/helpers/docker/backup-runner` — consolidate the three parallel formats (no-ext compiled, `.mjs`, `.ts`) into a single canonical `.ts` version; all three currently define identical function sets
-* [ ] `actions.sh` `source_core_libs` — missing core lib should be a hard failure, not a silent skip via `|| continue`
+* [x] `glone` — wrap the `git ls-remote` SSH availability check in a short timeout; the code has a `# NOTE:` flagging it as a potential hang with misconfigured SSH agents
+* [x] `glone_clone_one` — promote nested inner function to a `_glone_clone_one` top-level private function for testability and clarity
+* [x] `bashrc/helpers/docker/backup-runner` — consolidate the three parallel formats (no-ext compiled, `.mjs`, `.ts`) into a single canonical `.ts` version; all three currently define identical function sets
+* [x] `actions.sh` `source_core_libs` — missing core lib should be a hard failure, not a silent skip via `|| continue`
 
 ## Enhancements
 
