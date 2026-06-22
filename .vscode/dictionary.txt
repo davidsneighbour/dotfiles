@@ -10,6 +10,7 @@ createworkspace
 crosspost
 dmenu
 dotbot
+dreamhost
 drun
 erasedups
 esac
@@ -39,6 +40,7 @@ newwindow
 nohup
 nostr
 ollama
+orientalandbeyond
 Pango
 pipefail
 pixelsize
@@ -62,6 +64,10 @@ shellcheck
 sortorder
 sugarcoating
 sxhkd
+thailandiatour
+thailandiaviaggi
+thaitour
+thaiviaggi
 timezone
 updatestartuptty
 webui
