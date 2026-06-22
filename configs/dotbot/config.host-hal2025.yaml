@@ -23,3 +23,7 @@
     - cron: "20 15 * * 0"
       comment: "weekly docker container backup to keep"
       command: ${HOME}/.dotfiles/bashrc/cronjobs/docker-backup.sh --keep --apply --docker-path ${HOME}/.dotfiles/containers/hal2025 --backup-path /mnt/storage/Backup/Docker/HAL2025 --keep-count 10 --verbose >> "${HOME}/.logs/cron/docker-backup.log" 2>&1
+
+    - cron: "0 4,9,14,19 * * *"
+      comment: "restart claude usage counter"
+      command: /usr/bin/env bash -lc 'mkdir -p "$HOME/.logs" && claude -p "ping" --model haiku --no-session-persistence >> "$HOME/.logs/claude-warmup.log" 2>&1'
