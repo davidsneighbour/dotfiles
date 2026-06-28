@@ -1,5 +1,30 @@
 # Changelog
 
+## [3003.9.0](https://github.com/davidsneighbour/dotfiles/compare/v3003.8.0...v3003.9.0) (2026-06-28)
+
+### Features
+
+* ai aliases added ([577a927](https://github.com/davidsneighbour/dotfiles/commit/577a92782c46957ba36aa3db7a5d321bdddeda45))
+
+### Bug Fixes
+
+* **actions:** hard-fail on missing or unreadable core library ([032fb7b](https://github.com/davidsneighbour/dotfiles/commit/032fb7b3a4b2d685c9b626204b15c4c806f8b1ce))
+* **config:** disable telemetry export var ([72acfe7](https://github.com/davidsneighbour/dotfiles/commit/72acfe79a72c2f2aa1213573c7d69acea785adca))
+* **filezilla:** update configuration ([3684860](https://github.com/davidsneighbour/dotfiles/commit/3684860fcac65d05570f0b957f76918a23474a48))
+
+### Documentation
+
+* **plan:** mark code quality items complete ([71327e5](https://github.com/davidsneighbour/dotfiles/commit/71327e5b85a1050ac41caad03fb99d839df6e7eb))
+* **setup:** clean up setup.md and track progress in plan.md ([1cb7f97](https://github.com/davidsneighbour/dotfiles/commit/1cb7f973678bc42756c5d1f55203183e1b8882ee))
+* **setup:** remove obsolete dotbot setup step and config reference ([b999b5d](https://github.com/davidsneighbour/dotfiles/commit/b999b5df4952132c66b23a353d27f53e2c300e1f))
+
+### Chore
+
+* **dotbot:** add Claude warmup cron ([c7e497d](https://github.com/davidsneighbour/dotfiles/commit/c7e497df842fdcd338422bfebd6303cf5a19b64a))
+* **git:** update protected submodule ([15c89a1](https://github.com/davidsneighbour/dotfiles/commit/15c89a13503a6b9d76f5b3d26309eafea8b5be16))
+* recent changes ([59d4bc1](https://github.com/davidsneighbour/dotfiles/commit/59d4bc130e94c097302435d716c3c1ecda107f0e))
+* recent changes ([ba3da83](https://github.com/davidsneighbour/dotfiles/commit/ba3da836f163376bf24a53236c50fcc45797fde1))
+
 ## [3003.8.0](https://github.com/davidsneighbour/dotfiles/compare/v3003.7.0...v3003.8.0) (2026-06-11)
 
 ### Features
