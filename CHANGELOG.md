@@ -1,5 +1,7 @@
 # Changelog
 
+## [3003.9.1](https://github.com/davidsneighbour/dotfiles/compare/v3003.9.0...v3003.9.1) (2026-06-28)
+
 ## [3003.9.0](https://github.com/davidsneighbour/dotfiles/compare/v3003.8.0...v3003.9.0) (2026-06-28)
 
 ### Features
