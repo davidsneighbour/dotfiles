@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<FileZilla3 version="3.69.3" platform="*nix">
-	<Layout Builddate="2025-08-13" Buildtime="17:27:05">
+<FileZilla3 version="3.69.6" platform="*nix">
+	<Layout Builddate="2026-02-14" Buildtime="22:41:53">
 		<Resources>
 			<xrc file="sitemanager.xrc" date="1548412674" />
 			<xrc file="inputdialog.xrc" date="1548412674" />
@@ -11,8 +11,8 @@
 			<xrc file="update.xrc" date="1548412674" />
 			<xrc file="storj.xrc" date="1581159552" />
 		</Resources>
-		<Language id="en_US" date="1755106025">
-			<Font font="Noto Sans 10" width="792" height="19" />
+		<Language id="en_US" date="1771108913">
+			<Font font="Noto Sans 8" width="621" height="14" />
 		</Language>
 	</Layout>
 </FileZilla3>
