@@ -60,3 +60,7 @@ fi
 # set vale styles path
 VALE_STYLES_PATH="${HOME}/.config/vale/styles"
 export VALE_STYLES_PATH
+
+# reused over several tools, disable telemetry
+DISABLE_TELEMETRY=1
+export DISABLE_TELEMETRY
