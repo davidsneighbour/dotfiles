@@ -7,35 +7,38 @@
 
 ## Project state
 
-The repository is in a healthy, low-activity state. CI is green, patch/minor dependency updates have been applied (commit `de1c4d26b11c`). One issue (#488) remains open for remaining audit findings that cannot be resolved without updates to first-party packages.
+The repository is healthy. CI is green, all actionable dependency vulnerabilities have been resolved. No open GitHub issues.
 
 ## Health indicators
 
 | Signal | Status |
-|---|---|
+| --- | --- |
 | CI (Push on main) | ✅ passing (last 5 runs succeeded) |
-| Open GitHub issues | 1 |
-| npm audit | ⚠️ 41 vulnerabilities: 25 high, 13 moderate, 3 low (all require `--force` or have no upstream fix) |
+| Open GitHub issues | 0 |
+| npm audit | ⚠️ 14 vulnerabilities: 2 high, 9 moderate, 3 low — all accepted risk (no upstream fix or --force only) |
 | Markdown lint | ⚠️ errors in `modules/protected/` (submodule, not actionable) |
 | TODO.md | ✅ not present (clean) |
 
 ## Open issues
 
-### Maintenance
+None.
 
-- **[#488](https://github.com/davidsneighbour/dotfiles/issues/488) — fix(deps): address npm audit vulnerabilities**
-  Patch/minor updates applied (commit `de1c4d26b11c`). 41 vulnerabilities remain — all require `--force` (breaking) or have no upstream fix. Root causes: `@davidsneighbour/imagemin-lint-staged` (old imagemin binary tooling) and `@davidsneighbour/nanny` (old release-it/undici). Also `elliptic`/`linkify-it` with no upstream fix yet. All are devDependencies only; no production exposure. Follow-up: update the two first-party packages.
+## Accepted-risk audit findings (14)
+
+All are devDependencies with no production exposure. None can be fixed without a breaking change or an upstream fix that does not yet exist.
+
+| Root package | Severity | Why not fixed |
+| --- | --- | --- |
+| `elliptic` → `secp256k1` → `@secretlint/secretlint-rule-secp256k1-privatekey` | low | No upstream fix available |
+| `linkify-it` → `markdown-it` → `markdownlint`/`markdownlint-rule-*` | 2 high, moderate | No upstream fix available |
+| `js-yaml` in `@yarnpkg/parsers` → `lockfile-lint-api` → `lockfile-lint` | moderate | Fix requires `--force` downgrade to `lockfile-lint@4.7.4` (breaking) |
 
 ## Suggested order of work
 
-1. **#488** — update `@davidsneighbour/imagemin-lint-staged` and `@davidsneighbour/nanny` in their own repos to clear the remaining transitive vulnerability chains. Then re-run `npm install` here.
-
-## Open clarification questions
-
-None.
+Watch upstream for fixes to `elliptic`, `linkify-it`, and `@yarnpkg/parsers`/`js-yaml`. Re-run `npm audit` after any secretlint, markdownlint-rule-title-case-style, or lockfile-lint updates.
 
 ## Notes
 
-- Markdown lint errors in `modules/protected/DraculaPro/` originate from the DraculaPro submodule and are not actionable here.
-- `scratch/` is excluded from linting enforcement by design.
-- `PROJECT.md` has a title-case lint error (`# Project Instructions` → `# Project instructions`) but this is a cosmetic issue and is not tracked separately.
+* Markdown lint errors in `modules/protected/DraculaPro/` originate from the DraculaPro submodule and are not actionable here.
+* `scratch/` is excluded from linting enforcement by design.
+* `PROJECT.md` has a title-case lint error (`# Project Instructions` → `# Project instructions`) but this is a cosmetic issue and is not tracked separately.
