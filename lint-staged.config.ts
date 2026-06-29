@@ -13,9 +13,7 @@ export default {
   ],
   '*.y(a?)ml': ['yamllint -c .yamllint.yml'],
   '*.{scss,css}': ['stylelint --fix'],
-  '*.{png,jpeg,jpg,gif,svg}': [
-    'imagemin-lint-staged', // @davidsneighbour/imagemin-lint-staged
-  ],
+  '*.{png,jpeg,jpg,gif,svg}': ['sharp-lint-staged'],
   '!(CHANGELOG)**/*.{md,markdown}': [
     'markdownlint-cli2 --config node_modules/@dnbhq/markdownlint-config/.markdownlint-cli2.jsonc --no-globs',
   ],
