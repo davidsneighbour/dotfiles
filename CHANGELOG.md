@@ -1,5 +1,21 @@
 # Changelog
 
+## [3003.9.2](https://github.com/davidsneighbour/dotfiles/compare/v3003.9.1...v3003.9.2) (2026-06-29)
+
+### Build
+
+* **deps-dev:** bump hono from 4.12.23 to 4.12.26 in the npm_and_yarn group across 1 directory ([#487](https://github.com/davidsneighbour/dotfiles/issues/487)) ([4364ff6](https://github.com/davidsneighbour/dotfiles/commit/4364ff6525262bfc420a1e3b806e2a13c0d77e35))
+* **deps:** switch from imagemin-lint-staged to sharp-lint-staged ([8d4baf9](https://github.com/davidsneighbour/dotfiles/commit/8d4baf9f7ea193923ca2da33d44ed5682a893a2a))
+* **deps:** update dependencies ([de1c4d2](https://github.com/davidsneighbour/dotfiles/commit/de1c4d26b11ce412b6ed2442f41388a5046b5d01))
+* **deps:** update first-party packages to fix audit vulnerabilities ([d89cc11](https://github.com/davidsneighbour/dotfiles/commit/d89cc1153f327f75a72a4ae42b59fb5add8e47d2)), closes [#488](https://github.com/davidsneighbour/dotfiles/issues/488)
+
+### Chore
+
+* **git:** update dotbot submodules ([897a68c](https://github.com/davidsneighbour/dotfiles/commit/897a68c9a3d937fc5b60c624e9cc417d15fae2a3))
+* **project:** update project plan ([b1d32f5](https://github.com/davidsneighbour/dotfiles/commit/b1d32f5ee76f51e16cd3805c091db13c364c50a7)), closes [#488](https://github.com/davidsneighbour/dotfiles/issues/488)
+* **project:** update project plan ([fa1547b](https://github.com/davidsneighbour/dotfiles/commit/fa1547b14283ef53bb0936c321f84f874e2ab137))
+* **project:** update project plan ([a7ef160](https://github.com/davidsneighbour/dotfiles/commit/a7ef16074deb865fec5715c987df42b0429bb5bc)), closes [#488](https://github.com/davidsneighbour/dotfiles/issues/488)
+
 ## [3003.9.1](https://github.com/davidsneighbour/dotfiles/compare/v3003.9.0...v3003.9.1) (2026-06-28)
 
 ## [3003.9.0](https://github.com/davidsneighbour/dotfiles/compare/v3003.8.0...v3003.9.0) (2026-06-28)
