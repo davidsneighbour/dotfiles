@@ -1,5 +1,16 @@
 # Changelog
 
+## [3004.0.0](https://github.com/davidsneighbour/dotfiles/compare/v3003.9.2...v3004.0.0) (2026-06-29)
+
+### ⚠ BREAKING CHANGES
+
+* **dotfiles:** The dotbot command no longer exists in this repo. Use
+dotfiles [CONFIG_NAME] instead. Requires dotbot installed via brew.
+
+### Build
+
+* **dotfiles:** replace dotbot submodule with brew-installed dotbot ([c0542d3](https://github.com/davidsneighbour/dotfiles/commit/c0542d3e4bbf741a193331c2a02207fd7904c606))
+
 ## [3003.9.2](https://github.com/davidsneighbour/dotfiles/compare/v3003.9.1...v3003.9.2) (2026-06-29)
 
 ### Build
