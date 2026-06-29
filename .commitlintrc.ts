@@ -76,7 +76,7 @@ const config: UserConfig = {
       chore: ['repo'],
       docs: ['general', 'ai'],
       config: [
-        'dotbot',
+        'dotfiles',
         'containers',
         'workspace',
         'vscode',

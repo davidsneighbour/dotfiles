@@ -11,7 +11,7 @@ DOTFILES_ROOT="$(cd "${SCRIPT_DIR}/../../.." && pwd)"
 DEFAULT_ACTIONS_CONFIG="${DOTFILES_ROOT}/configs/actions/actions.toml"
 DEFAULT_AUTOSTART_DIR="${DOTFILES_ROOT}/configs/system/autostart"
 DEFAULT_DOTBOT_CONFIGS_DIR="${DOTFILES_ROOT}/configs/dotbot"
-DOTBOT_HELPER="${DOTFILES_ROOT}/bashrc/helpers/dotbot"
+DOTBOT_HELPER="${DOTFILES_ROOT}/bashrc/helpers/dotfiles"
 
 VERBOSE="false"
 DRY_RUN="false"
@@ -75,16 +75,16 @@ Commands:
   menu                    Run the TOML-driven action picker (default command).
   autostart-enable        Enable one or more autostart entries for a host.
   autostart-disable       Disable one or more autostart entries for a host.
-  dotbot-list             List available Dotbot setup profiles from configs/dotbot.
-  dotbot-run              Run Dotbot using a setup profile from configs/dotbot.
+  dotfiles-list           List available dotbot setup profiles from configs/dotbot.
+  dotfiles-run            Run dotbot using a setup profile from configs/dotbot.
 
 Examples:
   ${SCRIPT_NAME}
   ${SCRIPT_NAME} --verbose menu --config "${DEFAULT_ACTIONS_CONFIG}"
   ${SCRIPT_NAME} autostart-enable --host "$(hostname)"
   ${SCRIPT_NAME} autostart-disable --host "$(hostname)"
-  ${SCRIPT_NAME} dotbot-list
-  ${SCRIPT_NAME} dotbot-run --profile protected
+  ${SCRIPT_NAME} dotfiles-list
+  ${SCRIPT_NAME} dotfiles-run --profile protected
 
 Logs:
   ${__LOGFILE:-<not-initialized>}
@@ -763,7 +763,7 @@ list_dotbot_profiles() {
   done | sort
 }
 
-handle_dotbot_list() {
+handle_dotfiles_list() {
   local configs_dir="${DEFAULT_DOTBOT_CONFIGS_DIR}"
   while (($#)); do
     case "${1}" in
@@ -777,18 +777,18 @@ handle_dotbot_list() {
         ;;
       --help)
         cat <<EOF_HELP
-Usage: ${SCRIPT_NAME} dotbot-list [--configs-dir DIR]
+Usage: ${SCRIPT_NAME} dotfiles-list [--configs-dir DIR]
 
-List available Dotbot profiles inferred from config*.yaml files.
+List available dotbot profiles inferred from config*.yaml files.
 
 Options:
-  --configs-dir DIR       Directory that holds Dotbot config files.
+  --configs-dir DIR       Directory that holds dotbot config files.
   --help                  Show this help.
 EOF_HELP
         return 0
         ;;
       *)
-        log_error "Unknown option for dotbot-list: ${1}"
+        log_error "Unknown option for dotfiles-list: ${1}"
         return 1
         ;;
     esac
@@ -799,7 +799,7 @@ EOF_HELP
   done
 }
 
-handle_dotbot_run() {
+handle_dotfiles_run() {
   local configs_dir="${DEFAULT_DOTBOT_CONFIGS_DIR}"
   local profile=""
 
@@ -823,23 +823,23 @@ handle_dotbot_run() {
         ;;
       --help)
         cat <<EOF_HELP
-Usage: ${SCRIPT_NAME} dotbot-run [--configs-dir DIR] [--profile NAME]
+Usage: ${SCRIPT_NAME} dotfiles-run [--configs-dir DIR] [--profile NAME]
 
-Run Dotbot using the existing helper script and a profile derived from config*.yaml.
+Run dotbot using the existing helper script and a profile derived from config*.yaml.
 
 Options:
-  --configs-dir DIR       Directory that holds Dotbot config files.
+  --configs-dir DIR       Directory that holds dotbot config files.
   --profile NAME          Dotbot profile label (default, protected, etc).
   --help                  Show this help.
 
 Behavior:
   * If --profile is omitted and gum is installed, a profile picker is shown.
-  * The selected profile is passed to bashrc/helpers/dotbot.
+  * The selected profile is passed to bashrc/helpers/dotfiles.
 EOF_HELP
         return 0
         ;;
       *)
-        log_error "Unknown option for dotbot-run: ${1}"
+        log_error "Unknown option for dotfiles-run: ${1}"
         return 1
         ;;
     esac
@@ -871,7 +871,7 @@ EOF_HELP
   fi
 
   if ! printf '%s\n' "${profile_data}" | awk -F'|' '{print $1}' | grep -Fx "${profile}" >/dev/null 2>&1; then
-    log_error "Unknown Dotbot profile '${profile}'. Use dotbot-list to inspect valid values."
+    log_error "Unknown dotbot profile '${profile}'. Use dotfiles-list to inspect valid values."
     return 1
   fi
 
@@ -938,11 +938,11 @@ main() {
     autostart-disable)
       handle_autostart_disable "$@"
       ;;
-    dotbot-list)
-      handle_dotbot_list "$@"
+    dotfiles-list)
+      handle_dotfiles_list "$@"
       ;;
-    dotbot-run)
-      handle_dotbot_run "$@"
+    dotfiles-run)
+      handle_dotfiles_run "$@"
       ;;
     *)
       log_error "Unknown command: ${command_name}."

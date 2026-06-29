@@ -30,9 +30,9 @@ Bash helpers are standalone helper commands unless noted otherwise. Several Type
 
 ## Top-level helper files
 
-### `dotbot`
+### `dotfiles`
 
-Dotbot wrapper that initialises the Dotbot submodule if needed and runs a selected configs/dotbot/config*.yaml profile.
+Dotbot wrapper that runs a selected `configs/dotbot/config*.yaml` profile via the brew-installed `dotbot` binary.
 
 CLI option notes:
 
@@ -54,7 +54,7 @@ Functions/methods defined:
 
 Requirements:
 
-* bash, git, python3 for Dotbot, modules/dotbot submodule.
+* bash, `dotbot` installed via `brew install dotbot`.
 * gum only for --list.
 
 ### `explore`

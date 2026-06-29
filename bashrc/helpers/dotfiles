@@ -1,8 +1,17 @@
 #!/bin/bash
 ################################################################################
-# Dotbot wrapper script
+# dotfiles — dotbot wrapper script
+#
+# Runs configs/dotbot/config[.NAME].yaml via the brew-installed dotbot binary.
+#
+# Usage:
+#   dotfiles [CONFIG_NAME]
+#   dotfiles --config CONFIG_NAME
+#   dotfiles --list
+#   dotfiles --help
 #
 # @see https://github.com/davidsneighbour/dotfiles
+# @see https://github.com/anishathalye/dotbot
 ################################################################################
 
 set -euo pipefail
@@ -12,9 +21,7 @@ REPO_ROOT="$(cd "$(dirname "${SCRIPT_PATH}")/../.." && pwd)"
 CONFIGS_DIR="${REPO_ROOT}/configs/dotbot"
 DEFAULT_CONFIG_FILE="config.yaml"
 
-DOTBOT_DIR="${REPO_ROOT}/modules/dotbot"
-DOTBOT_BIN="${DOTBOT_DIR}/bin/dotbot"
-__LOGFILE="${HOME}/.logs/dotbot/dotbot-$(date +%Y%m%d-%H%M%S).log"
+__LOGFILE="${HOME}/.logs/dotbot/dotfiles-$(date +%Y%m%d-%H%M%S).log"
 
 source_core_libs() {
   local base_path="${BASHRC_PATH:-${REPO_ROOT}/bashrc}"
@@ -31,10 +38,10 @@ source_core_libs() {
 print_help() {
   cat <<'HELP'
 Usage:
-  dotbot [CONFIG_NAME]
-  dotbot --config CONFIG_NAME
-  dotbot --list
-  dotbot --help
+  dotfiles [CONFIG_NAME]
+  dotfiles --config CONFIG_NAME
+  dotfiles --list
+  dotfiles --help
 
 Options:
   --config CONFIG_NAME   Run a specific config.
@@ -47,17 +54,15 @@ Options:
 Behavior:
   - Default (no args): runs configs/dotbot/config.yaml
   - Positional CONFIG_NAME is preferred over --config.
+
+Prerequisites:
+  brew install dotbot
 HELP
 }
 
 ensure_dotbot_ready() {
-  if [[ -d "${DOTBOT_DIR}" ]]; then
-    git -C "${REPO_ROOT}" submodule sync --quiet --recursive
-    git -C "${REPO_ROOT}" submodule update --init --recursive "${DOTBOT_DIR#"${REPO_ROOT}"/}" >/dev/null 2>&1
-  fi
-
-  if [[ ! -x "${DOTBOT_BIN}" ]]; then
-    dnb_log error "Dotbot binary not found or not executable at '${DOTBOT_BIN}'."
+  if ! command -v dotbot >/dev/null 2>&1; then
+    dnb_log error "dotbot not found. Install it with: brew install dotbot"
     exit 1
   fi
 }
@@ -101,7 +106,7 @@ run_dotbot_with_config() {
   export HOSTNAME
   HOSTNAME="$(hostname)"
 
-  dnb_log info "Running Dotbot with config: ${config_path}"
+  dnb_log info "Running dotbot with config: ${config_path}"
 
   if [[ -n "${DNB_VERBOSE:-}" ]]; then
     dotbot_verbosity_flag='-vv'
@@ -110,7 +115,7 @@ run_dotbot_with_config() {
   fi
 
   cd "${REPO_ROOT}"
-  "${DOTBOT_BIN}" \
+  dotbot \
     --base-directory "${REPO_ROOT}" \
     --config-file "${config_path}" \
     --force-color \
@@ -147,7 +152,7 @@ pick_config_with_gum() {
     config_names[${#config_names[@]} - 1]="${config_names[${#config_names[@]} - 1]%.yaml}"
   done
 
-  gum choose --header "Select Dotbot config to run" "${config_names[@]}"
+  gum choose --header "Select dotbot config to run" "${config_names[@]}"
 }
 
 main() {

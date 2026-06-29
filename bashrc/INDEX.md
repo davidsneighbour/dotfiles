@@ -202,14 +202,7 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`dnb_repo_config_get`](./lib/20-config/dnb-repo-config.bash#L10) | function | [./lib/README.md](./lib/README.md#L38) |
 | [`dnb_to_lower`](./lib/50-variables/dnb-strings.bash#L3) | function | [./lib/README.md](./lib/README.md#L1) |
 | [`DOCUMENTATION.md`](./DOCUMENTATION.md#L1) | file | [./DOCUMENTATION.md](./DOCUMENTATION.md#L49) |
-| [`dotfiles`](./partials/_functions/dotfiles.bash#L5) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L50) |
-| [`dotfiles_get_next_version`](./partials/_functions/dotfiles.bash#L117) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L50) |
-| [`dotfiles_get_version`](./partials/_functions/dotfiles.bash#L92) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L50) |
-| [`dotfiles_git_status`](./partials/_functions/dotfiles.bash#L164) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L50) |
-| [`dotfiles_open_repository`](./partials/_functions/dotfiles.bash#L153) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L50) |
-| [`dotfiles_print_help`](./partials/_functions/dotfiles.bash#L49) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L50) |
-| [`dotfiles_require_directory`](./partials/_functions/dotfiles.bash#L76) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L50) |
-| [`dotfiles_require_package_file`](./partials/_functions/dotfiles.bash#L84) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L50) |
+| [`dotfiles`](./helpers/dotfiles#L1) | script | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L50) |
 | [`downloadFromRemarkable`](./helpers/remarkable/transfer.ts#L1037) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L66) |
 | [`egrep`](./partials/aliases#L22) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L20) |
 | [`emit_row`](./workspaces/ws_launch_program#L110) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L52) |
@@ -217,7 +210,7 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`ensure_config_files`](./helpers/packages/create.sh#L160) | function | [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md#L44) |
 | [`ensure_daily_note_exists`](./helpers/daily-reports/commit-report-to-dailynote.sh#L187) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L55) |
 | [`ensure_directory_exists`](./helpers/synch-devspace.sh#L135) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L317) |
-| [`ensure_dotbot_ready`](./helpers/dotbot#L53) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L47) |
+| [`ensure_dotbot_ready`](./helpers/dotfiles#L53) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L47) |
 | [`ensure_git_repo`](./cronjobs/git_updates.sh#L334) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L50) |
 | [`ensure_log_dir`](./helpers/bash/startup-profiler.sh#L71) | function | [./helpers/bash/DOCUMENTATION.md](./helpers/bash/DOCUMENTATION.md#L26) |
 | [`ensure_names_length`](./helpers/workspace/ws-setup.sh#L192) | function | [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md#L70) |
@@ -335,8 +328,8 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`h`](./partials/aliases#L43) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L24) |
 | [`handle_autostart_disable`](./helpers/_actions/actions.sh#L573) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L60) |
 | [`handle_autostart_enable`](./helpers/_actions/actions.sh#L402) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L59) |
-| [`handle_dotbot_list`](./helpers/_actions/actions.sh#L758) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L63) |
-| [`handle_dotbot_run`](./helpers/_actions/actions.sh#L794) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L64) |
+| [`handle_dotfiles_list`](./helpers/_actions/actions.sh#L758) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L63) |
+| [`handle_dotfiles_run`](./helpers/_actions/actions.sh#L794) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L64) |
 | [`handle_menu`](./helpers/_actions/actions.sh#L339) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L58) |
 | [`has_compose_file`](./cronjobs/docker-backup.sh#L90) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L5) |
 | [`has_upstream`](./cronjobs/git_updates.sh#L356) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L33) |
@@ -364,7 +357,7 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`helpers/docker/examples/DOCUMENTATION.md`](./helpers/docker/examples/DOCUMENTATION.md#L1) | file | [./helpers/docker/examples/DOCUMENTATION.md](./helpers/docker/examples/DOCUMENTATION.md#L1) |
 | [`helpers/docker/README.md`](./helpers/docker/README.md#L1) | file | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L9) |
 | [`helpers/DOCUMENTATION.md`](./helpers/DOCUMENTATION.md#L1) | file | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L13) |
-| [`helpers/dotbot`](./helpers/dotbot#L1) | file | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L32) |
+| [`helpers/dotbot`](./helpers/dotfiles#L1) | file | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L32) |
 | [`helpers/explore`](./helpers/explore#L1) | file | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L59) |
 | [`helpers/freshrss/DOCUMENTATION.md`](./helpers/freshrss/DOCUMENTATION.md#L1) | file | [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md#L1) |
 | [`helpers/freshrss/export.ts`](./helpers/freshrss/export.ts#L1) | file | [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md#L9) |
@@ -575,7 +568,7 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`main`](./helpers/daily-reports/commit-report-to-dailynote.sh#L368) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L58) |
 | [`main`](./helpers/daily-reports/commits-to-notes.sh#L338) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L58) |
 | [`main`](./helpers/docker/examples/backup.sh#L40) | function | [./helpers/docker/examples/DOCUMENTATION.md](./helpers/docker/examples/DOCUMENTATION.md#L18) |
-| [`main`](./helpers/dotbot#L153) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L52) |
+| [`main`](./helpers/dotfiles#L153) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L52) |
 | [`main`](./helpers/gh/label-migration.sh#L308) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L145) |
 | [`main`](./helpers/github-token#L242) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L52) |
 | [`main`](./helpers/lpack#L141) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L52) |
@@ -622,7 +615,7 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`need_cmd`](./workspaces/ws_tile_window#L75) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L70) |
 | [`node_run`](./helpers/node-run#L7) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L173) |
 | [`normalisedEmail`](./helpers/gh/github-manager.ts#L1062) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L9) |
-| [`normalize_config_to_filename`](./helpers/dotbot#L65) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L48) |
+| [`normalize_config_to_filename`](./helpers/dotfiles#L65) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L48) |
 | [`normalize_workspace_key`](./workspaces/ws_launch_program#L144) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L52) |
 | [`normalizeTagEntry`](./helpers/raindrop.io/getTags.ts#L132) | method/function | [./helpers/raindrop.io/DOCUMENTATION.md](./helpers/raindrop.io/DOCUMENTATION.md#L26) |
 | [`notify_discord`](./cronjobs/git_updates.sh#L111) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L47) |
@@ -687,7 +680,7 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`partials/_functions/change_directory`](./partials/_functions/change_directory.bash#L1) | file | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L19) |
 | [`partials/_functions/codex`](./partials/_functions/codex.bash#L1) | file | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L31) |
 | [`partials/_functions/DOCUMENTATION.md`](./partials/_functions/DOCUMENTATION.md#L1) | file | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L17) |
-| [`partials/_functions/dotfiles`](./partials/_functions/dotfiles.bash#L1) | file | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L50) |
+| [`helpers/dotfiles`](./helpers/dotfiles#L1) | script | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L50) |
 | [`partials/_functions/g_one_commit`](./partials/_functions/g_one_commit.bash#L1) | file | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L1) |
 | [`partials/_functions/gh_repo_list`](./partials/_functions/gh_repo_list.bash#L1) | file | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L65) |
 | [`partials/_functions/git`](./partials/_functions/git.bash#L1) | file | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L83) |
@@ -714,7 +707,7 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`pi-reboot`](./partials/aliases#L116) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L41) |
 | [`pi-shutdown`](./partials/aliases#L115) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L41) |
 | [`pick_archiver`](./helpers/web-mirror.sh#L87) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L364) |
-| [`pick_config_with_gum`](./helpers/dotbot#L121) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L51) |
+| [`pick_config_with_gum`](./helpers/dotfiles#L121) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L51) |
 | [`pick_filename_from_url`](./installs/50-obsidian.sh#L111) | function | [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md#L41) |
 | [`post_checks`](./helpers/synch-devspace.sh#L377) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L326) |
 | [`prepareUploadDocument`](./helpers/remarkable/transfer.ts#L650) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L53) |
@@ -729,7 +722,7 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`print_help`](./cronjobs/synch_downloads.sh#L8) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L61) |
 | [`print_help`](./helpers/_actions/actions.sh#L54) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L47) |
 | [`print_help`](./helpers/bash/startup-profiler.sh#L10) | function | [./helpers/bash/DOCUMENTATION.md](./helpers/bash/DOCUMENTATION.md#L24) |
-| [`print_help`](./helpers/dotbot#L31) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L46) |
+| [`print_help`](./helpers/dotfiles#L31) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L46) |
 | [`print_help`](./helpers/gh/git-sync.sh#L16) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L86) |
 | [`print_help`](./helpers/set-wallpaper.sh#L22) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L46) |
 | [`print_help`](./helpers/web-mirror.sh#L13) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L46) |
@@ -784,7 +777,7 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`require_positive_integer`](./workspaces/ws_generate_tile_svgs#L57) | function | [./workspaces/DOCUMENTATION.md](./workspaces/DOCUMENTATION.md#L105) |
 | [`requireEnv`](./helpers/docker/examples/backup.ts#L18) | method/function | [./helpers/docker/examples/DOCUMENTATION.md](./helpers/docker/examples/DOCUMENTATION.md#L30) |
 | [`requiresManualIntervention`](./helpers/gh/github-manager.ts#L1248) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L174) |
-| [`resolve_config_path`](./helpers/dotbot#L76) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L49) |
+| [`resolve_config_path`](./helpers/dotfiles#L76) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L49) |
 | [`resolve_env_file`](./helpers/github-token#L116) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L106) |
 | [`resolve_package_path`](./helpers/packages/create.sh#L201) | function | [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md#L47) |
 | [`resolve_repo_label`](./helpers/daily-reports/commits-to-notes.sh#L164) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L96) |
@@ -799,7 +792,7 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`run`](./helpers/remarkable/transfer.ts#L1120) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L68) |
 | [`run`](./helpers/screencaps.ts#L174) | method/function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L157) |
 | [`run_command`](./cronjobs/docker-backup.sh#L99) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L5) |
-| [`run_dotbot_with_config`](./helpers/dotbot#L89) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L50) |
+| [`run_dotbot_with_config`](./helpers/dotfiles#L89) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L50) |
 | [`run_gh_label_create`](./helpers/gh/label-migration.sh#L188) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L224) |
 | [`run_gh_label_delete`](./helpers/gh/label-migration.sh#L243) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L226) |
 | [`run_remote_github_check`](./helpers/synch-devspace.sh#L343) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L325) |
@@ -832,7 +825,7 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`source_core_libs`](./helpers/_actions/actions.sh#L19) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L42) |
 | [`source_core_libs`](./helpers/daily-reports/commit-report-to-dailynote.sh#L12) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L39) |
 | [`source_core_libs`](./helpers/daily-reports/commits-to-notes.sh#L7) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L39) |
-| [`source_core_libs`](./helpers/dotbot#L19) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L45) |
+| [`source_core_libs`](./helpers/dotfiles#L19) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L45) |
 | [`split_csv_to_array`](./helpers/workspace/ws-setup.sh#L178) | function | [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md#L69) |
 | [`start_on_workspace`](./helpers/workspace/ws-setup.sh#L215) | function | [./helpers/workspace/DOCUMENTATION.md](./helpers/workspace/DOCUMENTATION.md#L73) |
 | [`strip_ansi`](./helpers/daily-reports/commit-report-to-dailynote.sh#L174) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L53) |

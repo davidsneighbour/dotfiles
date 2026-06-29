@@ -1,4 +1,4 @@
-# bashrc/partials/_functions documentation
+# Bashrc/partials/_functions documentation
 
 Files in this folder are Bash functions sourced into the interactive shell by `partials/functions`. They may change shell state and are not standalone helper commands.
 
@@ -14,7 +14,7 @@ Options passed through to the helper:
 * `--print-cd-command` — ask the helper for a shell command and `eval` it deliberately so the current shell changes directory.
 * Other helper-supported options are delegated to `helpers/gh/cdg`.
 
-Requirements: executable `bashrc/helpers/gh/cdg`, Bash, and the helper's requirements (`gh`, `gum`, GitHub authentication, and repository folders as documented in [`../../helpers/gh/DOCUMENTATION.md`](../../helpers/gh/DOCUMENTATION.md)).
+Requirements: executable `bashrc/helpers/gh/cdg`, Bash, and the helper's requirements (`gh`, `gum`, GitHub authentication, and repository folders as documented in [`../helpers/gh/DOCUMENTATION.md`](../helpers/gh/DOCUMENTATION.md)).
 
 ## `change_directory`
 
@@ -49,18 +49,28 @@ Requirements: `curl`, `codex`, reachable Ollama/OpenAI-compatible endpoint, and 
 
 ## `dotfiles`
 
-Function: `dotfiles`.
+Script: `bashrc/helpers/dotfiles`.
 
-Inspects this dotfiles repository and its `package.json` version.
+Runs a dotbot config from `configs/dotbot/`. Wraps the brew-installed `dotbot` binary with config-name resolution and optional interactive profile selection via `gum`.
+
+Usage:
+
+```bash
+dotfiles [CONFIG_NAME]
+dotfiles --config CONFIG_NAME
+dotfiles --list
+dotfiles --help
+```
 
 Options:
 
-* `--help`, `-h` — show help.
-* `--version` — print the current version from `package.json`.
-* `--next` — calculate and print the next minor version.
-* `--status` — run Git status inside the dotfiles directory.
+* `--config CONFIG_NAME` — run a specific config; `host-locutus` and `config.host-locutus.yaml` are equivalent.
+* `--list` — pick a config interactively via `gum`.
+* `-h`, `--help` — show help.
 
-Requirements: Bash, `git`, and `node` for version parsing.
+Default (no args): runs `configs/dotbot/config.yaml`.
+
+Requirements: `dotbot` (installed via `brew install dotbot`), optionally `gum` for `--list`.
 
 ## `gh_repo_list`
 
