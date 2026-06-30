@@ -39,6 +39,12 @@ Notes:
 
 The switcher is intended to be controlled from the keyboard with the following recommended baseline:
 
+XFCE's keyboard shortcut menu does not expand shell variables in command fields. Use the literal absolute path there, replacing `<username>` with the local account name:
+
+```bash
+/home/<username>/.dotfiles/configs/system/rofi/window-switcher.sh --scope all
+```
+
 * `Alt+Tab`
 
   * command: `${DOTFILES_PATH}/configs/system/rofi/window-switcher.sh --scope all`
