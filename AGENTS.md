@@ -1,3 +1,4 @@
+<!-- markdownlint-disable-next-line title-case-style -->
 # AGENTS.md
 
 This repository contains the personal dotfiles, automation scripts, and infrastructure tooling of **Patrick Kollitsch (David's Neighbour)**.
@@ -137,6 +138,7 @@ Properties:
 
 This design intentionally avoids JSON and complex schemas.
 
+<!-- markdownlint-disable-next-line title-case-style -->
 ## Node.js and TypeScript rules
 
 When Node.js is used:
@@ -203,6 +205,12 @@ Any AI agent operating on this repository **MUST**:
 AI-generated code is treated as production code.
 
 ## Change management
+
+### Submodules
+
+When committing submodule updates, commit only the changed submodule HEAD recorded by this parent repository.
+Stage the submodule path from the parent repository, for example `git add modules/protected`.
+Do not commit, amend, clean, reset, or otherwise modify work inside the submodule unless the user explicitly asks for submodule-internal changes.
 
 Before making changes:
 
