@@ -53,7 +53,7 @@
   "explorer.fileNesting.patterns": {
     "actions.sh": "actions.toml",
     "package.json": "lint-staged.config.*,.commitlintrc.*,.markdownlint.*,.npmrc.*,.nvmrc,.secretlint*,.shellcheck*,biome.*,.yamllint.*,.versionrc.*,eslint.*,jsconfig.*,tsconfig.*,link.config.*,package-lock.json, .fixpackrc, .editorconfig, .release-it.*, .npmrc, typos.toml,.mcp.json",
-    "README.md": "SECURITY*, LICENSE*, CITATION.cff, OS_INSTALL_FIRST_STEPS.md, AGENTS.md,PROJECT.md"
+    "README.md": "SECURITY*, LICENSE*, CITATION.cff, OS_INSTALL_FIRST_STEPS.md, AGENTS.md,PROJECT.md, ROADMAP.md, TODO.md"
   },
   "files.insertFinalNewline": true,
   "markdown.extension.toc.levels": "2..6",
