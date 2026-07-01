@@ -1,5 +1,21 @@
 # Changelog
 
+## [3004.0.1](https://github.com/davidsneighbour/dotfiles/compare/v3004.0.0...v3004.0.1) (2026-07-01)
+
+### Documentation
+
+* **rofi:** document xfce window switcher shortcut ([47a1fdd](https://github.com/davidsneighbour/dotfiles/commit/47a1fddbf2a8576a48bc61ad0fe9c4eadcb99eca))
+
+### Build
+
+* **vscode:** update workspace configuration ([4dc618e](https://github.com/davidsneighbour/dotfiles/commit/4dc618ec0b9adab803485e8fe10ff0c3c1c81ba0))
+
+### Chore
+
+* **git:** update submodules ([7e58872](https://github.com/davidsneighbour/dotfiles/commit/7e588725ed6fbd54bfbc9091d9cb384743d9047f))
+* **project:** update project plan ([026b11e](https://github.com/davidsneighbour/dotfiles/commit/026b11ee43bad24255dc3cda459ef72291d1cdd8)), closes [503-#522](https://github.com/davidsneighbour/503-/issues/522)
+* **project:** update project plan ([b02b5e0](https://github.com/davidsneighbour/dotfiles/commit/b02b5e0eb50757f1c62729702d0b22e1c96145da)), closes [489-#502](https://github.com/davidsneighbour/489-/issues/502)
+
 ## [3004.0.0](https://github.com/davidsneighbour/dotfiles/compare/v3003.9.2...v3004.0.0) (2026-06-29)
 
 ### ⚠ BREAKING CHANGES
