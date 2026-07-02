@@ -53,22 +53,95 @@ dnb_msgvault_log() {
 #   if ! dnb_msgvault_create_lock; then
 #     exit 0
 #   fi
+dnb_msgvault_lock_value() {
+  local key="${1}"
+
+  awk -F= -v key="${key}" '$1 == key { print $2; exit }' "${LOCK_FILE}" 2>/dev/null
+}
+
+dnb_msgvault_lock_is_active() {
+  local lock_pid
+  local lock_host
+  local current_host
+  local lock_cmdline
+
+  [[ -f "${LOCK_FILE}" ]] || return 1
+
+  lock_pid="$(dnb_msgvault_lock_value "pid")"
+  lock_host="$(dnb_msgvault_lock_value "host")"
+  current_host="$(hostname 2>/dev/null || echo "unknown")"
+
+  if [[ -n "${lock_host}" && "${lock_host}" != "${current_host}" ]]; then
+    return 0
+  fi
+
+  if [[ ! "${lock_pid}" =~ ^[0-9]+$ ]]; then
+    return 1
+  fi
+
+  kill -0 "${lock_pid}" 2>/dev/null || return 1
+
+  if [[ -r "/proc/${lock_pid}/cmdline" ]]; then
+    lock_cmdline="$(tr '\0' ' ' <"/proc/${lock_pid}/cmdline" 2>/dev/null || echo "")"
+    case "${lock_cmdline}" in
+    *msgvault.sh* | *msgvault-manual-sync.sh*)
+      return 0
+      ;;
+    *)
+      return 1
+      ;;
+    esac
+  fi
+
+  return 0
+}
+
+dnb_msgvault_remove_stale_lock() {
+  [[ -f "${LOCK_FILE}" ]] || return 1
+
+  if dnb_msgvault_lock_is_active; then
+    return 1
+  fi
+
+  {
+    echo "============================================================"
+    echo "Stale lock removed: $(date --iso-8601=seconds)"
+    echo "Lock file: ${LOCK_FILE}"
+    echo "Previous lock content:"
+    sed 's/^/  /' "${LOCK_FILE}" 2>/dev/null || echo "  Could not read lock file."
+    echo "============================================================"
+    echo
+  } >>"${LOG_FILE}"
+
+  rm -f "${LOCK_FILE}"
+}
+
 dnb_msgvault_create_lock() {
   local started_at
   local host_name
+  local attempt
 
   started_at="$(date --iso-8601=seconds)"
   host_name="$(hostname 2>/dev/null || echo "unknown")"
 
-  if ! (
-    set -o noclobber
-    {
-      echo "started_at=${started_at}"
-      echo "pid=$$"
-      echo "host=${host_name}"
-      echo "log_file=${LOG_FILE}"
-    } >"${LOCK_FILE}"
-  ) 2>/dev/null; then
+  for attempt in 1 2; do
+    if (
+      set -o noclobber
+      {
+        echo "started_at=${started_at}"
+        echo "pid=$$"
+        echo "host=${host_name}"
+        echo "log_file=${LOG_FILE}"
+        echo "mode=cron"
+      } >"${LOCK_FILE}"
+    ) 2>/dev/null; then
+      return 0
+    fi
+
+    if [[ "${attempt}" -eq 1 ]] && dnb_msgvault_remove_stale_lock; then
+      continue
+    fi
+
     {
       echo "============================================================"
       echo "Run skipped: $(date --iso-8601=seconds)"
@@ -80,9 +153,9 @@ dnb_msgvault_create_lock() {
     } >>"${LOG_FILE}"
 
     return 1
-  fi
+  done
 
-  return 0
+  return 1
 }
 
 # dnb_msgvault_cleanup_lock
@@ -102,6 +175,14 @@ dnb_msgvault_cleanup_lock() {
   if [[ -f "${LOCK_FILE}" ]] && grep -qx "pid=$$" "${LOCK_FILE}" 2>/dev/null; then
     rm -f "${LOCK_FILE}"
   fi
+}
+
+dnb_msgvault_abort() {
+  local exit_code="${1:-143}"
+
+  dnb_msgvault_log "Run interrupted: $(date --iso-8601=seconds)"
+  dnb_msgvault_cleanup_lock
+  exit "${exit_code}"
 }
 
 # dnb_msgvault_report_failure
@@ -342,6 +423,9 @@ if ! dnb_msgvault_create_lock; then
 fi
 
 trap dnb_msgvault_cleanup_lock EXIT
+trap 'dnb_msgvault_abort 129' HUP
+trap 'dnb_msgvault_abort 130' INT
+trap 'dnb_msgvault_abort 143' TERM
 
 if [[ ! -x "${MSGVAULT_BIN}" ]]; then
   failure_reason="msgvault binary not found or not executable: ${MSGVAULT_BIN}"
