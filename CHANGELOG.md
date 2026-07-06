@@ -1,5 +1,36 @@
 # Changelog
 
+## [3004.1.0](https://github.com/davidsneighbour/dotfiles/compare/v3004.0.1...v3004.1.0) (2026-07-06)
+
+### Features
+
+* add dus alias to show summarized folder size ([9203e7d](https://github.com/davidsneighbour/dotfiles/commit/9203e7dccba228377bb8f2106582bfe332a007e3))
+* **launchers:** add Google Tasks launcher ([9df93b9](https://github.com/davidsneighbour/dotfiles/commit/9df93b9e3537c0ca53fa7e8a3e613a90cce00559))
+
+### Bug Fixes
+
+* **polybar:** make msgvault manual sync visible ([6b5f801](https://github.com/davidsneighbour/dotfiles/commit/6b5f80111c1cedcbbf20e2503270f9f1d7df78a6))
+* **starship:** remove config.ext from lookup for Hugo ([4c33563](https://github.com/davidsneighbour/dotfiles/commit/4c335636f4560b20226e1027cbcf1306f4f89c59))
+
+### Configuration
+
+* **ncu:** update ncu configuration ([b8673ed](https://github.com/davidsneighbour/dotfiles/commit/b8673edc6f2e3ec3f2b1a4e380024a4af2cfd08c))
+
+### Documentation
+
+* **ai:** add logfile pruning prompt ([237ac66](https://github.com/davidsneighbour/dotfiles/commit/237ac660148df7da00ef7c4660a8d79b31ec3078))
+
+### Build
+
+* **deps:** bump actions/checkout from 6.0.2 to 7.0.0 ([#523](https://github.com/davidsneighbour/dotfiles/issues/523)) ([12f0451](https://github.com/davidsneighbour/dotfiles/commit/12f04510954687f37a9c46220072b5cc68b5928d))
+* **fix:** proper autostarts for barrier and obsidian ([2565237](https://github.com/davidsneighbour/dotfiles/commit/256523735b4f392f05750e97ba1b9932763a4fa6))
+* **fix:** remove gmailctl submodule ([ca6bedb](https://github.com/davidsneighbour/dotfiles/commit/ca6bedb80e113303ac01796405302755c42c3a70))
+
+### Chore
+
+* **assets:** update skyline stats for 2026 ([40711f4](https://github.com/davidsneighbour/dotfiles/commit/40711f45ddf6ef3f4ce70a811ab232723c3d7099))
+* **git:** update submodules ([073b2b3](https://github.com/davidsneighbour/dotfiles/commit/073b2b34c460b676420c638e73c2801f6d0cf2e1))
+
 ## [3004.0.1](https://github.com/davidsneighbour/dotfiles/compare/v3004.0.0...v3004.0.1) (2026-07-01)
 
 ### Documentation
