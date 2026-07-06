@@ -5,12 +5,33 @@ set -uo pipefail
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:${HOME}/.local/bin"
 
 SCRIPT_NAME="$(basename "${0}")"
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+DNB_MSGVAULT_CONFIG_FILE="${DNB_MSGVAULT_CONFIG_FILE:-${SCRIPT_DIR}/config.env}"
+DNB_MSGVAULT_CONFIG_BACKUP_DIR=""
+
+if [[ -f "${DNB_MSGVAULT_CONFIG_FILE}" ]]; then
+  # shellcheck disable=SC1090
+  if ! source "${DNB_MSGVAULT_CONFIG_FILE}"; then
+    echo "ERROR: could not load msgvault config: ${DNB_MSGVAULT_CONFIG_FILE}" >&2
+    exit 1
+  fi
+elif [[ -z "${DNB_MSGVAULT_BACKUP_DIR:-}" ]]; then
+  echo "ERROR: msgvault config file not found: ${DNB_MSGVAULT_CONFIG_FILE}" >&2
+  exit 1
+fi
+
 LOG_BASE_DIR="${HOME}/.logs/msgvault"
 LOG_FILE="${LOG_BASE_DIR}/sync-$(date +%Y%m%d).log"
 LOCK_FILE="${LOG_BASE_DIR}/msgvault.lock"
 MSGVAULT_BIN="${HOME}/.local/bin/msgvault"
 MSGVAULT_DIR="${DNB_MSGVAULT_DIR:-${HOME}/.msgvault}"
-MSGVAULT_BACKUP_DIR="${DNB_MSGVAULT_BACKUP_DIR:-/mnt/storage/Backup/msgvault}"
+MSGVAULT_BACKUP_DIR="${DNB_MSGVAULT_BACKUP_DIR:-${DNB_MSGVAULT_CONFIG_BACKUP_DIR}}"
+
+if [[ -z "${MSGVAULT_BACKUP_DIR}" ]]; then
+  echo "ERROR: msgvault backup directory is not configured." >&2
+  exit 1
+fi
+
 MSGVAULT_BACKUP_INTERVAL_HOURS="${DNB_MSGVAULT_BACKUP_INTERVAL_HOURS:-6}"
 MSGVAULT_BACKUP_LAST_SUCCESS_FILE="${MSGVAULT_BACKUP_DIR}/last-successful-backup.txt"
 MSGVAULT_BACKUP_LOG_FILE="${LOG_BASE_DIR}/backup-$(date +%Y%m%d-%H%M).log"
@@ -36,7 +57,8 @@ Options:
 
 Environment:
   DNB_MSGVAULT_DIR                 msgvault home directory.
-  DNB_MSGVAULT_BACKUP_DIR          legacy backup directory value.
+  DNB_MSGVAULT_CONFIG_FILE         sourceable config file.
+  DNB_MSGVAULT_BACKUP_DIR          override configured backup directory.
   DNB_MSGVAULT_BACKUP_INTERVAL_HOURS
   DNB_POLYBAR_ISSUES_FILE          Polybar issues file.
   DNB_MSGVAULT_POLYBAR_ISSUE_ID    Polybar issue id.

@@ -16,7 +16,7 @@
 
     - cron: "30 3 * * *"
       comment: "daily msgvault backup"
-      command: LOG_FILE="${HOME}/.logs/msgvault/backup-$(date +\%Y\%m\%d-\%H\%M).log"; mkdir -p "${HOME}/.logs/msgvault" && DNB_MSGVAULT_BACKUP_LOG_FILE="${LOG_FILE}" DNB_MSGVAULT_LOG_TO_STDOUT=0 ${HOME}/.dotfiles/bashrc/helpers/msgvault/backup --source "${HOME}/.msgvault" --target "/mnt/storage/02_BACKUP/MSGVAULT/" >> "${LOG_FILE}" 2>&1
+      command: LOG_FILE="${HOME}/.logs/msgvault/backup-$(date +\%Y\%m\%d-\%H\%M).log"; mkdir -p "${HOME}/.logs/msgvault" && DNB_MSGVAULT_BACKUP_LOG_FILE="${LOG_FILE}" DNB_MSGVAULT_LOG_TO_STDOUT=0 ${HOME}/.dotfiles/bashrc/helpers/msgvault/backup --source "${HOME}/.msgvault" >> "${LOG_FILE}" 2>&1
 
     - cron: "15 15 * * *"
       comment: "daily docker container backup"

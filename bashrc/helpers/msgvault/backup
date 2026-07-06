@@ -4,8 +4,23 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 SCRIPT_NAME="$(basename "${0}")"
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+DNB_MSGVAULT_CONFIG_FILE="${DNB_MSGVAULT_CONFIG_FILE:-${SCRIPT_DIR}/config.env}"
+DNB_MSGVAULT_CONFIG_BACKUP_DIR=""
+
+if [[ -f "${DNB_MSGVAULT_CONFIG_FILE}" ]]; then
+  # shellcheck disable=SC1090
+  if ! source "${DNB_MSGVAULT_CONFIG_FILE}"; then
+    echo "ERROR: could not load msgvault config: ${DNB_MSGVAULT_CONFIG_FILE}" >&2
+    exit 1
+  fi
+elif [[ -z "${DNB_MSGVAULT_BACKUP_DIR:-}" ]]; then
+  echo "ERROR: msgvault config file not found: ${DNB_MSGVAULT_CONFIG_FILE}" >&2
+  exit 1
+fi
+
 DEFAULT_SOURCE="${HOME}/.msgvault"
-DEFAULT_TARGET="/mnt/storage/02_BACKUP/MSGVAULT/"
+DEFAULT_TARGET="${DNB_MSGVAULT_BACKUP_DIR:-${DNB_MSGVAULT_CONFIG_BACKUP_DIR}}"
 LOG_DIR="${HOME}/.logs/msgvault"
 LOG_FILE="${DNB_MSGVAULT_BACKUP_LOG_FILE:-${LOG_DIR}/backup-$(date +%Y%m%d-%H%M).log}"
 LOG_TO_STDOUT="${DNB_MSGVAULT_LOG_TO_STDOUT:-1}"
@@ -40,6 +55,11 @@ Options:
   --quiet            Disable verbose mode even when DNB_VERBOSE=1.
   --help             Show this help.
 
+Configuration:
+  ${DNB_MSGVAULT_CONFIG_FILE}
+    DNB_MSGVAULT_CONFIG_BACKUP_DIR sets the default backup repository.
+  DNB_MSGVAULT_BACKUP_DIR overrides the configured default.
+
 Secret handling:
   This wrapper intentionally does not pass --include-config, --include-tokens,
   or --allow-plaintext-secrets. msgvault v0.17.0 backup repositories are not
@@ -51,7 +71,7 @@ Examples:
   ${SCRIPT_NAME}
   ${SCRIPT_NAME} --dry-run
   ${SCRIPT_NAME} --verify-all
-  ${SCRIPT_NAME} --source "\${HOME}/.msgvault" --target "/mnt/storage/02_BACKUP/MSGVAULT/"
+  ${SCRIPT_NAME} --source "\${HOME}/.msgvault" --target "${DEFAULT_TARGET}"
 HELP
 }
 

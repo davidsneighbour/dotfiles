@@ -127,8 +127,18 @@ Creates and verifies a msgvault backup snapshot repository using `msgvault backu
 Default paths:
 
 * Source: `~/.msgvault`
-* Target: `/mnt/storage/02_BACKUP/MSGVAULT/`
+* Target: `DNB_MSGVAULT_CONFIG_BACKUP_DIR` from `bashrc/helpers/msgvault/config.env`
 * Backup log file: `~/.logs/msgvault/backup-YYYYMMDD-HHMM.log`
+
+The backup target is configured in the sourceable `config.env` file in this
+folder:
+
+```bash
+DNB_MSGVAULT_CONFIG_BACKUP_DIR="/mnt/storage/02_BACKUP/MSGVAULT"
+```
+
+Set `DNB_MSGVAULT_BACKUP_DIR` in the environment to override the configured
+default for one run.
 
 What it backs up:
 
@@ -147,7 +157,7 @@ msgvault v0.17.0 backup repositories are not encrypted yet, and config/tokens ma
 CLI option notes:
 
 * --source PATH — msgvault home directory; default is `~/.msgvault`.
-* --target PATH — msgvault backup repository; default is `/mnt/storage/02_BACKUP/MSGVAULT/`.
+* --target PATH — msgvault backup repository; default comes from `config.env`.
 * --tag TAG — snapshot label; defaults to `msgvault-YYYYMMDD-HHMMSS`.
 * --skip-verify — skip verification after the snapshot is created.
 * --verify-all — run a full verification of all snapshots.
@@ -162,15 +172,16 @@ Manual usage examples:
 bashrc/helpers/msgvault/backup
 bashrc/helpers/msgvault/backup --dry-run
 bashrc/helpers/msgvault/backup --verify-all
-bashrc/helpers/msgvault/backup --source "${HOME}/.msgvault" --target "/mnt/storage/02_BACKUP/MSGVAULT/"
+bashrc/helpers/msgvault/backup --source "${HOME}/.msgvault"
 ```
 
 Restore-test manually into a temporary directory:
 
 ```bash
 rm -rf /tmp/msgvault-restore-test
+source bashrc/helpers/msgvault/config.env
 msgvault --home "${HOME}/.msgvault" backup restore \
-  --repo "/mnt/storage/02_BACKUP/MSGVAULT/" \
+  --repo "${DNB_MSGVAULT_CONFIG_BACKUP_DIR}" \
   --target /tmp/msgvault-restore-test
 
 msgvault --home /tmp/msgvault-restore-test stats
@@ -179,7 +190,7 @@ msgvault --home /tmp/msgvault-restore-test stats
 The daily `locutus` backup cron entry is managed in `configs/dotbot/config.host-locutus.yaml`:
 
 ```cron
-30 3 * * * LOG_FILE="${HOME}/.logs/msgvault/backup-$(date +\%Y\%m\%d-\%H\%M).log"; mkdir -p "${HOME}/.logs/msgvault" && DNB_MSGVAULT_BACKUP_LOG_FILE="${LOG_FILE}" DNB_MSGVAULT_LOG_TO_STDOUT=0 ${HOME}/.dotfiles/bashrc/helpers/msgvault/backup --source "${HOME}/.msgvault" --target "/mnt/storage/02_BACKUP/MSGVAULT/" >> "${LOG_FILE}" 2>&1
+30 3 * * * LOG_FILE="${HOME}/.logs/msgvault/backup-$(date +\%Y\%m\%d-\%H\%M).log"; mkdir -p "${HOME}/.logs/msgvault" && DNB_MSGVAULT_BACKUP_LOG_FILE="${LOG_FILE}" DNB_MSGVAULT_LOG_TO_STDOUT=0 ${HOME}/.dotfiles/bashrc/helpers/msgvault/backup --source "${HOME}/.msgvault" >> "${LOG_FILE}" 2>&1
 ```
 
 Functions/methods defined:
