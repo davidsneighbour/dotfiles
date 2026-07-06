@@ -86,7 +86,7 @@
     ~/.config/github-label-manager: configs/system/git/github-label-manager
 
     # node configs
-    ~/.ncurc.js: configs/system/npm/ncu.cjs
+    ~/.ncurc.js: configs/system/npm/ncu.js
     ~/.nvm/default-packages: configs/system/npm/default-packages
 
     # qbittorrent
