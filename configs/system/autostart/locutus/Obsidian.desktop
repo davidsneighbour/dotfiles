@@ -1,0 +1,12 @@
+[Desktop Entry]
+Encoding=UTF-8
+Version=0.9.4
+Type=Application
+Name=Obsidian
+Comment=
+Exec=/bin/bash -lc "/home/patrick/.dotfiles/bashrc/workspaces/ws_launch_program  --exec \\"obsidian vault=notes\\" --tile right-70 --workspace 5 --switch"
+OnlyShowIn=XFCE;
+RunHook=0
+StartupNotify=false
+Terminal=false
+Hidden=false
