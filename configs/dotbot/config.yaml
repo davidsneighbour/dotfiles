@@ -41,7 +41,6 @@
     ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfwm4.xml: configs/system/xfce/xfwm4.xml
 
     # workspaces setup
-    ~/github.com/davidsneighbour/gmailctl-config: modules/gmailctl
     ~/github.com/davidsneighbour/dotfiles-protected: modules/protected
 
     # system setup

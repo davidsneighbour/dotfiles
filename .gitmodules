@@ -4,6 +4,3 @@
 [submodule "modules/protected"]
 	path = modules/protected
 	url = git@github.com:davidsneighbour/dotfiles-protected.git
-[submodule "modules/gmailctl"]
-	path = modules/gmailctl
-	url = git@github.com:davidsneighbour/gmailctl-config.git
