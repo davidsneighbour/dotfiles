@@ -155,6 +155,10 @@ Requirements:
 
 * bash, zip, git for .gitignore handling, optional python3/toml helper libraries from bashrc/lib.
 
+### `msgvault/`
+
+Contains msgvault sync, backup, indicator, and manual helper commands used by cron and Polybar. See [`msgvault/DOCUMENTATION.md`](./msgvault/DOCUMENTATION.md).
+
 ### `node-run`
 
 Runs a Node/TypeScript script through nvm with optional Node version installation and working-directory control.

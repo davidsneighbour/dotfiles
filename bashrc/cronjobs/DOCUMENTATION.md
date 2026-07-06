@@ -1,4 +1,4 @@
-# bashrc/cronjobs documentation
+# Bashrc/cronjobs documentation
 
 This folder contains standalone automation intended for cron or scheduled execution. Cron entries should redirect output into timestamped logs under `~/.logs/<functionality>/YYYYMMDD-HHMMSS.log` when installed.
 
@@ -51,12 +51,6 @@ Documented internal helper functions and their option contracts:
 * `process_repo --path DIR [--branch NAME] [--remote NAME] [--url URL]` — processes one repository.
 
 Requirements: Bash, `git`, `curl` for Discord notifications, and parser tools used by the config implementation (`jq`, Python, or language-specific parsers depending on config type). Network access is required for fetch/clone and Discord.
-
-## `msgvault.sh`
-
-Runs `msgvault sync --verbose`, logs the run, and records a Polybar issue when sync fails.
-
-Requirements: Bash, `msgvault`, configured log directory, and the Polybar issue command/path expected by `add_polybar_issue`.
 
 ## `synch_downloads.json`
 

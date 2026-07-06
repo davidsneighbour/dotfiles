@@ -4,8 +4,8 @@ set -Eeuo pipefail
 
 SCRIPT_NAME="$(basename "${BASH_SOURCE[0]}")"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
-DOTFILES_DIR="${DNB_DOTFILES_DIR:-$(cd "${SCRIPT_DIR}/../../../.." && pwd -P)}"
-LOG_DIR="${DNB_MSGVAULT_MANUAL_LOG_DIR:-${HOME}/.logs/msgvault/manual}"
+DOTFILES_DIR="${DNB_DOTFILES_DIR:-$(cd "${SCRIPT_DIR}/../../.." && pwd -P)}"
+LOG_DIR="${DNB_MSGVAULT_MANUAL_LOG_DIR:-${HOME}/.logs/msgvault}"
 LOCK_FILE="${DNB_MSGVAULT_LOCK_FILE:-${HOME}/.logs/msgvault/msgvault.lock}"
 MSGVAULT_BIN="${DNB_MSGVAULT_BIN:-${HOME}/.local/bin/msgvault}"
 PAUSE_ON_EXIT="0"
@@ -22,7 +22,7 @@ Usage:
 
 Options:
   --msgvault-bin <path>  msgvault executable path (default: ~/.local/bin/msgvault).
-  --log-dir <path>      Manual log directory (default: ~/.logs/msgvault/manual).
+  --log-dir <path>      Manual log directory (default: ~/.logs/msgvault).
   --lock-file <path>    Shared msgvault lock file (default: ~/.logs/msgvault/msgvault.lock).
   --pause-on-exit       Wait for Enter before exiting, useful from Polybar terminals.
   --verbose             Print extra progress messages.
@@ -101,7 +101,7 @@ source_libs() {
 
 init_logging() {
   mkdir -p "${LOG_DIR}"
-  DNB_SETUP_LOG_FILE="${LOG_DIR}/$(date +%Y%m%d-%H%M%S).log"
+  DNB_SETUP_LOG_FILE="${LOG_DIR}/manual-$(date +%Y%m%d-%H%M).log"
   export DNB_SETUP_LOG_FILE
   LOG_FILE="$(dnb_log_init)"
 }
@@ -204,7 +204,7 @@ lock_is_active() {
   if [[ -r "/proc/${lock_pid}/cmdline" ]]; then
     lock_cmdline="$(tr '\0' ' ' <"/proc/${lock_pid}/cmdline" 2>/dev/null || echo "")"
     case "${lock_cmdline}" in
-    *msgvault.sh* | *msgvault-manual-sync.sh*)
+    *msgvault/sync.sh* | *msgvault/manual-sync.sh* | *msgvault.sh* | *msgvault-manual-sync.sh*)
       return 0
       ;;
     *)

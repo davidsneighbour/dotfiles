@@ -68,6 +68,7 @@ seconds_since_last_run() {
   local age_seconds=""
   local log_file=""
   local log_mtime=""
+  local -a log_files=()
 
   if [[ ! -d "${LOG_DIR}" ]]; then
     printf -- '-1'
@@ -75,7 +76,8 @@ seconds_since_last_run() {
   fi
 
   shopt -s nullglob
-  for log_file in "${LOG_DIR}"/*.log; do
+  log_files=("${LOG_DIR}"/sync-*.log "${LOG_DIR}"/manual-*.log)
+  for log_file in "${log_files[@]}"; do
     log_mtime="$(stat -c %Y "${log_file}" 2>/dev/null || printf -- '-1')"
     if [[ ! "${log_mtime}" =~ ^[0-9]+$ ]]; then
       continue

@@ -4,19 +4,83 @@ set -uo pipefail
 
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:${HOME}/.local/bin"
 
+SCRIPT_NAME="$(basename "${0}")"
 LOG_BASE_DIR="${HOME}/.logs/msgvault"
-LOG_FILE="${LOG_BASE_DIR}/$(date +%Y%m%d).log"
+LOG_FILE="${LOG_BASE_DIR}/sync-$(date +%Y%m%d).log"
 LOCK_FILE="${LOG_BASE_DIR}/msgvault.lock"
 MSGVAULT_BIN="${HOME}/.local/bin/msgvault"
 MSGVAULT_DIR="${DNB_MSGVAULT_DIR:-${HOME}/.msgvault}"
 MSGVAULT_BACKUP_DIR="${DNB_MSGVAULT_BACKUP_DIR:-/mnt/storage/Backup/msgvault}"
 MSGVAULT_BACKUP_INTERVAL_HOURS="${DNB_MSGVAULT_BACKUP_INTERVAL_HOURS:-6}"
 MSGVAULT_BACKUP_LAST_SUCCESS_FILE="${MSGVAULT_BACKUP_DIR}/last-successful-backup.txt"
-MSGVAULT_BACKUP_LOG_FILE="${MSGVAULT_BACKUP_DIR}/backup.log"
+MSGVAULT_BACKUP_LOG_FILE="${LOG_BASE_DIR}/backup-$(date +%Y%m%d-%H%M).log"
 MSGVAULT_BACKUP_LOCK_FILE="${MSGVAULT_BACKUP_DIR}/backup.lock"
 POLYBAR_ISSUES_FILE="${DNB_POLYBAR_ISSUES_FILE:-${HOME}/.config/polybar/issues.toml}"
 POLYBAR_ISSUE_ID="${DNB_MSGVAULT_POLYBAR_ISSUE_ID:-msgvault-sync}"
+QUIET="false"
+VERBOSE="false"
 
+print_help() {
+  cat <<HELP
+Usage:
+  ${SCRIPT_NAME} [options]
+
+Description:
+  Run msgvault sync for scheduled automation. The sync log is written to
+  ${LOG_FILE}. Backups are handled by bashrc/helpers/msgvault/backup.
+
+Options:
+  --verbose  Enable verbose helper diagnostics through DNB_VERBOSE=1.
+  --quiet    Disable helper diagnostics, even when DNB_VERBOSE=1.
+  --help     Show this help.
+
+Environment:
+  DNB_MSGVAULT_DIR                 msgvault home directory.
+  DNB_MSGVAULT_BACKUP_DIR          legacy backup directory value.
+  DNB_MSGVAULT_BACKUP_INTERVAL_HOURS
+  DNB_POLYBAR_ISSUES_FILE          Polybar issues file.
+  DNB_MSGVAULT_POLYBAR_ISSUE_ID    Polybar issue id.
+HELP
+}
+
+parse_arguments() {
+  while [[ "${#}" -gt 0 ]]; do
+    case "${1}" in
+    --verbose)
+      VERBOSE="true"
+      export DNB_VERBOSE="1"
+      shift
+      ;;
+    --quiet)
+      QUIET="true"
+      shift
+      ;;
+    --help)
+      print_help
+      exit 0
+      ;;
+    --*)
+      echo "ERROR: unknown option: ${1}" >&2
+      print_help >&2
+      exit 1
+      ;;
+    *)
+      echo "ERROR: positional arguments are not supported: ${1}" >&2
+      print_help >&2
+      exit 1
+      ;;
+    esac
+  done
+
+  if [[ "${QUIET}" == "true" ]]; then
+    VERBOSE="false"
+    unset DNB_VERBOSE
+  elif [[ "${DNB_VERBOSE:-}" == "1" ]]; then
+    VERBOSE="true"
+  fi
+}
+
+parse_arguments "$@"
 mkdir -p "${LOG_BASE_DIR}"
 
 # dnb_msgvault_log
@@ -84,7 +148,7 @@ dnb_msgvault_lock_is_active() {
   if [[ -r "/proc/${lock_pid}/cmdline" ]]; then
     lock_cmdline="$(tr '\0' ' ' <"/proc/${lock_pid}/cmdline" 2>/dev/null || echo "")"
     case "${lock_cmdline}" in
-    *msgvault.sh* | *msgvault-manual-sync.sh*)
+    *msgvault/sync.sh* | *msgvault/manual-sync.sh* | *msgvault.sh* | *msgvault-manual-sync.sh*)
       return 0
       ;;
     *)
@@ -386,36 +450,24 @@ dnb_msgvault_run_backup() {
 
 # dnb_msgvault_maybe_run_backup
 #
-# Run a msgvault backup when the configured interval is due.
+# Preserve the old sync cronjob call site while backups are managed by the
+# dedicated msgvault/backup helper.
 #
 # Parameters:
 #   None.
 #
 # Behaviour:
-#   Checks the last successful backup marker and runs dnb_msgvault_run_backup
-#   when enough time has passed. Returns 0 when no backup is due or when backup
-#   succeeds. Returns non-zero on interval validation or backup failure.
+#   Logs that backup is handled separately and returns success so the sync
+#   cronjob does not mirror config files or OAuth tokens.
 #
 # Example:
 #   dnb_msgvault_maybe_run_backup
 dnb_msgvault_maybe_run_backup() {
-  local backup_due_exit_code
-
-  dnb_msgvault_backup_is_due
-  backup_due_exit_code="$?"
-
-  if [[ "${backup_due_exit_code}" -eq 1 ]]; then
-    dnb_msgvault_log "Backup skipped: interval has not elapsed"
-    return 0
+  if [[ "${VERBOSE}" == "true" ]]; then
+    dnb_msgvault_log "Backup skipped: managed separately by bashrc/helpers/msgvault/backup."
   fi
 
-  if [[ "${backup_due_exit_code}" -ne 0 ]]; then
-    dnb_msgvault_log "ERROR: could not determine backup interval"
-    return "${backup_due_exit_code}"
-  fi
-
-  dnb_msgvault_log "Backup due: running msgvault backup"
-  dnb_msgvault_run_backup
+  return 0
 }
 
 if ! dnb_msgvault_create_lock; then

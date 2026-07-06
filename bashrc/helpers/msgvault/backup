@@ -1,0 +1,377 @@
+#!/bin/bash
+
+set -Eeuo pipefail
+IFS=$'\n\t'
+
+SCRIPT_NAME="$(basename "${0}")"
+DEFAULT_SOURCE="${HOME}/.msgvault"
+DEFAULT_TARGET="/mnt/storage/02_BACKUP/MSGVAULT/"
+LOG_DIR="${HOME}/.logs/msgvault"
+LOG_FILE="${DNB_MSGVAULT_BACKUP_LOG_FILE:-${LOG_DIR}/backup-$(date +%Y%m%d-%H%M).log}"
+LOG_TO_STDOUT="${DNB_MSGVAULT_LOG_TO_STDOUT:-1}"
+
+SOURCE="${DEFAULT_SOURCE}"
+TARGET="${DEFAULT_TARGET}"
+TAG=""
+SKIP_VERIFY="false"
+VERIFY_ALL="false"
+DRY_RUN="false"
+VERBOSE="false"
+QUIET="false"
+
+print_help() {
+  cat <<HELP
+Usage:
+  ${SCRIPT_NAME} [options]
+
+Description:
+  Create a msgvault backup snapshot repository from a local msgvault home.
+  By default this captures the SQLite archive database, attachments, and
+  deleted-content audit data when present.
+
+Options:
+  --source <path>    msgvault home directory (default: ${DEFAULT_SOURCE})
+  --target <path>    msgvault backup repository (default: ${DEFAULT_TARGET})
+  --tag <tag>        Snapshot tag. Defaults to msgvault-YYYYMMDD-HHMMSS.
+  --skip-verify      Do not verify after creating the snapshot.
+  --verify-all       Run full verification of all snapshots after create.
+  --dry-run          Print planned commands without changing files.
+  --verbose          Print additional progress and pass verbose mode to msgvault.
+  --quiet            Disable verbose mode even when DNB_VERBOSE=1.
+  --help             Show this help.
+
+Secret handling:
+  This wrapper intentionally does not pass --include-config, --include-tokens,
+  or --allow-plaintext-secrets. msgvault v0.17.0 backup repositories are not
+  encrypted yet, and config/tokens may contain live credentials. Handle those
+  files through a separate encrypted system backup until msgvault ships
+  encryption, retention, and pruning support.
+
+Examples:
+  ${SCRIPT_NAME}
+  ${SCRIPT_NAME} --dry-run
+  ${SCRIPT_NAME} --verify-all
+  ${SCRIPT_NAME} --source "\${HOME}/.msgvault" --target "/mnt/storage/02_BACKUP/MSGVAULT/"
+HELP
+}
+
+log_line() {
+  local level="${1}"
+  local message="${2}"
+  local timestamp=""
+  local formatted_line=""
+
+  timestamp="$(date '+%Y-%m-%d %H:%M:%S')"
+  mkdir -p "${LOG_DIR}"
+  printf -v formatted_line '%s %-5s %s\n' "${timestamp}" "${level}" "${message}"
+  printf '%s' "${formatted_line}" >>"${LOG_FILE}"
+
+  if [[ "${LOG_TO_STDOUT}" != "1" ]]; then
+    return 0
+  fi
+
+  if [[ "${level}" == "ERROR" || "${level}" == "WARN" ]]; then
+    printf '%s' "${formatted_line}" >&2
+    return 0
+  fi
+
+  printf '%s' "${formatted_line}"
+}
+
+log_info() {
+  log_line "INFO" "${1}"
+}
+
+log_verbose() {
+  if [[ "${VERBOSE}" == "true" ]]; then
+    log_line "INFO" "${1}"
+  fi
+}
+
+die() {
+  log_line "ERROR" "${1}"
+  exit 1
+}
+
+handle_error() {
+  local line_number="${1}"
+  local command_text="${2}"
+
+  log_line "ERROR" "Command failed at line ${line_number}: ${command_text}"
+}
+
+shell_quote() {
+  local output=""
+  local value=""
+
+  for value in "$@"; do
+    printf -v value '%q' "${value}"
+    if [[ -z "${output}" ]]; then
+      output="${value}"
+    else
+      output+=" ${value}"
+    fi
+  done
+
+  printf '%s\n' "${output}"
+}
+
+run_command() {
+  local -a command_args=("$@")
+
+  if [[ "${DRY_RUN}" == "true" ]]; then
+    log_info "DRY RUN: $(shell_quote "${command_args[@]}")"
+    return 0
+  fi
+
+  log_verbose "Running: $(shell_quote "${command_args[@]}")"
+  "${command_args[@]}"
+}
+
+require_command() {
+  local command_name="${1}"
+
+  if ! command -v "${command_name}" >/dev/null 2>&1; then
+    die "Required command not found: ${command_name}"
+  fi
+}
+
+target_is_empty() {
+  local first_entry=""
+
+  first_entry="$(find "${TARGET}" -mindepth 1 -maxdepth 1 -print -quit 2>/dev/null || true)"
+  [[ -z "${first_entry}" ]]
+}
+
+target_has_repository_shape() {
+  local required_dir=""
+  local -a required_dirs=(indexes keys locks packs snapshots staging)
+
+  [[ -f "${TARGET}/config.toml" ]] || return 1
+  grep -Eq '^repo_id[[:space:]]*=' "${TARGET}/config.toml" || return 1
+  grep -Eq '^format_version[[:space:]]*=' "${TARGET}/config.toml" || return 1
+  grep -Eq '^min_reader_version[[:space:]]*=' "${TARGET}/config.toml" || return 1
+
+  for required_dir in "${required_dirs[@]}"; do
+    [[ -d "${TARGET}/${required_dir}" ]] || return 1
+  done
+}
+
+msgvault_base_command() {
+  local -n output_ref="${1}"
+
+  output_ref=(msgvault --home "${SOURCE}" --no-log-file)
+
+  if [[ "${VERBOSE}" == "true" ]]; then
+    output_ref+=(--verbose)
+  fi
+}
+
+verify_repository_readable() {
+  local -a command_args=()
+
+  msgvault_base_command command_args
+  command_args+=(backup list --repo "${TARGET}")
+  run_command "${command_args[@]}" >/dev/null
+}
+
+init_repository() {
+  local -a command_args=()
+
+  msgvault_base_command command_args
+  command_args+=(backup init --repo "${TARGET}")
+  run_command "${command_args[@]}"
+}
+
+ensure_repository() {
+  if [[ "${DRY_RUN}" == "true" ]]; then
+    if [[ ! -e "${TARGET}" ]]; then
+      log_info "DRY RUN: would create target directory: ${TARGET}"
+      log_info "DRY RUN: would initialise missing msgvault backup repository."
+      return 0
+    fi
+
+    if [[ -d "${TARGET}" ]] && target_has_repository_shape; then
+      log_info "DRY RUN: target looks like an initialized msgvault backup repository."
+      return 0
+    fi
+
+    if [[ -d "${TARGET}" ]] && target_is_empty; then
+      log_info "DRY RUN: would initialise empty target directory: ${TARGET}"
+      return 0
+    fi
+
+    die "Target exists but is not an empty or recognizable msgvault backup repository: ${TARGET}"
+  fi
+
+  if [[ ! -e "${TARGET}" ]]; then
+    log_info "Creating target directory: ${TARGET}"
+    mkdir -p "${TARGET}"
+    log_info "Initializing msgvault backup repository."
+    init_repository
+    return 0
+  fi
+
+  [[ -d "${TARGET}" ]] || die "Target exists but is not a directory: ${TARGET}"
+
+  if target_has_repository_shape; then
+    log_info "Using existing msgvault backup repository: ${TARGET}"
+    verify_repository_readable
+    return 0
+  fi
+
+  if target_is_empty; then
+    log_info "Initializing empty msgvault backup repository: ${TARGET}"
+    init_repository
+    return 0
+  fi
+
+  die "Target exists, is not empty, and does not look like a msgvault backup repository: ${TARGET}"
+}
+
+create_default_tag() {
+  printf 'msgvault-%s\n' "$(date +%Y%m%d-%H%M%S)"
+}
+
+create_backup() {
+  local -a command_args=()
+
+  msgvault_base_command command_args
+  command_args+=(backup create --repo "${TARGET}" --tag "${TAG}")
+  run_command "${command_args[@]}"
+}
+
+verify_backup() {
+  local -a command_args=()
+
+  if [[ "${SKIP_VERIFY}" == "true" ]]; then
+    log_info "Verification skipped by --skip-verify."
+    return 0
+  fi
+
+  msgvault_base_command command_args
+  command_args+=(backup verify --repo "${TARGET}" --all)
+
+  if [[ "${VERIFY_ALL}" != "true" ]]; then
+    command_args+=(--quick)
+    log_info "Running quick verification for all snapshots."
+  else
+    log_info "Running full verification for all snapshots."
+  fi
+
+  run_command "${command_args[@]}"
+}
+
+list_backups() {
+  local -a command_args=()
+
+  msgvault_base_command command_args
+  command_args+=(backup list --repo "${TARGET}")
+  run_command "${command_args[@]}"
+}
+
+parse_arguments() {
+  if [[ "${#}" -eq 0 ]]; then
+    return 0
+  fi
+
+  while [[ "${#}" -gt 0 ]]; do
+    case "${1}" in
+    --source)
+      [[ -n "${2:-}" ]] || die "--source requires a path."
+      SOURCE="${2}"
+      shift 2
+      ;;
+    --target)
+      [[ -n "${2:-}" ]] || die "--target requires a path."
+      TARGET="${2}"
+      shift 2
+      ;;
+    --tag)
+      [[ -n "${2:-}" ]] || die "--tag requires a value."
+      TAG="${2}"
+      shift 2
+      ;;
+    --skip-verify)
+      SKIP_VERIFY="true"
+      shift
+      ;;
+    --verify-all)
+      VERIFY_ALL="true"
+      shift
+      ;;
+    --dry-run)
+      DRY_RUN="true"
+      shift
+      ;;
+    --verbose)
+      VERBOSE="true"
+      export DNB_VERBOSE="1"
+      shift
+      ;;
+    --quiet)
+      QUIET="true"
+      shift
+      ;;
+    --help)
+      print_help
+      exit 0
+      ;;
+    --*)
+      die "Unknown option: ${1}"
+      ;;
+    *)
+      die "Positional arguments are not supported: ${1}"
+      ;;
+    esac
+  done
+
+  if [[ "${QUIET}" == "true" ]]; then
+    VERBOSE="false"
+    unset DNB_VERBOSE
+  elif [[ "${DNB_VERBOSE:-}" == "1" ]]; then
+    VERBOSE="true"
+  fi
+}
+
+validate_arguments() {
+  [[ -n "${SOURCE}" ]] || die "--source must not be empty."
+  [[ -n "${TARGET}" ]] || die "--target must not be empty."
+
+  if [[ "${SKIP_VERIFY}" == "true" && "${VERIFY_ALL}" == "true" ]]; then
+    die "--skip-verify and --verify-all cannot be combined."
+  fi
+
+  if [[ "${DRY_RUN}" != "true" && ! -d "${SOURCE}" ]]; then
+    die "msgvault source directory does not exist: ${SOURCE}"
+  fi
+}
+
+main() {
+  trap 'handle_error "${LINENO}" "${BASH_COMMAND}"' ERR
+
+  parse_arguments "$@"
+  validate_arguments
+  require_command "msgvault"
+
+  if [[ -z "${TAG}" ]]; then
+    TAG="$(create_default_tag)"
+  fi
+
+  log_info "msgvault backup wrapper started."
+  log_info "Source: ${SOURCE}"
+  log_info "Target: ${TARGET}"
+  log_info "Tag: ${TAG}"
+  log_info "Log file: ${LOG_FILE}"
+
+  ensure_repository
+  create_backup
+  verify_backup
+
+  log_info "Available backups:"
+  list_backups
+
+  log_info "msgvault backup wrapper finished successfully."
+}
+
+main "$@"

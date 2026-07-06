@@ -50,12 +50,12 @@ Folder documentation: [`partials/DOCUMENTATION.md`](./partials/DOCUMENTATION.md)
 
 Partials are sourced shell definitions:
 
-* [`partials/aliases`](./partials/DOCUMENTATION.md#aliases) and [`partials/_aliases/`](./partials/_aliases/DOCUMENTATION.md) — aliases and alias-like shell functions.
-* [`partials/functions`](./partials/DOCUMENTATION.md#functions) and [`partials/_functions/`](./partials/_functions/DOCUMENTATION.md) — interactive Bash functions such as `cdg`, `change_directory`, `codex-local`, `dotfiles`, `glone`, `gh_repos_list`, `searchfor`, and VS Code helpers.
+* [`partials/aliases`](./partials/DOCUMENTATION.md#aliases) and [`partials/_aliases/`](./partials/DOCUMENTATION_aliases.md) — aliases and alias-like shell functions.
+* [`partials/functions`](./partials/DOCUMENTATION.md#functions) and [`partials/_functions/`](./partials/DOCUMENTATION_functions.md) — interactive Bash functions such as `cdg`, `change_directory`, `codex-local`, `dotfiles`, `glone`, `gh_repos_list`, `searchfor`, and VS Code helpers.
 * [`partials/exports`](./partials/DOCUMENTATION.md#exports) — exported environment defaults.
-* [`partials/completions`](./partials/DOCUMENTATION.md#completions) and [`partials/_completions/`](./partials/_completions/DOCUMENTATION.md) — programmable completions and completion integrations.
+* [`partials/completions`](./partials/DOCUMENTATION.md#completions) and [`partials/_completions/`](./partials/DOCUMENTATION_completions.md) — programmable completions and completion integrations.
 * [`partials/prompt`](./partials/DOCUMENTATION.md#prompt) — prompt-adjacent colour setup.
-* [`partials/_programs/`](./partials/_programs/DOCUMENTATION.md) — optional program initialisation snippets; these are documented but not automatically sourced by the current top-level loader unless another loader includes them.
+* [`partials/_programs/`](./partials/DOCUMENTATION_programs.md) — optional program initialisation snippets; these are documented but not automatically sourced by the current top-level loader unless another loader includes them.
 
 ## Helper commands
 
@@ -76,13 +76,14 @@ Important grouped docs:
 * [`helpers/gh/DOCUMENTATION.md`](./helpers/gh/DOCUMENTATION.md)
 * [`helpers/kando/DOCUMENTATION.md`](./helpers/kando/DOCUMENTATION.md)
 * [`helpers/logs/DOCUMENTATION.md`](./helpers/logs/DOCUMENTATION.md)
+* [`helpers/msgvault/DOCUMENTATION.md`](./helpers/msgvault/DOCUMENTATION.md)
 * [`helpers/packages/DOCUMENTATION.md`](./helpers/packages/DOCUMENTATION.md)
 * [`helpers/raindrop.io/DOCUMENTATION.md`](./helpers/raindrop.io/DOCUMENTATION.md)
 * [`helpers/remarkable/DOCUMENTATION.md`](./helpers/remarkable/DOCUMENTATION.md)
 * [`helpers/theme/DOCUMENTATION.md`](./helpers/theme/DOCUMENTATION.md)
 * [`helpers/workspace/DOCUMENTATION.md`](./helpers/workspace/DOCUMENTATION.md)
 
-Top-level helper commands and support files are documented in [`helpers/DOCUMENTATION.md`](./helpers/DOCUMENTATION.md), including `dotbot`, `explore`, `github-token`, `interface-restart`, `lpack`, `node-run`, `screencaps.ts`, `set-wallpaper.sh`, `set_max_listeners.cjs`, `synch-devspace.sh`, `update-npm.sh`, and `web-mirror.sh`.
+Top-level helper commands and support files are documented in [`helpers/DOCUMENTATION.md`](./helpers/DOCUMENTATION.md), including `dotbot`, `explore`, `github-token`, `interface-restart`, `lpack`, `msgvault/`, `node-run`, `screencaps.ts`, `set-wallpaper.sh`, `set_max_listeners.cjs`, `synch-devspace.sh`, `update-npm.sh`, and `web-mirror.sh`.
 
 ## Workspace commands
 
@@ -94,7 +95,7 @@ The top-level Bash startup prepends `bashrc/workspaces` to `PATH`, making the `w
 
 Folder documentation: [`cronjobs/DOCUMENTATION.md`](./cronjobs/DOCUMENTATION.md).
 
-This folder contains scheduled automation for Docker backups, disk-space Discord alerts, repository updates, msgvault sync, and download synchronisation. These are standalone commands/config files, not sourced shell definitions.
+This folder contains scheduled automation for Docker backups, disk-space Discord alerts, repository updates, and download synchronisation. The msgvault cron commands live under [`helpers/msgvault/`](./helpers/msgvault/DOCUMENTATION.md) so related sync and backup helpers stay together.
 
 ## Documentation coverage note
 
