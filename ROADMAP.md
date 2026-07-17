@@ -2,7 +2,7 @@
 # Roadmap
 
 **Project:** `@davidsneighbour/dotfiles` — v3004.1.1
-**Last updated:** 2026-07-17
+**Last updated:** 2026-07-18
 **Branch:** `main`
 
 ## Project state
@@ -12,10 +12,11 @@ GitHub Issues is the source of truth for actionable work. The repository now has
 items remain.
 
 The main health risks remain visible: npm audit has remaining dev-tooling
-findings, the broad TypeScript check now fails on reachable strictness issues in
-repository scripts, and YAML/config linting still mixes first-party errors with
-vendored style-pack noise. The Node engines updater passes when network access is
-available, but it still needs the offline fallback tracked in #521.
+findings with no safe non-forced fix, the broad TypeScript check now fails on
+reachable strictness issues in repository scripts, and YAML/config linting still
+mixes first-party errors with vendored style-pack noise. The Node engines updater
+passes when network access is available, but it still needs the offline fallback
+tracked in #521.
 
 ## Health indicators
 
@@ -23,7 +24,7 @@ available, but it still needs the offline fallback tracked in #521.
 | --- | --- |
 | Open GitHub issues | 41 |
 | TODO.md | No unprocessed scratch notes remain |
-| npm audit | Failing: 11 vulnerabilities, 2 high, 6 moderate, 3 low, 0 critical |
+| npm audit | Failing: 8 vulnerabilities, 2 high, 3 moderate, 3 low, 0 critical; remaining paths have no safe non-forced fix |
 | Node engines check | Passing with network access: `engines.node` is current |
 | TypeScript check | Failing: unreachable code in helper scripts plus strict index-signature access in `scripts/update-node-engines.ts` |
 | Config lint | Failing: first-party Dotbot trailing spaces plus vendored/generated Font Awesome and Vale YAML noise |
@@ -43,7 +44,7 @@ available, but it still needs the offline fallback tracked in #521.
 | [#495 Make lint-staged commands operate only on staged files](https://github.com/davidsneighbour/dotfiles/issues/495) | Keeps pre-commit checks fast and scoped to the staged file set. |
 | [#494 Add spell checking for commit messages](https://github.com/davidsneighbour/dotfiles/issues/494) | Needs a decision about local hooks, CI, or both. |
 | [#489 Add version-bump linter for changed files](https://github.com/davidsneighbour/dotfiles/issues/489) | Needs clear scope for authoritative version files before implementation. |
-| [#502 Follow up on remaining npm audit findings](https://github.com/davidsneighbour/dotfiles/issues/502) | Current audit still reports Markdown tooling findings plus an unfixed `secp256k1` path through secretlint. |
+| [#502 Follow up on remaining npm audit findings](https://github.com/davidsneighbour/dotfiles/issues/502) | Audit overrides resolved the `markdownlint-cli2`/`js-yaml` path; remaining Markdown title-case and `secp256k1` findings are upstream-blocked without a safe non-forced fix. |
 
 ### Setup and installation
 
@@ -104,21 +105,23 @@ available, but it still needs the offline fallback tracked in #521.
 
 ## Audit findings
 
-`npm audit --json` currently reports 11 dev-tooling vulnerabilities. The high
-findings flow through Markdown parser tooling rather than production runtime
-dependencies, but #502 remains the tracking issue for remediation or accepted
-risk.
+`npm audit --json` currently reports 8 dev-tooling vulnerabilities. Targeted npm
+overrides resolved the `markdownlint-cli2`/`js-yaml` path without using
+`npm audit fix --force`. The remaining high/moderate findings flow through the
+unmaintained `markdownlint-rule-title-case-style` dependency chain, and the
+remaining low findings flow through Secretlint's `secp256k1` rule. Both remaining
+paths need upstream package releases or a deliberate package replacement before
+they can be removed safely.
 
 | Root package | Severity | Notes |
 | --- | --- | --- |
-| `@dnbhq/markdownlint-config` → Markdown lint tooling | high/moderate | Audit suggests a downgrade-style semver-major replacement, so this needs manual dependency review |
-| `js-yaml` → `markdownlint-cli2` | moderate | Still reported through Markdown lint tooling and tracked in #502 |
-| `linkify-it` → `markdown-it` → Markdown lint tooling | high/moderate | Still reported through Markdown lint rule dependencies |
-| `elliptic` → `secp256k1` → secretlint tooling | low | No upstream fix available |
+| `@dnbhq/markdownlint-config` → `markdownlint-cli2`/`js-yaml` | resolved | Covered by npm overrides for `markdownlint-cli2`, `markdownlint`, and `markdownlint-rule-relative-links` |
+| `@dnbhq/markdownlint-config` → `markdownlint-rule-title-case-style` → `markdownlint` → `markdown-it`/`linkify-it` | high/moderate | No patched `markdownlint-rule-title-case-style` release is available; `npm audit fix --force` proposes a breaking downgrade |
+| `elliptic` → `secp256k1` → secretlint tooling | low | No upstream fix available in the current `@secretlint/secretlint-rule-secp256k1-privatekey` chain |
 
 ## Suggested order of work
 
-1. Handle [#502](https://github.com/davidsneighbour/dotfiles/issues/502) first because npm audit is still failing and now needs a careful manual review of the Markdown lint dependency path.
+1. Treat [#502](https://github.com/davidsneighbour/dotfiles/issues/502) as the accepted-risk record for the remaining audit findings until upstream packages or an approved replacement are available.
 2. Make the local health signals useful: [#511](https://github.com/davidsneighbour/dotfiles/issues/511), [#504](https://github.com/davidsneighbour/dotfiles/issues/504), [#507](https://github.com/davidsneighbour/dotfiles/issues/507), and [#521](https://github.com/davidsneighbour/dotfiles/issues/521).
 3. Add the unified check command in [#503](https://github.com/davidsneighbour/dotfiles/issues/503) after the individual gates are trustworthy.
 4. Close the logging-policy cluster: [#524](https://github.com/davidsneighbour/dotfiles/issues/524), [#525](https://github.com/davidsneighbour/dotfiles/issues/525), [#526](https://github.com/davidsneighbour/dotfiles/issues/526), [#527](https://github.com/davidsneighbour/dotfiles/issues/527), [#528](https://github.com/davidsneighbour/dotfiles/issues/528), [#529](https://github.com/davidsneighbour/dotfiles/issues/529), and [#530](https://github.com/davidsneighbour/dotfiles/issues/530).
