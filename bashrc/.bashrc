@@ -3,6 +3,9 @@
 
 # executed by the command interpreter for interactive non-login shells
 
+# Trust Obsidian Local REST API's self-signed cert for Node/Claude Code MCP
+export NODE_EXTRA_CA_CERTS="${HOME}/.config/obsidian-local-rest-api/cert.pem"
+
 # shell environment variables
 DNB_IS_INTERACTIVE=1
 DNB_NAMESPACE=davidsneighbour
@@ -40,8 +43,8 @@ done
 export PLAYWRIGHT_HOST_PLATFORM_OVERRIDE=ubuntu24.04-x64
 
 # opencode
-export PATH=/home/patrick/.opencode/bin:$PATH
+export PATH="${HOME}/.opencode/bin:${PATH}"
 
 
 # Added by Antigravity CLI installer
-export PATH="/home/patrick/.local/bin:$PATH"
+export PATH="${HOME}/.local/bin:${PATH}"
