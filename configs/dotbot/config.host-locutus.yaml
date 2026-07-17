@@ -45,3 +45,7 @@
     - cron: "50 7,15,23 * * *"
       comment: "create daily repo log in obsidian for previous day"
       command: ${HOME}/.dotfiles/bashrc/helpers/daily-reports/commit-report-to-dailynote.sh --usernames "$HOME/github.com" --date "$(date -d 'yesterday' +\%F)"  >> "$HOME/.logs/cron/daily-report-cron.log" 2>&1
+
+    - cron: "@reboot"
+      comment: "Checking APS mailboxes"
+      command: sleep 90; mkdir -p "${HOME}/.logs/mailbox-monitor"; ${HOME}/scripts/mailbox-monitor/run-mailbox-monitor.sh --env-file "${HOME}/scripts/mailbox-monitor/.env" >> "${HOME}/.logs/mailbox-monitor/$(date +\%Y\%m\%d-\%H\%M\%S).log" 2>&1
