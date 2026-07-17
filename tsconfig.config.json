@@ -1,0 +1,5 @@
+{
+  "extends": "@dnbhq/tsconfig/cli",
+  "include": [".commitlintrc.ts", ".release-it.ts", "lint-staged.config.ts"],
+  "exclude": ["node_modules"]
+}

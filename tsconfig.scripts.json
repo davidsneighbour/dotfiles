@@ -1,0 +1,5 @@
+{
+  "extends": "@dnbhq/tsconfig/cli",
+  "include": ["scripts/**/*.ts"],
+  "exclude": ["node_modules"]
+}

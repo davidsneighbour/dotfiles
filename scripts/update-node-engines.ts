@@ -1,12 +1,12 @@
 #!/usr/bin/env -S node --experimental-strip-types
 
-import { readFile, writeFile } from 'node:fs/promises';
-import { resolve } from 'node:path';
+import { readFile, writeFile } from "node:fs/promises";
+import { resolve } from "node:path";
 
 const CONFIG = {
-  packageJsonPath: resolve(process.cwd(), 'package.json'),
+  packageJsonPath: resolve(process.cwd(), "package.json"),
   scheduleUrl:
-    'https://raw.githubusercontent.com/nodejs/Release/main/schedule.json',
+    "https://raw.githubusercontent.com/nodejs/Release/main/schedule.json",
   indentation: 2,
 } as const;
 
@@ -35,7 +35,7 @@ type PackageJson = {
  */
 function printHelp(): void {
   const command =
-    'node --experimental-strip-types scripts/update-node-engines.ts';
+    "node --experimental-strip-types scripts/update-node-engines.ts";
 
   console.log(
     `
@@ -65,16 +65,16 @@ Behaviour:
  * @returns Parsed command options.
  */
 function parseArgs(args: readonly string[]): { check: boolean; help: boolean } {
-  const allowed = new Set(['--check', '--help']);
+  const allowed = new Set(["--check", "--help"]);
   const unknown = args.filter((arg) => !allowed.has(arg));
 
   if (unknown.length > 0) {
-    throw new Error(`Unknown option: ${unknown.join(', ')}`);
+    throw new Error(`Unknown option: ${unknown.join(", ")}`);
   }
 
   return {
-    check: args.includes('--check'),
-    help: args.includes('--help'),
+    check: args.includes("--check"),
+    help: args.includes("--help"),
   };
 }
 
@@ -85,7 +85,7 @@ function parseArgs(args: readonly string[]): { check: boolean; help: boolean } {
  * @returns True when the value is a plain object.
  */
 function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
+  return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
 /**
@@ -96,13 +96,13 @@ function isRecord(value: unknown): value is Record<string, unknown> {
  */
 function parseSchedule(value: unknown): NodeSchedule {
   if (!isRecord(value)) {
-    throw new Error('Node.js release schedule must be a JSON object.');
+    throw new Error("Node.js release schedule must be a JSON object.");
   }
 
   const schedule: NodeSchedule = {};
 
   for (const [major, rawEntry] of Object.entries(value)) {
-    if (!major.startsWith('v')) {
+    if (!major.startsWith("v")) {
       continue;
     }
 
@@ -110,19 +110,19 @@ function parseSchedule(value: unknown): NodeSchedule {
       throw new Error(`Schedule entry for ${major} must be an object.`);
     }
 
-    const start = rawEntry.start;
-    const end = rawEntry.end;
-    const maintenance = rawEntry.maintenance;
-    const lts = rawEntry.lts;
-    const codename = rawEntry.codename;
+    const start = rawEntry["start"];
+    const end = rawEntry["end"];
+    const maintenance = rawEntry["maintenance"];
+    const lts = rawEntry["lts"];
+    const codename = rawEntry["codename"];
 
-    if (typeof start !== 'string') {
+    if (typeof start !== "string") {
       throw new Error(
         `Schedule entry for ${major} is missing string field "start".`,
       );
     }
 
-    if (typeof end !== 'string') {
+    if (typeof end !== "string") {
       throw new Error(
         `Schedule entry for ${major} is missing string field "end".`,
       );
@@ -131,9 +131,9 @@ function parseSchedule(value: unknown): NodeSchedule {
     schedule[major] = {
       start,
       end,
-      ...(typeof codename === 'string' ? { codename } : {}),
-      ...(typeof maintenance === 'string' ? { maintenance } : {}),
-      ...(typeof lts === 'string' || lts === false ? { lts } : {}),
+      ...(typeof codename === "string" ? { codename } : {}),
+      ...(typeof maintenance === "string" ? { maintenance } : {}),
+      ...(typeof lts === "string" || lts === false ? { lts } : {}),
     };
   }
 
@@ -148,24 +148,24 @@ function parseSchedule(value: unknown): NodeSchedule {
  */
 function parsePackageJson(value: unknown): PackageJson {
   if (!isRecord(value)) {
-    throw new Error('package.json must contain a JSON object.');
+    throw new Error("package.json must contain a JSON object.");
   }
 
   const packageJson: PackageJson = { ...value };
 
   if (packageJson.engines !== undefined && !isRecord(packageJson.engines)) {
     throw new Error(
-      'package.json field engines must be an object when present.',
+      "package.json field engines must be an object when present.",
     );
   }
 
   if (
     packageJson.engines !== undefined &&
     packageJson.engines.node !== undefined &&
-    typeof packageJson.engines.node !== 'string'
+    typeof packageJson.engines.node !== "string"
   ) {
     throw new Error(
-      'package.json field engines.node must be a string when present.',
+      "package.json field engines.node must be a string when present.",
     );
   }
 
@@ -206,7 +206,7 @@ function getTodayUtcTimestamp(): number {
  * @returns Numeric major version.
  */
 function getMajorVersion(key: string): number {
-  const major = Number.parseInt(key.replace(/^v/u, ''), 10);
+  const major = Number.parseInt(key.replace(/^v/u, ""), 10);
 
   if (!Number.isInteger(major) || major < 1) {
     throw new Error(`Invalid Node.js major version key: ${key}`);
@@ -237,10 +237,10 @@ function buildNodeEnginesRange(
     .sort((left, right) => left - right);
 
   if (supportedMajors.length === 0) {
-    throw new Error('No supported Node.js release lines found in schedule.');
+    throw new Error("No supported Node.js release lines found in schedule.");
   }
 
-  return supportedMajors.map((major) => `^${major}.0.0`).join(' || ');
+  return supportedMajors.map((major) => `^${major}.0.0`).join(" || ");
 }
 
 /**
@@ -250,7 +250,7 @@ function buildNodeEnginesRange(
  * @returns Parsed JSON value.
  */
 async function readJsonFile(filePath: string): Promise<unknown> {
-  const content = await readFile(filePath, 'utf8');
+  const content = await readFile(filePath, "utf8");
 
   try {
     return JSON.parse(content) as unknown;
@@ -269,8 +269,8 @@ async function readJsonFile(filePath: string): Promise<unknown> {
 async function fetchJson(url: string): Promise<unknown> {
   const response = await fetch(url, {
     headers: {
-      Accept: 'application/json',
-      'User-Agent': 'node-engines-updater',
+      Accept: "application/json",
+      "User-Agent": "node-engines-updater",
     },
   });
 
@@ -314,11 +314,11 @@ async function main(): Promise<void> {
   }
 
   console.log(
-    `Updating engines.node: ${currentNodeRange ?? '(missing)'} -> ${nextNodeRange}`,
+    `Updating engines.node: ${currentNodeRange ?? "(missing)"} -> ${nextNodeRange}`,
   );
 
   if (options.check) {
-    throw new Error('package.json engines.node is outdated.');
+    throw new Error("package.json engines.node is outdated.");
   }
 
   packageJson.engines = {
@@ -329,7 +329,7 @@ async function main(): Promise<void> {
   await writeFile(
     CONFIG.packageJsonPath,
     `${JSON.stringify(packageJson, null, CONFIG.indentation)}\n`,
-    'utf8',
+    "utf8",
   );
 
   console.log(`Updated ${CONFIG.packageJsonPath}`);

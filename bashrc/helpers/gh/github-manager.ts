@@ -32,26 +32,26 @@
  *   node github-manager.ts sync-all --owner davidsneighbour --topic astro
  */
 
-import { type SpawnSyncReturns, spawnSync } from 'node:child_process';
-import { existsSync, readdirSync, statSync } from 'node:fs';
-import { homedir } from 'node:os';
-import { join, resolve } from 'node:path';
-import { ensureNodeVersion } from '../_lib/node.ts';
+import { type SpawnSyncReturns, spawnSync } from "node:child_process";
+import { existsSync, readdirSync, statSync } from "node:fs";
+import { homedir } from "node:os";
+import { join, resolve } from "node:path";
+import { ensureNodeVersion } from "../_lib/node.ts";
 
 ensureNodeVersion(25);
 
-type LogLevel = 'info' | 'warn' | 'error' | 'debug';
+type LogLevel = "info" | "warn" | "error" | "debug";
 
 type CommandName =
-  | 'help'
-  | 'inventory'
-  | 'pull'
-  | 'status'
-  | 'audit'
-  | 'audit-manual'
-  | 'remote-list'
-  | 'clone-by-topic'
-  | 'sync-all';
+  | "help"
+  | "inventory"
+  | "pull"
+  | "status"
+  | "audit"
+  | "audit-manual"
+  | "remote-list"
+  | "clone-by-topic"
+  | "sync-all";
 
 interface CliConfig {
   basePath: string;
@@ -182,26 +182,26 @@ interface RepoOperationResult<T> {
   errorMessage?: string;
 }
 
-const DEFAULT_BASE_PATH = '~/github.com/davidsneighbour';
-const DEFAULT_OWNER = 'davidsneighbour';
+const DEFAULT_BASE_PATH = "~/github.com/davidsneighbour";
+const DEFAULT_OWNER = "davidsneighbour";
 const DEFAULT_ALLOWED_AUTHOR_EMAILS: string[] = [];
 
 const commandRegistry: Record<CommandName, CommandDefinition> = {
   help: {
-    name: 'help',
-    description: 'Show help output.',
+    name: "help",
+    description: "Show help output.",
     run: async () => {
       printHelp();
     },
   },
   inventory: {
-    name: 'inventory',
-    description: 'List local repositories in the base path.',
+    name: "inventory",
+    description: "List local repositories in the base path.",
     run: async ({ config }) => {
       const repos = inventoryLocalRepositories(config.basePath, config.verbose);
 
       if (repos.length === 0) {
-        log('warn', `No repositories found in "${config.basePath}".`);
+        log("warn", `No repositories found in "${config.basePath}".`);
         return;
       }
 
@@ -210,69 +210,69 @@ const commandRegistry: Record<CommandName, CommandDefinition> = {
           [
             repo.name,
             `path=${repo.absolutePath}`,
-            `branch=${repo.currentBranch ?? 'unknown'}`,
-            `upstream=${repo.upstreamRef ?? 'none'}`,
-            `remote=${repo.defaultRemoteName ?? 'none'}`,
-          ].join(' | '),
+            `branch=${repo.currentBranch ?? "unknown"}`,
+            `upstream=${repo.upstreamRef ?? "none"}`,
+            `remote=${repo.defaultRemoteName ?? "none"}`,
+          ].join(" | "),
         );
       }
     },
   },
   pull: {
-    name: 'pull',
+    name: "pull",
     description:
-      'Pull updates for each local repository using its upstream/default remote.',
+      "Pull updates for each local repository using its upstream/default remote.",
     run: async ({ config }) => {
       const repos = inventoryLocalRepositories(config.basePath, config.verbose);
 
       if (repos.length === 0) {
-        log('warn', `No repositories found in "${config.basePath}".`);
+        log("warn", `No repositories found in "${config.basePath}".`);
         return;
       }
 
       for (const repo of repos) {
-        await runRepoOperationAsync(repo.name, 'pull', async () => {
+        await runRepoOperationAsync(repo.name, "pull", async () => {
           await pullRepository(repo, config);
         });
       }
     },
   },
   status: {
-    name: 'status',
-    description: 'Show git changes for local repositories, silent when clean.',
+    name: "status",
+    description: "Show git changes for local repositories, silent when clean.",
     run: async ({ config }) => {
       const repos = inventoryLocalRepositories(config.basePath, config.verbose);
 
       if (repos.length === 0) {
-        log('warn', `No repositories found in "${config.basePath}".`);
+        log("warn", `No repositories found in "${config.basePath}".`);
         return;
       }
 
       for (const repo of repos) {
-        runRepoOperation(repo.name, 'status', () => {
+        runRepoOperation(repo.name, "status", () => {
           showRepositoryChanges(repo, config.verbose);
         });
       }
     },
   },
   audit: {
-    name: 'audit',
-    description: 'Check state, sync, conflicts, and remote commits by others.',
+    name: "audit",
+    description: "Check state, sync, conflicts, and remote commits by others.",
     run: async ({ config }) => {
       const repos = inventoryLocalRepositories(config.basePath, config.verbose);
 
       if (repos.length === 0) {
-        log('warn', `No repositories found in "${config.basePath}".`);
+        log("warn", `No repositories found in "${config.basePath}".`);
         return;
       }
 
       for (const repo of repos) {
-        const result = runRepoOperation(repo.name, 'audit', () => {
+        const result = runRepoOperation(repo.name, "audit", () => {
           return auditRepository(repo, config);
         });
 
         if (!result.ok || !result.value) {
-          printBrokenAuditResult(repo, result.errorMessage ?? 'Unknown error');
+          printBrokenAuditResult(repo, result.errorMessage ?? "Unknown error");
           continue;
         }
 
@@ -280,20 +280,20 @@ const commandRegistry: Record<CommandName, CommandDefinition> = {
       }
     },
   },
-  'audit-manual': {
-    name: 'audit-manual',
+  "audit-manual": {
+    name: "audit-manual",
     description:
-      'Run audit and print only repositories that need manual intervention.',
+      "Run audit and print only repositories that need manual intervention.",
     run: async ({ config }) => {
       const repos = inventoryLocalRepositories(config.basePath, config.verbose);
 
       if (repos.length === 0) {
-        log('warn', `No repositories found in "${config.basePath}".`);
+        log("warn", `No repositories found in "${config.basePath}".`);
         return;
       }
 
       for (const repo of repos) {
-        const result = runRepoOperation(repo.name, 'audit-manual', () => {
+        const result = runRepoOperation(repo.name, "audit-manual", () => {
           return auditRepository(repo, config);
         });
 
@@ -303,48 +303,48 @@ const commandRegistry: Record<CommandName, CommandDefinition> = {
         }
 
         if (requiresManualIntervention(result.value)) {
-          console.log(result.value['name']);
+          console.log(result.value["name"]);
         }
       }
     },
   },
-  'remote-list': {
-    name: 'remote-list',
+  "remote-list": {
+    name: "remote-list",
     description:
-      'List remote GitHub repositories for an owner and fetch metadata plus tags.',
+      "List remote GitHub repositories for an owner and fetch metadata plus tags.",
     run: async ({ config }) => {
       const records = await fetchRemoteRepositoryInventory(config);
 
       for (const record of records) {
         const topics = (record.repo.repositoryTopics ?? [])
           .map((topic) => topic.name)
-          .join(', ');
-        const tagNames = record.tags.map((tag) => tag.name).join(', ');
+          .join(", ");
+        const tagNames = record.tags.map((tag) => tag.name).join(", ");
 
         console.log(`${record.repo.nameWithOwner}`);
-        console.log(`  description: ${record.repo.description ?? ''}`);
-        console.log(`  homepage: ${record.repo.homepageUrl ?? ''}`);
+        console.log(`  description: ${record.repo.description ?? ""}`);
+        console.log(`  homepage: ${record.repo.homepageUrl ?? ""}`);
         console.log(`  visibility: ${record.repo.visibility}`);
         console.log(`  archived: ${String(record.repo.isArchived)}`);
         console.log(`  fork: ${String(record.repo.isFork)}`);
         console.log(
-          `  default-branch: ${record.repo.defaultBranchRef?.name ?? ''}`,
+          `  default-branch: ${record.repo.defaultBranchRef?.name ?? ""}`,
         );
         console.log(
-          `  latest-release: ${record.repo.latestRelease?.tagName ?? record.repo.latestRelease?.name ?? ''}`,
+          `  latest-release: ${record.repo.latestRelease?.tagName ?? record.repo.latestRelease?.name ?? ""}`,
         );
         console.log(`  topics: ${topics}`);
         console.log(`  tags: ${tagNames}`);
-        console.log('');
+        console.log("");
       }
     },
   },
-  'clone-by-topic': {
-    name: 'clone-by-topic',
-    description: 'Clone remote repositories filtered by one or more topics.',
+  "clone-by-topic": {
+    name: "clone-by-topic",
+    description: "Clone remote repositories filtered by one or more topics.",
     run: async ({ config }) => {
       if (config.topicFilters.length === 0) {
-        throw new Error('clone-by-topic requires at least one --topic value.');
+        throw new Error("clone-by-topic requires at least one --topic value.");
       }
 
       const repositories = await fetchRemoteRepositories(config);
@@ -355,23 +355,23 @@ const commandRegistry: Record<CommandName, CommandDefinition> = {
 
       if (filtered.length === 0) {
         log(
-          'warn',
-          `No repositories matched topics: ${config.topicFilters.join(', ')}`,
+          "warn",
+          `No repositories matched topics: ${config.topicFilters.join(", ")}`,
         );
         return;
       }
 
       for (const repo of filtered) {
-        await runRepoOperationAsync(repo.nameWithOwner, 'clone', async () => {
+        await runRepoOperationAsync(repo.nameWithOwner, "clone", async () => {
           await cloneRepositoryIfMissing(repo, config);
         });
       }
     },
   },
-  'sync-all': {
-    name: 'sync-all',
+  "sync-all": {
+    name: "sync-all",
     description:
-      'Run pull, status, audit, and optionally clone-by-topic in one pass.',
+      "Run pull, status, audit, and optionally clone-by-topic in one pass.",
     run: async ({ config }) => {
       const localRepos = inventoryLocalRepositories(
         config.basePath,
@@ -379,24 +379,24 @@ const commandRegistry: Record<CommandName, CommandDefinition> = {
       );
 
       for (const repo of localRepos) {
-        await runRepoOperationAsync(repo.name, 'pull', async () => {
+        await runRepoOperationAsync(repo.name, "pull", async () => {
           await pullRepository(repo, config);
         });
       }
 
       for (const repo of localRepos) {
-        runRepoOperation(repo.name, 'status', () => {
+        runRepoOperation(repo.name, "status", () => {
           showRepositoryChanges(repo, config.verbose);
         });
       }
 
       for (const repo of localRepos) {
-        const result = runRepoOperation(repo.name, 'audit', () => {
+        const result = runRepoOperation(repo.name, "audit", () => {
           return auditRepository(repo, config);
         });
 
         if (!result.ok || !result.value) {
-          printBrokenAuditResult(repo, result.errorMessage ?? 'Unknown error');
+          printBrokenAuditResult(repo, result.errorMessage ?? "Unknown error");
           continue;
         }
 
@@ -411,7 +411,7 @@ const commandRegistry: Record<CommandName, CommandDefinition> = {
         );
 
         for (const repo of filtered) {
-          await runRepoOperationAsync(repo.nameWithOwner, 'clone', async () => {
+          await runRepoOperationAsync(repo.nameWithOwner, "clone", async () => {
             await cloneRepositoryIfMissing(repo, config);
           });
         }
@@ -423,13 +423,13 @@ const commandRegistry: Record<CommandName, CommandDefinition> = {
 async function main(): Promise<void> {
   const config = parseArgs(process.argv.slice(2));
 
-  if (config.command === 'help') {
+  if (config.command === "help") {
     printHelp();
     return;
   }
 
-  ensureCommandAvailable('git');
-  ensureCommandAvailable('gh');
+  ensureCommandAvailable("git");
+  ensureCommandAvailable("gh");
   ensureGhAuthenticated();
 
   const command = commandRegistry[config.command];
@@ -445,7 +445,7 @@ function parseArgs(argv: string[]): CliConfig {
     includeForks: false,
     dryRun: false,
     verbose: false,
-    command: 'help',
+    command: "help",
     allowedAuthorEmails: [...DEFAULT_ALLOWED_AUTHOR_EMAILS],
   };
 
@@ -458,7 +458,7 @@ function parseArgs(argv: string[]): CliConfig {
 
   if (!commandToken || !isCommandName(commandToken)) {
     throw new Error(
-      `Unknown command "${commandToken ?? ''}". Run with --help.`,
+      `Unknown command "${commandToken ?? ""}". Run with --help.`,
     );
   }
 
@@ -468,66 +468,65 @@ function parseArgs(argv: string[]): CliConfig {
     const token = rest[index];
 
     switch (token) {
-      case '--base-path': {
+      case "--base-path": {
         const value = rest[index + 1];
         if (!value) {
-          throw new Error('--base-path requires a value.');
+          throw new Error("--base-path requires a value.");
         }
         config.basePath = expandHomeDirectory(value);
         index += 1;
         break;
       }
 
-      case '--owner': {
+      case "--owner": {
         const value = rest[index + 1];
         if (!value) {
-          throw new Error('--owner requires a value.');
+          throw new Error("--owner requires a value.");
         }
         config.owner = value;
         index += 1;
         break;
       }
 
-      case '--topic': {
+      case "--topic": {
         const value = rest[index + 1];
         if (!value) {
-          throw new Error('--topic requires a value.');
+          throw new Error("--topic requires a value.");
         }
         config.topicFilters.push(value);
         index += 1;
         break;
       }
 
-      case '--author-email': {
+      case "--author-email": {
         const value = rest[index + 1];
         if (!value) {
-          throw new Error('--author-email requires a value.');
+          throw new Error("--author-email requires a value.");
         }
         config.allowedAuthorEmails.push(value.trim().toLowerCase());
         index += 1;
         break;
       }
 
-      case '--include-archived':
+      case "--include-archived":
         config.includeArchived = true;
         break;
 
-      case '--include-forks':
+      case "--include-forks":
         config.includeForks = true;
         break;
 
-      case '--dry-run':
+      case "--dry-run":
         config.dryRun = true;
         break;
 
-      case '--verbose':
+      case "--verbose":
         config.verbose = true;
         break;
 
-      case '--help':
-        printHelp();
-        process.exit(0);
-        return config;
+      case "--help":
+        config.command = "help";
+        break;
 
       default:
         throw new Error(`Unknown option "${token}". Run with --help.`);
@@ -586,11 +585,11 @@ function getCommandName(): string {
   const argv1 = process.argv[1];
 
   if (!argv1) {
-    return 'github-manager';
+    return "github-manager";
   }
 
-  const segments = argv1.split('/');
-  return segments.at(-1) ?? 'github-manager';
+  const segments = argv1.split("/");
+  return segments.at(-1) ?? "github-manager";
 }
 
 function isCommandName(value: string): value is CommandName {
@@ -598,11 +597,11 @@ function isCommandName(value: string): value is CommandName {
 }
 
 function expandHomeDirectory(inputPath: string): string {
-  if (inputPath === '~') {
+  if (inputPath === "~") {
     return homedir();
   }
 
-  if (inputPath.startsWith('~/')) {
+  if (inputPath.startsWith("~/")) {
     return join(homedir(), inputPath.slice(2));
   }
 
@@ -611,15 +610,15 @@ function expandHomeDirectory(inputPath: string): string {
 
 function log(level: LogLevel, message: string): void {
   const prefixMap: Record<LogLevel, string> = {
-    info: '[info]',
-    warn: '[warn]',
-    error: '[error]',
-    debug: '[debug]',
+    info: "[info]",
+    warn: "[warn]",
+    error: "[error]",
+    debug: "[debug]",
   };
 
   const output = `${prefixMap[level]} ${message}`;
 
-  if (level === 'error') {
+  if (level === "error") {
     console.error(output);
     return;
   }
@@ -628,9 +627,9 @@ function log(level: LogLevel, message: string): void {
 }
 
 function ensureCommandAvailable(command: string): void {
-  const result = spawnSync(command, ['--version'], {
-    encoding: 'utf8',
-    stdio: 'ignore',
+  const result = spawnSync(command, ["--version"], {
+    encoding: "utf8",
+    stdio: "ignore",
   });
 
   if (result.error || result.status !== 0) {
@@ -639,7 +638,7 @@ function ensureCommandAvailable(command: string): void {
 }
 
 function ensureGhAuthenticated(): void {
-  const result = execCommand('gh', ['auth', 'status'], {
+  const result = execCommand("gh", ["auth", "status"], {
     allowFailure: true,
     silent: true,
   });
@@ -658,29 +657,29 @@ function execCommand(
 ): ExecResult {
   const result: SpawnSyncReturns<string> = spawnSync(command, args, {
     cwd: options.cwd,
-    encoding: 'utf8',
+    encoding: "utf8",
   });
 
-  const stdout = result.stdout ?? '';
-  const stderr = result.stderr ?? '';
+  const stdout = result.stdout ?? "";
+  const stderr = result.stderr ?? "";
   const exitCode = result.status ?? 1;
 
   if (exitCode !== 0 && !options.allowFailure) {
-    const renderedArgs = [command, ...args].join(' ');
+    const renderedArgs = [command, ...args].join(" ");
     throw new Error(
       [
         `Command failed: ${renderedArgs}`,
-        options.cwd ? `cwd: ${options.cwd}` : '',
-        stdout ? `stdout:\n${stdout}` : '',
-        stderr ? `stderr:\n${stderr}` : '',
+        options.cwd ? `cwd: ${options.cwd}` : "",
+        stdout ? `stdout:\n${stdout}` : "",
+        stderr ? `stderr:\n${stderr}` : "",
       ]
         .filter(Boolean)
-        .join('\n'),
+        .join("\n"),
     );
   }
 
   if (!options.silent && stderr.trim().length > 0) {
-    log('debug', stderr.trim());
+    log("debug", stderr.trim());
   }
 
   return { stdout, stderr, exitCode };
@@ -700,7 +699,7 @@ function runRepoOperation<T>(
     const message = error instanceof Error ? error.message : String(error);
     console.error(`[repo-error] ${repoName}: ${operationName} failed`);
     console.error(message);
-    console.error('');
+    console.error("");
 
     return {
       ok: false,
@@ -723,7 +722,7 @@ async function runRepoOperationAsync<T>(
     const message = error instanceof Error ? error.message : String(error);
     console.error(`[repo-error] ${repoName}: ${operationName} failed`);
     console.error(message);
-    console.error('');
+    console.error("");
 
     return {
       ok: false,
@@ -749,16 +748,16 @@ function inventoryLocalRepositories(
     }
 
     const absolutePath = join(basePath, entry.name);
-    const gitDirectory = join(absolutePath, '.git');
+    const gitDirectory = join(absolutePath, ".git");
 
     if (!existsSync(gitDirectory)) {
       if (verbose) {
-        log('debug', `Skipping non-git directory: ${absolutePath}`);
+        log("debug", `Skipping non-git directory: ${absolutePath}`);
       }
       continue;
     }
 
-    const result = runRepoOperation(entry.name, 'inventory', () => {
+    const result = runRepoOperation(entry.name, "inventory", () => {
       const upstreamRef = getUpstreamRef(absolutePath);
 
       return {
@@ -783,7 +782,7 @@ function inventoryLocalRepositories(
 }
 
 function getCurrentBranch(repoPath: string): string | null {
-  const result = execCommand('git', ['rev-parse', '--abbrev-ref', 'HEAD'], {
+  const result = execCommand("git", ["rev-parse", "--abbrev-ref", "HEAD"], {
     cwd: repoPath,
     allowFailure: true,
     silent: true,
@@ -799,8 +798,8 @@ function getCurrentBranch(repoPath: string): string | null {
 
 function getUpstreamRef(repoPath: string): string | null {
   const result = execCommand(
-    'git',
-    ['rev-parse', '--abbrev-ref', '--symbolic-full-name', '@{upstream}'],
+    "git",
+    ["rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{upstream}"],
     {
       cwd: repoPath,
       allowFailure: true,
@@ -820,12 +819,12 @@ function getDefaultRemoteName(
   repoPath: string,
   upstreamRef: string | null,
 ): string | null {
-  if (upstreamRef && upstreamRef.includes('/')) {
-    const [remoteName] = upstreamRef.split('/');
+  if (upstreamRef && upstreamRef.includes("/")) {
+    const [remoteName] = upstreamRef.split("/");
     return remoteName ?? null;
   }
 
-  const remotesResult = execCommand('git', ['remote'], {
+  const remotesResult = execCommand("git", ["remote"], {
     cwd: repoPath,
     allowFailure: true,
     silent: true,
@@ -836,12 +835,12 @@ function getDefaultRemoteName(
   }
 
   const remotes = remotesResult.stdout
-    .split('\n')
+    .split("\n")
     .map((line) => line.trim())
     .filter((line) => line.length > 0);
 
-  if (remotes.includes('origin')) {
-    return 'origin';
+  if (remotes.includes("origin")) {
+    return "origin";
   }
 
   return remotes[0] ?? null;
@@ -852,18 +851,18 @@ async function pullRepository(
   config: CliConfig,
 ): Promise<void> {
   if (!repo.defaultRemoteName) {
-    log('warn', `Skipping ${repo.name}: no remote found.`);
+    log("warn", `Skipping ${repo.name}: no remote found.`);
     return;
   }
 
-  log('info', `Pulling ${repo.name} from remote "${repo.defaultRemoteName}"`);
+  log("info", `Pulling ${repo.name} from remote "${repo.defaultRemoteName}"`);
 
   if (config.dryRun) {
     return;
   }
 
   if (repo.upstreamRef) {
-    execCommand('git', ['pull', '--ff-only'], {
+    execCommand("git", ["pull", "--ff-only"], {
       cwd: repo.absolutePath,
       silent: !config.verbose,
     });
@@ -873,27 +872,27 @@ async function pullRepository(
   const branch = repo.currentBranch;
   if (!branch) {
     log(
-      'warn',
+      "warn",
       `Skipping ${repo.name}: current branch could not be determined.`,
     );
     return;
   }
 
-  execCommand('git', ['pull', '--ff-only', repo.defaultRemoteName, branch], {
+  execCommand("git", ["pull", "--ff-only", repo.defaultRemoteName, branch], {
     cwd: repo.absolutePath,
     silent: !config.verbose,
   });
 }
 
 function showRepositoryChanges(repo: LocalRepository, verbose: boolean): void {
-  const result = execCommand('git', ['status', '--short'], {
+  const result = execCommand("git", ["status", "--short"], {
     cwd: repo.absolutePath,
     allowFailure: true,
     silent: true,
   });
 
   if (result.exitCode !== 0) {
-    log('warn', `Unable to read status for ${repo.name}`);
+    log("warn", `Unable to read status for ${repo.name}`);
     return;
   }
 
@@ -901,14 +900,14 @@ function showRepositoryChanges(repo: LocalRepository, verbose: boolean): void {
 
   if (trimmed.length === 0) {
     if (verbose) {
-      log('debug', `No changes in ${repo.name}`);
+      log("debug", `No changes in ${repo.name}`);
     }
     return;
   }
 
   console.log(`${repo.name}`);
   console.log(trimmed);
-  console.log('');
+  console.log("");
 }
 
 function fetchRepository(
@@ -918,12 +917,12 @@ function fetchRepository(
 ): void {
   if (dryRun) {
     if (verbose) {
-      log('debug', `Dry run: would fetch ${repoPath}`);
+      log("debug", `Dry run: would fetch ${repoPath}`);
     }
     return;
   }
 
-  execCommand('git', ['fetch', '--prune'], {
+  execCommand("git", ["fetch", "--prune"], {
     cwd: repoPath,
     allowFailure: false,
     silent: !verbose,
@@ -931,7 +930,7 @@ function fetchRepository(
 }
 
 function getGitMetadataPath(repoPath: string, relativePath: string): string {
-  const dotGitPath = join(repoPath, '.git');
+  const dotGitPath = join(repoPath, ".git");
 
   if (existsSync(dotGitPath)) {
     const dotGitStats = statSync(dotGitPath);
@@ -946,8 +945,8 @@ function getGitMetadataPath(repoPath: string, relativePath: string): string {
 
 function getConflictFiles(repoPath: string): string[] {
   const result = execCommand(
-    'git',
-    ['diff', '--name-only', '--diff-filter=U'],
+    "git",
+    ["diff", "--name-only", "--diff-filter=U"],
     {
       cwd: repoPath,
       allowFailure: true,
@@ -960,13 +959,13 @@ function getConflictFiles(repoPath: string): string[] {
   }
 
   return result.stdout
-    .split('\n')
+    .split("\n")
     .map((line) => line.trim())
     .filter((line) => line.length > 0);
 }
 
 function getDirtyFiles(repoPath: string): string[] {
-  const result = execCommand('git', ['status', '--short'], {
+  const result = execCommand("git", ["status", "--short"], {
     cwd: repoPath,
     allowFailure: true,
     silent: true,
@@ -977,34 +976,34 @@ function getDirtyFiles(repoPath: string): string[] {
   }
 
   return result.stdout
-    .split('\n')
+    .split("\n")
     .map((line) => line.trimEnd())
     .filter((line) => line.trim().length > 0);
 }
 
 function isMergeInProgress(repoPath: string): boolean {
-  return existsSync(getGitMetadataPath(repoPath, 'MERGE_HEAD'));
+  return existsSync(getGitMetadataPath(repoPath, "MERGE_HEAD"));
 }
 
 function isRebaseInProgress(repoPath: string): boolean {
   return (
-    existsSync(getGitMetadataPath(repoPath, 'rebase-merge')) ||
-    existsSync(getGitMetadataPath(repoPath, 'rebase-apply'))
+    existsSync(getGitMetadataPath(repoPath, "rebase-merge")) ||
+    existsSync(getGitMetadataPath(repoPath, "rebase-apply"))
   );
 }
 
 function isCherryPickInProgress(repoPath: string): boolean {
-  return existsSync(getGitMetadataPath(repoPath, 'CHERRY_PICK_HEAD'));
+  return existsSync(getGitMetadataPath(repoPath, "CHERRY_PICK_HEAD"));
 }
 
 function isRevertInProgress(repoPath: string): boolean {
-  return existsSync(getGitMetadataPath(repoPath, 'REVERT_HEAD'));
+  return existsSync(getGitMetadataPath(repoPath, "REVERT_HEAD"));
 }
 
 function getAheadBehind(repoPath: string): { ahead: number; behind: number } {
   const result = execCommand(
-    'git',
-    ['rev-list', '--left-right', '--count', 'HEAD...@{upstream}'],
+    "git",
+    ["rev-list", "--left-right", "--count", "HEAD...@{upstream}"],
     {
       cwd: repoPath,
       allowFailure: true,
@@ -1036,8 +1035,8 @@ function getRemoteOnlyCommits(
   allowedAuthorEmails: string[],
 ): RemoteOnlyCommit[] {
   const result = execCommand(
-    'git',
-    ['log', 'HEAD..@{upstream}', '--format=%H%x09%an%x09%ae'],
+    "git",
+    ["log", "HEAD..@{upstream}", "--format=%H%x09%an%x09%ae"],
     {
       cwd: repoPath,
       allowFailure: true,
@@ -1054,17 +1053,17 @@ function getRemoteOnlyCommits(
   );
 
   return result.stdout
-    .split('\n')
+    .split("\n")
     .map((line) => line.trim())
     .filter((line) => line.length > 0)
     .map((line) => {
-      const [hash, authorName, authorEmail] = line.split('\t');
-      const normalisedEmail = (authorEmail ?? '').trim().toLowerCase();
+      const [hash, authorName, authorEmail] = line.split("\t");
+      const normalisedEmail = (authorEmail ?? "").trim().toLowerCase();
 
       return {
-        hash: hash ?? '',
-        authorName: authorName ?? '',
-        authorEmail: authorEmail ?? '',
+        hash: hash ?? "",
+        authorName: authorName ?? "",
+        authorEmail: authorEmail ?? "",
         isOurs: allowedEmails.has(normalisedEmail),
       };
     })
@@ -1160,19 +1159,19 @@ function auditRepository(
 
 function printBrokenAuditResult(repo: LocalRepository, reason: string): void {
   console.log(repo.name);
-  console.log(`  upstream: ${repo.upstreamRef ?? 'none'}`);
-  console.log('  state-ok: no');
-  console.log('  in-sync: no');
-  console.log('  dirty: no');
-  console.log('  conflicted: no');
-  console.log('  diverged: no');
-  console.log('  ahead: 0');
-  console.log('  behind: 0');
-  console.log('  broken: yes');
-  console.log('  remote-commits-by-others: no');
-  console.log('  manual-check-required: yes');
-  console.log(`  reason: ${reason.split('\n')[0]}`);
-  console.log('');
+  console.log(`  upstream: ${repo.upstreamRef ?? "none"}`);
+  console.log("  state-ok: no");
+  console.log("  in-sync: no");
+  console.log("  dirty: no");
+  console.log("  conflicted: no");
+  console.log("  diverged: no");
+  console.log("  ahead: 0");
+  console.log("  behind: 0");
+  console.log("  broken: yes");
+  console.log("  remote-commits-by-others: no");
+  console.log("  manual-check-required: yes");
+  console.log(`  reason: ${reason.split("\n")[0]}`);
+  console.log("");
 }
 
 function printAuditResult(
@@ -1186,63 +1185,63 @@ function printAuditResult(
   }
 
   console.log(result.name);
-  console.log(`  upstream: ${result.upstreamRef ?? 'none'}`);
-  console.log(`  state-ok: ${result.stateOk ? 'yes' : 'no'}`);
-  console.log(`  in-sync: ${result.inSync ? 'yes' : 'no'}`);
-  console.log(`  dirty: ${result.dirty ? 'yes' : 'no'}`);
-  console.log(`  conflicted: ${result.conflicted ? 'yes' : 'no'}`);
-  console.log(`  diverged: ${result.diverged ? 'yes' : 'no'}`);
+  console.log(`  upstream: ${result.upstreamRef ?? "none"}`);
+  console.log(`  state-ok: ${result.stateOk ? "yes" : "no"}`);
+  console.log(`  in-sync: ${result.inSync ? "yes" : "no"}`);
+  console.log(`  dirty: ${result.dirty ? "yes" : "no"}`);
+  console.log(`  conflicted: ${result.conflicted ? "yes" : "no"}`);
+  console.log(`  diverged: ${result.diverged ? "yes" : "no"}`);
   console.log(`  ahead: ${result.aheadCount}`);
   console.log(`  behind: ${result.behindCount}`);
-  console.log(`  broken: ${result.broken ? 'yes' : 'no'}`);
+  console.log(`  broken: ${result.broken ? "yes" : "no"}`);
   console.log(
-    `  remote-commits-by-others: ${result.hasRemoteCommitsByOthers ? 'yes' : 'no'}`,
+    `  remote-commits-by-others: ${result.hasRemoteCommitsByOthers ? "yes" : "no"}`,
   );
 
   if (result.broken && result.brokenReason) {
-    console.log('  manual-check-required: yes');
-    console.log(`  reason: ${result.brokenReason.split('\n')[0]}`);
-    console.log('');
+    console.log("  manual-check-required: yes");
+    console.log(`  reason: ${result.brokenReason.split("\n")[0]}`);
+    console.log("");
     return;
   }
 
   if (result.mergeInProgress) {
-    console.log('  merge-in-progress: yes');
+    console.log("  merge-in-progress: yes");
   }
 
   if (result.rebaseInProgress) {
-    console.log('  rebase-in-progress: yes');
+    console.log("  rebase-in-progress: yes");
   }
 
   if (result.cherryPickInProgress) {
-    console.log('  cherry-pick-in-progress: yes');
+    console.log("  cherry-pick-in-progress: yes");
   }
 
   if (result.revertInProgress) {
-    console.log('  revert-in-progress: yes');
+    console.log("  revert-in-progress: yes");
   }
 
   if (result.dirtyFiles.length > 0 && verbose) {
-    console.log('  dirty-files:');
+    console.log("  dirty-files:");
     for (const dirtyFile of result.dirtyFiles) {
       console.log(`    ${dirtyFile}`);
     }
   }
 
   if (result.conflictFiles.length > 0) {
-    console.log(`  conflict-files: ${result.conflictFiles.join(', ')}`);
+    console.log(`  conflict-files: ${result.conflictFiles.join(", ")}`);
   }
 
   if (result.remoteOnlyCommits.length > 0) {
-    console.log('  remote-only-commits:');
+    console.log("  remote-only-commits:");
     for (const commit of result.remoteOnlyCommits) {
       console.log(
-        `    ${commit.hash} ${commit.authorName} <${commit.authorEmail}> ours=${commit.isOurs ? 'yes' : 'no'}`,
+        `    ${commit.hash} ${commit.authorName} <${commit.authorEmail}> ours=${commit.isOurs ? "yes" : "no"}`,
       );
     }
   }
 
-  console.log('');
+  console.log("");
 }
 
 function requiresManualIntervention(result: RepositoryAuditResult): boolean {
@@ -1253,42 +1252,42 @@ async function fetchRemoteRepositories(
   config: CliConfig,
 ): Promise<GhRepositorySummary[]> {
   const args = [
-    'repo',
-    'list',
+    "repo",
+    "list",
     config.owner,
-    '--limit',
-    '1000',
-    '--json',
+    "--limit",
+    "1000",
+    "--json",
     [
-      'name',
-      'nameWithOwner',
-      'description',
-      'homepageUrl',
-      'isArchived',
-      'isFork',
-      'url',
-      'pushedAt',
-      'visibility',
-      'repositoryTopics',
-      'latestRelease',
-      'licenseInfo',
-      'defaultBranchRef',
-    ].join(','),
+      "name",
+      "nameWithOwner",
+      "description",
+      "homepageUrl",
+      "isArchived",
+      "isFork",
+      "url",
+      "pushedAt",
+      "visibility",
+      "repositoryTopics",
+      "latestRelease",
+      "licenseInfo",
+      "defaultBranchRef",
+    ].join(","),
   ];
 
   if (!config.includeArchived) {
-    args.push('--no-archived');
+    args.push("--no-archived");
   }
 
   if (!config.includeForks) {
-    args.push('--source');
+    args.push("--source");
   }
 
   for (const topic of config.topicFilters) {
-    args.push('--topic', topic);
+    args.push("--topic", topic);
   }
 
-  const result = execCommand('gh', args, {
+  const result = execCommand("gh", args, {
     silent: !config.verbose,
   });
 
@@ -1296,7 +1295,7 @@ async function fetchRemoteRepositories(
 
   if (!isGhRepositorySummaryArray(parsed)) {
     throw new Error(
-      'Unexpected response while parsing GitHub repository list.',
+      "Unexpected response while parsing GitHub repository list.",
     );
   }
 
@@ -1312,7 +1311,7 @@ async function fetchRemoteRepositoryInventory(
   for (const repo of repositories) {
     const result = await runRepoOperationAsync(
       repo.nameWithOwner,
-      'fetch-tags',
+      "fetch-tags",
       async () => {
         return await fetchRepositoryTags(repo.nameWithOwner, config.verbose);
       },
@@ -1332,12 +1331,12 @@ async function fetchRepositoryTags(
   verbose: boolean,
 ): Promise<GhRepositoryTag[]> {
   if (verbose) {
-    log('debug', `Fetching tags for ${repository}`);
+    log("debug", `Fetching tags for ${repository}`);
   }
 
   const result = execCommand(
-    'gh',
-    ['api', '--method', 'GET', `repos/${repository}/tags?per_page=100`],
+    "gh",
+    ["api", "--method", "GET", `repos/${repository}/tags?per_page=100`],
     {
       allowFailure: true,
       silent: !verbose,
@@ -1392,18 +1391,18 @@ async function cloneRepositoryIfMissing(
 
   if (existsSync(localPath)) {
     if (config.verbose) {
-      log('debug', `Repository already exists locally: ${localPath}`);
+      log("debug", `Repository already exists locally: ${localPath}`);
     }
     return;
   }
 
-  log('info', `Cloning ${repo.nameWithOwner} into ${localPath}`);
+  log("info", `Cloning ${repo.nameWithOwner} into ${localPath}`);
 
   if (config.dryRun) {
     return;
   }
 
-  execCommand('gh', ['repo', 'clone', repo.nameWithOwner, localPath], {
+  execCommand("gh", ["repo", "clone", repo.nameWithOwner, localPath], {
     silent: !config.verbose,
   });
 }
@@ -1418,19 +1417,19 @@ function parseJson(input: string): unknown {
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null;
+  return typeof value === "object" && value !== null;
 }
 
 function isString(value: unknown): value is string {
-  return typeof value === 'string';
+  return typeof value === "string";
 }
 
 function isBoolean(value: unknown): value is boolean {
-  return typeof value === 'boolean';
+  return typeof value === "boolean";
 }
 
 function isNullableString(value: unknown): value is string | null {
-  return value === null || typeof value === 'string';
+  return value === null || typeof value === "string";
 }
 
 function isGhRepositorySummary(value: unknown): value is GhRepositorySummary {
@@ -1439,15 +1438,15 @@ function isGhRepositorySummary(value: unknown): value is GhRepositorySummary {
   }
 
   return (
-    isString(value['name']) &&
-    isString(value['nameWithOwner']) &&
-    isNullableString(value['description']) &&
-    isNullableString(value['homepageUrl']) &&
-    isBoolean(value['isArchived']) &&
-    isBoolean(value['isFork']) &&
-    isString(value['url']) &&
-    isNullableString(value['pushedAt']) &&
-    isString(value['visibility'])
+    isString(value["name"]) &&
+    isString(value["nameWithOwner"]) &&
+    isNullableString(value["description"]) &&
+    isNullableString(value["homepageUrl"]) &&
+    isBoolean(value["isArchived"]) &&
+    isBoolean(value["isFork"]) &&
+    isString(value["url"]) &&
+    isNullableString(value["pushedAt"]) &&
+    isString(value["visibility"])
   );
 }
 
@@ -1465,20 +1464,20 @@ function isGhRepositoryTag(value: unknown): value is GhRepositoryTag {
   }
 
   if (
-    !isString(value['name']) ||
-    !isString(value['zipball_url']) ||
-    !isString(value['tarball_url'])
+    !isString(value["name"]) ||
+    !isString(value["zipball_url"]) ||
+    !isString(value["tarball_url"])
   ) {
     return false;
   }
 
-  const commit = value['commit'];
+  const commit = value["commit"];
 
   if (!isRecord(commit)) {
     return false;
   }
 
-  return isString(commit['sha']) && isString(commit['url']);
+  return isString(commit["sha"]) && isString(commit["url"]);
 }
 
 function isGhRepositoryTagArray(value: unknown): value is GhRepositoryTag[] {
