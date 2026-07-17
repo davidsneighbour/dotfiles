@@ -24,10 +24,10 @@
     ~/.codex:
       path: ${HOME}/github.com/davidsneighbour/dotfiles-protected/ai-configs/codex
     ~/.copilot:
-      path: ${HOME}/github.com/davidsneighbour/dotfiles-protected/ai-configs/copilot   
+      path: ${HOME}/github.com/davidsneighbour/dotfiles-protected/ai-configs/copilot
     ~/.gemini:
-      path: ${HOME}/github.com/davidsneighbour/dotfiles-protected/ai-configs/gemini   
+      path: ${HOME}/github.com/davidsneighbour/dotfiles-protected/ai-configs/gemini
     ~/.hermes:
-      path: ${HOME}/github.com/davidsneighbour/dotfiles-protected/ai-configs/hermes    
+      path: ${HOME}/github.com/davidsneighbour/dotfiles-protected/ai-configs/hermes
     ~/.ollama:
-      path: ${HOME}/github.com/davidsneighbour/dotfiles-protected/ai-configs/ollama   
+      path: ${HOME}/github.com/davidsneighbour/dotfiles-protected/ai-configs/ollama
