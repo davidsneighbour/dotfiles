@@ -110,6 +110,17 @@
       "custom"
     ]
   },
+  "overrides": {
+    "@dnbhq/markdownlint-config": {
+      "markdownlint": "0.41.1",
+      "markdownlint-cli2": "0.23.1",
+      "markdownlint-rule-relative-links": "5.1.1"
+    },
+    "markdownlint-rule-title-case-style": {
+      ".": "0.4.3",
+      "markdownlint": "0.41.1"
+    }
+  },
   "simple-git-hooks": {
     "pre-commit": "npm run lint:hook:commit:loud"
   },
