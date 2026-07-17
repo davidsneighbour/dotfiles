@@ -1,14 +1,14 @@
 {
-  "extends": "@dnbhq/tsconfig/cli",
-  // @todo move included files into strict config
-  "include": ["**/*.ts", "lint-staged.config.ts"],
-  // @todo rework the excluded files list
-  "exclude": [
-    "node_modules",
-    "**/node_modules/*",
-    "configs/theme/Dracula",
-    "modules/protected",
-    "containers/hal2025",
-    "configs/vscode"
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.config.json"
+    },
+    {
+      "path": "./tsconfig.scripts.json"
+    },
+    {
+      "path": "./tsconfig.bash-helpers.json"
+    }
   ]
 }
