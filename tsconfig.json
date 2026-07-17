@@ -1,7 +1,7 @@
 {
-  "extends": "@dnbhq/tsconfig/strict",
+  "extends": "@dnbhq/tsconfig/cli",
   // @todo move included files into strict config
-  "include": ["**/*.ts", "**/*.tsx", "**/*.js", "lint-staged.config.ts"],
+  "include": ["**/*.ts", "lint-staged.config.ts"],
   // @todo rework the excluded files list
   "exclude": [
     "node_modules",

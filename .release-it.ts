@@ -1,94 +1,47 @@
+import { createReleaseConfig } from '@dnbhq/release-config';
 import type { Config } from 'release-it';
 
-const config = {
-  npm: {
-    publish: false,
-  },
-  git: {
-    requireBranch: 'main',
-    requireCleanWorkingDir: false, // we are doing that in hooks and ignore dirty submodules
-    commit: true,
-    commitArgs: ['--signoff', '--no-verify'],
-    commitMessage: 'chore(release): v${version}',
-    tag: true,
-    tagName: 'v${version}',
-    push: true,
-    pushArgs: ['--follow-tags'],
-  },
-  hooks: {
-    'before:init': [
-      'git update-index -q --refresh',
-      'git diff-index --quiet --ignore-submodules=dirty HEAD --',
+const config: Config = createReleaseConfig({
+  scopes: {
+    minorTypes: ['feat', 'prompts', 'instructions', 'skills'],
+    patchTypes: [
+      'fix',
+      'perf',
+      'refactor',
+      'docs',
+      'style',
+      'test',
+      'build',
+      'ci',
+      'chore',
+      'config',
+      'ai',
     ],
-    'before:git:release': [
-      'if [ -f CITATION.cff ]; then last_commit=$(git rev-parse HEAD); release_date=$(date +%F); sed -Ei "s/^commit: .*/commit: $last_commit/" CITATION.cff; sed -Ei "s/^version: .*/version: ${version}/" CITATION.cff; sed -Ei "s/^date-released: .*/date-released: $release_date/" CITATION.cff; git add CITATION.cff; fi',
-    ],
-    'after:release': [
-      'if [ -f bashrc/lib/45-workspace/dnb-gitmarker.bash ]; then source bashrc/lib/45-workspace/dnb-gitmarker.bash; if declare -F gitmark-set >/dev/null 2>&1; then gitmark-set; else echo "gitmark-set function missing after sourcing bashrc/lib/45-workspace/dnb-gitmarker.bash; skipping."; fi; else echo "bashrc/lib/45-workspace/dnb-gitmarker.bash not found; skipping gitmark-set."; fi',
-    ],
-  },
-  github: {
-    release: true,
-    releaseName: 'v${version}',
-    skipChecks: true,
-    tokenRef: 'GITHUB_TOKEN_CONTENT_PRIVATE',
-  },
-  plugins: {
-    '@release-it/conventional-changelog': {
-      infile: 'CHANGELOG.md',
-      preset: {
-        name: 'conventionalcommits',
-        types: [
-          { type: 'feat', section: 'Features' },
-          { type: 'fix', section: 'Bug Fixes' },
-          { type: 'config', section: 'Configuration' },
-          { type: 'docs', section: 'Documentation' },
-          { type: 'build', section: 'Build' },
-          { type: 'chore', section: 'Chore' },
-          { type: 'ai', section: 'AI' },
-        ],
-      },
-      whatBump(commits: Array<{ type?: string; notes?: unknown[] }>) {
-        let level: 2 | 1 | 0 | null = null;
-
-        for (const commit of commits) {
-          const notes = Array.isArray(commit.notes) ? commit.notes : [];
-          const type = typeof commit.type === 'string' ? commit.type : '';
-
-          if (notes.length > 0) {
-            return {
-              level: 0,
-              reason: 'There are BREAKING CHANGES.',
-            };
-          }
-
-          if (type === 'feat') {
-            level = 1;
-            continue;
-          }
-
-          if (
-            level === null &&
-            ['fix', 'config', 'docs', 'build', 'chore'].includes(type)
-          ) {
-            level = 2;
-          }
-        }
-
-        if (level === null) {
-          return false;
-        }
-
-        return {
-          level,
-          reason:
-            level === 1
-              ? 'There are feat/content commits.'
-              : 'There are patch-level changes.',
-        };
-      },
+    minorExclusionSubscopes: {
+      feat: ['fix'],
+      prompts: ['fix'],
+      instructions: ['fix'],
+      skills: ['fix'],
     },
   },
-} satisfies Config;
+  overrides: {
+    git: {
+      requireCleanWorkingDir: false,
+      commitArgs: ['--signoff', '--no-verify'],
+    },
+    hooks: {
+      'before:init': [
+        'git update-index -q --refresh',
+        'git diff-index --quiet --ignore-submodules=dirty HEAD --',
+      ],
+      'before:git:release': [
+        'if [ -f CITATION.cff ]; then sed -Ei "s/^version: .*/version: ${version}/" CITATION.cff; git add CITATION.cff; fi',
+      ],
+      'after:release': [
+        'if [ -f bashrc/lib/45-workspace/dnb-gitmarker.bash ]; then source bashrc/lib/45-workspace/dnb-gitmarker.bash; if declare -F gitmark-set >/dev/null 2>&1; then gitmark-set; else echo "gitmark-set function missing after sourcing bashrc/lib/45-workspace/dnb-gitmarker.bash; skipping."; fi; else echo "bashrc/lib/45-workspace/dnb-gitmarker.bash not found; skipping gitmark-set."; fi',
+      ],
+    },
+  },
+});
 
 export default config;

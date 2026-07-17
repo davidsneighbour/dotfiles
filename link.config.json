@@ -1,8 +1,10 @@
 {
   "packages": [
     "../configurations/packages/commitlint-config",
-    "../configurations/packages/markdownlint-config",
-    "../configurations/packages/release-config",
+    "../dnbhq/biome-config",
+    "../dnbhq/markdownlint-config",
+    "../dnbhq/release-config",
+    "../dnbhq/tsconfig",
     "../configurations/packages/remark-config",
     "../configurations/packages/tools"
   ]
