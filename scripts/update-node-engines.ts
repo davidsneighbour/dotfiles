@@ -4,6 +4,10 @@ import { readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
 const CONFIG = {
+  fallbackSchedulePath: resolve(
+    process.cwd(),
+    "scripts/node-release-schedule.json",
+  ),
   packageJsonPath: resolve(process.cwd(), "package.json"),
   scheduleUrl:
     "https://raw.githubusercontent.com/nodejs/Release/main/schedule.json",
@@ -28,6 +32,18 @@ type PackageJson = {
   [key: string]: unknown;
 };
 
+type CliOptions = {
+  check: boolean;
+  help: boolean;
+  offline: boolean;
+};
+
+type ScheduleResult = {
+  rawSchedule: unknown;
+  schedule: NodeSchedule;
+  source: "fallback" | "network";
+};
+
 /**
  * Prints the CLI help text.
  *
@@ -40,20 +56,23 @@ function printHelp(): void {
   console.log(
     `
 Usage:
-  ${command} [--check] [--help]
+  ${command} [--check] [--offline] [--help]
 
 Options:
-  --check   Check whether package.json is current without writing changes.
-  --help    Show this help message.
+  --check    Check whether package.json is current without writing changes.
+  --offline  Use the committed fallback schedule instead of the network.
+  --help     Show this help message.
 
 Behaviour:
   - Reads the official Node.js release schedule from:
     ${CONFIG.scheduleUrl}
+  - Falls back to the committed schedule when the network fetch fails:
+    ${CONFIG.fallbackSchedulePath}
   - Selects every released Node.js major whose EOL date is still in the future.
   - Includes odd-numbered majors while they are not EOL.
   - Updates package.json engines.node to an explicit semver range.
   - Example output:
-    ^22.0.0 || ^24.0.0 || ^25.0.0 || ^26.0.0
+    ^22.0.0 || ^24.0.0 || ^26.0.0
 `.trim(),
   );
 }
@@ -64,8 +83,8 @@ Behaviour:
  * @param args - Raw CLI arguments.
  * @returns Parsed command options.
  */
-function parseArgs(args: readonly string[]): { check: boolean; help: boolean } {
-  const allowed = new Set(["--check", "--help"]);
+function parseArgs(args: readonly string[]): CliOptions {
+  const allowed = new Set(["--check", "--help", "--offline"]);
   const unknown = args.filter((arg) => !allowed.has(arg));
 
   if (unknown.length > 0) {
@@ -75,6 +94,7 @@ function parseArgs(args: readonly string[]): { check: boolean; help: boolean } {
   return {
     check: args.includes("--check"),
     help: args.includes("--help"),
+    offline: args.includes("--offline"),
   };
 }
 
@@ -289,6 +309,56 @@ async function fetchJson(url: string): Promise<unknown> {
 }
 
 /**
+ * Reads the committed fallback Node.js release schedule.
+ *
+ * @returns Parsed fallback schedule result.
+ */
+async function readFallbackSchedule(): Promise<ScheduleResult> {
+  const rawSchedule = await readJsonFile(CONFIG.fallbackSchedulePath);
+
+  return {
+    rawSchedule,
+    schedule: parseSchedule(rawSchedule),
+    source: "fallback",
+  };
+}
+
+/**
+ * Reads the Node.js release schedule from the network or fallback file.
+ *
+ * @param options - Parsed command options.
+ * @returns Parsed schedule result.
+ */
+async function readSchedule(options: CliOptions): Promise<ScheduleResult> {
+  if (options.offline) {
+    console.warn(
+      `Using committed Node.js release schedule fallback: ${CONFIG.fallbackSchedulePath}`,
+    );
+    return readFallbackSchedule();
+  }
+
+  try {
+    const rawSchedule = await fetchJson(CONFIG.scheduleUrl);
+
+    return {
+      rawSchedule,
+      schedule: parseSchedule(rawSchedule),
+      source: "network",
+    };
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.warn(
+      `Warning: failed to fetch Node.js release schedule from ${CONFIG.scheduleUrl}: ${message}`,
+    );
+    console.warn(
+      `Warning: using committed fallback schedule: ${CONFIG.fallbackSchedulePath}`,
+    );
+
+    return readFallbackSchedule();
+  }
+}
+
+/**
  * Main CLI entrypoint.
  *
  * @returns Nothing.
@@ -304,8 +374,11 @@ async function main(): Promise<void> {
   const packageJson = parsePackageJson(
     await readJsonFile(CONFIG.packageJsonPath),
   );
-  const schedule = parseSchedule(await fetchJson(CONFIG.scheduleUrl));
-  const nextNodeRange = buildNodeEnginesRange(schedule, getTodayUtcTimestamp());
+  const scheduleResult = await readSchedule(options);
+  const nextNodeRange = buildNodeEnginesRange(
+    scheduleResult.schedule,
+    getTodayUtcTimestamp(),
+  );
   const currentNodeRange = packageJson.engines?.node;
 
   if (currentNodeRange === nextNodeRange) {
@@ -333,6 +406,15 @@ async function main(): Promise<void> {
   );
 
   console.log(`Updated ${CONFIG.packageJsonPath}`);
+
+  if (scheduleResult.source === "network") {
+    await writeFile(
+      CONFIG.fallbackSchedulePath,
+      `${JSON.stringify(scheduleResult.rawSchedule, null, CONFIG.indentation)}\n`,
+      "utf8",
+    );
+    console.log(`Updated ${CONFIG.fallbackSchedulePath}`);
+  }
 }
 
 try {
