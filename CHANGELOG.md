@@ -1,5 +1,22 @@
 # Changelog
 
+## [3004.1.1](https://github.com/davidsneighbour/dotfiles/compare/v3004.1.0...v3004.1.1) (2026-07-17)
+
+### Fix
+
+* **launchers:** stabilize GitHub protocol handler ([fb32a0c](https://github.com/davidsneighbour/dotfiles/commit/fb32a0cf06ab77c630a15e2356545d5982b5da33))
+* **msgvault:** load backup target from config ([2c44b32](https://github.com/davidsneighbour/dotfiles/commit/2c44b32ccf85e16d838f8dab219dd278fd81476f))
+
+### Chore
+
+* **cron:** start mailbox monitor on locutus ([d2575fc](https://github.com/davidsneighbour/dotfiles/commit/d2575fcbf5c1bab65ce30d28831434cd42d26107))
+* **installs:** add eza apt installer ([57cfb7a](https://github.com/davidsneighbour/dotfiles/commit/57cfb7a5519bf61aee1e374e1b6c56110ec95116))
+* **renovate:** move config to repository root ([c33bd43](https://github.com/davidsneighbour/dotfiles/commit/c33bd432a43f292f7d38fc6d55fa58c960291321))
+* **shell:** add AI assistant environment helpers ([9dcc5db](https://github.com/davidsneighbour/dotfiles/commit/9dcc5dba5f08bbf6b06e501c87613e7c9d0b5183))
+* **submodule:** update protected AI configs ([1f23664](https://github.com/davidsneighbour/dotfiles/commit/1f236641abd21daa7a61a7a67fbc50402c303ad2))
+* **submodule:** update protected env config ([a477589](https://github.com/davidsneighbour/dotfiles/commit/a47758932619e0b48a4139a8db78dc19f00957af))
+* **tooling:** adopt shared dnbhq configs ([47a4c18](https://github.com/davidsneighbour/dotfiles/commit/47a4c1867c6b7fa0b272dcbeaac83114125fcdfa))
+
 ## [3004.1.0](https://github.com/davidsneighbour/dotfiles/compare/v3004.0.1...v3004.1.0) (2026-07-06)
 
 ### Features
