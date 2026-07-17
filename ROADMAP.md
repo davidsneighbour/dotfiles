@@ -1,32 +1,33 @@
 <!-- vale off -->
 # Roadmap
 
-**Project:** `@davidsneighbour/dotfiles` — v3004.0.0
-**Last updated:** 2026-07-01
+**Project:** `@davidsneighbour/dotfiles` — v3004.1.1
+**Last updated:** 2026-07-17
 **Branch:** `main`
 
 ## Project state
 
 GitHub Issues is the source of truth for actionable work. The repository now has
-34 open issues, including 20 new issues created from the repo-wide recommendation
-inbox. `TODO.md` is empty except for a note that no unprocessed scratch items
-remain.
+41 open issues. `TODO.md` is empty except for a note that no unprocessed scratch
+items remain.
 
-The main health risks are now visible: npm audit has remaining dev-tooling
-findings, the broad TypeScript check fails because runtime-specific scripts share
-one configuration, and YAML/config linting mixes first-party errors with
-vendored style-pack noise.
+The main health risks remain visible: npm audit has remaining dev-tooling
+findings, the broad TypeScript check now fails on reachable strictness issues in
+repository scripts, and YAML/config linting still mixes first-party errors with
+vendored style-pack noise. The Node engines updater passes when network access is
+available, but it still needs the offline fallback tracked in #521.
 
 ## Health indicators
 
 | Signal | Status |
 | --- | --- |
-| Open GitHub issues | 34 |
+| Open GitHub issues | 41 |
 | TODO.md | No unprocessed scratch notes remain |
 | npm audit | Failing: 11 vulnerabilities, 2 high, 6 moderate, 3 low, 0 critical |
-| TypeScript check | Failing: broad `npx tsc --noEmit --pretty false` reports missing Node/runtime globals and typed-script errors |
-| Config lint | Failing: `npm run lint:config` reports first-party Dotbot trailing spaces plus vendored/generated Vale YAML noise |
-| Markdown lint | Pending after roadmap regeneration; validate `TODO.md` and `ROADMAP.md` before committing |
+| Node engines check | Passing with network access: `engines.node` is current |
+| TypeScript check | Failing: unreachable code in helper scripts plus strict index-signature access in `scripts/update-node-engines.ts` |
+| Config lint | Failing: first-party Dotbot trailing spaces plus vendored/generated Font Awesome and Vale YAML noise |
+| Tracking Markdown lint | Passing for `TODO.md` and `ROADMAP.md` |
 
 ## Open issues
 
@@ -38,10 +39,11 @@ vendored style-pack noise.
 | [#504 Split TypeScript configuration by runtime](https://github.com/davidsneighbour/dotfiles/issues/504) | Needed before TypeScript can become a meaningful repo-wide health gate. |
 | [#507 Add shell linting and formatting scripts](https://github.com/davidsneighbour/dotfiles/issues/507) | Exposes the required Bash/ShellCheck standard as a runnable check. |
 | [#511 Stabilize YAML linting for vendored configs](https://github.com/davidsneighbour/dotfiles/issues/511) | Separates actionable first-party YAML errors from downloaded style-pack noise. |
+| [#521 Add offline fallback for the Node engines updater](https://github.com/davidsneighbour/dotfiles/issues/521) | Keeps `check:node-engines` actionable when the Node release schedule cannot be fetched. |
 | [#495 Make lint-staged commands operate only on staged files](https://github.com/davidsneighbour/dotfiles/issues/495) | Keeps pre-commit checks fast and scoped to the staged file set. |
 | [#494 Add spell checking for commit messages](https://github.com/davidsneighbour/dotfiles/issues/494) | Needs a decision about local hooks, CI, or both. |
 | [#489 Add version-bump linter for changed files](https://github.com/davidsneighbour/dotfiles/issues/489) | Needs clear scope for authoritative version files before implementation. |
-| [#502 Follow up on remaining npm audit findings](https://github.com/davidsneighbour/dotfiles/issues/502) | Current audit still reports a fixable `js-yaml` path and unresolved transitive Markdown tooling findings. |
+| [#502 Follow up on remaining npm audit findings](https://github.com/davidsneighbour/dotfiles/issues/502) | Current audit still reports Markdown tooling findings plus an unfixed `secp256k1` path through secretlint. |
 
 ### Setup and installation
 
@@ -64,6 +66,13 @@ vendored style-pack noise.
 | [#499 Clean up and document bashrc helpers](https://github.com/davidsneighbour/dotfiles/issues/499) | Inventories helpers and adds focused help where useful. |
 | [#496 Clean up and document bashrc cronjob helpers](https://github.com/davidsneighbour/dotfiles/issues/496) | Reviews cron helper logging, help output, and shellcheck coverage. |
 | [#508 Normalize logging across cronjobs and UI helpers](https://github.com/davidsneighbour/dotfiles/issues/508) | Extends the logging standard across cron, Rofi, Polybar, and install commands. |
+| [#530 Document and lint log filename rules for AI-assisted changes](https://github.com/davidsneighbour/dotfiles/issues/530) | Converts the log filename policy into explicit instructions and conservative linting. |
+| [#529 Add date to rofi log filename](https://github.com/davidsneighbour/dotfiles/issues/529) | Fixes `logs/rofi/rofi.log` so retention logic can rely on basename dates. |
+| [#528 Add date to docker backup cron log filename](https://github.com/davidsneighbour/dotfiles/issues/528) | Fixes `logs/cron/docker-backup.log` without falling back to modified-time deletion. |
+| [#527 Add date to daily report cron log filename](https://github.com/davidsneighbour/dotfiles/issues/527) | Fixes `logs/cron/daily-report-cron.log` to match the timestamped log policy. |
+| [#526 Add date to wallpaper log filename](https://github.com/davidsneighbour/dotfiles/issues/526) | Fixes `logs/desktop/wallpaper.log` so cleanup can remain conservative. |
+| [#525 Add date to codex-tui log filename](https://github.com/davidsneighbour/dotfiles/issues/525) | Fixes `logs/codex/codex-tui.log` and preserves date-based retention safety. |
+| [#524 Keep lock files out of the logs directory](https://github.com/davidsneighbour/dotfiles/issues/524) | Moves operational lock state out of the log tree before cleanup logic grows broader. |
 | [#500 Clean up and deprecate bashrc workspaces](https://github.com/davidsneighbour/dotfiles/issues/500) | Includes workspace helper hardening or deprecation decisions. |
 | [#522 Add health checks for desktop helpers](https://github.com/davidsneighbour/dotfiles/issues/522) | Smoke-checks Rofi, Polybar, and desktop integration helpers without a full desktop session. |
 | [#490 Evaluate and add a window tiling helper](https://github.com/davidsneighbour/dotfiles/issues/490) | Compares the linked Xubuntu script, `zentile`, and current window-management patterns. |
@@ -102,21 +111,23 @@ risk.
 
 | Root package | Severity | Notes |
 | --- | --- | --- |
-| `js-yaml` → `markdownlint-cli2` | moderate | Fix is available according to npm audit; tracked in #502 |
-| `linkify-it` → `markdown-it` → Markdown lint tooling | high/moderate | No complete upstream fix available for all paths |
+| `@dnbhq/markdownlint-config` → Markdown lint tooling | high/moderate | Audit suggests a downgrade-style semver-major replacement, so this needs manual dependency review |
+| `js-yaml` → `markdownlint-cli2` | moderate | Still reported through Markdown lint tooling and tracked in #502 |
+| `linkify-it` → `markdown-it` → Markdown lint tooling | high/moderate | Still reported through Markdown lint rule dependencies |
 | `elliptic` → `secp256k1` → secretlint tooling | low | No upstream fix available |
 
 ## Suggested order of work
 
-1. Handle [#502](https://github.com/davidsneighbour/dotfiles/issues/502) first because npm audit reports at least one fixable path.
-2. Make the local health signals useful: [#511](https://github.com/davidsneighbour/dotfiles/issues/511), [#504](https://github.com/davidsneighbour/dotfiles/issues/504), and [#507](https://github.com/davidsneighbour/dotfiles/issues/507).
+1. Handle [#502](https://github.com/davidsneighbour/dotfiles/issues/502) first because npm audit is still failing and now needs a careful manual review of the Markdown lint dependency path.
+2. Make the local health signals useful: [#511](https://github.com/davidsneighbour/dotfiles/issues/511), [#504](https://github.com/davidsneighbour/dotfiles/issues/504), [#507](https://github.com/davidsneighbour/dotfiles/issues/507), and [#521](https://github.com/davidsneighbour/dotfiles/issues/521).
 3. Add the unified check command in [#503](https://github.com/davidsneighbour/dotfiles/issues/503) after the individual gates are trustworthy.
-4. Stabilize setup safety next: [#497](https://github.com/davidsneighbour/dotfiles/issues/497), [#506](https://github.com/davidsneighbour/dotfiles/issues/506), [#510](https://github.com/davidsneighbour/dotfiles/issues/510), [#509](https://github.com/davidsneighbour/dotfiles/issues/509), and [#505](https://github.com/davidsneighbour/dotfiles/issues/505).
-5. Continue shell and desktop maintenance: [#501](https://github.com/davidsneighbour/dotfiles/issues/501), [#499](https://github.com/davidsneighbour/dotfiles/issues/499), [#496](https://github.com/davidsneighbour/dotfiles/issues/496), [#508](https://github.com/davidsneighbour/dotfiles/issues/508), [#500](https://github.com/davidsneighbour/dotfiles/issues/500), and [#522](https://github.com/davidsneighbour/dotfiles/issues/522).
-6. Review service safety: [#520](https://github.com/davidsneighbour/dotfiles/issues/520), [#512](https://github.com/davidsneighbour/dotfiles/issues/512), [#513](https://github.com/davidsneighbour/dotfiles/issues/513), and [#517](https://github.com/davidsneighbour/dotfiles/issues/517).
-7. Improve backup reliability with [#516](https://github.com/davidsneighbour/dotfiles/issues/516) before [#515](https://github.com/davidsneighbour/dotfiles/issues/515).
-8. Finish structure cleanup and module polish with [#519](https://github.com/davidsneighbour/dotfiles/issues/519), [#518](https://github.com/davidsneighbour/dotfiles/issues/518), [#498](https://github.com/davidsneighbour/dotfiles/issues/498), and [#514](https://github.com/davidsneighbour/dotfiles/issues/514).
-9. Keep [#490](https://github.com/davidsneighbour/dotfiles/issues/490), [#491](https://github.com/davidsneighbour/dotfiles/issues/491), [#492](https://github.com/davidsneighbour/dotfiles/issues/492), [#493](https://github.com/davidsneighbour/dotfiles/issues/493), [#494](https://github.com/davidsneighbour/dotfiles/issues/494), and [#489](https://github.com/davidsneighbour/dotfiles/issues/489) as focused tasks that can be selected independently when their decisions are clear.
+4. Close the logging-policy cluster: [#524](https://github.com/davidsneighbour/dotfiles/issues/524), [#525](https://github.com/davidsneighbour/dotfiles/issues/525), [#526](https://github.com/davidsneighbour/dotfiles/issues/526), [#527](https://github.com/davidsneighbour/dotfiles/issues/527), [#528](https://github.com/davidsneighbour/dotfiles/issues/528), [#529](https://github.com/davidsneighbour/dotfiles/issues/529), and [#530](https://github.com/davidsneighbour/dotfiles/issues/530).
+5. Stabilize setup safety next: [#497](https://github.com/davidsneighbour/dotfiles/issues/497), [#506](https://github.com/davidsneighbour/dotfiles/issues/506), [#510](https://github.com/davidsneighbour/dotfiles/issues/510), [#509](https://github.com/davidsneighbour/dotfiles/issues/509), and [#505](https://github.com/davidsneighbour/dotfiles/issues/505).
+6. Continue shell and desktop maintenance: [#501](https://github.com/davidsneighbour/dotfiles/issues/501), [#499](https://github.com/davidsneighbour/dotfiles/issues/499), [#496](https://github.com/davidsneighbour/dotfiles/issues/496), [#508](https://github.com/davidsneighbour/dotfiles/issues/508), [#500](https://github.com/davidsneighbour/dotfiles/issues/500), and [#522](https://github.com/davidsneighbour/dotfiles/issues/522).
+7. Review service safety: [#520](https://github.com/davidsneighbour/dotfiles/issues/520), [#512](https://github.com/davidsneighbour/dotfiles/issues/512), [#513](https://github.com/davidsneighbour/dotfiles/issues/513), and [#517](https://github.com/davidsneighbour/dotfiles/issues/517).
+8. Improve backup reliability with [#516](https://github.com/davidsneighbour/dotfiles/issues/516) before [#515](https://github.com/davidsneighbour/dotfiles/issues/515).
+9. Finish structure cleanup and module polish with [#519](https://github.com/davidsneighbour/dotfiles/issues/519), [#518](https://github.com/davidsneighbour/dotfiles/issues/518), [#498](https://github.com/davidsneighbour/dotfiles/issues/498), and [#514](https://github.com/davidsneighbour/dotfiles/issues/514).
+10. Keep [#490](https://github.com/davidsneighbour/dotfiles/issues/490), [#491](https://github.com/davidsneighbour/dotfiles/issues/491), [#492](https://github.com/davidsneighbour/dotfiles/issues/492), [#493](https://github.com/davidsneighbour/dotfiles/issues/493), [#494](https://github.com/davidsneighbour/dotfiles/issues/494), and [#489](https://github.com/davidsneighbour/dotfiles/issues/489) as focused tasks that can be selected independently when their decisions are clear.
 
 ## Open clarification questions
 
