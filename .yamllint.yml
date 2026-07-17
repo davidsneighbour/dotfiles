@@ -6,12 +6,21 @@ yaml-files:
   - '.yamllint'
 
 ignore:
+  # Downloaded Font Awesome metadata is vendored data, not repository-authored config.
+  - configs/fonts/System/fontawesome/metadata/
+  # Downloaded Vale style packs are vendored; local DNB, AI, and config styles stay linted.
   - configs/system/vale/styles/alex/
   - configs/system/vale/styles/Google/
   - configs/system/vale/styles/Joblint/
   - configs/system/vale/styles/Microsoft/
   - configs/system/vale/styles/proselint/
+  - configs/system/vale/styles/Readability/
   - configs/system/vale/styles/write-good/
+  - configs/system/vale/styles/.vale-config/styles/alex/
+  - configs/system/vale/styles/.vale-config/styles/Google/
+  - configs/system/vale/styles/.vale-config/styles/proselint/
+  - configs/system/vale/styles/.vale-config/styles/Readability/
+  - configs/system/vale/styles/.vale-config/styles/write-good/
   - node_modules
   - modules
 
