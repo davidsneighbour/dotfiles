@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=GitHub Copilot
+Terminal=false
+NoDisplay=true
+MimeType=x-scheme-handler/gh;x-scheme-handler/ghapp;x-scheme-handler/github-app
+Exec="/home/patrick/.bin/local/GitHub-Copilot-linux-x64_a9ce2bf3dd39042c1b4b8999b3660b8c.AppImage" %u
