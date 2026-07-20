@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/espanso/espanso/dev/schemas/match.schema.json
+
+matches:
+  - trigger: ";ae"
+    replace: "ä"
+
+  - trigger: ";oe"
+    replace: "ö"
+
+  - trigger: ";ue"
+    replace: "ü"
+
+  - trigger: ";Ae"
+    replace: "Ä"
+
+  - trigger: ";Oe"
+    replace: "Ö"
+
+  - trigger: ";Ue"
+    replace: "Ü"
+
+  - trigger: ";ss"
+    replace: "ß"

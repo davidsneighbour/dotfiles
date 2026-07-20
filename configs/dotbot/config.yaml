@@ -83,6 +83,7 @@
     ~/.local/share/vale: configs/system/vale
     ~/.config/vale: configs/system/vale
     ~/.config/github-label-manager: configs/system/git/github-label-manager
+    ~/.config/espanso: configs/system/espanso
 
     # node configs
     ~/.ncurc.js: configs/system/npm/ncu.js
