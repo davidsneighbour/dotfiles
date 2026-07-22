@@ -11,7 +11,7 @@ done
 
 # Setup logging
 LOG_LEVEL="debug"
-DNB_SETUP_LOG_FILE="${HOME}/.logs/rofi/rofi.log"
+DNB_SETUP_LOG_FILE="${HOME}/.logs/rofi/rofi-$(date +%Y%m%d-%H%M%S).log"
 mkdir -p "$(dirname "${DNB_SETUP_LOG_FILE}")"
 dnb_log_init
 dnb_log info "Starting rofi project selector"
