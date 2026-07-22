@@ -3,7 +3,7 @@
 set -euo pipefail
 
 SCRIPT_NAME="$(basename "$0")"
-DEFAULT_LOG_FILE="${HOME}/.logs/desktop/wallpaper.log"
+DEFAULT_LOG_FILE="${HOME}/.logs/desktop/wallpaper-$(date '+%Y%m%d').log"
 DEFAULT_MODE="auto"
 DEFAULT_STYLE="fill"
 DEFAULT_VERBOSE="false"
@@ -40,7 +40,7 @@ Options:
 Examples:
   ${SCRIPT_NAME} --wallpaper "${HOME}/Pictures/wallpapers/forest.jpg"
   ${SCRIPT_NAME} --wallpaper "./wall.jpg" --mode xfce --verbose
-  ${SCRIPT_NAME} --wallpaper "${HOME}/Pictures/wall.jpg" --log-file "${HOME}/.logs/desktop/wallpaper.log"
+  ${SCRIPT_NAME} --wallpaper "${HOME}/Pictures/wall.jpg" --log-file "${HOME}/.logs/desktop/wallpaper-\$(date +%Y%m%d).log"
 EOF
 }
 
