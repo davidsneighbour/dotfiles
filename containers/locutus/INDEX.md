@@ -33,16 +33,16 @@ free unless there is a clear operational reason.
 
 | Service | Container | Source | Image | Published ports |
 | --- | --- | --- | --- | --- |
-| FreshRSS | `freshrss` | `containers/locutus/freshrss/docker-compose.yaml` | `lscr.io/linuxserver/freshrss:latest` | `3050:80` |
-| Homepage | `homepage` | `containers/locutus/homepage/docker-compose.yaml` | `ghcr.io/gethomepage/homepage:latest` | `3005:3000` |
-| Open WebUI | `open-webui` | `containers/locutus/openwebui/docker-compose.yaml` | `ghcr.io/open-webui/open-webui:main` | `3200:8080` |
-| Stirling PDF | `stirling-pdf` | `containers/locutus/stirling/docker-compose.yaml` | `stirlingtools/stirling-pdf:latest-fat`, pinned by digest | `3010:8080` |
+| FreshRSS | `freshrss` | `containers/locutus/freshrss/docker-compose.yaml` | `lscr.io/linuxserver/freshrss:latest`, pinned by digest | `3050:80` |
+| Homepage | `homepage` | `containers/locutus/homepage/docker-compose.yaml` | `ghcr.io/gethomepage/homepage:latest`, pinned by digest | `3005:3000` |
+| Open WebUI | `open-webui` | `containers/locutus/openwebui/docker-compose.yaml` | `ghcr.io/open-webui/open-webui:0.10.2`, pinned by digest | `3200:8080` |
+| Stirling PDF | `stirling-pdf` | `containers/locutus/stirling/docker-compose.yaml` | `stirlingtools/stirling-pdf:2.14.2-fat`, pinned by digest | `3010:8080` |
 
 ## Notes
 
 * Stirling PDF stores `/configs` through the `containers/locutus/stirling/data`
   symlink to `modules/protected/containers/stirling`.
-* Stirling PDF pins the `latest-fat` image by digest in its compose file; update
-  that digest intentionally when refreshing the image.
+* Locutus compose images are pinned by digest; update those digests
+  intentionally when refreshing images.
 * Stirling PDF keeps local, untracked `logs`, `pipeline`, and `tessdata`
   folders beside the compose file.

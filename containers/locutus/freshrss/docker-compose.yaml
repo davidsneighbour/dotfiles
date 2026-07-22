@@ -1,10 +1,12 @@
 ---
 services:
   freshrss:
-    image: lscr.io/linuxserver/freshrss:latest
+    # secretlint-disable-next-line @secretlint/secretlint-rule-secp256k1-privatekey
+    image: lscr.io/linuxserver/freshrss:latest@sha256:d97008a26ee3ed730bf5e85cdb92a4d369d12964e6439f3a5eaa3862092d3dcf
     container_name: freshrss
     volumes:
       - ./config:/config
+      # secretlint-disable-next-line @secretlint/secretlint-rule-no-homedir
       - /home/patrick/github.com/davidsneighbour/freshrss-theme:/app/www/p/themes/freshrss-theme/
     ports:
       - 3050:80

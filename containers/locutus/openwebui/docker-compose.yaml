@@ -1,7 +1,8 @@
 ---
 services:
   open-webui:
-    image: ghcr.io/open-webui/open-webui:main
+    # secretlint-disable-next-line @secretlint/secretlint-rule-secp256k1-privatekey
+    image: ghcr.io/open-webui/open-webui:0.10.2@sha256:9fcea9c6e32ab60b0498f3986c6cdf651ddbe61db48d2213a3d28048ddd673d4
     container_name: open-webui
     restart: unless-stopped
 
@@ -13,6 +14,7 @@ services:
       OLLAMA_BASE_URL: "http://host.docker.internal:11434"
       WEBUI_AUTH: "False"
       ENABLE_SIGNUP: "False"
+      # secretlint-disable-next-line @secretlint/secretlint-rule-secp256k1-privatekey
       WEBUI_SECRET_KEY: "5aed33e83d131dcdd71efb13952ac4f5bbfbc2eafff615c8a2bced2eb10b8dee"
       USER_AGENT: "Mozilla/5.0 (Windows NT 11.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.1.7578.115 Safari/537.36"
       # Lower the timeout (default is 10 seconds) for faster failover

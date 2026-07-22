@@ -132,3 +132,29 @@ updates:
       - "type:dependencies"
     cooldown:
       default-days: 7
+
+  - package-ecosystem: docker-compose
+    directories:
+      - /containers/hal2025/metube
+      - /containers/hal2025/owntrack
+      - /containers/hal2025/paperless
+      - /containers/hal2025/readeck
+      - /containers/locutus/freshrss
+      - /containers/locutus/homepage
+      - /containers/locutus/openwebui
+      - /containers/locutus/stirling
+    schedule:
+      interval: monthly
+      day: "friday"
+      time: "23:00"
+      timezone: Asia/Bangkok
+    assignees:
+      - davidsneighbour
+    target-branch: main
+    open-pull-requests-limit: 999
+    pull-request-branch-name:
+      separator: /
+    labels:
+      - "type:dependencies"
+    cooldown:
+      default-days: 7
