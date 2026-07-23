@@ -1,5 +1,15 @@
 # Changelog
 
+## [3004.3.0](https://github.com/davidsneighbour/dotfiles/compare/v3004.2.0...v3004.3.0) (2026-07-23)
+
+### Feat
+
+* **containers:** add locutus openpencil mcp ([109823b](https://github.com/davidsneighbour/dotfiles/commit/109823b0f1c1b0285b2df27b2df2b62ab820d9df))
+
+### Fix
+
+* **containers:** serve openpencil web app ([fac78b6](https://github.com/davidsneighbour/dotfiles/commit/fac78b6b88b7b858c324ed714ffe784af3b2609a))
+
 ## [3004.2.0](https://github.com/davidsneighbour/dotfiles/compare/v3004.1.1...v3004.2.0) (2026-07-23)
 
 ### Feat
