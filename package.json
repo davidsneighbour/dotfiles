@@ -11,7 +11,7 @@
     "@biomejs/biome": "2.5.5",
     "@clack/prompts": "1.7.0",
     "@commitlint/cli": "21.1.0",
-    "@commitlint/config-conventional": "21.1.0",
+    "@commitlint/config-conventional": "21.2.0",
     "@davidsneighbour/nanny": "0.4.1",
     "@dnbhq/biome-config": "0.2.3",
     "@dnbhq/markdownlint-config": "0.2.8",
