@@ -12,6 +12,5 @@ services:
       - ./pipeline:/pipeline
       - ./tessdata:/usr/share/tessdata
     environment:
-      SECURITY_ENABLELOGIN: false
       SYSTEM_DEFAULTLOCALE: en-GB
     restart: unless-stopped
