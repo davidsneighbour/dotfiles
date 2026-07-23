@@ -1,0 +1,25 @@
+---
+services:
+  openpencil:
+    # secretlint-disable-next-line @secretlint/secretlint-rule-secp256k1-privatekey
+    image: oven/bun:1.3.10-alpine@sha256:32f1fcccb1523960b254c4f80973bee1a910d60be000a45c20c9129a1efcffee
+    container_name: openpencil
+    restart: unless-stopped
+    working_dir: /workspace
+
+    ports:
+      - "3020:3100"
+
+    environment:
+      HOST: "0.0.0.0"
+      PORT: "3100"
+      OPENPENCIL_MCP_ROOT: "/workspace"
+
+    volumes:
+      - ./workspace:/workspace
+
+    command:
+      - bunx
+      - --package
+      - "@open-pencil/mcp@0.13.2"
+      - openpencil-mcp-http
