@@ -22,6 +22,7 @@ Bash helpers are standalone helper commands unless noted otherwise. Several Type
 * [`gh/`](./gh/DOCUMENTATION.md)
 * [`kando/`](./kando/DOCUMENTATION.md)
 * [`logs/`](./logs/DOCUMENTATION.md)
+* [`obsidian/`](./obsidian/DOCUMENTATION.md)
 * [`packages/`](./packages/DOCUMENTATION.md)
 * [`raindrop.io/`](./raindrop.io/DOCUMENTATION.md)
 * [`remarkable/`](./remarkable/DOCUMENTATION.md)
