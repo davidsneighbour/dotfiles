@@ -48,4 +48,4 @@
 
     - cron: "@reboot"
       comment: "Checking APS mailboxes"
-      command: sleep 90; mkdir -p "${HOME}/.logs/mailbox-monitor"; ${HOME}/scripts/mailbox-monitor/run-mailbox-monitor.sh --env-file "${HOME}/scripts/mailbox-monitor/.env" >> "${HOME}/.logs/mailbox-monitor/$(date +\%Y\%m\%d-\%H\%M\%S).log" 2>&1
+      command: sleep 90; mkdir -p "${HOME}/.logs/mailbox-monitor"; ${HOME}/.dotfiles/bashrc/helpers/mailbox-monitor/run-mailbox-monitor.sh --env-file "${HOME}/.dotfiles/bashrc/helpers/mailbox-monitor/.env" >> "${HOME}/.logs/mailbox-monitor/$(date +\%Y\%m\%d-\%H\%M\%S).log" 2>&1
