@@ -1,5 +1,41 @@
 # Changelog
 
+## [3004.2.0](https://github.com/davidsneighbour/dotfiles/compare/v3004.1.1...v3004.2.0) (2026-07-23)
+
+### Feat
+
+* **bashrc:** add obsidian_open_in_code function to open project files in VS Code ([5ceb5e9](https://github.com/davidsneighbour/dotfiles/commit/5ceb5e97b4356e7aff05eb98a67f91e7a2c78582))
+* **config:** add Espanso setup ([c3abd4d](https://github.com/davidsneighbour/dotfiles/commit/c3abd4d0b0e24b0975590ea52185e947c7390dce))
+* **containers:** add stirling pdf service ([4968512](https://github.com/davidsneighbour/dotfiles/commit/4968512cdbeaf60d00753feb5f044647c1cf0d65))
+* **shell:** add shell quality scripts ([d8a60a4](https://github.com/davidsneighbour/dotfiles/commit/d8a60a4bd95ad4eada5c1cf0491a5eb9320fa799)), closes [#507](https://github.com/davidsneighbour/dotfiles/issues/507)
+
+### Fix
+
+* add login to stirling container ([e8207a5](https://github.com/davidsneighbour/dotfiles/commit/e8207a5e5e4c1e3fa46f4b441815111bfeaa7259))
+* **config:** stabilize yaml linting ([c239122](https://github.com/davidsneighbour/dotfiles/commit/c2391226e850bbfb4fdb0e00fa492ce9a3020781)), closes [#511](https://github.com/davidsneighbour/dotfiles/issues/511)
+* **cron:** add timestamp to daily report cron log filename ([d18d8b7](https://github.com/davidsneighbour/dotfiles/commit/d18d8b7bc9c45be0080d9b5a4f1b36019acbb577)), closes [#527](https://github.com/davidsneighbour/dotfiles/issues/527)
+* **cron:** add timestamp to docker backup cron log filename ([2e6cbe4](https://github.com/davidsneighbour/dotfiles/commit/2e6cbe4932db3b627f238da1bc5295b7627cb15f)), closes [#528](https://github.com/davidsneighbour/dotfiles/issues/528)
+* **node:** add engines schedule fallback ([3193e36](https://github.com/davidsneighbour/dotfiles/commit/3193e36618ea2c774c8ab6223548db3a7413a4b3)), closes [#521](https://github.com/davidsneighbour/dotfiles/issues/521)
+* **rofi:** add timestamp to workspace selector log filename ([48237de](https://github.com/davidsneighbour/dotfiles/commit/48237de6dd372eb05ed2a112f5fa222fd6e81e71)), closes [#529](https://github.com/davidsneighbour/dotfiles/issues/529)
+* **typescript:** split runtime typechecks ([4d4fabc](https://github.com/davidsneighbour/dotfiles/commit/4d4fabc9a3c81b39a7059ac179c2f731567eef48)), closes [#504](https://github.com/davidsneighbour/dotfiles/issues/504)
+* **wallpaper:** add date to wallpaper log filename ([42f0cc3](https://github.com/davidsneighbour/dotfiles/commit/42f0cc3b4af7e15704e238c09e5b07b9576e52d7)), closes [#526](https://github.com/davidsneighbour/dotfiles/issues/526)
+
+### Docs
+
+* **containers:** add locutus container index ([786a450](https://github.com/davidsneighbour/dotfiles/commit/786a4507a110edd70259c3ccd46390861d6047b3))
+
+### Build
+
+* **chore:** update dependencies ([33ae25a](https://github.com/davidsneighbour/dotfiles/commit/33ae25a408e022999cf6db3a5b7c0e20f54fd0e2))
+* **deps:** reduce audit findings ([fa5ff36](https://github.com/davidsneighbour/dotfiles/commit/fa5ff363eb4fc199d2fc32d574696fce0b2043fd)), closes [#502](https://github.com/davidsneighbour/dotfiles/issues/502)
+
+### Chore
+
+* **containers:** pin docker compose images ([519b793](https://github.com/davidsneighbour/dotfiles/commit/519b793e91454ddd745d3de37d38f555bc1626bf))
+* **deps:** update dependency typescript to v7 ([edaf54e](https://github.com/davidsneighbour/dotfiles/commit/edaf54e2e03092527e31ec2dfdc1a43b1aaa6e9f))
+* **dotfiles:** update protected config state ([bdb8b6c](https://github.com/davidsneighbour/dotfiles/commit/bdb8b6c9f427254b98984736184cb9a5570dafc1))
+* **project:** update project plan ([a0ebffb](https://github.com/davidsneighbour/dotfiles/commit/a0ebffbb0afe0d121f00d6eb3166166b958e66b9)), closes [#521](https://github.com/davidsneighbour/dotfiles/issues/521) [524-#530](https://github.com/davidsneighbour/dotfiles/issues/530)
+
 ## [3004.1.1](https://github.com/davidsneighbour/dotfiles/compare/v3004.1.0...v3004.1.1) (2026-07-17)
 
 ### Fix
