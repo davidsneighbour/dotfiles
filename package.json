@@ -55,6 +55,7 @@
   },
   "scripts": {
     "biome:postinstall": "npx @biomejs/biome migrate --write",
+    "check": "npm run lint:shell && npm run test:shell",
     "check:biome": "biome check .",
     "check:biome:fix": "biome check --write .",
     "check:node-engines": "node --experimental-strip-types scripts/update-node-engines.ts --check",
@@ -79,6 +80,7 @@
     "release:major": "release-it --config .release-it.ts --ci --increment=major",
     "release:minor": "release-it --config .release-it.ts --ci --increment=minor",
     "release:patch": "release-it --config .release-it.ts --ci --increment=patch",
+    "test:shell": "bash bashrc/helpers/tests/dotfiles-includes-test.sh",
     "typecheck": "npm run typecheck:config && npm run typecheck:scripts && npm run typecheck:bash-helpers",
     "typecheck:bash-helpers": "tsc --project tsconfig.bash-helpers.json --noEmit",
     "typecheck:config": "tsc --project tsconfig.config.json --noEmit",

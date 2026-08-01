@@ -154,7 +154,8 @@ Useful checks after changing this directory or the wrapper:
 
 ```bash
 bash -n bashrc/helpers/dotfiles
-bash bashrc/helpers/tests/dotfiles-includes-test.sh
+npm run test:shell
+npm run check
 npm run lint:config
 npm run lint:shell
 ```
