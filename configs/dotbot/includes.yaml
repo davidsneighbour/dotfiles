@@ -1,0 +1,15 @@
+---
+################################################################################
+# Optional Dotbot config includes.
+#
+# Keys are primary config names. They may use the same names accepted by the
+# dotfiles helper, such as host-locutus or config.host-locutus.yaml.
+#
+# Values are ordered lists of extra config files. Relative paths are resolved
+# from configs/dotbot/. Absolute paths, ~/ paths, $HOME paths, and ${HOME} paths
+# are supported for configs that live outside this repository.
+################################################################################
+
+config.yaml:
+  # - ${HOME}/github.com/davidsneighbour/example-project/dotbot.yaml
+  - config.protected.yaml
