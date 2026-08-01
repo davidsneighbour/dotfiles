@@ -1,5 +1,23 @@
 # Changelog
 
+## [3004.4.0](https://github.com/davidsneighbour/dotfiles/compare/v3004.3.0...v3004.4.0) (2026-08-01)
+
+### Feat
+
+* **dotbot:** support profile include chains ([9224272](https://github.com/davidsneighbour/dotfiles/commit/9224272991c69775e3a5677466161ed10536172b))
+
+### Fix
+
+* **polybar:** disable ibus panel to stop stuck tray popup ([e3b40f1](https://github.com/davidsneighbour/dotfiles/commit/e3b40f13a4f5e52483a5fb5ad61a686e08b9b787))
+
+### Test
+
+* **shell:** wire dotfiles helper test into checks ([b90a984](https://github.com/davidsneighbour/dotfiles/commit/b90a984cdd134fbfe9228280d08c9d9b2649bc32))
+
+### Build
+
+* **deps:** udpate dependencies ([07a08a0](https://github.com/davidsneighbour/dotfiles/commit/07a08a0caf7b761c10efbca40ff719a3a27c8174))
+
 ## [3004.3.0](https://github.com/davidsneighbour/dotfiles/compare/v3004.2.0...v3004.3.0) (2026-07-23)
 
 ### Feat
