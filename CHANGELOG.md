@@ -1,5 +1,23 @@
 # Changelog
 
+## [3004.5.0](https://github.com/davidsneighbour/dotfiles/compare/v3004.4.0...v3004.5.0) (2026-08-02)
+
+### Feat
+
+* **containers:** add uptime kuma to hal2025 services ([37afb7a](https://github.com/davidsneighbour/dotfiles/commit/37afb7addc385daa3ecca535bc1db84510dea42b))
+
+### Fix
+
+* **containers:** move uptime kuma into proper location ([c99bd40](https://github.com/davidsneighbour/dotfiles/commit/c99bd409d71a6c1544de666fa0e2ab27b78a5765))
+
+### Docs
+
+* add INDEX.md for hal2025 containers ([94be78d](https://github.com/davidsneighbour/dotfiles/commit/94be78d7471f368e338ee2e59115a9218d9841c4))
+
+### Chore
+
+* **assets:** update skyline stats for 2026 ([167f3a8](https://github.com/davidsneighbour/dotfiles/commit/167f3a8cf76f767e8ead3c0ebe52b54a58f38e3d))
+
 ## [3004.4.0](https://github.com/davidsneighbour/dotfiles/compare/v3004.3.0...v3004.4.0) (2026-08-01)
 
 ### Feat
