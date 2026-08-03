@@ -95,7 +95,7 @@ services:
 
   penpot-postgres:
     # secretlint-disable-next-line @secretlint/secretlint-rule-secp256k1-privatekey
-    image: postgres:15@sha256:74e110c41804365e3915fcc09d5e7a1eff50161aaa94d5da0e58e0cd75ae509c
+    image: postgres:18@sha256:3a82e1f56c8f0f5616a11103ac3d47e632c3938698946a7ad26da0df1334744a
     container_name: penpot-postgres
     restart: unless-stopped
     stop_signal: SIGINT
