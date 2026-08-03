@@ -13,3 +13,6 @@
 config.yaml:
   # - ${HOME}/github.com/davidsneighbour/example-project/dotbot.yaml
   - config.protected.yaml
+
+host-locutus:
+  - ${HOME}/github.com/davidsneighbour/notes/.obsidian/scripts/daily-reports/dotbot.yaml

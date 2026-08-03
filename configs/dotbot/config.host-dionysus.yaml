@@ -7,7 +7,7 @@
 # Main workstation dotfiles setup (links, tools, cronjobs, and host-specific configs).
 
 - plugins:
-    - modules/dotbot-plugins/crontab-dotbot/
+    - configs/dotbot/plugins/crontab.py
 
 - crontab:
     - cron: 0 0 * * *

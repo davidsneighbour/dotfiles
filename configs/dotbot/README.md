@@ -71,11 +71,11 @@ host.
 ## Plugins
 
 Dotbot plugins are loaded from configuration files with the `plugins` directive.
-This repository currently uses `crontab-dotbot` for managed cron entries:
+This repository keeps its cron plugin locally for managed cron entries:
 
 ```yaml
 - plugins:
-    - modules/dotbot-plugins/crontab-dotbot/
+    - configs/dotbot/plugins/crontab.py
 ```
 
 Plugin paths are resolved by Dotbot from the repository root because the wrapper
