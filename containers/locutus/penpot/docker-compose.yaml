@@ -117,7 +117,7 @@ services:
 
   penpot-valkey:
     # secretlint-disable-next-line @secretlint/secretlint-rule-secp256k1-privatekey
-    image: valkey/valkey:8.1@sha256:495e4fecdc98ee48a20b207726caa5ab6451e0fac3642a9be10d9e70b3068df6
+    image: valkey/valkey:9.1@sha256:3acc0687f2a2e1091fae6450d7842dd658c941338cf0a873ddd9e14b9e4ea4dd
     container_name: penpot-valkey
     restart: unless-stopped
     healthcheck:
