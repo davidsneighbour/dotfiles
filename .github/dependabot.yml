@@ -139,10 +139,14 @@ updates:
       - /containers/hal2025/owntrack
       - /containers/hal2025/paperless
       - /containers/hal2025/readeck
+      - /containers/hal2025/uptimekuma
       - /containers/locutus/freshrss
       - /containers/locutus/homepage
+      - /containers/locutus/openpencil
       - /containers/locutus/openwebui
+      - /containers/locutus/penpot
       - /containers/locutus/stirling
+      - /containers/locutus/twenty
     schedule:
       interval: monthly
       day: "friday"

@@ -7,7 +7,7 @@ possible. New allocations should use clean `10` or `100` steps such as `3020`,
 `3100`, or `3300`. Before adding a new container, pick a clean port that is not
 listed here, then add it to this table in the same change as the compose file.
 
-Preferred next free port: `3030`.
+Preferred next free port: `3040`.
 
 ### 3000 row
 
@@ -16,12 +16,12 @@ Preferred next free port: `3030`.
 | `3005` | Homepage | `containers/locutus/homepage/docker-compose.yaml` | `3000` |
 | `3010` | Stirling PDF | `containers/locutus/stirling/docker-compose.yaml` | `8080` |
 | `3020` | OpenPencil | `containers/locutus/openpencil/docker-compose.yaml` | `3100` |
+| `3030` | Penpot | `containers/locutus/penpot/docker-compose.yaml` | `8080` |
 | `3050` | FreshRSS | `containers/locutus/freshrss/docker-compose.yaml` | `80` |
 | `3200` | Open WebUI | `containers/locutus/openwebui/docker-compose.yaml` | `8080` |
 
 Preferred free slots in the `3000-3999` row, based on repository definitions:
 
-* `3030`
 * `3040`
 * `3060-3190` in `10` steps
 * `3210-3990` in `10` steps
@@ -37,6 +37,7 @@ free unless there is a clear operational reason.
 | Homepage | `homepage` | `containers/locutus/homepage/docker-compose.yaml` | `ghcr.io/gethomepage/homepage:latest`, pinned by digest | `3005:3000` |
 | OpenPencil | `openpencil` | `containers/locutus/openpencil/docker-compose.yaml` | `ghcr.io/zseven-w/openpencil-web:v0.8.1`, pinned by digest | `3020:3100` |
 | Open WebUI | `open-webui` | `containers/locutus/openwebui/docker-compose.yaml` | `ghcr.io/open-webui/open-webui:0.10.2`, pinned by digest | `3200:8080` |
+| Penpot | `penpot-frontend` | `containers/locutus/penpot/docker-compose.yaml` | `penpotapp/frontend:2.17`, pinned by digest | `3030:8080` |
 | Stirling PDF | `stirling-pdf` | `containers/locutus/stirling/docker-compose.yaml` | `stirlingtools/stirling-pdf:2.14.2-fat`, pinned by digest | `3010:8080` |
 
 ## Notes
@@ -46,6 +47,9 @@ free unless there is a clear operational reason.
 * OpenPencil uses the ZSeven-W Rust web-host image. The current web container
   does not declare a server-side data volume; browser-owned credentials and
   preferences are same-origin browser storage by default.
+* Penpot stores uploaded assets and Postgres data below
+  `containers/locutus/penpot/assets`. Its web UI is bound to localhost only,
+  and the Mailcatcher helper is kept internal to the compose network.
 * Locutus compose images are pinned by digest; update those digests
   intentionally when refreshing images.
 * Stirling PDF keeps local, untracked `logs`, `pipeline`, and `tessdata`
