@@ -36,7 +36,7 @@
     "dotenv": "17.4.2",
     "fixpack": "4.0.0",
     "fs-extra": "11.4.0",
-    "lint-staged": "17.0.8",
+    "lint-staged": "17.3.0",
     "lockfile-lint": "5.0.0",
     "ncp": "2.0.0",
     "npm-check-updates": "23.0.0",
