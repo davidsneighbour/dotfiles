@@ -1,3 +1,5 @@
+<!-- markdownlint-disable title-case-style -->
+
 # bashrc/partials/_completions documentation
 
 Files in this folder provide Bash programmable completion definitions. They are sourced by `partials/completions` when readable.
@@ -47,6 +49,14 @@ Requirements: Bash completion and `gh`.
 Completion for Hugo-related commands.
 
 Requirements: Bash completion and Hugo (`hugo`) where used.
+
+### `msgvault`
+
+Dynamic completion loader for `msgvault`. It evaluates `msgvault completion bash`
+only when the `msgvault` command is available, and stays quiet when it is not
+installed.
+
+Requirements: Bash completion and optional `msgvault`.
 
 ### `netlify`
 

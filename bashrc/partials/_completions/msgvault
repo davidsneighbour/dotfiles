@@ -1,0 +1,11 @@
+# shellcheck shell=bash
+
+if command -v msgvault >/dev/null 2>&1; then
+  _msgvault_completion="$(msgvault completion bash 2>/dev/null)"
+
+  if [[ -n "${_msgvault_completion}" ]]; then
+    eval "${_msgvault_completion}"
+  fi
+
+  unset _msgvault_completion
+fi
