@@ -14,7 +14,7 @@
     "@commitlint/config-conventional": "21.2.0",
     "@davidsneighbour/nanny": "0.4.1",
     "@dnbhq/biome-config": "0.2.3",
-    "@dnbhq/markdownlint-config": "0.2.8",
+    "@dnbhq/markdownlint-config": "0.2.11",
     "@dnbhq/release-config": "1.1.0",
     "@dnbhq/sharp-lint-staged": "1.0.2",
     "@dnbhq/tsconfig": "0.1.6",
