@@ -1,0 +1,165 @@
+{
+  "version": 1,
+  "skills": {
+    "dnb-astro-migration-project": {
+      "source": "../ai",
+      "sourceType": "local",
+      "computedHash": "39146159924806ccef05eb9ee45f31bd38d7eab15345f59e94d51a49291738d8"
+    },
+    "dnb-behaviour-spec": {
+      "source": "../ai",
+      "sourceType": "local",
+      "computedHash": "09bc64d99a457d3771686229c4996ef9fc96cd8658fd0d4db5922c35c9152e6e"
+    },
+    "dnb-blog-draft-materialise": {
+      "source": "../ai",
+      "sourceType": "local",
+      "computedHash": "4abfe9f7e0f664bb6be15cb0a74c83d5f68d40c9c2c257001754865ba83b9741"
+    },
+    "dnb-blog-draft-meta-matter": {
+      "source": "../ai",
+      "sourceType": "local",
+      "computedHash": "d5aad61c07a29e6e051366ea9e421da4e493f07c5a68b7401bd1994dc92331e8"
+    },
+    "dnb-create-js-documentation": {
+      "source": "../ai",
+      "sourceType": "local",
+      "computedHash": "074d27ea30bc96a45b6b61494234e06e91d0a468f3d8ad83fbf8e3da59d33f51"
+    },
+    "dnb-dependency-maintenance": {
+      "source": "../ai",
+      "sourceType": "local",
+      "computedHash": "aa4843921e4ec396989d1d84a664d150f0a1c72c6d4bf2e93c5104df4cca2bcd"
+    },
+    "dnb-dnbhq-configs": {
+      "source": "../ai",
+      "sourceType": "local",
+      "computedHash": "08f50398ab2e28cd1c190c92f6cbd48e3b6b3ef638cc68df41731347ef5419f5"
+    },
+    "dnb-github-label-classifier": {
+      "source": "../ai",
+      "sourceType": "local",
+      "computedHash": "f565702aacb4f17b4e2a5b2b77b58cf7a2c204203e61cc31da0aa3e32600fc16"
+    },
+    "dnb-interface-engineering": {
+      "source": "../ai",
+      "sourceType": "local",
+      "computedHash": "5ff9d920a08167e03c3daa5b30964ea664bd55d1669a7d5889b8f417ea0637ab"
+    },
+    "dnb-llm-visibility": {
+      "source": "../ai",
+      "sourceType": "local",
+      "computedHash": "4cecdc322b5d3237bf6173470fe3ddbfa48d1274fd7a70d4a2ce3a0d96e0ae71"
+    },
+    "dnb-manage-node-version-policy": {
+      "source": "../ai",
+      "sourceType": "local",
+      "computedHash": "b8bfff419378dc061f2fefc7da2eb097ca594d9d1f53910b374ced0ff39cd727"
+    },
+    "dnb-markdown-formatting": {
+      "source": "../ai",
+      "sourceType": "local",
+      "computedHash": "9294facf7998d31c4d21430e0925ac980a23a4216d080c303a5d189bd76d149e"
+    },
+    "dnb-osv-scan": {
+      "source": "../ai",
+      "sourceType": "local",
+      "computedHash": "56be93596e078cf602efbbf7c135f6492b856041114aee771b0013e2febb83c0"
+    },
+    "dnb-porkbun-domain-management": {
+      "source": "../ai",
+      "sourceType": "local",
+      "computedHash": "90d2784de9d416c2bb9ff36f31607b1493dd87fecfc92ffaf045962c160c554e"
+    },
+    "dnb-post-into-void": {
+      "source": "../ai",
+      "sourceType": "local",
+      "computedHash": "ae5a28c98de8ca8f50e157cd7fafa46bb32607f640a00dad5a61c26a5cfc1028"
+    },
+    "dnb-post-link-into-void": {
+      "source": "../ai",
+      "sourceType": "local",
+      "computedHash": "13a49047a7d2a8b471c7a9dec1144271a3bda548d90ea9a277fbcabbb2e3518d"
+    },
+    "dnb-post-session-into-void": {
+      "source": "../ai",
+      "sourceType": "local",
+      "computedHash": "231cf7fe611a8eb781fe2a652b55cc50e7e283e23e93feb4fc5d0ff6037aec31"
+    },
+    "dnb-project-state-report": {
+      "source": "../ai",
+      "sourceType": "local",
+      "computedHash": "b74385261f5ead70c474339c4b64585bac77557bc49a1f06ab2ee6ba0aabe907"
+    },
+    "dnb-project-task-triage": {
+      "source": "../ai",
+      "sourceType": "local",
+      "computedHash": "c146d6aea55299272f720f3c940d0a72c2a8f7a3c709369aa5d819522bd9db3c"
+    },
+    "dnb-quality-gate-organisation": {
+      "source": "../ai",
+      "sourceType": "local",
+      "computedHash": "a801a8af9f72825fd5e42d31a53866522983d6b9d995137767fe4dbd4ac93dff"
+    },
+    "dnb-reddit-refresh-token": {
+      "source": "../ai",
+      "sourceType": "local",
+      "computedHash": "1c594c77c0df977a1c0b3e25cbb8de040a7d7b1c2d24cb28f9f92ba026785918"
+    },
+    "dnb-reference": {
+      "source": "../ai",
+      "sourceType": "local",
+      "computedHash": "8548850c9145ac576abdb8edfdd70f3b199c38cb8044edd41934678136ff053c"
+    },
+    "dnb-resume-interrupted-work": {
+      "source": "../ai",
+      "sourceType": "local",
+      "computedHash": "4a95a5ddb93dde0c87f0b20c9844cd12ae8c79fcbea76834def79371a5de73ae"
+    },
+    "dnb-select-next-issue": {
+      "source": "../ai",
+      "sourceType": "local",
+      "computedHash": "a0c1cb9142ba3d9db37fee0a86af5f2bbc99dd21f5edc1cd179a4a216458c109"
+    },
+    "dnb-site-audit": {
+      "source": "../ai",
+      "sourceType": "local",
+      "computedHash": "36b8f37b3cfe024d823269ccbfbc93e5f55c55a9e5e0deaf967f4cd480a1f45d"
+    },
+    "dnb-strict-typescript-check": {
+      "source": "../ai",
+      "sourceType": "local",
+      "computedHash": "a7a9e9b62ce87dceef0006c919a0733c435a088b263d833c36fb0ce4a6aa2087"
+    },
+    "dnb-threads-refresh-token": {
+      "source": "../ai",
+      "sourceType": "local",
+      "computedHash": "710ce8ea4513c66372f0256c308467d36cea929476b65d3c58721062931be1cb"
+    },
+    "dnb-tumblr-refresh-token": {
+      "source": "../ai",
+      "sourceType": "local",
+      "computedHash": "f3a6bc6a28f0e3d2e9f27d1b00fc57a6db74fda34af6fd59f994517aa00ca647"
+    },
+    "dnb-voice": {
+      "source": "../ai",
+      "sourceType": "local",
+      "computedHash": "e711689c345037a08bb726867c64b5d85d05126d10624936143f0b93df3b8134"
+    },
+    "dnb-work-on-issue": {
+      "source": "../ai",
+      "sourceType": "local",
+      "computedHash": "71b91011611f3024df783a8c88084cbe368bd0df981f15e5ca2ad6320ad7db49"
+    },
+    "dnb-work-on-next-issue": {
+      "source": "../ai",
+      "sourceType": "local",
+      "computedHash": "85a2abe9fb71beaf737786cba23997bbae6bfd2f6e268b97300f969b8dd3b946"
+    },
+    "dnb-work-through-issues": {
+      "source": "../ai",
+      "sourceType": "local",
+      "computedHash": "769a878d23bd931e11c8c713136bf46591d826a7c79c6feeddf04b54970735e2"
+    }
+  }
+}
