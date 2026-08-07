@@ -82,7 +82,7 @@
     "release:minor": "release-it --config .release-it.ts --ci --increment=minor",
     "release:patch": "release-it --config .release-it.ts --ci --increment=patch",
     "test:backup-runner": "node --experimental-strip-types bashrc/helpers/docker/tests/backup-runner-config-test.ts",
-    "test:shell": "bash bashrc/helpers/tests/dotfiles-includes-test.sh",
+    "test:shell": "bash bashrc/helpers/tests/dotfiles-includes-test.sh && bash bashrc/helpers/tests/desktop-helpers-health-check.sh",
     "typecheck": "npm run typecheck:config && npm run typecheck:scripts && npm run typecheck:bash-helpers",
     "typecheck:bash-helpers": "tsc --project tsconfig.bash-helpers.json --noEmit",
     "typecheck:config": "tsc --project tsconfig.config.json --noEmit",
