@@ -2,7 +2,7 @@
 services:
   openpencil:
     # secretlint-disable-next-line @secretlint/secretlint-rule-secp256k1-privatekey
-    image: ghcr.io/zseven-w/openpencil-web:v0.8.1@sha256:80eb447edc616a6d2f40f4ebf8fa23baecd044db46f7bf5d5d121eb533345c70
+    image: ghcr.io/zseven-w/openpencil-web:v0.8.2@sha256:e13982f18ba3f87ef422c84738be261a337ceccd877aff6ea69a16354fce9775
     container_name: openpencil
     restart: unless-stopped
 
