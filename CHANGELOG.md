@@ -1,5 +1,23 @@
 # Changelog
 
+## [3004.5.2](https://github.com/davidsneighbour/dotfiles/compare/v3004.5.1...v3004.5.2) (2026-08-07)
+
+### Chore
+
+* **git:** update git submodule ([1504584](https://github.com/davidsneighbour/dotfiles/commit/15045844fc0b940b4acb35679dfab396dff245c3))
+
+## [3004.5.1](https://github.com/davidsneighbour/dotfiles/compare/v3004.5.0...v3004.5.1) (2026-08-03)
+
+### Build
+
+* **fix:** clearout manual workspaces ([df8acc2](https://github.com/davidsneighbour/dotfiles/commit/df8acc2200e6feada7e06a50f096795c46b664e5))
+
+### Chore
+
+* **bashrc:** remove obsidian memory helper ([166438b](https://github.com/davidsneighbour/dotfiles/commit/166438b1e5095970826bc275e2c6f606bd0895a9))
+* **dotbot:** localize crontab plugin ([32c66ce](https://github.com/davidsneighbour/dotfiles/commit/32c66ce7592ac70835351bf915af58a3e8fd826d))
+* **git:** update protected submodule ([3e3632d](https://github.com/davidsneighbour/dotfiles/commit/3e3632d703357dcbfa0f878b2a631af446eba4e8))
+
 ## [3004.5.0](https://github.com/davidsneighbour/dotfiles/compare/v3004.4.0...v3004.5.0) (2026-08-02)
 
 ### Feat
