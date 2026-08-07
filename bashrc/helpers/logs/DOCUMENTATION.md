@@ -4,7 +4,7 @@ This file documents every file currently present in `bashrc/helpers/logs`.
 
 Parent index: [`../INDEX.md`](../INDEX.md).
 
-## Existing Markdown references
+## Existing markdown references
 
 * [`ToDo.md`](./ToDo.md)
 
@@ -28,6 +28,11 @@ CLI option notes:
 * --verbose — verbose output, also via DNB_VERBOSE.
 * --dry-run — show without changing files.
 * --help — show help.
+
+Runtime state:
+
+* The cleanup lock file is written below the configured temporary work
+  directory, not below the log root.
 
 Functions/methods defined:
 
@@ -59,6 +64,12 @@ Functions/methods defined:
 * `ensureBinaryAvailable`
 * `main`
 
+Requirements:
+
+* Node.js/TypeScript runtime compatible with this repository's `.ts` helpers.
+* Filesystem permissions for the configured log and temporary paths.
+* `tar` and `xz` for compression actions.
+
 ### `logs/config.toml`
 
 Default log cleanup configuration.
@@ -66,29 +77,3 @@ Default log cleanup configuration.
 ### `logs/log-cleanup.config.schema.json`
 
 JSON Schema for logs/config.toml.
-
-# bashrc/helpers/logs documentation
-
-This folder contains log-cleanup configuration and a TypeScript cleanup helper.
-
-## `cleanup.ts`
-
-TypeScript helper that scans configured log directories, groups old log files, optionally compresses/deletes them, and reports cleanup actions.
-
-CLI option notes: inspect `cleanup.ts --help` through the repository TypeScript runner before use; the implementation is the source of truth for accepted options.
-
-Important functions/methods implemented in the file include configuration loading, path expansion, candidate grouping, compression, deletion, and reporting helpers.
-
-Requirements: Node.js/TypeScript runtime compatible with this repository's `.ts` helpers, filesystem permissions for configured log paths, and compression tools/libraries used by the implementation.
-
-## `config.toml`
-
-Default TOML configuration for log cleanup. It defines cleanup targets and retention/compression behaviour consumed by `cleanup.ts`.
-
-## `log-cleanup.config.schema.json`
-
-JSON schema for validating `config.toml` in schema-aware editors or validation tooling.
-
-## `ToDo.md`
-
-One-line planning note for future log helper work. It is not executable and does not define current behaviour.

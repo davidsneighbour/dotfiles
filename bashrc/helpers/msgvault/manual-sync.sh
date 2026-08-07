@@ -6,7 +6,8 @@ SCRIPT_NAME="$(basename "${BASH_SOURCE[0]}")"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 DOTFILES_DIR="${DNB_DOTFILES_DIR:-$(cd "${SCRIPT_DIR}/../../.." && pwd -P)}"
 LOG_DIR="${DNB_MSGVAULT_MANUAL_LOG_DIR:-${HOME}/.logs/msgvault}"
-LOCK_FILE="${DNB_MSGVAULT_LOCK_FILE:-${HOME}/.logs/msgvault/msgvault.lock}"
+STATE_DIR="${DNB_MSGVAULT_STATE_DIR:-${HOME}/.local/state/msgvault}"
+LOCK_FILE="${DNB_MSGVAULT_LOCK_FILE:-${STATE_DIR}/msgvault.lock}"
 MSGVAULT_BIN="${DNB_MSGVAULT_BIN:-${HOME}/.local/bin/msgvault}"
 PAUSE_ON_EXIT="0"
 VERBOSE="0"
@@ -23,7 +24,7 @@ Usage:
 Options:
   --msgvault-bin <path>  msgvault executable path (default: ~/.local/bin/msgvault).
   --log-dir <path>      Manual log directory (default: ~/.logs/msgvault).
-  --lock-file <path>    Shared msgvault lock file (default: ~/.logs/msgvault/msgvault.lock).
+  --lock-file <path>    Shared msgvault lock file (default: ~/.local/state/msgvault/msgvault.lock).
   --pause-on-exit       Wait for Enter before exiting, useful from Polybar terminals.
   --verbose             Print extra progress messages.
   --help                Show this help.

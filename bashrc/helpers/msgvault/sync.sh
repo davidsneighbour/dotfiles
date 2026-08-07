@@ -22,7 +22,8 @@ fi
 
 LOG_BASE_DIR="${HOME}/.logs/msgvault"
 LOG_FILE="${LOG_BASE_DIR}/sync-$(date +%Y%m%d).log"
-LOCK_FILE="${LOG_BASE_DIR}/msgvault.lock"
+STATE_DIR="${DNB_MSGVAULT_STATE_DIR:-${HOME}/.local/state/msgvault}"
+LOCK_FILE="${DNB_MSGVAULT_LOCK_FILE:-${STATE_DIR}/msgvault.lock}"
 MSGVAULT_BIN="${HOME}/.local/bin/msgvault"
 MSGVAULT_DIR="${DNB_MSGVAULT_DIR:-${HOME}/.msgvault}"
 MSGVAULT_BACKUP_DIR="${DNB_MSGVAULT_BACKUP_DIR:-${DNB_MSGVAULT_CONFIG_BACKUP_DIR}}"
@@ -60,6 +61,8 @@ Environment:
   DNB_MSGVAULT_CONFIG_FILE         sourceable config file.
   DNB_MSGVAULT_BACKUP_DIR          override configured backup directory.
   DNB_MSGVAULT_BACKUP_INTERVAL_HOURS
+  DNB_MSGVAULT_STATE_DIR           runtime state directory for shared locks.
+  DNB_MSGVAULT_LOCK_FILE           shared sync lock file.
   DNB_POLYBAR_ISSUES_FILE          Polybar issues file.
   DNB_MSGVAULT_POLYBAR_ISSUE_ID    Polybar issue id.
 HELP
@@ -104,6 +107,7 @@ parse_arguments() {
 
 parse_arguments "$@"
 mkdir -p "${LOG_BASE_DIR}"
+mkdir -p "${STATE_DIR}"
 
 # dnb_msgvault_log
 #
@@ -205,10 +209,13 @@ dnb_msgvault_remove_stale_lock() {
 dnb_msgvault_create_lock() {
   local started_at
   local host_name
+  local lock_dir
   local attempt
 
   started_at="$(date --iso-8601=seconds)"
   host_name="$(hostname 2>/dev/null || echo "unknown")"
+  lock_dir="$(dirname "${LOCK_FILE}")"
+  mkdir -p "${lock_dir}"
 
   for attempt in 1 2; do
     if (

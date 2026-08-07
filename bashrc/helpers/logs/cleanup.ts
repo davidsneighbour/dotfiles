@@ -696,7 +696,7 @@ async function main(options: CliOptions): Promise<void> {
 
   const currentDay = formatCurrentDay(new Date());
   const taskLogPath = path.join(options.logRoot, `cleanup-${currentDay}.log`);
-  const lockPath = path.join(options.logRoot, '.cleanup-logs.lock');
+  const lockPath = path.join(options.tempRoot, '.cleanup-logs.lock');
 
   consoleVerbose(`[startup] taskLogPath=${taskLogPath}`, options.verbose);
   consoleVerbose(`[startup] lockPath=${lockPath}`, options.verbose);

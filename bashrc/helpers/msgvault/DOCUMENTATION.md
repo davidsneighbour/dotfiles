@@ -12,7 +12,8 @@ Default paths:
 
 * Sync log file: `~/.logs/msgvault/sync-YYYYMMDD.log`
 * Manual sync log file: `~/.logs/msgvault/manual-YYYYMMDD-HHMM.log`
-* Lock file: `~/.logs/msgvault/msgvault.lock`
+* Runtime state directory: `~/.local/state/msgvault`
+* Lock file: `~/.local/state/msgvault/msgvault.lock`
 * msgvault binary: `~/.local/bin/msgvault`
 
 CLI option notes:
@@ -85,7 +86,7 @@ CLI option notes:
 
 * --msgvault-bin PATH — msgvault executable path; default is `~/.local/bin/msgvault`.
 * --log-dir PATH — manual log directory; default is `~/.logs/msgvault`.
-* --lock-file PATH — shared msgvault lock file; default is `~/.logs/msgvault/msgvault.lock`.
+* --lock-file PATH — shared msgvault lock file; default is `~/.local/state/msgvault/msgvault.lock`.
 * --pause-on-exit — wait for Enter before exiting, useful from terminal launchers.
 * --verbose — print extra progress messages.
 * --help — show help.
