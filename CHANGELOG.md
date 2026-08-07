@@ -1,5 +1,59 @@
 # Changelog
 
+## [3004.5.2](https://github.com/davidsneighbour/dotfiles/compare/v3004.5.1...v3004.5.2) (2026-08-07)
+
+### Chore
+
+* **git:** update git submodule ([1504584](https://github.com/davidsneighbour/dotfiles/commit/15045844fc0b940b4acb35679dfab396dff245c3))
+
+## [3004.5.1](https://github.com/davidsneighbour/dotfiles/compare/v3004.5.0...v3004.5.1) (2026-08-03)
+
+### Build
+
+* **fix:** clearout manual workspaces ([df8acc2](https://github.com/davidsneighbour/dotfiles/commit/df8acc2200e6feada7e06a50f096795c46b664e5))
+
+### Chore
+
+* **bashrc:** remove obsidian memory helper ([166438b](https://github.com/davidsneighbour/dotfiles/commit/166438b1e5095970826bc275e2c6f606bd0895a9))
+* **dotbot:** localize crontab plugin ([32c66ce](https://github.com/davidsneighbour/dotfiles/commit/32c66ce7592ac70835351bf915af58a3e8fd826d))
+* **git:** update protected submodule ([3e3632d](https://github.com/davidsneighbour/dotfiles/commit/3e3632d703357dcbfa0f878b2a631af446eba4e8))
+
+## [3004.5.0](https://github.com/davidsneighbour/dotfiles/compare/v3004.4.0...v3004.5.0) (2026-08-02)
+
+### Feat
+
+* **containers:** add uptime kuma to hal2025 services ([37afb7a](https://github.com/davidsneighbour/dotfiles/commit/37afb7addc385daa3ecca535bc1db84510dea42b))
+
+### Fix
+
+* **containers:** move uptime kuma into proper location ([c99bd40](https://github.com/davidsneighbour/dotfiles/commit/c99bd409d71a6c1544de666fa0e2ab27b78a5765))
+
+### Docs
+
+* add INDEX.md for hal2025 containers ([94be78d](https://github.com/davidsneighbour/dotfiles/commit/94be78d7471f368e338ee2e59115a9218d9841c4))
+
+### Chore
+
+* **assets:** update skyline stats for 2026 ([167f3a8](https://github.com/davidsneighbour/dotfiles/commit/167f3a8cf76f767e8ead3c0ebe52b54a58f38e3d))
+
+## [3004.4.0](https://github.com/davidsneighbour/dotfiles/compare/v3004.3.0...v3004.4.0) (2026-08-01)
+
+### Feat
+
+* **dotbot:** support profile include chains ([9224272](https://github.com/davidsneighbour/dotfiles/commit/9224272991c69775e3a5677466161ed10536172b))
+
+### Fix
+
+* **polybar:** disable ibus panel to stop stuck tray popup ([e3b40f1](https://github.com/davidsneighbour/dotfiles/commit/e3b40f13a4f5e52483a5fb5ad61a686e08b9b787))
+
+### Test
+
+* **shell:** wire dotfiles helper test into checks ([b90a984](https://github.com/davidsneighbour/dotfiles/commit/b90a984cdd134fbfe9228280d08c9d9b2649bc32))
+
+### Build
+
+* **deps:** udpate dependencies ([07a08a0](https://github.com/davidsneighbour/dotfiles/commit/07a08a0caf7b761c10efbca40ff719a3a27c8174))
+
 ## [3004.3.0](https://github.com/davidsneighbour/dotfiles/compare/v3004.2.0...v3004.3.0) (2026-07-23)
 
 ### Feat
