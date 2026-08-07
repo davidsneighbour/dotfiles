@@ -1,5 +1,11 @@
 # Changelog
 
+## [3004.5.2](https://github.com/davidsneighbour/dotfiles/compare/v3004.5.1...v3004.5.2) (2026-08-07)
+
+### Chore
+
+* **git:** update git submodule ([1504584](https://github.com/davidsneighbour/dotfiles/commit/15045844fc0b940b4acb35679dfab396dff245c3))
+
 ## [3004.5.1](https://github.com/davidsneighbour/dotfiles/compare/v3004.5.0...v3004.5.1) (2026-08-03)
 
 ### Build
