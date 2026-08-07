@@ -3,6 +3,7 @@
 # dotfiles — dotbot wrapper script
 #
 # Runs configs/dotbot/config[.NAME].yaml via the brew-installed dotbot binary.
+# Optional extra configs are read from configs/dotbot/includes.yaml.
 #
 # Usage:
 #   dotfiles [CONFIG_NAME]
@@ -20,6 +21,7 @@ SCRIPT_PATH="$(readlink -f "${BASH_SOURCE[0]}")"
 REPO_ROOT="$(cd "$(dirname "${SCRIPT_PATH}")/../.." && pwd)"
 CONFIGS_DIR="${REPO_ROOT}/configs/dotbot"
 DEFAULT_CONFIG_FILE="config.yaml"
+INCLUDES_FILE="${CONFIGS_DIR}/includes.yaml"
 
 __LOGFILE="${HOME}/.logs/dotbot/dotfiles-$(date +%Y%m%d-%H%M%S).log"
 
@@ -54,6 +56,7 @@ Options:
 Behavior:
   - Default (no args): runs configs/dotbot/config.yaml
   - Positional CONFIG_NAME is preferred over --config.
+  - Extra configs are loaded from configs/dotbot/includes.yaml when configured.
 
 Prerequisites:
   brew install dotbot
@@ -91,9 +94,161 @@ resolve_config_path() {
   printf '%s/%s\n' "${CONFIGS_DIR}" "${filename}"
 }
 
+trim_string() {
+  local value="${1}"
+
+  value="${value#"${value%%[![:space:]]*}"}"
+  value="${value%"${value##*[![:space:]]}"}"
+
+  printf '%s\n' "${value}"
+}
+
+strip_wrapping_quotes() {
+  local value="${1}"
+
+  case "${value}" in
+    \"*\")
+      value="${value#\"}"
+      value="${value%\"}"
+      ;;
+    \'*\')
+      value="${value#\'}"
+      value="${value%\'}"
+      ;;
+    *) ;;
+  esac
+
+  printf '%s\n' "${value}"
+}
+
+normalize_include_key() {
+  local raw_config_name="${1}"
+
+  normalize_config_to_filename "${raw_config_name}"
+}
+
+expand_include_config_path() {
+  local raw_path="${1}"
+  local expanded_path
+  local literal_braced_home="\${HOME}"
+  local literal_home="\$HOME"
+  local literal_tilde='~'
+
+  expanded_path="$(strip_wrapping_quotes "$(trim_string "${raw_path}")")"
+
+  case "${expanded_path}" in
+    "${literal_tilde}")
+      expanded_path="${HOME}"
+      ;;
+    "${literal_tilde}/"*)
+      expanded_path="${HOME}/${expanded_path#"~/"}"
+      ;;
+    "${literal_home}")
+      expanded_path="${HOME}"
+      ;;
+    "${literal_home}/"*)
+      expanded_path="${HOME}/${expanded_path#"${literal_home}/"}"
+      ;;
+    "${literal_braced_home}")
+      expanded_path="${HOME}"
+      ;;
+    "${literal_braced_home}/"*)
+      expanded_path="${HOME}/${expanded_path#"${literal_braced_home}/"}"
+      ;;
+    /*) ;;
+    *)
+      expanded_path="${CONFIGS_DIR}/${expanded_path}"
+      ;;
+  esac
+
+  printf '%s\n' "${expanded_path}"
+}
+
+resolve_included_config_paths() {
+  local config_path="${1}"
+  local -n included_paths_ref="${2}"
+  local config_filename
+  local config_short_name
+  local current_key=''
+  local line=''
+  local line_number=0
+  local trimmed_line=''
+  local include_value=''
+  local include_path=''
+
+  if [[ ! -f "${INCLUDES_FILE}" ]]; then
+    return 0
+  fi
+
+  config_filename="$(basename "${config_path}")"
+  config_short_name="${config_filename#config.}"
+  config_short_name="${config_short_name%.yaml}"
+
+  while IFS= read -r line || [[ -n "${line}" ]]; do
+    line_number=$((line_number + 1))
+    trimmed_line="$(trim_string "${line}")"
+
+    case "${trimmed_line}" in
+      '' | '#'* | '---' | '...')
+        continue
+        ;;
+      -\ *)
+        if [[ -z "${current_key}" ]]; then
+          dnb_log error "Include entry without parent config in ${INCLUDES_FILE}:${line_number}"
+          return 1
+        fi
+
+        if [[ "${current_key}" != "${config_filename}" ]]; then
+          continue
+        fi
+
+        include_value="${trimmed_line#- }"
+        include_value="$(trim_string "${include_value}")"
+
+        if [[ -z "${include_value}" ]]; then
+          dnb_log error "Empty include path in ${INCLUDES_FILE}:${line_number}"
+          return 1
+        fi
+
+        include_path="$(expand_include_config_path "${include_value}")"
+
+        if [[ ! -f "${include_path}" ]]; then
+          dnb_log error "Included config file not found: ${include_path}"
+          return 1
+        fi
+
+        included_paths_ref+=("${include_path}")
+        ;;
+      *:)
+        current_key="${trimmed_line%:}"
+        current_key="$(strip_wrapping_quotes "$(trim_string "${current_key}")")"
+
+        if [[ -z "${current_key}" ]]; then
+          dnb_log error "Empty include config key in ${INCLUDES_FILE}:${line_number}"
+          return 1
+        fi
+
+        case "${current_key}" in
+          "${config_filename}" | "${config_short_name}")
+            current_key="${config_filename}"
+            ;;
+          *)
+            current_key="$(normalize_include_key "${current_key}")"
+            ;;
+        esac
+        ;;
+      *)
+        dnb_log error "Unsupported include syntax in ${INCLUDES_FILE}:${line_number}: ${trimmed_line}"
+        return 1
+        ;;
+    esac
+  done <"${INCLUDES_FILE}"
+}
+
 run_dotbot_with_config() {
   local config_path="${1}"
   local dotbot_verbosity_flag=''
+  local config_paths=()
 
   if [[ ! -f "${config_path}" ]]; then
     dnb_log error "Config file not found: ${config_path}"
@@ -106,7 +261,12 @@ run_dotbot_with_config() {
   export HOSTNAME
   HOSTNAME="$(hostname)"
 
-  dnb_log info "Running dotbot with config: ${config_path}"
+  config_paths=("${config_path}")
+  if ! resolve_included_config_paths "${config_path}" config_paths; then
+    exit 1
+  fi
+
+  dnb_log info "Running dotbot with config: ${config_paths[*]}"
 
   if [[ -n "${DNB_VERBOSE:-}" ]]; then
     dotbot_verbosity_flag='-vv'
@@ -117,7 +277,7 @@ run_dotbot_with_config() {
   cd "${REPO_ROOT}"
   dotbot \
     --base-directory "${REPO_ROOT}" \
-    --config-file "${config_path}" \
+    --config-file "${config_paths[@]}" \
     --force-color \
     "${dotbot_verbosity_flag}" \
     --exit-on-failure
@@ -164,37 +324,37 @@ main() {
 
   while (($#)); do
     case "$1" in
-    --config)
-      config_arg="${2-}"
-      if [[ -z "${config_arg}" ]]; then
-        dnb_log error "--config requires a value."
+      --config)
+        config_arg="${2-}"
+        if [[ -z "${config_arg}" ]]; then
+          dnb_log error "--config requires a value."
+          print_help
+          exit 2
+        fi
+        shift 2
+        ;;
+      --list)
+        list_mode=1
+        shift
+        ;;
+      -h | --help)
+        print_help
+        exit 0
+        ;;
+      --*)
+        dnb_log error "Unknown option '$1'."
         print_help
         exit 2
-      fi
-      shift 2
-      ;;
-    --list)
-      list_mode=1
-      shift
-      ;;
-    -h | --help)
-      print_help
-      exit 0
-      ;;
-    --*)
-      dnb_log error "Unknown option '$1'."
-      print_help
-      exit 2
-      ;;
-    *)
-      if [[ -n "${positional_config}" ]]; then
-        dnb_log error "Only one config name is supported."
-        print_help
-        exit 2
-      fi
-      positional_config="$1"
-      shift
-      ;;
+        ;;
+      *)
+        if [[ -n "${positional_config}" ]]; then
+          dnb_log error "Only one config name is supported."
+          print_help
+          exit 2
+        fi
+        positional_config="$1"
+        shift
+        ;;
     esac
   done
 
@@ -225,4 +385,6 @@ main() {
   run_dotbot_with_config "${target_config_path}"
 }
 
-main "$@"
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+  main "$@"
+fi

@@ -31,6 +31,7 @@ jsonnetfmt
 libpam
 lighthousing
 listview
+locutus
 LOGLEVEL
 mainbox
 Monaspace

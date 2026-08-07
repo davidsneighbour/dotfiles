@@ -7,7 +7,7 @@
 # Main workstation dotfiles setup (links, tools, cronjobs, and host-specific configs).
 
 - plugins:
-    - modules/dotbot-plugins/crontab-dotbot/
+    - configs/dotbot/plugins/crontab.py
 
 - link:
     ~/github.com/davidsneighbour/dotfiles/containers/hal2025/paperless/consume: /mnt/storage/Paperless/consume

@@ -1,5 +1,105 @@
 # Changelog
 
+## [3004.5.2](https://github.com/davidsneighbour/dotfiles/compare/v3004.5.1...v3004.5.2) (2026-08-07)
+
+### Chore
+
+* **git:** update git submodule ([1504584](https://github.com/davidsneighbour/dotfiles/commit/15045844fc0b940b4acb35679dfab396dff245c3))
+
+## [3004.5.1](https://github.com/davidsneighbour/dotfiles/compare/v3004.5.0...v3004.5.1) (2026-08-03)
+
+### Build
+
+* **fix:** clearout manual workspaces ([df8acc2](https://github.com/davidsneighbour/dotfiles/commit/df8acc2200e6feada7e06a50f096795c46b664e5))
+
+### Chore
+
+* **bashrc:** remove obsidian memory helper ([166438b](https://github.com/davidsneighbour/dotfiles/commit/166438b1e5095970826bc275e2c6f606bd0895a9))
+* **dotbot:** localize crontab plugin ([32c66ce](https://github.com/davidsneighbour/dotfiles/commit/32c66ce7592ac70835351bf915af58a3e8fd826d))
+* **git:** update protected submodule ([3e3632d](https://github.com/davidsneighbour/dotfiles/commit/3e3632d703357dcbfa0f878b2a631af446eba4e8))
+
+## [3004.5.0](https://github.com/davidsneighbour/dotfiles/compare/v3004.4.0...v3004.5.0) (2026-08-02)
+
+### Feat
+
+* **containers:** add uptime kuma to hal2025 services ([37afb7a](https://github.com/davidsneighbour/dotfiles/commit/37afb7addc385daa3ecca535bc1db84510dea42b))
+
+### Fix
+
+* **containers:** move uptime kuma into proper location ([c99bd40](https://github.com/davidsneighbour/dotfiles/commit/c99bd409d71a6c1544de666fa0e2ab27b78a5765))
+
+### Docs
+
+* add INDEX.md for hal2025 containers ([94be78d](https://github.com/davidsneighbour/dotfiles/commit/94be78d7471f368e338ee2e59115a9218d9841c4))
+
+### Chore
+
+* **assets:** update skyline stats for 2026 ([167f3a8](https://github.com/davidsneighbour/dotfiles/commit/167f3a8cf76f767e8ead3c0ebe52b54a58f38e3d))
+
+## [3004.4.0](https://github.com/davidsneighbour/dotfiles/compare/v3004.3.0...v3004.4.0) (2026-08-01)
+
+### Feat
+
+* **dotbot:** support profile include chains ([9224272](https://github.com/davidsneighbour/dotfiles/commit/9224272991c69775e3a5677466161ed10536172b))
+
+### Fix
+
+* **polybar:** disable ibus panel to stop stuck tray popup ([e3b40f1](https://github.com/davidsneighbour/dotfiles/commit/e3b40f13a4f5e52483a5fb5ad61a686e08b9b787))
+
+### Test
+
+* **shell:** wire dotfiles helper test into checks ([b90a984](https://github.com/davidsneighbour/dotfiles/commit/b90a984cdd134fbfe9228280d08c9d9b2649bc32))
+
+### Build
+
+* **deps:** udpate dependencies ([07a08a0](https://github.com/davidsneighbour/dotfiles/commit/07a08a0caf7b761c10efbca40ff719a3a27c8174))
+
+## [3004.3.0](https://github.com/davidsneighbour/dotfiles/compare/v3004.2.0...v3004.3.0) (2026-07-23)
+
+### Feat
+
+* **containers:** add locutus openpencil mcp ([109823b](https://github.com/davidsneighbour/dotfiles/commit/109823b0f1c1b0285b2df27b2df2b62ab820d9df))
+
+### Fix
+
+* **containers:** serve openpencil web app ([fac78b6](https://github.com/davidsneighbour/dotfiles/commit/fac78b6b88b7b858c324ed714ffe784af3b2609a))
+
+## [3004.2.0](https://github.com/davidsneighbour/dotfiles/compare/v3004.1.1...v3004.2.0) (2026-07-23)
+
+### Feat
+
+* **bashrc:** add obsidian_open_in_code function to open project files in VS Code ([5ceb5e9](https://github.com/davidsneighbour/dotfiles/commit/5ceb5e97b4356e7aff05eb98a67f91e7a2c78582))
+* **config:** add Espanso setup ([c3abd4d](https://github.com/davidsneighbour/dotfiles/commit/c3abd4d0b0e24b0975590ea52185e947c7390dce))
+* **containers:** add stirling pdf service ([4968512](https://github.com/davidsneighbour/dotfiles/commit/4968512cdbeaf60d00753feb5f044647c1cf0d65))
+* **shell:** add shell quality scripts ([d8a60a4](https://github.com/davidsneighbour/dotfiles/commit/d8a60a4bd95ad4eada5c1cf0491a5eb9320fa799)), closes [#507](https://github.com/davidsneighbour/dotfiles/issues/507)
+
+### Fix
+
+* add login to stirling container ([e8207a5](https://github.com/davidsneighbour/dotfiles/commit/e8207a5e5e4c1e3fa46f4b441815111bfeaa7259))
+* **config:** stabilize yaml linting ([c239122](https://github.com/davidsneighbour/dotfiles/commit/c2391226e850bbfb4fdb0e00fa492ce9a3020781)), closes [#511](https://github.com/davidsneighbour/dotfiles/issues/511)
+* **cron:** add timestamp to daily report cron log filename ([d18d8b7](https://github.com/davidsneighbour/dotfiles/commit/d18d8b7bc9c45be0080d9b5a4f1b36019acbb577)), closes [#527](https://github.com/davidsneighbour/dotfiles/issues/527)
+* **cron:** add timestamp to docker backup cron log filename ([2e6cbe4](https://github.com/davidsneighbour/dotfiles/commit/2e6cbe4932db3b627f238da1bc5295b7627cb15f)), closes [#528](https://github.com/davidsneighbour/dotfiles/issues/528)
+* **node:** add engines schedule fallback ([3193e36](https://github.com/davidsneighbour/dotfiles/commit/3193e36618ea2c774c8ab6223548db3a7413a4b3)), closes [#521](https://github.com/davidsneighbour/dotfiles/issues/521)
+* **rofi:** add timestamp to workspace selector log filename ([48237de](https://github.com/davidsneighbour/dotfiles/commit/48237de6dd372eb05ed2a112f5fa222fd6e81e71)), closes [#529](https://github.com/davidsneighbour/dotfiles/issues/529)
+* **typescript:** split runtime typechecks ([4d4fabc](https://github.com/davidsneighbour/dotfiles/commit/4d4fabc9a3c81b39a7059ac179c2f731567eef48)), closes [#504](https://github.com/davidsneighbour/dotfiles/issues/504)
+* **wallpaper:** add date to wallpaper log filename ([42f0cc3](https://github.com/davidsneighbour/dotfiles/commit/42f0cc3b4af7e15704e238c09e5b07b9576e52d7)), closes [#526](https://github.com/davidsneighbour/dotfiles/issues/526)
+
+### Docs
+
+* **containers:** add locutus container index ([786a450](https://github.com/davidsneighbour/dotfiles/commit/786a4507a110edd70259c3ccd46390861d6047b3))
+
+### Build
+
+* **chore:** update dependencies ([33ae25a](https://github.com/davidsneighbour/dotfiles/commit/33ae25a408e022999cf6db3a5b7c0e20f54fd0e2))
+* **deps:** reduce audit findings ([fa5ff36](https://github.com/davidsneighbour/dotfiles/commit/fa5ff363eb4fc199d2fc32d574696fce0b2043fd)), closes [#502](https://github.com/davidsneighbour/dotfiles/issues/502)
+
+### Chore
+
+* **containers:** pin docker compose images ([519b793](https://github.com/davidsneighbour/dotfiles/commit/519b793e91454ddd745d3de37d38f555bc1626bf))
+* **deps:** update dependency typescript to v7 ([edaf54e](https://github.com/davidsneighbour/dotfiles/commit/edaf54e2e03092527e31ec2dfdc1a43b1aaa6e9f))
+* **dotfiles:** update protected config state ([bdb8b6c](https://github.com/davidsneighbour/dotfiles/commit/bdb8b6c9f427254b98984736184cb9a5570dafc1))
+* **project:** update project plan ([a0ebffb](https://github.com/davidsneighbour/dotfiles/commit/a0ebffbb0afe0d121f00d6eb3166166b958e66b9)), closes [#521](https://github.com/davidsneighbour/dotfiles/issues/521) [524-#530](https://github.com/davidsneighbour/dotfiles/issues/530)
+
 ## [3004.1.1](https://github.com/davidsneighbour/dotfiles/compare/v3004.1.0...v3004.1.1) (2026-07-17)
 
 ### Fix

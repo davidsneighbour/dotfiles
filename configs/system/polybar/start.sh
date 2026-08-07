@@ -33,6 +33,23 @@ while ! pgrep -x xfwm4 >/dev/null 2>&1; do
   sleep 0.5
 done
 
+# ibus's own GTK panel/tray icon (ibus-ui-gtk3) has a language-switch popup
+# that never closes when embedded in polybar's tray: polybar can't complete
+# the X11 grab handshake GTK relies on to dismiss the menu on an outside
+# click. Disabling ibus's panel avoids the stuck menu entirely; engine
+# switching keeps working via ibus's own hotkey (default <Super>space).
+if pgrep -u "${UID}" -x ibus-ui-gtk3 >/dev/null 2>&1; then
+  echo "disabling ibus panel to avoid a stuck tray popup"
+  CURRENT_IBUS_ENGINE="$(ibus engine 2>/dev/null || true)"
+  pkill -u "${UID}" -x ibus-daemon || true
+  sleep 1
+  ibus-daemon --daemonize --xim --panel=disable || true
+  sleep 1
+  if [[ -n "${CURRENT_IBUS_ENGINE}" ]]; then
+    ibus engine "${CURRENT_IBUS_ENGINE}" || true
+  fi
+fi
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 LOGLEVEL="info" # {trace, info, notice, warning, error}
