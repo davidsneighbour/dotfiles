@@ -12,6 +12,9 @@ export default {
     'biome check --write --staged --no-errors-on-unmatched',
   ],
   '*.y(a?)ml': ['yamllint -c .yamllint.yml'],
+  '*.{bash,cjs,js,json,jsonc,mjs,sh,toml,ts,yaml,yml}': [
+    'node --experimental-strip-types scripts/lint-log-filenames.ts',
+  ],
   '*.{scss,css}': ['stylelint --fix'],
   '*.{png,jpeg,jpg,gif,svg}': ['sharp-lint-staged'],
   '!(CHANGELOG)**/*.{md,markdown}': [

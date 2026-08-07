@@ -4,6 +4,8 @@ description: Canonical implementation contract for verbosity in Bash functions, 
 applyTo: "bashrc/**,bin/**,modules/**,containers/**,**/*.sh,**/*.bash,**/*.ts,**/*.js"
 ---
 
+<!-- markdownlint-disable title-case-style -->
+
 # Global Logging and Verbosity Contract (DNB_VERBOSE)
 
 ## Purpose
@@ -95,6 +97,32 @@ If no script-specific logfile is configured:
 * `dnb_log_init` writes to `~/.logs/YYYYMMDD-HHMMSS.log`
 
 This aligns with repository logging requirements.
+
+## Log filename policy
+
+Log-producing code MUST write logs under the existing log directory structure,
+normally `~/.logs/<area>/`.
+
+Log files MUST include an obvious date token in the basename.
+
+Preferred basename format:
+
+```text
+YYYYMMDD-HHMMSS.log
+```
+
+Acceptable minimum format when finer granularity is not practical:
+
+```text
+YYYYMM.log
+```
+
+Cleanup automation MUST only delete or compress files whose basenames contain
+an obvious date. Undated or ambiguous log filenames MUST be reported for
+follow-up instead of being deleted by modified time.
+
+`*.lock` files are operational state, not logs. They MUST NOT be handled by log
+cleanup, and new lock-file locations SHOULD stay outside log-only trees.
 
 ## Reference implementation pattern (Bash)
 
