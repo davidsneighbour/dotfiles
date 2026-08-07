@@ -14,6 +14,8 @@ import {
 } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { basename, dirname, join, relative, resolve } from 'node:path';
+import { pathToFileURL } from 'node:url';
+import { parse as parseToml } from 'smol-toml';
 
 /**
  * Docker backup orchestrator.
@@ -330,122 +332,215 @@ async function findTasks(
   return results.sort((left, right) => left.localeCompare(right));
 }
 
-function parseTomlValue(rawValue: string): unknown {
-  const value = rawValue.trim();
+function formatConfigField(sourceLabel: string, fieldName: string): string {
+  return `${sourceLabel} field ${fieldName}`;
+}
 
-  if (value === 'true') {
-    return true;
-  }
-  if (value === 'false') {
-    return false;
-  }
-  if (/^-?\d+$/.test(value)) {
-    return Number.parseInt(value, 10);
-  }
-  if (/^-?\d+\.\d+$/.test(value)) {
-    return Number.parseFloat(value);
-  }
-  if (
-    (value.startsWith('"') && value.endsWith('"')) ||
-    (value.startsWith("'") && value.endsWith("'"))
-  ) {
-    return value.slice(1, -1);
-  }
-  if (value.startsWith('[') && value.endsWith(']')) {
-    const inner = value.slice(1, -1).trim();
-    if (!inner) {
-      return [];
-    }
-    return inner
-      .split(',')
-      .map((item) => parseTomlValue(item))
-      .filter((item): item is string => typeof item === 'string');
+function asConfigRecord(
+  data: unknown,
+  sourceLabel: string,
+): Record<string, unknown> {
+  if (typeof data !== 'object' || data === null || Array.isArray(data)) {
+    throw new Error(`${sourceLabel} must contain a TOML table`);
   }
 
+  return data as Record<string, unknown>;
+}
+
+function readOptionalBoolean(
+  data: Record<string, unknown>,
+  fieldName: string,
+  sourceLabel: string,
+): boolean | undefined {
+  const value = data[fieldName];
+  if (value === undefined) {
+    return undefined;
+  }
+  if (typeof value !== 'boolean') {
+    throw new Error(
+      `${formatConfigField(sourceLabel, fieldName)} must be true or false`,
+    );
+  }
   return value;
 }
 
-function setNestedValue(
-  target: Record<string, unknown>,
-  keyPath: string[],
-  value: unknown,
-): void {
-  let current: Record<string, unknown> = target;
-
-  for (const key of keyPath.slice(0, -1)) {
-    const existing = current[key];
-    if (
-      typeof existing !== 'object' ||
-      existing === null ||
-      Array.isArray(existing)
-    ) {
-      current[key] = {};
-    }
-    current = current[key] as Record<string, unknown>;
+function readOptionalNumber(
+  data: Record<string, unknown>,
+  fieldName: string,
+  sourceLabel: string,
+): number | undefined {
+  const value = data[fieldName];
+  if (value === undefined) {
+    return undefined;
   }
-
-  const lastKey = keyPath.at(-1);
-  if (lastKey === undefined) {
-    throw new Error('Cannot set a TOML value without a key path.');
-  }
-  current[lastKey] = value;
-}
-
-function parseToml(content: string): Record<string, unknown> {
-  const root: Record<string, unknown> = {};
-  let currentPath: string[] = [];
-
-  for (const rawLine of content.split(/\r?\n/u)) {
-    const line = rawLine.trim();
-
-    if (!line || line.startsWith('#')) {
-      continue;
-    }
-
-    if (line.startsWith('[') && line.endsWith(']')) {
-      currentPath = line
-        .slice(1, -1)
-        .split('.')
-        .map((part) => part.trim())
-        .filter(Boolean);
-      continue;
-    }
-
-    const equalsIndex = line.indexOf('=');
-    if (equalsIndex === -1) {
-      throw new Error(`Invalid TOML line: ${line}`);
-    }
-
-    const key = line.slice(0, equalsIndex).trim();
-    const rawValue = line.slice(equalsIndex + 1).trim();
-    setNestedValue(root, [...currentPath, key], parseTomlValue(rawValue));
-  }
-
-  return root;
-}
-
-function toBackupTomlConfig(data: Record<string, unknown>): BackupTomlConfig {
-  const config = data as BackupTomlConfig;
-
-  if (
-    config.mode &&
-    config.mode !== 'compose-copy' &&
-    config.mode !== 'command'
-  ) {
-    throw new Error(`Unsupported mode in backup.toml: ${String(config.mode)}`);
-  }
-
-  if (config.compression && config.compression !== 'tar.gz') {
+  if (typeof value !== 'number') {
     throw new Error(
-      `Unsupported compression in backup.toml: ${String(config.compression)}`,
+      `${formatConfigField(sourceLabel, fieldName)} must be a number`,
     );
   }
+  return value;
+}
 
-  if (config.data_paths && !Array.isArray(config.data_paths)) {
-    throw new Error('backup.toml field data_paths must be an array of strings');
+function readOptionalString(
+  data: Record<string, unknown>,
+  fieldName: string,
+  sourceLabel: string,
+): string | undefined {
+  const value = data[fieldName];
+  if (value === undefined) {
+    return undefined;
+  }
+  if (typeof value !== 'string') {
+    throw new Error(
+      `${formatConfigField(sourceLabel, fieldName)} must be a string`,
+    );
+  }
+  return value;
+}
+
+function readOptionalStringArray(
+  data: Record<string, unknown>,
+  fieldName: string,
+  sourceLabel: string,
+): string[] | undefined {
+  const value = data[fieldName];
+  if (value === undefined) {
+    return undefined;
+  }
+  if (!Array.isArray(value) || value.some((item) => typeof item !== 'string')) {
+    throw new Error(
+      `${formatConfigField(sourceLabel, fieldName)} must be an array of strings`,
+    );
+  }
+  return value;
+}
+
+function isRunnerMode(value: string): value is RunnerMode {
+  return value === 'compose-copy' || value === 'command';
+}
+
+function isCompression(value: string): value is 'tar.gz' {
+  return value === 'tar.gz';
+}
+
+function toBackupTomlConfig(
+  data: unknown,
+  sourceLabel = 'backup.toml',
+): BackupTomlConfig {
+  const configData = asConfigRecord(data, sourceLabel);
+  const mode = readOptionalString(configData, 'mode', sourceLabel);
+  const compression = readOptionalString(
+    configData,
+    'compression',
+    sourceLabel,
+  );
+
+  if (mode !== undefined && !isRunnerMode(mode)) {
+    throw new Error(`Unsupported mode in ${sourceLabel}: ${mode}`);
+  }
+
+  if (compression !== undefined && !isCompression(compression)) {
+    throw new Error(`Unsupported compression in ${sourceLabel}: ${compression}`);
+  }
+
+  const config: BackupTomlConfig = {};
+  const enabled = readOptionalBoolean(configData, 'enabled', sourceLabel);
+  const name = readOptionalString(configData, 'name', sourceLabel);
+  const serviceRoot = readOptionalString(
+    configData,
+    'service_root',
+    sourceLabel,
+  );
+  const composeFile = readOptionalString(
+    configData,
+    'compose_file',
+    sourceLabel,
+  );
+  const dataPaths = readOptionalStringArray(
+    configData,
+    'data_paths',
+    sourceLabel,
+  );
+  const command = readOptionalString(configData, 'command', sourceLabel);
+  const preCommand = readOptionalString(
+    configData,
+    'pre_command',
+    sourceLabel,
+  );
+  const postCommand = readOptionalString(
+    configData,
+    'post_command',
+    sourceLabel,
+  );
+  const uploadCommand = readOptionalString(
+    configData,
+    'upload_command',
+    sourceLabel,
+  );
+  const stopTimeoutSeconds = readOptionalNumber(
+    configData,
+    'stop_timeout_seconds',
+    sourceLabel,
+  );
+  const ignoreMissingPaths = readOptionalBoolean(
+    configData,
+    'ignore_missing_paths',
+    sourceLabel,
+  );
+
+  if (enabled !== undefined) {
+    config.enabled = enabled;
+  }
+  if (name !== undefined) {
+    config.name = name;
+  }
+  if (mode !== undefined) {
+    config.mode = mode;
+  }
+  if (serviceRoot !== undefined) {
+    config.service_root = serviceRoot;
+  }
+  if (composeFile !== undefined) {
+    config.compose_file = composeFile;
+  }
+  if (dataPaths !== undefined) {
+    config.data_paths = dataPaths;
+  }
+  if (command !== undefined) {
+    config.command = command;
+  }
+  if (preCommand !== undefined) {
+    config.pre_command = preCommand;
+  }
+  if (postCommand !== undefined) {
+    config.post_command = postCommand;
+  }
+  if (uploadCommand !== undefined) {
+    config.upload_command = uploadCommand;
+  }
+  if (stopTimeoutSeconds !== undefined) {
+    config.stop_timeout_seconds = stopTimeoutSeconds;
+  }
+  if (compression !== undefined) {
+    config.compression = compression;
+  }
+  if (ignoreMissingPaths !== undefined) {
+    config.ignore_missing_paths = ignoreMissingPaths;
   }
 
   return config;
+}
+
+export function parseBackupTomlConfig(
+  content: string,
+  sourceLabel = 'backup.toml',
+): BackupTomlConfig {
+  try {
+    return toBackupTomlConfig(parseToml(content), sourceLabel);
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    throw new Error(`Invalid TOML config in ${sourceLabel}: ${message}`);
+  }
 }
 
 async function detectComposeCommand(): Promise<string> {
@@ -497,7 +592,7 @@ async function executeTomlTask(
   const startedAt = Date.now();
   const taskDirectory = dirname(taskPath);
   const configContent = await readFile(taskPath, 'utf8');
-  const config = toBackupTomlConfig(parseToml(configContent));
+  const config = parseBackupTomlConfig(configContent, taskPath);
   const name = config.name ?? basename(taskDirectory);
   const timestamp = createTimestamp();
   const outputDirectory = join(
@@ -895,8 +990,18 @@ async function main(): Promise<void> {
   }
 }
 
-main().catch((error: unknown) => {
-  const message = error instanceof Error ? error.message : String(error);
-  log('ERROR', message, true);
-  process.exitCode = 1;
-});
+function isMainModule(entryScript: string | undefined): boolean {
+  if (!entryScript) {
+    return false;
+  }
+
+  return import.meta.url === pathToFileURL(resolve(entryScript)).href;
+}
+
+if (isMainModule(process.argv[1])) {
+  main().catch((error: unknown) => {
+    const message = error instanceof Error ? error.message : String(error);
+    log('ERROR', message, true);
+    process.exitCode = 1;
+  });
+}

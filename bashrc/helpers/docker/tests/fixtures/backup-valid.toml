@@ -1,0 +1,12 @@
+enabled = true
+name = "portainer"
+mode = "compose-copy"
+service_root = "."
+compose_file = "docker-compose.yml"
+data_paths = ["data", "uploads"]
+stop_timeout_seconds = 30
+compression = "tar.gz"
+ignore_missing_paths = false
+pre_command = "echo Starting ${name}"
+post_command = "echo Finished ${archive}"
+upload_command = "rclone copy ${archive} remote:docker-backups/${host}/"

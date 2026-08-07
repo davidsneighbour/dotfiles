@@ -45,10 +45,14 @@ Functions/methods defined:
 * `execCommand`
 * `findTasks`
 * `walk`
-* `parseTomlValue`
-* `setNestedValue`
-* `parseToml`
+* `formatConfigField`
+* `asConfigRecord`
+* `readOptionalBoolean`
+* `readOptionalNumber`
+* `readOptionalString`
+* `readOptionalStringArray`
 * `toBackupTomlConfig`
+* `parseBackupTomlConfig`
 * `detectComposeCommand`
 * `createTarGzFromPaths`
 * `createTarGzFromDirectory`
@@ -61,9 +65,34 @@ Functions/methods defined:
 * `validateRootDirectory`
 * `printSummary`
 * `main`
+* `isMainModule`
 
 Requirements:
 
 * Node.js 22+ (for `--experimental-strip-types` TypeScript execution).
 * docker and Docker Compose for compose-copy tasks.
 * tar for archives.
+
+### `docker/tests/backup-runner-config-test.ts`
+
+Fixture-backed parser checks for `backup.toml` configuration files. The tests cover valid configs, missing optional keys, empty strings, invalid TOML, and invalid field types.
+
+### `docker/tests/fixtures/backup-empty-strings.toml`
+
+Parser fixture proving that zero-length TOML strings stay distinct from missing values.
+
+### `docker/tests/fixtures/backup-invalid-data-paths.toml`
+
+Parser fixture proving that `data_paths` must contain strings only.
+
+### `docker/tests/fixtures/backup-invalid.toml`
+
+Parser fixture for invalid TOML syntax.
+
+### `docker/tests/fixtures/backup-missing-keys.toml`
+
+Parser fixture proving that optional fields can be omitted and handled by runtime defaults.
+
+### `docker/tests/fixtures/backup-valid.toml`
+
+Parser fixture covering a complete built-in backup task configuration.

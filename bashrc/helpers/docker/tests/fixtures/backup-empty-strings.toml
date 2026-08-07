@@ -1,0 +1,7 @@
+name = ""
+service_root = ""
+compose_file = ""
+data_paths = ["", "data"]
+pre_command = ""
+post_command = ""
+upload_command = ""
