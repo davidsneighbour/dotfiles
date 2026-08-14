@@ -13,26 +13,26 @@
 - clean: ["~"]
 
 - link:
-    ~/.env: modules/protected/.env
-    ~/.gmailctl: modules/gmailctl
-    ~/.gnupg: modules/protected/.gnupg
-    ~/.npmrc: modules/protected/.npmrc
-    ~/.sentryclirc: modules/protected/.sentryclirc
-    ~/.ssh: modules/protected/.ssh
-    ~/.config/Cryptomator: modules/protected/Cryptomator
-    ~/.config/transmission: modules/protected/transmission
-    ~/.config/filezilla/filezilla.xml: modules/protected/filezilla/filezilla.xml
-    ~/.config/filezilla/sitemanager.xml: modules/protected/filezilla/sitemanager.xml
-    ~/.config/filezilla/trustedcerts.xml: modules/protected/filezilla/trustedcerts.xml
-    ~/.crosspost.env: modules/protected/crosspost.env
-    ~/.clockify-cli.yaml: modules/protected/clockify-cli.yaml
+    ~/.env: protected/.env
+    ~/.gmailctl: protected/gmailctl
+    ~/.gnupg: protected/.gnupg
+    ~/.npmrc: protected/.npmrc
+    ~/.sentryclirc: protected/.sentryclirc
+    ~/.ssh: protected/.ssh
+    ~/.config/Cryptomator: protected/Cryptomator
+    ~/.config/transmission: protected/transmission
+    ~/.config/filezilla/filezilla.xml: protected/filezilla/filezilla.xml
+    ~/.config/filezilla/sitemanager.xml: protected/filezilla/sitemanager.xml
+    ~/.config/filezilla/trustedcerts.xml: protected/filezilla/trustedcerts.xml
+    ~/.crosspost.env: protected/crosspost.env
+    ~/.clockify-cli.yaml: protected/clockify-cli.yaml
 
     # fonts
-    ~/.fonts/AkwePro: modules/protected/fonts/AkwePro
-    ~/.fonts/BahnPro: modules/protected/fonts/BahnPro
-    ~/.fonts/Panton: modules/protected/fonts/Panton
-    ~/.fonts/Tomkin: modules/protected/fonts/Tomkin
-    ~/.fonts/Verb: modules/protected/fonts/Verb
+    ~/.fonts/AkwePro: protected/fonts/AkwePro
+    ~/.fonts/BahnPro: protected/fonts/BahnPro
+    ~/.fonts/Panton: protected/fonts/Panton
+    ~/.fonts/Tomkin: protected/fonts/Tomkin
+    ~/.fonts/Verb: protected/fonts/Verb
 
 - shell:
     -

@@ -105,7 +105,7 @@ seconds_since_last_run() {
 
 ISSUES_FILE="${HOME}/.config/polybar/issues.toml"
 SETTINGS_FILE="${HOME}/.dotfiles/configs/system/polybar/configs/01-colours.ini"
-GMAIL_CREDENTIALS="${HOME}/github.com/davidsneighbour/dotfiles/modules/gmailctl/credentials.json"
+GMAIL_CREDENTIALS="${HOME}/github.com/davidsneighbour/dotfiles/protected/gmailctl/credentials.json"
 UNREAD_FILE="${MSGVAULT_UNREAD_FILE:-${HOME}/.cache/gmailctl/unread_count}"
 LOG_DIR="${HOME}/.logs/msgvault"
 HEALTHY_WINDOW_MINUTES="5"

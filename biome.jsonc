@@ -13,7 +13,7 @@
       "!containers",
       "!configs/vscode/extensions/dnb-dotfiles-tools/node_modules",
       "!logs",
-      "!modules/protected"
+      "!protected"
     ]
   }
 }

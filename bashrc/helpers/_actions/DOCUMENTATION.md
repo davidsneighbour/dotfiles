@@ -4,7 +4,7 @@ This file documents every file currently present in `bashrc/helpers/_actions`.
 
 Parent index: [`../INDEX.md`](../INDEX.md).
 
-## Existing Markdown references
+## Existing markdown references
 
 * [`README.md`](./README.md)
 
@@ -67,4 +67,4 @@ Functions/methods defined:
 Requirements:
 
 * bash, gum, python3 with tomllib or tomli for menu parsing.
-* Dotbot commands require modules/dotbot and configs/dotbot.
+* Dotbot commands require dotbot and configs/dotbot.

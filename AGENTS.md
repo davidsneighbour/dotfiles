@@ -34,8 +34,8 @@ Common top-level areas (names may evolve):
 * `bin/`
   User-facing CLI commands and helpers
 
-* `modules/`
-  Feature modules such as containers, cronjobs, or integrations
+* `protected/`
+  Private submodule for secrets, credentials, and local secure assets
 
 * `lib/`
   Shared Bash helpers and internal functions
@@ -209,7 +209,7 @@ AI-generated code is treated as production code.
 ### Submodules
 
 When committing submodule updates, commit only the changed submodule HEAD recorded by this parent repository.
-Stage the submodule path from the parent repository, for example `git add modules/protected`.
+Stage the submodule path from the parent repository, for example `git add protected`.
 Do not commit, amend, clean, reset, or otherwise modify work inside the submodule unless the user explicitly asks for submodule-internal changes.
 
 Before making changes:

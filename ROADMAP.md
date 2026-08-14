@@ -94,14 +94,14 @@ tracked in #521.
 | [#516 Replace custom TOML parsing in backup-runner](https://github.com/davidsneighbour/dotfiles/issues/516) | Reduces parser maintenance risk before extending backup configuration. |
 | [#515 Add backup retention and restore checks](https://github.com/davidsneighbour/dotfiles/issues/515) | Adds archive rotation and restore confidence checks. |
 
-### Repository structure and modules
+### Repository structure and protected assets
 
 | Issue | Notes |
 | --- | --- |
 | [#498 Document and clean up configs directory](https://github.com/davidsneighbour/dotfiles/issues/498) | Inventory config ownership before moving files or changing link paths. |
 | [#519 Centralize local TODO files into the issue tracker](https://github.com/davidsneighbour/dotfiles/issues/519) | Prevents helper-local TODO fragments from drifting away from GitHub Issues. |
 | [#518 Document cleanup for local generated and vendored payloads](https://github.com/davidsneighbour/dotfiles/issues/518) | Adds safe cleanup guidance for ignored logs, caches, themes, and downloaded metadata. |
-| [#514 Split gmailctl build from apply, version, and push](https://github.com/davidsneighbour/dotfiles/issues/514) | Separates validation from external mutation and publishing in `modules/gmailctl`. |
+| [#514 Split gmailctl build from apply, version, and push](https://github.com/davidsneighbour/dotfiles/issues/514) | Separates validation from external mutation and publishing in `protected/gmailctl`. |
 
 ## Audit findings
 

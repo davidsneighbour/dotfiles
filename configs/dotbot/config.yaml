@@ -41,7 +41,7 @@
     ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfwm4.xml: configs/system/xfce/xfwm4.xml
 
     # workspaces setup
-    ~/github.com/davidsneighbour/dotfiles-protected: modules/protected
+    ~/github.com/davidsneighbour/dotfiles-protected: protected
 
     # system setup
     ~/.face.icon: configs/system/face.icon

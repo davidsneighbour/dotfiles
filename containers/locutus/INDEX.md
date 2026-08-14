@@ -9,7 +9,7 @@ listed here, then add it to this table in the same change as the compose file.
 
 Preferred next free port: `3060`.
 
-### 3000 Row
+### 3000 row
 
 * `3005`: Homepage, container port `3000`.
   Source: `containers/locutus/homepage/docker-compose.yaml`.
@@ -34,7 +34,7 @@ Preferred free slots in the `3000-3999` row, based on repository definitions:
 Avoid assigning arbitrary in-between ports such as `3006` or `3038`; keep those
 free unless there is a clear operational reason.
 
-## Locutus Definitions
+## Locutus definitions
 
 ### FreshRSS
 
@@ -50,7 +50,7 @@ free unless there is a clear operational reason.
 * Image: `ghcr.io/gethomepage/homepage:latest`, pinned by digest.
 * Published ports: `3005:3000`.
 
-### ntfy
+### Ntfy
 
 * Container: `ntfy`.
 * Source: `containers/locutus/ntfy/docker-compose.yaml`.
@@ -64,7 +64,7 @@ free unless there is a clear operational reason.
 * Image: `ghcr.io/zseven-w/openpencil-web:v0.8.1`, pinned by digest.
 * Published ports: `3020:3100`.
 
-### Open WebUI
+### Open webUI
 
 * Container: `open-webui`.
 * Source: `containers/locutus/openwebui/docker-compose.yaml`.
@@ -88,7 +88,7 @@ free unless there is a clear operational reason.
 ## Notes
 
 * Stirling PDF stores `/configs` through the `containers/locutus/stirling/data`
-  symlink to `modules/protected/containers/stirling`.
+  symlink to `protected/containers/stirling`.
 * OpenPencil uses the ZSeven-W Rust web-host image. The current web container
   does not declare a server-side data volume; browser-owned credentials and
   preferences are same-origin browser storage by default.
