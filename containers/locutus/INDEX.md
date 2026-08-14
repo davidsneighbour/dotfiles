@@ -7,38 +7,83 @@ possible. New allocations should use clean `10` or `100` steps such as `3020`,
 `3100`, or `3300`. Before adding a new container, pick a clean port that is not
 listed here, then add it to this table in the same change as the compose file.
 
-Preferred next free port: `3040`.
+Preferred next free port: `3060`.
 
-### 3000 row
+### 3000 Row
 
-| Host port | Service | Source | Container port |
-| --- | --- | --- | --- |
-| `3005` | Homepage | `containers/locutus/homepage/docker-compose.yaml` | `3000` |
-| `3010` | Stirling PDF | `containers/locutus/stirling/docker-compose.yaml` | `8080` |
-| `3020` | OpenPencil | `containers/locutus/openpencil/docker-compose.yaml` | `3100` |
-| `3030` | Penpot | `containers/locutus/penpot/docker-compose.yaml` | `8080` |
-| `3050` | FreshRSS | `containers/locutus/freshrss/docker-compose.yaml` | `80` |
-| `3200` | Open WebUI | `containers/locutus/openwebui/docker-compose.yaml` | `8080` |
+* `3005`: Homepage, container port `3000`.
+  Source: `containers/locutus/homepage/docker-compose.yaml`.
+* `3010`: Stirling PDF, container port `8080`.
+  Source: `containers/locutus/stirling/docker-compose.yaml`.
+* `3020`: OpenPencil, container port `3100`.
+  Source: `containers/locutus/openpencil/docker-compose.yaml`.
+* `3030`: Penpot, container port `8080`.
+  Source: `containers/locutus/penpot/docker-compose.yaml`.
+* `3040`: ntfy, container port `80`.
+  Source: `containers/locutus/ntfy/docker-compose.yaml`.
+* `3050`: FreshRSS, container port `80`.
+  Source: `containers/locutus/freshrss/docker-compose.yaml`.
+* `3200`: Open WebUI, container port `8080`.
+  Source: `containers/locutus/openwebui/docker-compose.yaml`.
 
 Preferred free slots in the `3000-3999` row, based on repository definitions:
 
-* `3040`
 * `3060-3190` in `10` steps
 * `3210-3990` in `10` steps
 
 Avoid assigning arbitrary in-between ports such as `3006` or `3038`; keep those
 free unless there is a clear operational reason.
 
-## Locutus definitions
+## Locutus Definitions
 
-| Service | Container | Source | Image | Published ports |
-| --- | --- | --- | --- | --- |
-| FreshRSS | `freshrss` | `containers/locutus/freshrss/docker-compose.yaml` | `lscr.io/linuxserver/freshrss:latest`, pinned by digest | `3050:80` |
-| Homepage | `homepage` | `containers/locutus/homepage/docker-compose.yaml` | `ghcr.io/gethomepage/homepage:latest`, pinned by digest | `3005:3000` |
-| OpenPencil | `openpencil` | `containers/locutus/openpencil/docker-compose.yaml` | `ghcr.io/zseven-w/openpencil-web:v0.8.1`, pinned by digest | `3020:3100` |
-| Open WebUI | `open-webui` | `containers/locutus/openwebui/docker-compose.yaml` | `ghcr.io/open-webui/open-webui:0.10.2`, pinned by digest | `3200:8080` |
-| Penpot | `penpot-frontend` | `containers/locutus/penpot/docker-compose.yaml` | `penpotapp/frontend:2.17`, pinned by digest | `3030:8080` |
-| Stirling PDF | `stirling-pdf` | `containers/locutus/stirling/docker-compose.yaml` | `stirlingtools/stirling-pdf:2.14.2-fat`, pinned by digest | `3010:8080` |
+### FreshRSS
+
+* Container: `freshrss`.
+* Source: `containers/locutus/freshrss/docker-compose.yaml`.
+* Image: `lscr.io/linuxserver/freshrss:latest`, pinned by digest.
+* Published ports: `3050:80`.
+
+### Homepage
+
+* Container: `homepage`.
+* Source: `containers/locutus/homepage/docker-compose.yaml`.
+* Image: `ghcr.io/gethomepage/homepage:latest`, pinned by digest.
+* Published ports: `3005:3000`.
+
+### ntfy
+
+* Container: `ntfy`.
+* Source: `containers/locutus/ntfy/docker-compose.yaml`.
+* Image: `binwiederhier/ntfy:latest`, pinned by digest.
+* Published ports: `3040:80`.
+
+### OpenPencil
+
+* Container: `openpencil`.
+* Source: `containers/locutus/openpencil/docker-compose.yaml`.
+* Image: `ghcr.io/zseven-w/openpencil-web:v0.8.1`, pinned by digest.
+* Published ports: `3020:3100`.
+
+### Open WebUI
+
+* Container: `open-webui`.
+* Source: `containers/locutus/openwebui/docker-compose.yaml`.
+* Image: `ghcr.io/open-webui/open-webui:0.10.2`, pinned by digest.
+* Published ports: `3200:8080`.
+
+### Penpot
+
+* Container: `penpot-frontend`.
+* Source: `containers/locutus/penpot/docker-compose.yaml`.
+* Image: `penpotapp/frontend:2.17`, pinned by digest.
+* Published ports: `3030:8080`.
+
+### Stirling PDF
+
+* Container: `stirling-pdf`.
+* Source: `containers/locutus/stirling/docker-compose.yaml`.
+* Image: `stirlingtools/stirling-pdf:2.14.2-fat`, pinned by digest.
+* Published ports: `3010:8080`.
 
 ## Notes
 
@@ -50,6 +95,8 @@ free unless there is a clear operational reason.
 * Penpot stores uploaded assets and Postgres data below
   `containers/locutus/penpot/assets`. Its web UI is bound to localhost only,
   and the Mailcatcher helper is kept internal to the compose network.
+* ntfy stores its cache database below `containers/locutus/ntfy/cache` and
+  reads `containers/locutus/ntfy/config/server.yml` read-only.
 * Locutus compose images are pinned by digest; update those digests
   intentionally when refreshing images.
 * Stirling PDF keeps local, untracked `logs`, `pipeline`, and `tessdata`

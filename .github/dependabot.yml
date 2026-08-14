@@ -142,6 +142,7 @@ updates:
       - /containers/hal2025/uptimekuma
       - /containers/locutus/freshrss
       - /containers/locutus/homepage
+      - /containers/locutus/ntfy
       - /containers/locutus/openpencil
       - /containers/locutus/openwebui
       - /containers/locutus/penpot

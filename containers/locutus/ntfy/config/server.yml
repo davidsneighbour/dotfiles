@@ -1,0 +1,4 @@
+---
+base-url: "http://locutus:3040"
+listen-http: ":80"
+cache-file: "/var/cache/ntfy/cache.db"

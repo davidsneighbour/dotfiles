@@ -1,0 +1,30 @@
+---
+services:
+  ntfy:
+    # secretlint-disable-next-line @secretlint/secretlint-rule-secp256k1-privatekey
+    image: binwiederhier/ntfy:latest@sha256:f2419f405127afa868f10985c1a41449e673477cee1eb19994339a5ae8b592e7
+    container_name: ntfy
+    command:
+      - serve
+    environment:
+      TZ: Asia/Bangkok
+    user: "1000:1000"
+    volumes:
+      - ./cache:/var/cache/ntfy
+      - ./config:/etc/ntfy:ro
+    ports:
+      - 3040:80
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          wget -q --tries=1 http://localhost:80/v1/health -O -
+          | grep -Eo '"healthy"\s*:\s*true' || exit 1
+      interval: 10m
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+    init: true
+    security_opt:
+      - no-new-privileges:true
