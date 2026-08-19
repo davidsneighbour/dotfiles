@@ -1,0 +1,108 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+
+# ---------------------------------------------------------------------------
+# Configuration
+# ---------------------------------------------------------------------------
+
+SKILL_REPOSITORIES=(
+  "/home/patrick/github.com/davidsneighbour/ai"
+  "/home/patrick/github.com/davidsneighbour/clerkwork"
+  "/home/patrick/github.com/davidsneighbour/gazetteer"
+  "/home/patrick/github.com/davidsneighbour/idiolect"
+  "/home/patrick/github.com/davidsneighbour/patternbook"
+  "/home/patrick/github.com/davidsneighbour/posthaste"
+)
+
+SKILL_AGENTS=(
+  "codex"
+  "claude-code"
+)
+
+# ---------------------------------------------------------------------------
+# Helpers
+# ---------------------------------------------------------------------------
+
+die() {
+  printf 'ERROR: %s\n' "$*" >&2
+  exit 1
+}
+
+build_agent_args() {
+  AGENT_ARGS=()
+
+  local agent
+
+  for agent in "${SKILL_AGENTS[@]}"; do
+    AGENT_ARGS+=(--agent "${agent}")
+  done
+}
+
+install_repository() {
+  local repository="$1"
+
+  [[ -d "${repository}" ]] || die "Repository does not exist: ${repository}"
+
+  printf '\nInstalling skills from:\n  %s\n\n' "${repository}"
+
+  # Local sources + --yes use the recommended symlink installation.
+  # Do NOT add --copy here.
+  npx --yes skills add \
+    "${repository}" \
+    --global \
+    --skill '*' \
+    "${AGENT_ARGS[@]}" \
+    --yes
+}
+
+show_installed_skills() {
+  printf '\nGlobal skills after synchronisation:\n\n'
+
+  npx --yes skills list \
+    --global \
+    "${AGENT_ARGS[@]}"
+}
+
+show_symlinks() {
+  local directory
+
+  printf '\nInstalled symlinks:\n\n'
+
+  for directory in \
+    "${HOME}/.agents/skills" \
+    "${HOME}/.codex/skills" \
+    "${HOME}/.claude/skills"; do
+    [[ -d "${directory}" ]] || continue
+
+    printf '%s\n' "${directory}"
+
+    find "${directory}" \
+      -mindepth 1 \
+      -maxdepth 1 \
+      -type l \
+      -printf '  %f -> %l\n' \
+      2>/dev/null || true
+  done
+}
+
+main() {
+  command -v npx >/dev/null 2>&1 || die "npx is not available in PATH."
+
+  build_agent_args
+
+  printf 'Synchronising development skills via symlinks...\n'
+
+  local repository
+
+  for repository in "${SKILL_REPOSITORIES[@]}"; do
+    install_repository "${repository}"
+  done
+
+  show_installed_skills
+  show_symlinks
+
+  printf '\nDone.\n'
+}
+
+main "$@"
