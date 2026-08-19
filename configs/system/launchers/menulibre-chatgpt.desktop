@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.1
+Type=Application
+Name=ChatGPT
+Icon=chatgpt
+Exec=/usr/bin/chatgpt
+Path=/home/patrick
+Actions=
+Categories=Development;X-XFCE;X-Xfce-Toplevel;
