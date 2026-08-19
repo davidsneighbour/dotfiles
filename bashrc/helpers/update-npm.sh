@@ -24,7 +24,7 @@ export NVM_DIR
 # shellcheck source=/dev/null
 [ -s "${NVM_DIR}/nvm.sh" ] && \. "${NVM_DIR}/nvm.sh"
 
-for DIRNAME in /home/patrick/.nvm/versions/node/*/; do
+for DIRNAME in "${NVM_DIR}"/versions/node/*/; do
 
   DIR=$(basename "${DIRNAME}")
   nvm use "${DIR}"
