@@ -20,7 +20,17 @@ export default {
   '!(CHANGELOG)**/*.{md,markdown}': [
     'markdownlint-cli2 --config node_modules/@dnbhq/markdownlint-config/.markdownlint-cli2.jsonc --no-globs',
   ],
-  '**/*.ts?(x)': () => ['tsc-files --noEmit --pretty'],
+  '{.commitlintrc.ts,.release-it.ts,lint-staged.config.ts}': (
+    files: string[],
+  ) => [
+    `tsc-files -p tsconfig.config.json --noEmit --pretty ${files.join(' ')}`,
+  ],
+  'scripts/**/*.ts': (files: string[]) => [
+    `tsc-files -p tsconfig.scripts.json --noEmit --pretty ${files.join(' ')}`,
+  ],
+  'bashrc/helpers/**/*.ts': (files: string[]) => [
+    `tsc-files -p tsconfig.bash-helpers.json --noEmit --pretty ${files.join(' ')}`,
+  ],
   '**/*.*': ['secretlint --no-glob'],
-  '*.jsonnet': ['jsonnetfmt -i *.jsonnet'],
+  '*.jsonnet': ['jsonnetfmt -i'],
 };
