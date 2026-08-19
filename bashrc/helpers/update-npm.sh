@@ -7,7 +7,7 @@ echo "starting update-npm.sh"
 echo "$(date)"
 echo "##########################################################################"
 
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+"${HOME}/.dotfiles/bashrc/helpers/fetch-and-run.sh" --url https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh --interpreter bash --verbose
 
 # exit if any command fails
 set -e

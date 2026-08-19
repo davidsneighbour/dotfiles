@@ -80,6 +80,26 @@ Requirements:
 
 * bash and either xdg-open or gio.
 
+### `fetch-and-run.sh`
+
+Downloads a remote installer to a temp file, optionally verifies a sha256
+checksum, and executes it explicitly instead of piping curl directly into a
+shell. Used by install scripts and aliases that previously ran
+`curl ... | sh`/`bash`.
+
+CLI option notes:
+
+* --url URL — required; installer URL to download.
+* --sha256 HEX — expected checksum; aborts on mismatch.
+* --interpreter sh|bash — interpreter to run the download with. Default: sh.
+* --dry-run — print what would be downloaded and run, without doing it.
+* --verbose — print the download location and a content preview.
+* --help — show help.
+
+Requirements:
+
+* bash, curl, sha256sum.
+
 ### `github-token`
 
 Selects a GitHub token from environment variables or .env files by role and visibility; can print, export, or run a command with the token.
@@ -301,7 +321,10 @@ Requirements:
 
 ### `update-npm.sh`
 
-Updates nvm itself and reinstalls global npm packages into installed Node versions.
+Updates nvm itself and reinstalls global npm packages into installed Node
+versions. Downloads the nvm installer via `fetch-and-run.sh` instead of
+piping curl directly into bash; nvm does not publish a checksum for this
+installer, so no `--sha256` is passed.
 
 Requirements:
 
