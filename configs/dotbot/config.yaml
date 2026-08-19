@@ -16,7 +16,7 @@
 
 - create:
     logs:
-      mode: 0777
+      mode: 0755
 
 - clean:
     ~/:
@@ -107,15 +107,15 @@
 - shell:
     - description: "\e[1;38;5;103mCreate logs directory if it doesn't exist:\e[0m\e[1;38;5;66m"
       command: |
-        if [ ! -d "$HOME/.dotfiles/logs" ]; then
-          mkdir -p "$HOME/.dotfiles/logs"
+        if [ ! -d "${HOME}/.dotfiles/logs" ]; then
+          mkdir -p "${HOME}/.dotfiles/logs"
         fi
-        if [[ -L "$HOME/.logs" ]]; then
-          ln -sfn $HOME/.dotfiles/logs $HOME/.logs
-        elif [[ ! -e "$HOME/.logs" ]]; then
-          ln -s $HOME/.dotfiles/logs $HOME/.logs
+        if [[ -L "${HOME}/.logs" ]]; then
+          ln -sfn "${HOME}/.dotfiles/logs" "${HOME}/.logs"
+        elif [[ ! -e "${HOME}/.logs" ]]; then
+          ln -s "${HOME}/.dotfiles/logs" "${HOME}/.logs"
         else
-          echo "[ERROR] Exists and is not a symlink: $HOME/.logs"
+          echo "[ERROR] Exists and is not a symlink: ${HOME}/.logs"
         fi
       quiet: true
       stdin: false   # Allow a command to read from standard input (default: false)
@@ -127,12 +127,12 @@
     - description: "\e[1;38;5;103mSymlinking mounts:\e[0m\e[1;38;5;66m"
       command: |
         if [[ "$(hostname)" == "locutus" ]]; then
-          if [[ -L "$HOME/Downloads/Paperless" ]]; then
-            ln -sfn /mnt/storage/Paperless/consume $HOME/Downloads/Paperless
-          elif [[ ! -e "$HOME/Downloads/Paperless" ]]; then
-            ln -s /mnt/storage/Paperless/consume $HOME/Downloads/Paperless
+          if [[ -L "${HOME}/Downloads/Paperless" ]]; then
+            ln -sfn /mnt/storage/Paperless/consume "${HOME}/Downloads/Paperless"
+          elif [[ ! -e "${HOME}/Downloads/Paperless" ]]; then
+            ln -s /mnt/storage/Paperless/consume "${HOME}/Downloads/Paperless"
           else
-            echo "[ERROR] Exists and is not a symlink: $HOME/Downloads/Paperless"
+            echo "[ERROR] Exists and is not a symlink: ${HOME}/Downloads/Paperless"
           fi
         fi
       quiet: true
