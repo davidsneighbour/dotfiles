@@ -11,8 +11,8 @@ const DEFAULTS = {
   headless: true,
   navPath: "Email|Manage Mailboxes",
   rowSelector: ".newui-table-row",
-  mailboxSelector: ".col-7",
-  usageSelector: ".col-2",
+  mailboxSelector: "td:nth-child(2)",
+  usageSelector: "td:nth-child(3)",
   dataSortUnit: "KB",
   timeoutMs: 30_000,
 };
