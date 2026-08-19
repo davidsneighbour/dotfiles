@@ -1,5 +1,22 @@
 # Changelog
 
+## [3004.6.1](https://github.com/davidsneighbour/dotfiles/compare/v3004.6.0...v3004.6.1) (2026-08-19)
+
+### Build
+
+* **deps-dev:** bump npm-check-updates from 23.0.0 to 23.0.2 ([#561](https://github.com/davidsneighbour/dotfiles/issues/561)) ([8d44650](https://github.com/davidsneighbour/dotfiles/commit/8d446506383f47f0cef621a591a7b168d24c0296))
+* **deps:** bump gotenberg/gotenberg from 8.34 to 8.35 in /containers/hal2025/paperless ([#557](https://github.com/davidsneighbour/dotfiles/issues/557)) ([a50077a](https://github.com/davidsneighbour/dotfiles/commit/a50077ae192b9e69bb6b51b849a071960ecf03bd))
+* **deps:** bump open-webui/open-webui from 0.10.2 to v0.11.0 in /containers/locutus/openwebui ([#562](https://github.com/davidsneighbour/dotfiles/issues/562)) ([d6abfcd](https://github.com/davidsneighbour/dotfiles/commit/d6abfcdfaba8f8902126b5b2d25adaa68cc38852))
+* **deps:** bump stirlingtools/stirling-pdf from 2.14.2-fat to 2.14.3-fat in /containers/locutus/stirling ([#563](https://github.com/davidsneighbour/dotfiles/issues/563)) ([ee594af](https://github.com/davidsneighbour/dotfiles/commit/ee594af4a026797b2db515e4de198cee2799547f))
+* **deps:** update dependencies ([9a70995](https://github.com/davidsneighbour/dotfiles/commit/9a7099526d77e454c24bbc99e115ca608a3d5e6d))
+* **deps:** update dependencies ([3c9d3f6](https://github.com/davidsneighbour/dotfiles/commit/3c9d3f6e6987bfe2592820211d4cf2edae6694a1))
+* **deps:** update dependencies ([76d1ac4](https://github.com/davidsneighbour/dotfiles/commit/76d1ac4b6bcdf81f35bc5b28864e0bf48b6e37bb))
+* **deps:** update dependencies ([6725320](https://github.com/davidsneighbour/dotfiles/commit/672532037a39d4c5d07a22a4d263979fe84e6bdf))
+
+### Chore
+
+* **deps:** pin dependencies ([#564](https://github.com/davidsneighbour/dotfiles/issues/564)) ([4113604](https://github.com/davidsneighbour/dotfiles/commit/4113604d2acdb77c12a0c0d22ea21faf66739a95))
+
 ## [3004.6.0](https://github.com/davidsneighbour/dotfiles/compare/v3004.5.2...v3004.6.0) (2026-08-19)
 
 ### Feat
