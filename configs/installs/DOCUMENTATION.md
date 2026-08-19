@@ -1,4 +1,4 @@
-# bashrc/installs documentation
+# Bashrc/installs documentation
 
 This folder contains installation snippets for a Linux Mint/Ubuntu-style workstation. Most files are direct provisioning scripts, not general-purpose CLIs, and many require `sudo` and network access.
 
@@ -16,13 +16,19 @@ Requirements: Bash, network access, and Homebrew's documented prerequisites.
 
 ## `20-cargo.sh`
 
-Installs Rust/Cargo according to the commands in the file.
+Installs Rust/Cargo by downloading `https://sh.rustup.rs` to a temp file and
+running it explicitly via `bashrc/helpers/fetch-and-run.sh`, instead of
+piping curl directly into a shell. Rustup does not publish a checksum for
+this installer, so no `--sha256` is passed.
 
 Requirements: Bash, network access, and the Rust installer prerequisites.
 
 ## `50-atuin.sh`
 
-Installs Atuin via `curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh`.
+Installs Atuin by downloading `https://setup.atuin.sh` to a temp file and
+running it explicitly via `bashrc/helpers/fetch-and-run.sh`, instead of
+piping curl directly into a shell. Atuin does not publish a checksum for
+this installer, so no `--sha256` is passed.
 
 Requirements: `curl`, `sh`, TLS/network access.
 
@@ -56,7 +62,10 @@ Requirements: Bash, `curl`, `dpkg` for installation, optional `jq` for release J
 
 ## `50-ollama.sh`
 
-Installs Ollama according to the commands in the file.
+Installs Ollama by downloading `https://ollama.com/install.sh` to a temp
+file and running it explicitly via `bashrc/helpers/fetch-and-run.sh`,
+instead of piping curl directly into a shell. Ollama does not publish a
+checksum for this installer, so no `--sha256` is passed.
 
 Requirements: Bash, network access, and Ollama installer prerequisites.
 

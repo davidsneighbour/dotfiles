@@ -1,3 +1,4 @@
 #!/bin/bash
+# shellcheck shell=bash
 
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+"${HOME}/.dotfiles/bashrc/helpers/fetch-and-run.sh" --url https://sh.rustup.rs --verbose

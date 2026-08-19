@@ -1,3 +1,4 @@
 #!/bin/bash
+# shellcheck shell=bash
 
-curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh
+"${HOME}/.dotfiles/bashrc/helpers/fetch-and-run.sh" --url https://setup.atuin.sh --verbose
