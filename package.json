@@ -119,41 +119,6 @@
       "custom"
     ]
   },
-  "overrides": {
-    "@dnbhq/markdownlint-config": {
-      "markdownlint": "0.41.1",
-      "markdownlint-cli2": "0.23.2",
-      "markdownlint-rule-relative-links": "5.1.1"
-    },
-    "@dnbhq/sharp-lint-staged": {
-      "sharp": "0.35.3",
-      "svgo": "4.0.2"
-    },
-    "@secretlint/secretlint-rule-no-k8s-kind-secret": {
-      "js-yaml": "4.3.1"
-    },
-    "@textlint/linter-formatter": {
-      "js-yaml": "4.3.1"
-    },
-    "@yarnpkg/parsers": {
-      "js-yaml": "3.15.1"
-    },
-    "body-parser": "2.3.0",
-    "cosmiconfig": {
-      "js-yaml": "4.3.1"
-    },
-    "markdownlint-cli2": {
-      ".": "0.23.2",
-      "js-yaml": "5.3.0"
-    },
-    "markdownlint-rule-title-case-style": {
-      ".": "0.4.3",
-      "markdownlint": "0.41.1"
-    },
-    "rc-config-loader": {
-      "js-yaml": "4.3.1"
-    }
-  },
   "simple-git-hooks": {
     "pre-commit": "npm run lint:hook:commit:loud"
   },
