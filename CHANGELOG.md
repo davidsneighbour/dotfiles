@@ -1,5 +1,54 @@
 # Changelog
 
+## [3004.6.0](https://github.com/davidsneighbour/dotfiles/compare/v3004.5.2...v3004.6.0) (2026-08-19)
+
+### Feat
+
+* add skillz helper to install dnb skills ([4386e3e](https://github.com/davidsneighbour/dotfiles/commit/4386e3e72d3d91d5215721eca5c8a3578eeadd95))
+* **docker:** add ntfy container ([822c25a](https://github.com/davidsneighbour/dotfiles/commit/822c25a558c05e43689c4681e7e18a056f7aefe5))
+* **msgvault:** load bash completions when available ([3e60048](https://github.com/davidsneighbour/dotfiles/commit/3e600486d294f63dc5d535be236fc3da58a66ee3)), closes [#493](https://github.com/davidsneighbour/dotfiles/issues/493)
+
+### Fix
+
+* **containers:** update paths to protected submodule ([651d4cf](https://github.com/davidsneighbour/dotfiles/commit/651d4cf482d09469aeaad9c1bf7cf813fb376e7d))
+* **logging:** keep runtime locks out of logs ([4d0d641](https://github.com/davidsneighbour/dotfiles/commit/4d0d641759c560906c8adc9990419166dfafa649)), closes [#524](https://github.com/davidsneighbour/dotfiles/issues/524)
+* proper sections to extract for mailbox monitor ([99e968b](https://github.com/davidsneighbour/dotfiles/commit/99e968b0c30a13a40ecd09297558b0f3c4f5d4fe))
+
+### Refactor
+
+* **docker:** parse backup config with smol-toml ([d9fe5d6](https://github.com/davidsneighbour/dotfiles/commit/d9fe5d6c1c402be5c75d758ff4871d5d5441b680)), closes [#516](https://github.com/davidsneighbour/dotfiles/issues/516)
+* formatting changes ([85fa6b8](https://github.com/davidsneighbour/dotfiles/commit/85fa6b849011476299ef31d13d3931ca6ebc207d))
+* **repo:** move protected submodule to root ([2f93039](https://github.com/davidsneighbour/dotfiles/commit/2f9303906380e81f268fabf40ef0e65b3513a2e4))
+
+### Test
+
+* **desktop:** add helper health check ([5bc2f53](https://github.com/davidsneighbour/dotfiles/commit/5bc2f53c1926865c2497c4fe77c0b2bfc48b3893)), closes [#522](https://github.com/davidsneighbour/dotfiles/issues/522)
+
+### Build
+
+* **deps-dev:** bump @davidsneighbour/nanny from 0.4.1 to 0.5.0 ([#545](https://github.com/davidsneighbour/dotfiles/issues/545)) ([e7e4642](https://github.com/davidsneighbour/dotfiles/commit/e7e4642f69339e03b6834d7edcb48ad126c5f862))
+* **deps-dev:** bump @dnbhq/markdownlint-config from 0.2.8 to 0.2.11 ([#551](https://github.com/davidsneighbour/dotfiles/issues/551)) ([476aaa4](https://github.com/davidsneighbour/dotfiles/commit/476aaa48f2b56b0bf8307f61b9e4962b72a4df0e))
+* **deps-dev:** bump lint-staged from 17.0.8 to 17.3.0 ([#543](https://github.com/davidsneighbour/dotfiles/issues/543)) ([c2ec3c3](https://github.com/davidsneighbour/dotfiles/commit/c2ec3c33f88cba9d623dc0a946d695bb730d4620))
+* **deps-dev:** bump npm-check-updates from 22.2.9 to 23.0.0 ([#550](https://github.com/davidsneighbour/dotfiles/issues/550)) ([b1bce1f](https://github.com/davidsneighbour/dotfiles/commit/b1bce1f1420f7ce4124016c9c8b4b5c425df051b))
+* **deps:** bump actions/checkout from 7.0.0 to 7.0.1 ([#537](https://github.com/davidsneighbour/dotfiles/issues/537)) ([97fe511](https://github.com/davidsneighbour/dotfiles/commit/97fe5111a1c270d679571daadeb2c6b834eea34e))
+* **deps:** bump actions/setup-node from 6.4.0 to 7.0.0 ([#533](https://github.com/davidsneighbour/dotfiles/issues/533)) ([0345305](https://github.com/davidsneighbour/dotfiles/commit/03453052ea398749b30c7d9bdde391a9e888bbc9))
+* **deps:** bump gotenberg/gotenberg from 8.20 to 8.34 in /containers/hal2025/paperless ([#532](https://github.com/davidsneighbour/dotfiles/issues/532)) ([7eeae3e](https://github.com/davidsneighbour/dotfiles/commit/7eeae3ec8cebdb76ed7117d5bdddd6e71ca5bf80))
+* **deps:** bump postgres from 16 to 18 in /containers/locutus/twenty ([#554](https://github.com/davidsneighbour/dotfiles/issues/554)) ([d9e4b56](https://github.com/davidsneighbour/dotfiles/commit/d9e4b568b628856500b16c9317b8dbf6274e207b))
+* **deps:** bump the npm_and_yarn group across 1 directory with 2 updates ([#556](https://github.com/davidsneighbour/dotfiles/issues/556)) ([45420d5](https://github.com/davidsneighbour/dotfiles/commit/45420d53efc062f4bcc8140ffa8bb542263a06af))
+* **deps:** bump the npm_and_yarn group across 1 directory with 4 updates ([#555](https://github.com/davidsneighbour/dotfiles/issues/555)) ([7adbab3](https://github.com/davidsneighbour/dotfiles/commit/7adbab32e9231761afce999bcf4108683127d3ff))
+* **deps:** bump valkey/valkey from 8.1 to 9.1 in /containers/locutus/penpot ([#552](https://github.com/davidsneighbour/dotfiles/issues/552)) ([3644dcf](https://github.com/davidsneighbour/dotfiles/commit/3644dcf5614b6b538c7ab6532c354d0cfc7df900))
+* **deps:** bump zseven-w/openpencil-web from v0.8.1 to v0.8.2 in /containers/locutus/openpencil ([#549](https://github.com/davidsneighbour/dotfiles/issues/549)) ([61eff18](https://github.com/davidsneighbour/dotfiles/commit/61eff184a74ed0767e8634b6311ca580b801cb43))
+* **deps:** update dependencies ([b257d38](https://github.com/davidsneighbour/dotfiles/commit/b257d383494074ebd3daadfac78826396480112e))
+* **vscode:** update workspace configuration ([86da70e](https://github.com/davidsneighbour/dotfiles/commit/86da70e719a9260fc2f01b5a1c0b190f5515730d))
+
+### Chore
+
+* **deps:** update dependency playwright to v1.62.1 ([#536](https://github.com/davidsneighbour/dotfiles/issues/536)) ([5ea8ed3](https://github.com/davidsneighbour/dotfiles/commit/5ea8ed390cb672f71f501ee078cdd8299a384cf5))
+* **git:** update protected submodule ([8698f3f](https://github.com/davidsneighbour/dotfiles/commit/8698f3f9e5d2e2154996f645f82f54999bbeb653))
+* **git:** update submodule ([b148132](https://github.com/davidsneighbour/dotfiles/commit/b148132d8b0feb3d68d037d2ea6a58e790fef3fa))
+* **logging:** lint date-bearing log filenames ([4392bc5](https://github.com/davidsneighbour/dotfiles/commit/4392bc5111c8b7df7ae14ccadd6526a489faaab5)), closes [#530](https://github.com/davidsneighbour/dotfiles/issues/530)
+* update skills ([c6359b6](https://github.com/davidsneighbour/dotfiles/commit/c6359b6319f89ee08c5e0ec1f1602febdce547a1))
+
 ## [3004.5.2](https://github.com/davidsneighbour/dotfiles/compare/v3004.5.1...v3004.5.2) (2026-08-07)
 
 ### Chore
