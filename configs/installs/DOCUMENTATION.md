@@ -1,16 +1,20 @@
 # Bashrc/installs documentation
 
-This folder contains installation snippets for a Linux Mint/Ubuntu-style workstation. Most files are direct provisioning scripts, not general-purpose CLIs, and many require `sudo` and network access.
+This folder contains installation scripts for a Linux Mint/Ubuntu-style workstation, run directly (e.g. `bash configs/installs/10-system.sh`). Most support `--help`, `--verbose` (traces each command via `set -x`), and `--dry-run` (prints the steps it would take without changing anything); scripts that don't are noted below. Many require `sudo` and network access.
 
 ## `10-system.sh`
 
-Adds LibreOffice, Papirus, and OpenShot PPAs, then runs `apt update`, `apt upgrade`, `apt dist-upgrade`, `apt autoremove`, and `apt clean`.
+Adds LibreOffice, Papirus, and OpenShot PPAs, then runs `apt update`, `apt upgrade`, `apt dist-upgrade`, `apt autoremove`, `apt clean`, installs the base workstation package set, installs the `vale` snap, and copies the `git-extras` Bash completion into this repo.
+
+Options: `--verbose`, `--dry-run`, `--help`.
 
 Requirements: Ubuntu-compatible `apt`, `add-apt-repository`, `sudo`, and network access.
 
 ## `20-brew.sh`
 
-Installs or bootstraps Homebrew/Linuxbrew according to the commands in the file.
+Installs Homebrew/Linuxbrew non-interactively, then installs `dotbot` (required before running `dotfiles`).
+
+Options: `--verbose`, `--dry-run`, `--help`.
 
 Requirements: Bash, network access, and Homebrew's documented prerequisites.
 
@@ -21,6 +25,8 @@ running it explicitly via `bashrc/helpers/fetch-and-run.sh`, instead of
 piping curl directly into a shell. Rustup does not publish a checksum for
 this installer, so no `--sha256` is passed.
 
+Options: forwards all arguments to `fetch-and-run.sh` (`--verbose`, `--dry-run`, `--help`, `--sha256`, `--interpreter`).
+
 Requirements: Bash, network access, and the Rust installer prerequisites.
 
 ## `50-atuin.sh`
@@ -30,19 +36,25 @@ running it explicitly via `bashrc/helpers/fetch-and-run.sh`, instead of
 piping curl directly into a shell. Atuin does not publish a checksum for
 this installer, so no `--sha256` is passed.
 
+Options: forwards all arguments to `fetch-and-run.sh` (`--verbose`, `--dry-run`, `--help`, `--sha256`, `--interpreter`).
+
 Requirements: `curl`, `sh`, TLS/network access.
 
 ## `50-chrome.sh`
 
-Installs Google Chrome according to the apt repository/package commands in the file.
+Downloads the latest Google Chrome stable `.deb` to a temp file and installs it with `dpkg`.
 
-Requirements: `wget`/`curl` or apt key tooling as implemented, `apt`, `sudo`, and network access.
+Options: `--verbose`, `--dry-run`, `--help`.
+
+Requirements: `wget`, `dpkg`, `apt`, `sudo`, and network access.
 
 ## `50-github.sh`
 
 Configures the GitHub CLI apt repository and installs `gh`.
 
-Requirements: `curl`, `gpg`, `dpkg`, `apt`, `sudo`, and network access.
+Options: `--verbose`, `--dry-run`, `--help`.
+
+Requirements: `wget`, `gpg`, `dpkg`, `apt`, `sudo`, and network access.
 
 ## `50-obsidian.sh`
 
@@ -67,34 +79,46 @@ file and running it explicitly via `bashrc/helpers/fetch-and-run.sh`,
 instead of piping curl directly into a shell. Ollama does not publish a
 checksum for this installer, so no `--sha256` is passed.
 
+Options: forwards all arguments to `fetch-and-run.sh` (`--verbose`, `--dry-run`, `--help`, `--sha256`, `--interpreter`).
+
 Requirements: Bash, network access, and Ollama installer prerequisites.
 
 ## `50-signal.sh`
 
 Adds the Signal Desktop apt key/repository and installs Signal Desktop.
 
+Options: `--verbose`, `--dry-run`, `--help`.
+
 Requirements: `wget`, `gpg`, `apt`, `sudo`, and network access.
 
 ## `50-sublime.sh`
 
-Installs Sublime Text according to the apt repository/package commands in the file.
+Adds the Sublime HQ apt repository and installs Sublime Text and Sublime Merge.
 
-Requirements: apt repository tooling, `apt`, `sudo`, and network access.
+Options: `--verbose`, `--dry-run`, `--help`.
+
+Requirements: `wget`, `apt-get`, `sudo`, and network access.
 
 ## `50.gum.sh`
 
 Adds Charm's apt repository key and installs `gum`.
 
+Options: `--verbose`, `--dry-run`, `--help`.
+
 Requirements: `curl`, `gpg`, `apt`, `sudo`, and network access.
 
 ## `90-brew-packages.sh`
 
-Installs Homebrew packages listed in the script.
+Taps `dart-lang/dart` and installs the shared Homebrew CLI tool set.
+
+Options: `--verbose`, `--dry-run`, `--help`.
 
 Requirements: Homebrew/Linuxbrew (`brew`) and network access.
 
 ## `90-cargo-packages.sh`
 
-Installs Cargo packages listed in the script.
+Installs eww's apt build dependencies, clones (if missing) and builds eww from source with cargo, and installs the release binary to `~/.local/bin`.
 
-Requirements: Rust/Cargo (`cargo`) and network access.
+Options: `--verbose`, `--dry-run`, `--help`.
+
+Requirements: `apt`, `sudo`, `git`, Rust/Cargo (`cargo`), and network access.

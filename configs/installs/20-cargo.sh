@@ -1,4 +1,4 @@
 #!/bin/bash
 # shellcheck shell=bash
 
-"${HOME}/.dotfiles/bashrc/helpers/fetch-and-run.sh" --url https://sh.rustup.rs --verbose
+"${HOME}/.dotfiles/bashrc/helpers/fetch-and-run.sh" --url https://sh.rustup.rs "$@"
