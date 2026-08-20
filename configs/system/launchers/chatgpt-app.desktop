@@ -1,9 +1,10 @@
+#!/usr/bin/env xdg-open
 [Desktop Entry]
 Version=1.1
 Type=Application
-Name=ChatGPT
+Name=ChatGPT (app)
 Icon=chatgpt
 Exec=/usr/bin/chatgpt
 Path=/home/patrick
-Actions=
+StartupWMClass=chrome_chatgpt_app
 Categories=Development;X-XFCE;X-Xfce-Toplevel;

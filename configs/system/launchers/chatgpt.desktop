@@ -4,6 +4,9 @@ Version=1.0
 Terminal=false
 Type=Application
 Name=ChatGPT
-Exec=/opt/google/chrome/google-chrome --profile-directory=Default --app=https://chatgpt.com/
+# user-data-dir to isolate the chrome profile
+# app to load a specific website inside the minimal app window
+Exec=/opt/google/chrome/google-chrome --user-data-dir="$HOME/.local/share/chrome-apps/chatgpt-chrome" --app="https://chatgpt.com/"
 Icon=chatgpt
 StartupWMClass=chrome_chatgpt
+Categories=Development;X-XFCE;X-Xfce-Toplevel;
