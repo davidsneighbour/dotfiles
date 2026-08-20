@@ -1,0 +1,3 @@
+Codex usage status
+5-hour limit: 23% used
+weekly limit: 64% used

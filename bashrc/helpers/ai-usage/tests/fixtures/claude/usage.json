@@ -1,0 +1,26 @@
+{
+  "limits": [
+    {
+      "id": "5-hour",
+      "label": "5-hour",
+      "used_percent": 60,
+      "remaining_percent": 40,
+      "window": {
+        "type": "rolling",
+        "started_at": "2026-08-20T08:00:00.000Z",
+        "resets_at": "2026-08-20T13:00:00.000Z"
+      }
+    },
+    {
+      "id": "weekly",
+      "label": "weekly",
+      "used_percent": 41,
+      "remaining_percent": 59,
+      "window": {
+        "type": "calendar",
+        "started_at": "2026-08-17T00:00:00.000Z",
+        "resets_at": "2026-08-24T00:00:00.000Z"
+      }
+    }
+  ]
+}

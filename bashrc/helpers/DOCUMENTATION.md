@@ -14,6 +14,7 @@ Bash helpers are standalone helper commands unless noted otherwise. Several Type
 * [`_actions/`](./_actions/DOCUMENTATION.md)
 * [`_lib/`](./_lib/DOCUMENTATION.md)
 * [`api/`](./api/DOCUMENTATION.md)
+* [`ai-usage/`](./ai-usage/DOCUMENTATION.md)
 * [`bash/`](./bash/DOCUMENTATION.md)
 * [`daily-reports/`](./daily-reports/DOCUMENTATION.md)
 * [`docker/`](./docker/DOCUMENTATION.md)
