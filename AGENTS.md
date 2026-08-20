@@ -49,6 +49,10 @@ Common top-level areas (names may evolve):
 * `.github/`
   Repository-specific configuration (including optional `dnb.toml` files)
 
+### Related packages
+
+Packages referred to as `@davidsneighbour/PACKAGENAME` live at `https://github.com/davidsneighbour/PACKAGENAME`. If a referenced package is not found there, ask for a clear location for the latest version before depending on it.
+
 ## Environment assumptions
 
 All scripts and tooling assume:
@@ -155,6 +159,11 @@ When Node.js is used:
 * Errors must be logged
 * Failures must be explicit
 
+### Package manager
+
+* Use static versions in `package.json`
+* Use npm as the package manager; `npm install` must work without issues
+
 ## Docker and containers
 
 Containers are managed via **Docker Compose**.
@@ -190,6 +199,18 @@ Rules:
 * Documentation must not describe behaviour that scripts do not enforce
 * Avoid duplication
 * Prefer short explanations over exhaustive prose
+* If a folder contains a `README.md`, read and follow it before working in that folder
+* If a folder contains an `INDEX.md`, read it and follow the structure it lays out
+* Update `README.md` and `INDEX.md` files as you work on their counterparts
+* Add documentation for any change you make in the codebase
+* Read and apply any instructions under `.github/instructions/`, scoped by each file's `applyTo` field
+
+### Quick instructions
+
+These shorthand instructions carry a fixed meaning when a user gives them:
+
+* **"Update your references"** — fetch the currently used repository and update to the latest HEAD of the main branch; update code to reflect any upstream changes; resolve merge conflicts if any arise.
+* **"Document"** — add documentation to the `README.md` in the folder you worked on, or create a new documentation file and link it from `README.md`; explain what the code does, how to use it, and anything else useful to someone new to the codebase.
 
 ## AI agent rules (mandatory)
 
@@ -205,6 +226,12 @@ Any AI agent operating on this repository **MUST**:
 AI-generated code is treated as production code.
 
 ## Change management
+
+### Commits and branching
+
+* Commit directly to `main`; create a branch only when explicitly asked to do so
+* Use Conventional Commits messages
+* Use `.release-it.ts` for the list of available commit scopes
 
 ### Submodules
 

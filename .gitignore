@@ -316,3 +316,7 @@ dist
 # Sonarlint plugin
 
 # End of https://www.toptal.com/developers/gitignore/api/node,intellij+all,phpstorm+all,macos
+
+# Local project-management working files
+/PROJECT.md
+/TODO.md
