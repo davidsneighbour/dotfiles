@@ -189,6 +189,15 @@ Cronjobs:
 
 Cron scripts live alongside the functionality they support, not in a central cron folder.
 
+## Secrets and tokens
+
+* Real tokens, API keys, and other credentials belong only in real, gitignored `.env` files (or in the `protected/` submodule) — never in `.env.template`, `.env.example`, or any other file whose name or purpose marks it as a template
+* When a token-shaped value must appear in a template, example, or documentation, anonymise it (e.g. `gpd_######`) instead of using a real-looking value
+* Every secret-consuming script must load its value from a documented `.env`/config source, never a hardcoded literal
+* Missing secrets must fail safely and quietly (log a short skip message and continue or exit non-fatally), not spam errors or crash unrelated functionality
+* Never log secret values, even at verbose/debug log levels
+* `secretlint` (wired into `lint-staged` on every tracked file) is the enforcement backstop for this policy — do not bypass it or narrow `.secretlintignore` to work around a real finding
+
 ## Documentation rules
 
 Documentation is **secondary**, not authoritative.
