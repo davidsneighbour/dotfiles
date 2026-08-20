@@ -25,4 +25,9 @@ actionable output.
   `check:biome:fix` — mutating variants; `check` only reads, never writes.
 * `lint:hook:commit` / `lint:hook:commit:loud` — scoped to the staged file
   set for pre-commit hooks, not the whole repository.
+* `lint:hook:commit-msg` — spell-checks a commit message file with `cspell`
+  (`.vscode/dictionary.txt` is the project dictionary). Wired as the
+  `commit-msg` git hook, so it runs automatically on every `git commit`; run
+  it manually with `npm run lint:hook:commit-msg -- <path-to-message-file>`,
+  e.g. `git log -1 --format=%B > /tmp/msg.txt && npm run lint:hook:commit-msg -- /tmp/msg.txt`.
 * `release*` — publishing/version-bump commands; never part of a health check.

@@ -67,6 +67,7 @@
     "lint:config": "yamllint -c .yamllint.yml configs bashrc",
     "lint:hook:commit": "lint-staged --quiet --config lint-staged.config.ts",
     "lint:hook:commit:loud": "lint-staged --debug --verbose --config lint-staged.config.ts",
+    "lint:hook:commit-msg": "node --experimental-strip-types scripts/lint-commit-message.ts",
     "lint:log-filenames": "node --experimental-strip-types scripts/lint-log-filenames.ts",
     "lint:markdown": "markdownlint-cli2 --config ./node_modules/@dnbhq/markdownlint-config/.markdownlint-cli2.jsonc \"**/*.{md,mdx}\" \"#CHANGELOG.md\" \"#configs/fonts\" \"#configs/theme/Dracula\" \"#containers\" \"#logs\" \"#protected\"",
     "lint:markdown:fix": "markdownlint-cli2 --config ./node_modules/@dnbhq/markdownlint-config/.markdownlint-cli2.jsonc --fix \"**/*.{md,mdx}\" \"#CHANGELOG.md\" \"#configs/fonts\" \"#configs/theme/Dracula\" \"#containers\" \"#logs\" \"#protected\"",
@@ -120,7 +121,8 @@
     ]
   },
   "simple-git-hooks": {
-    "pre-commit": "npm run lint:hook:commit:loud"
+    "pre-commit": "npm run lint:hook:commit:loud",
+    "commit-msg": "npm run lint:hook:commit-msg -- \"$1\""
   },
   "type": "module",
   "allowScripts": {
