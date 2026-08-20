@@ -19,6 +19,7 @@ dotbot
 dreamhost
 drun
 erasedups
+errexit
 esac
 Espanso
 exportfs
@@ -92,6 +93,7 @@ secp
 secretapikey
 separatorcolor
 shellcheck
+shellenv
 shfmt
 skillz
 smol

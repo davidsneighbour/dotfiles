@@ -1,4 +1,4 @@
-# bashrc/partials documentation
+# `bashrc/partials` documentation
 
 `bashrc/partials` contains shell definitions that are sourced by `bashrc/bashrc` during interactive Bash startup. These files intentionally modify the current shell by defining aliases, functions, completions, exports, and prompt behaviour.
 
@@ -10,7 +10,7 @@ The implementation is authoritative. This document records the files that are lo
 
 Sources every readable file in `_aliases/` through `dnb_auto_source`, then defines general aliases.
 
-Documented in more detail: [`_aliases/DOCUMENTATION.md`](./_aliases/DOCUMENTATION.md).
+Documented in more detail: [`DOCUMENTATION_aliases.md`](./DOCUMENTATION_aliases.md).
 
 Notable aliases and requirements:
 
@@ -50,7 +50,7 @@ Exports:
 
 Sources every readable file in `_functions/` through `dnb_auto_source`.
 
-Documented in more detail: [`_functions/DOCUMENTATION.md`](./_functions/DOCUMENTATION.md).
+Documented in more detail: [`DOCUMENTATION_functions.md`](./DOCUMENTATION_functions.md).
 
 ### `exports`
 
@@ -67,7 +67,7 @@ Exports interactive environment defaults:
 
 Loads completion definitions from `_completions/`, bash-completion system files, Google Cloud SDK completion files, autojump completion, and selected static `complete` rules.
 
-Documented in more detail: [`_completions/DOCUMENTATION.md`](./_completions/DOCUMENTATION.md).
+Documented in more detail: [`DOCUMENTATION_completions.md`](./DOCUMENTATION_completions.md).
 
 ### `prompt`
 
@@ -77,4 +77,4 @@ Requirements: Bash, `tput`, `dircolors`, and GNU colour-capable coreutils/grep f
 
 ## Program initialisation partials
 
-Program startup snippets live in `_programs/` and are documented in [`_programs/DOCUMENTATION.md`](./_programs/DOCUMENTATION.md). They are not explicitly sourced by the current `bashrc/bashrc` loader because the loader sources named files in `partials/`, not arbitrary files in `_programs/`.
+Program startup snippets live in `_programs/` and are documented in [`DOCUMENTATION_programs.md`](./DOCUMENTATION_programs.md). `bashrc/bashrc` sources every file in `_programs/` near the end of interactive shell startup.

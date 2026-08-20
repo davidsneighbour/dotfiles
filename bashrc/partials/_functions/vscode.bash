@@ -1,11 +1,7 @@
 #!/bin/bash
 # shellcheck shell=bash
 
-# SC2250: enforce errexit and pipefail
-
 vscode_add_mcp() {
-  set -eo pipefail
-
   local key=""
   local value=""
   local config_dir=".vscode"

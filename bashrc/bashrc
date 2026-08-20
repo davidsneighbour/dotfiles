@@ -204,7 +204,7 @@ WM_TILE_POLYBAR_TOP_HEIGHT=40
 WM_TILE_POLYBAR_BOTTOM_HEIGHT=40
 export WM_TILE_POLYBAR_TOP_HEIGHT WM_TILE_POLYBAR_BOTTOM_HEIGHT
 
-for FILE in "${BASHRC_PATH}"/partials/programs/*; do
+for FILE in "${BASHRC_PATH}"/partials/_programs/*; do
   # this routine ranges through a folder of filenames that we don't explicitly know (@davidsneighbour)
   # shellcheck source=/dev/null
   [[ -f "${FILE}" && -r "${FILE}" ]] && source "${FILE}"

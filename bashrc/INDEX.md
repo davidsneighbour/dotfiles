@@ -753,7 +753,6 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`partials/_functions/vscode`](./partials/_functions/vscode.bash#L1) | file | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L191) |
 | [`partials/_programs/100-brew.sh`](./partials/_programs/100-brew.sh#L1) | file | [./partials/DOCUMENTATION_programs.md](./partials/DOCUMENTATION_programs.md#L7) |
 | [`partials/_programs/110-nvm.sh`](./partials/_programs/110-nvm.sh#L1) | file | [./partials/DOCUMENTATION_programs.md](./partials/DOCUMENTATION_programs.md#L13) |
-| [`partials/_programs/900-gpg-on-console.sh`](./partials/_programs/900-gpg-on-console.sh#L1) | file | [./partials/DOCUMENTATION_programs.md](./partials/DOCUMENTATION_programs.md#L19) |
 | [`partials/_programs/DOCUMENTATION.md`](./partials/_programs/DOCUMENTATION.md#L1) | file | [./partials/DOCUMENTATION_programs.md](./partials/DOCUMENTATION_programs.md#L1) |
 | [`partials/aliases`](./partials/aliases#L1) | file | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L9) |
 | [`partials/completions`](./partials/completions#L1) | file | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L66) |
