@@ -26,3 +26,15 @@ keep_hours = 168
 folderslug = "msgvault"
 action = "compress"
 keep_hours = 1
+
+# Downloaded icon theme, gitignored and not currently linked from
+# configs/dotbot (unlike DNB and DNB-Bibata, which are). Left protected
+# until confirmed disposable; run with --allow-protected to actually clean it.
+[[location]]
+name = "theme-dracula"
+root = "~/.dotfiles/configs/theme/Dracula"
+pattern = "*"
+action = "delete"
+keep_hours = 8760
+protected = true
+max_depth = 8

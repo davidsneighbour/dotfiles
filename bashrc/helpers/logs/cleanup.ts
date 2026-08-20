@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-import { spawn } from 'node:child_process';
-import { constants as fsConstants } from 'node:fs';
+import { spawn } from "node:child_process";
+import { constants as fsConstants } from "node:fs";
 import {
   access,
   appendFile,
@@ -14,14 +14,14 @@ import {
   rm,
   stat,
   writeFile,
-} from 'node:fs/promises';
-import os from 'node:os';
-import path from 'node:path';
-import process from 'node:process';
-import { pathToFileURL } from 'node:url';
-import { parse as parseToml } from 'smol-toml';
+} from "node:fs/promises";
+import os from "node:os";
+import path from "node:path";
+import process from "node:process";
+import { pathToFileURL } from "node:url";
+import { parse as parseToml } from "smol-toml";
 
-type CleanupAction = 'delete' | 'compress';
+type CleanupAction = "delete" | "compress";
 
 interface CleanupPolicy {
   action: CleanupAction;
@@ -34,9 +34,20 @@ interface CleanupRule {
   keep_hours: number;
 }
 
+interface LocationConfig {
+  name: string;
+  root: string;
+  pattern: string;
+  action: CleanupAction;
+  keep_hours: number;
+  protected: boolean;
+  max_depth: number;
+}
+
 interface CleanupConfig {
   default: CleanupPolicy;
   rule?: CleanupRule[];
+  location?: LocationConfig[];
 }
 
 interface CliOptions {
@@ -45,6 +56,7 @@ interface CliOptions {
   tempRoot: string;
   verbose: boolean;
   dryRun: boolean;
+  allowProtected: boolean;
   help: boolean;
 }
 
@@ -65,32 +77,35 @@ interface RunStats {
   archivesUpdated: number;
 }
 
-const SCRIPT_NAME = path.basename(process.argv[1] ?? 'cleanup-logs.ts');
+const SCRIPT_NAME = path.basename(process.argv[1] ?? "cleanup-logs.ts");
 const DEFAULT_CONFIG_PATH = path.join(
   os.homedir(),
-  '.config',
-  'log-cleanup',
-  'config.toml',
+  ".config",
+  "log-cleanup",
+  "config.toml",
 );
-const DEFAULT_LOG_ROOT = path.join(os.homedir(), '.logs');
-const DEFAULT_TEMP_ROOT = path.join(os.homedir(), '.temp', 'logcleanup');
+const DEFAULT_LOG_ROOT = path.join(os.homedir(), ".logs");
+const DEFAULT_TEMP_ROOT = path.join(os.homedir(), ".temp", "logcleanup");
 const HOUR_IN_MS = 60 * 60 * 1000;
 
 function printHelp(): void {
-  console.log(`
+  console.log(
+    `
 Usage:
-  ${SCRIPT_NAME} [--config <path>] [--log-root <path>] [--temp-root <path>] [--verbose] [--dry-run] [--help]
+  ${SCRIPT_NAME} [--config <path>] [--log-root <path>] [--temp-root <path>] [--verbose] [--dry-run] [--allow-protected] [--help]
 
 Options:
   --config <path>    Path to TOML configuration file.
                      Default: ${DEFAULT_CONFIG_PATH}
-  --log-root <path>  Root log directory.
+  --log-root <path>  Root log directory (matches *.log files).
                      Default: ${DEFAULT_LOG_ROOT}
   --temp-root <path> Temporary working directory.
                      Default: ${DEFAULT_TEMP_ROOT}
   --verbose          Enable verbose output.
                      Also enabled if DNB_VERBOSE=1|true|yes|on
   --dry-run          Show what would happen without changing files.
+  --allow-protected  Also act on [[location]] entries marked protected = true.
+                     Without this flag, protected locations are only reported.
   --help             Show this help.
 
 Config format:
@@ -107,7 +122,29 @@ Config format:
   folderslug = "services/nginx"
   action = "delete"
   keep_hours = 72
-`.trim());
+
+  # Additional cleanable locations beyond --log-root. Each location scans its
+  # own root for files matching a glob-style pattern ('*' and '?' wildcards).
+  [[location]]
+  name = "browser-cache"
+  root = "~/.cache/some-app"
+  pattern = "*"
+  action = "delete"
+  keep_hours = 720
+  protected = false
+
+  # Vendored/downloaded payloads should stay protected until you have
+  # confirmed they are safe to remove; protected locations are always
+  # reported but only acted on with --allow-protected.
+  [[location]]
+  name = "downloaded-theme"
+  root = "~/.dotfiles/configs/theme/SomeTheme"
+  pattern = "*"
+  action = "delete"
+  keep_hours = 8760
+  protected = true
+`.trim(),
+  );
 }
 
 function consoleVerbose(message: string, verbose: boolean): void {
@@ -121,7 +158,7 @@ function isVerboseEnv(value: string | undefined): boolean {
     return false;
   }
 
-  return ['1', 'true', 'yes', 'on'].includes(value.toLowerCase());
+  return ["1", "true", "yes", "on"].includes(value.toLowerCase());
 }
 
 function parseArgs(argv: string[]): CliOptions {
@@ -129,8 +166,9 @@ function parseArgs(argv: string[]): CliOptions {
     configPath: DEFAULT_CONFIG_PATH,
     logRoot: DEFAULT_LOG_ROOT,
     tempRoot: DEFAULT_TEMP_ROOT,
-    verbose: isVerboseEnv(process.env['DNB_VERBOSE']),
+    verbose: isVerboseEnv(process.env["DNB_VERBOSE"]),
     dryRun: false,
+    allowProtected: false,
     help: false,
   };
 
@@ -138,42 +176,46 @@ function parseArgs(argv: string[]): CliOptions {
     const arg = argv[index];
 
     switch (arg) {
-      case '--help':
+      case "--help":
         options.help = true;
         break;
 
-      case '--verbose':
+      case "--verbose":
         options.verbose = true;
         break;
 
-      case '--dry-run':
+      case "--dry-run":
         options.dryRun = true;
         break;
 
-      case '--config': {
+      case "--allow-protected":
+        options.allowProtected = true;
+        break;
+
+      case "--config": {
         const value = argv[index + 1];
         if (!value) {
-          throw new Error('--config requires a value');
+          throw new Error("--config requires a value");
         }
         options.configPath = path.resolve(value);
         index += 1;
         break;
       }
 
-      case '--log-root': {
+      case "--log-root": {
         const value = argv[index + 1];
         if (!value) {
-          throw new Error('--log-root requires a value');
+          throw new Error("--log-root requires a value");
         }
         options.logRoot = path.resolve(value);
         index += 1;
         break;
       }
 
-      case '--temp-root': {
+      case "--temp-root": {
         const value = argv[index + 1];
         if (!value) {
-          throw new Error('--temp-root requires a value');
+          throw new Error("--temp-root requires a value");
         }
         options.tempRoot = path.resolve(value);
         index += 1;
@@ -190,6 +232,28 @@ function parseArgs(argv: string[]): CliOptions {
 
 async function ensureDir(targetPath: string): Promise<void> {
   await mkdir(targetPath, { recursive: true });
+}
+
+function expandHome(inputPath: string): string {
+  if (inputPath === "~") {
+    return os.homedir();
+  }
+
+  if (inputPath.startsWith("~/")) {
+    return path.join(os.homedir(), inputPath.slice(2));
+  }
+
+  return inputPath;
+}
+
+function matchesPattern(basename: string, pattern: string): boolean {
+  if (pattern === "*") {
+    return true;
+  }
+
+  const escaped = pattern.replace(/[.+^${}()|[\]\\]/g, "\\$&");
+  const regexSource = `^${escaped.replace(/\*/g, ".*").replace(/\?/g, ".")}$`;
+  return new RegExp(regexSource).test(basename);
 }
 
 async function fileExists(filePath: string): Promise<boolean> {
@@ -209,29 +273,29 @@ async function runCommand(
   return new Promise((resolve, reject) => {
     const child = spawn(command, args, {
       cwd,
-      stdio: ['ignore', 'pipe', 'pipe'],
+      stdio: ["ignore", "pipe", "pipe"],
     });
 
-    let stdout = '';
-    let stderr = '';
+    let stdout = "";
+    let stderr = "";
 
-    child.stdout.on('data', (chunk: Buffer | string) => {
+    child.stdout.on("data", (chunk: Buffer | string) => {
       stdout += String(chunk);
     });
 
-    child.stderr.on('data', (chunk: Buffer | string) => {
+    child.stderr.on("data", (chunk: Buffer | string) => {
       stderr += String(chunk);
     });
 
-    child.on('error', (error: Error) => {
+    child.on("error", (error: Error) => {
       reject(error);
     });
 
-    child.on('close', (code: number | null) => {
+    child.on("close", (code: number | null) => {
       if (code !== 0) {
         reject(
           new Error(
-            `${command} ${args.join(' ')} failed with exit code ${String(code)}\n${stderr || stdout}`,
+            `${command} ${args.join(" ")} failed with exit code ${String(code)}\n${stderr || stdout}`,
           ),
         );
         return;
@@ -248,9 +312,9 @@ async function moveFile(sourcePath: string, targetPath: string): Promise<void> {
   } catch (error: unknown) {
     if (
       error &&
-      typeof error === 'object' &&
-      'code' in error &&
-      error.code === 'EXDEV'
+      typeof error === "object" &&
+      "code" in error &&
+      error.code === "EXDEV"
     ) {
       await copyFile(sourcePath, targetPath);
       await rm(sourcePath, { force: true });
@@ -262,55 +326,55 @@ async function moveFile(sourcePath: string, targetPath: string): Promise<void> {
 }
 
 function isCleanupAction(value: unknown): value is CleanupAction {
-  return value === 'delete' || value === 'compress';
+  return value === "delete" || value === "compress";
 }
 
 function validateConfig(rawConfig: unknown): CleanupConfig {
-  if (!rawConfig || typeof rawConfig !== 'object') {
-    throw new Error('Config must be an object');
+  if (!rawConfig || typeof rawConfig !== "object") {
+    throw new Error("Config must be an object");
   }
 
   const configObject = rawConfig as Record<string, unknown>;
-  const defaultPolicyRaw = configObject['default'];
+  const defaultPolicyRaw = configObject["default"];
 
-  if (!defaultPolicyRaw || typeof defaultPolicyRaw !== 'object') {
-    throw new Error('Config must contain a [default] table');
+  if (!defaultPolicyRaw || typeof defaultPolicyRaw !== "object") {
+    throw new Error("Config must contain a [default] table");
   }
 
   const defaultPolicyObject = defaultPolicyRaw as Record<string, unknown>;
-  const defaultAction = defaultPolicyObject['action'];
-  const defaultKeepHours = defaultPolicyObject['keep_hours'];
+  const defaultAction = defaultPolicyObject["action"];
+  const defaultKeepHours = defaultPolicyObject["keep_hours"];
 
   if (!isCleanupAction(defaultAction)) {
     throw new Error('default.action must be "delete" or "compress"');
   }
 
   if (
-    typeof defaultKeepHours !== 'number' ||
+    typeof defaultKeepHours !== "number" ||
     !Number.isFinite(defaultKeepHours) ||
     defaultKeepHours < 0
   ) {
-    throw new Error('default.keep_hours must be a non-negative number');
+    throw new Error("default.keep_hours must be a non-negative number");
   }
 
   const rules: CleanupRule[] = [];
 
-  if (Array.isArray(configObject['rule'])) {
-    for (const item of configObject['rule']) {
-      if (!item || typeof item !== 'object') {
-        throw new Error('Each [[rule]] entry must be an object');
+  if (Array.isArray(configObject["rule"])) {
+    for (const item of configObject["rule"]) {
+      if (!item || typeof item !== "object") {
+        throw new Error("Each [[rule]] entry must be an object");
       }
 
       const ruleObject = item as Record<string, unknown>;
-      const folderslug = ruleObject['folderslug'];
-      const action = ruleObject['action'];
-      const keepHours = ruleObject['keep_hours'];
+      const folderslug = ruleObject["folderslug"];
+      const action = ruleObject["action"];
+      const keepHours = ruleObject["keep_hours"];
 
-      if (typeof folderslug !== 'string' || folderslug.trim() === '') {
-        throw new Error('rule.folderslug must be a non-empty string');
+      if (typeof folderslug !== "string" || folderslug.trim() === "") {
+        throw new Error("rule.folderslug must be a non-empty string");
       }
 
-      if (folderslug.startsWith('/') || folderslug.includes('..')) {
+      if (folderslug.startsWith("/") || folderslug.includes("..")) {
         throw new Error(`Invalid rule.folderslug: ${folderslug}`);
       }
 
@@ -319,7 +383,7 @@ function validateConfig(rawConfig: unknown): CleanupConfig {
       }
 
       if (
-        typeof keepHours !== 'number' ||
+        typeof keepHours !== "number" ||
         !Number.isFinite(keepHours) ||
         keepHours < 0
       ) {
@@ -327,9 +391,78 @@ function validateConfig(rawConfig: unknown): CleanupConfig {
       }
 
       rules.push({
-        folderslug: folderslug.replace(/^\.?\//, '').replace(/\/+$/, ''),
+        folderslug: folderslug.replace(/^\.?\//, "").replace(/\/+$/, ""),
         action,
         keep_hours: keepHours,
+      });
+    }
+  }
+
+  const locations: LocationConfig[] = [];
+
+  if (Array.isArray(configObject["location"])) {
+    for (const item of configObject["location"]) {
+      if (!item || typeof item !== "object") {
+        throw new Error("Each [[location]] entry must be an object");
+      }
+
+      const locationObject = item as Record<string, unknown>;
+      const name = locationObject["name"];
+      const root = locationObject["root"];
+      const pattern = locationObject["pattern"] ?? "*";
+      const action = locationObject["action"];
+      const keepHours = locationObject["keep_hours"];
+      const isProtected = locationObject["protected"] ?? false;
+      const maxDepth = locationObject["max_depth"] ?? 2;
+
+      if (typeof name !== "string" || name.trim() === "") {
+        throw new Error("location.name must be a non-empty string");
+      }
+
+      if (typeof root !== "string" || root.trim() === "") {
+        throw new Error(`location.root must be a non-empty string for ${name}`);
+      }
+
+      if (typeof pattern !== "string" || pattern.trim() === "") {
+        throw new Error(
+          `location.pattern must be a non-empty string for ${name}`,
+        );
+      }
+
+      if (!isCleanupAction(action)) {
+        throw new Error(`Invalid action for location ${name}`);
+      }
+
+      if (
+        typeof keepHours !== "number" ||
+        !Number.isFinite(keepHours) ||
+        keepHours < 0
+      ) {
+        throw new Error(`Invalid keep_hours for location ${name}`);
+      }
+
+      if (typeof isProtected !== "boolean") {
+        throw new Error(`location.protected must be a boolean for ${name}`);
+      }
+
+      if (
+        typeof maxDepth !== "number" ||
+        !Number.isInteger(maxDepth) ||
+        maxDepth < 0
+      ) {
+        throw new Error(
+          `location.max_depth must be a non-negative integer for ${name}`,
+        );
+      }
+
+      locations.push({
+        name,
+        root,
+        pattern,
+        action,
+        keep_hours: keepHours,
+        protected: isProtected,
+        max_depth: maxDepth,
       });
     }
   }
@@ -340,24 +473,28 @@ function validateConfig(rawConfig: unknown): CleanupConfig {
       keep_hours: defaultKeepHours,
     },
     rule: rules,
+    location: locations,
   };
 }
 
 async function loadConfig(configPath: string): Promise<CleanupConfig> {
-  const content = await readFile(configPath, 'utf8');
+  const content = await readFile(configPath, "utf8");
   const parsed = parseToml(content);
   return validateConfig(parsed);
 }
 
 function toFolderSlug(relativeDirectory: string): string {
-  if (!relativeDirectory || relativeDirectory === '.') {
-    return '.';
+  if (!relativeDirectory || relativeDirectory === ".") {
+    return ".";
   }
 
-  return relativeDirectory.split(path.sep).join('/');
+  return relativeDirectory.split(path.sep).join("/");
 }
 
-function resolvePolicy(config: CleanupConfig, folderSlug: string): CleanupPolicy {
+function resolvePolicy(
+  config: CleanupConfig,
+  folderSlug: string,
+): CleanupPolicy {
   const rules = config.rule ?? [];
   let bestMatch: CleanupRule | null = null;
 
@@ -390,20 +527,22 @@ function deriveArchiveDay(filename: string, mtimeMs: number): string {
 
   const date = new Date(mtimeMs);
   const year = String(date.getFullYear());
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
 
   return `${year}${month}${day}`;
 }
 
-async function findLogCandidates(
-  logRoot: string,
+async function findCandidateFiles(
+  scanRoot: string,
+  pattern: string,
+  maxDepth: number,
   activeTaskLog: string,
 ): Promise<CandidateFile[]> {
   const result: CandidateFile[] = [];
 
   async function walk(currentDirectory: string, depth: number): Promise<void> {
-    if (depth > 2) {
+    if (depth > maxDepth) {
       return;
     }
 
@@ -421,7 +560,7 @@ async function findLogCandidates(
         continue;
       }
 
-      if (!entry.name.endsWith('.log')) {
+      if (!matchesPattern(entry.name, pattern)) {
         continue;
       }
 
@@ -430,7 +569,7 @@ async function findLogCandidates(
       }
 
       const fileStat = await stat(absolutePath);
-      const relativePath = path.relative(logRoot, absolutePath);
+      const relativePath = path.relative(scanRoot, absolutePath);
       const folderRelative = path.dirname(relativePath);
       const folderSlug = toFolderSlug(folderRelative);
 
@@ -446,7 +585,7 @@ async function findLogCandidates(
     }
   }
 
-  await walk(logRoot, 0);
+  await walk(scanRoot, 0);
   return result;
 }
 
@@ -454,26 +593,26 @@ async function writeTaskLog(
   message: string,
   verbose: boolean,
   taskLogPath: string,
-  level: 'INFO' | 'WARN' | 'ERROR' = 'INFO',
+  level: "INFO" | "WARN" | "ERROR" = "INFO",
 ): Promise<void> {
   const line = `[${new Date().toISOString()}] [${level}] ${message}\n`;
-  await appendFile(taskLogPath, line, 'utf8');
+  await appendFile(taskLogPath, line, "utf8");
 
-  if (verbose || level !== 'INFO') {
-    const stream = level === 'ERROR' ? process.stderr : process.stdout;
+  if (verbose || level !== "INFO") {
+    const stream = level === "ERROR" ? process.stderr : process.stdout;
     stream.write(line);
   }
 }
 
 async function acquireLock(lockPath: string): Promise<void> {
   try {
-    await writeFile(lockPath, String(process.pid), { flag: 'wx' });
+    await writeFile(lockPath, String(process.pid), { flag: "wx" });
   } catch (error: unknown) {
     if (
       error &&
-      typeof error === 'object' &&
-      'code' in error &&
-      error.code === 'EEXIST'
+      typeof error === "object" &&
+      "code" in error &&
+      error.code === "EEXIST"
     ) {
       throw new Error(
         `Another cleanup run appears to be active. Lock file exists: ${lockPath}`,
@@ -540,7 +679,7 @@ async function deleteFiles(
 ): Promise<void> {
   for (const file of files) {
     await writeTaskLog(
-      `${dryRun ? 'Would delete' : 'Deleting'} ${file.absolutePath}`,
+      `${dryRun ? "Would delete" : "Deleting"} ${file.absolutePath}`,
       verbose,
       taskLogPath,
     );
@@ -575,8 +714,8 @@ async function compressGroup(
   const archivePath = archivePathFor(targetDirectory, archiveDay);
 
   await ensureDir(tempRoot);
-  const temporaryRoot = await mkdtemp(path.join(tempRoot, 'cleanup-logs-'));
-  const payloadDir = path.join(temporaryRoot, 'payload');
+  const temporaryRoot = await mkdtemp(path.join(tempRoot, "cleanup-logs-"));
+  const payloadDir = path.join(temporaryRoot, "payload");
 
   try {
     await ensureDir(payloadDir);
@@ -590,8 +729,8 @@ async function compressGroup(
 
       if (!dryRun) {
         await runCommand(
-          'tar',
-          ['-xJf', archivePath, '-C', payloadDir],
+          "tar",
+          ["-xJf", archivePath, "-C", payloadDir],
           temporaryRoot,
         );
       }
@@ -612,7 +751,7 @@ async function compressGroup(
           `Filename collision for ${file.absolutePath}; storing in archive as ${destinationName}`,
           verbose,
           taskLogPath,
-          'WARN',
+          "WARN",
         );
       }
 
@@ -622,21 +761,21 @@ async function compressGroup(
     }
 
     if (!dryRun) {
-      const temporaryArchive = path.join(temporaryRoot, 'archive.tar.xz');
+      const temporaryArchive = path.join(temporaryRoot, "archive.tar.xz");
 
       await runCommand(
-        'tar',
+        "tar",
         [
-          '--sort=name',
-          '--mtime=@0',
-          '--owner=0',
-          '--group=0',
-          '--numeric-owner',
-          '-cJf',
+          "--sort=name",
+          "--mtime=@0",
+          "--owner=0",
+          "--group=0",
+          "--numeric-owner",
+          "-cJf",
           temporaryArchive,
-          '-C',
+          "-C",
           payloadDir,
-          '.',
+          ".",
         ],
         temporaryRoot,
       );
@@ -652,7 +791,7 @@ async function compressGroup(
     stats.archivesUpdated += 1;
 
     await writeTaskLog(
-      `${dryRun ? 'Would compress' : 'Compressed'} ${files.length} file(s) into ${archivePath}`,
+      `${dryRun ? "Would compress" : "Compressed"} ${files.length} file(s) into ${archivePath}`,
       verbose,
       taskLogPath,
     );
@@ -661,21 +800,97 @@ async function compressGroup(
   }
 }
 
+async function processCandidates(
+  label: string,
+  candidates: CandidateFile[],
+  resolvePolicyForFile: (file: CandidateFile) => CleanupPolicy,
+  now: number,
+  taskLogPath: string,
+  tempRoot: string,
+  verbose: boolean,
+  dryRun: boolean,
+  stats: RunStats,
+): Promise<void> {
+  const deleteQueue: CandidateFile[] = [];
+  const compressQueue: CandidateFile[] = [];
+
+  for (const file of candidates) {
+    const policy = resolvePolicyForFile(file);
+    const ageMs = now - file.mtimeMs;
+    const keepMs = policy.keep_hours * HOUR_IN_MS;
+    const ageHours = ageMs / HOUR_IN_MS;
+
+    if (ageMs < keepMs) {
+      stats.skipped += 1;
+
+      if (verbose) {
+        console.log(
+          `[${label}:skip] ${file.relativePath} | age=${ageHours.toFixed(2)}h | keep=${String(policy.keep_hours)}h | action=${policy.action}`,
+        );
+      }
+
+      continue;
+    }
+
+    if (policy.action === "delete") {
+      deleteQueue.push(file);
+
+      if (verbose) {
+        console.log(
+          `[${label}:queue:delete] ${file.relativePath} | age=${ageHours.toFixed(2)}h | keep=${String(policy.keep_hours)}h`,
+        );
+      }
+    } else {
+      compressQueue.push(file);
+
+      if (verbose) {
+        console.log(
+          `[${label}:queue:compress] ${file.relativePath} | age=${ageHours.toFixed(2)}h | keep=${String(policy.keep_hours)}h | archiveDay=${file.archiveDay}`,
+        );
+      }
+    }
+  }
+
+  await writeTaskLog(
+    `[${label}] Decision summary: delete=${String(deleteQueue.length)}, compress=${String(compressQueue.length)}`,
+    true,
+    taskLogPath,
+  );
+
+  await deleteFiles(deleteQueue, taskLogPath, verbose, dryRun, stats);
+
+  const compressionGroups = groupCandidatesForCompression(compressQueue);
+  for (const groupFiles of compressionGroups.values()) {
+    await compressGroup(
+      groupFiles,
+      tempRoot,
+      taskLogPath,
+      verbose,
+      dryRun,
+      stats,
+    );
+  }
+}
+
 function formatCurrentDay(date: Date): string {
   return [
     String(date.getFullYear()),
-    String(date.getMonth() + 1).padStart(2, '0'),
-    String(date.getDate()).padStart(2, '0'),
-  ].join('');
+    String(date.getMonth() + 1).padStart(2, "0"),
+    String(date.getDate()).padStart(2, "0"),
+  ].join("");
 }
 
 async function ensureBinaryAvailable(binary: string): Promise<void> {
   try {
-    await runCommand(binary, ['--version'], process.cwd());
+    await runCommand(binary, ["--version"], process.cwd());
   } catch (error: unknown) {
     const message =
-      error instanceof Error ? error.message : `Unknown error: ${String(error)}`;
-    throw new Error(`Required external tool not available: ${binary}. ${message}`);
+      error instanceof Error
+        ? error.message
+        : `Unknown error: ${String(error)}`;
+    throw new Error(
+      `Required external tool not available: ${binary}. ${message}`,
+    );
   }
 }
 
@@ -689,14 +904,17 @@ async function main(options: CliOptions): Promise<void> {
   consoleVerbose(`[startup] configPath=${options.configPath}`, options.verbose);
   consoleVerbose(`[startup] tempRoot=${options.tempRoot}`, options.verbose);
   consoleVerbose(`[startup] dryRun=${String(options.dryRun)}`, options.verbose);
-  consoleVerbose(`[startup] verbose=${String(options.verbose)}`, options.verbose);
+  consoleVerbose(
+    `[startup] verbose=${String(options.verbose)}`,
+    options.verbose,
+  );
 
   await ensureDir(options.logRoot);
   await ensureDir(options.tempRoot);
 
   const currentDay = formatCurrentDay(new Date());
   const taskLogPath = path.join(options.logRoot, `cleanup-${currentDay}.log`);
-  const lockPath = path.join(options.tempRoot, '.cleanup-logs.lock');
+  const lockPath = path.join(options.tempRoot, ".cleanup-logs.lock");
 
   consoleVerbose(`[startup] taskLogPath=${taskLogPath}`, options.verbose);
   consoleVerbose(`[startup] lockPath=${lockPath}`, options.verbose);
@@ -711,13 +929,13 @@ async function main(options: CliOptions): Promise<void> {
   };
 
   try {
-    await writeTaskLog('Starting cleanup run', options.verbose, taskLogPath);
+    await writeTaskLog("Starting cleanup run", options.verbose, taskLogPath);
 
     await access(options.configPath, fsConstants.R_OK);
     const config = await loadConfig(options.configPath);
 
     if (options.verbose) {
-      console.log('[config] Loaded cleanup config successfully');
+      console.log("[config] Loaded cleanup config successfully");
       console.log(
         `[config] default action=${config.default.action}, keep_hours=${String(config.default.keep_hours)}`,
       );
@@ -729,24 +947,30 @@ async function main(options: CliOptions): Promise<void> {
       }
     }
 
-    await ensureBinaryAvailable('tar');
-    await ensureBinaryAvailable('xz');
+    await ensureBinaryAvailable("tar");
+    await ensureBinaryAvailable("xz");
 
-    const allCandidates = await findLogCandidates(options.logRoot, taskLogPath);
     const now = Date.now();
 
+    const logCandidates = await findCandidateFiles(
+      options.logRoot,
+      "*.log",
+      2,
+      taskLogPath,
+    );
+
     await writeTaskLog(
-      `Found ${String(allCandidates.length)} candidate log file(s) under ${options.logRoot}`,
+      `[logs] Found ${String(logCandidates.length)} candidate log file(s) under ${options.logRoot}`,
       true,
       taskLogPath,
     );
 
     if (options.verbose) {
-      if (allCandidates.length === 0) {
-        console.log('[scan] No .log files found.');
+      if (logCandidates.length === 0) {
+        console.log("[logs:scan] No .log files found.");
       } else {
-        console.log('[scan] Candidate files:');
-        for (const file of allCandidates) {
+        console.log("[logs:scan] Candidate files:");
+        for (const file of logCandidates) {
           console.log(
             `  - ${file.relativePath} | folder=${file.folderSlug} | archiveDay=${file.archiveDay}`,
           );
@@ -754,66 +978,71 @@ async function main(options: CliOptions): Promise<void> {
       }
     }
 
-    const deleteQueue: CandidateFile[] = [];
-    const compressQueue: CandidateFile[] = [];
-
-    for (const file of allCandidates) {
-      const policy = resolvePolicy(config, file.folderSlug);
-      const ageMs = now - file.mtimeMs;
-      const keepMs = policy.keep_hours * HOUR_IN_MS;
-      const ageHours = ageMs / HOUR_IN_MS;
-
-      if (ageMs < keepMs) {
-        stats.skipped += 1;
-
-        if (options.verbose) {
-          console.log(
-            `[skip] ${file.relativePath} | age=${ageHours.toFixed(2)}h | keep=${String(policy.keep_hours)}h | action=${policy.action}`,
-          );
-        }
-
-        continue;
-      }
-
-      if (policy.action === 'delete') {
-        deleteQueue.push(file);
-
-        if (options.verbose) {
-          console.log(
-            `[queue:delete] ${file.relativePath} | age=${ageHours.toFixed(2)}h | keep=${String(policy.keep_hours)}h`,
-          );
-        }
-      } else {
-        compressQueue.push(file);
-
-        if (options.verbose) {
-          console.log(
-            `[queue:compress] ${file.relativePath} | age=${ageHours.toFixed(2)}h | keep=${String(policy.keep_hours)}h | archiveDay=${file.archiveDay}`,
-          );
-        }
-      }
-    }
-
-    await writeTaskLog(
-      `Decision summary: delete=${String(deleteQueue.length)}, compress=${String(compressQueue.length)}, skipped=${String(stats.skipped)}`,
-      true,
+    await processCandidates(
+      "logs",
+      logCandidates,
+      (file) => resolvePolicy(config, file.folderSlug),
+      now,
       taskLogPath,
-    );
-
-    await deleteFiles(
-      deleteQueue,
-      taskLogPath,
+      options.tempRoot,
       options.verbose,
       options.dryRun,
       stats,
     );
 
-    const compressionGroups = groupCandidatesForCompression(compressQueue);
-    for (const groupFiles of compressionGroups.values()) {
-      await compressGroup(
-        groupFiles,
-        options.tempRoot,
+    for (const location of config.location ?? []) {
+      const locationRoot = expandHome(location.root);
+
+      if (!(await fileExists(locationRoot))) {
+        await writeTaskLog(
+          `[location:${location.name}] Root not found, skipping: ${locationRoot}`,
+          options.verbose,
+          taskLogPath,
+          "WARN",
+        );
+        continue;
+      }
+
+      const locationCandidates = await findCandidateFiles(
+        locationRoot,
+        location.pattern,
+        location.max_depth,
         taskLogPath,
+      );
+
+      await writeTaskLog(
+        `[location:${location.name}] Found ${String(locationCandidates.length)} candidate file(s) matching '${location.pattern}' under ${locationRoot}`,
+        true,
+        taskLogPath,
+      );
+
+      if (location.protected && !options.allowProtected) {
+        stats.skipped += locationCandidates.length;
+
+        await writeTaskLog(
+          `[location:${location.name}] Protected location; reporting only (pass --allow-protected to act on it)`,
+          true,
+          taskLogPath,
+        );
+
+        if (options.verbose) {
+          for (const file of locationCandidates) {
+            console.log(
+              `[location:${location.name}:protected] ${file.relativePath}`,
+            );
+          }
+        }
+
+        continue;
+      }
+
+      await processCandidates(
+        `location:${location.name}`,
+        locationCandidates,
+        () => ({ action: location.action, keep_hours: location.keep_hours }),
+        now,
+        taskLogPath,
+        options.tempRoot,
         options.verbose,
         options.dryRun,
         stats,
@@ -832,7 +1061,7 @@ async function main(options: CliOptions): Promise<void> {
 
 const entryScript = process.argv[1];
 const isDirectRun =
-  typeof entryScript === 'string' &&
+  typeof entryScript === "string" &&
   import.meta.url === pathToFileURL(path.resolve(entryScript)).href;
 
 if (isDirectRun) {
@@ -853,9 +1082,9 @@ if (isDirectRun) {
           ? (error.stack ?? error.message)
           : `Unknown error: ${String(error)}`;
 
-      await writeTaskLog(message, true, fallbackLogPath, 'ERROR');
+      await writeTaskLog(message, true, fallbackLogPath, "ERROR");
     } catch (loggingError: unknown) {
-      console.error('Failed to write fallback log:', loggingError);
+      console.error("Failed to write fallback log:", loggingError);
       console.error(error);
     }
 
