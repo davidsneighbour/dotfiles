@@ -15,45 +15,80 @@
 
 ## Installation
 
-* Setup GitHub folder
+> [!NOTE]
+> The steps below are bootstrapping prerequisites that must be completed before `dotfiles` can
+> manage the environment. Once Homebrew and dotbot are installed and the repo is cloned,
+> everything else is driven by `dotfiles [CONFIG_NAME]`.
+
+* Set up the GitHub folder:
 
   ```bash
   mkdir -p ~/github.com/davidsneighbour
   ```
 
-* Install nvm and set to use required Node.js version (currently 24, see `.nvmrc`, for the latest script [check the repository](https://github.com/nvm-sh/nvm#install--update-script)).
+* Install [git](https://git-scm.com/downloads) if not already installed:
+
+   ```bash
+   sudo apt install git
+   ```
+
+* Clone this repository **with submodules** (SSH key must be set up first):
+
+   ```bash
+   git clone --recurse-submodules git@github.com:davidsneighbour/dotfiles.git ~/github.com/davidsneighbour/dotfiles
+   cd ~/github.com/davidsneighbour/dotfiles
+   ```
+
+* Install [Homebrew](https://brew.sh) (Linuxbrew):
+
+   ```bash
+   bash configs/installs/20-brew.sh
+   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+   ```
+
+* Install dotbot via Homebrew — **required before running `dotfiles`**:
+
+   ```bash
+   brew install dotbot
+   ```
+
+* Install Node.js dependencies:
 
    ```bash
    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
    source ~/.bashrc
    nvm install 24
    nvm use 24
-   ```
-
-* Install [git](https://git-scm.com/downloads) if not already installed.
-
-   ```bash
-   sudo apt install git
-   ```
-
-* Clone this repository with submodules (this might be complicated, because the SSH key needs to be set up first).
-
-   ```bash
-   git clone --recurse-submodules git@github.com:davidsneighbour/dotfiles.git
-   ```
-
-* Install dependencies with `npm install`.
-
-   ```bash
    npm install
    ```
 
-* Run `./dotbot.sh` to set up symlinks and `./dotbot.sh protected` to set up protected symlinks.
+* Run `dotfiles` to set up symlinks, tools, and host-specific config.
+  The `dotfiles` command lives in `bashrc/helpers/dotfiles` and is added to PATH automatically
+  once the bashrc symlink is in place. During the very first run, invoke it directly:
 
    ```bash
-   ./dotbot.sh
-   ./dotbot.sh protected
+   bash bashrc/helpers/dotfiles
    ```
+
+  For named configs (host-specific, AI tooling, protected symlinks, etc.):
+
+   ```bash
+   bash bashrc/helpers/dotfiles ai
+   bash bashrc/helpers/dotfiles protected
+   bash bashrc/helpers/dotfiles host-locutus
+   ```
+
+  After the initial run the symlink `~/.dotfiles → ~/github.com/davidsneighbour/dotfiles` and the
+  sourced bashrc are in place, so subsequent runs use the short form:
+
+   ```bash
+   dotfiles
+   dotfiles ai
+   dotfiles protected
+   ```
+
+  Run `dotfiles --help` for the full option list, or `dotfiles --list` to pick a config
+  interactively via `gum`.
 
 ## Shell actor environment variables
 
@@ -76,8 +111,8 @@ Run consecutive updates:
 
 ```bash
 git pull
-./dotbot.sh
-./dotbot.sh protected
+dotfiles
+dotfiles protected
 git submodule update --recursive --remote --merge --force
 ```
 
@@ -100,7 +135,9 @@ git checkout main
 
 ### Shortcuts/Keybindings
 
-Keybindings are managed via `actions` → `keybindings` scope. Run `actions menu` and select the keybindings scope to export or import the current Cinnamon keybinding configuration.
+Keybindings are managed via the `keybindings` scope in `configs/actions/actions.toml`. Run
+`actions menu` and select that scope to export or import the current Cinnamon keybinding
+configuration.
 
 #### Custom shortcuts that are set up (work in progress)
 

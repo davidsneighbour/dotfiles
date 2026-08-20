@@ -10,8 +10,8 @@ literal absolute home directory path.
   instead of a literal path, respecting an `XDG_CONFIG_HOME` override.
 * `configs/installs/10-system.sh` — now copies into
   `"${HOME}/.dotfiles/bashrc/partials/_completions/"` instead of an absolute
-  path, since `./dotbot.sh` creates the `~/.dotfiles` symlink before install
-  scripts run.
+  path, since `dotfiles` (the dotbot wrapper at `bashrc/helpers/dotfiles`)
+  creates the `~/.dotfiles` symlink before install scripts run.
 
 ## Intentionally left literal
 
