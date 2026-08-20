@@ -54,6 +54,7 @@
   },
   "scripts": {
     "biome:postinstall": "npx @biomejs/biome migrate --write",
+    "bump-versions": "node --experimental-strip-types scripts/bump-versions.ts",
     "check": "npm run test:backup-runner && npm run lint:log-filenames && npm run test:shell && npm run lint:config && npm run typecheck && npm run lint:markdown && npm run lint:shell",
     "check:biome": "biome check .",
     "check:biome:fix": "biome check --write .",

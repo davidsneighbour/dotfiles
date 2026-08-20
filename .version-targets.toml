@@ -1,0 +1,17 @@
+# Extra files that carry a copy of package.json's version number.
+#
+# release-it bumps package.json itself natively; this config only lists the
+# additional files that need the same version written into them during a
+# release. See scripts/bump-versions.ts and the `before:git:release` hook in
+# .release-it.ts.
+#
+# format = "json"      -> pointer is a dot-path into parsed JSON (e.g. "metadata.version")
+# format = "text-line" -> pattern is a regex matched against each line; the
+#                          whole matching line is replaced with `replacement`,
+#                          where {version} is substituted with the new version
+
+[[target]]
+path = "CITATION.cff"
+format = "text-line"
+pattern = "^version:\\s*.*$"
+replacement = "version: {version}"
