@@ -22,9 +22,12 @@ Bash helpers are standalone helper commands unless noted otherwise. Several Type
 * [`gh/`](./gh/DOCUMENTATION.md)
 * [`kando/`](./kando/DOCUMENTATION.md)
 * [`logs/`](./logs/DOCUMENTATION.md)
+* [`mailbox-monitor/`](./mailbox-monitor/README.md)
+* [`msgvault/`](./msgvault/DOCUMENTATION.md)
 * [`packages/`](./packages/DOCUMENTATION.md)
 * [`raindrop.io/`](./raindrop.io/DOCUMENTATION.md)
 * [`remarkable/`](./remarkable/DOCUMENTATION.md)
+* [`tests/`](#tests)
 * [`theme/`](./theme/DOCUMENTATION.md)
 * [`workspace/`](./workspace/DOCUMENTATION.md)
 
@@ -174,10 +177,6 @@ Functions/methods defined:
 Requirements:
 
 * bash, zip, git for .gitignore handling, optional python3/toml helper libraries from bashrc/lib.
-
-### `msgvault/`
-
-Contains msgvault sync, backup, indicator, and manual helper commands used by cron and Polybar. See [`msgvault/DOCUMENTATION.md`](./msgvault/DOCUMENTATION.md).
 
 ### `node-run`
 
@@ -441,6 +440,23 @@ See [`logs/DOCUMENTATION.md`](./logs/DOCUMENTATION.md).
 * `logs/config.toml`: Default log cleanup configuration.
 * `logs/log-cleanup.config.schema.json`: JSON Schema for logs/config.toml.
 
+### `mailbox-monitor/`
+
+See [`mailbox-monitor/README.md`](./mailbox-monitor/README.md).
+
+* `mailbox-monitor/monitor-mailboxes.mjs`: Logs in to a hosting control panel with Playwright, reads mailbox usage, and sends a Discord alert above a configured threshold. Configured via a gitignored `.env` file (see `.env.template` conventions in AGENTS.md); intended to run from cron on a personal machine.
+* `mailbox-monitor/run-mailbox-monitor.sh`: Cron entrypoint wrapper for the monitor script.
+
+### `msgvault/`
+
+See [`msgvault/DOCUMENTATION.md`](./msgvault/DOCUMENTATION.md).
+
+* `msgvault/sync.sh`: Runs `msgvault sync`, logs the run, and records a Polybar issue on failure.
+* `msgvault/backup`: Backs up msgvault config/state separately from the sync cronjob.
+* `msgvault/manual-sync.sh`: Manual/interactive sync entrypoint.
+* `msgvault/indicator.sh`: Prints the Polybar status indicator (issue state, sync freshness, optional unread count).
+* `msgvault/config.env`: Sourceable helper defaults (e.g. backup directory).
+
 ### `packages/`
 
 See [`packages/DOCUMENTATION.md`](./packages/DOCUMENTATION.md).
@@ -460,6 +476,13 @@ See [`remarkable/DOCUMENTATION.md`](./remarkable/DOCUMENTATION.md).
 
 * `remarkable/README.md`: Existing user guide for reMarkable transfers.
 * `remarkable/transfer.ts`: Transfers PDF/EPUB files to/from a reMarkable tablet and supports raw rsync backups.
+
+### `tests/`
+
+No dedicated documentation file; run via `npm run test:shell`.
+
+* `tests/dotfiles-includes-test.sh`: Sources the `dotfiles` helper and asserts its internal include/config-resolution functions behave correctly.
+* `tests/desktop-helpers-health-check.sh`: Smoke-checks desktop helper scripts and local config references without launching a desktop session.
 
 ### `theme/`
 

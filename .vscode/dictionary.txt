@@ -11,6 +11,7 @@ combi
 commitlint
 createworkspace
 crosspost
+dailynote
 dasel
 davidsneighbour
 dmenu
@@ -37,6 +38,7 @@ gmailctl
 gotenberg
 hideemptyprojects
 hono
+hostinformation
 humanwhocodes
 ibus
 ignoreboth
