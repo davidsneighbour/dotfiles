@@ -40,10 +40,23 @@ expand_tilde() {
   # Usage: expanded="$(expand_tilde "~/.logs")"
   local p="${1}"
   if [[ "${p}" == "~/"* ]]; then
-    echo "${HOME}/${p#~/}"
+    echo "${HOME}/${p#\~/}"
     return 0
   fi
   echo "${p}"
+}
+
+expand_rsync_path() {
+  # Expands a leading "~/" for local paths only. Remote rsync specs
+  # (user@host:path or host:path) are left untouched so ssh/rsync expand
+  # "~" on the remote end instead.
+  # Usage: expanded="$(expand_rsync_path "patrick@host:~/Downloads/")"
+  local p="${1}"
+  if [[ "${p}" =~ ^[^/]+: ]]; then
+    echo "${p}"
+    return 0
+  fi
+  expand_tilde "${p}"
 }
 
 require_cmd() {
@@ -124,8 +137,12 @@ rsync_job() {
     args+=(--exclude="${pattern}")
   done
 
-  log "job '${name}': rsync '${from}' -> '${to}'"
-  rsync "${args[@]}" "${from}" "${to}"
+  local resolved_from resolved_to
+  resolved_from="$(expand_rsync_path "${from}")"
+  resolved_to="$(expand_rsync_path "${to}")"
+
+  log "job '${name}': rsync '${resolved_from}' -> '${resolved_to}'"
+  rsync "${args[@]}" "${resolved_from}" "${resolved_to}"
 }
 
 main() {
@@ -179,7 +196,7 @@ main() {
   prefix="$(read_json_str "${config_file}" '.log.filename_prefix // "download-synch"')"
 
   local date_fmt
-  date_fmt="$(read_json_str "${config_file}" '.log.date_format // "%Y%m%d"')"
+  date_fmt="$(read_json_str "${config_file}" '.log.date_format // "%Y%m%d-%H%M%S"')"
 
   local timestamp
   timestamp="$(date +"${date_fmt}")"

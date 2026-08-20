@@ -4,7 +4,7 @@
   "log": {
     "dir": "~/.logs/cron",
     "filename_prefix": "download-synch",
-    "date_format": "%Y%m%d"
+    "date_format": "%Y%m%d-%H%M%S"
   },
 
   "rsync": {
@@ -28,13 +28,13 @@
   "jobs": [
     {
       "name": "download-pull",
-      "from": "patrick@192.168.1.201:/home/patrick/Downloads/",
-      "to": "/home/patrick/Downloads/000_unkle"
+      "from": "patrick@192.168.1.201:~/Downloads/",
+      "to": "~/Downloads/000_unkle"
     },
     {
       "name": "download-push",
-      "from": "/home/patrick/Downloads/000_synchback",
-      "to": "patrick@192.168.1.201:/home/patrick/Downloads/",
+      "from": "~/Downloads/000_synchback",
+      "to": "patrick@192.168.1.201:~/Downloads/",
       "exclude": [".incoming", "*.crdownload"],
       "delete": true
     }
