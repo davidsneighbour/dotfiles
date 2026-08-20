@@ -236,16 +236,7 @@ if ((${#WORKSPACE_FILES_DIRS[@]})); then
     done < <(find "${d}" -type f -name "${FILE_PATTERN}" -print0 2>/dev/null || true)
   done
 else
-  # Optional fallback: if a common default exists, use it
-  if [[ -d "${HOME}/.dotfiles/configs/workspaces" ]]; then
-    dnb_log warn "No --workspacedirs provided; falling back to ${HOME}/.dotfiles/configs/workspaces"
-    WORKSPACE_FILES_DIRS=("${HOME}/.dotfiles/configs/workspaces")
-    while IFS= read -r -d '' f; do
-      WORKSPACE_FILES+=("${f}")
-    done < <(find "${WORKSPACE_FILES_DIRS[0]}" -type f -name "${FILE_PATTERN}" -print0 2>/dev/null || true)
-  else
-    dnb_log debug "No WORKSPACE_FILES_DIRS provided"
-  fi
+  dnb_log debug "No WORKSPACE_FILES_DIRS provided"
 fi
 dnb_log info "Found ${#WORKSPACE_FILES[@]} workspace files"
 

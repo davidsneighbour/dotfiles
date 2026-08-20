@@ -15,10 +15,10 @@
  * - Replaces root.children entirely (does not merge).
  */
 
-import fs from 'node:fs/promises';
-import os from 'node:os';
-import path from 'node:path';
-import process from 'node:process';
+import fs from "node:fs/promises";
+import os from "node:os";
+import path from "node:path";
+import process from "node:process";
 
 type CliArgs = {
   help?: boolean;
@@ -40,7 +40,7 @@ type CommandData = {
 };
 
 type KandoChildEntry = {
-  type: 'command';
+  type: "command";
   data: CommandData;
   name: string;
   icon: string;
@@ -62,18 +62,17 @@ type KandoConfig = {
 };
 
 const DEFAULTS = {
-  menuJsonPath: path.join(os.homedir(), '.config/kando/menus.json'),
-  workspacesDir:
-    '/home/patrick/github.com/davidsneighbour/dotfiles/configs/workspaces',
-  menuName: 'Workspace Starter',
-  vscodeCommand: '/usr/share/code/code',
-  icon: 'code',
-  iconTheme: 'material-symbols-rounded',
-  includeExtensions: ['.code-workspace'],
+  menuJsonPath: path.join(os.homedir(), ".config/kando/menus.json"),
+  workspacesDir: "",
+  menuName: "Workspace Starter",
+  vscodeCommand: "/usr/share/code/code",
+  icon: "code",
+  iconTheme: "material-symbols-rounded",
+  includeExtensions: [".code-workspace"],
 };
 
 function printHelp(): void {
-  const cmd = path.basename(process.argv[1] ?? 'kando-workspaces.mjs');
+  const cmd = path.basename(process.argv[1] ?? "kando-workspaces.mjs");
   console.log(
     `
 ${cmd} - update Kando "Workspace Starter" entries from VS Code workspace files
@@ -86,8 +85,7 @@ Options:
   --menu-json-path <path>     Path to Kando menu.json
                               Default: ${DEFAULTS.menuJsonPath}
 
-  --workspaces-dir <path>     Directory containing workspace files
-                              Default: ${DEFAULTS.workspacesDir}
+  --workspaces-dir <path>     Directory containing workspace files (required)
 
   --menu-name <name>          Kando menu root.name to update
                               Default: ${DEFAULTS.menuName}
@@ -96,7 +94,7 @@ Options:
                               Default: ${DEFAULTS.vscodeCommand}
 
   --extensions <list>         Comma-separated list of file extensions to include
-                              Default: ${DEFAULTS.includeExtensions.join(',')}
+                              Default: ${DEFAULTS.includeExtensions.join(",")}
 
   --dry-run                   Print what would change; do not write
   --apply                     Write changes (creates backup first)
@@ -117,8 +115,8 @@ Examples:
  * @returns {string}
  */
 function expandHome(input: string): string {
-  if (input === '~') return os.homedir();
-  if (input.startsWith('~/')) return path.join(os.homedir(), input.slice(2));
+  if (input === "~") return os.homedir();
+  if (input.startsWith("~/")) return path.join(os.homedir(), input.slice(2));
   return input;
 }
 
@@ -136,7 +134,7 @@ function safeJsonPreview(s: string): string {
  */
 function parseCommaList(value: string): string[] {
   return value
-    .split(',')
+    .split(",")
     .map((x) => x.trim())
     .filter(Boolean);
 }
@@ -152,15 +150,15 @@ function parseArgs(argv: string[]): CliArgs {
     const a = argv[i];
     if (!a) continue;
 
-    if (a === '--help') out.help = true;
-    else if (a === '--verbose') out.verbose = true;
-    else if (a === '--dry-run') out.dryRun = true;
-    else if (a === '--apply') out.apply = true;
-    else if (a === '--menu-json-path') out.menuJsonPath = argv[++i] ?? '';
-    else if (a === '--workspaces-dir') out.workspacesDir = argv[++i] ?? '';
-    else if (a === '--menu-name') out.menuName = argv[++i] ?? '';
-    else if (a === '--vscode-command') out.vscodeCommand = argv[++i] ?? '';
-    else if (a === '--extensions') out.extensions = argv[++i] ?? '';
+    if (a === "--help") out.help = true;
+    else if (a === "--verbose") out.verbose = true;
+    else if (a === "--dry-run") out.dryRun = true;
+    else if (a === "--apply") out.apply = true;
+    else if (a === "--menu-json-path") out.menuJsonPath = argv[++i] ?? "";
+    else if (a === "--workspaces-dir") out.workspacesDir = argv[++i] ?? "";
+    else if (a === "--menu-name") out.menuName = argv[++i] ?? "";
+    else if (a === "--vscode-command") out.vscodeCommand = argv[++i] ?? "";
+    else if (a === "--extensions") out.extensions = argv[++i] ?? "";
     else {
       throw new Error(`Unknown argument: ${a}`);
     }
@@ -197,12 +195,12 @@ async function readMenuJson(
   verbose: boolean,
 ): Promise<{ raw: string; json: unknown }> {
   vlog(verbose, `Reading: ${menuJsonPath}`);
-  const raw = await fs.readFile(menuJsonPath, 'utf8');
+  const raw = await fs.readFile(menuJsonPath, "utf8");
   try {
     return { raw, json: JSON.parse(raw) };
   } catch (error) {
-    console.error('Failed to parse JSON from menu.json.');
-    console.error('First part of file for debugging:');
+    console.error("Failed to parse JSON from menu.json.");
+    console.error("First part of file for debugging:");
     console.error(safeJsonPreview(raw));
     throw error;
   }
@@ -231,7 +229,7 @@ async function listWorkspaceFiles(
     .filter((name) =>
       includeExtensions.some((ext) => name.toLowerCase().endsWith(ext)),
     )
-    .sort((a, b) => a.localeCompare(b, 'en'));
+    .sort((a, b) => a.localeCompare(b, "en"));
 
   vlog(verbose, `Found ${files.length} workspace file(s) in ${dir}`);
   return files.map((name) => path.join(dir, name));
@@ -252,7 +250,7 @@ function makeChildEntry(
   iconTheme: string,
 ): KandoChildEntry {
   return {
-    type: 'command',
+    type: "command",
     data: {
       command: `${vscodeCommand} ${workspaceFilePath}`,
       detached: true,
@@ -270,7 +268,7 @@ function makeChildEntry(
  * @returns {root is { type?: unknown, name?: unknown, children?: unknown[] }}
  */
 function isMenuRootObject(root: unknown): root is KandoRoot {
-  return typeof root === 'object' && root !== null;
+  return typeof root === "object" && root !== null;
 }
 
 /**
@@ -278,7 +276,7 @@ function isMenuRootObject(root: unknown): root is KandoRoot {
  * @returns {menu is { root?: unknown }}
  */
 function isMenuObject(menu: unknown): menu is KandoMenu {
-  return typeof menu === 'object' && menu !== null;
+  return typeof menu === "object" && menu !== null;
 }
 
 /**
@@ -294,8 +292,8 @@ function updateTargetMenu(
   children: KandoChildEntry[],
   verbose: boolean,
 ): { updatedIndex: number } {
-  if (typeof configJson !== 'object' || configJson === null) {
-    throw new Error('menu.json root is not an object');
+  if (typeof configJson !== "object" || configJson === null) {
+    throw new Error("menu.json root is not an object");
   }
   const menus = (configJson as KandoConfig).menus;
   if (!Array.isArray(menus)) {
@@ -314,7 +312,7 @@ function updateTargetMenu(
     const rootName = root.name;
     const rootType = root.type;
 
-    if (rootType === 'submenu' && rootName === menuName) {
+    if (rootType === "submenu" && rootName === menuName) {
       matches.push(i);
     }
   }
@@ -327,7 +325,7 @@ function updateTargetMenu(
   if (matches.length > 1) {
     throw new Error(
       `Multiple menus found with root.name="${menuName}". Refine the selector (e.g. rename the menu or adjust the script). Matches at indices: ${matches.join(
-        ', ',
+        ", ",
       )}`,
     );
   }
@@ -363,12 +361,12 @@ async function writeBackup(
 ): Promise<string> {
   const ts = new Date()
     .toISOString()
-    .replaceAll(':', '')
-    .replaceAll('-', '')
-    .replaceAll('.', '');
+    .replaceAll(":", "")
+    .replaceAll("-", "")
+    .replaceAll(".", "");
   const backupPath = `${menuJsonPath}.bak-${ts}`;
   vlog(verbose, `Writing backup: ${backupPath}`);
-  await fs.writeFile(backupPath, originalRaw, 'utf8');
+  await fs.writeFile(backupPath, originalRaw, "utf8");
   return backupPath;
 }
 
@@ -382,9 +380,9 @@ async function writeUpdatedMenu(
   updatedJson: unknown,
   verbose: boolean,
 ): Promise<void> {
-  const out = JSON.stringify(updatedJson, null, 2) + '\n';
+  const out = JSON.stringify(updatedJson, null, 2) + "\n";
   vlog(verbose, `Writing updated file: ${menuJsonPath}`);
-  await fs.writeFile(menuJsonPath, out, 'utf8');
+  await fs.writeFile(menuJsonPath, out, "utf8");
 }
 
 /**
@@ -405,7 +403,7 @@ function summariseChange(
     afterCount: afterChildren.length,
     beforeNames: (Array.isArray(beforeChildren) ? beforeChildren : [])
       .map((child: unknown) =>
-        isMenuRootObject(child) && typeof child.name === 'string'
+        isMenuRootObject(child) && typeof child.name === "string"
           ? child.name
           : null,
       )
@@ -429,36 +427,38 @@ async function main(): Promise<void> {
 
   if (!apply && !dryRun) {
     printHelp();
-    console.error('\nError: you must pass either --dry-run or --apply.');
+    console.error("\nError: you must pass either --dry-run or --apply.");
     process.exit(2);
   }
 
   const menuJsonPath = expandHome(
-    typeof args.menuJsonPath === 'string' && args.menuJsonPath.length > 0
+    typeof args.menuJsonPath === "string" && args.menuJsonPath.length > 0
       ? args.menuJsonPath
       : DEFAULTS.menuJsonPath,
   );
 
-  const workspacesDir = expandHome(
-    typeof args.workspacesDir === 'string' && args.workspacesDir.length > 0
-      ? args.workspacesDir
-      : DEFAULTS.workspacesDir,
-  );
+  if (
+    typeof args.workspacesDir !== "string" ||
+    args.workspacesDir.length === 0
+  ) {
+    throw new Error("--workspaces-dir is required (no default directory)");
+  }
+  const workspacesDir = expandHome(args.workspacesDir);
 
   const menuName =
-    typeof args.menuName === 'string' && args.menuName.length > 0
+    typeof args.menuName === "string" && args.menuName.length > 0
       ? args.menuName
       : DEFAULTS.menuName;
 
   const vscodeCommand =
-    typeof args.vscodeCommand === 'string' && args.vscodeCommand.length > 0
+    typeof args.vscodeCommand === "string" && args.vscodeCommand.length > 0
       ? args.vscodeCommand
       : DEFAULTS.vscodeCommand;
 
   const includeExtensions =
-    typeof args.extensions === 'string' && args.extensions.length > 0
+    typeof args.extensions === "string" && args.extensions.length > 0
       ? parseCommaList(args.extensions).map((e) =>
-          e.startsWith('.') ? e : `.${e}`,
+          e.startsWith(".") ? e : `.${e}`,
         )
       : DEFAULTS.includeExtensions;
 
@@ -480,7 +480,7 @@ async function main(): Promise<void> {
 
   const children = workspaceFiles.map((fullPath) => {
     const base = path.basename(fullPath);
-    const name = base.replace(/\.[^.]+$/, ''); // strip last extension
+    const name = base.replace(/\.[^.]+$/, ""); // strip last extension
     return makeChildEntry(
       vscodeCommand,
       fullPath,
@@ -499,7 +499,7 @@ async function main(): Promise<void> {
         if (!isMenuObject(menu) || !isMenuRootObject(menu.root)) {
           return false;
         }
-        return menu.root.type === 'submenu' && menu.root.name === menuName;
+        return menu.root.type === "submenu" && menu.root.name === menuName;
       });
       if (
         isMenuObject(target) &&
@@ -520,11 +520,11 @@ async function main(): Promise<void> {
     `Menu "${menuName}": children ${change.beforeCount} -> ${change.afterCount}`,
   );
   if (verbose) {
-    console.log('New entries:', change.afterNames);
+    console.log("New entries:", change.afterNames);
   }
 
   if (dryRun) {
-    console.log('\n--dry-run: not writing any files.');
+    console.log("\n--dry-run: not writing any files.");
     process.exit(0);
   }
 
@@ -538,7 +538,7 @@ async function main(): Promise<void> {
 }
 
 main().catch((e: unknown) => {
-  console.error('\nFatal error:');
+  console.error("\nFatal error:");
   console.error(e instanceof Error ? (e.stack ?? e.message) : String(e));
   process.exit(1);
 });
