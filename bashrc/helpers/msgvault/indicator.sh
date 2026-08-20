@@ -7,13 +7,12 @@ SCRIPT_NAME="$(basename "$0")"
 usage() {
   cat <<USAGE
 Usage:
-  ${SCRIPT_NAME} [--issues-file <path>] [--settings-file <path>] [--gmail-credentials <path>] [--unread-file <path>] [--log-dir <path>] [--healthy-window-minutes <number>] [--show-unread] [--verbose]
+  ${SCRIPT_NAME} [--issues-file <path>] [--settings-file <path>] [--unread-file <path>] [--log-dir <path>] [--healthy-window-minutes <number>] [--show-unread] [--verbose]
   ${SCRIPT_NAME} --help
 
 Options:
   --issues-file <path>        TOML issues file to read (default: ~/.config/polybar/issues.toml).
   --settings-file <path>      Polybar settings INI file used for colours (default: ~/.dotfiles/configs/system/polybar/configs/01-colours.ini).
-  --gmail-credentials <path>  Gmail API credentials file path for optional unread lookup.
   --unread-file <path>        Optional plain-text file containing a numeric unread count.
   --log-dir <path>            Log directory used to determine last msgvault run freshness (default: ~/.logs/msgvault).
   --healthy-window-minutes <number>
@@ -48,10 +47,6 @@ get_unread_count() {
   elif [[ -f "${UNREAD_FILE}" ]]; then
     unread_raw="$(head -n1 "${UNREAD_FILE}" | tr -d '[:space:]')"
     log_debug "Using unread count from unread file: ${UNREAD_FILE}"
-  elif command -v gmailctl >/dev/null 2>&1 && [[ -f "${GMAIL_CREDENTIALS}" ]]; then
-    unread_raw="$({ timeout 5s gmailctl unread-count --credentials "${GMAIL_CREDENTIALS}"; } 2>/dev/null || true)"
-    unread_raw="$(printf '%s' "${unread_raw}" | head -n1 | tr -d '[:space:]')"
-    log_debug "Attempted unread lookup via gmailctl"
   fi
 
   if [[ "${unread_raw}" =~ ^[0-9]+$ ]]; then
@@ -105,8 +100,7 @@ seconds_since_last_run() {
 
 ISSUES_FILE="${HOME}/.config/polybar/issues.toml"
 SETTINGS_FILE="${HOME}/.dotfiles/configs/system/polybar/configs/01-colours.ini"
-GMAIL_CREDENTIALS="${HOME}/github.com/davidsneighbour/dotfiles/protected/gmailctl/credentials.json"
-UNREAD_FILE="${MSGVAULT_UNREAD_FILE:-${HOME}/.cache/gmailctl/unread_count}"
+UNREAD_FILE="${MSGVAULT_UNREAD_FILE:-${HOME}/.cache/msgvault/unread_count}"
 LOG_DIR="${HOME}/.logs/msgvault"
 HEALTHY_WINDOW_MINUTES="5"
 SHOW_UNREAD="0"
@@ -136,16 +130,6 @@ while [[ $# -gt 0 ]]; do
       exit 1
     }
     SETTINGS_FILE="$1"
-    shift
-    ;;
-  --gmail-credentials)
-    shift
-    [[ $# -gt 0 ]] || {
-      echo "ERROR: --gmail-credentials requires a value" >&2
-      usage >&2
-      exit 1
-    }
-    GMAIL_CREDENTIALS="$1"
     shift
     ;;
   --unread-file)

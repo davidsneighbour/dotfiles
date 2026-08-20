@@ -58,7 +58,6 @@ CLI option notes:
 
 * --issues-file PATH — TOML issues file to read; default is `~/.config/polybar/issues.toml`.
 * --settings-file PATH — Polybar colour settings file.
-* --gmail-credentials PATH — Gmail API credentials file for optional unread lookup.
 * --unread-file PATH — optional plain-text unread count file.
 * --log-dir PATH — msgvault log directory; default is `~/.logs/msgvault`.
 * --healthy-window-minutes NUMBER — freshness window in minutes; default is 5.

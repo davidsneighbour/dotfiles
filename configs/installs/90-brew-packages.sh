@@ -7,7 +7,6 @@ brew trust dart-lang/dart
 brew install gum \
   biome \
   lychee \
-  gmailctl \
   llmfit \
   osv-scanner \
   snitch \
