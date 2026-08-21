@@ -1,5 +1,51 @@
 # Changelog
 
+## [3004.7.0](https://github.com/davidsneighbour/dotfiles/compare/v3004.6.1...v3004.7.0) (2026-08-21)
+
+### Feat
+
+* add devilspie2 configuration ([e17da0c](https://github.com/davidsneighbour/dotfiles/commit/e17da0c1c613d4c5edabd0671680750775622470))
+* **ai-usage:** add WIP usage helper scaffold ([9bff0a2](https://github.com/davidsneighbour/dotfiles/commit/9bff0a2b8ecefc5c98207914092f90ad7108076f)), references [#565](https://github.com/davidsneighbour/dotfiles/issues/565)
+* **check:** expand repo-wide check command to cover the expected gates ([5d6f145](https://github.com/davidsneighbour/dotfiles/commit/5d6f145b2ff356a4706bf73fdac13654601189aa)), closes [#503](https://github.com/davidsneighbour/dotfiles/issues/503)
+* **hooks:** spell-check commit messages with cspell ([dad3b9d](https://github.com/davidsneighbour/dotfiles/commit/dad3b9d76c80e805c3f08e4adfc49661a4e2d73d)), closes [#494](https://github.com/davidsneighbour/dotfiles/issues/494)
+* **hostinformation:** add Raspberry Pi dump helper ([2d45707](https://github.com/davidsneighbour/dotfiles/commit/2d45707cd1e5f30e2aad0ab0653fc89498c2e69a))
+* **installs:** make install scripts safe, inspectable CLI commands ([0cb9bee](https://github.com/davidsneighbour/dotfiles/commit/0cb9bee1fe24ffcf15852c0d78f95a52ac7db401)), closes [#506](https://github.com/davidsneighbour/dotfiles/issues/506)
+* **logs-cleanup:** make cleanup.ts extensible to non-log locations ([e744db7](https://github.com/davidsneighbour/dotfiles/commit/e744db7d0ed5b2b1eb527039095762780a11caab)), closes [#518](https://github.com/davidsneighbour/dotfiles/issues/518)
+* **release:** generalize version-bump hook into a configurable script ([9e4cc3e](https://github.com/davidsneighbour/dotfiles/commit/9e4cc3ec288c6930d8ff8f4b0d5aad195145b1be)), closes [#489](https://github.com/davidsneighbour/dotfiles/issues/489)
+
+### Fix
+
+* **bashrc:** activate _programs loader, fix interactive-shell violation ([47c2524](https://github.com/davidsneighbour/dotfiles/commit/47c2524502f873df4fb7612ad5a423f3f799c2c9)), closes [#501](https://github.com/davidsneighbour/dotfiles/issues/501)
+* **cronjobs:** give synch_downloads.sh timestamped logs and portable job paths ([753ddaa](https://github.com/davidsneighbour/dotfiles/commit/753ddaacf2b0595a35703c10df328b325d00d4a5)), closes [#508](https://github.com/davidsneighbour/dotfiles/issues/508)
+* **dotbot:** quote HOME paths and narrow logs directory permissions ([77837f1](https://github.com/davidsneighbour/dotfiles/commit/77837f171bd4680cc9120d3cebae34ac1df1fdc9)), closes [#509](https://github.com/davidsneighbour/dotfiles/issues/509)
+* **installs:** replace curl-pipe installers with download-then-run ([3bcfca2](https://github.com/davidsneighbour/dotfiles/commit/3bcfca2e13634f0bc07eb00824bf5ee71542a70f)), closes [#517](https://github.com/davidsneighbour/dotfiles/issues/517)
+* **lint-staged:** scope tsc-files and jsonnetfmt to staged files ([1b00f41](https://github.com/davidsneighbour/dotfiles/commit/1b00f41a7a6266dff28a3344cc48d7642e2339a6)), closes [#495](https://github.com/davidsneighbour/dotfiles/issues/495)
+* **paths:** replace safe hard-coded home paths and document exceptions ([3a75642](https://github.com/davidsneighbour/dotfiles/commit/3a75642f8428e18da2c2bce46f8737f0d9d0ad47)), closes [#505](https://github.com/davidsneighbour/dotfiles/issues/505)
+
+### Docs
+
+* **agents:** document token and secret handling policy ([1c9d289](https://github.com/davidsneighbour/dotfiles/commit/1c9d28982ab637885b4a103ac4cd2fb7b7c1a217)), closes [#520](https://github.com/davidsneighbour/dotfiles/issues/520)
+* **configs:** add top-level inventory and configs/system subdir map ([6481bc7](https://github.com/davidsneighbour/dotfiles/commit/6481bc7dda4b6964b665f947e8a5a04cd0bc486d)), closes [#498](https://github.com/davidsneighbour/dotfiles/issues/498)
+* **helpers:** fix stale folder index and add missing sections ([722a06c](https://github.com/davidsneighbour/dotfiles/commit/722a06c41419cc19e09472f3e578c29bd931f03b)), closes [#499](https://github.com/davidsneighbour/dotfiles/issues/499)
+* **setup:** fix quick-install entrypoint documentation ([cdde936](https://github.com/davidsneighbour/dotfiles/commit/cdde936c2c9810d5c6315968de370b86ea3bec6c)), closes [#497](https://github.com/davidsneighbour/dotfiles/issues/497)
+* **setup:** merge accurate install steps into setup.md ([3650e2d](https://github.com/davidsneighbour/dotfiles/commit/3650e2d592df154529ee41083fc8a7313208c5dc)), closes [#497](https://github.com/davidsneighbour/dotfiles/issues/497)
+
+### Build
+
+* **config:** update secretlint configuration ([ae25f7a](https://github.com/davidsneighbour/dotfiles/commit/ae25f7ae0775f1868718b81d28cc1f45a7e8c0e5))
+* **launchers:** update launchers for chatgpt ([5225eee](https://github.com/davidsneighbour/dotfiles/commit/5225eee605224e79f9187dad687d9695e1864cd2))
+* **vscode:** update workspace configuration ([a7d9eef](https://github.com/davidsneighbour/dotfiles/commit/a7d9eef0afde9fb668de815d075969875f3fe9c8))
+
+### Chore
+
+* **msgvault:** remove stale gmailctl integration ([2adcc61](https://github.com/davidsneighbour/dotfiles/commit/2adcc6187faae4abb632d9fa9e0c2dd2c9709201)), closes [#514](https://github.com/davidsneighbour/dotfiles/issues/514)
+* **project-tracking:** centralize local TODO/PROJECT files into issue tracker ([89517ff](https://github.com/davidsneighbour/dotfiles/commit/89517ffae227b01218bd9a9298e0b6ae34229d10)), closes [#519](https://github.com/davidsneighbour/dotfiles/issues/519)
+* **workspaces:** remove dead configs/workspaces references ([2553067](https://github.com/davidsneighbour/dotfiles/commit/2553067593519b9fcfa136859fc00d1919f47c7d)), closes [#500](https://github.com/davidsneighbour/dotfiles/issues/500)
+
+### Config
+
+* **fix:** cleanup chatgpt launchers ([776d82e](https://github.com/davidsneighbour/dotfiles/commit/776d82ea497ba678889ae4e1510ced626e0cf94f))
+
 ## [3004.6.1](https://github.com/davidsneighbour/dotfiles/compare/v3004.6.0...v3004.6.1) (2026-08-19)
 
 ### Build
