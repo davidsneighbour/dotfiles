@@ -1,0 +1,9 @@
+[Unit]
+Description=Watch Devilspie2 configuration
+
+[Path]
+PathChanged=%h/.config/devilspie2
+Unit=devilspie2-restart.service
+
+[Install]
+WantedBy=default.target
