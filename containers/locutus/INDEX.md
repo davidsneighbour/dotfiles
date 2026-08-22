@@ -101,3 +101,9 @@ free unless there is a clear operational reason.
   intentionally when refreshing images.
 * Stirling PDF keeps local, untracked `logs`, `pipeline`, and `tessdata`
   folders beside the compose file.
+* Open WebUI's `WEBUI_SECRET_KEY` is supplied via a gitignored `.env` in
+  `containers/locutus/openwebui/` (template: `.env.template`). Auth and
+  signup are disabled intentionally because the host is private and
+  LAN-only; see the comment beside `WEBUI_AUTH` in its compose file.
+* Homepage's `HOMEPAGE_ALLOWED_HOSTS: "*"` is intentional and local-only;
+  see the comment beside it in its compose file.

@@ -13,4 +13,7 @@ services:
     environment:
       PUID: 1000
       PGID: 1000
+      # Wildcard is intentional and local-only: the host is reached under
+      # several local names/IPs (container name, LAN IP, Tailscale name) and
+      # is not exposed to the public internet.
       HOMEPAGE_ALLOWED_HOSTS: "*"

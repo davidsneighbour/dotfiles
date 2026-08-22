@@ -12,10 +12,12 @@ services:
     # https://docs.openwebui.com/reference/env-configuration
     environment:
       OLLAMA_BASE_URL: "http://host.docker.internal:11434"
+      # Auth and signup are disabled intentionally: this instance is bound to
+      # a private LAN-only host with no public exposure, so there is no
+      # untrusted network path that would need per-user login.
       WEBUI_AUTH: "False"
       ENABLE_SIGNUP: "False"
-      # secretlint-disable-next-line @secretlint/secretlint-rule-secp256k1-privatekey
-      WEBUI_SECRET_KEY: "5aed33e83d131dcdd71efb13952ac4f5bbfbc2eafff615c8a2bced2eb10b8dee"
+      WEBUI_SECRET_KEY: ${WEBUI_SECRET_KEY:?set WEBUI_SECRET_KEY in .env}
       USER_AGENT: "Mozilla/5.0 (Windows NT 11.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.1.7578.115 Safari/537.36"
       # Lower the timeout (default is 10 seconds) for faster failover
       # makes sense for local networks, but can be increased for remote servers
