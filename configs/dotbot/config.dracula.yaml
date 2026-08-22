@@ -10,6 +10,10 @@
     shell:
       quiet: false
       description: <<<<<<<<####### DESCRIPTION MISSING
+    link:
+      create: true
+      relink: true
+      force: true
 
 - shell:
     - /usr/bin/rm -rf ~/github.com/dracula

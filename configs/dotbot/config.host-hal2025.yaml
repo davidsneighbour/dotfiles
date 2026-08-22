@@ -9,6 +9,12 @@
 - plugins:
     - configs/dotbot/plugins/crontab.py
 
+- defaults:
+    link:
+      create: true
+      relink: true
+      force: true
+
 - link:
     ~/github.com/davidsneighbour/dotfiles/containers/hal2025/paperless/consume: /mnt/storage/Paperless/consume
 
@@ -26,4 +32,4 @@
 
     - cron: "0 4,9,14,19 * * *"
       comment: "restart claude usage counter"
-      command: /usr/bin/env bash -lc 'mkdir -p "$HOME/.logs" && claude -p "ping" --model haiku --no-session-persistence >> "$HOME/.logs/claude-warmup.log" 2>&1'
+      command: /usr/bin/env bash -lc 'mkdir -p "$HOME/.logs/claude-warmup" && claude -p "ping" --model haiku --no-session-persistence >> "$HOME/.logs/claude-warmup/$(date +\%Y\%m\%d-\%H\%M\%S).log" 2>&1'
