@@ -29,6 +29,20 @@ function windowedLimit(usedPercent: number): UsageLimit {
   };
 }
 
+function weeklyLimit(usedPercent: number): UsageLimit {
+  return {
+    id: "weekly",
+    label: "weekly",
+    usedPercent,
+    remainingPercent: 100 - usedPercent,
+    window: {
+      type: "calendar",
+      startedAt: "2026-08-17T00:00:00.000Z",
+      resetsAt: "2026-08-24T00:00:00.000Z",
+    },
+  };
+}
+
 const claudeFixture = await readFile(
   join(dirname, "fixtures", "claude", "usage.json"),
   "utf8",
@@ -67,6 +81,21 @@ assert.equal(claudeJsonResultLimits[1]?.usedPercent, 57);
 assert.equal(
   claudeJsonResultLimits[1]?.window?.resetsAt,
   `${fixtureYear}-08-21T08:00:00.000Z`,
+);
+
+// Claude's /usage text only reports a reset time, not a window start. The
+// parser must derive startedAt from the known 5-hour/weekly window
+// durations so pace-based health scoring can run instead of falling back to
+// absolute-only classification for every Claude limit.
+assert.equal(claudeJsonResultLimits[0]?.window?.durationSeconds, 5 * 3_600);
+assert.equal(
+  claudeJsonResultLimits[0]?.window?.startedAt,
+  `${fixtureYear}-08-20T04:00:00.000Z`,
+);
+assert.equal(claudeJsonResultLimits[1]?.window?.durationSeconds, 7 * 86_400);
+assert.equal(
+  claudeJsonResultLimits[1]?.window?.startedAt,
+  `${fixtureYear}-08-14T08:00:00.000Z`,
 );
 
 const onPace = classifyLimitHealth(
@@ -112,6 +141,88 @@ const lowRemaining = classifyLimitHealth(
 );
 assert.equal(lowRemaining.status, "critical");
 assert.equal(lowRemaining.basis, "absolute");
+
+// Regression: `claude --output-format json` can leak an unrelated MCP
+// diagnostic line onto stdout after the JSON payload (observed live as
+// "Client.listTools() called but server does not advertise tools
+// capability - returning empty list"). That trailing noise must not break
+// JSON parsing and fall through to scanning the raw envelope as text, which
+// previously misread every unrelated percentage in the /usage "What's
+// contributing to your limits usage?" breakdown (skill/MCP/context stats)
+// as bogus extra quota windows.
+const claudeOutputWithTrailingNoise = [
+  JSON.stringify({
+    result:
+      "You are currently using your subscription to power your Claude Code usage\n\n" +
+      "Current session: 4% used · resets Aug 22, 7:59pm (Asia/Bangkok)\n" +
+      "Current week (all models): 2% used · resets Aug 28, 2:59pm (Asia/Bangkok)\n\n" +
+      "What's contributing to your limits usage?\n" +
+      "Last 24h · 135 requests · 4 sessions\n" +
+      "  Top skills: /ksc-dropbox-setup 5%\n" +
+      "  Top MCP servers: plugin:playwright:playwright 19%\n" +
+      "Last 7d · 3804 requests · 124 sessions\n" +
+      "  57% of your usage was at >150k context\n" +
+      "  Top skills: /dnb-work-on-issue 32%, /dnb-dependency-maintenance 2%",
+  }),
+  "Client.listTools() called but server does not advertise tools capability - returning empty list",
+].join("\n");
+const noiseTolerantLimits = parseProviderOutput(claudeOutputWithTrailingNoise);
+assert.equal(noiseTolerantLimits.length, 2);
+assert.equal(noiseTolerantLimits[0]?.label, "session");
+assert.equal(noiseTolerantLimits[0]?.usedPercent, 4);
+assert.equal(noiseTolerantLimits[1]?.label, "weekly");
+assert.equal(noiseTolerantLimits[1]?.usedPercent, 2);
+
+// Regression: Claude reports reset times both as a whole hour ("resets Aug
+// 20, 4pm") and, observed live, with minutes ("resets Aug 22, 7:59pm"). The
+// minutes form previously failed to match and silently dropped resetsAt.
+const claudeMinuteResetLimits = parseProviderOutput(
+  JSON.stringify({
+    result:
+      "Current session: 5% used · resets Aug 22, 7:59pm (Asia/Bangkok)\nCurrent week (all models): 2% used · resets Aug 28, 2:59pm (Asia/Bangkok)",
+  }),
+);
+assert.equal(
+  claudeMinuteResetLimits[0]?.window?.resetsAt,
+  `${fixtureYear}-08-22T12:59:00.000Z`,
+);
+assert.equal(
+  claudeMinuteResetLimits[1]?.window?.resetsAt,
+  `${fixtureYear}-08-28T07:59:00.000Z`,
+);
+
+// Weekly window boundary tests, mirroring the 5-hour cases above but over a
+// 7-day window (4 days elapsed of 7 = ~57% elapsed).
+const weeklyOnPace = classifyLimitHealth(
+  weeklyLimit(57),
+  thresholds,
+  new Date("2026-08-21T00:00:00.000Z"),
+);
+assert.equal(weeklyOnPace.status, "healthy");
+assert.equal(weeklyOnPace.basis, "pace");
+
+const weeklySlightlyAhead = classifyLimitHealth(
+  weeklyLimit(70),
+  thresholds,
+  new Date("2026-08-21T00:00:00.000Z"),
+);
+assert.equal(weeklySlightlyAhead.status, "elevated");
+
+const weeklyCriticallyAhead = classifyLimitHealth(
+  weeklyLimit(85),
+  thresholds,
+  new Date("2026-08-21T00:00:00.000Z"),
+);
+assert.equal(weeklyCriticallyAhead.status, "critical");
+
+// A reset time that has already passed must not produce a pace score based
+// on a negative or zero remaining window; fall back to absolute health.
+const resetAlreadyPassed = classifyLimitHealth(
+  windowedLimit(80),
+  thresholds,
+  new Date("2026-08-20T13:30:00.000Z"),
+);
+assert.equal(resetAlreadyPassed.basis, "absolute");
 
 const unknownStart = classifyLimitHealth(
   {

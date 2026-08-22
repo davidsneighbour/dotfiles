@@ -175,6 +175,12 @@ Investigate the data behind:
 /usage
 ```
 
+Confirmed against a real authenticated `claude` outside the sandbox: the
+JSON envelope's `result` field is the only non-interactive quota source;
+there is no separate structured API. See `DOCUMENTATION.md` for the two
+upstream quirks (stray stdout diagnostics, inconsistent reset-time format)
+that had to be handled defensively as a result.
+
 Implement:
 
 ```ts

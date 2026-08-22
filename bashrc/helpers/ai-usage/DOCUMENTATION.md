@@ -72,6 +72,39 @@ Provider failures are isolated. If one provider is unavailable, the other can
 still render. The command exits non-zero when every configured provider fails or
 when configuration is invalid.
 
+## Claude code provider details
+
+`claude -p /usage --output-format json --no-session-persistence` is the only
+confirmed non-interactive Claude Code usage source. There is no separate
+structured quota API: the JSON envelope's `result` field is the same
+human-readable text shown by `/usage` interactively (e.g. `Current session:
+4% used · resets Aug 22, 7:59pm (Asia/Bangkok)`), including a variable
+"What's contributing to your limits usage?" breakdown of unrelated
+percentages (skills, MCP servers, context usage). Parsing must extract only
+the two quota lines (`Current session`, `Current week`) and ignore the rest.
+
+Two upstream quirks were confirmed against a real authenticated `claude`
+outside the sandbox and are handled defensively rather than assumed away:
+
+* `claude --output-format json` can leak an unrelated MCP diagnostic line
+  (e.g. `Client.listTools() called but server does not advertise tools
+  capability - returning empty list`) onto stdout *after* the JSON payload.
+  `parseProviderOutput` retries `JSON.parse` against just the first line
+  before falling back to whole-blob text parsing, so this noise can't break
+  parsing or (worse) get scanned as if it were quota text.
+* Reset times are reported inconsistently — sometimes a whole hour
+  (`resets Aug 20, 4pm`), sometimes with minutes (`resets Aug 22, 7:59pm`).
+  `parseResetAt`'s minute group is optional to match both.
+
+Claude does not report a window start time, only a reset time, for either
+window. `startedAt` is derived as `resetsAt - durationSeconds` using the
+publicly documented quota windows: a 5-hour rolling session limit and a
+7-day weekly limit. This is what lets health scoring use pace
+(`usageRatio / elapsedRatio`) instead of falling back to absolute-only
+classification for every Claude limit. If Claude ever reports quota windows
+of a different length, the label-based duration table in
+`src/providers/provider.ts` (`KNOWN_WINDOW_DURATIONS_SECONDS`) needs updating.
+
 ## Health model
 
 Usage health is based on quota pressure, not raw percentage consumed. For
@@ -93,7 +126,7 @@ When timing data is incomplete, it falls back to absolute remaining quota.
 * `runCommand` (`src/commands/run-command.ts`) — runs provider commands without shell interpolation and with a timeout.
 * `commandFailureMessage` (`src/commands/run-command.ts`) — normalises command failure details for provider errors.
 * `runDoctor` (`src/commands/doctor.ts`) — runs provider executable, authentication, and retrieval checks.
-* `parseProviderOutput` (`src/providers/provider.ts`) — extracts normalised limits from JSON or fallback text output.
+* `parseProviderOutput` (`src/providers/provider.ts`) — extracts normalised limits from JSON or fallback text output, tolerating trailing non-JSON diagnostic lines.
 * `ClaudeCodeProvider.collect` (`src/providers/claude-code.ts`) — retrieves Claude Code usage.
 * `ClaudeCodeProvider.doctor` (`src/providers/claude-code.ts`) — checks Claude Code availability and retrieval.
 * `CodexProvider.collect` (`src/providers/codex.ts`) — retrieves Codex usage.
