@@ -41,7 +41,7 @@ enough. Most files are installed onto the workstation as symlinks by
 | `i3` | i3 window manager config (mostly superseded; see `configs/system/i3/old/` for the prior config kept for reference). | Yes — `~/.config/i3` |
 | `launchers` | Desktop launcher (`.desktop`) files. | Yes — `~/.local/share/applications` |
 | `monitor` | Standalone XFCE monitor-layout debug/fix scripts, run manually. | No — ad hoc scripts, not linked. |
-| `npm` | `npm-check-updates` config and default global npm packages list. | Yes — `~/.ncurc.js`, `~/.nvm/default-packages` |
+| `npm` | `npm-check-updates` config, default global npm packages list, and `install-default-packages.ts` helper for installing that list. | Yes — `~/.ncurc.js`, `~/.nvm/default-packages` |
 | `polybar` | Polybar bar modules/scripts/start script. | Yes — `~/.config/polybar` |
 | `rofi` | Rofi launcher config and scripts (window switcher, workspace/project picker). | Yes — `~/.config/rofi` |
 | `starship` | Starship prompt config. | Yes — `~/.config/starship.toml` |

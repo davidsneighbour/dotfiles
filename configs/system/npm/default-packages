@@ -3,6 +3,7 @@
 @google/gemini-cli
 @humanwhocodes/crosspost
 @openai/codex
+defuddle
 fixpack
 http-server
 jsonnet
