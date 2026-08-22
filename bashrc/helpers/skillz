@@ -9,10 +9,12 @@ set -Eeuo pipefail
 SKILL_REPOSITORIES=(
   "/home/patrick/github.com/davidsneighbour/ai"
   "/home/patrick/github.com/davidsneighbour/clerkwork"
+  "/home/patrick/github.com/davidsneighbour/gallimaufry"
   "/home/patrick/github.com/davidsneighbour/gazetteer"
   "/home/patrick/github.com/davidsneighbour/idiolect"
   "/home/patrick/github.com/davidsneighbour/patternbook"
   "/home/patrick/github.com/davidsneighbour/posthaste"
+  "/home/patrick/github.com/davidsneighbour/skills"
 )
 
 SKILL_AGENTS=(
