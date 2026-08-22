@@ -8,10 +8,6 @@
       "type": "http",
       "url": "https://gitmcp.io/docs"
     },
-    "raindrop.io": {
-      "command": "npx",
-      "args": ["-y", "mcp-remote", "https://api.raindrop.io/rest/v2/ai/mcp"]
-    },
     "netlify": {
       "command": "npx",
       "args": ["-y", "@netlify/mcp"]

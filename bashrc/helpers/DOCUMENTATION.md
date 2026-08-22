@@ -26,7 +26,6 @@ Bash helpers are standalone helper commands unless noted otherwise. Several Type
 * [`mailbox-monitor/`](./mailbox-monitor/README.md)
 * [`msgvault/`](./msgvault/DOCUMENTATION.md)
 * [`packages/`](./packages/DOCUMENTATION.md)
-* [`raindrop.io/`](./raindrop.io/DOCUMENTATION.md)
 * [`remarkable/`](./remarkable/DOCUMENTATION.md)
 * [`tests/`](#tests)
 * [`theme/`](./theme/DOCUMENTATION.md)
@@ -464,12 +463,6 @@ See [`packages/DOCUMENTATION.md`](./packages/DOCUMENTATION.md).
 
 * `packages/README.md`: Existing guide for package archive helper configuration.
 * `packages/create.sh`: Creates zip archives from line-oriented `[packages.NAME]` TOML sections.
-
-### `raindrop.io/`
-
-See [`raindrop.io/DOCUMENTATION.md`](./raindrop.io/DOCUMENTATION.md).
-
-* `raindrop.io/getTags.ts`: Fetches and prints tags for a Raindrop.io collection.
 
 ### `remarkable/`
 

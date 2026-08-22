@@ -78,7 +78,6 @@ Important grouped docs:
 * [`helpers/logs/DOCUMENTATION.md`](./helpers/logs/DOCUMENTATION.md)
 * [`helpers/msgvault/DOCUMENTATION.md`](./helpers/msgvault/DOCUMENTATION.md)
 * [`helpers/packages/DOCUMENTATION.md`](./helpers/packages/DOCUMENTATION.md)
-* [`helpers/raindrop.io/DOCUMENTATION.md`](./helpers/raindrop.io/DOCUMENTATION.md)
 * [`helpers/remarkable/DOCUMENTATION.md`](./helpers/remarkable/DOCUMENTATION.md)
 * [`helpers/theme/DOCUMENTATION.md`](./helpers/theme/DOCUMENTATION.md)
 * [`helpers/workspace/DOCUMENTATION.md`](./helpers/workspace/DOCUMENTATION.md)
