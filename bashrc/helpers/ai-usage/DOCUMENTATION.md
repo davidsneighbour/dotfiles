@@ -105,6 +105,29 @@ classification for every Claude limit. If Claude ever reports quota windows
 of a different length, the label-based duration table in
 `src/providers/provider.ts` (`KNOWN_WINDOW_DURATIONS_SECONDS`) needs updating.
 
+## Codex provider details
+
+`codex-cli 0.149.0` does not currently expose a confirmed non-interactive
+quota source. The checked CLI surface has `codex doctor --json`, which reports
+installation, authentication, configuration, reachability, and local state
+health, but it does not include quota, limit, usage-window, reset, or remaining
+allowance fields. `codex --help` lists no `status` or `usage` subcommand;
+asking for `codex status --help` or `codex usage --help` falls through to the
+main interactive CLI help. `codex status` itself is not used because it enters
+the interactive TUI path instead of returning parseable usage data.
+
+The current adapter therefore treats Codex as authenticated only when
+`codex doctor --json` reports `auth.credentials.status = "ok"`, then returns an
+explicit unsupported-usage error with no invented quota windows. `ai-usage
+doctor` still reports Codex executable and authentication state, while marking
+usage retrieval as unsupported.
+
+A Playwright-based web scrape was also checked and rejected as a helper source:
+opening `https://chatgpt.com/` from the automation browser returned a `403`
+`Just a moment...` page. Even if that path sometimes works locally, it depends
+on browser session/web UI state rather than the local authenticated `codex`
+command, so it is not stable enough for this CLI helper.
+
 ## Health model
 
 Usage health is based on quota pressure, not raw percentage consumed. For

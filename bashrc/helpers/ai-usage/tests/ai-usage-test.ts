@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+import type { CommandResult } from "../src/commands/run-command.ts";
+import { CodexProvider, getDoctorState } from "../src/providers/codex.ts";
 import { parseProviderOutput } from "../src/providers/provider.ts";
 import { renderTerminalReport, stripAnsi } from "../src/renderers/terminal.ts";
 import type { HealthThresholds, UsageLimit } from "../src/types.ts";
@@ -40,6 +42,18 @@ function weeklyLimit(usedPercent: number): UsageLimit {
       startedAt: "2026-08-17T00:00:00.000Z",
       resetsAt: "2026-08-24T00:00:00.000Z",
     },
+  };
+}
+
+function commandResult(overrides: Partial<CommandResult>): CommandResult {
+  return {
+    ok: true,
+    command: "codex",
+    args: [],
+    stdout: "",
+    stderr: "",
+    timedOut: false,
+    ...overrides,
   };
 }
 
@@ -239,6 +253,82 @@ const unknownStart = classifyLimitHealth(
 );
 assert.equal(unknownStart.status, "elevated");
 assert.equal(unknownStart.basis, "absolute");
+
+const codexAuthenticatedDoctor = await getDoctorState(async () =>
+  commandResult({
+    stdout: JSON.stringify({
+      checks: {
+        "auth.credentials": {
+          status: "ok",
+          summary: "auth is configured",
+        },
+      },
+    }),
+  }),
+);
+assert.equal(codexAuthenticatedDoctor.authenticated, true);
+
+const codexUnauthenticatedDoctor = await getDoctorState(async () =>
+  commandResult({
+    stdout: JSON.stringify({
+      checks: {
+        "auth.credentials": {
+          status: "fail",
+          summary: "auth is missing",
+        },
+      },
+    }),
+  }),
+);
+assert.equal(codexUnauthenticatedDoctor.authenticated, false);
+assert.equal(codexUnauthenticatedDoctor.error, "auth is missing");
+
+const missingCodexProvider = new CodexProvider(
+  async () => commandResult({}),
+  async () => false,
+);
+const missingCodex = await missingCodexProvider.collect();
+assert.equal(missingCodex.authenticated, false);
+assert.equal(missingCodex.error, "codex executable not found");
+
+const unauthenticatedCodexProvider = new CodexProvider(
+  async () =>
+    commandResult({
+      stdout: JSON.stringify({
+        checks: {
+          "auth.credentials": {
+            status: "fail",
+            summary: "login required",
+          },
+        },
+      }),
+    }),
+  async () => true,
+);
+const unauthenticatedCodex = await unauthenticatedCodexProvider.collect();
+assert.equal(unauthenticatedCodex.authenticated, false);
+assert.equal(unauthenticatedCodex.error, "login required");
+
+const unsupportedCodexProvider = new CodexProvider(
+  async () =>
+    commandResult({
+      stdout: JSON.stringify({
+        checks: {
+          "auth.credentials": {
+            status: "ok",
+          },
+        },
+      }),
+    }),
+  async () => true,
+);
+const unsupportedCodex = await unsupportedCodexProvider.collect();
+assert.equal(unsupportedCodex.authenticated, true);
+assert.equal(unsupportedCodex.limits.length, 0);
+assert.equal(
+  unsupportedCodex.error,
+  "Codex does not expose a non-interactive usage source yet",
+);
 
 const rendered = renderTerminalReport(
   {

@@ -203,13 +203,24 @@ Investigate the data behind:
 /status
 ```
 
+Current verified state for `codex-cli 0.149.0`: no non-interactive quota source
+is exposed. `codex doctor --json` confirms auth/install/config state but has no
+quota payload, `codex --help` lists no `status` or `usage` subcommand, and
+`codex status --help` / `codex usage --help` fall through to the main
+interactive CLI help. `codex status` is unsuitable because it enters the TUI
+path. A Playwright attempt against `https://chatgpt.com/` returned a `403`
+`Just a moment...` page, and in any case would depend on browser/web state
+rather than the local `codex` CLI authentication this helper is scoped to use.
+
 Implement:
 
 ```ts
 CodexProvider
 ```
 
-with the same responsibilities.
+with the same responsibilities once Codex exposes a stable usage source. Until
+then, the adapter must verify executable/authentication state and report usage
+retrieval as unsupported instead of inventing quota windows.
 
 Do not assume that Codex or Claude will always expose exactly a 5-hour and weekly window.
 
@@ -716,15 +727,17 @@ unknown start time
 
 1. Determine the most stable machine-readable Claude Code usage source.
 2. Capture representative Claude responses.
-3. Determine the most stable machine-readable Codex usage source.
-4. Capture representative Codex responses.
+3. Determine the most stable machine-readable Codex usage source. Current
+   result for `codex-cli 0.149.0`: none confirmed.
+4. Capture representative Codex responses once a usage source exists.
 
 Do this investigation before writing substantial parser code.
 
 ## Phase 3 — provider adapters
 
  1. Implement Claude Code adapter.
- 2. Implement Codex adapter.
+ 2. Implement Codex adapter. Current adapter reports executable/authentication
+    state and explicit unsupported usage retrieval until a stable source exists.
  3. Add authentication and availability detection.
  4. Add fixture-based parser tests.
 
@@ -756,7 +769,9 @@ Do this investigation before writing substantial parser code.
 ## Phase 7 — hardening
 
  1. Test against real authenticated Claude Code.
- 2. Test against real authenticated Codex.
+ 2. Test against real authenticated Codex. Current verification covers
+    `codex-cli 0.149.0` executable/authentication state and confirms no
+    non-interactive usage source was exposed.
  3. Verify reset calculations against provider UI.
  4. Verify colours at representative usage/time combinations.
  5. Document provider-specific data acquisition.

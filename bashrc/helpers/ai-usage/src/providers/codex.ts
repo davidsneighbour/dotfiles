@@ -4,31 +4,66 @@ import { commandFailureMessage, runCommand } from "../commands/run-command.ts";
 import type { UsageProviderResult } from "../types.ts";
 import { type ProviderDoctorResult, type UsageProvider } from "./provider.ts";
 
+type CommandRunner = typeof runCommand;
+type CommandExists = (command: string) => Promise<boolean>;
+
 export class CodexProvider implements UsageProvider {
   id = "codex";
   displayName = "Codex";
+  private readonly run: CommandRunner;
+  private readonly exists: CommandExists;
+
+  constructor(
+    run: CommandRunner = runCommand,
+    exists: CommandExists = commandExists,
+  ) {
+    this.run = run;
+    this.exists = exists;
+  }
 
   async collect(): Promise<UsageProviderResult> {
     const collectedAt = new Date().toISOString();
-    const executableAvailable = await commandExists("codex");
+    const executableAvailable = await this.exists("codex");
+
+    if (!executableAvailable) {
+      return {
+        provider: this.id,
+        displayName: this.displayName,
+        authenticated: false,
+        collectedAt,
+        limits: [],
+        error: "codex executable not found",
+      };
+    }
+
+    const doctor = await getDoctorState(this.run);
+
+    if (!doctor.authenticated) {
+      return {
+        provider: this.id,
+        displayName: this.displayName,
+        authenticated: false,
+        collectedAt,
+        limits: [],
+        error: doctor.error ?? "Codex authentication could not be verified",
+      };
+    }
 
     return {
       provider: this.id,
       displayName: this.displayName,
-      authenticated: executableAvailable,
+      authenticated: true,
       collectedAt,
       limits: [],
-      error: executableAvailable
-        ? "Codex does not expose a non-interactive usage source yet"
-        : "codex executable not found",
+      error: CODEX_UNSUPPORTED_USAGE_MESSAGE,
     };
   }
 
   async doctor(): Promise<ProviderDoctorResult> {
-    const version = await runCommand("codex", ["--version"], {
+    const version = await this.run("codex", ["--version"], {
       timeoutMs: 5_000,
     });
-    const doctor = await getDoctorState();
+    const doctor = await getDoctorState(this.run);
 
     return {
       provider: this.id,
@@ -49,12 +84,15 @@ export class CodexProvider implements UsageProvider {
         {
           label: "usage retrieval",
           ok: false,
-          detail: "Codex does not expose a non-interactive usage source yet",
+          detail: CODEX_UNSUPPORTED_USAGE_MESSAGE,
         },
       ],
     };
   }
 }
+
+const CODEX_UNSUPPORTED_USAGE_MESSAGE =
+  "Codex does not expose a non-interactive usage source yet";
 
 async function commandExists(command: string): Promise<boolean> {
   const pathValue = process.env["PATH"];
@@ -74,7 +112,7 @@ async function commandExists(command: string): Promise<boolean> {
   return false;
 }
 
-interface CodexDoctorState {
+export interface CodexDoctorState {
   authenticated: boolean;
   error?: string;
 }
@@ -88,8 +126,10 @@ interface CodexDoctorReport {
   };
 }
 
-async function getDoctorState(): Promise<CodexDoctorState> {
-  const result = await runCommand("codex", ["doctor", "--json"], {
+export async function getDoctorState(
+  run: CommandRunner = runCommand,
+): Promise<CodexDoctorState> {
+  const result = await run("codex", ["doctor", "--json"], {
     timeoutMs: 20_000,
   });
   const stdout = result.stdout.trim();
