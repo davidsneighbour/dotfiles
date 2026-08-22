@@ -134,9 +134,9 @@ EOF
 
 expand_path() {
   local raw="${1:-}"
-  raw="${raw/#\~/$HOME}"
-  raw="${raw//\$\{HOME\}/$HOME}"
-  raw="${raw//\$HOME/$HOME}"
+  raw="${raw/#\~/${HOME}}"
+  raw="${raw//\$\{HOME\}/${HOME}}"
+  raw="${raw//\$HOME/${HOME}}"
   echo "${raw}"
 }
 
@@ -247,7 +247,7 @@ EOF
       ;;
     toml|TOML)
       command -v python3 >/dev/null 2>&1 || die "python3 is required for TOML configs."
-      python3 - "$file" <<'PY'
+      python3 - "${file}" <<'PY'
 import sys
 path = sys.argv[1]
 try:

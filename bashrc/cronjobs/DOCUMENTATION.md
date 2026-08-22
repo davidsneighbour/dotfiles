@@ -21,12 +21,17 @@ Requirements: Bash, Docker Compose (`docker compose`), `rsync`, and permissions 
 
 ## `filespace-discord.sh`
 
-Checks available space for a configured project path and posts a Discord warning when the threshold is critical.
+Checks root (`/`) filesystem usage and posts a Discord warning when usage exceeds a threshold.
+
+Options:
+
+* `--project-name NAME` — label used in the Discord alert (default: `Behemoth`).
+* `--threshold PERCENT` — disk usage percent that triggers an alert (default: `80`).
+* `--help` — show help.
 
 Configuration/environment expected by the script:
 
-* `DISCORD_WEBHOOK` — Discord webhook URL.
-* `PROJECT_NAME` and path/threshold variables as implemented in the script.
+* `DISCORD_WEBHOOK` — Discord webhook URL, sourced from `~/.env` if present. Missing or empty is not an error: the check still runs, the alert is skipped.
 
 Requirements: Bash, `df`, `awk`/standard text utilities, `curl`, and network access to Discord.
 

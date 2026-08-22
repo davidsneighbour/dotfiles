@@ -39,6 +39,7 @@ expand_tilde() {
   # Expands a leading "~/" in a path.
   # Usage: expanded="$(expand_tilde "~/.logs")"
   local p="${1}"
+  # shellcheck disable=SC2088 # intentional literal "~/" prefix match, not tilde expansion
   if [[ "${p}" == "~/"* ]]; then
     echo "${HOME}/${p#\~/}"
     return 0
