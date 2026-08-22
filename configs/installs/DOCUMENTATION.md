@@ -107,6 +107,17 @@ Options: `--verbose`, `--dry-run`, `--help`.
 
 Requirements: `curl`, `gpg`, `apt`, `sudo`, and network access.
 
+## `50-zoxide.sh`
+
+Installs zoxide by downloading `https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh` to a temp
+file and running it explicitly via `bashrc/helpers/fetch-and-run.sh`,
+instead of piping curl directly into a shell. zoxide does not publish a
+checksum for this installer, so no `--sha256` is passed.
+
+Options: forwards all arguments to `fetch-and-run.sh` (`--verbose`, `--dry-run`, `--help`, `--sha256`, `--interpreter`).
+
+Requirements: Bash, `curl`, and network access.
+
 ## `90-brew-packages.sh`
 
 Taps `dart-lang/dart` and installs the shared Homebrew CLI tool set.

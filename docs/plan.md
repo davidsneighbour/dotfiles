@@ -38,4 +38,4 @@ Recommendations and improvements identified during codebase review. Pick items f
 ## Bugs / investigations
 
 * [ ] `@dnbhq/markdownlint-config` not applying correctly when extended via `.markdownlint.jsonc` — line-length rule fires even though it is disabled in the shared config; see `scratch/job.md` for full reproduction steps
-* [ ] `zoxide` — listed as optional init in bashrc docs; verify whether the current bashrc init is sufficient or needs further wiring
+* [x] `zoxide` — bashrc init is sufficient; fixed silent-failure logging and switched the install script to `fetch-and-run.sh` (see #492)

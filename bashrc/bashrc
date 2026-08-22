@@ -54,7 +54,7 @@ export NVM_DIR="${HOME}/.nvm"
 # Zoxide
 if command -v zoxide >/dev/null 2>&1; then
   eval "$(zoxide init bash)"
-else
+elif [[ -n "${DNB_VERBOSE}" ]]; then
   dnb_log info "zoxide is not installed. Skipping zoxide initialization."
 fi
 
