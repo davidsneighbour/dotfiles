@@ -1,5 +1,12 @@
 # Changelog
 
+## [3004.7.2](https://github.com/davidsneighbour/dotfiles/compare/v3004.7.1...v3004.7.2) (2026-08-23)
+
+### Build
+
+* **deps:** update dependencies ([b71a5e6](https://github.com/davidsneighbour/dotfiles/commit/b71a5e6bade50f35bfe0558d6de57608ae0c6736))
+* **ncu:** add interactiveSelect option with value minor ([55749f5](https://github.com/davidsneighbour/dotfiles/commit/55749f517af0f14b539d46c637800eccd0d652ec))
+
 ## [3004.7.1](https://github.com/davidsneighbour/dotfiles/compare/v3004.7.0...v3004.7.1) (2026-08-23)
 
 ### Fix
