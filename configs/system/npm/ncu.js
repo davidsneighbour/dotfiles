@@ -13,4 +13,5 @@ export default defineConfig({
 
   install: "prompt",
   upgrade: true,
+  interactiveSelect: "minor",
 });
