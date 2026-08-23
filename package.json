@@ -89,9 +89,6 @@
     "update:node-engines": "node --experimental-strip-types scripts/update-node-engines.ts"
   },
   "wireit": {
-    "link:prepare": {
-      "command": "npx link"
-    },
     "postinstall": {
       "dependencies": [
         "biome:postinstall",
