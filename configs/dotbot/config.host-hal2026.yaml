@@ -1,0 +1,16 @@
+---
+################################################################################
+# Setup configuration for Dotbot
+#
+# @see https://github.com/anishathalye/dotbot for more info
+################################################################################
+# Main workstation dotfiles setup (links, tools, cronjobs, and host-specific configs).
+
+- plugins:
+    - configs/dotbot/plugins/crontab.py
+
+- defaults:
+    link:
+      create: true
+      relink: true
+      force: true
