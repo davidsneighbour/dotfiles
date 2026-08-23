@@ -1,5 +1,30 @@
 # Changelog
 
+## [3004.7.1](https://github.com/davidsneighbour/dotfiles/compare/v3004.7.0...v3004.7.1) (2026-08-23)
+
+### Fix
+
+* add all skill repos to skillz setup ([fa0a557](https://github.com/davidsneighbour/dotfiles/commit/fa0a55726cbb4644035d828cd0913c7cc46d84c8))
+* add hal2026 dotbot config ([5309819](https://github.com/davidsneighbour/dotfiles/commit/5309819e6026f3e2780fc78ec3de77108b9d3369))
+* add new skills repos to skillz ([6be7be0](https://github.com/davidsneighbour/dotfiles/commit/6be7be074a516a38832093373f4e6904a82fe19e))
+* **ai-usage:** derive Claude quota window timing and fix live parsing bugs ([ed530de](https://github.com/davidsneighbour/dotfiles/commit/ed530de7edbf759626871800d470b28d611055cb)), references [#565](https://github.com/davidsneighbour/dotfiles/issues/565)
+* **ai-usage:** document unsupported codex usage retrieval ([e4b785b](https://github.com/davidsneighbour/dotfiles/commit/e4b785b95c99a9956920a97b42e4721e71e02cb1)), references [#565](https://github.com/davidsneighbour/dotfiles/issues/565)
+* **bashrc:** integrate zoxide per bashrc.instructions.md conventions ([1766680](https://github.com/davidsneighbour/dotfiles/commit/1766680884a8a26408e2e484205e1c1870378169)), closes [#492](https://github.com/davidsneighbour/dotfiles/issues/492)
+* **containers:** move open-webui secret key into .env ([e71f166](https://github.com/davidsneighbour/dotfiles/commit/e71f166e56861989aeb466f99cec7e2d0ab96bb9)), closes [#512](https://github.com/davidsneighbour/dotfiles/issues/512)
+* **cronjobs:** clean up and document bashrc/cronjobs helpers ([13fbaa0](https://github.com/davidsneighbour/dotfiles/commit/13fbaa08a37785458844427d06d618d1bf4942b9)), closes [#496](https://github.com/davidsneighbour/dotfiles/issues/496)
+* **dotbot:** ensure all link configs auto-create parent directories ([ec0a397](https://github.com/davidsneighbour/dotfiles/commit/ec0a3976487001a03cfd1407102d9707b3642183)), closes [#510](https://github.com/davidsneighbour/dotfiles/issues/510)
+* remove npx link config (unused) ([3b287dd](https://github.com/davidsneighbour/dotfiles/commit/3b287dd729c7313a8dd82417291b6c081b47377e))
+* remove raindrop.io setup ([bad8b83](https://github.com/davidsneighbour/dotfiles/commit/bad8b8325bf818bbf1400aff8db3ca92f4ac749f))
+
+### Chore
+
+* cleanup launchers ([6d42ad4](https://github.com/davidsneighbour/dotfiles/commit/6d42ad457a4fd05bb377efe288174371fc73b125))
+* **git:** update protected submodule ([7582c6f](https://github.com/davidsneighbour/dotfiles/commit/7582c6f9c74c33108268808a79898170cc5684f6))
+
+### Config
+
+* **npm:** add default package install helpers ([279e822](https://github.com/davidsneighbour/dotfiles/commit/279e822824460eef05b8deccfc641e467cad1478)), references [#491](https://github.com/davidsneighbour/dotfiles/issues/491)
+
 ## [3004.7.0](https://github.com/davidsneighbour/dotfiles/compare/v3004.6.1...v3004.7.0) (2026-08-21)
 
 ### Feat
