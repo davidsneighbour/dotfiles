@@ -15,6 +15,7 @@ SKILL_REPOSITORIES=(
   "/home/patrick/github.com/davidsneighbour/patternbook"
   "/home/patrick/github.com/davidsneighbour/posthaste"
   "/home/patrick/github.com/davidsneighbour/skills"
+  "/home/patrick/github.com/dnbhq/skills"
 )
 
 SKILL_AGENTS=(
