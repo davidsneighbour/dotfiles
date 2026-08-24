@@ -1,5 +1,11 @@
 # Changelog
 
+## [3004.8.0](https://github.com/davidsneighbour/dotfiles/compare/v3004.7.2...v3004.8.0) (2026-08-24)
+
+### Feat
+
+* add tabgroup export chrome extension ([c96fcae](https://github.com/davidsneighbour/dotfiles/commit/c96fcae958fba17afb927aee38045225d487dd2c))
+
 ## [3004.7.2](https://github.com/davidsneighbour/dotfiles/compare/v3004.7.1...v3004.7.2) (2026-08-23)
 
 ### Build
