@@ -55,6 +55,90 @@
         done
 
 - link:
+    ~/.agents/skills/ab-testing:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/ab-testing
+    ~/.codex/skills/ab-testing:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/ab-testing
+    ~/.claude/skills/ab-testing:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/ab-testing
+    ~/.agents/skills/ad-creative:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/ad-creative
+    ~/.codex/skills/ad-creative:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/ad-creative
+    ~/.claude/skills/ad-creative:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/ad-creative
+    ~/.agents/skills/ads:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/ads
+    ~/.codex/skills/ads:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/ads
+    ~/.claude/skills/ads:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/ads
+    ~/.agents/skills/ai-seo:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/ai-seo
+    ~/.codex/skills/ai-seo:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/ai-seo
+    ~/.claude/skills/ai-seo:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/ai-seo
+    ~/.agents/skills/analytics:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/analytics
+    ~/.codex/skills/analytics:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/analytics
+    ~/.claude/skills/analytics:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/analytics
+    ~/.agents/skills/ask-matt:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/ask-matt
+    ~/.codex/skills/ask-matt:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/ask-matt
+    ~/.claude/skills/ask-matt:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/ask-matt
+    ~/.agents/skills/aso:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/aso
+    ~/.codex/skills/aso:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/aso
+    ~/.claude/skills/aso:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/aso
+    ~/.agents/skills/attribution:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/attribution
+    ~/.codex/skills/attribution:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/attribution
+    ~/.claude/skills/attribution:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/attribution
+    ~/.agents/skills/auteur:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/auteur
+    ~/.codex/skills/auteur:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/auteur
+    ~/.claude/skills/auteur:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/auteur
+    ~/.agents/skills/batch-grill-me:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/batch-grill-me
+    ~/.codex/skills/batch-grill-me:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/batch-grill-me
+    ~/.claude/skills/batch-grill-me:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/batch-grill-me
+    ~/.agents/skills/book-to-skill:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/book-to-skill
+    ~/.codex/skills/book-to-skill:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/book-to-skill
+    ~/.claude/skills/book-to-skill:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/book-to-skill
+    ~/.agents/skills/brandkit:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/brandkit
+    ~/.codex/skills/brandkit:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/brandkit
+    ~/.claude/skills/brandkit:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/brandkit
+    ~/.agents/skills/churn-prevention:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/churn-prevention
+    ~/.codex/skills/churn-prevention:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/churn-prevention
+    ~/.claude/skills/churn-prevention:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/churn-prevention
+    ~/.agents/skills/claude-handoff:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/claude-handoff
+    ~/.codex/skills/claude-handoff:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/claude-handoff
+    ~/.claude/skills/claude-handoff:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/claude-handoff
     ~/.agents/skills/clerkwork-dependency-maintenance:
       path: ${HOME}/github.com/davidsneighbour/clerkwork/skills/clerkwork-dependency-maintenance
     ~/.codex/skills/clerkwork-dependency-maintenance:
@@ -121,6 +205,126 @@
       path: ${HOME}/github.com/davidsneighbour/clerkwork/skills/clerkwork-work-through-issues
     ~/.claude/skills/clerkwork-work-through-issues:
       path: ${HOME}/github.com/davidsneighbour/clerkwork/skills/clerkwork-work-through-issues
+    ~/.agents/skills/clipify:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/clipify
+    ~/.codex/skills/clipify:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/clipify
+    ~/.claude/skills/clipify:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/clipify
+    ~/.agents/skills/codebase-design:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/codebase-design
+    ~/.codex/skills/codebase-design:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/codebase-design
+    ~/.claude/skills/codebase-design:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/codebase-design
+    ~/.agents/skills/code-review:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/code-review
+    ~/.codex/skills/code-review:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/code-review
+    ~/.claude/skills/code-review:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/code-review
+    ~/.agents/skills/codex-task-preparation:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/codex-task-preparation
+    ~/.codex/skills/codex-task-preparation:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/codex-task-preparation
+    ~/.claude/skills/codex-task-preparation:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/codex-task-preparation
+    ~/.agents/skills/cold-email:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/cold-email
+    ~/.codex/skills/cold-email:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/cold-email
+    ~/.claude/skills/cold-email:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/cold-email
+    ~/.agents/skills/co-marketing:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/co-marketing
+    ~/.codex/skills/co-marketing:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/co-marketing
+    ~/.claude/skills/co-marketing:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/co-marketing
+    ~/.agents/skills/community-marketing:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/community-marketing
+    ~/.codex/skills/community-marketing:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/community-marketing
+    ~/.claude/skills/community-marketing:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/community-marketing
+    ~/.agents/skills/competitor-profiling:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/competitor-profiling
+    ~/.codex/skills/competitor-profiling:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/competitor-profiling
+    ~/.claude/skills/competitor-profiling:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/competitor-profiling
+    ~/.agents/skills/competitors:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/competitors
+    ~/.codex/skills/competitors:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/competitors
+    ~/.claude/skills/competitors:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/competitors
+    ~/.agents/skills/content-strategy:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/content-strategy
+    ~/.codex/skills/content-strategy:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/content-strategy
+    ~/.claude/skills/content-strategy:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/content-strategy
+    ~/.agents/skills/copy-editing:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/copy-editing
+    ~/.codex/skills/copy-editing:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/copy-editing
+    ~/.claude/skills/copy-editing:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/copy-editing
+    ~/.agents/skills/copywriting:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/copywriting
+    ~/.codex/skills/copywriting:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/copywriting
+    ~/.claude/skills/copywriting:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/copywriting
+    ~/.agents/skills/cro:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/cro
+    ~/.codex/skills/cro:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/cro
+    ~/.claude/skills/cro:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/cro
+    ~/.agents/skills/customer-research:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/customer-research
+    ~/.codex/skills/customer-research:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/customer-research
+    ~/.claude/skills/customer-research:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/customer-research
+    ~/.agents/skills/defuddle:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/defuddle
+    ~/.codex/skills/defuddle:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/defuddle
+    ~/.claude/skills/defuddle:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/defuddle
+    ~/.agents/skills/design-an-interface:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/design-an-interface
+    ~/.codex/skills/design-an-interface:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/design-an-interface
+    ~/.claude/skills/design-an-interface:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/design-an-interface
+    ~/.agents/skills/design-taste-frontend:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/design-taste-frontend
+    ~/.codex/skills/design-taste-frontend:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/design-taste-frontend
+    ~/.claude/skills/design-taste-frontend:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/design-taste-frontend
+    ~/.agents/skills/design-taste-frontend-v1:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/design-taste-frontend-v1
+    ~/.codex/skills/design-taste-frontend-v1:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/design-taste-frontend-v1
+    ~/.claude/skills/design-taste-frontend-v1:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/design-taste-frontend-v1
+    ~/.agents/skills/diagnosing-bugs:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/diagnosing-bugs
+    ~/.codex/skills/diagnosing-bugs:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/diagnosing-bugs
+    ~/.claude/skills/diagnosing-bugs:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/diagnosing-bugs
+    ~/.agents/skills/directory-submissions:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/directory-submissions
+    ~/.codex/skills/directory-submissions:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/directory-submissions
+    ~/.claude/skills/directory-submissions:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/directory-submissions
     ~/.agents/skills/dnb-astro-architecture:
       path: ${HOME}/github.com/davidsneighbour/gallimaufry/skills/dnb-astro-architecture
     ~/.codex/skills/dnb-astro-architecture:
@@ -133,6 +337,12 @@
       path: ${HOME}/github.com/davidsneighbour/gallimaufry/skills/dnb-astro-migration-project
     ~/.claude/skills/dnb-astro-migration-project:
       path: ${HOME}/github.com/davidsneighbour/gallimaufry/skills/dnb-astro-migration-project
+    ~/.agents/skills/dnb-behaviour-spec:
+      path: ${HOME}/github.com/davidsneighbour/clerkwork/skills/dnb-behaviour-spec
+    ~/.codex/skills/dnb-behaviour-spec:
+      path: ${HOME}/github.com/davidsneighbour/clerkwork/skills/dnb-behaviour-spec
+    ~/.claude/skills/dnb-behaviour-spec:
+      path: ${HOME}/github.com/davidsneighbour/clerkwork/skills/dnb-behaviour-spec
     ~/.agents/skills/dnb-blog-draft-materialise:
       path: ${HOME}/github.com/davidsneighbour/gazetteer/skills/dnb-blog-draft-materialise
     ~/.codex/skills/dnb-blog-draft-materialise:
@@ -157,6 +367,12 @@
       path: ${HOME}/github.com/davidsneighbour/gallimaufry/skills/dnb-create-js-documentation
     ~/.claude/skills/dnb-create-js-documentation:
       path: ${HOME}/github.com/davidsneighbour/gallimaufry/skills/dnb-create-js-documentation
+    ~/.agents/skills/dnbhq-configs:
+      path: ${HOME}/github.com/davidsneighbour/clerkwork/skills/dnbhq-configs
+    ~/.codex/skills/dnbhq-configs:
+      path: ${HOME}/github.com/davidsneighbour/clerkwork/skills/dnbhq-configs
+    ~/.claude/skills/dnbhq-configs:
+      path: ${HOME}/github.com/davidsneighbour/clerkwork/skills/dnbhq-configs
     ~/.agents/skills/dnb-interface-design:
       path: ${HOME}/github.com/davidsneighbour/gazetteer/skills/dnb-interface-design
     ~/.codex/skills/dnb-interface-design:
@@ -193,6 +409,12 @@
       path: ${HOME}/github.com/davidsneighbour/gazetteer/skills/dnb-post-session-into-void
     ~/.claude/skills/dnb-post-session-into-void:
       path: ${HOME}/github.com/davidsneighbour/gazetteer/skills/dnb-post-session-into-void
+    ~/.agents/skills/dnb-quality-gate-organisation:
+      path: ${HOME}/github.com/davidsneighbour/clerkwork/skills/dnb-quality-gate-organisation
+    ~/.codex/skills/dnb-quality-gate-organisation:
+      path: ${HOME}/github.com/davidsneighbour/clerkwork/skills/dnb-quality-gate-organisation
+    ~/.claude/skills/dnb-quality-gate-organisation:
+      path: ${HOME}/github.com/davidsneighbour/clerkwork/skills/dnb-quality-gate-organisation
     ~/.agents/skills/dnb-reference:
       path: ${HOME}/github.com/davidsneighbour/gallimaufry/skills/dnb-reference
     ~/.codex/skills/dnb-reference:
@@ -223,18 +445,192 @@
       path: ${HOME}/github.com/davidsneighbour/gazetteer/skills/dnb-voice
     ~/.claude/skills/dnb-voice:
       path: ${HOME}/github.com/davidsneighbour/gazetteer/skills/dnb-voice
+    ~/.agents/skills/domain-modeling:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/domain-modeling
+    ~/.codex/skills/domain-modeling:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/domain-modeling
+    ~/.claude/skills/domain-modeling:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/domain-modeling
+    ~/.agents/skills/edit-article:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/edit-article
+    ~/.codex/skills/edit-article:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/edit-article
+    ~/.claude/skills/edit-article:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/edit-article
+    ~/.agents/skills/emails:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/emails
+    ~/.codex/skills/emails:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/emails
+    ~/.claude/skills/emails:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/emails
+    ~/.agents/skills/embedded-captions:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/embedded-captions
+    ~/.codex/skills/embedded-captions:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/embedded-captions
+    ~/.claude/skills/embedded-captions:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/embedded-captions
+    ~/.agents/skills/emil-design-eng:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/emil-design-eng
+    ~/.codex/skills/emil-design-eng:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/emil-design-eng
+    ~/.claude/skills/emil-design-eng:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/emil-design-eng
+    ~/.agents/skills/emil-design-engineering:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/emil-design-engineering
+    ~/.codex/skills/emil-design-engineering:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/emil-design-engineering
+    ~/.claude/skills/emil-design-engineering:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/emil-design-engineering
+    ~/.agents/skills/faceless-explainer:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/faceless-explainer
+    ~/.codex/skills/faceless-explainer:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/faceless-explainer
+    ~/.claude/skills/faceless-explainer:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/faceless-explainer
+    ~/.agents/skills/figma:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/figma
+    ~/.codex/skills/figma:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/figma
+    ~/.claude/skills/figma:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/figma
+    ~/.agents/skills/find-skills:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/find-skills
+    ~/.codex/skills/find-skills:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/find-skills
+    ~/.claude/skills/find-skills:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/find-skills
     ~/.agents/skills/foreman:
       path: ${HOME}/github.com/davidsneighbour/clerkwork/skills/foreman
     ~/.codex/skills/foreman:
       path: ${HOME}/github.com/davidsneighbour/clerkwork/skills/foreman
     ~/.claude/skills/foreman:
       path: ${HOME}/github.com/davidsneighbour/clerkwork/skills/foreman
+    ~/.agents/skills/free-tools:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/free-tools
+    ~/.codex/skills/free-tools:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/free-tools
+    ~/.claude/skills/free-tools:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/free-tools
+    ~/.agents/skills/full-output-enforcement:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/full-output-enforcement
+    ~/.codex/skills/full-output-enforcement:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/full-output-enforcement
+    ~/.claude/skills/full-output-enforcement:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/full-output-enforcement
     ~/.agents/skills/gazetteer:
       path: ${HOME}/github.com/davidsneighbour/gazetteer/skills/gazetteer
     ~/.codex/skills/gazetteer:
       path: ${HOME}/github.com/davidsneighbour/gazetteer/skills/gazetteer
     ~/.claude/skills/gazetteer:
       path: ${HOME}/github.com/davidsneighbour/gazetteer/skills/gazetteer
+    ~/.agents/skills/general-video:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/general-video
+    ~/.codex/skills/general-video:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/general-video
+    ~/.claude/skills/general-video:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/general-video
+    ~/.agents/skills/git-guardrails-claude-code:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/git-guardrails-claude-code
+    ~/.codex/skills/git-guardrails-claude-code:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/git-guardrails-claude-code
+    ~/.claude/skills/git-guardrails-claude-code:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/git-guardrails-claude-code
+    ~/.agents/skills/good-readme:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/good-readme
+    ~/.codex/skills/good-readme:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/good-readme
+    ~/.claude/skills/good-readme:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/good-readme
+    ~/.agents/skills/gpt-taste:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/gpt-taste
+    ~/.codex/skills/gpt-taste:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/gpt-taste
+    ~/.claude/skills/gpt-taste:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/gpt-taste
+    ~/.agents/skills/grilling:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/grilling
+    ~/.codex/skills/grilling:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/grilling
+    ~/.claude/skills/grilling:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/grilling
+    ~/.agents/skills/grill-me:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/grill-me
+    ~/.codex/skills/grill-me:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/grill-me
+    ~/.claude/skills/grill-me:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/grill-me
+    ~/.agents/skills/grill-with-docs:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/grill-with-docs
+    ~/.codex/skills/grill-with-docs:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/grill-with-docs
+    ~/.claude/skills/grill-with-docs:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/grill-with-docs
+    ~/.agents/skills/handoff:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/handoff
+    ~/.codex/skills/handoff:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/handoff
+    ~/.claude/skills/handoff:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/handoff
+    ~/.agents/skills/high-end-visual-design:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/high-end-visual-design
+    ~/.codex/skills/high-end-visual-design:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/high-end-visual-design
+    ~/.claude/skills/high-end-visual-design:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/high-end-visual-design
+    ~/.agents/skills/hugo-landing:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/hugo-landing
+    ~/.codex/skills/hugo-landing:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/hugo-landing
+    ~/.claude/skills/hugo-landing:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/hugo-landing
+    ~/.agents/skills/humanizer:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/humanizer
+    ~/.codex/skills/humanizer:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/humanizer
+    ~/.claude/skills/humanizer:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/humanizer
+    ~/.agents/skills/hyperframes:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/hyperframes
+    ~/.codex/skills/hyperframes:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/hyperframes
+    ~/.claude/skills/hyperframes:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/hyperframes
+    ~/.agents/skills/hyperframes-animation:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/hyperframes-animation
+    ~/.codex/skills/hyperframes-animation:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/hyperframes-animation
+    ~/.claude/skills/hyperframes-animation:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/hyperframes-animation
+    ~/.agents/skills/hyperframes-cli:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/hyperframes-cli
+    ~/.codex/skills/hyperframes-cli:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/hyperframes-cli
+    ~/.claude/skills/hyperframes-cli:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/hyperframes-cli
+    ~/.agents/skills/hyperframes-core:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/hyperframes-core
+    ~/.codex/skills/hyperframes-core:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/hyperframes-core
+    ~/.claude/skills/hyperframes-core:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/hyperframes-core
+    ~/.agents/skills/hyperframes-creative:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/hyperframes-creative
+    ~/.codex/skills/hyperframes-creative:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/hyperframes-creative
+    ~/.claude/skills/hyperframes-creative:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/hyperframes-creative
+    ~/.agents/skills/hyperframes-keyframes:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/hyperframes-keyframes
+    ~/.codex/skills/hyperframes-keyframes:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/hyperframes-keyframes
+    ~/.claude/skills/hyperframes-keyframes:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/hyperframes-keyframes
+    ~/.agents/skills/hyperframes-registry:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/hyperframes-registry
+    ~/.codex/skills/hyperframes-registry:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/hyperframes-registry
+    ~/.claude/skills/hyperframes-registry:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/hyperframes-registry
     ~/.agents/skills/idiolect:
       path: ${HOME}/github.com/davidsneighbour/idiolect/skills/idiolect
     ~/.codex/skills/idiolect:
@@ -253,12 +649,222 @@
       path: ${HOME}/github.com/davidsneighbour/idiolect/skills/idiolect-voice
     ~/.claude/skills/idiolect-voice:
       path: ${HOME}/github.com/davidsneighbour/idiolect/skills/idiolect-voice
+    ~/.agents/skills/i-have-adhd:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/i-have-adhd
+    ~/.codex/skills/i-have-adhd:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/i-have-adhd
+    ~/.claude/skills/i-have-adhd:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/i-have-adhd
+    ~/.agents/skills/image:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/image
+    ~/.codex/skills/image:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/image
+    ~/.claude/skills/image:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/image
+    ~/.agents/skills/imagegen-frontend-mobile:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/imagegen-frontend-mobile
+    ~/.codex/skills/imagegen-frontend-mobile:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/imagegen-frontend-mobile
+    ~/.claude/skills/imagegen-frontend-mobile:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/imagegen-frontend-mobile
+    ~/.agents/skills/imagegen-frontend-web:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/imagegen-frontend-web
+    ~/.codex/skills/imagegen-frontend-web:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/imagegen-frontend-web
+    ~/.claude/skills/imagegen-frontend-web:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/imagegen-frontend-web
+    ~/.agents/skills/image-to-code:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/image-to-code
+    ~/.codex/skills/image-to-code:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/image-to-code
+    ~/.claude/skills/image-to-code:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/image-to-code
+    ~/.agents/skills/implement:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/implement
+    ~/.codex/skills/implement:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/implement
+    ~/.claude/skills/implement:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/implement
+    ~/.agents/skills/implement-spec:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/implement-spec
+    ~/.codex/skills/implement-spec:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/implement-spec
+    ~/.claude/skills/implement-spec:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/implement-spec
+    ~/.agents/skills/improve-codebase-architecture:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/improve-codebase-architecture
+    ~/.codex/skills/improve-codebase-architecture:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/improve-codebase-architecture
+    ~/.claude/skills/improve-codebase-architecture:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/improve-codebase-architecture
+    ~/.agents/skills/industrial-brutalist-ui:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/industrial-brutalist-ui
+    ~/.codex/skills/industrial-brutalist-ui:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/industrial-brutalist-ui
+    ~/.claude/skills/industrial-brutalist-ui:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/industrial-brutalist-ui
+    ~/.agents/skills/influencer-marketing:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/influencer-marketing
+    ~/.codex/skills/influencer-marketing:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/influencer-marketing
+    ~/.claude/skills/influencer-marketing:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/influencer-marketing
+    ~/.agents/skills/json-canvas:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/json-canvas
+    ~/.codex/skills/json-canvas:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/json-canvas
+    ~/.claude/skills/json-canvas:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/json-canvas
+    ~/.agents/skills/karpathy-guidelines:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/karpathy-guidelines
+    ~/.codex/skills/karpathy-guidelines:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/karpathy-guidelines
+    ~/.claude/skills/karpathy-guidelines:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/karpathy-guidelines
+    ~/.agents/skills/launch:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/launch
+    ~/.codex/skills/launch:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/launch
+    ~/.claude/skills/launch:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/launch
+    ~/.agents/skills/lead-magnets:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/lead-magnets
+    ~/.codex/skills/lead-magnets:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/lead-magnets
+    ~/.claude/skills/lead-magnets:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/lead-magnets
+    ~/.agents/skills/llms-visibility:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/llms-visibility
+    ~/.codex/skills/llms-visibility:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/llms-visibility
+    ~/.claude/skills/llms-visibility:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/llms-visibility
+    ~/.agents/skills/loop-me:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/loop-me
+    ~/.codex/skills/loop-me:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/loop-me
+    ~/.claude/skills/loop-me:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/loop-me
+    ~/.agents/skills/marketing-council:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/marketing-council
+    ~/.codex/skills/marketing-council:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/marketing-council
+    ~/.claude/skills/marketing-council:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/marketing-council
+    ~/.agents/skills/marketing-ideas:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/marketing-ideas
+    ~/.codex/skills/marketing-ideas:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/marketing-ideas
+    ~/.claude/skills/marketing-ideas:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/marketing-ideas
+    ~/.agents/skills/marketing-loops:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/marketing-loops
+    ~/.codex/skills/marketing-loops:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/marketing-loops
+    ~/.claude/skills/marketing-loops:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/marketing-loops
+    ~/.agents/skills/marketing-plan:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/marketing-plan
+    ~/.codex/skills/marketing-plan:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/marketing-plan
+    ~/.claude/skills/marketing-plan:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/marketing-plan
+    ~/.agents/skills/marketing-psychology:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/marketing-psychology
+    ~/.codex/skills/marketing-psychology:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/marketing-psychology
+    ~/.claude/skills/marketing-psychology:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/marketing-psychology
+    ~/.agents/skills/media-use:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/media-use
+    ~/.codex/skills/media-use:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/media-use
+    ~/.claude/skills/media-use:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/media-use
+    ~/.agents/skills/migrate-to-shoehorn:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/migrate-to-shoehorn
+    ~/.codex/skills/migrate-to-shoehorn:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/migrate-to-shoehorn
+    ~/.claude/skills/migrate-to-shoehorn:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/migrate-to-shoehorn
+    ~/.agents/skills/minimalist-ui:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/minimalist-ui
+    ~/.codex/skills/minimalist-ui:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/minimalist-ui
+    ~/.claude/skills/minimalist-ui:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/minimalist-ui
+    ~/.agents/skills/motion-graphics:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/motion-graphics
+    ~/.codex/skills/motion-graphics:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/motion-graphics
+    ~/.claude/skills/motion-graphics:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/motion-graphics
+    ~/.agents/skills/music-to-video:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/music-to-video
+    ~/.codex/skills/music-to-video:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/music-to-video
+    ~/.claude/skills/music-to-video:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/music-to-video
+    ~/.agents/skills/nothing-design:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/nothing-design
+    ~/.codex/skills/nothing-design:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/nothing-design
+    ~/.claude/skills/nothing-design:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/nothing-design
+    ~/.agents/skills/obsidian-bases:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/obsidian-bases
+    ~/.codex/skills/obsidian-bases:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/obsidian-bases
+    ~/.claude/skills/obsidian-bases:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/obsidian-bases
+    ~/.agents/skills/obsidian-cli:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/obsidian-cli
+    ~/.codex/skills/obsidian-cli:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/obsidian-cli
+    ~/.claude/skills/obsidian-cli:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/obsidian-cli
+    ~/.agents/skills/obsidian-markdown:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/obsidian-markdown
+    ~/.codex/skills/obsidian-markdown:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/obsidian-markdown
+    ~/.claude/skills/obsidian-markdown:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/obsidian-markdown
+    ~/.agents/skills/obsidian-vault:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/obsidian-vault
+    ~/.codex/skills/obsidian-vault:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/obsidian-vault
+    ~/.claude/skills/obsidian-vault:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/obsidian-vault
+    ~/.agents/skills/offers:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/offers
+    ~/.codex/skills/offers:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/offers
+    ~/.claude/skills/offers:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/offers
+    ~/.agents/skills/onboarding:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/onboarding
+    ~/.codex/skills/onboarding:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/onboarding
+    ~/.claude/skills/onboarding:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/onboarding
     ~/.agents/skills/patternbook:
       path: ${HOME}/github.com/davidsneighbour/patternbook/skills/patternbook
     ~/.codex/skills/patternbook:
       path: ${HOME}/github.com/davidsneighbour/patternbook/skills/patternbook
     ~/.claude/skills/patternbook:
       path: ${HOME}/github.com/davidsneighbour/patternbook/skills/patternbook
+    ~/.agents/skills/paywalls:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/paywalls
+    ~/.codex/skills/paywalls:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/paywalls
+    ~/.claude/skills/paywalls:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/paywalls
+    ~/.agents/skills/popups:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/popups
+    ~/.codex/skills/popups:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/popups
+    ~/.claude/skills/popups:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/popups
     ~/.agents/skills/posthaste:
       path: ${HOME}/github.com/davidsneighbour/posthaste/skills/posthaste
     ~/.codex/skills/posthaste:
@@ -313,3 +919,327 @@
       path: ${HOME}/github.com/davidsneighbour/posthaste/skills/posthaste-voice
     ~/.claude/skills/posthaste-voice:
       path: ${HOME}/github.com/davidsneighbour/posthaste/skills/posthaste-voice
+    ~/.agents/skills/pricing:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/pricing
+    ~/.codex/skills/pricing:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/pricing
+    ~/.claude/skills/pricing:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/pricing
+    ~/.agents/skills/product-launch-video:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/product-launch-video
+    ~/.codex/skills/product-launch-video:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/product-launch-video
+    ~/.claude/skills/product-launch-video:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/product-launch-video
+    ~/.agents/skills/product-marketing:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/product-marketing
+    ~/.codex/skills/product-marketing:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/product-marketing
+    ~/.claude/skills/product-marketing:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/product-marketing
+    ~/.agents/skills/programmatic-seo:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/programmatic-seo
+    ~/.codex/skills/programmatic-seo:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/programmatic-seo
+    ~/.claude/skills/programmatic-seo:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/programmatic-seo
+    ~/.agents/skills/prompt-master:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/prompt-master
+    ~/.codex/skills/prompt-master:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/prompt-master
+    ~/.claude/skills/prompt-master:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/prompt-master
+    ~/.agents/skills/prospecting:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/prospecting
+    ~/.codex/skills/prospecting:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/prospecting
+    ~/.claude/skills/prospecting:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/prospecting
+    ~/.agents/skills/prototype:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/prototype
+    ~/.codex/skills/prototype:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/prototype
+    ~/.claude/skills/prototype:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/prototype
+    ~/.agents/skills/pr-to-video:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/pr-to-video
+    ~/.codex/skills/pr-to-video:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/pr-to-video
+    ~/.claude/skills/pr-to-video:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/pr-to-video
+    ~/.agents/skills/public-relations:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/public-relations
+    ~/.codex/skills/public-relations:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/public-relations
+    ~/.claude/skills/public-relations:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/public-relations
+    ~/.agents/skills/qa:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/qa
+    ~/.codex/skills/qa:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/qa
+    ~/.claude/skills/qa:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/qa
+    ~/.agents/skills/redesign-existing-projects:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/redesign-existing-projects
+    ~/.codex/skills/redesign-existing-projects:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/redesign-existing-projects
+    ~/.claude/skills/redesign-existing-projects:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/redesign-existing-projects
+    ~/.agents/skills/referrals:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/referrals
+    ~/.codex/skills/referrals:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/referrals
+    ~/.claude/skills/referrals:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/referrals
+    ~/.agents/skills/remotion-to-hyperframes:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/remotion-to-hyperframes
+    ~/.codex/skills/remotion-to-hyperframes:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/remotion-to-hyperframes
+    ~/.claude/skills/remotion-to-hyperframes:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/remotion-to-hyperframes
+    ~/.agents/skills/request-refactor-plan:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/request-refactor-plan
+    ~/.codex/skills/request-refactor-plan:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/request-refactor-plan
+    ~/.claude/skills/request-refactor-plan:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/request-refactor-plan
+    ~/.agents/skills/research:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/research
+    ~/.codex/skills/research:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/research
+    ~/.claude/skills/research:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/research
+    ~/.agents/skills/resolving-merge-conflicts:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/resolving-merge-conflicts
+    ~/.codex/skills/resolving-merge-conflicts:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/resolving-merge-conflicts
+    ~/.claude/skills/resolving-merge-conflicts:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/resolving-merge-conflicts
+    ~/.agents/skills/revops:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/revops
+    ~/.codex/skills/revops:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/revops
+    ~/.claude/skills/revops:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/revops
+    ~/.agents/skills/sales-enablement:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/sales-enablement
+    ~/.codex/skills/sales-enablement:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/sales-enablement
+    ~/.claude/skills/sales-enablement:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/sales-enablement
+    ~/.agents/skills/scaffold-exercises:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/scaffold-exercises
+    ~/.codex/skills/scaffold-exercises:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/scaffold-exercises
+    ~/.claude/skills/scaffold-exercises:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/scaffold-exercises
+    ~/.agents/skills/schema:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/schema
+    ~/.codex/skills/schema:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/schema
+    ~/.claude/skills/schema:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/schema
+    ~/.agents/skills/secure-npm-package:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/secure-npm-package
+    ~/.codex/skills/secure-npm-package:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/secure-npm-package
+    ~/.claude/skills/secure-npm-package:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/secure-npm-package
+    ~/.agents/skills/seo-audit:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/seo-audit
+    ~/.codex/skills/seo-audit:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/seo-audit
+    ~/.claude/skills/seo-audit:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/seo-audit
+    ~/.agents/skills/setup-matt-pocock-skills:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/setup-matt-pocock-skills
+    ~/.codex/skills/setup-matt-pocock-skills:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/setup-matt-pocock-skills
+    ~/.claude/skills/setup-matt-pocock-skills:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/setup-matt-pocock-skills
+    ~/.agents/skills/setup-pre-commit:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/setup-pre-commit
+    ~/.codex/skills/setup-pre-commit:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/setup-pre-commit
+    ~/.claude/skills/setup-pre-commit:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/setup-pre-commit
+    ~/.agents/skills/setup-ts-deep-modules:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/setup-ts-deep-modules
+    ~/.codex/skills/setup-ts-deep-modules:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/setup-ts-deep-modules
+    ~/.claude/skills/setup-ts-deep-modules:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/setup-ts-deep-modules
+    ~/.agents/skills/signup:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/signup
+    ~/.codex/skills/signup:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/signup
+    ~/.claude/skills/signup:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/signup
+    ~/.agents/skills/site-architecture:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/site-architecture
+    ~/.codex/skills/site-architecture:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/site-architecture
+    ~/.claude/skills/site-architecture:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/site-architecture
+    ~/.agents/skills/skills-visibility:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/skills-visibility
+    ~/.codex/skills/skills-visibility:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/skills-visibility
+    ~/.claude/skills/skills-visibility:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/skills-visibility
+    ~/.agents/skills/slideshow:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/slideshow
+    ~/.codex/skills/slideshow:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/slideshow
+    ~/.claude/skills/slideshow:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/slideshow
+    ~/.agents/skills/sms:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/sms
+    ~/.codex/skills/sms:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/sms
+    ~/.claude/skills/sms:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/sms
+    ~/.agents/skills/social:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/social
+    ~/.codex/skills/social:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/social
+    ~/.claude/skills/social:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/social
+    ~/.agents/skills/stitch-design-taste:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/stitch-design-taste
+    ~/.codex/skills/stitch-design-taste:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/stitch-design-taste
+    ~/.claude/skills/stitch-design-taste:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/stitch-design-taste
+    ~/.agents/skills/synchwork:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/synchwork
+    ~/.codex/skills/synchwork:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/synchwork
+    ~/.claude/skills/synchwork:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/synchwork
+    ~/.agents/skills/tailwind-best-practices:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/tailwind-best-practices
+    ~/.codex/skills/tailwind-best-practices:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/tailwind-best-practices
+    ~/.claude/skills/tailwind-best-practices:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/tailwind-best-practices
+    ~/.agents/skills/talking-head-recut:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/talking-head-recut
+    ~/.codex/skills/talking-head-recut:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/talking-head-recut
+    ~/.claude/skills/talking-head-recut:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/talking-head-recut
+    ~/.agents/skills/tdd:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/tdd
+    ~/.codex/skills/tdd:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/tdd
+    ~/.claude/skills/tdd:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/tdd
+    ~/.agents/skills/teach:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/teach
+    ~/.codex/skills/teach:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/teach
+    ~/.claude/skills/teach:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/teach
+    ~/.agents/skills/to-questionnaire:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/to-questionnaire
+    ~/.codex/skills/to-questionnaire:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/to-questionnaire
+    ~/.claude/skills/to-questionnaire:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/to-questionnaire
+    ~/.agents/skills/to-spec:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/to-spec
+    ~/.codex/skills/to-spec:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/to-spec
+    ~/.claude/skills/to-spec:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/to-spec
+    ~/.agents/skills/to-tickets:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/to-tickets
+    ~/.codex/skills/to-tickets:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/to-tickets
+    ~/.claude/skills/to-tickets:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/to-tickets
+    ~/.agents/skills/triage:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/triage
+    ~/.codex/skills/triage:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/triage
+    ~/.claude/skills/triage:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/triage
+    ~/.agents/skills/ubiquitous-language:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/ubiquitous-language
+    ~/.codex/skills/ubiquitous-language:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/ubiquitous-language
+    ~/.claude/skills/ubiquitous-language:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/ubiquitous-language
+    ~/.agents/skills/video:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/video
+    ~/.codex/skills/video:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/video
+    ~/.claude/skills/video:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/video
+    ~/.agents/skills/wait-what:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/wait-what
+    ~/.codex/skills/wait-what:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/wait-what
+    ~/.claude/skills/wait-what:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/wait-what
+    ~/.agents/skills/wayfinder:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/wayfinder
+    ~/.codex/skills/wayfinder:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/wayfinder
+    ~/.claude/skills/wayfinder:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/wayfinder
+    ~/.agents/skills/web-animation-design:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/web-animation-design
+    ~/.codex/skills/web-animation-design:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/web-animation-design
+    ~/.claude/skills/web-animation-design:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/web-animation-design
+    ~/.agents/skills/web-design-reviewer:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/web-design-reviewer
+    ~/.codex/skills/web-design-reviewer:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/web-design-reviewer
+    ~/.claude/skills/web-design-reviewer:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/web-design-reviewer
+    ~/.agents/skills/website-to-video:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/website-to-video
+    ~/.codex/skills/website-to-video:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/website-to-video
+    ~/.claude/skills/website-to-video:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/website-to-video
+    ~/.agents/skills/wizard:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/wizard
+    ~/.codex/skills/wizard:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/wizard
+    ~/.claude/skills/wizard:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/wizard
+    ~/.agents/skills/writing-beats:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/writing-beats
+    ~/.codex/skills/writing-beats:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/writing-beats
+    ~/.claude/skills/writing-beats:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/writing-beats
+    ~/.agents/skills/writing-for-agents:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/writing-for-agents
+    ~/.codex/skills/writing-for-agents:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/writing-for-agents
+    ~/.claude/skills/writing-for-agents:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/writing-for-agents
+    ~/.agents/skills/writing-fragments:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/writing-fragments
+    ~/.codex/skills/writing-fragments:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/writing-fragments
+    ~/.claude/skills/writing-fragments:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/writing-fragments
+    ~/.agents/skills/writing-great-skills:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/writing-great-skills
+    ~/.codex/skills/writing-great-skills:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/writing-great-skills
+    ~/.claude/skills/writing-great-skills:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/writing-great-skills
+    ~/.agents/skills/writing-shape:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/writing-shape
+    ~/.codex/skills/writing-shape:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/writing-shape
+    ~/.claude/skills/writing-shape:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/writing-shape
