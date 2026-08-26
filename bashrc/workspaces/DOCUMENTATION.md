@@ -1,8 +1,8 @@
-# bashrc/workspaces documentation
+# Bashrc/workspaces documentation
 
 This folder provides CLI-first workspace automation for XFCE/Xubuntu. The user-facing overview and migration notes are in [`README.md`](./README.md); this document adds per-file coverage and option notes so the folder is included in the global bashrc documentation set.
 
-Requirements for the command set: Bash, XFCE/xfwm4, `wmctrl`, `xdotool`, `xrandr`, `xprop`, `rofi`, `python3`, and optional Polybar integration. All user-facing commands follow the workspace logging contract in `ws-common.sh`: logs under `~/.logs/workspaces/<command>/YYYYMMDD-HHMMSS.log`; `--verbose` sets `DNB_VERBOSE=1`; `--quiet` disables verbose output.
+Requirements for the command set: Bash, XFCE/xfwm4, `wmctrl`, `xdotool`, `xrandr`, `xprop`, `rofi`, `python3`, a running `devilspie2` (see `configs/system/devilspie2/`), and optional Polybar integration. All user-facing commands follow the workspace logging contract in `ws-common.sh`: logs under `~/.logs/workspaces/<command>/YYYYMMDD-HHMMSS.log`; `--verbose` sets `DNB_VERBOSE=1`; `--quiet` disables verbose output.
 
 ## Shared files
 
@@ -64,7 +64,11 @@ Options: `--workspace-full`, `--full`, `--workspace N`, `--include-sticky`, `--v
 
 ### `ws_launch_program`
 
-Launches a configured or explicit command on a workspace and can tile it.
+Launches a configured or explicit command on a workspace and can tile it. Moving
+the launched window to `--workspace` is delegated to Devilspie2 (a one-shot
+placement request keyed by the launched PID, consumed by
+`configs/system/devilspie2/config/ws-placement.lua`) instead of a manual
+`wmctrl` wait-and-move loop; Devilspie2 must be running for placement to work.
 
 Options: `--exec COMMAND`, `--workspace N|NAME`, `--tile TEMPLATE`, `--switch`, `--no-switch`, `--verbose`, `--quiet`, `--help`.
 

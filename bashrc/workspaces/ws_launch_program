@@ -13,6 +13,8 @@ WORKSPACE_NUM=""
 TILE_TEMPLATE=""
 EXEC_COMMAND=""
 SWITCH_WORKSPACE="0"
+PLACEMENT_DIR="${XDG_RUNTIME_DIR:-/tmp}/ws-launch-placements"
+PLACEMENT_TIMEOUT_SECONDS="15"
 
 usage() {
   cat <<EOF_USAGE
@@ -29,6 +31,9 @@ Options:
   --workspace N|NAME
       Workspace indicator (1-based index or workspace title from ${CONFIG_FILE}).
       Title lookup is case-insensitive. Optional. Default: current workspace.
+      Moving the launched window to this workspace is delegated to devilspie2
+      (see configs/system/devilspie2/config/ws-placement.lua); devilspie2 must
+      be running for placement to take effect.
 
   --tile TEMPLATE
       Tile template from ${SCRIPT_DIR}/config.toml. Optional.
@@ -212,6 +217,28 @@ wait_for_window_id_by_pid() {
   return 1
 }
 
+devilspie2_is_running() {
+  pgrep -x devilspie2 >/dev/null 2>&1
+}
+
+request_workspace_placement() {
+  local pid="$1"
+  local workspace_num="$2"
+  local placement_file="${PLACEMENT_DIR}/${pid}"
+
+  mkdir -p "${PLACEMENT_DIR}"
+  chmod 700 "${PLACEMENT_DIR}"
+  echo "${workspace_num}" >"${placement_file}"
+
+  (
+    sleep "${PLACEMENT_TIMEOUT_SECONDS}"
+    rm -f "${placement_file}"
+  ) &
+  disown
+
+  log_line "INFO" "Requested devilspie2 placement of PID ${pid} on workspace ${workspace_num} via ${placement_file}"
+}
+
 main() {
   if [[ "${DNB_VERBOSE:-0}" == "1" ]]; then
     VERBOSE="1"
@@ -316,32 +343,38 @@ main() {
     log_line "INFO" "Using current workspace ${WORKSPACE_NUM}"
   fi
 
+  local needs_placement="0"
+  if [[ "${WORKSPACE_NUM}" != "${current_workspace}" ]]; then
+    if devilspie2_is_running; then
+      needs_placement="1"
+    else
+      log_line "ERROR" "devilspie2 is not running; ${SCRIPT_NAME} cannot move the launched window to workspace ${WORKSPACE_NUM}. Start it via the devilspie2 autostart entry or configs/system/devilspie2/scripts/restart-devilspie2.sh."
+    fi
+  fi
+
   bash -lc "${EXEC_COMMAND}" &
   local launch_pid="$!"
   disown "${launch_pid}" || true
   log_line "INFO" "Launched command with PID ${launch_pid}"
 
-  if [[ "${WORKSPACE_NUM}" != "${current_workspace}" && "${SWITCH_WORKSPACE}" == "0" ]] || [[ -n "${TILE_TEMPLATE}" ]]; then
+  if [[ "${needs_placement}" == "1" ]]; then
+    request_workspace_placement "${launch_pid}" "${WORKSPACE_NUM}"
+  fi
+
+  if [[ -n "${TILE_TEMPLATE}" ]]; then
     local window_id
 
     if window_id="$(wait_for_window_id_by_pid "${launch_pid}")"; then
       log_line "INFO" "Detected window id ${window_id} for PID ${launch_pid}"
 
-      if [[ "${WORKSPACE_NUM}" != "${current_workspace}" ]]; then
-        wmctrl -i -r "${window_id}" -t "${target_workspace_idx}"
-        log_line "INFO" "Moved window ${window_id} to workspace ${WORKSPACE_NUM}"
+      local tile_cmd=("${SCRIPT_DIR}/ws_tile_window" "--template" "${TILE_TEMPLATE}" "--window-id" "${window_id}")
+
+      if [[ "${VERBOSE}" == "1" ]]; then
+        tile_cmd+=("--verbose")
       fi
 
-      if [[ -n "${TILE_TEMPLATE}" ]]; then
-        local tile_cmd=("${SCRIPT_DIR}/ws_tile_window" "--template" "${TILE_TEMPLATE}" "--window-id" "${window_id}")
-
-        if [[ "${VERBOSE}" == "1" ]]; then
-          tile_cmd+=("--verbose")
-        fi
-
-        "${tile_cmd[@]}"
-        log_line "INFO" "Applied tile template '${TILE_TEMPLATE}' to window ${window_id}"
-      fi
+      "${tile_cmd[@]}"
+      log_line "INFO" "Applied tile template '${TILE_TEMPLATE}' to window ${window_id}"
     else
       die "Unable to find a window for PID ${launch_pid}. Command may have forked immediately or did not open a window."
     fi

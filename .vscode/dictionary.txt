@@ -37,6 +37,7 @@ gitmarker
 glone
 gmailctl
 gotenberg
+guake
 hideemptyprojects
 hono
 hostinformation
@@ -119,9 +120,11 @@ vulns
 webui
 windowcd
 wireit
+wmctrl
 WORKINGDIR
 workspacedirs
 worktree
+XAUTHORITY
 xbindkeys
 xfconf
 xprop

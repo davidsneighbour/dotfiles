@@ -1,4 +1,4 @@
-# Workspace CLI (XFCE/Xubuntu 25.10)
+# Workspace CLI (`XFCE`/`Xubuntu` 25.10)
 
 This folder provides CLI-first workspace automation for XFCE on Xubuntu 25.10 with `wmctrl`, `xdotool`, `xrandr`, `rofi`, and optional Polybar usage.
 
@@ -7,6 +7,7 @@ This folder provides CLI-first workspace automation for XFCE on Xubuntu 25.10 wi
 * XFCE (xfwm4) on Xubuntu 25.10
 * `wmctrl`, `xdotool`, `xrandr`, `xprop`, `rofi`, `python3`
 * Bash
+* `devilspie2`, running (see `configs/system/devilspie2/`), for `ws_launch_program --workspace` to move the launched window onto that workspace
 
 ## Logging and verbosity
 
@@ -54,6 +55,12 @@ The change lives in xfconf, never in `config.toml`, so the next restart removes 
 * `--verbose`
 * `--quiet`
 * `--help`
+
+Moving the launched window onto `--workspace` is delegated to a Devilspie2 rule
+(`configs/system/devilspie2/config/ws-placement.lua`) rather than a manual
+`wmctrl` wait-and-move loop: `ws_launch_program` writes a one-shot placement
+request keyed by the launched PID, and Devilspie2 applies it as soon as the
+window appears. Devilspie2 must be running for this to take effect.
 
 ### `ws_move_active_window`
 
