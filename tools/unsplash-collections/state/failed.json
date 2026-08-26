@@ -1,0 +1,170 @@
+[
+  {
+    "description": "473 images · Curated by Unsplash+ Collections",
+    "href": "https://unsplash.com/collections/FxZR7I7iuJQ/dark-mode-wallpapers",
+    "title": "Dark Mode Wallpapers",
+    "failedAt": "2026-08-25T05:13:00.954Z",
+    "message": "download.saveAs: canceled"
+  },
+  {
+    "description": "67 images · Curated by Unsplash+ Collections",
+    "href": "https://unsplash.com/collections/kvpWBrvnOeQ/irregular-shapes",
+    "title": "Irregular Shapes",
+    "failedAt": "2026-08-25T06:11:36.320Z",
+    "message": "page.waitForEvent: Timeout 300000ms exceeded while waiting for event \"download\"\n=========================== logs ===========================\nwaiting for event \"download\"\n============================================================"
+  },
+  {
+    "description": "37 images · Curated by Unsplash+ Collections",
+    "href": "https://unsplash.com/collections/YsNYKOhbypI/touch-base",
+    "title": "Touch Base",
+    "failedAt": "2026-08-25T06:44:04.381Z",
+    "message": "page.waitForEvent: Target page, context or browser has been closed\n=========================== logs ===========================\nwaiting for event \"download\"\n============================================================"
+  },
+  {
+    "description": "37 images · Curated by Unsplash+ Collections",
+    "href": "https://unsplash.com/collections/YsNYKOhbypI/touch-base",
+    "title": "Touch Base",
+    "failedAt": "2026-08-25T07:31:59.056Z",
+    "message": "page.waitForEvent: Timeout 300000ms exceeded while waiting for event \"download\"\n=========================== logs ===========================\nwaiting for event \"download\"\n============================================================"
+  },
+  {
+    "description": "40 images · Curated by Unsplash+ Collections",
+    "href": "https://unsplash.com/collections/5eMXRL6UsGs/unsplash-award-finalists-%26-shortlists",
+    "title": "Unsplash Award Finalists & Shortlists",
+    "failedAt": "2026-08-25T07:48:39.893Z",
+    "message": "page.waitForEvent: Timeout 300000ms exceeded while waiting for event \"download\"\n=========================== logs ===========================\nwaiting for event \"download\"\n============================================================"
+  },
+  {
+    "description": "50 images · Curated by Unsplash+ Collections",
+    "href": "https://unsplash.com/collections/4_VxuLL0fhU/giving-thanks",
+    "title": "Giving Thanks",
+    "failedAt": "2026-08-25T08:15:39.330Z",
+    "message": "page.goto: net::ERR_NETWORK_CHANGED at https://unsplash.com/collections/4_VxuLL0fhU/giving-thanks\nCall log:\n\u001b[2m  - navigating to \"https://unsplash.com/collections/4_VxuLL0fhU/giving-thanks\", waiting until \"domcontentloaded\"\u001b[22m\n"
+  },
+  {
+    "description": "100 images · Curated by Unsplash+ Collections",
+    "href": "https://unsplash.com/collections/oGBnPDGuiCo/close-ups-of-nature-and-animals",
+    "title": "Close-ups of Nature and Animals",
+    "failedAt": "2026-08-25T08:28:42.654Z",
+    "message": "download.saveAs: canceled"
+  },
+  {
+    "description": "50 images · Curated by Unsplash+ Collections",
+    "href": "https://unsplash.com/collections/v0dz1KzuhJE/whimsy",
+    "title": "Whimsy",
+    "failedAt": "2026-08-25T08:29:33.196Z",
+    "message": "download.saveAs: canceled"
+  },
+  {
+    "description": "81 images · Curated by Unsplash+ Collections",
+    "href": "https://unsplash.com/collections/Sk6uD17_oiM/valentine's-day",
+    "title": "Valentine's Day",
+    "failedAt": "2026-08-25T08:29:59.651Z",
+    "message": "download.saveAs: canceled"
+  },
+  {
+    "description": "26 images · Curated by Unsplash+ Collections",
+    "href": "https://unsplash.com/collections/8K5S_rZ0qMo/red%2C-white-and-blue",
+    "title": "Red, White and Blue",
+    "failedAt": "2026-08-25T08:30:17.751Z",
+    "message": "download.saveAs: canceled"
+  },
+  {
+    "description": "80 images · Curated by Unsplash+ Collections",
+    "href": "https://unsplash.com/collections/djiuqu82JpE/bundled-up",
+    "title": "Bundled Up",
+    "failedAt": "2026-08-25T08:30:40.732Z",
+    "message": "download.saveAs: canceled"
+  },
+  {
+    "description": "75 images · Curated by Unsplash+ Collections",
+    "href": "https://unsplash.com/collections/65B__8t0z6c/remote-work",
+    "title": "Remote Work",
+    "failedAt": "2026-08-25T08:30:59.190Z",
+    "message": "download.saveAs: canceled"
+  },
+  {
+    "description": "44 images · Curated by Unsplash+ Collections",
+    "href": "https://unsplash.com/collections/QoctFSMJtXk/holiday-magic",
+    "title": "Holiday Magic",
+    "failedAt": "2026-08-25T08:31:16.211Z",
+    "message": "download.saveAs: canceled"
+  },
+  {
+    "description": "70 images · Curated by Unsplash+ Collections",
+    "href": "https://unsplash.com/collections/0M4xkCuxCx8/identity-by-nick-fancher",
+    "title": "Identity by Nick Fancher",
+    "failedAt": "2026-08-25T08:31:40.681Z",
+    "message": "download.saveAs: canceled"
+  },
+  {
+    "description": "50 images · Curated by Unsplash+ Collections",
+    "href": "https://unsplash.com/collections/ydpdKnpFvcg/excess-by-marlen-stahlhuth",
+    "title": "Excess by Marlen Stahlhuth",
+    "failedAt": "2026-08-25T08:31:57.469Z",
+    "message": "download.saveAs: canceled"
+  },
+  {
+    "description": "50 images · Curated by Unsplash+ Collections",
+    "href": "https://unsplash.com/collections/T1jvcmhEe5E/earthbound",
+    "title": "Earthbound",
+    "failedAt": "2026-08-25T08:32:31.836Z",
+    "message": "download.saveAs: canceled"
+  },
+  {
+    "description": "23 images · Curated by Unsplash+ Collections",
+    "href": "https://unsplash.com/collections/HuNZMxCZ6hk/forbidden-fruit-by-andrew-petrischev",
+    "title": "Forbidden Fruit by Andrew Petrischev",
+    "failedAt": "2026-08-25T08:32:45.696Z",
+    "message": "download.saveAs: canceled"
+  },
+  {
+    "description": "40 images · Curated by Unsplash+ Collections",
+    "href": "https://unsplash.com/collections/Hr_aW1hcIJ4/from-above",
+    "title": "From Above",
+    "failedAt": "2026-08-25T08:32:58.706Z",
+    "message": "download.saveAs: canceled"
+  },
+  {
+    "description": "51 images · Curated by Unsplash+ Collections",
+    "href": "https://unsplash.com/collections/26LduKzGz1Y/plugged-in",
+    "title": "Plugged in",
+    "failedAt": "2026-08-25T08:33:19.556Z",
+    "message": "download.saveAs: canceled"
+  },
+  {
+    "description": "100 images · Curated by Unsplash+ Collections",
+    "href": "https://unsplash.com/collections/tZstva-MHRk/2025-calendars",
+    "title": "2025 Calendars",
+    "failedAt": "2026-08-25T08:33:49.239Z",
+    "message": "download.saveAs: canceled"
+  },
+  {
+    "description": "45 images · Curated by Unsplash+ Collections",
+    "href": "https://unsplash.com/collections/UTkcbA5kU7s/avatars",
+    "title": "Avatars",
+    "failedAt": "2026-08-25T08:34:14.577Z",
+    "message": "download.saveAs: canceled"
+  },
+  {
+    "description": "50 images · Curated by Unsplash+ Collections",
+    "href": "https://unsplash.com/collections/CK7frjektDI/the-lunar-perspective",
+    "title": "The Lunar Perspective",
+    "failedAt": "2026-08-25T08:34:52.939Z",
+    "message": "locator.waitFor: Target crashed \nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /^download all$/i }) to be visible\u001b[22m\n"
+  },
+  {
+    "description": "37 images · Curated by Unsplash+ Collections",
+    "href": "https://unsplash.com/collections/YsNYKOhbypI/touch-base",
+    "title": "Touch Base",
+    "failedAt": "2026-08-25T09:14:14.924Z",
+    "message": "page.waitForEvent: Timeout 300000ms exceeded while waiting for event \"download\"\n=========================== logs ===========================\nwaiting for event \"download\"\n============================================================"
+  },
+  {
+    "description": "40 images · Curated by Unsplash+ Collections",
+    "href": "https://unsplash.com/collections/5eMXRL6UsGs/unsplash-award-finalists-%26-shortlists",
+    "title": "Unsplash Award Finalists & Shortlists",
+    "failedAt": "2026-08-25T09:38:31.435Z",
+    "message": "page.waitForEvent: Timeout 300000ms exceeded while waiting for event \"download\"\n=========================== logs ===========================\nwaiting for event \"download\"\n============================================================"
+  }
+]
