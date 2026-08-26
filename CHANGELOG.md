@@ -1,5 +1,24 @@
 # Changelog
 
+## [3004.9.0](https://github.com/davidsneighbour/dotfiles/compare/v3004.8.0...v3004.9.0) (2026-08-26)
+
+### Feat
+
+* **tools:** add unsplash collections downloader ([490e5a8](https://github.com/davidsneighbour/dotfiles/commit/490e5a851b1799f65207fd5d0d456c094f36fea9))
+
+### Fix
+
+* add state files to unsplash downloader ([316dc91](https://github.com/davidsneighbour/dotfiles/commit/316dc9110468af63ce3a74079a109f5635650ba6))
+* remove atuin ([8399ca4](https://github.com/davidsneighbour/dotfiles/commit/8399ca476773b5849c9bcea9d376edae6e443b8b))
+* remove atuin integration ([600cc14](https://github.com/davidsneighbour/dotfiles/commit/600cc14bc7398ddcce0fb16990a03d6c4d117208))
+* **skillz:** update skillz to recreate symlink list and use dotbot ([03898dd](https://github.com/davidsneighbour/dotfiles/commit/03898ddb68218a194783302039a58b9b1bef6785))
+* **tools:** update gitignore for unsplash collections ([df4efa7](https://github.com/davidsneighbour/dotfiles/commit/df4efa718d4ba1a7525b45216249a11e51919525))
+* update skills config ([a128e59](https://github.com/davidsneighbour/dotfiles/commit/a128e5993abac652d03b33fa2ae07ad2b74b0f19))
+
+### Chore
+
+* **git:** update protected submodule ([2d77306](https://github.com/davidsneighbour/dotfiles/commit/2d773062d48994b36c0d728db036d3fc2ed2d098))
+
 ## [3004.8.0](https://github.com/davidsneighbour/dotfiles/compare/v3004.7.2...v3004.8.0) (2026-08-24)
 
 ### Feat
