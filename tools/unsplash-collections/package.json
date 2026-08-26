@@ -1,0 +1,23 @@
+{
+  "name": "@davidsneighbour/unsplash-collections",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Playwright helper for downloading signed-in Unsplash+ collection ZIP files.",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "playwright:install": "playwright install chromium",
+    "start": "node --experimental-strip-types download-unsplash.ts",
+    "typecheck": "tsc --project tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "playwright": "1.62.1"
+  },
+  "devDependencies": {
+    "@types/node": "26.2.0",
+    "typescript": "7.0.2"
+  },
+  "engines": {
+    "node": "^22.0.0 || ^24.0.0 || ^26.0.0"
+  }
+}
