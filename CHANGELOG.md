@@ -1,5 +1,22 @@
 # Changelog
 
+## [3004.9.1](https://github.com/davidsneighbour/dotfiles/compare/v3004.9.0...v3004.9.1) (2026-08-27)
+
+### Fix
+
+* remove assets directory, move wallpaper to theme config ([20fb123](https://github.com/davidsneighbour/dotfiles/commit/20fb1237d080977f3b7765f20918d3ce5fba3c91))
+* remove atuin from dotbot setup ([9f4e861](https://github.com/davidsneighbour/dotfiles/commit/9f4e861d1568fa489e2681a6c2829c47dcab0a70))
+* remove eww setup (unused) ([b50ebf6](https://github.com/davidsneighbour/dotfiles/commit/b50ebf6447a91b486455d2bdddcc1c424ca7ba17))
+* remove i3 window manager ([0fa3353](https://github.com/davidsneighbour/dotfiles/commit/0fa33533b8174a77cdd22fb73b51a5f3e42a585c))
+
+### Refactor
+
+* **workspaces:** move launched-window placement to devilspie2 ([15cc478](https://github.com/davidsneighbour/dotfiles/commit/15cc47817e85113a6d61ce884d6cae32be46ab76))
+
+### Chore
+
+* **skyline:** move gh-stl assets and skyline workflow to skyline repo ([7adb0fc](https://github.com/davidsneighbour/dotfiles/commit/7adb0fc42b995989c3761d6ffbee805567db74b3))
+
 ## [3004.9.0](https://github.com/davidsneighbour/dotfiles/compare/v3004.8.0...v3004.9.0) (2026-08-26)
 
 ### Feat
