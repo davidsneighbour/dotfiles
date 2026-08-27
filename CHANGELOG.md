@@ -1,5 +1,15 @@
 # Changelog
 
+## [3004.9.2](https://github.com/davidsneighbour/dotfiles/compare/v3004.9.1...v3004.9.2) (2026-08-27)
+
+### Fix
+
+* remove manual version bump for CITATION.cff ([18dcc27](https://github.com/davidsneighbour/dotfiles/commit/18dcc27e6451400127549c139334a5099ae2660a))
+
+### Build
+
+* update configuration ([ec00934](https://github.com/davidsneighbour/dotfiles/commit/ec009346dc823063b91dd8aff19d4688edc0c05a))
+
 ## [3004.9.1](https://github.com/davidsneighbour/dotfiles/compare/v3004.9.0...v3004.9.1) (2026-08-27)
 
 ### Fix
