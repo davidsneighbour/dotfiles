@@ -1,6 +1,6 @@
 # AGENTS.md (bashrc/workspaces)
 
-Scope: this directory tree.
+Scope: this directory tree (bashrc/workspaces).
 
 ## Extension rules
 

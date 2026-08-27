@@ -49,7 +49,6 @@
     ~/.config/conky: configs/system/conky
     ~/.config/user-dirs.dirs: configs/system/user-dirs.dirs
     ~/.config/polybar: configs/system/polybar
-    ~/.config/i3: configs/system/i3
     ~/.nvmrc: .nvmrc
     ~/.editorconfig: .editorconfig
     ~/.fixpackrc: .fixpackrc

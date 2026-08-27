@@ -1,7 +1,7 @@
 #!/bin/bash
 # based on https://github.com/adi1090x/rofi
 
-dir="$HOME/.dotfiles"
+dir="${HOME}/.dotfiles"
 theme="${dir}/configs/system/rofi/power/powermenu.rasi"
 
 : "${BASHRC_PATH:?BASHRC_PATH must be set before loading Bash helper files}"
@@ -10,7 +10,7 @@ for FILE in "${BASHRC_PATH}"/lib/*/*.bash; do
   [[ -f "${FILE}" && -r "${FILE}" ]] && source "${FILE}"
 done
 
-lastLogin="$(last $USER | head -n1 | tr -s ' ' | cut -d' ' -f5,6,7)"
+lastLogin="$(last "${USER}" | head -n1 | tr -s ' ' | cut -d' ' -f5,6,7)"
 uptime="$(uptime -p | sed -e 's/up //g')"
 host=$(hostname)
 
@@ -26,9 +26,9 @@ no=''
 rofi_cmd() {
   rofi \
     -dmenu \
-    -p " $USER@$host" \
-    -mesg " Last Login: $lastLogin |  Uptime: $uptime" \
-    -theme ${theme}
+    -p " ${USER}@${host}" \
+    -mesg " Last Login: ${lastLogin} |  Uptime: ${uptime}" \
+    -theme "${theme}"
 }
 
 # Confirmation CMD
@@ -42,35 +42,33 @@ confirm_cmd() {
     -dmenu \
     -p 'Confirmation' \
     -mesg 'Are you sure?' \
-    -theme ${theme}
+    -theme "${theme}"
 }
 
 # Ask for confirmation
 confirm_exit() {
-  echo -e "$no\n$yes" | confirm_cmd
+  echo -e "${no}\n${yes}" | confirm_cmd
 }
 
 # Pass variables to rofi dmenu
 run_rofi() {
-  echo -e "$lock\n$logout\n$reboot\n$shutdown" | rofi_cmd
+  echo -e "${lock}\n${logout}\n${reboot}\n${shutdown}" | rofi_cmd
 }
 
 # Execute Command
 run_cmd() {
   selected="$(confirm_exit)"
-  if [[ "$selected" == "$yes" ]]; then
+  if [[ "${selected}" == "${yes}" ]]; then
     if [[ $1 == '--shutdown' ]]; then
       systemctl poweroff
     elif [[ $1 == '--reboot' ]]; then
       systemctl reboot
     elif [[ $1 == '--logout' ]]; then
-      if [[ "$DESKTOP_SESSION" == 'openbox' ]]; then
+      if [[ "${DESKTOP_SESSION}" == 'openbox' ]]; then
         openbox --exit
-      elif [[ "$DESKTOP_SESSION" == 'bspwm' ]]; then
+      elif [[ "${DESKTOP_SESSION}" == 'bspwm' ]]; then
         bspc quit
-      elif [[ "$DESKTOP_SESSION" == 'i3' ]]; then
-        i3-msg exit
-      elif [[ "$DESKTOP_SESSION" == 'plasma' ]]; then
+      elif [[ "${DESKTOP_SESSION}" == 'plasma' ]]; then
         qdbus org.kde.ksmserver /KSMServer logout 0 0 0
       fi
     fi
@@ -82,20 +80,20 @@ run_cmd() {
 # Actions
 chosen="$(run_rofi)"
 case ${chosen} in
-$shutdown)
+${shutdown})
   run_cmd --shutdown
   ;;
-$reboot)
+${reboot})
   run_cmd --reboot
   ;;
-$lock)
+${lock})
   if [[ -x '/usr/bin/betterlockscreen' ]]; then
     betterlockscreen -l
   elif [[ -x '/usr/bin/i3lock' ]]; then
     i3lock
   fi
   ;;
-$logout)
+${logout})
   run_cmd --logout
   ;;
 esac
