@@ -67,10 +67,10 @@ main() {
 
   local wallpaper_path=""
 
-  if [[ -f "${DOTFILES_PATH}/assets/wallpaper.jpg" ]]; then
-    wallpaper_path="${DOTFILES_PATH}/assets/wallpaper.jpg"
-  elif [[ -f "${DOTFILES_PATH}/assets/wallpaper.png" ]]; then
-    wallpaper_path="${DOTFILES_PATH}/assets/wallpaper.png"
+  if [[ -f "${DOTFILES_PATH}/config/theme/wallpaper.jpg" ]]; then
+    wallpaper_path="${DOTFILES_PATH}/config/theme/wallpaper.jpg"
+  elif [[ -f "${DOTFILES_PATH}/config/theme/wallpaper.png" ]]; then
+    wallpaper_path="${DOTFILES_PATH}/config/theme/wallpaper.png"
   else
     log_info "No default wallpaper found."
     exit 0
