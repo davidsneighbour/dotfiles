@@ -10,7 +10,10 @@
     },
     "netlify": {
       "command": "npx",
-      "args": ["-y", "@netlify/mcp"]
+      "args": [
+        "-y",
+        "@netlify/mcp"
+      ]
     }
   }
 }

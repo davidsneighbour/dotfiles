@@ -1,0 +1,10 @@
+[launcher]
+icon = "circle-dot"
+
+[lpack]
+exclude = [
+  ".git",
+  "logs",
+  "node_modules",
+  "scratch"
+]

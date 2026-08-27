@@ -1,8 +1,0 @@
-{
-  "servers": {
-    "dotfiles Docs": {
-      "type": "sse",
-      "url": "https://gitmcp.io/davidsneighbour/dotfiles"
-    }
-  }
-}
