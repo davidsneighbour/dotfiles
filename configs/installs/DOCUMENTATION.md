@@ -126,10 +126,3 @@ Options: `--verbose`, `--dry-run`, `--help`.
 
 Requirements: Homebrew/Linuxbrew (`brew`) and network access.
 
-## `90-cargo-packages.sh`
-
-Installs eww's apt build dependencies, clones (if missing) and builds eww from source with cargo, and installs the release binary to `~/.local/bin`.
-
-Options: `--verbose`, `--dry-run`, `--help`.
-
-Requirements: `apt`, `sudo`, `git`, Rust/Cargo (`cargo`), and network access.

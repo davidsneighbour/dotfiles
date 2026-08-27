@@ -19,7 +19,7 @@ enough. Most files are installed onto the workstation as symlinks by
 | `installs/` | Numbered workstation setup scripts (`10-system.sh`, `20-brew.sh`, `50-*.sh`, `90-*-packages.sh`). See [`installs/DOCUMENTATION.md`](./installs/DOCUMENTATION.md). | Run directly (`bash configs/installs/NN-name.sh`), not symlinked. |
 | `packages/` | `system/default.jsonc` and `legacy/starter.jsonc` — not referenced anywhere in this repo's scripts or Dotbot configs. Appear to be a stale/orphaned `package.json`-shaped snapshot (`system/default.jsonc` hasn't changed since a `default.jsonc` last touched in an unrelated May commit) and a `package.json` template that only gets touched incidentally by dependency-update automation scanning all `*.jsonc` files. Not confirmed obsolete — flagging for a decision rather than deleting. | Not symlinked; no known consumer. |
 | `savefiles/` | `devdocs.json` — a [DevDocs](https://devdocs.io) settings export for manual import; not consumed by any script. | Not symlinked; manual import into DevDocs. |
-| `system/` | Per-application config for desktop/workstation tools (polybar, rofi, xfce, i3, git, etc.). See the subdirectory table below. | Mostly Dotbot; a few (`eww`, `monitor/`, `systemd/nfs-storage/`) are referenced directly by path or run manually instead. |
+| `system/` | Per-application config for desktop/workstation tools (polybar, rofi, xfce, i3, git, etc.). See the subdirectory table below. | Mostly Dotbot; a few (`monitor/`, `systemd/nfs-storage/`) are referenced directly by path or run manually instead. |
 | `theme/` | Icon/cursor themes. `DNB` and `DNB-Bibata` are repo-authored and Dotbot-linked to `~/.icons`. `Dracula` is a gitignored downloaded icon pack (~1.6G, includes `Archive.zip`/`__MACOSX` extraction remnants), not linked from Dotbot — see the `theme-dracula` entry in `bashrc/helpers/logs/config.toml`, which flags it as a cleanup candidate pending confirmation. | `DNB`/`DNB-Bibata` via Dotbot; `Dracula` unmanaged. |
 | `vscode/` | `extensions/dnb-dotfiles-tools` (a local VS Code extension) and `extensions/scripts/install-local-extensions.sh` to install it. | Run manually via the install script, not Dotbot-linked. |
 
@@ -33,7 +33,6 @@ enough. Most files are installed onto the workstation as symlinks by
 | `bittorrent` | qBittorrent watched-folder/category/main config. | Yes — three separate `~/.config/qBittorrent/*` files |
 | `conky` | Conky system-monitor widget config. | Yes — `~/.config/conky` |
 | `espanso` | Espanso text-expander matches/config. | Yes — `~/.config/espanso` |
-| `eww` | Eww widgets used as Polybar companion popups (session menu). See [`system/eww/README.md`](./system/eww/README.md). | No — read via an explicit `--config` path from the Polybar start script, not symlinked. |
 | `fastfetch` | Fastfetch system-info banner config. | Yes — `~/.config/fastfetch` |
 | `filezilla` | FileZilla client config. | Yes — `~/.config/filezilla` |
 | `fontconfig` | Extra `fontconfig` snippets (e.g. emoji fallback). | Yes — `~/.config/fontconfig/conf.d/01-emoji.conf` |
