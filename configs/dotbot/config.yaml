@@ -34,7 +34,6 @@
     ~/.bashrc: bashrc/.bashrc
     ~/.profile: bashrc/.profile
     ~/.config/starship.toml: configs/system/starship/starship.toml
-    ~/.config/atuin: configs/system/atuin
 
     # xfwm setup
     ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml: configs/system/xfce/xfce4-keyboard-shortcuts.xml
