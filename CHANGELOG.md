@@ -1,5 +1,17 @@
 # Changelog
 
+## [3004.10.0](https://github.com/davidsneighbour/dotfiles/compare/v3004.9.2...v3004.10.0) (2026-08-30)
+
+### Feat
+
+* add repo triage container ([22caae7](https://github.com/davidsneighbour/dotfiles/commit/22caae7644da76605d3763fe298c04887c24925a))
+
+### Chore
+
+* **cleanup:** remove template (it's in the protected submodule) ([e068b02](https://github.com/davidsneighbour/dotfiles/commit/e068b0213ef3c5f3f01dc4af7a8b7863ff96e75c))
+* **git:** update protected submodule ([8ea0f20](https://github.com/davidsneighbour/dotfiles/commit/8ea0f2024b3ded88ae17f6874366be246175fc9d))
+* update skills config ([4e093cf](https://github.com/davidsneighbour/dotfiles/commit/4e093cf2768eec43ec4bfac37793223dae34ff77))
+
 ## [3004.9.2](https://github.com/davidsneighbour/dotfiles/compare/v3004.9.1...v3004.9.2) (2026-08-27)
 
 ### Fix
