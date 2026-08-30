@@ -1,5 +1,11 @@
 # Changelog
 
+## [3004.10.1](https://github.com/davidsneighbour/dotfiles/compare/v3004.10.0...v3004.10.1) (2026-08-30)
+
+### Build
+
+* **deps:** update dependencies ([dd369ab](https://github.com/davidsneighbour/dotfiles/commit/dd369ab20f037cce46f014877acbf008fcd451ba))
+
 ## [3004.10.0](https://github.com/davidsneighbour/dotfiles/compare/v3004.9.2...v3004.10.0) (2026-08-30)
 
 ### Feat
