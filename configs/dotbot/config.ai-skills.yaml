@@ -277,6 +277,12 @@
       path: ${HOME}/github.com/davidsneighbour/gazetteer/skills/gazetteer
     ~/.claude/skills/gazetteer:
       path: ${HOME}/github.com/davidsneighbour/gazetteer/skills/gazetteer
+    ~/.agents/skills/genjutsu:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/genjutsu
+    ~/.codex/skills/genjutsu:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/genjutsu
+    ~/.claude/skills/genjutsu:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/genjutsu
     ~/.agents/skills/hallmark:
       path: ${HOME}/github.com/davidsneighbour/skills/skills/hallmark
     ~/.codex/skills/hallmark:
@@ -373,6 +379,12 @@
       path: ${HOME}/github.com/davidsneighbour/posthaste/skills/posthaste-voice
     ~/.claude/skills/posthaste-voice:
       path: ${HOME}/github.com/davidsneighbour/posthaste/skills/posthaste-voice
+    ~/.agents/skills/resend:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/resend
+    ~/.codex/skills/resend:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/resend
+    ~/.claude/skills/resend:
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/resend
     ~/.agents/skills/shadcn:
       path: ${HOME}/github.com/davidsneighbour/skills/skills/shadcn
     ~/.codex/skills/shadcn:
