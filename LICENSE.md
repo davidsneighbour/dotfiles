@@ -1,3 +1,4 @@
+<!-- markdownlint-disable-next-line title-case-style -->
 # MIT License
 
 Copyright ©2026 Patrick Kollitsch
