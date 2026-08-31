@@ -22,6 +22,12 @@ See the preceding note. If you are still here, then you are interested in how I 
 
 See [SETUP.md](docs/setup.md) for details.
 
+## Desktop session
+
+See [SESSION.md](SESSION.md) for the authoritative reference on how the
+i3/Polybar/Rofi desktop session (and the XFCE fallback) is assembled and
+started.
+
 ## LICENSE
 
 As far as components of this project are licensable this is done so under the MIT License - see the [LICENSE](LICENSE.md) file for details. Again… use at your own risk.

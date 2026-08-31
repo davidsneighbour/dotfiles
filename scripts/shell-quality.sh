@@ -78,6 +78,7 @@ discover_shell_files() {
     git ls-files -z -- \
       bashrc \
       configs/installs \
+      configs/session/polybar \
       configs/system/polybar/scripts \
       configs/system/rofi \
       scripts
