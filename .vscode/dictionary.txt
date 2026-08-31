@@ -4,8 +4,10 @@ atuin
 automount
 autostarts
 Bibata
+bindsym
 biomejs
 bordercolor
+bspwm
 color
 combi
 commitlint
@@ -63,6 +65,7 @@ mainbox
 mktemp
 Monaspace
 msgvault
+nagbar
 ncurc
 newwindow
 nohup
@@ -70,6 +73,7 @@ nonexistent
 nostr
 ntfy
 ollama
+openbox
 openpencil
 openwebui
 orientalandbeyond
@@ -99,6 +103,7 @@ separatorcolor
 shellcheck
 shellenv
 shfmt
+shmlog
 skillz
 smol
 sortorder

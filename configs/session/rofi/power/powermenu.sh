@@ -2,7 +2,7 @@
 # based on https://github.com/adi1090x/rofi
 
 dir="${HOME}/.dotfiles"
-theme="${dir}/configs/system/rofi/power/powermenu.rasi"
+theme="${dir}/configs/session/rofi/power/powermenu.rasi"
 
 : "${BASHRC_PATH:?BASHRC_PATH must be set before loading Bash helper files}"
 for FILE in "${BASHRC_PATH}"/lib/*/*.bash; do
@@ -70,6 +70,8 @@ run_cmd() {
         bspc quit
       elif [[ "${DESKTOP_SESSION}" == 'plasma' ]]; then
         qdbus org.kde.ksmserver /KSMServer logout 0 0 0
+      elif [[ "${DESKTOP_SESSION}" == 'i3' || "${DESKTOP_SESSION}" == 'i3-with-shmlog' ]]; then
+        i3-msg exit
       fi
     fi
   else

@@ -172,8 +172,25 @@ bindsym $mod+Shift+c reload
 # responsible for not leaving duplicate bars behind.
 bindsym $mod+Shift+r restart
 
-# Exit i3, with a confirmation prompt so it cannot be triggered by accident.
-bindsym $mod+Shift+e exec --no-startup-id i3-nagbar -t warning -m 'Exit i3? This ends the session.' -B 'Yes, exit i3' 'i3-msg exit'
+# Exit i3 (and lock/reboot/shutdown), via the same Rofi power menu XFCE's
+# Polybar already uses (configs/session/rofi/power/powermenu.sh, wired to its
+# Polybar module's click-left there). Its own listview handles confirmation,
+# so this needs no i3-side confirmation step. An i3-nagbar-button confirm
+# was tried first and dropped: i3-nagbar does not warp the pointer, so its
+# button (top-right, the same strip Polybar's tray/clock occupies) could
+# fire on a merely-resting cursor; a keyboard-only i3 "mode" confirm was
+# tried next and also dropped: entering a mode grabs all keyboard input
+# session-wide with no visible indicator (no i3bar binding_mode module),
+# which read as the whole session hanging.
+#
+# powermenu.sh requires BASHRC_PATH (it sources bashrc/lib/*/*.bash) and
+# hard-fails without it. Under XFCE it gets this for free: Polybar's own
+# launcher (configs/system/polybar/start.sh) exports BASHRC_PATH before
+# starting Polybar, so the click-left handler inherits it. i3's `exec` runs
+# commands directly from i3's own environment, which never has it (only
+# `.bashrc`/`.profile` export it, and `exec` uses a plain, non-interactive,
+# non-login shell) — so it has to be set inline here instead.
+bindsym $mod+Shift+e exec --no-startup-id sh -c 'BASHRC_PATH="$HOME/.dotfiles/bashrc" "$HOME/.dotfiles/configs/session/rofi/power/powermenu.sh"'
 
 ################################################################################
 # Resize mode (conventional i3 extra, kept small)

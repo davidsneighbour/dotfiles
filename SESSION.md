@@ -328,20 +328,23 @@ checks above into one read-only report — it never modifies the desktop.
 Deliberately not implemented in this starter pass (do not implement without
 a separate, explicit request — see the spec's scope-control section):
 
-* **Unscoped host autostart entries also run under i3.**
-  `configs/system/autostart/locutus/` has several `.desktop` files with no
+* **Host autostart entries do NOT run under i3 — i3 has no session
+  manager.** `configs/system/autostart/locutus/` (symlinked to
+  `~/.config/autostart/`) has several `.desktop` files, some with no
   `OnlyShowIn`/`NotShowIn` at all (`Barrier.desktop`, `dnb_enpass.desktop`,
-  `dnb_discord.desktop`, `onboard-autostart.desktop`,
-  `gnome-keyring-pkcs11.desktop`, `dropbox.desktop`,
-  `indicator-messages.desktop`, `startup.sh.desktop`,
-  `gnome-keyring-secrets.desktop`, `Flameshot.desktop`,
-  `org.gnome.SettingsDaemon.DiskUtilityNotify.desktop`). These will also
-  launch under the new i3 session. Some of that may be intentional
-  (keyring unlocking, for instance, arguably should be session-wide); some
-  of it may be exactly the kind of thing that produces "an apparently
-  empty desktop" if one of them errors loudly or grabs focus before i3's
-  own startup finishes. Recommend auditing this list deliberately in a
-  follow-up rather than as a side effect of this change.
+  `dnb_discord.desktop`, `onboard-autostart.desktop`, `dropbox.desktop`,
+  `indicator-messages.desktop`, `startup.sh.desktop`, `Flameshot.desktop`,
+  `org.gnome.SettingsDaemon.DiskUtilityNotify.desktop`). Only
+  `xfce4-session` reads that directory; i3 only runs what its own config
+  file's `exec`/`exec_always` lines say, so none of these launch under the
+  i3 session unless explicitly added there. `gnome-keyring-pkcs11.desktop`
+  and `gnome-keyring-secrets.desktop` are the one pair with an i3
+  equivalent so far — see the `gnome-keyring-daemon` line in
+  `configs/session/i3/config` ("Session startup"), added because VS Code
+  and other libsecret-using apps could not find a keyring under i3
+  otherwise. Auditing the rest of this list (does Barrier/Dropbox/Discord
+  etc. need an i3 `exec` too?) is a deliberate follow-up, not part of this
+  starter.
 * No compositor (e.g. Picom) — windows will not have shadows/transparency;
   add only if a specific problem needs it.
 * No notification daemon — `notify-send` calls will silently do nothing
