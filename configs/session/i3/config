@@ -57,6 +57,22 @@ gaps outer 0
 # doing anything i3 would notice.
 ################################################################################
 
+# (Re)registers the GNOME Keyring's PKCS#11 and Secret Service
+# (org.freedesktop.secrets) D-Bus components on this session's bus. PAM
+# (pam_gnome_keyring.so `auto_start` in /etc/pam.d/lightdm) already starts
+# and unlocks the daemon at login for every session, including this one, but
+# that happens before the X session's D-Bus bus exists, so those two D-Bus
+# services never get registered. XFCE papers over this with
+# X-XFCE-Autostart-Override entries in configs/system/autostart/locutus/
+# (gnome-keyring-pkcs11.desktop, gnome-keyring-secrets.desktop) that
+# xfce4-session processes from ~/.config/autostart; i3 has no session
+# manager reading that directory at all, so without this line apps that use
+# libsecret (e.g. VS Code's credential storage) find no keyring under i3.
+# gnome-keyring-daemon attaches to the already-running PAM instance (same
+# control directory) instead of starting a second one, so this is safe to
+# re-run on every restart.
+exec_always --no-startup-id sh -c "/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets || true"
+
 # Guaranteed-visible root background so the desktop never looks "empty" even
 # with no wallpaper image configured (see SESSION.md "Background").
 exec_always --no-startup-id xsetroot -solid '#0B0D0F'
