@@ -57,6 +57,27 @@ Documented internal helper functions and their option contracts:
 
 Requirements: Bash, `git`, `curl` for Discord notifications, and parser tools used by the config implementation (`jq`, Python, or language-specific parsers depending on config type). Network access is required for fetch/clone and Discord.
 
+## `node-update.sh`
+
+Loads [`../../configs/system/npm/cron-node-update.sh`](../../configs/system/npm/cron-node-update.sh).
+That npm-owned cron script installs the latest Current Node.js release through
+NVM, sets the NVM default alias to that release, and installs the default global
+npm package list when the resolved default Node.js version changes.
+
+Options:
+
+* `--dry-run` — print the commands that would run.
+* `--verbose` — print detailed progress.
+* `--help` — show help.
+
+Package source:
+[`../../configs/system/npm/default-packages`](../../configs/system/npm/default-packages),
+via
+[`../../configs/system/npm/install-default-packages.ts`](../../configs/system/npm/install-default-packages.ts).
+
+Requirements: Bash, NVM installed under `~/.nvm`, Node.js, npm, and network
+access to the Node.js and npm registries.
+
 ## `synch_downloads.json`
 
 JSON configuration for `synch_downloads.sh`.

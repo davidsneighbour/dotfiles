@@ -26,8 +26,9 @@
       comment: "weekly docker container backup to keep"
       command: ${HOME}/.dotfiles/bashrc/cronjobs/docker-backup.sh --keep --apply --docker-path ${HOME}/.dotfiles/containers/locutus --backup-path /mnt/storage/Backup/Docker/Locutus --keep-count 10 --verbose >> "${HOME}/.logs/cron/docker-backup-$(date +\%Y\%m\%d-\%H\%M\%S).log" 2>&1
 
-    - cron: 0 0 * * *
-      command: ${HOME}/github.com/davidsneighbour/dotfiles/bashrc/helpers/update-npm.sh >> "$HOME/.logs/cron/job-$(date +\%Y\%m\%d-\%H\%M\%S).log" 2>&1
+    - cron: "0 10 * * *"
+      comment: "daily Node.js update"
+      command: mkdir -p "${HOME}/.logs/node-update" && ${HOME}/.dotfiles/bashrc/cronjobs/node-update.sh >> "${HOME}/.logs/node-update/$(date +\%Y\%m\%d-\%H\%M\%S).log" 2>&1
     - cron: 30 */4 * * *
       command: ${HOME}/github.com/davidsneighbour/dotfiles/bashrc/cronjobs/filespace-discord.sh >> "$HOME/.logs/cron/job-$(date +\%Y\%m\%d-\%H\%M\%S).log" 2>&1
     - cron: 0 6,12,18 * * *

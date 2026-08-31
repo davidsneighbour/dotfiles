@@ -147,8 +147,9 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`cronjobs/DOCUMENTATION.md`](./cronjobs/DOCUMENTATION.md#L1) | file | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L1) |
 | [`cronjobs/filespace-discord.sh`](./cronjobs/filespace-discord.sh#L1) | file | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L22) |
 | [`cronjobs/git_updates.sh`](./cronjobs/git_updates.sh#L1) | file | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L33) |
-| [`cronjobs/synch_downloads.json`](./cronjobs/synch_downloads.json#L1) | file | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L71) |
-| [`cronjobs/synch_downloads.sh`](./cronjobs/synch_downloads.sh#L1) | file | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L61) |
+| [`cronjobs/node-update.sh`](./cronjobs/node-update.sh#L1) | file | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L60) |
+| [`cronjobs/synch_downloads.json`](./cronjobs/synch_downloads.json#L1) | file | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L80) |
+| [`cronjobs/synch_downloads.sh`](./cronjobs/synch_downloads.sh#L1) | file | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L84) |
 | [`current_branch`](./cronjobs/git_updates.sh#L354) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L33) |
 | [`d`](./partials/aliases#L16) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L19) |
 | [`default_config_file`](./helpers/packages/create.sh#L126) | function | [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md#L41) |
