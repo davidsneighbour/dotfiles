@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.0.0](https://github.com/davidsneighbour/dotfiles/compare/v1.0.0...v2.0.0) (2026-08-31)
+
+### Feat
+
+* **session:** add i3 starter desktop session ([4437d77](https://github.com/davidsneighbour/dotfiles/commit/4437d776c9a72141dacef246a835d9e2d3fcd7cc)), closes [#567](https://github.com/davidsneighbour/dotfiles/issues/567)
+
+### Fix
+
+* **session:** close i3 rework gaps against the original spec ([02bdecf](https://github.com/davidsneighbour/dotfiles/commit/02bdecffbd5042d7725efa45f3942fb6084de44c)), references [#567](https://github.com/davidsneighbour/dotfiles/issues/567)
+
+### Docs
+
+* **fix:** update repo theme image ([2c5d213](https://github.com/davidsneighbour/dotfiles/commit/2c5d21370152493a6a4d8b7c7bbba388bf69d5d7))
+
 ## [3004.10.1](https://github.com/davidsneighbour/dotfiles/compare/v3004.10.0...v3004.10.1) (2026-08-30)
 
 ### Build
