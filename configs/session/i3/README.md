@@ -13,6 +13,8 @@ at the repo root. This file only documents what lives in this folder.
 | File | Purpose |
 | --- | --- |
 | `config` | The i3 configuration itself, linked to `~/.config/i3/config`. |
+| `rofi.rasi` | Small standalone Rofi override used by the launcher bindings — see "Rofi" below. |
+| `check.sh` | Read-only diagnostic: reports whether i3/Polybar/Rofi are installed and running. Run `check.sh --help` for details. Never modifies the desktop. |
 
 ## Design
 
@@ -33,12 +35,17 @@ at the repo root. This file only documents what lives in this folder.
 
 ## Rofi
 
-This configuration does **not** ship its own Rofi config. It calls
-`rofi -show drun`, which resolves to the existing, shared
-`configs/system/rofi/` config — the same one XFCE already binds to bare
-`Super_L` in `configs/system/xfce/xfce4-keyboard-shortcuts.xml`. That config
-already has `drun` mode, icons, and history enabled, so a second
-i3-specific Rofi config would just be duplication.
+This configuration ships a small, standalone Rofi override,
+[`rofi.rasi`](./rofi.rasi), rather than a full forked config. It sets the
+functional properties the starter spec calls for that rofi does not enable
+by default — `matching: "fuzzy"`, explicit `case-sensitive: false`,
+`show-icons: true`, an explicit `width`/`location` — while reusing the
+existing, shared `configs/system/rofi/theme.rasi` visuals via `@theme
+"theme"` (confirmed with `rofi -config rofi.rasi -dump-theme`), so nothing
+is visually duplicated and there is no second theme to keep in sync.
+`configs/system/rofi/` itself (used directly by XFCE, e.g. its bare
+`Super_L` binding in `configs/system/xfce/xfce4-keyboard-shortcuts.xml`)
+is untouched.
 
 ## Polybar
 
@@ -55,7 +62,7 @@ bare modifier on its own. The bare-`Super`-opens-launcher requirement is
 implemented as:
 
 ```text
-bindsym --release Super_L exec --no-startup-id rofi -show drun
+bindsym --release Super_L exec --no-startup-id $rofi
 ```
 
 `--release` means this only fires when `Super_L` is pressed and released
@@ -72,3 +79,6 @@ i3 -C -c configs/session/i3/config
 
 Reload a running i3 session with `Super+Shift+c`, or `i3-msg reload`.
 Restart it in place with `Super+Shift+r`, or `i3-msg restart`.
+
+For a broader "is everything installed and running" check, run
+[`check.sh`](./check.sh) (read-only, safe to run from any session).

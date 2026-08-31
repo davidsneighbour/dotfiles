@@ -231,6 +231,11 @@ Any AI agent operating on this repository **MUST**:
 * Never assume user intent
 * Never optimise for cleverness over clarity
 * Never remove safeguards without justification
+* Before touching i3, Polybar, Rofi, X11/Xorg, LightDM/session selection,
+  or any other part of the graphical desktop session, read the repo-root
+  `SESSION.md` first — it is the authoritative session architecture
+  reference — and update it in the same change if the change affects what
+  it documents
 
 AI-generated code is treated as production code.
 

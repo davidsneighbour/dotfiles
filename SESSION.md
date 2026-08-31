@@ -172,15 +172,27 @@ the documented fallback bound to the exact same command.
 
 ## Rofi
 
-* Config: `configs/system/rofi/` — **shared, unchanged**. Already used by
-  the live XFCE session (bare `Super_L` in
+* `configs/system/rofi/` — **shared, unchanged**. Already used by the live
+  XFCE session (bare `Super_L` in
   `configs/system/xfce/xfce4-keyboard-shortcuts.xml`, plus the window
   switcher and workspace scripts in that same folder).
-  `drun` mode, icons, and history are already enabled there; i3 gains
-  nothing from forking a second config.
-* i3 calls it as `rofi -show drun`, identical to what XFCE already runs.
+* i3 does not use that config directly. It calls
+  `configs/session/i3/rofi.rasi` — a small, standalone override (per the
+  starter spec's own requirement for one) that sets `matching: "fuzzy"`,
+  `case-sensitive: false`, `show-icons: true`, and an explicit
+  `width`/`location`, none of which the shared config turns on (rofi's
+  default matching is substring, not fuzzy — the shared config never
+  needed fuzzy matching for XFCE's usage, so it never set it). The
+  override reuses the shared config's *visuals* via `@theme "theme"`
+  (rofi's own theme search path resolves this to
+  `configs/system/rofi/theme.rasi`, confirmed with
+  `rofi -config configs/session/i3/rofi.rasi -dump-theme`), so there is no
+  second theme to keep in sync — only the functional settings are
+  i3-specific.
+* Invoked as `rofi -show drun -config <repo>/configs/session/i3/rofi.rasi`
+  (the i3 config's `$rofi` variable).
 * Validated non-interactively (parses without opening a window):
-  `rofi -config configs/system/rofi/config.rasi -dump-config`.
+  `rofi -config configs/session/i3/rofi.rasi -dump-config` and `-dump-theme`.
 
 ## Polybar
 
@@ -302,14 +314,14 @@ i3-msg restart                          # restart i3 in place (same as Super+Shi
 pgrep -a polybar                        # see which bar(s) are running and with which config
 polybar --version                       # confirm feature flags (+i3 is required)
 rofi -version
-rofi -config configs/system/rofi/config.rasi -dump-config   # validate Rofi config, no window opens
+rofi -config configs/session/i3/rofi.rasi -dump-config   # validate the i3 Rofi override, no window opens
 tail -f ~/.logs/polybar-i3/bar-$(date +%Y%m%d).log           # i3 Polybar's own log
 cat ~/.xsession-errors | tail -100                            # general X session errors
+configs/session/i3/check.sh                                   # read-only: installed/running summary
 ```
 
-A read-only diagnostic helper covering "is i3/Polybar/Rofi installed and
-running" was considered but not built in this pass — see
-"Known limitations."
+`configs/session/i3/check.sh` bundles the executable/config/process/log
+checks above into one read-only report — it never modifies the desktop.
 
 ## Known limitations / next improvements
 
@@ -352,9 +364,6 @@ a separate, explicit request — see the spec's scope-control section):
 * No host-specific i3 config split (this file and the i3 config are
   currently locutus-specific in exactly one place: the Polybar network
   module's `interface = eno1`).
-* No read-only "is everything installed and running" diagnostic script —
-  the diagnostic commands above are documented but not wrapped in a single
-  helper.
 
 ## Recovery procedure (XFCE fallback)
 
@@ -373,8 +382,9 @@ The XFCE/Xubuntu session is untouched and remains the LightDM default
 
 ```bash
 i3 -C -c configs/session/i3/config
-rofi -config configs/system/rofi/config.rasi -dump-config
+rofi -config configs/session/i3/rofi.rasi -dump-config
 polybar -c configs/session/polybar/config.ini --list-monitors
+configs/session/i3/check.sh
 ```
 
 ## Agent maintenance requirement

@@ -1,0 +1,27 @@
+/**
+ * i3 starter Rofi override.
+ *
+ * Small, standalone, functional config — deliberately not a fork of
+ * configs/system/rofi/ (the shared config XFCE also uses). It reuses that
+ * config's existing visual theme (@theme "theme" resolves via rofi's own
+ * theme search path to ~/.config/rofi/theme.rasi, which Dotbot links from
+ * configs/system/rofi/theme.rasi) so nothing is visually duplicated, but
+ * sets the functional properties the i3 starter spec calls for that the
+ * shared config leaves at rofi's defaults (notably: fuzzy matching is off
+ * by default in rofi; the shared config never turns it on because XFCE's
+ * usage never needed it).
+ *
+ * See configs/session/i3/README.md and SESSION.md ("Rofi") for why this
+ * exists as a separate file instead of editing the shared config.
+ */
+
+@theme "theme"
+
+configuration {
+    modi: "drun";
+    matching: "fuzzy";
+    case-sensitive: false;
+    show-icons: true;
+    width: 40;
+    location: 0;
+}
