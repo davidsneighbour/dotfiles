@@ -1,13 +1,14 @@
 ################################################################################
-# Variables
+# see https://i3wm.org/docs/userguide.html
 ################################################################################
+# Variables
 
 set $mod Mod4
 set $terminal terminator
 
 # Plain numbered workspaces. No icons, no per-application assignment yet
 # (see SESSION.md "Known limitations / next improvements").
-set $ws1 "1"
+set $ws1 "1:Dashboard"
 set $ws2 "2"
 set $ws3 "3"
 set $ws4 "4"
@@ -17,10 +18,7 @@ set $ws7 "7"
 set $ws8 "8"
 set $ws9 "9"
 
-################################################################################
 # Appearance
-################################################################################
-
 font pango:sans-serif 10
 focus_follows_mouse no
 default_border pixel 0
@@ -29,6 +27,7 @@ hide_edge_borders smart
 gaps inner 0
 gaps outer 0
 
+# Includes
 include configs/session-starts.conf
 include configs/applications.conf
 include configs/keybindings.conf

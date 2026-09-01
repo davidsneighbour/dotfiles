@@ -144,6 +144,7 @@ Defined entirely in `configs/session/i3/config`. `$mod` is `Mod4`
 | --- | --- |
 | `Super` (bare, release) | Open Rofi (`drun`) — see "Bare Super key limitation" below |
 | `Super+D` | Open Rofi (`drun`) — explicit, always-reliable fallback for the above |
+| `Super+W` | Open Rofi VS Code workspace picker (`configs/system/rofi/workspaces.sh --newwindow`) |
 | `Super+Enter` | Open terminal (`$terminal`, currently `xfce4-terminal`) |
 | `Super+Shift+Q` | Close focused window |
 | `Super+Shift+C` | Reload i3 config |
