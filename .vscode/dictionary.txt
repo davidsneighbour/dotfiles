@@ -91,6 +91,7 @@ PORKBUN
 powermenu
 prio
 projectsdirs
+pulseaudio
 pyyaml
 rasi
 Recordly
