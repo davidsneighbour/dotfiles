@@ -1,5 +1,35 @@
 # Changelog
 
+## [2.1.0](https://github.com/davidsneighbour/dotfiles/compare/v2.0.0...v2.1.0) (2026-09-01)
+
+### Feat
+
+* **polybar:** add camera/mic privacy indicator script ([c8745b4](https://github.com/davidsneighbour/dotfiles/commit/c8745b4e15707531fb1ae06d8a09c11584ee16e8))
+* **session:** split i3 config into includes and lock the screen via xss-lock ([a397592](https://github.com/davidsneighbour/dotfiles/commit/a39759274e91320380ec4700b3669e38c8dc1305))
+
+### Fix
+
+* add keystore startup registration to i3 session ([253185e](https://github.com/davidsneighbour/dotfiles/commit/253185e5dc4b506a1f0ccfc0764ce6ba9090dd37))
+* **launchers:** register Chrome as a handler for about: and unknown scheme links ([da8f7a4](https://github.com/davidsneighbour/dotfiles/commit/da8f7a4985a68b6294d4de228d92048c30dbc944))
+* **rofi:** adapt power menu image to 2:1 aspect ratio ([43e8d07](https://github.com/davidsneighbour/dotfiles/commit/43e8d0766422c751f25356ef7075fd67b0012109))
+* **rofi:** remove obsolete theme image ([6107667](https://github.com/davidsneighbour/dotfiles/commit/6107667872074e684bab2458a5a97b61968ddc78))
+* **session:** make the polybar power menu and Enpass work under i3 ([606f1c3](https://github.com/davidsneighbour/dotfiles/commit/606f1c384637cd1325dd04a426e6588cd6fb7081))
+* **session:** route i3 exit through the Rofi power menu ([fc8cd14](https://github.com/davidsneighbour/dotfiles/commit/fc8cd1477b6886a8753e5566750d5fa152ffd75b))
+
+### Docs
+
+* **ai:** add CLAUDE.md pointing to AGENTS.md ([f7afe43](https://github.com/davidsneighbour/dotfiles/commit/f7afe433a5f82e574beffef05b28acd7fab450bd))
+* silence markdownlint title-case-style on the MIT License heading ([182f8d4](https://github.com/davidsneighbour/dotfiles/commit/182f8d487fde688c859c2dcf3ece5cd0c80aa29c))
+
+### Style
+
+* **polybar:** remove module padding for icon-only labels ([c4767c5](https://github.com/davidsneighbour/dotfiles/commit/c4767c5c2d01c019e41d12bba53e9f99cbd42c0e))
+* **polybar:** switch status modules to icon-only labels ([6734b5f](https://github.com/davidsneighbour/dotfiles/commit/6734b5f8385ebaa1ec7cb49f87dec3e50cdbbe33))
+
+### Chore
+
+* move out old polybar configuration ([ce81da3](https://github.com/davidsneighbour/dotfiles/commit/ce81da39264a71a2d7350c9d6908541e67dec1f4))
+
 ## [2.0.0](https://github.com/davidsneighbour/dotfiles/compare/v1.0.0...v2.0.0) (2026-08-31)
 
 ### Feat
