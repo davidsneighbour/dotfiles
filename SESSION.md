@@ -126,6 +126,7 @@ For every automatically started i3-session component:
 | Root background colour | i3 | `xsetroot -solid '#0B0D0F'` | `exec_always` | Non-fatal; i3 unaffected. |
 | Wallpaper (optional) | i3 | `bashrc/helpers/theme/set-default-wallpaper.sh` | `exec_always` (`sh -c ... \|\| true`) | Non-fatal; no-ops if no wallpaper file exists. |
 | Polybar | i3 | `configs/session/polybar/launch.sh` | `exec_always` (`sh -c ... \|\| true`) | Non-fatal; i3 remains usable with no bar if Polybar/its config is missing. |
+| xss-lock | i3 | `xss-lock --transfer-sleep-lock -- configs/session/i3lock/lock.sh` | `exec` (once per session, see "Screen lock") | Non-fatal to i3; if `xss-lock` is missing, `Super+L`/suspend simply do not lock the screen. |
 | Rofi | user keypress (`Super_L` release, or `$mod+d`) | `rofi -show drun` | `bindsym ... exec` | Non-fatal; a launcher failure does not affect the rest of the session. |
 | Terminal | user keypress (`$mod+Return`) | `xfce4-terminal` | `bindsym ... exec` | Non-fatal. |
 
@@ -148,6 +149,7 @@ Defined entirely in `configs/session/i3/config`. `$mod` is `Mod4`
 | `Super+Shift+C` | Reload i3 config |
 | `Super+Shift+R` | Restart i3 in place |
 | `Super+Shift+E` | Exit i3, with an `i3-nagbar` confirmation prompt |
+| `Super+L` | Lock the screen (`loginctl lock-session`, caught by `xss-lock`) |
 | `Super+1`..`Super+9` | Switch to workspace 1-9 |
 | `Super+Shift+1`..`Super+Shift+9` | Move focused window to workspace 1-9 |
 | `Super+Arrow` | Move focus |
@@ -232,6 +234,37 @@ the documented fallback bound to the exact same command.
 * No compositor is configured (Picom or otherwise) — out of scope per the
   starter spec; see "Known limitations."
 
+## Screen lock
+
+* `xss-lock` is started once per session (`exec`, not `exec_always` — see
+  "Session startup" — in `configs/session/i3/configs/session-starts.conf`)
+  as `xss-lock --transfer-sleep-lock -- configs/session/i3lock/lock.sh`.
+  `lock.sh` resolves its own directory and runs
+  `i3lock --nofork -i configs/session/i3lock/lockscreen.png` with a full
+  path, so it works regardless of i3's `exec` environment (same rationale
+  as the `Super+Shift+e` powermenu binding). `--nofork` is required:
+  xss-lock tracks lock/unlock by waiting for the locker process to exit,
+  and i3lock daemonises (forks, parent exits immediately) unless told not
+  to — see `man i3lock`, "RECOMMENDED USAGE".
+* `xss-lock` is the single thing that decides how the screen gets locked.
+  It reacts to two triggers: `loginctl lock-session` (what `Super+L` calls
+  — see "Keybinding architecture") and systemd-logind's sleep signal, which
+  `--transfer-sleep-lock` uses to hold suspend (lid close, power button,
+  `systemctl suspend`) until the screen is actually locked, not just until
+  a suspend keybinding is pressed (there is none — see "Known
+  limitations").
+* The Rofi power menu's `lock` entry
+  (`configs/session/rofi/power/powermenu.sh`) does not go through
+  `xss-lock`/`loginctl`: it prefers `betterlockscreen` if installed, then
+  falls back to calling `configs/session/i3lock/lock.sh` directly (same
+  lockscreen image as `Super+L`), then to a plain `i3lock` with no image if
+  neither is present. This keeps the power menu working under XFCE too,
+  where `xss-lock` is never started (see "Components that must only run
+  under i3").
+* Validated non-interactively (parses, does not open a window):
+  `bash -n configs/session/i3lock/lock.sh`, `shellcheck
+  configs/session/i3lock/lock.sh`, and `i3 -C -c configs/session/i3/config`.
+
 ## Environment variables relevant to the session
 
 * `$mod` / `$terminal` / `$ws1`..`$ws9` — i3-config-local variables, not
@@ -258,6 +291,9 @@ the documented fallback bound to the exact same command.
 ## Components that must only run under i3
 
 * `configs/session/polybar/` and its `launch.sh`.
+* `configs/session/i3lock/lock.sh` and the `xss-lock` daemon that runs it
+  (started via `session-starts.conf`, triggered by `Super+L` and by
+  suspend).
 * The i3 config itself (`configs/session/i3/config`) and everything it
   `exec`/`exec_always`s.
 
@@ -279,6 +315,8 @@ Required, all confirmed already installed on this host:
 i3       (4.25.1)     apt: i3-wm
 polybar  (3.7.2, +i3 feature) apt: polybar
 rofi     (2.0.0)      apt: rofi
+i3lock                 apt: i3lock (part of the base i3 install on this host)
+xss-lock (0.4.0)       apt: xss-lock
 ```
 
 Helpers used by the startup chain, all confirmed present:
@@ -362,7 +400,11 @@ a separate, explicit request — see the spec's scope-control section):
   i3's own `for_window`/`assign` directives could eventually replace the
   Lua rules in `configs/system/devilspie2/config/` for the i3 session, but
   that is a deliberate follow-up, not part of this starter.
-* No screen lock / suspend keybindings.
+* No keybinding that triggers suspend itself (e.g. `systemctl suspend`) —
+  only screen lock is bound (`Super+L`, see "Keybinding architecture"). The
+  screen locks automatically before *any* suspend trigger (lid close, power
+  button, a manual `systemctl suspend`), via `xss-lock` — see "Screen
+  lock".
 * No media/volume key bindings beyond the Polybar volume module display
   (no `pactl set-sink-volume` bindings, no `playerctl` — not installed).
 * No custom Polybar modules beyond the ones listed above (no

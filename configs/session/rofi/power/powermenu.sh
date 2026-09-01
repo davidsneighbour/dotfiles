@@ -91,6 +91,8 @@ ${reboot})
 ${lock})
   if [[ -x '/usr/bin/betterlockscreen' ]]; then
     betterlockscreen -l
+  elif [[ -x "${dir}/configs/session/i3lock/lock.sh" ]]; then
+    "${dir}/configs/session/i3lock/lock.sh"
   elif [[ -x '/usr/bin/i3lock' ]]; then
     i3lock
   fi
