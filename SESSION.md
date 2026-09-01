@@ -331,18 +331,21 @@ a separate, explicit request — see the spec's scope-control section):
 * **Host autostart entries do NOT run under i3 — i3 has no session
   manager.** `configs/system/autostart/locutus/` (symlinked to
   `~/.config/autostart/`) has several `.desktop` files, some with no
-  `OnlyShowIn`/`NotShowIn` at all (`Barrier.desktop`, `dnb_enpass.desktop`,
-  `dnb_discord.desktop`, `onboard-autostart.desktop`, `dropbox.desktop`,
+  `OnlyShowIn`/`NotShowIn` at all (`Barrier.desktop`, `dnb_discord.desktop`,
+  `onboard-autostart.desktop`, `dropbox.desktop`,
   `indicator-messages.desktop`, `startup.sh.desktop`, `Flameshot.desktop`,
   `org.gnome.SettingsDaemon.DiskUtilityNotify.desktop`). Only
   `xfce4-session` reads that directory; i3 only runs what its own config
   file's `exec`/`exec_always` lines say, so none of these launch under the
-  i3 session unless explicitly added there. `gnome-keyring-pkcs11.desktop`
-  and `gnome-keyring-secrets.desktop` are the one pair with an i3
-  equivalent so far — see the `gnome-keyring-daemon` line in
-  `configs/session/i3/config` ("Session startup"), added because VS Code
-  and other libsecret-using apps could not find a keyring under i3
-  otherwise. Auditing the rest of this list (does Barrier/Dropbox/Discord
+  i3 session unless explicitly added there. `gnome-keyring-pkcs11.desktop`/
+  `gnome-keyring-secrets.desktop` and Enpass are the ones with an i3
+  equivalent so far — see the `gnome-keyring-daemon` and `enpass` lines in
+  `configs/session/i3/config` ("Session startup"). The gnome-keyring pair
+  was added because VS Code and other libsecret-using apps could not find a
+  keyring under i3 otherwise; Enpass's `dnb_enpass.desktop` XFCE autostart
+  entry was removed from `configs/system/autostart/locutus/` in favour of
+  the i3 `exec` line, since it no longer needs to also fire under XFCE on
+  this host. Auditing the rest of this list (does Barrier/Dropbox/Discord
   etc. need an i3 `exec` too?) is a deliberate follow-up, not part of this
   starter.
 * No compositor (e.g. Picom) — windows will not have shadows/transparency;

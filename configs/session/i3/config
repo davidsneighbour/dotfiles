@@ -88,6 +88,13 @@ exec_always --no-startup-id sh -c "$HOME/.dotfiles/bashrc/helpers/theme/set-defa
 # the `|| true` here is a second safety net at the i3 level.
 exec_always --no-startup-id sh -c "$HOME/.dotfiles/configs/session/polybar/launch.sh || true"
 
+# Enpass. XFCE autostarts this via configs/system/autostart/*/dnb_enpass.desktop,
+# but i3 has no session manager reading that directory (see SESSION.md "Known
+# limitations"), so it never launches under i3 without an explicit line here.
+# Plain `exec`, not `exec_always`: this should start once per session, not
+# relaunch (and re-prompt for its master password) on every i3-msg restart.
+exec --no-startup-id enpass --start-in-background
+
 ################################################################################
 # Launcher (Rofi)
 #
@@ -184,12 +191,14 @@ bindsym $mod+Shift+r restart
 # which read as the whole session hanging.
 #
 # powermenu.sh requires BASHRC_PATH (it sources bashrc/lib/*/*.bash) and
-# hard-fails without it. Under XFCE it gets this for free: Polybar's own
-# launcher (configs/system/polybar/start.sh) exports BASHRC_PATH before
-# starting Polybar, so the click-left handler inherits it. i3's `exec` runs
-# commands directly from i3's own environment, which never has it (only
-# `.bashrc`/`.profile` export it, and `exec` uses a plain, non-interactive,
-# non-login shell) — so it has to be set inline here instead.
+# hard-fails without it. Polybar's i3 launcher (configs/session/polybar/
+# launch.sh) exports BASHRC_PATH before starting Polybar, so the powermenu
+# module's click-left handler inherits it. This keybinding is a separate
+# `exec` invoked directly by i3, not a child of Polybar, so it does not
+# inherit that export — i3's `exec` runs commands from i3's own environment,
+# which never has BASHRC_PATH (only `.bashrc`/`.profile` export it, and
+# `exec` uses a plain, non-interactive, non-login shell) — so it has to be
+# set inline here instead.
 bindsym $mod+Shift+e exec --no-startup-id sh -c 'BASHRC_PATH="$HOME/.dotfiles/bashrc" "$HOME/.dotfiles/configs/session/rofi/power/powermenu.sh"'
 
 ################################################################################

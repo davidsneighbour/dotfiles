@@ -25,6 +25,14 @@ CONFIG_FILE="${SCRIPT_DIR}/config.ini"
 LOG_DIR="${HOME}/.logs/polybar-i3"
 LOGLEVEL="info"
 
+# Polybar click handlers (e.g. the powermenu module) run as children of the
+# Polybar process started below. i3's `exec_always` runs this script from a
+# plain, non-interactive, non-login shell that never sourced bashrc/.profile,
+# so BASHRC_PATH would otherwise be missing for those handlers even though it
+# is set for interactive shells and for i3 keybindings that set it inline
+# (see i3/config's $mod+Shift+e binding).
+export BASHRC_PATH="${HOME}/.dotfiles/bashrc"
+
 print_help() {
   cat <<EOF
 Usage: $(basename "${0}") [--help]

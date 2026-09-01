@@ -2,6 +2,7 @@ APIKEY
 aptget
 atuin
 automount
+autostarted
 autostarts
 Bibata
 bindsym
@@ -22,6 +23,8 @@ dnbhq
 dotbot
 dreamhost
 drun
+Enpass
+enpass
 erasedups
 errexit
 esac
@@ -53,6 +56,7 @@ journalctl
 jsonnet
 jsonnetfmt
 Kando
+keybinding
 Kollitsch
 libpam
 lighthousing
