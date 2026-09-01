@@ -47,7 +47,6 @@
     ~/.face: configs/system/face.icon
     ~/.config/conky: configs/system/conky
     ~/.config/user-dirs.dirs: configs/system/user-dirs.dirs
-    ~/.config/polybar: configs/system/polybar
 
     # i3 session (starter config, see configs/session/i3/README.md and
     # repo-root SESSION.md). Polybar for i3 is launched by repo path
