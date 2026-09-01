@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.2.1](https://github.com/davidsneighbour/dotfiles/compare/v2.2.0...v2.2.1) (2026-09-01)
+
+### Fix
+
+* remove polybar symlink from dotbot config ([043798b](https://github.com/davidsneighbour/dotfiles/commit/043798bd16a64bdd266ec029c40def22b748ec6e))
+
 ## [2.2.0](https://github.com/davidsneighbour/dotfiles/compare/v2.1.0...v2.2.0) (2026-09-01)
 
 ### Feat
