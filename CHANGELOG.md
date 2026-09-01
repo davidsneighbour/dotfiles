@@ -1,5 +1,23 @@
 # Changelog
 
+## [2.2.0](https://github.com/davidsneighbour/dotfiles/compare/v2.1.0...v2.2.0) (2026-09-01)
+
+### Feat
+
+* **session:** add VS Code workspace picker keybinding and set wallpaper on start ([7b08d77](https://github.com/davidsneighbour/dotfiles/commit/7b08d7743e61979a14ffca267f172ff49b974c0d))
+
+### Fix
+
+* add bin directory to path ([3abf4ea](https://github.com/davidsneighbour/dotfiles/commit/3abf4ea4591d09b4f30f2577aa9120efe21cdc89))
+
+### Docs
+
+* **ai:** update instructions to create completion file for any particle in _functions ([f0bbc11](https://github.com/davidsneighbour/dotfiles/commit/f0bbc11c4664f3237cf7c26168927a761a213aca))
+
+### Chore
+
+* remove savefiles ([4321f02](https://github.com/davidsneighbour/dotfiles/commit/4321f02c465946de6881650984cbb7b2f134a0d5))
+
 ## [2.1.0](https://github.com/davidsneighbour/dotfiles/compare/v2.0.0...v2.1.0) (2026-09-01)
 
 ### Feat
