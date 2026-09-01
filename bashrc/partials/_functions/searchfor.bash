@@ -4,14 +4,16 @@
 searchfor() {
   local term=""
   local path="${HOME}/github.com/davidsneighbour"
+  local locations_only=0
 
   # help
   if [[ $# -eq 0 ]]; then
-    echo "Usage: ${FUNCNAME[0]} <SEARCHTERM> [--path <path>] [--help]"
+    echo "Usage: ${FUNCNAME[0]} <SEARCHTERM> [--path <path>] [--locations-only] [--help]"
     echo
     echo "Options:"
-    echo "  --path <path>   Override search base path (default: ${HOME}/github.com/davidsneighbour)"
-    echo "  --help          Show this help message"
+    echo "  --path <path>      Override search base path (default: ${HOME}/github.com/davidsneighbour)"
+    echo "  --locations-only   Show only file:line of each match, not the matched code"
+    echo "  --help             Show this help message"
     return 1
   fi
 
@@ -21,8 +23,12 @@ searchfor() {
       path="$2"
       shift 2
       ;;
+    --locations-only)
+      locations_only=1
+      shift
+      ;;
     --help)
-      echo "Usage: ${FUNCNAME[0]} <SEARCHTERM> [--path <path>] [--help]"
+      echo "Usage: ${FUNCNAME[0]} <SEARCHTERM> [--path <path>] [--locations-only] [--help]"
       return 0
       ;;
     *)
@@ -47,13 +53,24 @@ searchfor() {
     return 1
   fi
 
-  grep -rIn \
-    --exclude-dir='.git' \
-    --exclude-dir='node_modules' \
-    --exclude-dir='scratch' \
-    --exclude-dir='chatgpt-obsidian-importer' \
-    --exclude='*/.config/Code/*' \
-    --color=always \
-    "${term}" \
-    "${path}"
+  if [[ "${locations_only}" -eq 1 ]]; then
+    grep -rIn \
+      --exclude-dir='.git' \
+      --exclude-dir='node_modules' \
+      --exclude-dir='scratch' \
+      --exclude-dir='chatgpt-obsidian-importer' \
+      --exclude='*/.config/Code/*' \
+      "${term}" \
+      "${path}" | cut -d: -f1,2
+  else
+    grep -rIn \
+      --exclude-dir='.git' \
+      --exclude-dir='node_modules' \
+      --exclude-dir='scratch' \
+      --exclude-dir='chatgpt-obsidian-importer' \
+      --exclude='*/.config/Code/*' \
+      --color=always \
+      "${term}" \
+      "${path}"
+  fi
 }

@@ -1,0 +1,20 @@
+# shellcheck shell=bash
+# bash completion for the searchfor function.
+
+_searchfor_completion() {
+  local cur prev
+  cur="${COMP_WORDS[COMP_CWORD]}"
+  prev="${COMP_WORDS[COMP_CWORD - 1]}"
+
+  case "${prev}" in
+  --path)
+    compopt -o default
+    COMPREPLY=()
+    return 0
+    ;;
+  *) ;;
+  esac
+
+  mapfile -t COMPREPLY < <(compgen -W "--path --locations-only --help" -- "${cur}")
+}
+complete -F _searchfor_completion searchfor

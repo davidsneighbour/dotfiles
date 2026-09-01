@@ -122,6 +122,14 @@ All user-facing CLI scripts **MUST**:
 * Function-level help should use `${FUNCNAME[0]}` where applicable
 * Usage examples are encouraged
 
+### Bash completion for `_functions/`
+
+Every function added to or changed in `bashrc/partials/_functions/` **MUST** have a matching bash
+completion file in `bashrc/partials/_completions/` (same base name, no extension) that offers the
+function's flags via `complete -F`. `_completions/` is auto-sourced, so a new file is picked up
+without further wiring. When a function gains, loses, or renames a flag, update its completion file
+in the same change. See `bashrc/partials/_completions/searchfor` for a minimal example.
+
 ## Repository-local configuration (`.github/dnb.toml`)
 
 Repositories may optionally define a configuration file at `.github/dnb.toml`.
