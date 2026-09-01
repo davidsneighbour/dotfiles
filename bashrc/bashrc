@@ -22,6 +22,9 @@ fi
 
 BASHRC_PATH="${DOTFILES_PATH}/bashrc"
 
+# add symlink directory to path
+dnb_path_add_if_missing --dir "${DOTFILES_PATH}/bin"
+
 force_color_prompt=yes
 export force_color_prompt
 
