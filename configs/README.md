@@ -22,7 +22,6 @@ enough. Most files are installed onto the workstation as symlinks by
 | `session/` | `i3/` (i3 window manager starter config) and `polybar/` (i3-only Polybar bar). See [`session/i3/README.md`](./session/i3/README.md), [`session/polybar/README.md`](./session/polybar/README.md), and the repo-root [`SESSION.md`](../SESSION.md) for the full session architecture. | `i3/` via Dotbot (`~/.config/i3`); `polybar/` referenced by repo path directly from i3's config, not symlinked. |
 | `system/` | Per-application config for desktop/workstation tools (polybar, rofi, xfce, git, etc. — **not** i3, see `session/` above). See the subdirectory table below. | Mostly Dotbot; a few (`monitor/`, `systemd/nfs-storage/`) are referenced directly by path or run manually instead. |
 | `theme/` | Icon/cursor themes. `DNB` and `DNB-Bibata` are repo-authored and Dotbot-linked to `~/.icons`. `Dracula` is a gitignored downloaded icon pack (~1.6G, includes `Archive.zip`/`__MACOSX` extraction remnants), not linked from Dotbot — see the `theme-dracula` entry in `bashrc/helpers/logs/config.toml`, which flags it as a cleanup candidate pending confirmation. | `DNB`/`DNB-Bibata` via Dotbot; `Dracula` unmanaged. |
-| `vscode/` | `extensions/dnb-dotfiles-tools` (a local VS Code extension) and `extensions/scripts/install-local-extensions.sh` to install it. | Run manually via the install script, not Dotbot-linked. |
 
 ## `system/` subdirectories
 

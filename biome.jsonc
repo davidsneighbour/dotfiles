@@ -9,9 +9,7 @@
       "!coverage",
       "!configs/theme/DNB-Bibata",
       "!configs/theme/Dracula",
-      "!configs/vscode",
       "!containers",
-      "!configs/vscode/extensions/dnb-dotfiles-tools/node_modules",
       "!logs",
       "!protected"
     ]
