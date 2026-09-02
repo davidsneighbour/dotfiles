@@ -51,7 +51,6 @@
   "evenBetterToml.formatter.trailingNewline": true,
   //"peacock.color": "#6272a4",
   "explorer.fileNesting.patterns": {
-    "actions.sh": "actions.toml",
     ".agents": ".claude, .codex"
   },
   "files.insertFinalNewline": true,

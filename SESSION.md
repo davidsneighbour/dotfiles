@@ -337,8 +337,8 @@ has no equivalent window-placement rules (see "Known limitations").
 `available/`, and per-host folders for both this workstation, `locutus/`,
 and a second host, `dionysus/`) has been **removed entirely**, along with
 its `~/.config/autostart` Dotbot link and the `actions.sh autostart-enable`
-/ `autostart-disable` commands that managed it (see
-`bashrc/helpers/_actions/`). i3 never read this directory (it has no
+/ `autostart-disable` commands that managed it (the `actions` helper itself
+has since been removed too). i3 never read this directory (it has no
 session manager — see "Known limitations"), but XFCE's `xfce4-session`
 did, so this also **stops these from autostarting under XFCE**: Polybar
 and Obsidian (both were `OnlyShowIn=XFCE;`, i.e. previously i3-safe to

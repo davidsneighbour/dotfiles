@@ -7,7 +7,6 @@ Recommendations and improvements identified during codebase review. Pick items f
 ## Documentation
 
 * [x] `docs/setup.md` — strip empty stubs (Discord, Signal, Telegram, Dropbox, Todoist sections), remove crossed-out entries, complete sparse sections
-* [ ] `configs/actions/` — add `DOCUMENTATION.md` explaining TOML schema: scopes, activities, `label`, `cmd`, variable expansion
 * [ ] `bashrc/lib/00-core/` through `bashrc/lib/50-variables/` — add `DOCUMENTATION.md` per numbered tier explaining what each layer provides and its load-order position
 * [ ] cleanup and document `bashrc/cronjobs`
 * [ ] cleanup and document `bashrc/helpers`
@@ -19,12 +18,10 @@ Recommendations and improvements identified during codebase review. Pick items f
 * [x] `glone` — wrap the `git ls-remote` SSH availability check in a short timeout; the code has a `# NOTE:` flagging it as a potential hang with misconfigured SSH agents
 * [x] `glone_clone_one` — promote nested inner function to a `_glone_clone_one` top-level private function for testability and clarity
 * [x] `bashrc/helpers/docker/backup-runner` — consolidate the three parallel formats (no-ext compiled, `.mjs`, `.ts`) into a single canonical `.ts` version; all three currently define identical function sets
-* [x] `actions.sh` `source_core_libs` — missing core lib should be a hard failure, not a silent skip via `|| continue`
 
 ## Enhancements
 
-* [ ] `configs/actions/actions.toml` — add scopes for: wallpaper selection (wraps `set-wallpaper.sh`), theme switching, docker container update, workspace layout setup
-* [ ] unified container update helper — script or `actions.toml` scope that iterates `containers/<host>/*/` and runs each `update.sh`
+* [ ] unified container update helper — script that iterates `containers/<host>/*/` and runs each `update.sh`
 * [ ] `glone` post-clone hooks — `--post-clone` mechanism for running `npm install`, `git submodule update`, project init scripts after a successful clone
 
 ## Infrastructure / containers

@@ -61,7 +61,6 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`_stem`](./partials/_completions/robo#L1) | function | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L63) |
 | [`_wp_complete`](./partials/_completions/wp#L1) | function | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L69) |
 | [`acquireLock`](./helpers/logs/cleanup.ts#L468) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L51) |
-| [`actions`](./partials/_aliases/workspace.bash#L5) | function | [./partials/DOCUMENTATION_aliases.md](./partials/DOCUMENTATION_aliases.md#L54) |
 | [`add_config_file`](./helpers/packages/create.sh#L132) | function | [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md#L42) |
 | [`ahead_behind_counts`](./cronjobs/git_updates.sh#L366) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L33) |
 | [`alert`](./partials/aliases#L38) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L22) |
@@ -76,7 +75,6 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`build_note_title`](./helpers/daily-reports/commit-report-to-dailynote.sh#L178) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L54) |
 | [`build_report_content`](./helpers/daily-reports/commit-report-to-dailynote.sh#L232) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L56) |
 | [`build_rsync_command`](./helpers/synch-devspace.sh#L179) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L320) |
-| [`build_select_line`](./helpers/_actions/actions.sh#L138) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L50) |
 | [`buildChannelTitle`](./helpers/freshrss/export.ts#L310) | method/function | [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md#L31) |
 | [`buildOutputPath`](./helpers/remarkable/transfer.ts#L1013) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L65) |
 | [`buildQualityArgs`](./helpers/screencaps.ts#L372) | method/function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L229) |
@@ -125,7 +123,6 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`codex-local`](./partials/_functions/codex.bash#L5) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L33) |
 | [`codex-update`](./partials/_aliases/tools.bash#L7) | alias | [./partials/DOCUMENTATION_aliases.md](./partials/DOCUMENTATION_aliases.md#L46) |
 | [`collect_repositories`](./helpers/daily-reports/commits-to-notes.sh#L190) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L98) |
-| [`colorize_expanded`](./helpers/_actions/actions.sh#L224) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L53) |
 | [`command_exists`](./helpers/gh/label-migration.sh#L82) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L216) |
 | [`commandExists`](./helpers/screencaps.ts#L159) | method/function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L219) |
 | [`compressGroup`](./helpers/logs/cleanup.ts#L556) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L57) |
@@ -221,7 +218,6 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`export_keybindings`](./partials/_functions/keybindings.bash#L5) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L159) |
 | [`extract_asset_url_fallback`](./installs/50-obsidian.sh#L104) | function | [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md#L41) |
 | [`extract_asset_url_with_jq`](./installs/50-obsidian.sh#L91) | function | [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md#L41) |
-| [`extract_dotbot_description`](./helpers/_actions/actions.sh#L711) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L61) |
 | [`extract_github_slug`](./helpers/daily-reports/commits-to-notes.sh#L121) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L95) |
 | [`extract_repo_name`](./helpers/daily-reports/commits-to-notes.sh#L116) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L94) |
 | [`extractMultiRun`](./helpers/screencaps.ts#L537) | method/function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L232) |
@@ -258,7 +254,6 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`generate_report`](./helpers/bash/startup-profiler.sh#L97) | function | [./helpers/bash/DOCUMENTATION.md](./helpers/bash/DOCUMENTATION.md#L28) |
 | [`get_default_role`](./helpers/github-token#L156) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L108) |
 | [`get_default_visibility`](./helpers/github-token#L160) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L109) |
-| [`get_desktop_entry_value`](./helpers/_actions/actions.sh#L94) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L49) |
 | [`get_feh_style_flag`](./helpers/set-wallpaper.sh#L120) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L264) |
 | [`get_help_node_context`](./helpers/node-run#L17) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L174) |
 | [`get_origin_url`](./helpers/gh/label-migration.sh#L124) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L221) |
@@ -296,16 +291,10 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`grep`](./partials/aliases#L20) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L20) |
 | [`groupCandidatesForCompression`](./helpers/logs/cleanup.ts#L493) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L53) |
 | [`h`](./partials/aliases#L43) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L24) |
-| [`handle_dotfiles_list`](./helpers/_actions/actions.sh#L758) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L63) |
-| [`handle_dotfiles_run`](./helpers/_actions/actions.sh#L794) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L64) |
-| [`handle_menu`](./helpers/_actions/actions.sh#L339) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L58) |
 | [`has_compose_file`](./cronjobs/docker-backup.sh#L90) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L5) |
 | [`has_upstream`](./cronjobs/git_updates.sh#L356) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L33) |
 | [`hasText`](./helpers/freshrss/export.ts#L137) | method/function | [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md#L26) |
 | [`have_command`](./helpers/set-wallpaper.sh#L110) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L263) |
-| [`helpers/_actions/actions.sh`](./helpers/_actions/actions.sh#L1) | file | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L15) |
-| [`helpers/_actions/DOCUMENTATION.md`](./helpers/_actions/DOCUMENTATION.md#L1) | file | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L1) |
-| [`helpers/_actions/README.md`](./helpers/_actions/README.md#L1) | file | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L9) |
 | [`helpers/_lib/DOCUMENTATION.md`](./helpers/_lib/DOCUMENTATION.md#L1) | file | [./helpers/_lib/DOCUMENTATION.md](./helpers/_lib/DOCUMENTATION.md#L1) |
 | [`helpers/_lib/node.ts`](./helpers/_lib/node.ts#L1) | file | [./helpers/_lib/DOCUMENTATION.md](./helpers/_lib/DOCUMENTATION.md#L9) |
 | [`helpers/api/DOCUMENTATION.md`](./helpers/api/DOCUMENTATION.md#L1) | file | [./helpers/api/DOCUMENTATION.md](./helpers/api/DOCUMENTATION.md#L1) |
@@ -379,7 +368,6 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`import_keybindings`](./partials/_functions/keybindings.bash#L57) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L159) |
 | [`INDEX.md`](./INDEX.md#L1) | file | [./INDEX.md](./INDEX.md#L432) |
 | [`info`](./helpers/gh/label-migration.sh#L64) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L212) |
-| [`init_logging`](./helpers/_actions/actions.sh#L30) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L43) |
 | [`init_logging`](./helpers/daily-reports/commit-report-to-dailynote.sh#L27) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L40) |
 | [`init_logging`](./helpers/daily-reports/commits-to-notes.sh#L22) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L40) |
 | [`init_verbose_logging`](./helpers/packages/create.sh#L76) | function | [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md#L36) |
@@ -467,7 +455,6 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`lib/40-packages/dnb-packages.bash`](./lib/40-packages/dnb-packages.bash#L1) | file | [./lib/README.md](./lib/README.md#L1) |
 | [`lib/50-variables/dnb-strings.bash`](./lib/50-variables/dnb-strings.bash#L1) | file | [./lib/README.md](./lib/README.md#L1) |
 | [`lib/README.md`](./lib/README.md#L1) | file | [./lib/README.md](./lib/README.md#L1) |
-| [`list_dotbot_profiles`](./helpers/_actions/actions.sh#L730) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L62) |
 | [`list_packages`](./helpers/packages/create.sh#L180) | function | [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md#L45) |
 | [`listDownloadableRemoteDocuments`](./helpers/remarkable/transfer.ts#L891) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L62) |
 | [`listWorkspaceFiles`](./helpers/kando/kando-vscode-menu-creator.ts#L216) | method/function | [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md#L35) |
@@ -487,9 +474,7 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`log`](./helpers/docker/backup-runner.ts#L197) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L38) |
 | [`log`](./helpers/gh/github-manager.ts#L612) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L87) |
 | [`log`](./helpers/screencaps.ts#L136) | method/function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L216) |
-| [`log_debug`](./helpers/_actions/actions.sh#L44) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L45) |
 | [`log_error`](./cronjobs/docker-backup.sh#L71) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L5) |
-| [`log_error`](./helpers/_actions/actions.sh#L50) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L46) |
 | [`log_error`](./helpers/daily-reports/commit-report-to-dailynote.sh#L88) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L45) |
 | [`log_error`](./helpers/daily-reports/commits-to-notes.sh#L80) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L45) |
 | [`log_error`](./helpers/docker/examples/backup.sh#L36) | function | [./helpers/docker/examples/DOCUMENTATION.md](./helpers/docker/examples/DOCUMENTATION.md#L17) |
@@ -500,7 +485,6 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`log_init`](./helpers/web-mirror.sh#L46) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L359) |
 | [`log_message`](./helpers/node-run#L82) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L176) |
 | [`log_message`](./helpers/set-wallpaper.sh#L68) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L176) |
-| [`log_msg`](./helpers/_actions/actions.sh#L36) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L44) |
 | [`log_timestamp`](./helpers/daily-reports/commit-report-to-dailynote.sh#L72) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L42) |
 | [`log_timestamp`](./helpers/daily-reports/commits-to-notes.sh#L64) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L42) |
 | [`log_verbose`](./cronjobs/docker-backup.sh#L75) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L5) |
@@ -576,7 +560,6 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`main`](./cronjobs/docker-backup.sh#L239) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L5) |
 | [`main`](./cronjobs/git_updates.sh#L503) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L33) |
 | [`main`](./cronjobs/synch_downloads.sh#L131) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L61) |
-| [`main`](./helpers/_actions/actions.sh#L885) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L65) |
 | [`main`](./helpers/bash/startup-profiler.sh#L163) | function | [./helpers/bash/DOCUMENTATION.md](./helpers/bash/DOCUMENTATION.md#L30) |
 | [`main`](./helpers/daily-reports/commit-report-to-dailynote.sh#L368) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L58) |
 | [`main`](./helpers/daily-reports/commits-to-notes.sh#L338) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L58) |
@@ -602,11 +585,6 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`main`](./helpers/theme/color-steps.ts#L441) | method/function | [./helpers/theme/DOCUMENTATION.md](./helpers/theme/DOCUMENTATION.md#L63) |
 | [`make_zip_name`](./helpers/packages/create.sh#L239) | function | [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md#L49) |
 | [`makeChildEntry`](./helpers/kando/kando-vscode-menu-creator.ts#L247) | method/function | [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md#L36) |
-| [`menu_choose_activity`](./helpers/_actions/actions.sh#L274) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L55) |
-| [`menu_choose_scope`](./helpers/_actions/actions.sh#L250) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L54) |
-| [`menu_extract_id`](./helpers/_actions/actions.sh#L299) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L56) |
-| [`menu_py_toml`](./helpers/_actions/actions.sh#L170) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L52) |
-| [`menu_run_activity`](./helpers/_actions/actions.sh#L304) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L57) |
 | [`menus`](./helpers/kando/kando-vscode-menu-creator.ts#L300) | method/function | [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md#L15) |
 | [`mergeScaleFilter`](./helpers/screencaps.ts#L385) | method/function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L230) |
 | [`moveFile`](./helpers/logs/cleanup.ts#L245) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L41) |
@@ -625,7 +603,6 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`parse_args`](./helpers/set-wallpaper.sh#L426) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L273) |
 | [`parse_arguments`](./helpers/synch-devspace.sh#L257) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L323) |
 | [`parse_config`](./cronjobs/git_updates.sh#L191) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L48) |
-| [`parse_desktop_selections`](./helpers/_actions/actions.sh#L154) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L51) |
 | [`parse_github_repo_from_url`](./helpers/gh/label-migration.sh#L128) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L222) |
 | [`parseArgs`](./helpers/api/porkbun-api.ts#L146) | method/function | [./helpers/api/DOCUMENTATION.md](./helpers/api/DOCUMENTATION.md#L25) |
 | [`parseArgs`](./helpers/docker/backup-runner.ts#L127) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L37) |
@@ -659,7 +636,6 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`partials/_aliases/media`](./partials/_aliases/media.bash#L1) | file | [./partials/DOCUMENTATION_aliases.md](./partials/DOCUMENTATION_aliases.md#L24) |
 | [`partials/_aliases/system`](./partials/_aliases/system.bash#L1) | file | [./partials/DOCUMENTATION_aliases.md](./partials/DOCUMENTATION_aliases.md#L28) |
 | [`partials/_aliases/tools`](./partials/_aliases/tools.bash#L1) | file | [./partials/DOCUMENTATION_aliases.md](./partials/DOCUMENTATION_aliases.md#L42) |
-| [`partials/_aliases/workspace`](./partials/_aliases/workspace.bash#L1) | file | [./partials/DOCUMENTATION_aliases.md](./partials/DOCUMENTATION_aliases.md#L50) |
 | [`partials/_completions/bootstrap`](./partials/_completions/bootstrap#L1) | file | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L21) |
 | [`partials/_completions/caniuse`](./partials/_completions/caniuse#L1) | file | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L27) |
 | [`partials/_completions/codex`](./partials/_completions/codex#L1) | file | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L33) |
@@ -713,7 +689,6 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`print_help`](./cronjobs/docker-backup.sh#L20) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L5) |
 | [`print_help`](./cronjobs/git_updates.sh#L47) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L33) |
 | [`print_help`](./cronjobs/synch_downloads.sh#L8) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L61) |
-| [`print_help`](./helpers/_actions/actions.sh#L54) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L47) |
 | [`print_help`](./helpers/bash/startup-profiler.sh#L10) | function | [./helpers/bash/DOCUMENTATION.md](./helpers/bash/DOCUMENTATION.md#L24) |
 | [`print_help`](./helpers/dotfiles#L31) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L46) |
 | [`print_help`](./helpers/gh/git-sync.sh#L16) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L86) |
@@ -756,7 +731,6 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`remoteFileExists`](./helpers/remarkable/transfer.ts#L860) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L61) |
 | [`replace_section_for_day`](./helpers/daily-reports/commit-report-to-dailynote.sh#L291) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L57) |
 | [`require_cmd`](./cronjobs/synch_downloads.sh#L49) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L61) |
-| [`require_cmd`](./helpers/_actions/actions.sh#L86) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L48) |
 | [`require_cmd`](./helpers/web-mirror.sh#L73) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L362) |
 | [`require_cmd`](./installs/50-obsidian.sh#L52) | function | [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md#L41) |
 | [`require_command`](./cronjobs/docker-backup.sh#L81) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L5) |
@@ -810,7 +784,6 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`showHelp`](./helpers/raindrop.io/getTags.ts#L48) | method/function | [./helpers/raindrop.io/DOCUMENTATION.md](./helpers/raindrop.io/DOCUMENTATION.md#L24) |
 | [`showRepositoryChanges`](./helpers/gh/github-manager.ts#L888) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L160) |
 | [`sortRemoteDocuments`](./helpers/remarkable/transfer.ts#L993) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L64) |
-| [`source_core_libs`](./helpers/_actions/actions.sh#L19) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L42) |
 | [`source_core_libs`](./helpers/daily-reports/commit-report-to-dailynote.sh#L12) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L39) |
 | [`source_core_libs`](./helpers/daily-reports/commits-to-notes.sh#L7) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L39) |
 | [`source_core_libs`](./helpers/dotfiles#L19) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L45) |

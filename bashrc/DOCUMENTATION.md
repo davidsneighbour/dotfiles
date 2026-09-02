@@ -65,7 +65,6 @@ Folder documentation: [`helpers/DOCUMENTATION.md`](./helpers/DOCUMENTATION.md). 
 
 Important grouped docs:
 
-* [`helpers/_actions/DOCUMENTATION.md`](./helpers/_actions/DOCUMENTATION.md)
 * [`helpers/_lib/DOCUMENTATION.md`](./helpers/_lib/DOCUMENTATION.md)
 * [`helpers/api/DOCUMENTATION.md`](./helpers/api/DOCUMENTATION.md)
 * [`helpers/bash/DOCUMENTATION.md`](./helpers/bash/DOCUMENTATION.md)
@@ -77,7 +76,6 @@ Important grouped docs:
 * [`helpers/kando/DOCUMENTATION.md`](./helpers/kando/DOCUMENTATION.md)
 * [`helpers/logs/DOCUMENTATION.md`](./helpers/logs/DOCUMENTATION.md)
 * [`helpers/msgvault/DOCUMENTATION.md`](./helpers/msgvault/DOCUMENTATION.md)
-* [`helpers/packages/DOCUMENTATION.md`](./helpers/packages/DOCUMENTATION.md)
 * [`helpers/remarkable/DOCUMENTATION.md`](./helpers/remarkable/DOCUMENTATION.md)
 * [`helpers/theme/DOCUMENTATION.md`](./helpers/theme/DOCUMENTATION.md)
 

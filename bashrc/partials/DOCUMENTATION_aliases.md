@@ -1,4 +1,4 @@
-# bashrc/partials/_aliases documentation
+# Bashrc/partials/_aliases documentation
 
 Files in this folder are shell-definition fragments sourced by `partials/aliases` through `dnb_auto_source`. They must be sourced, not executed.
 
@@ -46,11 +46,3 @@ Defines tooling aliases:
 * `codex-update` — `npm install --global @openai/codex@latest`.
 
 Requirements: `npm` and network access to the npm registry when updating.
-
-### `workspace`
-
-Defines an interactive shell function:
-
-* `actions "$@"` — delegates to `${HOME}/.dotfiles/bashrc/helpers/_actions/actions.sh`.
-
-Requirements: Bash and an executable `bashrc/helpers/_actions/actions.sh` helper. The delegated helper options are documented in [`../../helpers/_actions/DOCUMENTATION.md`](../../helpers/_actions/DOCUMENTATION.md).

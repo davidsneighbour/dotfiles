@@ -1,5 +1,4 @@
 paths=[
-    "_actions",
     "_lib",
     "api",
     "daily-reports",

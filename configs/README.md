@@ -11,7 +11,6 @@ enough. Most files are installed onto the workstation as symlinks by
 
 | Area | Purpose | Installed via |
 | --- | --- | --- |
-| `actions/` | `actions.toml` — data-driven scopes/activities for the `actions menu` command. See [`actions/README.md`](./actions/README.md). | Read directly by `actions.sh`, not symlinked. |
 | `content/` | `.remarkrc.js` / `.remarkignore` — Markdown/remark linting config for content repos. | Dotbot (`~/.remarkrc.js`, `~/.remarkignore`). |
 | `dotbot/` | Dotbot profiles (`config.yaml`, `config.<name>.yaml`, `includes.yaml`) that `dotfiles` runs. See [`dotbot/README.md`](./dotbot/README.md). | N/A — this is the installer itself. |
 | `fonts/` | Font families (JetBrains Mono, Monaspace, system/symbol fonts) installed to `~/.fonts`. See [`fonts/READ_ABOUT_LICENSES.md`](./fonts/READ_ABOUT_LICENSES.md) for per-family licensing. | Dotbot (`~/.fonts`). |

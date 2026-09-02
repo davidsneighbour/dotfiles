@@ -11,7 +11,6 @@ Bash helpers are standalone helper commands unless noted otherwise. Several Type
 
 ## Folder documentation
 
-* [`_actions/`](./_actions/DOCUMENTATION.md)
 * [`_lib/`](./_lib/DOCUMENTATION.md)
 * [`api/`](./api/DOCUMENTATION.md)
 * [`ai-usage/`](./ai-usage/DOCUMENTATION.md)
@@ -356,13 +355,6 @@ Requirements:
 * bash, wget, and one archiver: tar, zip, or 7z.
 
 ## Grouped helper summary
-
-### `_actions/`
-
-See [`_actions/DOCUMENTATION.md`](./_actions/DOCUMENTATION.md).
-
-* `_actions/README.md`: Existing user documentation for the actions helper; keep aligned with actions.sh.
-* `_actions/actions.sh`: Unified Bash helper for actions and Dotbot profile discovery/execution.
 
 ### `_lib/`
 

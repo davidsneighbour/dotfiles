@@ -135,10 +135,6 @@ git checkout main
 
 ### Shortcuts/Keybindings
 
-Keybindings are managed via the `keybindings` scope in `configs/actions/actions.toml`. Run
-`actions menu` and select that scope to export or import the current Cinnamon keybinding
-configuration.
-
 #### Custom shortcuts that are set up (work in progress)
 
 | key binding | function |
