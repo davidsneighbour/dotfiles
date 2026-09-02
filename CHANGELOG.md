@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.3.0](https://github.com/davidsneighbour/dotfiles/compare/v2.2.1...v2.3.0) (2026-09-02)
+
+### Feat
+
+* **containers:** add changedetection.io container ([4211358](https://github.com/davidsneighbour/dotfiles/commit/42113585a8021659d94550ca14373786ae7fc55c))
+
+### Fix
+
+* **i3:** update i3 and i3lock to dracula theme ([eb969b7](https://github.com/davidsneighbour/dotfiles/commit/eb969b7303edb8cb9ac2dbbbf3d112954a2db6d8))
+
 ## [2.2.1](https://github.com/davidsneighbour/dotfiles/compare/v2.2.0...v2.2.1) (2026-09-01)
 
 ### Fix
