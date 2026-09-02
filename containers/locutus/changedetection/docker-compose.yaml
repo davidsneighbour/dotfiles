@@ -1,0 +1,39 @@
+---
+services:
+  changedetection:
+    # secretlint-disable-next-line @secretlint/secretlint-rule-secp256k1-privatekey
+    image: ghcr.io/dgtlmoon/changedetection.io:latest@sha256:fab18103da4995c98df9529752848ccb061b4ecf8bd24c307936af0656f8ba16
+    container_name: changedetection
+    hostname: changedetection
+    restart: unless-stopped
+
+    ports:
+      - "3060:5000"
+
+    volumes:
+      - ./data:/datastore
+
+    environment:
+      TZ: Asia/Bangkok
+      PLAYWRIGHT_DRIVER_URL: ws://browser-sockpuppet-chrome:3000
+      HIDE_REFERER: "true"
+
+    depends_on:
+      browser-sockpuppet-chrome:
+        condition: service_started
+
+  browser-sockpuppet-chrome:
+    # secretlint-disable-next-line @secretlint/secretlint-rule-secp256k1-privatekey
+    image: dgtlmoon/sockpuppetbrowser:latest@sha256:064c5705bdd83c4b6dc8ab6569e84f5d6d8ffce579afccd7a066913fd07e08da
+    container_name: changedetection-browser
+    hostname: browser-sockpuppet-chrome
+    restart: unless-stopped
+
+    cap_add:
+      - SYS_ADMIN
+
+    environment:
+      SCREEN_WIDTH: "1920"
+      SCREEN_HEIGHT: "1080"
+      SCREEN_DEPTH: "24"
+      MAX_CONCURRENT_CHROME_PROCESSES: "10"
