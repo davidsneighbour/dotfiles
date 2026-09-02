@@ -1,9 +1,0 @@
-[system]
-ip = "192.169.1.201"
-
-[bashrc]
-node = true
-
-[openweathermap]
-# https://openweathermap.org/weathermap
-placeid = "237624353"
