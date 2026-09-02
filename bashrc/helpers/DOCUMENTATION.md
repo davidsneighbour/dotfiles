@@ -29,7 +29,6 @@ Bash helpers are standalone helper commands unless noted otherwise. Several Type
 * [`remarkable/`](./remarkable/DOCUMENTATION.md)
 * [`tests/`](#tests)
 * [`theme/`](./theme/DOCUMENTATION.md)
-* [`workspace/`](./workspace/DOCUMENTATION.md)
 
 ## Top-level helper files
 
@@ -485,11 +484,3 @@ See [`theme/DOCUMENTATION.md`](./theme/DOCUMENTATION.md).
 * `theme/color-steps.md`: Existing guide for the CSS colour variable generator.
 * `theme/color-steps.todo.md`: Todo notes for future colour generator documentation/features; not implemented behaviour.
 * `theme/color-steps.ts`: Generates HSL CSS custom properties for colour ramps.
-
-### `workspace/`
-
-See [`workspace/DOCUMENTATION.md`](./workspace/DOCUMENTATION.md).
-
-* `workspace/wm-detect.sh`: Detects the current X11 window manager through EWMH properties.
-* `workspace/wm-wsname.sh`: Sets XFCE workspace names by positional number/name pairs.
-* `workspace/workspace-setup.sh`: Configures XFCE workspace count/names and optionally starts or moves applications by workspace.

@@ -151,7 +151,6 @@ dnb_path_add_if_missing --dir "/opt/firefox/firefox"
 
 # adding helper commands to PATH
 dnb_path_add_if_missing --dir "${BASHRC_PATH}/helpers" --prepend
-dnb_path_add_if_missing --dir "${BASHRC_PATH}/workspaces" --prepend
 
 # don't add jrnl entries to bash history
 HISTIGNORE="${HISTIGNORE}:jrnl *"

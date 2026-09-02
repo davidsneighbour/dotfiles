@@ -82,37 +82,32 @@ check_shell_syntax() {
   done < <(
     find \
       "${REPO_ROOT}/configs/system/rofi" \
-      "${REPO_ROOT}/configs/system/polybar/scripts" \
-      "${REPO_ROOT}/bashrc/workspaces" \
+      "${REPO_ROOT}/configs/session/polybar/launch.sh" \
+      "${REPO_ROOT}/configs/session/polybar/scripts" \
       -type f \
       -print0
   )
 
-  bash -n "${REPO_ROOT}/configs/system/polybar/start.sh" \
-    || fail "Bash syntax failed: ${REPO_ROOT}/configs/system/polybar/start.sh"
+  bash -n "${REPO_ROOT}/configs/session/polybar/launch.sh" \
+    || fail "Bash syntax failed: ${REPO_ROOT}/configs/session/polybar/launch.sh"
 }
 
 check_executable_entrypoints() {
   local file_path
 
-  require_executable "${REPO_ROOT}/configs/system/polybar/start.sh"
+  require_executable "${REPO_ROOT}/configs/session/polybar/launch.sh"
 
   while IFS= read -r -d '' file_path; do
     require_executable "${file_path}"
   done < <(
     find \
       "${REPO_ROOT}/configs/system/rofi" \
-      "${REPO_ROOT}/configs/system/polybar/scripts" \
+      "${REPO_ROOT}/configs/session/polybar/scripts" \
       -type f \
       \( -name '*.sh' -o -name 'polypomo' \) \
       -print0
   )
 
-  while IFS= read -r -d '' file_path; do
-    require_executable "${file_path}"
-  done < <(
-    find "${REPO_ROOT}/bashrc/workspaces" -maxdepth 1 -type f -name 'ws_*' -print0
-  )
 }
 
 check_polybar_includes() {
@@ -124,11 +119,11 @@ check_polybar_includes() {
     include_directory="${config_file#*=}"
     include_directory="${include_directory#"${include_directory%%[![:space:]]*}"}"
     include_directory="${include_directory%"${include_directory##*[![:space:]]}"}"
-    include_path="${REPO_ROOT}/configs/system/polybar/${include_directory}"
+    include_path="${REPO_ROOT}/configs/session/polybar/${include_directory}"
     require_directory "${include_path}"
   done < <(
     grep -hE '^[[:space:]]*include-directory[[:space:]]*=' \
-      "${REPO_ROOT}"/configs/system/polybar/*.ini
+      "${REPO_ROOT}"/configs/session/polybar/*.ini
   )
 }
 
@@ -159,10 +154,11 @@ check_polybar_script_references() {
 
   while IFS= read -r reference; do
     script_name="${reference##*/}"
-    require_executable "${REPO_ROOT}/configs/system/polybar/scripts/${script_name}"
+    require_executable "${REPO_ROOT}/configs/session/polybar/scripts/${script_name}"
   done < <(
     grep -rhoE '[~]/.config/polybar/scripts/[[:alnum:]_.-]+' \
-      "${REPO_ROOT}/configs/system/polybar" \
+      "${REPO_ROOT}/configs/session/polybar/config.ini" \
+      "${REPO_ROOT}/configs/session/polybar/configs" \
       | sort -u
   )
 }

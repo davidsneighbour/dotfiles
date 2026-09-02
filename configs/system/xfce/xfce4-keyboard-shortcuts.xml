@@ -86,10 +86,7 @@
       <property name="Super_L" type="string" value="rofi -show drun"/>
       <property name="&lt;Primary&gt;&lt;Shift&gt;w" type="string" value="/home/patrick/.dotfiles/configs/system/rofi/workspaces.sh --newwindow"/>
       <property name="&lt;Primary&gt;&lt;Shift&gt;s" type="string" value="subl"/>
-      <property name="&lt;Primary&gt;&lt;Shift&gt;&lt;Alt&gt;o" type="string" value="bash -lc &quot;/home/patrick/.dotfiles/bashrc/workspaces/ws_launch_program  --exec \&quot;obsidian vault=notes\&quot; --tile right-70 --workspace 5 --switch&quot;"/>
-      <property name="&lt;Primary&gt;&lt;Shift&gt;&lt;Alt&gt;Up" type="string" value="bash -lc &quot;/home/patrick/.dotfiles/bashrc/workspaces/ws_menu_window_tile-target&quot;"/>
-      <property name="&lt;Primary&gt;&lt;Shift&gt;Up" type="string" value="bash -lc &quot;/home/patrick/.dotfiles/bashrc/workspaces/ws_menu_window_tile&quot;"/>
-      <property name="&lt;Primary&gt;&lt;Shift&gt;&lt;Alt&gt;Down" type="string" value="bash -lc &quot;/home/patrick/.dotfiles/bashrc/workspaces/ws_menu_window_move&quot;"/>
+      <property name="&lt;Primary&gt;&lt;Shift&gt;&lt;Alt&gt;o" type="string" value="/opt/Obsidian/obsidian vault=notes"/>
       <property name="&lt;Primary&gt;&lt;Shift&gt;&lt;Alt&gt;r" type="string" value="bash -lc &quot;${HOME}/.dotfiles/bashrc/helpers/interface-restart&quot;"/>
     </property>
   </property>

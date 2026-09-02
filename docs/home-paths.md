@@ -32,5 +32,5 @@ literal absolute home directory path.
   ("Paths must be explicit", "No hidden bind mounts"), these stay literal.
 * Comment/usage-example paths in `bashrc/helpers/synch-devspace.sh`,
   `bashrc/lib/30-filesystem/dnb-synchhome.bash`, and
-  `bashrc/workspaces/config.toml` — these are illustrative text in comments,
+  old workspace configuration examples — these are illustrative text in comments,
   not paths a script resolves at runtime.

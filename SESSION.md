@@ -302,15 +302,20 @@ the documented fallback bound to the exact same command.
 * The i3 config itself (`configs/session/i3/config`) and everything it
   `exec`/`exec_always`s.
 
-## Components that must only run under XFCE (unchanged by this work)
+Workspace names are defined directly in `configs/session/i3/config`. The old
+`bashrc/workspaces` command folder and the XFCE-oriented
+`bashrc/helpers/workspace` setup helpers have been removed.
 
-* `configs/system/polybar/` (XFCE bar) and `configs/system/polybar/start.sh`
-  — waits for `xfwm4`, so it would hang harmlessly if it were ever started
-  outside XFCE; it never is, because its autostart entry is
-  `OnlyShowIn=XFCE;`.
-* `configs/system/devilspie2/` — `OnlyShowIn=XFCE;`, unaffected.
+## Components that must only run under XFCE
+
+* `configs/system/devilspie2/` — `OnlyShowIn=XFCE;`; now only contains
+  explicit Devilspie2 rules and debugging helpers, with the old
+  `ws_launch_program` placement bridge removed.
 * `configs/system/xfce/*.xml` (xfwm4 window-manager and keyboard-shortcut
-  settings) — untouched.
+  settings) — no longer binds the removed workspace move/tile helpers.
+* `configs/system/autostart/locutus/Obsidian.desktop` — `OnlyShowIn=XFCE;`;
+  launches Obsidian directly, without the removed workspace placement/tile
+  helper.
 
 ## Dependencies
 
@@ -402,9 +407,10 @@ a separate, explicit request — see the spec's scope-control section):
 * Devilspie2 → i3 native window rules: Devilspie2
   (`configs/system/devilspie2/`) still only runs under XFCE
   (`OnlyShowIn=XFCE;`); i3 has no equivalent window-placement rules yet.
-  i3's own `for_window`/`assign` directives could eventually replace the
-  Lua rules in `configs/system/devilspie2/config/` for the i3 session, but
-  that is a deliberate follow-up, not part of this starter.
+  The old Bash workspace move/tile helpers and Devilspie2 one-shot placement
+  bridge have been removed; future i3 placement should use i3's own
+  `for_window`/`assign` directives instead of reintroducing shell-managed
+  placement.
 * No keybinding that triggers suspend itself (e.g. `systemctl suspend`) —
   only screen lock is bound (`Super+L`, see "Keybinding architecture"). The
   screen locks automatically before *any* suspend trigger (lid close, power

@@ -13,7 +13,6 @@ Recommendations and improvements identified during codebase review. Pick items f
 * [ ] cleanup and document `bashrc/cronjobs`
 * [ ] cleanup and document `bashrc/helpers`
 * [ ] cleanup and document `bashrc/partials`
-* [ ] cleanup and deprecate `bashrc/workspaces`
 * [ ] document and cleanup `configs`
 
 ## Code quality

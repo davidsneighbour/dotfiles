@@ -17,7 +17,7 @@ Runtime behaviour and requirements:
 * Requires readable library files for shared `dnb_*` functions.
 * Optionally loads `${HOME}/.env`.
 * Optionally initialises `zoxide` when installed.
-* Adds Bun, configured system paths, Android SDK paths, npm global paths, `/opt/firefox/firefox`, `bashrc/helpers`, and `bashrc/workspaces` to `PATH` when applicable.
+* Adds Bun, configured system paths, Android SDK paths, npm global paths, `/opt/firefox/firefox`, and `bashrc/helpers` to `PATH` when applicable.
 * Sets `GPG_TTY`, updates the GPG agent terminal when `gpg-connect-agent` exists, configures umask/history/shell options, enables bash-completion, sets Go/Perl/Pager variables, and configures coloured man pages.
 
 ### `.bashrc`
@@ -80,15 +80,8 @@ Important grouped docs:
 * [`helpers/packages/DOCUMENTATION.md`](./helpers/packages/DOCUMENTATION.md)
 * [`helpers/remarkable/DOCUMENTATION.md`](./helpers/remarkable/DOCUMENTATION.md)
 * [`helpers/theme/DOCUMENTATION.md`](./helpers/theme/DOCUMENTATION.md)
-* [`helpers/workspace/DOCUMENTATION.md`](./helpers/workspace/DOCUMENTATION.md)
 
 Top-level helper commands and support files are documented in [`helpers/DOCUMENTATION.md`](./helpers/DOCUMENTATION.md), including `dotbot`, `explore`, `github-token`, `interface-restart`, `lpack`, `msgvault/`, `node-run`, `screencaps.ts`, `set-wallpaper.sh`, `set_max_listeners.cjs`, `synch-devspace.sh`, `update-npm.sh`, and `web-mirror.sh`.
-
-## Workspace commands
-
-Folder documentation: [`workspaces/DOCUMENTATION.md`](./workspaces/DOCUMENTATION.md). Existing overview: [`workspaces/README.md`](./workspaces/README.md).
-
-The top-level Bash startup prepends `bashrc/workspaces` to `PATH`, making the `ws_*` commands available interactively. These commands manage XFCE workspaces, windows, rofi menus, and tile templates.
 
 ## Cron jobs
 

@@ -16,7 +16,6 @@ are loaded by Devilspie2 through `~/.config/devilspie2`.
 config/
   chrome.lua
   debug.lua
-  ws-placement.lua
 scripts/
   restart-devilspie2.sh
   window-debug.sh
@@ -24,9 +23,6 @@ scripts/
 
 `chrome.lua` contains the active Chrome workspace rule. `debug.lua` prints the
 window values Devilspie2 sees when `devilspie2 --debug` is running.
-`ws-placement.lua` is the generic rule that `bashrc/workspaces/ws_launch_program`
-depends on to move a just-launched window onto a specific workspace; see
-"ws_launch_program placement" below.
 
 ## Install
 
@@ -62,26 +58,6 @@ undefined global.
 Prefer stable window identity values over titles. For Chrome, the class or class
 group is usually more reliable than the window name, because titles change with
 the active tab.
-
-## `ws_launch_program` placement
-
-`bashrc/workspaces/ws_launch_program --workspace N` no longer moves the
-launched window itself with a `wmctrl`/PID-polling loop. Instead it writes a
-one-line state file — the target workspace number — to
-`${XDG_RUNTIME_DIR:-/tmp}/ws-launch-placements/<pid>` right after launching the
-command, keyed by the launched process's PID.
-
-`config/ws-placement.lua` runs on every new window Devilspie2 sees. Devilspie2
-has no `get_window_pid()`, so it reads the PID back off the window via the
-standard `_NET_WM_PID` property (`get_window_property("_NET_WM_PID")`) instead,
-looks for a matching state file, and if found calls `set_window_workspace()`
-and deletes the file — so a request only ever fires once, and a reused PID can
-never pick up a stale request. `ws_launch_program` also expires its own state
-files after 15 seconds in case the launched program never opens a window.
-
-This means Devilspie2 must be running for `ws_launch_program --workspace` to
-have any effect; `ws_launch_program` checks for a running `devilspie2` process
-and logs an error (but still launches the program) if it isn't.
 
 ## Debugging windows
 

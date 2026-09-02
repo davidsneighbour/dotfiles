@@ -40,13 +40,9 @@ next improvements".
 
 ## Why a separate copy instead of one shared config
 
-`configs/system/polybar/start.sh` (the XFCE launcher) waits for `xfwm4`
-before doing anything, and calls
-`bashrc/helpers/workspace/ws-setup.sh` to rename workspaces to
-application-specific titles — both are XFCE-session behaviour that would
-either hang forever or do the wrong thing under i3. Forking the config
-avoids conditional branches inside one shared script and keeps the XFCE
-bar's behaviour completely unchanged.
+The old XFCE workspace setup helpers are not used here. i3 owns its workspace
+names in `configs/session/i3/config`, and Polybar's `internal/i3` module reads
+them directly.
 
 ## Both bars share the `polybar` process name
 
