@@ -141,6 +141,8 @@ worktree
 XAUTHORITY
 xbindkeys
 xfconf
+xfsettingsd
+Xsettings
 xprop
 xwininfo
 yarnpkg
