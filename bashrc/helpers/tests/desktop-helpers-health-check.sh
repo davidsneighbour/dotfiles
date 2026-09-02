@@ -81,7 +81,7 @@ check_shell_syntax() {
     esac
   done < <(
     find \
-      "${REPO_ROOT}/configs/system/rofi" \
+      "${REPO_ROOT}/configs/session/rofi" \
       "${REPO_ROOT}/configs/session/polybar/launch.sh" \
       "${REPO_ROOT}/configs/session/polybar/scripts" \
       -type f \
@@ -101,7 +101,7 @@ check_executable_entrypoints() {
     require_executable "${file_path}"
   done < <(
     find \
-      "${REPO_ROOT}/configs/system/rofi" \
+      "${REPO_ROOT}/configs/session/rofi" \
       "${REPO_ROOT}/configs/session/polybar/scripts" \
       -type f \
       \( -name '*.sh' -o -name 'polypomo' \) \
@@ -144,7 +144,7 @@ check_rofi_imports() {
     require_file "${import_path}.rasi"
   done < <(
     grep -RE '^[[:space:]]*@import[[:space:]]+"[^"]+"' \
-      "${REPO_ROOT}/configs/system/rofi"
+      "${REPO_ROOT}/configs/session/rofi"
   )
 }
 

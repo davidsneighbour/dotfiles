@@ -62,7 +62,7 @@
     ~/.config/sublime-merge: configs/system/sublime-merge
     ~/.config/sublime-text: configs/system/sublime-text
     ~/.config/filezilla: configs/system/filezilla
-    ~/.config/rofi: configs/system/rofi
+    ~/.config/rofi: configs/session/rofi
     ~/.barrier-server.config: configs/system/barrier/barrier-server.conf
 
     # autostart

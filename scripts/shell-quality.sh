@@ -79,7 +79,7 @@ discover_shell_files() {
       bashrc \
       configs/installs \
       configs/session/polybar \
-      configs/system/rofi \
+      configs/session/rofi \
       scripts
   )
 

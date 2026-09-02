@@ -40,12 +40,14 @@ This configuration ships a small, standalone Rofi override,
 functional properties the starter spec calls for that rofi does not enable
 by default — `matching: "fuzzy"`, explicit `case-sensitive: false`,
 `show-icons: true`, an explicit `width`/`location` — while reusing the
-existing, shared `configs/system/rofi/theme.rasi` visuals via `@theme
-"theme"` (confirmed with `rofi -config rofi.rasi -dump-theme`), so nothing
-is visually duplicated and there is no second theme to keep in sync.
-`configs/system/rofi/` itself (used directly by XFCE, e.g. its bare
-`Super_L` binding in `configs/system/xfce/xfce4-keyboard-shortcuts.xml`)
-is untouched.
+existing `configs/session/rofi/theme.rasi` visuals via `@theme "theme"`
+(confirmed with `rofi -config rofi.rasi -dump-theme`), so nothing is
+visually duplicated and there is no second theme to keep in sync.
+`configs/session/rofi/` is i3-only: it is Dotbot-linked to `~/.config/rofi`
+and holds the base config, theme, and the Alt+Tab window-switcher and
+VS Code workspace-picker scripts. XFCE no longer has any Rofi bindings of
+its own (`configs/system/xfce/xfce4-keyboard-shortcuts.xml`'s bare
+`Super_L` and `Ctrl+Shift+W` shortcuts were removed with this move).
 
 ## Polybar
 

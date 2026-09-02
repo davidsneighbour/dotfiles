@@ -40,7 +40,7 @@ configs/session/polybar/               -> (not symlinked; referenced by
                                             repo path directly from i3's
                                             exec_always — see "Polybar" below)
 configs/system/polybar/                -> ~/.config/polybar     (Dotbot link, XFCE bar, unchanged)
-configs/system/rofi/                   -> ~/.config/rofi        (Dotbot link, shared by XFCE and i3)
+configs/session/rofi/                  -> ~/.config/rofi        (Dotbot link, i3-only)
 configs/system/xfce/*.xml              -> ~/.config/xfce4/xfconf/xfce-perchannel-xml/*.xml (Dotbot link, XFCE-only)
 configs/system/autostart/locutus/      -> ~/.config/autostart   (Dotbot link, host-specific XDG autostart pool)
 configs/system/devilspie2/config       -> ~/.config/devilspie2  (Dotbot link, XFCE-only, see "Known limitations")
@@ -59,11 +59,11 @@ LightDM
 │   ├── xfce4-panel
 │   ├── Polybar (configs/system/polybar/, autostarted via
 │   │   configs/system/autostart/locutus/polybar.desktop, OnlyShowIn=XFCE)
-│   ├── Devilspie2 (configs/system/devilspie2/, autostarted via
-│   │   .../devilspie2.desktop, OnlyShowIn=XFCE)
-│   └── Rofi (configs/system/rofi/, launched ad hoc via XFCE keyboard
-│       shortcuts — bare Super, Ctrl+Shift+W, Alt+Tab/Super+Tab window
-│       switcher)
+│   └── Devilspie2 (configs/system/devilspie2/, autostarted via
+│       .../devilspie2.desktop, OnlyShowIn=XFCE)
+│       (No Rofi bindings of its own — Rofi is i3-only, see "Rofi" below.
+│       Alt+Tab/Super+Tab under XFCE go to xfwm4's own native window
+│       cycling.)
 │
 └── i3  (this work; selectable at the LightDM greeter, not the default)
     │
@@ -74,8 +74,8 @@ LightDM
         │   ├── workspaces 1-9 (plain numbers, no icons/rules yet)
         │   └── window rules (none yet — see "Known limitations")
         │
-        ├── Rofi (SHARED with XFCE — configs/system/rofi/, unchanged,
-        │   invoked as `rofi -show drun`)
+        ├── Rofi (i3-only — configs/session/rofi/, invoked as
+        │   `rofi -show drun`)
         ├── Polybar (i3-ONLY copy — configs/session/polybar/, launched by
         │   configs/session/polybar/launch.sh via i3 exec_always)
         ├── background (xsetroot solid colour, then best-effort
@@ -144,7 +144,8 @@ Defined entirely in `configs/session/i3/config`. `$mod` is `Mod4`
 | --- | --- |
 | `Super` (bare, release) | Open Rofi (`drun`) — see "Bare Super key limitation" below |
 | `Super+D` | Open Rofi (`drun`) — explicit, always-reliable fallback for the above |
-| `Super+W` | Open Rofi VS Code workspace picker (`configs/system/rofi/workspaces.sh --newwindow`) |
+| `Ctrl+Shift+W` | Open Rofi VS Code workspace picker (`configs/session/rofi/workspaces.sh --newwindow`) |
+| `Alt+Tab` (`Mod1+Tab`) | Open Rofi window switcher, all workspaces (`configs/session/rofi/window-switcher.sh`) — see "Rofi" below |
 | `Super+Enter` | Open terminal (`$terminal`, currently `xfce4-terminal`) |
 | `Super+Shift+Q` | Close focused window |
 | `Super+Shift+C` | Reload i3 config |
@@ -175,23 +176,40 @@ the documented fallback bound to the exact same command.
 
 ## Rofi
 
-* `configs/system/rofi/` — **shared, unchanged**. Already used by the live
-  XFCE session (bare `Super_L` in
-  `configs/system/xfce/xfce4-keyboard-shortcuts.xml`, plus the window
-  switcher and workspace scripts in that same folder).
-* i3 does not use that config directly. It calls
-  `configs/session/i3/rofi.rasi` — a small, standalone override (per the
-  starter spec's own requirement for one) that sets `matching: "fuzzy"`,
-  `case-sensitive: false`, `show-icons: true`, and an explicit
-  `width`/`location`, none of which the shared config turns on (rofi's
-  default matching is substring, not fuzzy — the shared config never
-  needed fuzzy matching for XFCE's usage, so it never set it). The
-  override reuses the shared config's *visuals* via `@theme "theme"`
-  (rofi's own theme search path resolves this to
-  `configs/system/rofi/theme.rasi`, confirmed with
-  `rofi -config configs/session/i3/rofi.rasi -dump-theme`), so there is no
-  second theme to keep in sync — only the functional settings are
-  i3-specific.
+Rofi is **i3-only**. It used to be shared with XFCE (a Dotbot link at
+`~/.config/rofi` pointing at `configs/system/rofi/`); that folder has been
+retired and its contents moved into `configs/session/rofi/`, and the XFCE
+keyboard shortcuts that used to invoke it (bare `Super_L` → `rofi -show
+drun`, `Ctrl+Shift+W` → the workspace picker script) were removed from
+`configs/system/xfce/xfce4-keyboard-shortcuts.xml`. XFCE now has no Rofi
+bindings at all; its Alt+Tab/Super+Tab still go to xfwm4's native
+`cycle_windows_key`/`switch_window_key`, unaffected by this.
+
+* `configs/session/rofi/` — Dotbot-linked to `~/.config/rofi`. Holds the
+  base `config.rasi`, `theme.rasi`, `config.alt-tab-switcher.rasi`, plus
+  two scripts:
+  * `window-switcher.sh` — a Rofi-based Alt+Tab replacement, bound to
+    `Mod1+Tab` in `configs/session/i3/configs/applications.conf` (i3 has no
+    native Alt+Tab window cycling, unlike xfwm4). Always shows windows
+    across all workspaces — an earlier `--scope workspace` mode was dropped
+    as unused; i3 workspaces here are per-output single-window-set
+    groupings, not something this script ever needed to scroll within.
+    Resolves `config.alt-tab-switcher.rasi` via rofi's own config search
+    path (`~/.config/rofi`), so it keeps working regardless of which
+    directory it is invoked from.
+  * `workspaces.sh` — the VS Code workspace picker, bound to `Ctrl+Shift+W`
+    in `configs/session/i3/configs/applications.conf`.
+* i3's app launcher (drun) does not use `configs/session/rofi/config.rasi`
+  directly. It calls `configs/session/i3/rofi.rasi` — a small, standalone
+  override (per the starter spec's own requirement for one) that sets
+  `matching: "fuzzy"`, `case-sensitive: false`, `show-icons: true`, and an
+  explicit `width`/`location`, none of which the base config turns on
+  (rofi's default matching is substring, not fuzzy). The override reuses
+  the base config's *visuals* via `@theme "theme"` (rofi's own theme
+  search path resolves this to `configs/session/rofi/theme.rasi`,
+  confirmed with `rofi -config configs/session/i3/rofi.rasi -dump-theme`),
+  so there is no second theme to keep in sync — only the functional
+  settings are i3-specific.
 * Invoked as `rofi -show drun -config <repo>/configs/session/i3/rofi.rasi`
   (the i3 config's `$rofi` variable).
 * Validated non-interactively (parses without opening a window):
@@ -286,7 +304,6 @@ the documented fallback bound to the exact same command.
 
 ## Shared components (used by both XFCE and i3)
 
-* Rofi (`configs/system/rofi/`) — see "Rofi" above.
 * The `feh`/`xsetroot` wallpaper tooling
   (`bashrc/helpers/theme/set-wallpaper.sh`) — generic, environment-aware,
   not modified.
@@ -295,6 +312,7 @@ the documented fallback bound to the exact same command.
 
 ## Components that must only run under i3
 
+* `configs/session/rofi/` — see "Rofi" above.
 * `configs/session/polybar/` and its `launch.sh`.
 * `configs/session/i3lock/lock.sh` and the `xss-lock` daemon that runs it
   (started via `session-starts.conf`, triggered by `Super+L` and by
@@ -432,9 +450,11 @@ The XFCE/Xubuntu session is untouched and remains the LightDM default
 1. Log out of i3 (`Super+Shift+E`, confirm in the `i3-nagbar` prompt), or
    use LightDM's session-switch mechanism if i3 is unresponsive.
 2. At the LightDM greeter, select **Xubuntu** or **XFCE**.
-3. Log in normally — this session and its Polybar/Devilspie2/Rofi setup are
-   completely independent of the i3 files above and were not modified by
-   this work.
+3. Log in normally — this session and its Polybar/Devilspie2 setup are
+   completely independent of the i3 files above. XFCE no longer has any
+   Rofi bindings of its own (Rofi is i3-only — see "Rofi" above); its
+   keyboard-shortcuts file was edited only to remove those two now-unused
+   bindings, nothing else in it changed.
 4. Inspect/repair `configs/session/i3/config` and
    `configs/session/polybar/` from within the working XFCE session.
 5. Validate before logging back into i3:
