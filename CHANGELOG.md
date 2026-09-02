@@ -1,5 +1,32 @@
 # Changelog
 
+## [2.3.1](https://github.com/davidsneighbour/dotfiles/compare/v2.3.0...v2.3.1) (2026-09-02)
+
+### Fix
+
+* **i3:** correct Dracula background colour and start xfsettingsd ([39700a7](https://github.com/davidsneighbour/dotfiles/commit/39700a7b47a08a6169d89c46b62d5abe220b34b9))
+* remove actions helper and its config ([1ac1505](https://github.com/davidsneighbour/dotfiles/commit/1ac150552539aa18ae37666bcc14012dfb67d36a))
+* remove bashrc/helpers/theme wallpaper scripts ([1c0cee8](https://github.com/davidsneighbour/dotfiles/commit/1c0cee89fb9438b40f02a028375e2116fcf7da24))
+* remove color-steps theme script ([ad542b1](https://github.com/davidsneighbour/dotfiles/commit/ad542b103790e69d089db327072e78e142202e5a))
+* remove package helper and config ([0620cf0](https://github.com/davidsneighbour/dotfiles/commit/0620cf0555bfb67cd2dc0658093290378a7d045c))
+* remove tabdump extension into separate repo ([58550de](https://github.com/davidsneighbour/dotfiles/commit/58550deba2c47afbf4f8528241cb87d8bd11d36a))
+* remove unused dnb-dotfiles-tools VS Code extension ([7eb0f51](https://github.com/davidsneighbour/dotfiles/commit/7eb0f51b818cb1b19a84140b960ee43c3ac17d2b))
+* remove unused nanny setup ([ea140fa](https://github.com/davidsneighbour/dotfiles/commit/ea140fa736ed8964d71108b5b0bdfcad9e5daa04))
+* start barrier server only once at the session start ([4b6e696](https://github.com/davidsneighbour/dotfiles/commit/4b6e696fd546f87443179cacb000c9b764a1028e))
+* **theme:** background image ([662a56f](https://github.com/davidsneighbour/dotfiles/commit/662a56ffff005dcc0a1b14d55655b69d53be8a6e))
+
+### Refactor
+
+* **autostart:** remove XDG autostart pool and its actions.sh commands ([7aef239](https://github.com/davidsneighbour/dotfiles/commit/7aef2391071cae99630a3d183002474796a03d5b))
+* **devilspie2:** remove Devilspie2 setup ([3f2652e](https://github.com/davidsneighbour/dotfiles/commit/3f2652e990a0e859432e61d470e0be73b296c6a6))
+* **i3:** remove legacy workspace helpers ([e44253c](https://github.com/davidsneighbour/dotfiles/commit/e44253c3459f6b4914f591849a718f5ea4dcb796))
+* **rofi:** make Rofi i3-only, wire Alt+Tab window switcher ([7ec4a9b](https://github.com/davidsneighbour/dotfiles/commit/7ec4a9bb78217700700b505cee1e5c4aa30451b6))
+* **xfce:** remove dotfiles-managed XFCE xfconf settings ([f4d9c05](https://github.com/davidsneighbour/dotfiles/commit/f4d9c0502b856fdcfe3382b1a465079f1ea66cc3))
+
+### Build
+
+* **deps:** update dependencies ([917983d](https://github.com/davidsneighbour/dotfiles/commit/917983d51f4039f1b392ed3cf996014cc4b8e91a))
+
 ## [2.3.0](https://github.com/davidsneighbour/dotfiles/compare/v2.2.1...v2.3.0) (2026-09-02)
 
 ### Feat
