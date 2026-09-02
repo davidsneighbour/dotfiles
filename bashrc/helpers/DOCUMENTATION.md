@@ -472,7 +472,3 @@ No dedicated documentation file; run via `npm run test:shell`.
 ### `theme/`
 
 See [`theme/DOCUMENTATION.md`](./theme/DOCUMENTATION.md).
-
-* `theme/color-steps.md`: Existing guide for the CSS colour variable generator.
-* `theme/color-steps.todo.md`: Todo notes for future colour generator documentation/features; not implemented behaviour.
-* `theme/color-steps.ts`: Generates HSL CSS custom properties for colour ramps.
