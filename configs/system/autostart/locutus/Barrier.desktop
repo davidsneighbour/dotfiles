@@ -1,8 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=Barrier
-Comment=Start Barrier after XFCE login
-Exec=sh -c 'sleep 5; barrier'
-Terminal=false
-X-GNOME-Autostart-enabled=true
-Hidden=false

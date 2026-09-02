@@ -8,7 +8,6 @@ Recommendations and improvements identified during codebase review. Pick items f
 
 * [x] `docs/setup.md` — strip empty stubs (Discord, Signal, Telegram, Dropbox, Todoist sections), remove crossed-out entries, complete sparse sections
 * [ ] `configs/actions/` — add `DOCUMENTATION.md` explaining TOML schema: scopes, activities, `label`, `cmd`, variable expansion
-* [ ] `configs/system/autostart/` — add `README.md` explaining `available/` pool, per-host symlink structure, and how `actions autostart-enable` connects
 * [ ] `bashrc/lib/00-core/` through `bashrc/lib/50-variables/` — add `DOCUMENTATION.md` per numbered tier explaining what each layer provides and its load-order position
 * [ ] cleanup and document `bashrc/cronjobs`
 * [ ] cleanup and document `bashrc/helpers`
@@ -24,8 +23,7 @@ Recommendations and improvements identified during codebase review. Pick items f
 
 ## Enhancements
 
-* [ ] `configs/actions/actions.toml` — add scopes for: wallpaper selection (wraps `set-wallpaper.sh`), theme switching, docker container update, workspace layout setup, autostart management
-* [ ] Dotbot per-host autostart — add autostart symlink steps to `config.host-locutus.yaml` and `config.host-hal2025.yaml` so autostarts are configured idempotently on each `dotbot` run
+* [ ] `configs/actions/actions.toml` — add scopes for: wallpaper selection (wraps `set-wallpaper.sh`), theme switching, docker container update, workspace layout setup
 * [ ] unified container update helper — script or `actions.toml` scope that iterates `containers/<host>/*/` and runs each `update.sh`
 * [ ] `glone` post-clone hooks — `--post-clone` mechanism for running `npm install`, `git submodule update`, project init scripts after a successful clone
 

@@ -5,7 +5,6 @@
 It consolidates:
 
 * TOML-driven command execution (`menu`),
-* autostart profile management (`autostart-enable`, `autostart-disable`),
 * Dotbot setup discovery and execution (`dotbot-list`, `dotbot-run`).
 
 This helper is invoked through a compatibility wrapper at `bashrc/helpers/actions.sh`.
@@ -27,8 +26,6 @@ actions.sh [--verbose] [--dry-run] <command> [command-options]
 ### Commands
 
 * `menu`: Run the interactive TOML menu.
-* `autostart-enable`: Symlink selected desktop entries into the host autostart folder.
-* `autostart-disable`: Remove selected host autostart symlinks.
 * `dotbot-list`: List available Dotbot profiles discovered from `configs/dotbot/config*.yaml`.
 * `dotbot-run`: Run Dotbot using a selected or explicit profile.
 
@@ -50,7 +47,7 @@ Example:
 
 ---
 
-## `menu` command (TOML-driven actions)
+## `menu` command (`TOML`-driven actions)
 
 ### What it does
 
@@ -77,32 +74,6 @@ actions.sh menu [--config FILE]
 
 * `gum`
 * `python3` with `tomllib` (Python 3.11+) or `tomli`
-
----
-
-## Autostart management
-
-### `autostart-enable`
-
-Enables one or more entries from `<autostarts>/available` by creating symlinks in `<autostarts>/<host>/`.
-
-```bash
-actions.sh autostart-enable [--dir DIR] [--dir-autostarts DIR] [--host HOST] [--prompt TEXT]
-```
-
-### `autostart-disable`
-
-Disables one or more entries by removing symlinks from `<autostarts>/<host>/`.
-
-```bash
-actions.sh autostart-disable [--host HOST] [--dir-autostarts DIR] [--prompt TEXT]
-```
-
-### Defaults
-
-* Base autostarts directory: `configs/system/autostart`
-* Available entries: `configs/system/autostart/available`
-* Host folder: `configs/system/autostart/${HOSTNAME}`
 
 ---
 
@@ -187,19 +158,7 @@ If the feature is better expressed as data-driven behavior, prefer extending `co
 actions menu --config ./configs/actions/actions.toml
 ```
 
-### Enable autostarts for another host
-
-```bash
-actions autostart-enable --host workstation-02
-```
-
-### Dry-run autostart cleanup
-
-```bash
-actions --dry-run autostart-disable --host workstation-02
-```
-
-### List and run Dotbot profile
+### List and run `Dotbot` profile
 
 ```bash
 actions dotbot-list

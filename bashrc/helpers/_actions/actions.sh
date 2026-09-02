@@ -1,5 +1,5 @@
 #!/bin/bash
-# Unified actions helper for interactive actions, autostart management, and Dotbot setup runs.
+# Unified actions helper for interactive actions and Dotbot setup runs.
 # shellcheck disable=SC2016
 
 set -euo pipefail
@@ -9,7 +9,6 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DOTFILES_ROOT="$(cd "${SCRIPT_DIR}/../../.." && pwd)"
 
 DEFAULT_ACTIONS_CONFIG="${DOTFILES_ROOT}/configs/actions/actions.toml"
-DEFAULT_AUTOSTART_DIR="${DOTFILES_ROOT}/configs/system/autostart"
 DEFAULT_DOTBOT_CONFIGS_DIR="${DOTFILES_ROOT}/configs/dotbot"
 DOTBOT_HELPER="${DOTFILES_ROOT}/bashrc/helpers/dotfiles"
 
@@ -73,16 +72,12 @@ Global options:
 
 Commands:
   menu                    Run the TOML-driven action picker (default command).
-  autostart-enable        Enable one or more autostart entries for a host.
-  autostart-disable       Disable one or more autostart entries for a host.
   dotfiles-list           List available dotbot setup profiles from configs/dotbot.
   dotfiles-run            Run dotbot using a setup profile from configs/dotbot.
 
 Examples:
   ${SCRIPT_NAME}
   ${SCRIPT_NAME} --verbose menu --config "${DEFAULT_ACTIONS_CONFIG}"
-  ${SCRIPT_NAME} autostart-enable --host "$(hostname)"
-  ${SCRIPT_NAME} autostart-disable --host "$(hostname)"
   ${SCRIPT_NAME} dotfiles-list
   ${SCRIPT_NAME} dotfiles-run --profile protected
 
@@ -97,82 +92,6 @@ require_cmd() {
     log_error "Required command '${cmd}' was not found in PATH."
     exit 1
   fi
-}
-
-get_desktop_entry_value() {
-  local file_path="${1}"
-  local exact_key="${2}"
-  local localized_prefix="${3}"
-  local line=""
-  local key=""
-  local value=""
-  local in_desktop_entry="false"
-
-  while IFS= read -r line; do
-    if [[ "${line}" == "[Desktop Entry]" ]]; then
-      in_desktop_entry="true"
-      continue
-    fi
-
-    if [[ "${in_desktop_entry}" != "true" ]]; then
-      continue
-    fi
-
-    if [[ "${line}" =~ ^\[.*\]$ ]]; then
-      break
-    fi
-
-    if [[ "${line}" != *=* ]]; then
-      continue
-    fi
-
-    key="${line%%=*}"
-    value="${line#*=}"
-
-    if [[ "${key}" == "${exact_key}" ]]; then
-      printf '%s\n' "${value}"
-      return 0
-    fi
-
-    if [[ "${key}" =~ ^${localized_prefix}\[[^]]+\]$ ]]; then
-      printf '%s\n' "${value}"
-      return 0
-    fi
-  done < "${file_path}"
-
-  return 1
-}
-
-build_select_line() {
-  local index="${1}"
-  local title="${2}"
-  local description="${3}"
-  local title_color=$'\033[38;2;248;248;242m'
-  local description_color=$'\033[38;2;112;140;169m'
-  local color_reset=$'\033[0m'
-
-  if [[ -n "${description}" ]]; then
-    printf '%s\n' "${index}) ${title_color}${title}${color_reset} ${description_color}${description}${color_reset}"
-    return
-  fi
-
-  printf '%s\n' "${index}) ${title_color}${title}${color_reset}"
-}
-
-parse_desktop_selections() {
-  local selected_out="${1}"
-  local -n out_array_ref="${2}"
-  local -n by_index_ref="${3}"
-  local line=""
-  local selection_id=""
-
-  while IFS= read -r line; do
-    [[ -z "${line}" ]] && continue
-    selection_id="${line%%)*}"
-    if [[ "${selection_id}" =~ ^[0-9]+$ ]] && [[ -n "${by_index_ref[${selection_id}]:-}" ]]; then
-      out_array_ref+=("${by_index_ref[${selection_id}]}")
-    fi
-  done <<< "${selected_out}"
 }
 
 menu_py_toml() {
@@ -407,315 +326,6 @@ EOF_HELP
   done
 }
 
-handle_autostart_enable() {
-  local dir_autostarts="${DEFAULT_AUTOSTART_DIR}"
-  local dir_available="${DEFAULT_AUTOSTART_DIR}/available"
-  local host_name="${HOSTNAME:-unknown-host}"
-  local prompt="Select an item:"
-
-  while (($#)); do
-    case "${1}" in
-      --dir)
-        dir_available="${2:-}"
-        if [[ -z "${dir_available}" ]]; then
-          log_error "--dir requires a value."
-          return 1
-        fi
-        shift 2
-        ;;
-      --dir-autostarts)
-        dir_autostarts="${2:-}"
-        if [[ -z "${dir_autostarts}" ]]; then
-          log_error "--dir-autostarts requires a value."
-          return 1
-        fi
-        shift 2
-        ;;
-      --host)
-        host_name="${2:-}"
-        if [[ -z "${host_name}" ]]; then
-          log_error "--host requires a value."
-          return 1
-        fi
-        shift 2
-        ;;
-      --prompt)
-        prompt="${2:-}"
-        if [[ -z "${prompt}" ]]; then
-          log_error "--prompt requires a value."
-          return 1
-        fi
-        shift 2
-        ;;
-      --help)
-        cat <<EOF_HELP
-Usage: ${SCRIPT_NAME} autostart-enable [--dir DIR] [--dir-autostarts DIR] [--host HOST] [--prompt TEXT]
-
-Enable one or more autostart desktop entries by creating symlinks under:
-  <dir-autostarts>/<host>/
-
-Options:
-  --dir DIR              Directory with available desktop entries.
-  --dir-autostarts DIR   Base autostart directory.
-  --host HOST            Host directory name.
-  --prompt TEXT          Prompt text for gum.
-  --help                 Show this help.
-EOF_HELP
-        return 0
-        ;;
-      *)
-        log_error "Unknown option for autostart-enable: ${1}"
-        return 1
-        ;;
-    esac
-  done
-
-  require_cmd gum
-
-  if [[ "${dir_available}" == "${DEFAULT_AUTOSTART_DIR}/available" ]]; then
-    dir_available="${dir_autostarts%/}/available"
-  fi
-
-  if [[ ! -d "${dir_available}" ]]; then
-    log_error "Autostart source directory was not found: ${dir_available}."
-    return 1
-  fi
-
-  shopt -s nullglob
-  local entries=("${dir_available%/}"/*)
-  shopt -u nullglob
-
-  if (( ${#entries[@]} == 0 )); then
-    log_error "No entries available in ${dir_available}."
-    return 1
-  fi
-
-  # shellcheck disable=SC2034 # referenced through nameref in parse_desktop_selections
-  local -A selection_by_index=()
-  local selection_lines=()
-  local index=1
-  local p=""
-  local base_name=""
-  local title=""
-  local description=""
-  local parsed_title=""
-  local parsed_description=""
-
-  for p in "${entries[@]}"; do
-    base_name="$(basename -- "${p}")"
-    title="${base_name}"
-    description=""
-
-    if [[ -f "${p}" ]]; then
-      parsed_title=""
-      parsed_description=""
-      if parsed_title="$(get_desktop_entry_value "${p}" "Name" "Name")"; then
-        title="${parsed_title}"
-      fi
-      if parsed_description="$(get_desktop_entry_value "${p}" "Comment" "Comment")"; then
-        description="${parsed_description}"
-      fi
-    fi
-
-    # shellcheck disable=SC2034 # referenced through nameref in parse_desktop_selections
-    selection_by_index["${index}"]="${base_name}"
-    selection_lines+=("$(build_select_line "${index}" "${title}" "${description}")")
-    ((index++))
-  done
-
-  local selected_out=""
-  if ! selected_out="$(printf '%b\n' "${selection_lines[@]}" | gum filter --placeholder "${prompt}" --no-limit)"; then
-    log_error "No selection made."
-    return 1
-  fi
-
-  local selections=()
-  parse_desktop_selections "${selected_out}" selections selection_by_index
-
-  local destination_dir="${dir_autostarts%/}/${host_name}"
-  mkdir -p -- "${destination_dir}"
-
-  local sel=""
-  local src=""
-  local dst=""
-  local action=""
-
-  for sel in "${selections[@]}"; do
-    src="${dir_available%/}/${sel}"
-    dst="${destination_dir}/${sel}"
-
-    if [[ ! -e "${src}" ]]; then
-      log_error "Source entry not found, skipping: ${src}."
-      continue
-    fi
-
-    if [[ -L "${dst}" || -e "${dst}" ]]; then
-      if [[ -L "${dst}" ]] && [[ "$(readlink -- "${dst}")" == "${src}" ]]; then
-        log_msg "INFO" "Already linked: ${dst} -> ${src}"
-        continue
-      fi
-
-      action="$(printf '%s\n' "replace" "skip" | gum choose --header "File exists: ${sel}. What now?")"
-      if [[ "${action}" == "replace" ]]; then
-        if [[ "${DRY_RUN}" == "true" ]]; then
-          log_msg "INFO" "[DRY-RUN] Would replace ${dst} -> ${src}."
-        else
-          rm -f -- "${dst}"
-          ln -s -- "${src}" "${dst}"
-          log_msg "INFO" "Replaced ${dst} -> ${src}."
-        fi
-      else
-        log_msg "INFO" "Skipped ${dst}."
-      fi
-    else
-      if [[ "${DRY_RUN}" == "true" ]]; then
-        log_msg "INFO" "[DRY-RUN] Would link ${dst} -> ${src}."
-      else
-        ln -s -- "${src}" "${dst}"
-        printf ':heavy_check_mark: Linked: %s -> %s\n' "${dst}" "${src}" | gum format -t emoji
-      fi
-    fi
-  done
-}
-
-handle_autostart_disable() {
-  local dir_autostarts="${DEFAULT_AUTOSTART_DIR}"
-  local host_name="${HOSTNAME:-unknown-host}"
-  local prompt="Select symlink(s) to remove:"
-
-  while (($#)); do
-    case "${1}" in
-      --host)
-        host_name="${2:-}"
-        if [[ -z "${host_name}" ]]; then
-          log_error "--host requires a value."
-          return 1
-        fi
-        shift 2
-        ;;
-      --dir-autostarts)
-        dir_autostarts="${2:-}"
-        if [[ -z "${dir_autostarts}" ]]; then
-          log_error "--dir-autostarts requires a value."
-          return 1
-        fi
-        shift 2
-        ;;
-      --prompt)
-        prompt="${2:-}"
-        if [[ -z "${prompt}" ]]; then
-          log_error "--prompt requires a value."
-          return 1
-        fi
-        shift 2
-        ;;
-      --help)
-        cat <<EOF_HELP
-Usage: ${SCRIPT_NAME} autostart-disable [--host HOST] [--dir-autostarts DIR] [--prompt TEXT]
-
-Disable one or more autostart desktop entries by removing symlinks under:
-  <dir-autostarts>/<host>/
-
-Options:
-  --host HOST            Host directory name.
-  --dir-autostarts DIR   Base autostart directory.
-  --prompt TEXT          Prompt text for gum.
-  --help                 Show this help.
-EOF_HELP
-        return 0
-        ;;
-      *)
-        log_error "Unknown option for autostart-disable: ${1}"
-        return 1
-        ;;
-    esac
-  done
-
-  require_cmd gum
-
-  local destination_dir="${dir_autostarts%/}/${host_name}"
-  if [[ ! -d "${destination_dir}" ]]; then
-    log_error "Host autostart directory was not found: ${destination_dir}."
-    return 1
-  fi
-
-  shopt -s nullglob
-  local entries=("${destination_dir}"/*)
-  shopt -u nullglob
-
-  local symlinks=()
-  local p=""
-  for p in "${entries[@]}"; do
-    if [[ -L "${p}" ]]; then
-      symlinks+=("${p}")
-    fi
-  done
-
-  if (( ${#symlinks[@]} == 0 )); then
-    log_error "No symlinks found in ${destination_dir}."
-    return 1
-  fi
-
-  # shellcheck disable=SC2034 # referenced through nameref in parse_desktop_selections
-  local -A selection_by_index=()
-  local selection_lines=()
-  local index=1
-  local base_name=""
-  local title=""
-  local description=""
-  local source_entry=""
-  local parsed_title=""
-  local parsed_description=""
-
-  for p in "${symlinks[@]}"; do
-    base_name="$(basename -- "${p}")"
-    title="${base_name}"
-    description=""
-    source_entry="${dir_autostarts%/}/available/${base_name}"
-
-    if [[ -f "${source_entry}" ]]; then
-      parsed_title=""
-      parsed_description=""
-      if parsed_title="$(get_desktop_entry_value "${source_entry}" "Name" "Name")"; then
-        title="${parsed_title}"
-      fi
-      if parsed_description="$(get_desktop_entry_value "${source_entry}" "Comment" "Comment")"; then
-        description="${parsed_description}"
-      fi
-    fi
-
-    # shellcheck disable=SC2034 # referenced through nameref in parse_desktop_selections
-    selection_by_index["${index}"]="${base_name}"
-    selection_lines+=("$(build_select_line "${index}" "${title}" "${description}")")
-    ((index++))
-  done
-
-  local selected_out=""
-  if ! selected_out="$(printf '%b\n' "${selection_lines[@]}" | gum filter --placeholder "${prompt}" --no-limit)"; then
-    log_error "No selection made."
-    return 1
-  fi
-
-  local selections=()
-  parse_desktop_selections "${selected_out}" selections selection_by_index
-
-  local sel=""
-  local target_path=""
-  for sel in "${selections[@]}"; do
-    target_path="${destination_dir}/${sel}"
-    if [[ -L "${target_path}" ]]; then
-      if [[ "${DRY_RUN}" == "true" ]]; then
-        log_msg "INFO" "[DRY-RUN] Would remove ${target_path}."
-      else
-        rm -f -- "${target_path}"
-        log_msg "INFO" "Removed symlink: ${target_path}."
-      fi
-    else
-      log_error "Skipped non-symlink: ${target_path}."
-    fi
-  done
-}
-
 extract_dotbot_description() {
   local config_file="${1}"
   local description_line=""
@@ -931,12 +541,6 @@ main() {
   case "${command_name}" in
     menu)
       handle_menu "$@"
-      ;;
-    autostart-enable)
-      handle_autostart_enable "$@"
-      ;;
-    autostart-disable)
-      handle_autostart_disable "$@"
       ;;
     dotfiles-list)
       handle_dotfiles_list "$@"

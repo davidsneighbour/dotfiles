@@ -1,4 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=startup.sh
-Exec=sh -c '~/.config/conky/startup.sh'

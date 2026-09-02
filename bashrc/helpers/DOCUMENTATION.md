@@ -25,7 +25,7 @@ Bash helpers are standalone helper commands unless noted otherwise. Several Type
 * [`logs/`](./logs/DOCUMENTATION.md)
 * [`mailbox-monitor/`](./mailbox-monitor/README.md)
 * [`msgvault/`](./msgvault/DOCUMENTATION.md)
-* [`packages/`](./packages/DOCUMENTATION.md)
+* `packages/`
 * [`remarkable/`](./remarkable/DOCUMENTATION.md)
 * [`tests/`](#tests)
 * [`theme/`](./theme/DOCUMENTATION.md)
@@ -362,7 +362,7 @@ Requirements:
 See [`_actions/DOCUMENTATION.md`](./_actions/DOCUMENTATION.md).
 
 * `_actions/README.md`: Existing user documentation for the actions helper; keep aligned with actions.sh.
-* `_actions/actions.sh`: Unified Bash helper for actions, autostart symlink management, and Dotbot profile discovery/execution.
+* `_actions/actions.sh`: Unified Bash helper for actions and Dotbot profile discovery/execution.
 
 ### `_lib/`
 
@@ -458,7 +458,7 @@ See [`msgvault/DOCUMENTATION.md`](./msgvault/DOCUMENTATION.md).
 
 ### `packages/`
 
-See [`packages/DOCUMENTATION.md`](./packages/DOCUMENTATION.md).
+See `packages/DOCUMENTATION.md`.
 
 * `packages/README.md`: Existing guide for package archive helper configuration.
 * `packages/create.sh`: Creates zip archives from line-oriented `[packages.NAME]` TOML sections.

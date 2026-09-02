@@ -198,8 +198,6 @@ Alphabetic index of every file and every function/method detected in `bashrc/hel
 * `github-manager.ts` (file, `gh/github-manager.ts`) — documented in [./gh/DOCUMENTATION.md](./gh/DOCUMENTATION.md)
 * `github-token` (file, `github-token`) — documented in [./DOCUMENTATION.md](./DOCUMENTATION.md)
 * `groupCandidatesForCompression` (function, `logs/cleanup.ts`) — documented in [./logs/DOCUMENTATION.md](./logs/DOCUMENTATION.md)
-* `handle_autostart_disable` (function, `_actions/actions.sh`) — documented in [./_actions/DOCUMENTATION.md](./_actions/DOCUMENTATION.md)
-* `handle_autostart_enable` (function, `_actions/actions.sh`) — documented in [./_actions/DOCUMENTATION.md](./_actions/DOCUMENTATION.md)
 * `handle_dotfiles_list` (function, `_actions/actions.sh`) — documented in [./_actions/DOCUMENTATION.md](./_actions/DOCUMENTATION.md)
 * `handle_dotfiles_run` (function, `_actions/actions.sh`) — documented in [./_actions/DOCUMENTATION.md](./_actions/DOCUMENTATION.md)
 * `handle_menu` (function, `_actions/actions.sh`) — documented in [./_actions/DOCUMENTATION.md](./_actions/DOCUMENTATION.md)

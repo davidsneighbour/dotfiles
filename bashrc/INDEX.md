@@ -296,8 +296,6 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`grep`](./partials/aliases#L20) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L20) |
 | [`groupCandidatesForCompression`](./helpers/logs/cleanup.ts#L493) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L53) |
 | [`h`](./partials/aliases#L43) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L24) |
-| [`handle_autostart_disable`](./helpers/_actions/actions.sh#L573) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L60) |
-| [`handle_autostart_enable`](./helpers/_actions/actions.sh#L402) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L59) |
 | [`handle_dotfiles_list`](./helpers/_actions/actions.sh#L758) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L63) |
 | [`handle_dotfiles_run`](./helpers/_actions/actions.sh#L794) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L64) |
 | [`handle_menu`](./helpers/_actions/actions.sh#L339) | function | [./helpers/_actions/DOCUMENTATION.md](./helpers/_actions/DOCUMENTATION.md#L58) |

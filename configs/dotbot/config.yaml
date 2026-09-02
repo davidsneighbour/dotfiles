@@ -61,9 +61,6 @@
     ~/.config/rofi: configs/session/rofi
     ~/.barrier-server.config: configs/system/barrier/barrier-server.conf
 
-    # autostart
-    ~/.config/autostart: configs/system/autostart/${HOSTNAME}
-
     # git setup
     ~/.gitignore: configs/system/git/global.gitignore
     ~/.gitmessage: configs/system/git/.gitmessage
@@ -121,8 +118,6 @@
       stdout: false  # Show a command's output from stdout (default: false)
       stderr: false  # Show a command's output from stderr (default: false)
 
-    #     # create autostart folder connection
-    #     - ln -f -s ${HOME}/.dotfiles/configs/system/autostart/${HOSTNAME} ${HOME}/.config/autostart
     - description: "\e[1;38;5;103mSymlinking mounts:\e[0m\e[1;38;5;66m"
       command: |
         if [[ "$(hostname)" == "locutus" ]]; then

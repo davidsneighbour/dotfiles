@@ -1,5 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=Talon
-Exec=/home/patrick/github.com/davidsneighbour/dotfiles/bin/local/talon/talon/run.sh
-Comment=Start Talon on login

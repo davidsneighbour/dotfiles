@@ -29,7 +29,6 @@ enough. Most files are installed onto the workstation as symlinks by
 | Directory | Purpose | Dotbot-linked |
 | --- | --- | --- |
 | `atuin` | Atuin shell-history sync config. | Yes — `~/.config/atuin` |
-| `autostart` | Per-host XDG autostart `.desktop` entries (`<host>/` symlinked; see `available/` pool referenced in `docs/plan.md`). | Yes — `~/.config/autostart` (host-scoped) |
 | `barrier` | Barrier (KVM software) server config. | Yes — `~/.barrier-server.config` |
 | `bittorrent` | qBittorrent watched-folder/category/main config. | Yes — three separate `~/.config/qBittorrent/*` files |
 | `conky` | Conky system-monitor widget config. | Yes — `~/.config/conky` |

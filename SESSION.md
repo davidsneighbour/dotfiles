@@ -41,7 +41,6 @@ configs/session/polybar/               -> (not symlinked; referenced by
                                             exec_always — see "Polybar" below)
 configs/system/polybar/                -> ~/.config/polybar     (Dotbot link, XFCE bar, unchanged)
 configs/session/rofi/                  -> ~/.config/rofi        (Dotbot link, i3-only)
-configs/system/autostart/locutus/      -> ~/.config/autostart   (Dotbot link, host-specific XDG autostart pool)
 ```
 
 Dotbot config: `configs/dotbot/config.yaml`, run via the `dotfiles` wrapper
@@ -55,12 +54,11 @@ LightDM
 ├── Xubuntu / XFCE  (default session, ~/.dmrc)
 │   ├── xfwm4 (window manager)
 │   ├── xfce4-panel
-│   └── Polybar (configs/system/polybar/, autostarted via
-│       configs/system/autostart/locutus/polybar.desktop, OnlyShowIn=XFCE)
-│       (No Rofi bindings of its own — Rofi is i3-only, see "Rofi" below.
-│       Alt+Tab/Super+Tab under XFCE go to xfwm4's own native window
-│       cycling. Devilspie2 was removed from the host and this repo — see
-│       "Components that must only run under XFCE".)
+│   (No Rofi bindings of its own — Rofi is i3-only, see "Rofi" below.
+│   Alt+Tab/Super+Tab under XFCE go to xfwm4's own native window cycling.
+│   Devilspie2 and the XDG autostart pool that used to launch Polybar,
+│   Obsidian, and other apps under XFCE were both removed — see
+│   "Components that must only run under XFCE".)
 │
 └── i3  (this work; selectable at the LightDM greeter, not the default)
     │
@@ -107,14 +105,11 @@ LightDM
       `~/.logs/polybar-i3/bar-YYYYMMDD.log`. **Non-fatal**: the script
       itself never exits in a way i3 acts on, and internally logs+returns
       rather than throwing if `polybar` or the config file is missing.
-5. XDG autostart (`~/.config/autostart`, i.e.
-   `configs/system/autostart/locutus/`) also runs under i3, same as any
-   session. Entries explicitly scoped `OnlyShowIn=XFCE;`
-   (`polybar.desktop`, `Obsidian.desktop`) do **not**
-   fire under i3. See "Known limitations" for entries that are *not*
-   scoped and therefore *do* also run under i3.
-6. Nothing else is started automatically. No compositor, no notification
-   daemon, no monitor/xrandr commands, no wallpaper-manager daemon.
+5. Nothing else is started automatically. No compositor, no notification
+   daemon, no monitor/xrandr commands, no wallpaper-manager daemon. i3 has
+   no session manager, so it never reads XDG autostart (`~/.config/
+   autostart`) either way — dotfiles no longer manages an autostart pool
+   for any session, see "Components that must only run under XFCE".
 
 For every automatically started i3-session component:
 
@@ -293,9 +288,8 @@ Alt+Tab/Super+Tab still go to xfwm4's own default
   `configs/session/i3/config`).
 * `XDG_CURRENT_DESKTOP` / `DESKTOP_SESSION` are set to `i3` by
   `/usr/share/xsessions/i3.desktop`'s `DesktopNames=i3`. This is what makes
-  XDG-autostart `OnlyShowIn=XFCE;` entries correctly skip the i3 session,
-  and what makes `bashrc/helpers/theme/set-wallpaper.sh --mode auto`
-  correctly fall through to its `feh` backend under i3.
+  `bashrc/helpers/theme/set-wallpaper.sh --mode auto` correctly fall
+  through to its `feh` backend under i3.
 * No i3-specific environment file (`~/.xprofile`, `~/.xinitrc`) exists or
   was added; LightDM's standard `/etc/X11/Xsession` handling is used
   unmodified for both sessions.
@@ -324,9 +318,8 @@ Workspace names are defined directly in `configs/session/i3/config`. The old
 
 ## Components that must only run under XFCE
 
-* `configs/system/autostart/locutus/Obsidian.desktop` — `OnlyShowIn=XFCE;`;
-  launches Obsidian directly, without the removed workspace placement/tile
-  helper.
+Nothing currently lives here — see the removal notes below for what used
+to.
 
 `configs/system/xfce/` (xfwm4 window-manager settings and the keyboard-
 shortcuts file) has been **removed entirely** — dotfiles no longer manages
@@ -336,10 +329,25 @@ already live in `~/.config/xfce4/xfconf/`, unmanaged by this repo; a fresh
 XFCE profile would start from xfwm4's stock defaults instead.
 
 Devilspie2 (`configs/system/devilspie2/`, its `~/.config/devilspie2`
-Dotbot link, and its `configs/system/autostart/locutus/devilspie2.desktop`
-autostart entry) has been **removed entirely** — it was uninstalled from
-the host and is no longer part of this repo. i3 still has no equivalent
-window-placement rules (see "Known limitations").
+Dotbot link, and its autostart entry) has been **removed entirely** — it
+was uninstalled from the host and is no longer part of this repo. i3 still
+has no equivalent window-placement rules (see "Known limitations").
+
+`configs/system/autostart/` (the host-scoped XDG autostart pool —
+`available/`, and per-host folders for both this workstation, `locutus/`,
+and a second host, `dionysus/`) has been **removed entirely**, along with
+its `~/.config/autostart` Dotbot link and the `actions.sh autostart-enable`
+/ `autostart-disable` commands that managed it (see
+`bashrc/helpers/_actions/`). i3 never read this directory (it has no
+session manager — see "Known limitations"), but XFCE's `xfce4-session`
+did, so this also **stops these from autostarting under XFCE**: Polybar
+and Obsidian (both were `OnlyShowIn=XFCE;`, i.e. previously i3-safe to
+leave unscoped), plus Barrier, Discord, Dropbox, Flameshot, onboard, a
+conky startup script, and the `gnome-keyring-pkcs11`/`gnome-keyring-
+secrets` XFCE overrides (unrelated to i3's own `gnome-keyring-daemon`
+line — see "Startup sequence (i3 session)"), none of which had any scope
+restriction. Re-launch any of these manually under XFCE, or wire them up
+some other way, if still needed.
 
 ## Dependencies
 
@@ -400,26 +408,19 @@ checks above into one read-only report — it never modifies the desktop.
 Deliberately not implemented in this starter pass (do not implement without
 a separate, explicit request — see the spec's scope-control section):
 
-* **Host autostart entries do NOT run under i3 — i3 has no session
-  manager.** `configs/system/autostart/locutus/` (symlinked to
-  `~/.config/autostart/`) has several `.desktop` files, some with no
-  `OnlyShowIn`/`NotShowIn` at all (`Barrier.desktop`, `dnb_discord.desktop`,
-  `onboard-autostart.desktop`, `dropbox.desktop`,
-  `indicator-messages.desktop`, `startup.sh.desktop`, `Flameshot.desktop`,
-  `org.gnome.SettingsDaemon.DiskUtilityNotify.desktop`). Only
-  `xfce4-session` reads that directory; i3 only runs what its own config
-  file's `exec`/`exec_always` lines say, so none of these launch under the
-  i3 session unless explicitly added there. `gnome-keyring-pkcs11.desktop`/
-  `gnome-keyring-secrets.desktop` and Enpass are the ones with an i3
-  equivalent so far — see the `gnome-keyring-daemon` and `enpass` lines in
-  `configs/session/i3/config` ("Session startup"). The gnome-keyring pair
-  was added because VS Code and other libsecret-using apps could not find a
-  keyring under i3 otherwise; Enpass's `dnb_enpass.desktop` XFCE autostart
-  entry was removed from `configs/system/autostart/locutus/` in favour of
-  the i3 `exec` line, since it no longer needs to also fire under XFCE on
-  this host. Auditing the rest of this list (does Barrier/Dropbox/Discord
-  etc. need an i3 `exec` too?) is a deliberate follow-up, not part of this
-  starter.
+* **No XDG autostart pool at all any more** — `configs/system/autostart/`
+  used to hold host-scoped `.desktop` entries (Barrier, Discord, Dropbox,
+  Flameshot, onboard, a conky startup script, Polybar/Obsidian for XFCE,
+  and more) but has been removed entirely, see "Components that must only
+  run under XFCE". i3 never read it in the first place (no session
+  manager); apps that need to run under i3 specifically go in
+  `configs/session/i3/configs/session-starts.conf` instead —
+  `gnome-keyring-daemon` and Enpass are the two done that way so far (see
+  "Startup sequence (i3 session)"). The gnome-keyring line was added
+  because VS Code and other libsecret-using apps could not find a keyring
+  under i3 otherwise. Auditing whether any of the removed autostart apps
+  (Barrier, Dropbox, Discord, etc.) need an i3 `exec` line of their own is
+  a deliberate follow-up, not part of this change.
 * No compositor (e.g. Picom) — windows will not have shadows/transparency;
   add only if a specific problem needs it.
 * No notification daemon — `notify-send` calls will silently do nothing

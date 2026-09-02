@@ -3,6 +3,7 @@ aptget
 atuin
 automount
 autostarted
+autostarting
 autostarts
 Bibata
 betterlockscreen
@@ -13,6 +14,7 @@ bspwm
 color
 combi
 commitlint
+conky
 createworkspace
 crosspost
 dailynote
@@ -35,6 +37,7 @@ extensionless
 fastfetch
 filepattern
 filezilla
+Flameshot
 fontconfig
 FUNCNAME
 getopts
