@@ -83,7 +83,6 @@
     ~/.config/vale: configs/system/vale
     ~/.config/github-label-manager: configs/system/git/github-label-manager
     ~/.config/espanso: configs/system/espanso
-    ~/.config/devilspie2: configs/system/devilspie2/config
 
     # node configs
     ~/.ncurc.js: configs/system/npm/ncu.js

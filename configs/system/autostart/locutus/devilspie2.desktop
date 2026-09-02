@@ -1,8 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=Devilspie2
-Comment=Apply Devilspie2 window rules
-Exec=/usr/bin/devilspie2
-OnlyShowIn=XFCE;
-X-GNOME-Autostart-enabled=true
-Terminal=false

@@ -42,7 +42,6 @@ configs/session/polybar/               -> (not symlinked; referenced by
 configs/system/polybar/                -> ~/.config/polybar     (Dotbot link, XFCE bar, unchanged)
 configs/session/rofi/                  -> ~/.config/rofi        (Dotbot link, i3-only)
 configs/system/autostart/locutus/      -> ~/.config/autostart   (Dotbot link, host-specific XDG autostart pool)
-configs/system/devilspie2/config       -> ~/.config/devilspie2  (Dotbot link, XFCE-only, see "Known limitations")
 ```
 
 Dotbot config: `configs/dotbot/config.yaml`, run via the `dotfiles` wrapper
@@ -56,13 +55,12 @@ LightDM
 ├── Xubuntu / XFCE  (default session, ~/.dmrc)
 │   ├── xfwm4 (window manager)
 │   ├── xfce4-panel
-│   ├── Polybar (configs/system/polybar/, autostarted via
-│   │   configs/system/autostart/locutus/polybar.desktop, OnlyShowIn=XFCE)
-│   └── Devilspie2 (configs/system/devilspie2/, autostarted via
-│       .../devilspie2.desktop, OnlyShowIn=XFCE)
+│   └── Polybar (configs/system/polybar/, autostarted via
+│       configs/system/autostart/locutus/polybar.desktop, OnlyShowIn=XFCE)
 │       (No Rofi bindings of its own — Rofi is i3-only, see "Rofi" below.
 │       Alt+Tab/Super+Tab under XFCE go to xfwm4's own native window
-│       cycling.)
+│       cycling. Devilspie2 was removed from the host and this repo — see
+│       "Components that must only run under XFCE".)
 │
 └── i3  (this work; selectable at the LightDM greeter, not the default)
     │
@@ -112,7 +110,7 @@ LightDM
 5. XDG autostart (`~/.config/autostart`, i.e.
    `configs/system/autostart/locutus/`) also runs under i3, same as any
    session. Entries explicitly scoped `OnlyShowIn=XFCE;`
-   (`polybar.desktop`, `devilspie2.desktop`, `Obsidian.desktop`) do **not**
+   (`polybar.desktop`, `Obsidian.desktop`) do **not**
    fire under i3. See "Known limitations" for entries that are *not*
    scoped and therefore *do* also run under i3.
 6. Nothing else is started automatically. No compositor, no notification
@@ -326,9 +324,6 @@ Workspace names are defined directly in `configs/session/i3/config`. The old
 
 ## Components that must only run under XFCE
 
-* `configs/system/devilspie2/` — `OnlyShowIn=XFCE;`; now only contains
-  explicit Devilspie2 rules and debugging helpers, with the old
-  `ws_launch_program` placement bridge removed.
 * `configs/system/autostart/locutus/Obsidian.desktop` — `OnlyShowIn=XFCE;`;
   launches Obsidian directly, without the removed workspace placement/tile
   helper.
@@ -339,6 +334,12 @@ XFCE's xfconf settings at all. XFCE still runs (see "Display manager and
 available sessions"), but with whatever xfwm4/keyboard-shortcuts state is
 already live in `~/.config/xfce4/xfconf/`, unmanaged by this repo; a fresh
 XFCE profile would start from xfwm4's stock defaults instead.
+
+Devilspie2 (`configs/system/devilspie2/`, its `~/.config/devilspie2`
+Dotbot link, and its `configs/system/autostart/locutus/devilspie2.desktop`
+autostart entry) has been **removed entirely** — it was uninstalled from
+the host and is no longer part of this repo. i3 still has no equivalent
+window-placement rules (see "Known limitations").
 
 ## Dependencies
 
@@ -427,13 +428,12 @@ a separate, explicit request — see the spec's scope-control section):
   single monitor (`DP-1`, 1920x1080, confirmed via
   `polybar --list-monitors`); multi-monitor behaviour is untested.
 * No application-to-workspace assignment rules.
-* Devilspie2 → i3 native window rules: Devilspie2
-  (`configs/system/devilspie2/`) still only runs under XFCE
-  (`OnlyShowIn=XFCE;`); i3 has no equivalent window-placement rules yet.
-  The old Bash workspace move/tile helpers and Devilspie2 one-shot placement
-  bridge have been removed; future i3 placement should use i3's own
-  `for_window`/`assign` directives instead of reintroducing shell-managed
-  placement.
+* No i3 window-placement rules: Devilspie2 (previously XFCE-only) has been
+  removed entirely — see "Components that must only run under XFCE". The
+  old Bash workspace move/tile helpers and Devilspie2 one-shot placement
+  bridge were already removed before that; future i3 placement should use
+  i3's own `for_window`/`assign` directives instead of reintroducing
+  shell-managed placement.
 * No keybinding that triggers suspend itself (e.g. `systemctl suspend`) —
   only screen lock is bound (`Super+L`, see "Keybinding architecture"). The
   screen locks automatically before *any* suspend trigger (lid close, power
@@ -455,8 +455,9 @@ The XFCE/Xubuntu session is untouched and remains the LightDM default
 1. Log out of i3 (`Super+Shift+E`, confirm in the `i3-nagbar` prompt), or
    use LightDM's session-switch mechanism if i3 is unresponsive.
 2. At the LightDM greeter, select **Xubuntu** or **XFCE**.
-3. Log in normally — this session and its Polybar/Devilspie2 setup are
-   completely independent of the i3 files above. XFCE no longer has any
+3. Log in normally — this session and its Polybar setup are completely
+   independent of the i3 files above (Devilspie2 has been removed — see
+   "Components that must only run under XFCE"). XFCE no longer has any
    Rofi bindings of its own (Rofi is i3-only — see "Rofi" above); its
    keyboard-shortcuts file was edited only to remove those two now-unused
    bindings, nothing else in it changed.
