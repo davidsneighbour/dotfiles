@@ -27,7 +27,6 @@ Bash helpers are standalone helper commands unless noted otherwise. Several Type
 * `packages/`
 * [`remarkable/`](./remarkable/DOCUMENTATION.md)
 * [`tests/`](#tests)
-* [`theme/`](./theme/DOCUMENTATION.md)
 
 ## Top-level helper files
 
@@ -468,7 +467,3 @@ No dedicated documentation file; run via `npm run test:shell`.
 
 * `tests/dotfiles-includes-test.sh`: Sources the `dotfiles` helper and asserts its internal include/config-resolution functions behave correctly.
 * `tests/desktop-helpers-health-check.sh`: Smoke-checks desktop helper scripts and local config references without launching a desktop session.
-
-### `theme/`
-
-See [`theme/DOCUMENTATION.md`](./theme/DOCUMENTATION.md).

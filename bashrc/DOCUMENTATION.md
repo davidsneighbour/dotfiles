@@ -77,9 +77,8 @@ Important grouped docs:
 * [`helpers/logs/DOCUMENTATION.md`](./helpers/logs/DOCUMENTATION.md)
 * [`helpers/msgvault/DOCUMENTATION.md`](./helpers/msgvault/DOCUMENTATION.md)
 * [`helpers/remarkable/DOCUMENTATION.md`](./helpers/remarkable/DOCUMENTATION.md)
-* [`helpers/theme/DOCUMENTATION.md`](./helpers/theme/DOCUMENTATION.md)
 
-Top-level helper commands and support files are documented in [`helpers/DOCUMENTATION.md`](./helpers/DOCUMENTATION.md), including `dotbot`, `explore`, `github-token`, `interface-restart`, `lpack`, `msgvault/`, `node-run`, `screencaps.ts`, `set-wallpaper.sh`, `set_max_listeners.cjs`, `synch-devspace.sh`, `update-npm.sh`, and `web-mirror.sh`.
+Top-level helper commands and support files are documented in [`helpers/DOCUMENTATION.md`](./helpers/DOCUMENTATION.md), including `dotbot`, `explore`, `github-token`, `interface-restart`, `lpack`, `msgvault/`, `node-run`, `screencaps.ts`, `set_max_listeners.cjs`, `synch-devspace.sh`, `update-npm.sh`, and `web-mirror.sh`.
 
 ## Cron jobs
 

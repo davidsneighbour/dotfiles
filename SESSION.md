@@ -73,8 +73,8 @@ LightDM
         │   `rofi -show drun`)
         ├── Polybar (i3-ONLY copy — configs/session/polybar/, launched by
         │   configs/session/polybar/launch.sh via i3 exec_always)
-        ├── background (xsetroot solid colour, then best-effort
-        │   bashrc/helpers/theme/set-default-wallpaper.sh)
+        ├── background (xsetroot solid colour, then feh sets a
+        │   fixed repo-committed wallpaper)
         └── (no compositor, no notification daemon, no monitor rules —
             intentionally out of scope, see "Known limitations")
 ```
@@ -92,12 +92,10 @@ LightDM
       background colour. **Non-fatal**: `xsetroot` is a tiny, essentially
       infallible tool; if it were somehow missing, i3 continues normally
       (exec_always failures are not fatal to i3 itself).
-   2. `bashrc/helpers/theme/set-default-wallpaper.sh` (wrapped in
-      `sh -c '... || true'`) — best-effort: looks for
-      `config/theme/wallpaper.{jpg,png}` in the repo (currently absent on
-      this host) and, if found, overrides the solid colour via `feh`
-      (auto-detected backend for a non-XFCE/GNOME/KDE/Sway/Hyprland
-      session). **Non-fatal** by construction.
+   2. `feh --bg-fill configs/session/i3/wallpaper.jpg` — overrides the
+      solid colour with a fixed, repo-committed wallpaper image. Unlike
+      the other `exec_always` lines here, this one is not wrapped in
+      `|| true`.
    3. `configs/session/polybar/launch.sh` (wrapped in
       `sh -c '... || true'`) — kills any existing user Polybar instance,
       waits up to ~5s, starts `bar/i3bar` from
@@ -116,7 +114,7 @@ For every automatically started i3-session component:
 | Component | Started by | Command | `exec` vs `exec_always` | Failure mode |
 | --- | --- | --- | --- | --- |
 | Root background colour | i3 | `xsetroot -solid '#0B0D0F'` | `exec_always` | Non-fatal; i3 unaffected. |
-| Wallpaper (optional) | i3 | `bashrc/helpers/theme/set-default-wallpaper.sh` | `exec_always` (`sh -c ... \|\| true`) | Non-fatal; no-ops if no wallpaper file exists. |
+| Wallpaper | i3 | `feh --bg-fill configs/session/i3/wallpaper.jpg` | `exec_always` (not wrapped in `\|\| true`) | Fixed repo-committed image. |
 | Polybar | i3 | `configs/session/polybar/launch.sh` | `exec_always` (`sh -c ... \|\| true`) | Non-fatal; i3 remains usable with no bar if Polybar/its config is missing. |
 | xss-lock | i3 | `xss-lock --transfer-sleep-lock -- configs/session/i3lock/lock.sh` | `exec` (once per session, see "Screen lock") | Non-fatal to i3; if `xss-lock` is missing, `Super+L`/suspend simply do not lock the screen. |
 | Rofi | user keypress (`Super_L` release, or `$mod+d`) | `rofi -show drun` | `bindsym ... exec` | Non-fatal; a launcher failure does not affect the rest of the session. |
@@ -238,11 +236,9 @@ Alt+Tab/Super+Tab still go to xfwm4's own default
 * `xsetroot -solid '#0B0D0F'` runs unconditionally on every i3 start/restart
   — guarantees the desktop is visibly "on," independent of any wallpaper
   file existing. Colour matches Polybar's Dracula Pro `dnb-background`.
-* `bashrc/helpers/theme/set-default-wallpaper.sh` then runs best-effort; it
-  looks for `config/theme/wallpaper.{jpg,png}` in the repo. **Neither file
-  exists on this host right now** — this is a known, documented gap, not a
-  bug. Add either file to enable a real wallpaper under i3 (and XFCE/GNOME/
-  KDE/Sway/Hyprland, via the same script's auto-detection).
+* `feh --bg-fill configs/session/i3/wallpaper.jpg` then overrides the solid
+  colour with a fixed, repo-committed wallpaper image. i3-only — feh is
+  invoked directly from `session-starts.conf`, with no backend detection.
 * No compositor is configured (Picom or otherwise) — out of scope per the
   starter spec; see "Known limitations."
 
@@ -286,19 +282,12 @@ Alt+Tab/Super+Tab still go to xfwm4's own default
 * `$mod` / `$terminal` / `$ws1`..`$ws9` — i3-config-local variables, not
   shell/session environment variables (set via `set $var value` inside
   `configs/session/i3/config`).
-* `XDG_CURRENT_DESKTOP` / `DESKTOP_SESSION` are set to `i3` by
-  `/usr/share/xsessions/i3.desktop`'s `DesktopNames=i3`. This is what makes
-  `bashrc/helpers/theme/set-wallpaper.sh --mode auto` correctly fall
-  through to its `feh` backend under i3.
 * No i3-specific environment file (`~/.xprofile`, `~/.xinitrc`) exists or
   was added; LightDM's standard `/etc/X11/Xsession` handling is used
   unmodified for both sessions.
 
 ## Shared components (used by both XFCE and i3)
 
-* The `feh`/`xsetroot` wallpaper tooling
-  (`bashrc/helpers/theme/set-wallpaper.sh`) — generic, environment-aware,
-  not modified.
 * Xorg itself, fonts, icon themes, `~/.gitconfig` and other non-desktop
   Dotbot links — unaffected by this work.
 
@@ -365,7 +354,7 @@ Helpers used by the startup chain, all confirmed present:
 
 ```text
 xsetroot   apt: x11-xserver-utils
-feh        apt: feh   (only used if a wallpaper file is ever added)
+feh        apt: feh   (sets configs/session/i3/wallpaper.jpg on every start/restart)
 pactl      apt: pulseaudio-utils  (used by Polybar's pulseaudio module)
 shellcheck (dev-only, used to lint launch.sh; via linuxbrew on this host)
 ```
