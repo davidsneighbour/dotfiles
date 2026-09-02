@@ -240,13 +240,17 @@ the documented fallback bound to the exact same command.
 * `xss-lock` is started once per session (`exec`, not `exec_always` — see
   "Session startup" — in `configs/session/i3/configs/session-starts.conf`)
   as `xss-lock --transfer-sleep-lock -- configs/session/i3lock/lock.sh`.
-  `lock.sh` resolves its own directory and runs
-  `i3lock --nofork -i configs/session/i3lock/lockscreen.png` with a full
-  path, so it works regardless of i3's `exec` environment (same rationale
-  as the `Super+Shift+e` powermenu binding). `--nofork` is required:
-  xss-lock tracks lock/unlock by waiting for the locker process to exit,
-  and i3lock daemonises (forks, parent exits immediately) unless told not
-  to — see `man i3lock`, "RECOMMENDED USAGE".
+  `lock.sh` resolves its own directory and runs `i3lock --nofork -i
+  configs/session/i3lock/lockscreen.png` with a full path, so it works
+  regardless of i3's `exec` environment (same rationale as the
+  `Super+Shift+e` powermenu binding). If the installed `i3lock` binary
+  supports the i3lock-colour option set, `lock.sh` also applies the
+  Dracula-style colours, clock, indicator, and media-key pass-through flags
+  adapted from `configs/session/i3lock/lock2.sh`; vanilla i3lock falls back
+  to the image-only lock command. `--nofork` is required: xss-lock tracks
+  lock/unlock by waiting for the locker process to exit, and i3lock
+  daemonises (forks, parent exits immediately) unless told not to — see
+  `man i3lock`, "RECOMMENDED USAGE".
 * `xss-lock` is the single thing that decides how the screen gets locked.
   It reacts to two triggers: `loginctl lock-session` (what `Super+L` calls
   — see "Keybinding architecture") and systemd-logind's sleep signal, which

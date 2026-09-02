@@ -1,6 +1,7 @@
 #!/bin/bash
 #
-# Lock the i3 session with i3lock, using this directory's lockscreen image.
+# Lock the i3 session with i3lock, using this directory's lockscreen image
+# and the Dracula-style i3lock-colour theme when the local binary supports it.
 #
 # This is the locker xss-lock runs (started via
 # configs/session/i3/configs/session-starts.conf), which xss-lock invokes
@@ -22,6 +23,10 @@ set -Eeuo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 LOCKSCREEN_IMAGE="${SCRIPT_DIR}/lockscreen.png"
+
+theme_supported() {
+  i3lock --help 2>&1 | grep -q -- '--inside-color'
+}
 
 print_help() {
   cat <<EOF
@@ -60,4 +65,56 @@ if [[ ! -f "${LOCKSCREEN_IMAGE}" ]]; then
   exit 1
 fi
 
-exec i3lock --nofork -i "${LOCKSCREEN_IMAGE}"
+args=(
+  --nofork
+  -i "${LOCKSCREEN_IMAGE}"
+)
+
+if theme_supported; then
+  alpha='dd'
+  background='#282a36'
+  selection='#44475a'
+  red='#ff5555'
+  magenta='#ff79c6'
+  blue='#6272a4'
+  green='#50fa7b'
+  orange='#ffb86c'
+
+  args+=(
+    --insidever-color="${selection}${alpha}"
+    --insidewrong-color="${selection}${alpha}"
+    --inside-color="${selection}${alpha}"
+    --ringver-color="${green}${alpha}"
+    --ringwrong-color="${red}${alpha}"
+    --ring-color="${blue}${alpha}"
+    --line-uses-ring
+    --keyhl-color="${magenta}${alpha}"
+    --bshl-color="${orange}${alpha}"
+    --separator-color="${selection}${alpha}"
+    --verif-color="${green}"
+    --wrong-color="${red}"
+    --modif-color="${red}"
+    --layout-color="${blue}"
+    --date-color="${blue}"
+    --time-color="${blue}"
+    --screen=1
+    --blur=1
+    --clock
+    --indicator
+    --time-str='%H:%M:%S'
+    --date-str='%A %e %B %Y'
+    --verif-text='Checking...'
+    --wrong-text='Wrong password'
+    --noinput='No input'
+    --lock-text='Locking...'
+    --lockfailed='Lock failed'
+    --radius=120
+    --ring-width=10
+    --pass-media-keys
+    --pass-screen-keys
+    --pass-volume-keys
+    --color="${background#'#'}"
+  )
+fi
+
+exec i3lock "${args[@]}"
