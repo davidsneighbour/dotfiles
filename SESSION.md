@@ -41,7 +41,6 @@ configs/session/polybar/               -> (not symlinked; referenced by
                                             exec_always — see "Polybar" below)
 configs/system/polybar/                -> ~/.config/polybar     (Dotbot link, XFCE bar, unchanged)
 configs/session/rofi/                  -> ~/.config/rofi        (Dotbot link, i3-only)
-configs/system/xfce/*.xml              -> ~/.config/xfce4/xfconf/xfce-perchannel-xml/*.xml (Dotbot link, XFCE-only)
 configs/system/autostart/locutus/      -> ~/.config/autostart   (Dotbot link, host-specific XDG autostart pool)
 configs/system/devilspie2/config       -> ~/.config/devilspie2  (Dotbot link, XFCE-only, see "Known limitations")
 ```
@@ -180,9 +179,10 @@ Rofi is **i3-only**. It used to be shared with XFCE (a Dotbot link at
 `~/.config/rofi` pointing at `configs/system/rofi/`); that folder has been
 retired and its contents moved into `configs/session/rofi/`, and the XFCE
 keyboard shortcuts that used to invoke it (bare `Super_L` → `rofi -show
-drun`, `Ctrl+Shift+W` → the workspace picker script) were removed from
-`configs/system/xfce/xfce4-keyboard-shortcuts.xml`. XFCE now has no Rofi
-bindings at all; its Alt+Tab/Super+Tab still go to xfwm4's native
+drun`, `Ctrl+Shift+W` → the workspace picker script) were removed before
+`configs/system/xfce/` itself was later removed entirely (see "Components
+that must only run under XFCE"). XFCE now has no Rofi bindings at all; its
+Alt+Tab/Super+Tab still go to xfwm4's own default
 `cycle_windows_key`/`switch_window_key`, unaffected by this.
 
 * `configs/session/rofi/` — Dotbot-linked to `~/.config/rofi`. Holds the
@@ -329,11 +329,16 @@ Workspace names are defined directly in `configs/session/i3/config`. The old
 * `configs/system/devilspie2/` — `OnlyShowIn=XFCE;`; now only contains
   explicit Devilspie2 rules and debugging helpers, with the old
   `ws_launch_program` placement bridge removed.
-* `configs/system/xfce/*.xml` (xfwm4 window-manager and keyboard-shortcut
-  settings) — no longer binds the removed workspace move/tile helpers.
 * `configs/system/autostart/locutus/Obsidian.desktop` — `OnlyShowIn=XFCE;`;
   launches Obsidian directly, without the removed workspace placement/tile
   helper.
+
+`configs/system/xfce/` (xfwm4 window-manager settings and the keyboard-
+shortcuts file) has been **removed entirely** — dotfiles no longer manages
+XFCE's xfconf settings at all. XFCE still runs (see "Display manager and
+available sessions"), but with whatever xfwm4/keyboard-shortcuts state is
+already live in `~/.config/xfce4/xfconf/`, unmanaged by this repo; a fresh
+XFCE profile would start from xfwm4's stock defaults instead.
 
 ## Dependencies
 

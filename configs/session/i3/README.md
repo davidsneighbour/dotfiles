@@ -25,9 +25,9 @@ at the repo root. This file only documents what lives in this folder.
   terminal binary elsewhere in this file.
 * Workspaces are plain numbers (`$ws1`..`$ws9`), no icons or
   application-to-workspace rules yet (see SESSION.md "Known limitations").
-* `focus_follows_mouse no` mirrors the absence of an explicit
-  focus-follows-mouse override in `configs/system/xfce/xfwm4.xml`
-  (xfwm4's own default is click-to-focus).
+* `focus_follows_mouse no` mirrors xfwm4's own default (click-to-focus);
+  dotfiles no longer manages XFCE's xfconf settings at all (see SESSION.md),
+  but this stayed the intended i3 behaviour regardless.
 * Every `exec_always` in the startup section is written so a failure there
   cannot break the rest of i3 (backgrounded, `sh -c '... || true'` where the
   underlying command could reasonably fail). i3 itself, the terminal, and
@@ -46,8 +46,9 @@ visually duplicated and there is no second theme to keep in sync.
 `configs/session/rofi/` is i3-only: it is Dotbot-linked to `~/.config/rofi`
 and holds the base config, theme, and the Alt+Tab window-switcher and
 VS Code workspace-picker scripts. XFCE no longer has any Rofi bindings of
-its own (`configs/system/xfce/xfce4-keyboard-shortcuts.xml`'s bare
-`Super_L` and `Ctrl+Shift+W` shortcuts were removed with this move).
+its own — its bare `Super_L` and `Ctrl+Shift+W` shortcuts were removed when
+Rofi moved here, and dotfiles no longer manages XFCE's keyboard-shortcuts
+xfconf file at all (see SESSION.md).
 
 ## Polybar
 

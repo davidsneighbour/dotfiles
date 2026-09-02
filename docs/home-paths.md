@@ -15,14 +15,6 @@ literal absolute home directory path.
 
 ## Intentionally left literal
 
-* `configs/system/xfce/xfce4-keyboard-shortcuts.xml` — this file is
-  Dotbot-linked directly into `~/.config/xfce4/xfconf/xfce-perchannel-xml/`
-  and read live by the running desktop session. Some shortcut command values
-  are invoked without a shell, so they cannot expand `${HOME}` at all; others
-  are wrapped in `bash -lc "..."` and could in principle use `${HOME}`, but
-  editing this file changes live keybindings immediately and isn't something
-  that can be verified without an interactive desktop session, so all values
-  stay literal for now.
 * `containers/hal2025/*/docker-compose.yaml` and
   `containers/locutus/*/docker-compose.yaml` volume paths — these are already
   host-specific by directory name. Docker Compose only substitutes `${HOME}`
