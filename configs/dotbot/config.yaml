@@ -43,13 +43,13 @@
     ~/.face: configs/system/face.icon
     ~/.config/conky: configs/system/conky
     ~/.config/user-dirs.dirs: configs/system/user-dirs.dirs
+
+    # i3 session
+    ~/.config/i3: configs/session/i3
+    ~/.config/rofi: configs/session/rofi
     ~/.config/picom: configs/session/picom
 
-    # i3 session (starter config, see configs/session/i3/README.md and
-    # repo-root SESSION.md). Polybar for i3 is launched by repo path
-    # directly from configs/session/i3/config, not symlinked under
-    # ~/.config/polybar — that path is already the XFCE bar above.
-    ~/.config/i3: configs/session/i3
+    # configs
     ~/.nvmrc: .nvmrc
     ~/.editorconfig: .editorconfig
     ~/.fixpackrc: .fixpackrc
@@ -59,7 +59,6 @@
     ~/.config/sublime-merge: configs/system/sublime-merge
     ~/.config/sublime-text: configs/system/sublime-text
     ~/.config/filezilla: configs/system/filezilla
-    ~/.config/rofi: configs/session/rofi
     ~/.barrier-server.config: configs/system/barrier/barrier-server.conf
 
     # git setup

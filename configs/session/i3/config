@@ -20,6 +20,7 @@ include configs/workspaces.conf
 include configs/session-starts.conf
 include configs/applications.conf
 include configs/keybindings.conf
+include configs/rules.conf
 
 # <colorclass> <border> <background> <text> <indicator> <child_border>
 client.focused          #6272A4 #6272A4 #F8F8F2 #6272A4   #6272A4

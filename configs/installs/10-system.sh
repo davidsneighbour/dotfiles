@@ -27,11 +27,12 @@ APT_PACKAGES=(
   qbittorrent
   shfmt
   software-properties-common
+  terminator
   unzip
   vlc
   wget
   wtmpdb
-  wmctrl
+  wmctrl xdotool x11-utils
   yad
   yamllint
 )

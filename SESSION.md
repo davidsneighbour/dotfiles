@@ -75,7 +75,8 @@ LightDM
         │   ├── keybindings (see "Keybinding architecture")
         │   ├── numbered icon workspaces 1-9, generated from
         │   │   configs/session/i3/workspaces/workspaces.yaml
-        │   └── window rules (none yet — see "Known limitations")
+        │   └── window rules — one so far (floats window-inspector.sh's
+        │       report terminal), see "Window rules"
         │
         ├── Rofi (i3-only — configs/session/rofi/, invoked as
         │   `rofi -show drun`)
@@ -143,6 +144,7 @@ Defined entirely in `configs/session/i3/config`. `$mod` is `Mod4`
 | `Super` (bare, release) | Open Rofi (`drun`) — see "Bare Super key limitation" below |
 | `Super+D` | Open Rofi (`drun`) — explicit, always-reliable fallback for the above |
 | `Ctrl+Shift+W` | Open Rofi VS Code workspace picker and launch the selection in a temporary dynamic Code workspace (`configs/session/rofi/workspaces.sh --newwindow --dynamic-workspace code`) |
+| `Ctrl+Shift+Alt+I` | Click a window, then show its WM_CLASS/role/title/PID/geometry in a floating terminal (`configs/session/i3/window-inspector.sh`) — see "Window rules" |
 | `Alt+Tab` (`Mod1+Tab`) | Open YAML-aware Rofi window switcher, all workspaces (`configs/session/rofi/window-switcher.sh`) — see "Rofi" below |
 | `Super+Enter` | Open terminal (`$terminal`, currently `xfce4-terminal`) |
 | `Super+Shift+Q` | Close focused window |
@@ -171,6 +173,47 @@ bindsym --release Super_L exec --no-startup-id rofi -show drun
 pressed in between," so it does not fight with `$mod+<key>` bindings. If
 this is ever unreliable on a given keyboard/X11 combination, `Super+D` is
 the documented fallback bound to the exact same command.
+
+## Window rules
+
+`configs/session/i3/configs/rules.conf` holds this config's
+`for_window`/`assign` rules, included from `configs/session/i3/config`
+separately from `keybindings.conf`/`applications.conf` so it stays easy to
+scan as it grows. One entry so far:
+
+```text
+for_window [window_role="window-inspector"] floating enable, resize set 720 480, move position center
+```
+
+This floats the report terminal opened by `configs/session/i3/window-
+inspector.sh` (`Ctrl+Shift+Alt+I` — see "Keybinding architecture"), an
+admin tool for finding a window's `WM_CLASS`/role/title/PID/geometry so it
+can be targeted by a future `for_window`/`assign` rule. It:
+
+1. Runs `xdotool selectwindow` — a crosshair cursor, click any window to
+   pick it (no typing/searching; this is a direct X11 pointer grab, not a
+   Rofi list).
+2. Prints that window's details — `xdotool getwindowname`/`getwindowpid`/
+   `getwindowgeometry`, `xprop WM_CLASS`/`WM_WINDOW_ROLE`/`WM_NAME`/
+   `_NET_WM_PID`, and its matching `wmctrl -lxp` line — plus a ready-to-
+   paste `[class="..." instance="..."]` match snippet, into a `terminator`
+   window it launches for the purpose.
+3. That terminator instance is started with `--role=window-inspector`
+   (a custom `WM_WINDOW_ROLE`, not its title or class), which is what the
+   `rules.conf` entry above matches on — so it floats and gets a
+   fixed size/position without ever matching, or being confused with, an
+   ordinary `terminator` window (`$terminal`, bound to `$mod+Return`).
+   "Floats on top" here means i3's normal floating-window stacking (above
+   the tiled windows on its workspace) — i3 has no cross-workspace
+   always-on-top concept.
+4. It never moves, closes, resizes, or otherwise changes the window it
+   inspects — read-only, by design, since its only job is finding match
+   criteria for rules you write yourself.
+
+Validated non-interactively (parses without opening a window): `bash -n
+configs/session/i3/window-inspector.sh`, `shellcheck configs/session/i3/
+window-inspector.sh`, and `i3 -C -c configs/session/i3/config` (also
+covers `rules.conf`, via the `config` file's `include`).
 
 ## Rofi
 
@@ -375,6 +418,10 @@ xsetroot   apt: x11-xserver-utils
 feh        apt: feh   (sets configs/session/i3/wallpaper.jpg on every start/restart)
 pactl      apt: pulseaudio-utils  (used by Polybar's pulseaudio module)
 shellcheck (dev-only, used to lint launch.sh; via linuxbrew on this host)
+terminator apt: terminator (`$terminal`, $mod+Return; also window-inspector.sh's report terminal — see "Window rules")
+xdotool    apt: xdotool    (window-inspector.sh's click-to-select and window queries)
+xprop      apt: x11-utils  (window-inspector.sh's WM_CLASS/role queries)
+wmctrl     apt: wmctrl     (window-inspector.sh's desktop/PID listing)
 ```
 
 Explicitly **not** used, despite being mentioned as possibilities in the
@@ -437,12 +484,16 @@ a separate, explicit request — see the spec's scope-control section):
   `polybar --list-monitors`); multi-monitor behaviour is untested.
 * No static application-to-workspace assignment rules. Dynamic Code
   workspaces are launched on demand by the Rofi workspace picker.
-* No i3 window-placement rules: Devilspie2 (previously XFCE-only) has been
-  removed entirely — see "Components that must only run under XFCE". The
-  old Bash workspace move/tile helpers and Devilspie2 one-shot placement
-  bridge were already removed before that; future i3 placement should use
-  i3's own `for_window`/`assign` directives instead of reintroducing
-  shell-managed placement.
+* No static application-to-workspace/placement rules beyond the single
+  `for_window` entry in `configs/session/i3/configs/rules.conf` that floats
+  `window-inspector.sh`'s own report terminal (see "Window rules").
+  Devilspie2 (previously XFCE-only) has been removed entirely — see
+  "Components that must only run under XFCE". The old Bash workspace
+  move/tile helpers and Devilspie2 one-shot placement bridge were already
+  removed before that; future i3 placement should keep using i3's own
+  `for_window`/`assign` directives instead of reintroducing shell-managed
+  placement. `window-inspector.sh` exists to make writing those future
+  rules easier (it finds the match criteria; it does not add any itself).
 * No keybinding that triggers suspend itself (e.g. `systemctl suspend`) —
   only screen lock is bound (`Super+L`, see "Keybinding architecture"). The
   screen locks automatically before *any* suspend trigger (lid close, power

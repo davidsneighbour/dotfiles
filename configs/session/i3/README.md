@@ -14,8 +14,10 @@ at the repo root. This file only documents what lives in this folder.
 | --- | --- |
 | `config` | The i3 configuration itself, linked to `~/.config/i3/config`. |
 | `configs/workspaces.conf` | Generated workspace variable include, derived from `workspaces/workspaces.yaml`. |
+| `configs/rules.conf` | `for_window`/`assign` window rules — see "Window rules" below. |
 | `rofi.rasi` | Small standalone Rofi override used by the launcher bindings — see "Rofi" below. |
 | `check.sh` | Read-only diagnostic: reports whether i3/Polybar/Rofi are installed and running. Run `check.sh --help` for details. Never modifies the desktop. |
+| `window-inspector.sh` | Click a window, see its WM_CLASS/role/title/PID/geometry in a floating terminal — see "Window rules" below. Bound to `Ctrl+Shift+Alt+I`. |
 
 ## Design
 
@@ -65,6 +67,22 @@ VS Code workspace-picker scripts. XFCE no longer has any Rofi bindings of
 its own — its bare `Super_L` and `Ctrl+Shift+W` shortcuts were removed when
 Rofi moved here, and dotfiles no longer manages XFCE's keyboard-shortcuts
 xfconf file at all (see SESSION.md).
+
+## Window rules
+
+`configs/rules.conf` holds this config's `for_window`/`assign` rules,
+included separately from `keybindings.conf`/`applications.conf` so it stays
+easy to scan as it grows. The only entry so far floats
+[`window-inspector.sh`](./window-inspector.sh)'s own report terminal,
+matched on `WM_WINDOW_ROLE` (set via `terminator --role=window-inspector`,
+not title or class, so it never matches a normal terminator window).
+
+`window-inspector.sh` (`Ctrl+Shift+Alt+I`) runs `xdotool selectwindow` to
+let you click any window, then prints its `WM_CLASS`, `WM_WINDOW_ROLE`,
+title, PID, geometry, desktop (via `xdotool`, `xprop`, and `wmctrl`) — plus
+a ready-to-paste `[class="..." instance="..."]` match snippet — into that
+floating terminal. It is a read-only diagnostic: it never moves, closes, or
+otherwise changes the window it inspects.
 
 ## Polybar
 
