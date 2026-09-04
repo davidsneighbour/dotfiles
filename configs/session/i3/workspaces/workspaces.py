@@ -30,7 +30,6 @@ DEFAULT_ROFI_CONFIG = REPO_SESSION_DIR / "rofi" / "config.alt-tab-switcher.rasi"
 class Workspace:
     key: int
     name: str
-    label: str
     icon: str
 
     @property
@@ -69,7 +68,6 @@ def load_workspaces(config: dict[str, Any]) -> list[Workspace]:
             Workspace(
                 key=int(raw_workspace["key"]),
                 name=str(raw_workspace["name"]),
-                label=str(raw_workspace["label"]),
                 icon=str(raw_workspace["icon"]),
             )
         )
@@ -111,6 +109,7 @@ def generate_i3_config(workspaces: list[Workspace]) -> str:
     ]
 
     for workspace in workspaces:
+        lines.append(f"# {workspace.name}")
         lines.append(f'set $ws{workspace.key} "{workspace.i3_name}"')
 
     return "\n".join(lines) + "\n"

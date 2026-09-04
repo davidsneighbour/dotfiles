@@ -1,39 +1,30 @@
 workspaces:
   - key: 1
     name: dashboard
-    label: Dashboard
     icon: "\uE1C1"
   - key: 2
     name: web
-    label: Web
     icon: "\uE0E8"
   - key: 3
     name: code
-    label: Code
     icon: ""
   - key: 4
     name: ops
-    label: Ops
     icon: "\uE154"
   - key: 5
     name: notes
-    label: Notes
     icon: "\uE595"
   - key: 6
     name: bots
-    label: Bots
     icon: "\uE1BB"
   - key: 7
     name: dotfiles
-    label: Dotfiles
     icon: "\uE0D7"
   - key: 8
     name: comms
-    label: Comms
     icon: "\uE116"
   - key: 9
     name: cookies
-    label: Cookies
     icon: "\uE26B"
 
 dynamic:

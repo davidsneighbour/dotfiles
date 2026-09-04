@@ -26,8 +26,10 @@ at the repo root. This file only documents what lives in this folder.
   `update-alternatives --display x-terminal-emulator` already resolves to on
   this workstation) and referenced everywhere else — never hardcode a
   terminal binary elsewhere in this file.
-* Static workspaces are configured in `workspaces/workspaces.yaml`. Their labels are
-  for maintenance only; i3 receives numbered icon workspace names such as
+* Static workspaces are configured in `workspaces/workspaces.yaml`. Their `name`
+  values are for maintenance only (they appear as a trailing comment in the
+  generated `configs/workspaces.conf`); i3 receives numbered icon workspace names
+  such as
   `2:` from `configs/workspaces.conf`. User-facing surfaces show the icon
   only. Run
   `workspaces/workspaces.py generate-i3 --write` and
