@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import re
 import subprocess
 import sys
@@ -19,6 +20,8 @@ DEFAULT_I3_INCLUDE = REPO_SESSION_DIR / "i3" / "configs" / "workspaces.conf"
 DEFAULT_POLYBAR_INCLUDE = (
     REPO_SESSION_DIR / "polybar" / "configs" / "07-module-i3.ini"
 )
+DEFAULT_ROFI_CONFIG = REPO_SESSION_DIR / "rofi" / "config.alt-tab-switcher.rasi"
+
 
 @dataclass(frozen=True)
 class Workspace:
@@ -29,7 +32,7 @@ class Workspace:
 
     @property
     def i3_name(self) -> str:
-        return f"{self.key}:{self.label}"
+        return f"{self.key}:{self.icon}"
 
 
 @dataclass(frozen=True)
@@ -157,9 +160,9 @@ def generate_polybar_config(
 
     lines.extend(
         [
-            "ws-icon-default = □",
+            "ws-icon-default = ",
             "",
-            "; Render only icons. The i3 workspace names remain internal.",
+            "; Render only icons. Dynamic workspace names remain internal.",
             "strip-wsnumbers = false",
             "",
             "label-mode-padding = 2",
@@ -221,12 +224,152 @@ def i3_msg(*arguments: str) -> subprocess.CompletedProcess[str]:
     )
 
 
+def get_i3_tree() -> dict[str, Any]:
+    result = i3_msg("-t", "get_tree")
+    if result.returncode != 0:
+        return {}
+
+    try:
+        parsed = json.loads(result.stdout)
+    except json.JSONDecodeError:
+        return {}
+
+    return parsed if isinstance(parsed, dict) else {}
+
+
+def workspace_icon_for_name(
+    workspace_name: str,
+    workspaces: list[Workspace],
+    dynamic_applications: dict[str, DynamicApplication],
+) -> str:
+    for workspace in workspaces:
+        if workspace_name == workspace.i3_name:
+            return workspace.icon
+
+    segments = workspace_name.split(":", 2)
+    if len(segments) >= 2:
+        dynamic_name = segments[1]
+        for application in dynamic_applications.values():
+            if application.workspace_prefix == dynamic_name:
+                return application.icon
+
+    return ""
+
+
+def iter_windows(
+    node: dict[str, Any],
+    workspace_name: str = "",
+) -> list[tuple[int, str, str, str]]:
+    windows: list[tuple[int, str, str, str]] = []
+    node_type = node.get("type")
+    current_workspace = (
+        str(node.get("name", "")) if node_type == "workspace" else workspace_name
+    )
+
+    if node.get("window") is not None and isinstance(node.get("id"), int):
+        properties = node.get("window_properties", {})
+        window_class = ""
+        if isinstance(properties, dict):
+            window_class = str(properties.get("class", ""))
+        title = str(node.get("name", "")) or window_class or "Window"
+        windows.append((int(node["id"]), current_workspace, window_class, title))
+
+    for child_key in ("nodes", "floating_nodes"):
+        children = node.get(child_key, [])
+        if not isinstance(children, list):
+            continue
+        for child in children:
+            if isinstance(child, dict):
+                windows.extend(iter_windows(child, current_workspace))
+
+    return windows
+
+
+def pango_escape(value: str) -> str:
+    return (
+        value.replace("&", "&amp;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+        .replace('"', "&quot;")
+    )
+
+
+def command_window_switcher(args: argparse.Namespace) -> int:
+    config = load_config(args.config)
+    workspaces = load_workspaces(config)
+    dynamic_applications = load_dynamic_applications(config)
+    windows = iter_windows(get_i3_tree())
+
+    if not windows:
+        return 0
+
+    entries = [
+        (
+            con_id,
+            (
+                "<span font='lucide'>"
+                f"{pango_escape(workspace_icon_for_name(workspace_name, workspaces, dynamic_applications))}"
+                "</span> "
+                f"<span color='#708CA9'>{pango_escape(window_class[:18])}</span> "
+                f"{pango_escape(title)}"
+            ),
+        )
+        for con_id, workspace_name, window_class, title in windows
+    ]
+
+    rofi = subprocess.run(
+        [
+            "rofi",
+            "-x11",
+            "-dmenu",
+            "-i",
+            "-markup-rows",
+            "-config",
+            str(args.rofi_config),
+            "-p",
+            "Windows",
+            "-format",
+            "i",
+            "-kb-cancel",
+            "Alt+Escape,Escape",
+            "-kb-row-down",
+            "Alt+Tab,Down",
+            "-kb-row-up",
+            "Alt+ISO_Left_Tab,Up",
+            "-theme-str",
+            (
+                "listview { lines: 12; dynamic: false; scrollbar: true; } "
+                "element { padding: 6px; } "
+                "element-text { vertical-align: 0.5; }"
+            ),
+        ],
+        input="\n".join(entry for _con_id, entry in entries),
+        check=False,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.DEVNULL,
+        text=True,
+    )
+
+    if rofi.returncode != 0:
+        return rofi.returncode
+
+    selected_index = rofi.stdout.strip()
+    if not selected_index.isdigit():
+        return 1
+
+    index = int(selected_index)
+    if index < 0 or index >= len(entries):
+        return 1
+
+    con_id = entries[index][0]
+    result = i3_msg(f"[con_id={con_id}]", "focus")
+    return result.returncode
+
+
 def next_dynamic_workspace_number() -> int:
     result = i3_msg("-t", "get_workspaces")
     if result.returncode != 0:
         return 10
-
-    import json
 
     try:
         existing = json.loads(result.stdout)
@@ -292,6 +435,10 @@ def build_parser() -> argparse.ArgumentParser:
     generate_polybar.add_argument("--write", action="store_true")
     generate_polybar.add_argument("--output", type=Path, default=DEFAULT_POLYBAR_INCLUDE)
     generate_polybar.set_defaults(func=command_generate_polybar)
+
+    window_switcher = subparsers.add_parser("window-switcher")
+    window_switcher.add_argument("--rofi-config", type=Path, default=DEFAULT_ROFI_CONFIG)
+    window_switcher.set_defaults(func=command_window_switcher)
 
     launch = subparsers.add_parser("launch")
     launch.add_argument("--application", required=True)

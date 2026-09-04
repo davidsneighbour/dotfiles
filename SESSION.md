@@ -66,7 +66,8 @@ LightDM
         │
         ├── i3 (configs/session/i3/config)
         │   ├── keybindings (see "Keybinding architecture")
-        │   ├── workspaces 1-9 (plain numbers, no icons/rules yet)
+        │   ├── numbered icon workspaces 1-9, generated from
+        │   │   configs/session/workspaces.yaml
         │   └── window rules (none yet — see "Known limitations")
         │
         ├── Rofi (i3-only — configs/session/rofi/, invoked as
@@ -134,16 +135,16 @@ Defined entirely in `configs/session/i3/config`. `$mod` is `Mod4`
 | --- | --- |
 | `Super` (bare, release) | Open Rofi (`drun`) — see "Bare Super key limitation" below |
 | `Super+D` | Open Rofi (`drun`) — explicit, always-reliable fallback for the above |
-| `Ctrl+Shift+W` | Open Rofi VS Code workspace picker (`configs/session/rofi/workspaces.sh --newwindow`) |
-| `Alt+Tab` (`Mod1+Tab`) | Open Rofi window switcher, all workspaces (`configs/session/rofi/window-switcher.sh`) — see "Rofi" below |
+| `Ctrl+Shift+W` | Open Rofi VS Code workspace picker and launch the selection in a temporary dynamic Code workspace (`configs/session/rofi/workspaces.sh --newwindow --dynamic-workspace code`) |
+| `Alt+Tab` (`Mod1+Tab`) | Open YAML-aware Rofi window switcher, all workspaces (`configs/session/rofi/window-switcher.sh`) — see "Rofi" below |
 | `Super+Enter` | Open terminal (`$terminal`, currently `xfce4-terminal`) |
 | `Super+Shift+Q` | Close focused window |
 | `Super+Shift+C` | Reload i3 config |
 | `Super+Shift+R` | Restart i3 in place |
 | `Super+Shift+E` | Exit i3, with an `i3-nagbar` confirmation prompt |
 | `Super+L` | Lock the screen (`loginctl lock-session`, caught by `xss-lock`) |
-| `Super+1`..`Super+9` | Switch to workspace 1-9 |
-| `Super+Shift+1`..`Super+Shift+9` | Move focused window to workspace 1-9 |
+| `Super+1`..`Super+9` | Switch to generated numbered icon workspace 1-9 |
+| `Super+Shift+1`..`Super+Shift+9` | Move focused window to generated numbered icon workspace 1-9 |
 | `Super+Arrow` | Move focus |
 | `Super+Shift+Arrow` | Move focused window |
 | `Super+F` | Toggle fullscreen |
@@ -182,14 +183,15 @@ Alt+Tab/Super+Tab still go to xfwm4's own default
   * `window-switcher.sh` — a Rofi-based Alt+Tab replacement, bound to
     `Mod1+Tab` in `configs/session/i3/configs/applications.conf` (i3 has no
     native Alt+Tab window cycling, unlike xfwm4). Always shows windows
-    across all workspaces — an earlier `--scope workspace` mode was dropped
-    as unused; i3 workspaces here are per-output single-window-set
-    groupings, not something this script ever needed to scroll within.
-    Resolves `config.alt-tab-switcher.rasi` via rofi's own config search
-    path (`~/.config/rofi`), so it keeps working regardless of which
-    directory it is invoked from.
-  * `workspaces.sh` — the VS Code workspace picker, bound to `Ctrl+Shift+W`
-    in `configs/session/i3/configs/applications.conf`.
+    across all workspaces. It asks `configs/session/workspaces.py` to read
+    i3's tree, map raw workspace names through
+    `configs/session/workspaces.yaml`, and show workspace icons instead of
+    labels such as `2:Web` or dynamic names such as `10:code:dotfiles`.
+  * `workspaces.sh` — the VS Code workspace picker, bound to
+    `Ctrl+Shift+W` in `configs/session/i3/configs/applications.conf`.
+    With `--dynamic-workspace code`, it creates a temporary i3 workspace,
+    switches to it, and starts the selected Code target there. i3 removes
+    that workspace from the live workspace list when the last window closes.
 * i3's app launcher (drun) does not use `configs/session/rofi/config.rasi`
   directly. It calls `configs/session/i3/rofi.rasi` — a small, standalone
   override (per the starter spec's own requirement for one) that sets
@@ -212,7 +214,7 @@ Alt+Tab/Super+Tab still go to xfwm4's own default
   * `configs/system/polybar/` — the XFCE bar. Live, currently running
     under the XFCE session on this host. **Not touched by this work.**
   * `configs/session/polybar/` — new, i3-only. A single bar (`bar/i3bar`):
-    left = i3 workspaces (`internal/i3`), centre = focused window title
+    left = icon-rendered i3 workspaces (`internal/i3`), centre = focused window title
     (`internal/xwindow`), right = CPU, memory, root filesystem, network
     (interface `eno1` — host-specific), volume (`internal/pulseaudio`),
     date, tray (`internal/tray`).
@@ -417,7 +419,8 @@ a separate, explicit request — see the spec's scope-control section):
 * No monitor-specific (`xrandr`) configuration — this host currently has a
   single monitor (`DP-1`, 1920x1080, confirmed via
   `polybar --list-monitors`); multi-monitor behaviour is untested.
-* No application-to-workspace assignment rules.
+* No static application-to-workspace assignment rules. Dynamic Code
+  workspaces are launched on demand by the Rofi workspace picker.
 * No i3 window-placement rules: Devilspie2 (previously XFCE-only) has been
   removed entirely — see "Components that must only run under XFCE". The
   old Bash workspace move/tile helpers and Devilspie2 one-shot placement

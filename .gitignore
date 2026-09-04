@@ -11,6 +11,8 @@ release.json
 todoctor
 .crush
 cache
+__pycache__/
+*.py[cod]
 bashrc/helpers/linker.sh
 /logs
 

@@ -17,7 +17,7 @@ at the repo root.
 | `configs/01-colours.ini` | Copied unchanged from `configs/system/polybar/configs/` (Dracula Pro palette). |
 | `configs/01-fonts.ini` | Copied unchanged. |
 | `configs/01-settings.ini` | Copied unchanged. |
-| `configs/07-module-i3.ini` | Generated official `internal/i3` workspace module. It maps the workspace names from `../workspaces.yaml` to Lucide icons and uses a fuzzy rule for dynamic Code workspaces. |
+| `configs/07-module-i3.ini` | Generated official `internal/i3` workspace module. Static workspaces are rendered as icons; dynamic Code workspaces use a fuzzy icon rule. |
 | `configs/07-module-xwindow.ini` | Copied unchanged. `internal/xwindow` is generic EWMH, not XFCE-specific. |
 | `configs/07-module-cpu.ini` | New. `internal/cpu`. |
 | `configs/07-module-memory.ini` | New. `internal/memory`. |
@@ -41,7 +41,7 @@ next improvements".
 ## Why a separate copy instead of one shared config
 
 The old XFCE workspace setup helpers are not used here. Static and dynamic
-i3 workspace names live in `configs/session/workspaces.yaml`. i3 reads a
+workspace definitions live in `configs/session/workspaces.yaml`. i3 reads a
 generated include derived from that file. Polybar also reads a generated
 official `internal/i3` module derived from that YAML.
 

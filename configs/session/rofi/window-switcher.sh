@@ -56,43 +56,11 @@ EOF
     printf 'Error: rofi is not installed or not in PATH.\n' >&2
     return 1
   fi
-}
 
-##
-# Build shared rofi arguments for window switching.
-#
-# Options:
-#   --help       Show help.
-#
-# Output:
-#   Prints one rofi argument per line for safe loading into an array.
-#
-# Examples:
-#   mapfile -t args < <(window_switcher_rofi_args)
-#
-window_switcher_rofi_args() {
-  if [[ "${1:-}" == "--help" ]]; then
-    cat <<EOF
-Usage: ${FUNCNAME[0]}
-
-Print shared rofi arguments for the window switcher, one per line.
-EOF
-    return 0
+  if ! command -v i3-msg >/dev/null 2>&1; then
+    printf 'Error: i3-msg is not installed or not in PATH.\n' >&2
+    return 1
   fi
-
-  cat <<'EOF'
--show-icons
--kb-cancel
-Alt+Escape,Escape
--kb-row-down
-Alt+Tab,Down
--kb-row-up
-Alt+ISO_Left_Tab,Up
--window-match-fields
-title,class
--theme-str
-listview { lines: 12; dynamic: false; scrollbar: true; } element { padding: 6px; } element-text { vertical-align: 0.5; }
-EOF
 }
 
 ##
@@ -114,17 +82,7 @@ EOF
     return 0
   fi
 
-  local -a rofi_args=()
-  mapfile -t rofi_args < <(window_switcher_rofi_args) || {
-    printf 'Error: failed to build rofi arguments.\n' >&2
-    return 1
-  }
-
-  rofi \
-    -config config.alt-tab-switcher.rasi \
-    -show window \
-    -window-format "{w:10} {c:18} {t}" \
-    "${rofi_args[@]}"
+  "${HOME}/.dotfiles/configs/session/workspaces.py" window-switcher
 }
 
 ##

@@ -3,3 +3,6 @@
 scratch.md
 
 **/.claude/settings.local.json
+
+__pycache__
+*.py[cod]
