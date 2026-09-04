@@ -125,6 +125,7 @@ For every automatically started i3-session component:
 | Root background colour | i3 | `xsetroot -solid '#0B0D0F'` | `exec_always` | Non-fatal; i3 unaffected. |
 | Wallpaper | i3 | `feh --bg-fill configs/session/i3/wallpaper.jpg` | `exec_always` (not wrapped in `\|\| true`) | Fixed repo-committed image. |
 | Polybar | i3 | `configs/session/polybar/launch.sh` | `exec_always` (`sh -c ... \|\| true`) | Non-fatal; i3 remains usable with no bar if Polybar/its config is missing. |
+| Enpass | i3 | `/opt/enpass/Enpass --minimize` | `exec` (once per session, see "Screen lock" rationale — no relaunch/re-prompt on restart) | Non-fatal; if Enpass is missing, i3 continues with no error surfaced. Its window is sent to the scratchpad by a `for_window` rule as soon as it appears — see "Window rules". |
 | xss-lock | i3 | `xss-lock --transfer-sleep-lock -- configs/session/i3lock/lock.sh` | `exec` (once per session, see "Screen lock") | Non-fatal to i3; if `xss-lock` is missing, `Super+L`/suspend simply do not lock the screen. |
 | Rofi | user keypress (`Super_L` release, or `$mod+d`) | `rofi -show drun` | `bindsym ... exec` | Non-fatal; a launcher failure does not affect the rest of the session. |
 | Terminal | user keypress (`$mod+Return`) | `xfce4-terminal` | `bindsym ... exec` | Non-fatal. |
@@ -145,6 +146,7 @@ Defined entirely in `configs/session/i3/config`. `$mod` is `Mod4`
 | `Super+D` | Open Rofi (`drun`) — explicit, always-reliable fallback for the above |
 | `Ctrl+Shift+W` | Open Rofi VS Code workspace picker and launch the selection in a temporary dynamic Code workspace (`configs/session/rofi/workspaces.sh --newwindow --dynamic-workspace code`) |
 | `Ctrl+Shift+Alt+I` | Click a window, then show its WM_CLASS/role/title/PID/geometry in a floating terminal (`configs/session/i3/window-inspector.sh`) — see "Window rules" |
+| `Ctrl+Shift+Alt+E` | Toggle Enpass in/out of the scratchpad on the current workspace (`[con_mark="scratch-enpass"] scratchpad show`) — see "Window rules" |
 | `Alt+Tab` (`Mod1+Tab`) | Open YAML-aware Rofi window switcher, all workspaces (`configs/session/rofi/window-switcher.sh`) — see "Rofi" below |
 | `Super+Enter` | Open terminal (`$terminal`, currently `xfce4-terminal`) |
 | `Super+Shift+Q` | Close focused window |
@@ -214,6 +216,68 @@ Validated non-interactively (parses without opening a window): `bash -n
 configs/session/i3/window-inspector.sh`, `shellcheck configs/session/i3/
 window-inspector.sh`, and `i3 -C -c configs/session/i3/config` (also
 covers `rules.conf`, via the `config` file's `include`).
+
+### Enpass scratchpad
+
+Enpass autostarts (`session-starts.conf`, see "Startup sequence") but must
+never occupy a normal workspace — its login/unlock window would otherwise
+sit visibly on `$ws1` after every session start. `rules.conf` instead sends
+it straight to i3's scratchpad as soon as its window maps:
+
+```text
+for_window [class="Enpass" instance="Enpass"] mark scratch-enpass, floating enable, move scratchpad
+```
+
+* **Match criterion**: `class="Enpass" instance="Enpass"` — both are the
+  literal string `Enpass` on this system, confirmed with `xprop WM_CLASS`
+  against Enpass's live window (window-inspector.sh's suggested-match
+  output would show the same). Title is deliberately not used: Enpass's
+  login/unlock window and its unlocked vault window are the *same* window,
+  and its title flips between locale/state-dependent strings (`Enpass`
+  before unlock, the vault name after), so it is not a stable match —
+  class/instance stay constant across both states, which is why this rule
+  works whether or not Enpass has been unlocked yet.
+* Enpass also opens two other X11 windows on startup — an "Enpass
+  Assistant" helper and a small tray-icon proxy — that share this same
+  `WM_CLASS`. Both are override-redirect
+  (`_KDE_NET_WM_WINDOW_TYPE_OVERRIDE`), confirmed via `xprop
+  _NET_WM_WINDOW_TYPE` on both, so i3 never manages or reparents them —
+  they do not appear in `i3-msg -t get_tree` at all, and this rule cannot
+  match (or accidentally capture) them.
+* **Mark**: `scratch-enpass`, applied by the same `for_window` rule. This
+  is what the toggle keybinding targets, rather than re-matching on
+  class/instance, so the same window is always the target even if the
+  match criteria were ever loosened later.
+* **Keybinding**: `Ctrl+Shift+Alt+E` (`Control+Shift+Mod1+e`, see
+  "Keybinding architecture"), bound in `applications.conf` to `[con_mark=
+  "scratch-enpass"] scratchpad show`. i3's `scratchpad show` already
+  toggles both directions on its own — shown floating on the current
+  workspace and focused if it was hidden, hidden again if it was already
+  the visible/focused match — so this needs only the one bindsym, no
+  separate show/hide logic. Confirmed live: showing floats Enpass on the
+  active workspace and focuses it; pressing again re-hides it; switching
+  workspace first and pressing it there shows the same window on the new
+  workspace.
+* `session-starts.conf` keeps Enpass's own `--minimize` startup flag. It
+  still maps a normal, `for_window`-catchable window (confirmed live — Linux
+  Enpass has no tray-only start mode), so this flag is not a substitute for
+  the scratchpad rule; it is kept only as a minor head start before the
+  rule applies.
+* If a future Enpass release changes its `WM_CLASS`/instance, re-diagnose
+  with `configs/session/i3/window-inspector.sh` (`Ctrl+Shift+Alt+I`, click
+  the Enpass window) or manually: `xprop WM_CLASS` after clicking the
+  window, or `i3-msg -t get_tree | grep -A4 -i enpass` while it is open.
+  Update the `class`/`instance` values in the `for_window` line in
+  `rules.conf` to match, then reload (`i3-msg reload` or `Super+Shift+C` —
+  a full `restart` is not required since this is a config-only change).
+* No Polybar workspace is created or exposed for Enpass at any point: it
+  never occupies a normal workspace, so there is nothing for Polybar's
+  `internal/i3` workspace module to show.
+
+Validated non-interactively: `i3 -C -c configs/session/i3/config`. Validated
+live against a running i3 session: reload picks up the rule, the keybinding
+shows/hides/focuses the marked window, and toggling from a second workspace
+shows the same window there.
 
 ## Rofi
 
@@ -484,16 +548,17 @@ a separate, explicit request — see the spec's scope-control section):
   `polybar --list-monitors`); multi-monitor behaviour is untested.
 * No static application-to-workspace assignment rules. Dynamic Code
   workspaces are launched on demand by the Rofi workspace picker.
-* No static application-to-workspace/placement rules beyond the single
-  `for_window` entry in `configs/session/i3/configs/rules.conf` that floats
-  `window-inspector.sh`'s own report terminal (see "Window rules").
-  Devilspie2 (previously XFCE-only) has been removed entirely — see
-  "Components that must only run under XFCE". The old Bash workspace
-  move/tile helpers and Devilspie2 one-shot placement bridge were already
-  removed before that; future i3 placement should keep using i3's own
-  `for_window`/`assign` directives instead of reintroducing shell-managed
-  placement. `window-inspector.sh` exists to make writing those future
-  rules easier (it finds the match criteria; it does not add any itself).
+* No static application-to-workspace/placement rules beyond the two
+  `for_window` entries in `configs/session/i3/configs/rules.conf`: one
+  floats `window-inspector.sh`'s own report terminal, the other sends
+  Enpass to the scratchpad (see "Window rules" for both). Devilspie2
+  (previously XFCE-only) has been removed entirely — see "Components that
+  must only run under XFCE". The old Bash workspace move/tile helpers and
+  Devilspie2 one-shot placement bridge were already removed before that;
+  future i3 placement should keep using i3's own `for_window`/`assign`
+  directives instead of reintroducing shell-managed placement.
+  `window-inspector.sh` exists to make writing those future rules easier
+  (it finds the match criteria; it does not add any itself).
 * No keybinding that triggers suspend itself (e.g. `systemctl suspend`) —
   only screen lock is bound (`Super+L`, see "Keybinding architecture"). The
   screen locks automatically before *any* suspend trigger (lid close, power
