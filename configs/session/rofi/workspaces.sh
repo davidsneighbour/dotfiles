@@ -10,6 +10,7 @@ for FILE in "${BASHRC_PATH}"/lib/*/*.bash; do
 done
 
 # Setup logging
+# shellcheck disable=SC2034 # consumed by sourced dnb logging helpers
 LOG_LEVEL="debug"
 DNB_SETUP_LOG_FILE="${HOME}/.logs/rofi/rofi-$(date +%Y%m%d-%H%M%S).log"
 mkdir -p "$(dirname "${DNB_SETUP_LOG_FILE}")"
@@ -37,6 +38,7 @@ CACHE_FILE="${HOME}/.cache/rofi_workspaces_cache"
 CACHE_SIZE=5
 HIDE_EMPTY_PROJECTS="false"
 NEW_WINDOW="false"
+DYNAMIC_WORKSPACE=""
 
 # Helpers
 resolve_dir() {
@@ -167,6 +169,10 @@ while [[ $# -gt 0 ]]; do
     NEW_WINDOW="true"
     shift
     ;;
+  --dynamic-workspace)
+    DYNAMIC_WORKSPACE="$2"
+    shift 2
+    ;;
   --help)
     cat <<EOF
 Usage: $(basename "$0") [OPTIONS]
@@ -182,6 +188,7 @@ Options:
   --createworkspace        Create .code-workspace if missing
   --hideemptyprojects      Skip projects without .code-workspace
   --newwindow              Open in new VS Code window
+  --dynamic-workspace APP  Open the selection in a configured dynamic i3 workspace
   --help                   Show this message
 EOF
     exit 0
@@ -347,11 +354,25 @@ sel_target=${DISPLAY_TO_TARGET[${SELECTED}]}
 dnb_log info "User selected '${sel_name}' → '${sel_target}'"
 update_cache "${sel_name}"
 
+open_target() {
+  local target="${1}"
+
+  if [[ -n "${DYNAMIC_WORKSPACE}" ]]; then
+    "${HOME}/.dotfiles/configs/session/workspaces.py" launch \
+      --application "${DYNAMIC_WORKSPACE}" \
+      --target "${target}" \
+      --label "${sel_name}"
+    return
+  fi
+
+  "${CODE_COMMAND[@]}" "${target}"
+}
+
 # Open in VS Code
 if [[ -d "${sel_target}" ]]; then
   wsf=$(find "${sel_target}" -mindepth 1 -maxdepth 1 -type f -name "${FILE_PATTERN}" | head -n1)
   if [[ -n "${wsf}" ]]; then
-    "${CODE_COMMAND[@]}" "${wsf}"
+    open_target "${wsf}"
   elif [[ "${CREATE_WORKSPACE}" == "true" ]]; then
     tpl="${WORKINGDIR}/workspace.code-workspace"
     new="${sel_target}/workspace.code-workspace"
@@ -365,12 +386,12 @@ if [[ -d "${sel_target}" ]]; then
 EOL
     fi
     dnb_log info "Created workspace: ${new}"
-    "${CODE_COMMAND[@]}" "${new}"
+    open_target "${new}"
   else
-    "${CODE_COMMAND[@]}" "${sel_target}"
+    open_target "${sel_target}"
   fi
 else
-  "${CODE_COMMAND[@]}" "${sel_target}"
+  open_target "${sel_target}"
 fi
 
 exit 0

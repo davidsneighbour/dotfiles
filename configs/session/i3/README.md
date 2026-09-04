@@ -13,6 +13,7 @@ at the repo root. This file only documents what lives in this folder.
 | File | Purpose |
 | --- | --- |
 | `config` | The i3 configuration itself, linked to `~/.config/i3/config`. |
+| `configs/workspaces.conf` | Generated workspace variable include, derived from `../workspaces.yaml`. |
 | `rofi.rasi` | Small standalone Rofi override used by the launcher bindings — see "Rofi" below. |
 | `check.sh` | Read-only diagnostic: reports whether i3/Polybar/Rofi are installed and running. Run `check.sh --help` for details. Never modifies the desktop. |
 
@@ -23,8 +24,14 @@ at the repo root. This file only documents what lives in this folder.
   `update-alternatives --display x-terminal-emulator` already resolves to on
   this workstation) and referenced everywhere else — never hardcode a
   terminal binary elsewhere in this file.
-* Workspaces are plain numbers (`$ws1`..`$ws9`), no icons or
-  application-to-workspace rules yet (see SESSION.md "Known limitations").
+* Static workspaces are configured in `../workspaces.yaml` and materialised
+  into `configs/workspaces.conf` for i3's variable syntax. Run
+  `../workspaces.py generate-i3 --write` and
+  `../workspaces.py generate-polybar --write` after changing the YAML.
+* Dynamic application workspaces are also configured in `../workspaces.yaml`.
+  `Ctrl+Shift+W` opens the VS Code workspace picker and launches the
+  selected project in a temporary `code` workspace. i3 removes that
+  workspace from its live list once the last window in it closes.
 * `focus_follows_mouse no` mirrors xfwm4's own default (click-to-focus);
   dotfiles no longer manages XFCE's xfconf settings at all (see SESSION.md),
   but this stayed the intended i3 behaviour regardless.

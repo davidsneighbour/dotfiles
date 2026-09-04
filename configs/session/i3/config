@@ -6,18 +6,6 @@
 set $mod Mod4
 set $terminal terminator
 
-# Named i3 workspaces. No icons, no per-application assignment yet
-# (see SESSION.md "Known limitations / next improvements").
-set $ws1 "1:Dashboard"
-set $ws2 "2:Web"
-set $ws3 "3:Code"
-set $ws4 "4:Ops"
-set $ws5 "5:Notes"
-set $ws6 "6:Bots"
-set $ws7 "7:Dotfiles"
-set $ws8 "8:Comms"
-set $ws9 "9:Cookies"
-
 # Appearance
 font pango:sans-serif 10
 focus_follows_mouse no
@@ -28,6 +16,7 @@ gaps inner 0
 gaps outer 0
 
 # Includes
+include configs/workspaces.conf
 include configs/session-starts.conf
 include configs/applications.conf
 include configs/keybindings.conf

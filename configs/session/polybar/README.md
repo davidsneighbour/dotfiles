@@ -12,12 +12,12 @@ at the repo root.
 
 | Path | Purpose |
 | --- | --- |
-| `config.ini` | The bar definition (`bar/i3bar`): left = i3 workspaces, centre = focused window title, right = CPU/memory/root filesystem/network/volume/date/tray. |
+| `config.ini` | The bar definition (`bar/i3bar`): left = configured i3 workspaces, centre = focused window title, right = CPU/memory/root filesystem/network/volume/date/tray. |
 | `launch.sh` | Starts the bar. Kills any previous instance for this user first, logs to `~/.logs/polybar-i3/`, never fails in a way i3 would notice. Run `launch.sh --help` for details. |
 | `configs/01-colours.ini` | Copied unchanged from `configs/system/polybar/configs/` (Dracula Pro palette). |
 | `configs/01-fonts.ini` | Copied unchanged. |
 | `configs/01-settings.ini` | Copied unchanged. |
-| `configs/07-module-i3.ini` | New. `internal/i3` workspace module (native i3-IPC), replacing the XFCE bar's `internal/xworkspaces` + icon mapping. |
+| `configs/07-module-i3.ini` | Generated official `internal/i3` workspace module. It maps the workspace names from `../workspaces.yaml` to Lucide icons and uses a fuzzy rule for dynamic Code workspaces. |
 | `configs/07-module-xwindow.ini` | Copied unchanged. `internal/xwindow` is generic EWMH, not XFCE-specific. |
 | `configs/07-module-cpu.ini` | New. `internal/cpu`. |
 | `configs/07-module-memory.ini` | New. `internal/memory`. |
@@ -40,9 +40,10 @@ next improvements".
 
 ## Why a separate copy instead of one shared config
 
-The old XFCE workspace setup helpers are not used here. i3 owns its workspace
-names in `configs/session/i3/config`, and Polybar's `internal/i3` module reads
-them directly.
+The old XFCE workspace setup helpers are not used here. Static and dynamic
+i3 workspace names live in `configs/session/workspaces.yaml`. i3 reads a
+generated include derived from that file. Polybar also reads a generated
+official `internal/i3` module derived from that YAML.
 
 ## Both bars share the `polybar` process name
 
