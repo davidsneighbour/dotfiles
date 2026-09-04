@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.7.0](https://github.com/davidsneighbour/dotfiles/compare/v2.6.0...v2.7.0) (2026-09-04)
+
+### Feat
+
+* add LightDM greeter configuration and background image ([9c90354](https://github.com/davidsneighbour/dotfiles/commit/9c903547b22e7c2f9fecce26272f3126b203615b))
+
 ## [2.6.0](https://github.com/davidsneighbour/dotfiles/compare/v2.5.1...v2.6.0) (2026-09-04)
 
 ### Feat
