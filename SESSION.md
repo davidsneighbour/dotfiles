@@ -13,6 +13,13 @@ monitors, input sharing, workspace behaviour, window assignment, screen
 locking, suspend/logout controls, or related session services. **Any such
 change must update this file in the same change.**
 
+XFCE is obsolete in this repository and remains only as the legacy session
+manager/fallback context documented below. New graphical desktop features and
+improvements must target i3. When feature work touches an XFCE configuration
+or XFCE-specific feature, remove obsolete XFCE references where possible and
+replace the behaviour with the i3 equivalent where applicable, as part of that
+feature change.
+
 ## Display manager and available sessions
 
 * Display manager: **LightDM** (`/etc/lightdm/`), Debian/Ubuntu defaults

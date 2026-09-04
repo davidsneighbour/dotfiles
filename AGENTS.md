@@ -239,6 +239,13 @@ Any AI agent operating on this repository **MUST**:
 * Never assume user intent
 * Never optimise for cleverness over clarity
 * Never remove safeguards without justification
+* Treat XFCE as obsolete and as the legacy session manager. New graphical
+  desktop features, improvements, bindings, startup behaviour, workspace
+  behaviour, and session services must target i3 only.
+* When feature work touches an XFCE configuration or an XFCE-specific feature,
+  remove the XFCE reference where it is no longer needed and replace the
+  behaviour with the i3 equivalent where possible and applicable. Do this as
+  part of the feature change, not as unrelated cleanup.
 * Before touching i3, Polybar, Rofi, X11/Xorg, LightDM/session selection,
   or any other part of the graphical desktop session, read the repo-root
   `SESSION.md` first — it is the authoritative session architecture
