@@ -10,3 +10,4 @@ Exec=/opt/google/chrome/google-chrome --user-data-dir=".local/share/chrome-apps/
 Icon=chatgpt
 StartupWMClass=chrome_chatgpt
 Categories=Development;X-XFCE;X-Xfce-Toplevel;
+MimeType=x-scheme-handler/codex;

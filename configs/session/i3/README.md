@@ -32,8 +32,11 @@ at the repo root. This file only documents what lives in this folder.
   `workspaces/workspaces.py generate-polybar --write` after changing the YAML.
 * Dynamic application workspaces are also configured in `workspaces/workspaces.yaml`.
   `Ctrl+Shift+W` opens the VS Code workspace picker and launches the
-  selected project in a temporary `code` workspace. i3 removes that
-  workspace from its live list once the last window in it closes.
+  selected project in a temporary workspace whose visible indicator is the
+  nearest `.github/config.toml` `[workspace] icon` value when it exists, or
+  the configured Code icon otherwise. For `.code-workspace` files, folder
+  entries are checked too. i3 removes that workspace from its live list once
+  the last window in it closes.
 * The Alt+Tab window switcher reads the same YAML and shows workspace icons
   instead of raw i3 workspace names. It hides panel/dock windows such as
   the i3 Polybar instance, because they are session infrastructure rather

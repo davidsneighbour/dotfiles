@@ -1,5 +1,5 @@
-[launcher]
-icon = "circle-dot"
+[workspace]
+icon = ""
 
 [lpack]
 exclude = [

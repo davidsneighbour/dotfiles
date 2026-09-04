@@ -4,12 +4,13 @@ from __future__ import annotations
 
 import argparse
 import json
-import re
 import subprocess
 import sys
+import tomllib
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
+from urllib.parse import unquote, urlparse
 
 import yaml
 
@@ -127,10 +128,7 @@ def command_generate_i3(args: argparse.Namespace) -> int:
     return 0
 
 
-def generate_polybar_config(
-    workspaces: list[Workspace],
-    dynamic_applications: dict[str, DynamicApplication],
-) -> str:
+def generate_polybar_config(workspaces: list[Workspace]) -> str:
     lines = [
         "[module/i3]",
         "# Generated from configs/session/i3/workspaces/workspaces.yaml.",
@@ -144,8 +142,8 @@ def generate_polybar_config(
         "; Sort workspaces by their i3 workspace number rather than creation order.",
         "index-sort = true",
         "",
-        "; Let dynamic names such as 10:code:dotfiles match the code icon rule.",
-        "fuzzy-match = true",
+        "; Dynamic workspaces put their display icon directly in the i3 name.",
+        "fuzzy-match = false",
         "",
     ]
 
@@ -154,37 +152,31 @@ def generate_polybar_config(
         lines.append(f"ws-icon-{icon_index} = {workspace.i3_name};{workspace.icon}")
         icon_index += 1
 
-    for application in dynamic_applications.values():
-        lines.append(
-            f"ws-icon-{icon_index} = {application.workspace_prefix};{application.icon}"
-        )
-        icon_index += 1
-
     lines.extend(
         [
             "ws-icon-default = ",
             "",
-            "; Render only icons. Dynamic workspace names remain internal.",
-            "strip-wsnumbers = false",
+            "; Render workspace names after their numeric prefix. Dynamic names are only icons.",
+            "strip-wsnumbers = true",
             "",
             "label-mode-padding = 2",
             "",
-            "label-focused = %icon%",
+            "label-focused = %name%",
             "label-focused-foreground = ${colours.green}",
             "label-focused-background = ${colours.selection}",
             "label-focused-underline = ${colours.purple}",
             "label-focused-padding = 4",
             "",
-            "label-unfocused = %icon%",
+            "label-unfocused = %name%",
             "label-unfocused-foreground = ${colours.foreground}",
             "label-unfocused-padding = 4",
             "",
-            "label-visible = %icon%",
+            "label-visible = %name%",
             "label-visible-foreground = ${colours.orange}",
             "label-visible-underline = ${colours.primary}",
             "label-visible-padding = 4",
             "",
-            "label-urgent = %icon%",
+            "label-urgent = %name%",
             "label-urgent-foreground = ${colours.background}",
             "label-urgent-background = ${colours.pink}",
             "label-urgent-underline = ${colours.orange}",
@@ -198,10 +190,7 @@ def generate_polybar_config(
 
 def command_generate_polybar(args: argparse.Namespace) -> int:
     config = load_config(args.config)
-    output = generate_polybar_config(
-        load_workspaces(config),
-        load_dynamic_applications(config),
-    )
+    output = generate_polybar_config(load_workspaces(config))
 
     if args.write:
         args.output.write_text(output, encoding="utf-8")
@@ -209,11 +198,6 @@ def command_generate_polybar(args: argparse.Namespace) -> int:
 
     sys.stdout.write(output)
     return 0
-
-
-def slugify(value: str) -> str:
-    slug = re.sub(r"[^A-Za-z0-9_.-]+", "-", value.strip()).strip("-")
-    return slug.lower() or "workspace"
 
 
 def i3_msg(*arguments: str) -> subprocess.CompletedProcess[str]:
@@ -250,10 +234,12 @@ def workspace_icon_for_name(
 
     segments = workspace_name.split(":", 2)
     if len(segments) >= 2:
-        dynamic_name = segments[1]
+        dynamic_indicator = segments[1]
         for application in dynamic_applications.values():
-            if application.workspace_prefix == dynamic_name:
+            if application.workspace_prefix == dynamic_indicator:
                 return application.icon
+        if dynamic_indicator:
+            return dynamic_indicator
 
     return ""
 
@@ -417,6 +403,165 @@ def next_dynamic_workspace_number() -> int:
     return candidate
 
 
+def remove_json_comments(content: str) -> str:
+    output: list[str] = []
+    index = 0
+    in_string = False
+    escaped = False
+    in_line_comment = False
+    in_block_comment = False
+
+    while index < len(content):
+        char = content[index]
+        next_char = content[index + 1] if index + 1 < len(content) else ""
+
+        if in_line_comment:
+            if char == "\n":
+                in_line_comment = False
+                output.append(char)
+            index += 1
+            continue
+
+        if in_block_comment:
+            if char == "*" and next_char == "/":
+                in_block_comment = False
+                index += 2
+                continue
+            if char == "\n":
+                output.append(char)
+            index += 1
+            continue
+
+        if in_string:
+            output.append(char)
+            if escaped:
+                escaped = False
+            elif char == "\\":
+                escaped = True
+            elif char == '"':
+                in_string = False
+            index += 1
+            continue
+
+        if char == '"':
+            in_string = True
+            output.append(char)
+            index += 1
+            continue
+
+        if char == "/" and next_char == "/":
+            in_line_comment = True
+            index += 2
+            continue
+
+        if char == "/" and next_char == "*":
+            in_block_comment = True
+            index += 2
+            continue
+
+        output.append(char)
+        index += 1
+
+    return "".join(output)
+
+
+def load_code_workspace(workspace_path: Path) -> dict[str, Any]:
+    try:
+        parsed = json.loads(
+            remove_json_comments(workspace_path.read_text(encoding="utf-8"))
+        )
+    except (OSError, json.JSONDecodeError):
+        return {}
+
+    return parsed if isinstance(parsed, dict) else {}
+
+
+def ancestor_workspace_config_paths(directory: Path) -> list[Path]:
+    try:
+        current = directory.resolve(strict=False)
+    except OSError:
+        current = directory
+
+    candidates = [current / ".github" / "config.toml"]
+    candidates.extend(parent / ".github" / "config.toml" for parent in current.parents)
+    return candidates
+
+
+def workspace_folder_path(raw_folder: dict[str, Any], base_path: Path) -> Path | None:
+    raw_path = raw_folder.get("path")
+    if isinstance(raw_path, str) and raw_path:
+        folder_path = Path(raw_path).expanduser()
+        if not folder_path.is_absolute():
+            folder_path = base_path / folder_path
+        return folder_path
+
+    raw_uri = raw_folder.get("uri")
+    if not isinstance(raw_uri, str) or not raw_uri:
+        return None
+
+    parsed = urlparse(raw_uri)
+    if parsed.scheme != "file":
+        return None
+
+    return Path(unquote(parsed.path)).expanduser()
+
+
+def workspace_config_paths_for_target(target: Path) -> list[Path]:
+    candidates: list[Path] = []
+    resolved_target = target.expanduser()
+
+    if resolved_target.is_dir():
+        candidates.extend(ancestor_workspace_config_paths(resolved_target))
+    else:
+        candidates.extend(ancestor_workspace_config_paths(resolved_target.parent))
+
+    if resolved_target.is_file() and resolved_target.suffix == ".code-workspace":
+        workspace = load_code_workspace(resolved_target)
+        folders = workspace.get("folders", []) if isinstance(workspace, dict) else []
+        if isinstance(folders, list):
+            for folder in folders:
+                if not isinstance(folder, dict):
+                    continue
+                folder_path = workspace_folder_path(folder, resolved_target.parent)
+                if folder_path is None:
+                    continue
+                candidates.extend(ancestor_workspace_config_paths(folder_path))
+
+    unique_candidates: list[Path] = []
+    seen: set[Path] = set()
+    for candidate in candidates:
+        if candidate in seen:
+            continue
+        seen.add(candidate)
+        unique_candidates.append(candidate)
+
+    return unique_candidates
+
+
+def project_workspace_icon(target: Path) -> str:
+    for config_path in workspace_config_paths_for_target(target):
+        if not config_path.is_file():
+            continue
+        try:
+            config = tomllib.loads(config_path.read_text(encoding="utf-8"))
+        except (OSError, tomllib.TOMLDecodeError) as error:
+            print(
+                f"Ignoring invalid workspace icon config: {config_path}: {error}",
+                file=sys.stderr,
+            )
+            continue
+
+        workspace = config.get("workspace")
+        if not isinstance(workspace, dict):
+            continue
+
+        icon = workspace.get("icon")
+        if isinstance(icon, str) and icon.strip():
+            return icon.strip()
+
+    return ""
+
+
 def command_launch(args: argparse.Namespace) -> int:
     config = load_config(args.config)
     applications = load_dynamic_applications(config)
@@ -426,9 +571,9 @@ def command_launch(args: argparse.Namespace) -> int:
         return 1
 
     target = Path(args.target).expanduser()
-    label = args.label or (target.stem if target.is_file() else target.name)
+    indicator = project_workspace_icon(target) or application.icon
     number = next_dynamic_workspace_number()
-    workspace_name = f"{number}:{application.workspace_prefix}:{slugify(label)}"
+    workspace_name = f"{number}:{indicator}"
 
     switch_result = i3_msg("workspace", "number", workspace_name)
     if switch_result.returncode != 0:

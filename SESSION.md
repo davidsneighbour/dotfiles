@@ -187,16 +187,20 @@ Alt+Tab/Super+Tab still go to xfwm4's own default
     `configs/session/i3/workspaces/workspaces.py` to read
     i3's tree, map raw workspace names through
     `configs/session/i3/workspaces/workspaces.yaml`, and show workspace
-    icons instead of labels such as `2:Web` or dynamic names such as
-    `10:code:dotfiles`.
+    icons instead of labels such as `2:Web`, legacy dynamic names such as
+    `10:code:dotfiles`, or current dynamic indicator names such as `10:`.
     Panel/dock windows such as the i3 Polybar instance are hidden from this
     switcher, because they are session infrastructure rather than useful
     focus targets.
   * `workspaces.sh` — the VS Code workspace picker, bound to
     `Ctrl+Shift+W` in `configs/session/i3/configs/applications.conf`.
     With `--dynamic-workspace code`, it creates a temporary i3 workspace,
-    switches to it, and starts the selected Code target there. i3 removes
-    that workspace from the live workspace list when the last window closes.
+    switches to it, and starts the selected Code target there. If the target
+    path, one of the folders in a `.code-workspace` file, or one of their
+    parent directories has a `.github/config.toml` with
+    `[workspace] icon = "..."`, that icon becomes the dynamic workspace
+    indicator. Otherwise the configured Code icon is used. i3 removes that
+    workspace from the live workspace list when the last window closes.
 * i3's app launcher (drun) does not use `configs/session/rofi/config.rasi`
   directly. It calls `configs/session/i3/rofi.rasi` — a small, standalone
   override (per the starter spec's own requirement for one) that sets

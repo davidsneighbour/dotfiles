@@ -17,7 +17,7 @@ at the repo root.
 | `configs/01-colours.ini` | Copied unchanged from `configs/system/polybar/configs/` (Dracula Pro palette). |
 | `configs/01-fonts.ini` | Copied unchanged. |
 | `configs/01-settings.ini` | Copied unchanged. |
-| `configs/07-module-i3.ini` | Generated official `internal/i3` workspace module. Static workspaces are rendered as icons; dynamic Code workspaces use a fuzzy icon rule. |
+| `configs/07-module-i3.ini` | Generated official `internal/i3` workspace module. Static and dynamic workspaces render the icon stored after the numeric i3 workspace prefix. |
 | `configs/07-module-xwindow.ini` | Copied unchanged. `internal/xwindow` is generic EWMH, not XFCE-specific. |
 | `configs/07-module-cpu.ini` | New. `internal/cpu`. |
 | `configs/07-module-memory.ini` | New. `internal/memory`. |
@@ -40,10 +40,13 @@ next improvements".
 
 ## Why a separate copy instead of one shared config
 
-The old XFCE workspace setup helpers are not used here. Static and dynamic
-workspace definitions live in `configs/session/i3/workspaces/workspaces.yaml`. i3 reads a
-generated include derived from that file. Polybar also reads a generated
-official `internal/i3` module derived from that YAML.
+The old XFCE workspace setup helpers are not used here. Static workspace
+definitions live in `configs/session/i3/workspaces/workspaces.yaml`. i3 reads
+a generated include derived from that file. Polybar also reads a generated
+official `internal/i3` module derived from that YAML. Dynamic workspaces are
+named with their display icon after the numeric prefix, so project-specific
+icons from `.github/config.toml` can show without regenerating Polybar
+configuration at launch time.
 
 ## Both bars share the `polybar` process name
 
