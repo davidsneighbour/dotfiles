@@ -15,7 +15,6 @@ SKILL_REPOSITORIES=(
   "/home/patrick/github.com/davidsneighbour/patternbook"
   "/home/patrick/github.com/davidsneighbour/posthaste"
   "/home/patrick/github.com/davidsneighbour/skills"
-  "/home/patrick/github.com/dnbhq/skills"
 )
 
 # Every skill gets one symlink under each of these roots.
@@ -54,7 +53,7 @@ compute_trusted_roots() {
     for existing in "${TRUSTED_ROOTS[@]:-}"; do
       [[ "${existing}" == "${parent}" ]] && seen=1 && break
     done
-    (( seen )) || TRUSTED_ROOTS+=("${parent}")
+    ((seen)) || TRUSTED_ROOTS+=("${parent}")
   done
 }
 
@@ -143,7 +142,7 @@ write_dotbot_config() {
     printf '          expanded="${dir/#\\~/$HOME}"\n'
     printf '\n'
     printf '          if [ -L "${expanded}" ]; then\n'
-    printf '            resolved="$(readlink -f "${expanded}")"\n'
+    printf '            resolved="$(readlink -f "${expanded}" 2>/dev/null || true)"\n'
     printf '            if is_trusted "${resolved}"; then\n'
     printf '              rm "${expanded}"\n'
     printf '            else\n'
@@ -157,7 +156,7 @@ write_dotbot_config() {
     printf '          for entry in "${expanded}"/*; do\n'
     printf '            [ -L "${entry}" ] || continue\n'
     printf '            [ -e "${entry}" ] && continue\n'
-    printf '            resolved="$(readlink -f "${entry}")"\n'
+    printf '            resolved="$(readlink -f "${entry}" 2>/dev/null || true)"\n'
     printf '            is_trusted "${resolved}" && rm "${entry}"\n'
     printf '          done\n'
     printf '        done\n'
@@ -202,7 +201,7 @@ main() {
   printf 'Collecting skills from SKILL_REPOSITORIES...\n'
   collect_skills
 
-  (( ${#SKILL_PATHS[@]} > 0 )) || die "No skills found under any SKILL_REPOSITORIES entry."
+  ((${#SKILL_PATHS[@]} > 0)) || die "No skills found under any SKILL_REPOSITORIES entry."
 
   printf 'Found %d skill(s).\n' "${#SKILL_PATHS[@]}"
   printf 'Regenerating %s...\n' "${DOTBOT_CONFIG}"

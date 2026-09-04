@@ -26,7 +26,7 @@
 
         is_trusted() {
           case "$1" in
-            "${HOME}/github.com/davidsneighbour"/*|"${HOME}/github.com/dnbhq"/*) return 0 ;;
+            "${HOME}/github.com/davidsneighbour"/*) return 0 ;;
             *) return 1 ;;
           esac
         }
@@ -35,7 +35,7 @@
           expanded="${dir/#\~/$HOME}"
 
           if [ -L "${expanded}" ]; then
-            resolved="$(readlink -f "${expanded}")"
+            resolved="$(readlink -f "${expanded}" 2>/dev/null || true)"
             if is_trusted "${resolved}"; then
               rm "${expanded}"
             else
@@ -49,7 +49,7 @@
           for entry in "${expanded}"/*; do
             [ -L "${entry}" ] || continue
             [ -e "${entry}" ] && continue
-            resolved="$(readlink -f "${entry}")"
+            resolved="$(readlink -f "${entry}" 2>/dev/null || true)"
             is_trusted "${resolved}" && rm "${entry}"
           done
         done
@@ -73,6 +73,12 @@
       path: ${HOME}/github.com/davidsneighbour/skills/skills/cleanup
     ~/.claude/skills/cleanup:
       path: ${HOME}/github.com/davidsneighbour/skills/skills/cleanup
+    ~/.agents/skills/clerkwork-agent-align:
+      path: ${HOME}/github.com/davidsneighbour/clerkwork/skills/clerkwork-agent-align
+    ~/.codex/skills/clerkwork-agent-align:
+      path: ${HOME}/github.com/davidsneighbour/clerkwork/skills/clerkwork-agent-align
+    ~/.claude/skills/clerkwork-agent-align:
+      path: ${HOME}/github.com/davidsneighbour/clerkwork/skills/clerkwork-agent-align
     ~/.agents/skills/clerkwork-dependency-maintenance:
       path: ${HOME}/github.com/davidsneighbour/clerkwork/skills/clerkwork-dependency-maintenance
     ~/.codex/skills/clerkwork-dependency-maintenance:
@@ -121,6 +127,12 @@
       path: ${HOME}/github.com/davidsneighbour/clerkwork/skills/clerkwork-select-next-issue
     ~/.claude/skills/clerkwork-select-next-issue:
       path: ${HOME}/github.com/davidsneighbour/clerkwork/skills/clerkwork-select-next-issue
+    ~/.agents/skills/clerkwork-shared-configurations:
+      path: ${HOME}/github.com/davidsneighbour/clerkwork/skills/clerkwork-shared-configurations
+    ~/.codex/skills/clerkwork-shared-configurations:
+      path: ${HOME}/github.com/davidsneighbour/clerkwork/skills/clerkwork-shared-configurations
+    ~/.claude/skills/clerkwork-shared-configurations:
+      path: ${HOME}/github.com/davidsneighbour/clerkwork/skills/clerkwork-shared-configurations
     ~/.agents/skills/clerkwork-work-on-issue:
       path: ${HOME}/github.com/davidsneighbour/clerkwork/skills/clerkwork-work-on-issue
     ~/.codex/skills/clerkwork-work-on-issue:
@@ -176,23 +188,17 @@
     ~/.claude/skills/dnb-blog-draft-meta-matter:
       path: ${HOME}/github.com/davidsneighbour/gazetteer/skills/dnb-blog-draft-meta-matter
     ~/.agents/skills/dnb-create-config-package:
-      path: ${HOME}/github.com/dnbhq/skills/skills/dnb-create-config-package
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/dnb-create-config-package
     ~/.codex/skills/dnb-create-config-package:
-      path: ${HOME}/github.com/dnbhq/skills/skills/dnb-create-config-package
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/dnb-create-config-package
     ~/.claude/skills/dnb-create-config-package:
-      path: ${HOME}/github.com/dnbhq/skills/skills/dnb-create-config-package
+      path: ${HOME}/github.com/davidsneighbour/skills/skills/dnb-create-config-package
     ~/.agents/skills/dnb-create-js-documentation:
       path: ${HOME}/github.com/davidsneighbour/gallimaufry/skills/dnb-create-js-documentation
     ~/.codex/skills/dnb-create-js-documentation:
       path: ${HOME}/github.com/davidsneighbour/gallimaufry/skills/dnb-create-js-documentation
     ~/.claude/skills/dnb-create-js-documentation:
       path: ${HOME}/github.com/davidsneighbour/gallimaufry/skills/dnb-create-js-documentation
-    ~/.agents/skills/dnbhq-configs:
-      path: ${HOME}/github.com/davidsneighbour/clerkwork/skills/dnbhq-configs
-    ~/.codex/skills/dnbhq-configs:
-      path: ${HOME}/github.com/davidsneighbour/clerkwork/skills/dnbhq-configs
-    ~/.claude/skills/dnbhq-configs:
-      path: ${HOME}/github.com/davidsneighbour/clerkwork/skills/dnbhq-configs
     ~/.agents/skills/dnb-interface-design:
       path: ${HOME}/github.com/davidsneighbour/gazetteer/skills/dnb-interface-design
     ~/.codex/skills/dnb-interface-design:
