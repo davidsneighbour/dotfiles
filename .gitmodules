@@ -1,3 +1,0 @@
-[submodule "protected"]
-	path = protected
-	url = git@github.com:davidsneighbour/dotfiles-protected.git

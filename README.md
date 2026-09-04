@@ -4,6 +4,7 @@
 
 * [Introduction](#introduction)
 * [Setup and update](#setup-and-update)
+* [Protected configuration](#protected-configuration)
 * [LICENSE](#license)
 
 > [!CAUTION]
@@ -21,6 +22,18 @@ See the preceding note. If you are still here, then you are interested in how I 
 ## Setup and update
 
 See [SETUP.md](docs/setup.md) for details.
+
+## Protected configuration
+
+Private configuration is kept in an external repository at `./protected`.
+Clone it after cloning this repository:
+
+```bash
+git clone git@github.com:davidsneighbour/dotfiles-protected.git ./protected
+```
+
+The `protected/` directory is ignored by this repository and is not managed as
+a submodule.
 
 ## Desktop session
 
