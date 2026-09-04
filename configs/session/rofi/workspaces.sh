@@ -358,7 +358,7 @@ open_target() {
   local target="${1}"
 
   if [[ -n "${DYNAMIC_WORKSPACE}" ]]; then
-    "${HOME}/.dotfiles/configs/session/workspaces.py" launch \
+    "${HOME}/.dotfiles/configs/session/i3/workspaces/workspaces.py" launch \
       --application "${DYNAMIC_WORKSPACE}" \
       --target "${target}" \
       --label "${sel_name}"

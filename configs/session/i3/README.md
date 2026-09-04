@@ -13,7 +13,7 @@ at the repo root. This file only documents what lives in this folder.
 | File | Purpose |
 | --- | --- |
 | `config` | The i3 configuration itself, linked to `~/.config/i3/config`. |
-| `configs/workspaces.conf` | Generated workspace variable include, derived from `../workspaces.yaml`. |
+| `configs/workspaces.conf` | Generated workspace variable include, derived from `workspaces/workspaces.yaml`. |
 | `rofi.rasi` | Small standalone Rofi override used by the launcher bindings — see "Rofi" below. |
 | `check.sh` | Read-only diagnostic: reports whether i3/Polybar/Rofi are installed and running. Run `check.sh --help` for details. Never modifies the desktop. |
 
@@ -24,18 +24,20 @@ at the repo root. This file only documents what lives in this folder.
   `update-alternatives --display x-terminal-emulator` already resolves to on
   this workstation) and referenced everywhere else — never hardcode a
   terminal binary elsewhere in this file.
-* Static workspaces are configured in `../workspaces.yaml`. Their labels are
+* Static workspaces are configured in `workspaces/workspaces.yaml`. Their labels are
   for maintenance only; i3 receives numbered icon workspace names such as
   `2:` from `configs/workspaces.conf`. User-facing surfaces show the icon
   only. Run
-  `../workspaces.py generate-i3 --write` and
-  `../workspaces.py generate-polybar --write` after changing the YAML.
-* Dynamic application workspaces are also configured in `../workspaces.yaml`.
+  `workspaces/workspaces.py generate-i3 --write` and
+  `workspaces/workspaces.py generate-polybar --write` after changing the YAML.
+* Dynamic application workspaces are also configured in `workspaces/workspaces.yaml`.
   `Ctrl+Shift+W` opens the VS Code workspace picker and launches the
   selected project in a temporary `code` workspace. i3 removes that
   workspace from its live list once the last window in it closes.
 * The Alt+Tab window switcher reads the same YAML and shows workspace icons
-  instead of raw i3 workspace names.
+  instead of raw i3 workspace names. It hides panel/dock windows such as
+  the i3 Polybar instance, because they are session infrastructure rather
+  than useful focus targets.
 * `focus_follows_mouse no` mirrors xfwm4's own default (click-to-focus);
   dotfiles no longer manages XFCE's xfconf settings at all (see SESSION.md),
   but this stayed the intended i3 behaviour regardless.

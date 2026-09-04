@@ -82,7 +82,7 @@ EOF
     return 0
   fi
 
-  "${HOME}/.dotfiles/configs/session/workspaces.py" window-switcher
+  "${HOME}/.dotfiles/configs/session/i3/workspaces/workspaces.py" window-switcher
 }
 
 ##

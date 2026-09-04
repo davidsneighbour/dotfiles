@@ -67,7 +67,7 @@ LightDM
         ├── i3 (configs/session/i3/config)
         │   ├── keybindings (see "Keybinding architecture")
         │   ├── numbered icon workspaces 1-9, generated from
-        │   │   configs/session/workspaces.yaml
+        │   │   configs/session/i3/workspaces/workspaces.yaml
         │   └── window rules (none yet — see "Known limitations")
         │
         ├── Rofi (i3-only — configs/session/rofi/, invoked as
@@ -183,10 +183,15 @@ Alt+Tab/Super+Tab still go to xfwm4's own default
   * `window-switcher.sh` — a Rofi-based Alt+Tab replacement, bound to
     `Mod1+Tab` in `configs/session/i3/configs/applications.conf` (i3 has no
     native Alt+Tab window cycling, unlike xfwm4). Always shows windows
-    across all workspaces. It asks `configs/session/workspaces.py` to read
+    across all workspaces. It asks
+    `configs/session/i3/workspaces/workspaces.py` to read
     i3's tree, map raw workspace names through
-    `configs/session/workspaces.yaml`, and show workspace icons instead of
-    labels such as `2:Web` or dynamic names such as `10:code:dotfiles`.
+    `configs/session/i3/workspaces/workspaces.yaml`, and show workspace
+    icons instead of labels such as `2:Web` or dynamic names such as
+    `10:code:dotfiles`.
+    Panel/dock windows such as the i3 Polybar instance are hidden from this
+    switcher, because they are session infrastructure rather than useful
+    focus targets.
   * `workspaces.sh` — the VS Code workspace picker, bound to
     `Ctrl+Shift+W` in `configs/session/i3/configs/applications.conf`.
     With `--dynamic-workspace code`, it creates a temporary i3 workspace,

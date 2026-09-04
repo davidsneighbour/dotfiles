@@ -14,9 +14,11 @@ from typing import Any
 import yaml
 
 
-REPO_SESSION_DIR = Path(__file__).resolve().parent
-DEFAULT_CONFIG = REPO_SESSION_DIR / "workspaces.yaml"
-DEFAULT_I3_INCLUDE = REPO_SESSION_DIR / "i3" / "configs" / "workspaces.conf"
+WORKSPACES_DIR = Path(__file__).resolve().parent
+I3_SESSION_DIR = WORKSPACES_DIR.parent
+REPO_SESSION_DIR = I3_SESSION_DIR.parent
+DEFAULT_CONFIG = WORKSPACES_DIR / "workspaces.yaml"
+DEFAULT_I3_INCLUDE = I3_SESSION_DIR / "configs" / "workspaces.conf"
 DEFAULT_POLYBAR_INCLUDE = (
     REPO_SESSION_DIR / "polybar" / "configs" / "07-module-i3.ini"
 )
@@ -101,8 +103,8 @@ def load_dynamic_applications(config: dict[str, Any]) -> dict[str, DynamicApplic
 def generate_i3_config(workspaces: list[Workspace]) -> str:
     lines = [
         "################################################################################",
-        "# Generated from configs/session/workspaces.yaml.",
-        "# Run configs/session/workspaces.py generate-i3 --write after changing YAML.",
+        "# Generated from configs/session/i3/workspaces/workspaces.yaml.",
+        "# Run configs/session/i3/workspaces/workspaces.py generate-i3 --write after changing YAML.",
         "################################################################################",
         "",
     ]
@@ -131,8 +133,8 @@ def generate_polybar_config(
 ) -> str:
     lines = [
         "[module/i3]",
-        "# Generated from configs/session/workspaces.yaml.",
-        "# Run configs/session/workspaces.py generate-polybar --write after changing YAML.",
+        "# Generated from configs/session/i3/workspaces/workspaces.yaml.",
+        "# Run configs/session/i3/workspaces/workspaces.py generate-polybar --write after changing YAML.",
         "# https://github.com/polybar/polybar/wiki/Module:-i3",
         "type = internal/i3",
         "",
@@ -266,7 +268,11 @@ def iter_windows(
         str(node.get("name", "")) if node_type == "workspace" else workspace_name
     )
 
-    if node.get("window") is not None and isinstance(node.get("id"), int):
+    if (
+        node.get("window") is not None
+        and isinstance(node.get("id"), int)
+        and is_switchable_window(node)
+    ):
         properties = node.get("window_properties", {})
         window_class = ""
         if isinstance(properties, dict):
@@ -283,6 +289,25 @@ def iter_windows(
                 windows.extend(iter_windows(child, current_workspace))
 
     return windows
+
+
+def is_switchable_window(node: dict[str, Any]) -> bool:
+    properties = node.get("window_properties", {})
+    window_class = ""
+    window_instance = ""
+    if isinstance(properties, dict):
+        window_class = str(properties.get("class", "")).lower()
+        window_instance = str(properties.get("instance", "")).lower()
+
+    window_type = str(node.get("window_type", "")).lower()
+    title = str(node.get("name", "")).lower()
+
+    return (
+        window_type != "dock"
+        and window_class != "polybar"
+        and window_instance != "polybar"
+        and title != "polybar-i3bar"
+    )
 
 
 def pango_escape(value: str) -> str:
@@ -421,7 +446,7 @@ def command_launch(args: argparse.Namespace) -> int:
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="Manage i3 session workspaces from configs/session/workspaces.yaml."
+        description="Manage i3 session workspaces from configs/session/i3/workspaces/workspaces.yaml."
     )
     parser.add_argument("--config", type=Path, default=DEFAULT_CONFIG)
     subparsers = parser.add_subparsers(dest="command", required=True)

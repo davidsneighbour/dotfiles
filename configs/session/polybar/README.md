@@ -41,7 +41,7 @@ next improvements".
 ## Why a separate copy instead of one shared config
 
 The old XFCE workspace setup helpers are not used here. Static and dynamic
-workspace definitions live in `configs/session/workspaces.yaml`. i3 reads a
+workspace definitions live in `configs/session/i3/workspaces/workspaces.yaml`. i3 reads a
 generated include derived from that file. Polybar also reads a generated
 official `internal/i3` module derived from that YAML.
 
