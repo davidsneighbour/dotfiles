@@ -1,5 +1,26 @@
 # Changelog
 
+## [2.6.0](https://github.com/davidsneighbour/dotfiles/compare/v2.5.1...v2.6.0) (2026-09-04)
+
+### Feat
+
+* add window inspector tool for i3 window-rule discovery ([443db2f](https://github.com/davidsneighbour/dotfiles/commit/443db2f3ab637f68d0000c6b3c962d986791b844))
+* run Enpass in the i3 scratchpad instead of a normal workspace ([32369ff](https://github.com/davidsneighbour/dotfiles/commit/32369ffaf63bda6395448d26479f29303e141337))
+
+### Fix
+
+* add rules and desktop comments to i3 config ([97f635f](https://github.com/davidsneighbour/dotfiles/commit/97f635f2f88ec07aad76e52cd6173364c5a44f0d))
+* resort polybar layout ([b905aec](https://github.com/davidsneighbour/dotfiles/commit/b905aec836bfa9f951b1aa65570dd6eb18d18bf2))
+
+### Refactor
+
+* comments in rules.conf ([108e9af](https://github.com/davidsneighbour/dotfiles/commit/108e9af3dbea0987023b4c9d9297b4fbb1f6d84c))
+
+### Chore
+
+* remove accidental polybar module file ([a3dfcc1](https://github.com/davidsneighbour/dotfiles/commit/a3dfcc1ea687e49d4af56e744be3f2252c772ef2))
+* resize window-inspector floating window to 700x540 ([5ed3cb5](https://github.com/davidsneighbour/dotfiles/commit/5ed3cb5cf18baf77be65887feb7a548a868fac01))
+
 ## [2.5.1](https://github.com/davidsneighbour/dotfiles/compare/v2.5.0...v2.5.1) (2026-09-04)
 
 ### Build
