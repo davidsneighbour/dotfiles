@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.5.0](https://github.com/davidsneighbour/dotfiles/compare/v2.4.1...v2.5.0) (2026-09-04)
+
+### Feat
+
+* **session:** support project workspace icons ([4b47305](https://github.com/davidsneighbour/dotfiles/commit/4b473057dd55dde3a2193425e5bb190c844b7a09))
+
+### Instructions
+
+* mark XFCE as legacy session ([c0fd1a9](https://github.com/davidsneighbour/dotfiles/commit/c0fd1a9338b229259c98d6ae80fdce7b10d49c8e))
+
+### Chore
+
+* remove protected submodule ([50820ef](https://github.com/davidsneighbour/dotfiles/commit/50820effad7c2fb62dbc8bef3e308305c4c7fdcd))
+
 ## [2.4.1](https://github.com/davidsneighbour/dotfiles/compare/v2.4.0...v2.4.1) (2026-09-04)
 
 ### Config
