@@ -1,5 +1,22 @@
 # Changelog
 
+## [2.4.0](https://github.com/davidsneighbour/dotfiles/compare/v2.3.1...v2.4.0) (2026-09-04)
+
+### Feat
+
+* **session:** add dynamic i3 workspaces ([3c3939c](https://github.com/davidsneighbour/dotfiles/commit/3c3939c91600217e19f83531691a1536c31c8058))
+* **session:** use icon workspace labels ([4ba73ec](https://github.com/davidsneighbour/dotfiles/commit/4ba73ecdfa182772d535806612e9826e1879b7f6))
+
+### Fix
+
+* remove dnbhq skills directory from skillz ([17dcd48](https://github.com/davidsneighbour/dotfiles/commit/17dcd48cd05bf0f496cae6239dc548572b1a6b24))
+* remove vale configuration ([041eced](https://github.com/davidsneighbour/dotfiles/commit/041ecedf0d2f7aeebe88fd449c6b01d4db0998f0))
+
+### Build
+
+* **deps-dev:** bump cspell from 10.0.1 to 10.1.1 ([#568](https://github.com/davidsneighbour/dotfiles/issues/568)) ([247d1ca](https://github.com/davidsneighbour/dotfiles/commit/247d1cabd9dc590c061d29dac546df3c50ce3e08))
+* **deps-dev:** bump npm-check-updates from 23.0.2 to 23.1.0 ([#569](https://github.com/davidsneighbour/dotfiles/issues/569)) ([e13fc8e](https://github.com/davidsneighbour/dotfiles/commit/e13fc8e556ecc401abae0e9cd5b58f234f4d966f))
+
 ## [2.3.1](https://github.com/davidsneighbour/dotfiles/compare/v2.3.0...v2.3.1) (2026-09-02)
 
 ### Fix
