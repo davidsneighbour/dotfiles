@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.7.1](https://github.com/davidsneighbour/dotfiles/compare/v2.7.0...v2.7.1) (2026-09-05)
+
+### Fix
+
+* **polybar:** order in pulseaudio module ([961a62e](https://github.com/davidsneighbour/dotfiles/commit/961a62e9711f175c6accdd7dede3908abbc1b407))
+
 ## [2.7.0](https://github.com/davidsneighbour/dotfiles/compare/v2.6.0...v2.7.0) (2026-09-04)
 
 ### Feat
