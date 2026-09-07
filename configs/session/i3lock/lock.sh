@@ -18,6 +18,15 @@
 # --nofork, xss-lock would think the lock ended the instant i3lock forked,
 # not when the user actually unlocked it (see `man i3lock`, "RECOMMENDED
 # USAGE").
+#
+# After i3lock exits (i.e. once the user has unlocked), this script restarts
+# Polybar via launch.sh. Polybar sometimes fails to reappear after an
+# unlock, leaving the bar missing until a manual i3 restart ($mod+Shift+R) —
+# launch.sh's kill-existing-instance-then-relaunch logic is the fix, run
+# unconditionally on every unlock since it is a no-op (from the user's
+# perspective) when Polybar is already fine. This is why the script no
+# longer `exec`s i3lock at the end: that would replace this process and
+# leave nothing behind to run launch.sh afterwards.
 
 set -Eeuo pipefail
 
@@ -34,6 +43,8 @@ Usage: $(basename "${0}") [--help]
 
 Lock the screen via 'i3lock --nofork', using:
   ${LOCKSCREEN_IMAGE}
+
+Restarts Polybar (via ../polybar/launch.sh) once the screen is unlocked.
 
 Intended as the locker for xss-lock (see
 configs/session/i3/configs/session-starts.conf), not for direct interactive
@@ -117,4 +128,9 @@ if theme_supported; then
   )
 fi
 
-exec i3lock "${args[@]}"
+status=0
+i3lock "${args[@]}" || status="${?}"
+
+"${SCRIPT_DIR}/../polybar/launch.sh" || true
+
+exit "${status}"

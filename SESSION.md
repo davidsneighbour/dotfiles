@@ -383,6 +383,17 @@ Alt+Tab/Super+Tab still go to xfwm4's own default
   lock/unlock by waiting for the locker process to exit, and i3lock
   daemonises (forks, parent exits immediately) unless told not to — see
   `man i3lock`, "RECOMMENDED USAGE".
+* `lock.sh` does **not** `exec` into `i3lock`: it runs it as a child process
+  and, once `i3lock` exits (i.e. once the user has unlocked), runs
+  `configs/session/polybar/launch.sh` before exiting itself with `i3lock`'s
+  own exit status. This works around Polybar occasionally failing to
+  reappear after an unlock (bar missing until a manual `i3-msg restart` /
+  `Super+Shift+R`) — `launch.sh` already kills any existing Polybar
+  instance and relaunches it, so running it unconditionally on every unlock
+  fixes a stuck bar with no visible effect when Polybar was already fine.
+  `xss-lock` only cares that the locker process eventually exits, so
+  deferring that exit until after `launch.sh` runs does not change how
+  `xss-lock`/`--transfer-sleep-lock` behave.
 * `xss-lock` is the single thing that decides how the screen gets locked.
   It reacts to two triggers: `loginctl lock-session` (what `Super+L` calls
   — see "Keybinding architecture") and systemd-logind's sleep signal, which
