@@ -66,6 +66,7 @@
     ~/.gitmessage: configs/system/git/.gitmessage
     ~/.gitconfig: configs/system/git/.gitconfig
     ~/.git-templates: configs/system/git/.git-templates
+    ~/.config/gh: configs/system/git/gh
 
     # folders in ~/.local/share
     ~/.local/share/applications: configs/system/launchers
@@ -76,8 +77,6 @@
 
     # Tool configs
     ~/.config/fastfetch: configs/system/fastfetch
-    ~/.local/share/vale: configs/system/vale
-    ~/.config/vale: configs/system/vale
     ~/.config/github-label-manager: configs/system/git/github-label-manager
     ~/.config/espanso: configs/system/espanso
 
