@@ -87,10 +87,8 @@ configuration {
 #window {
     background-color: @dnb-background2;
     border: 1;
-    border-radius: 0;
-    /* border-radius:    15; */
     border-color: @bordercolor;
-    padding: 15;
+    /* padding and border-radius: see "Shared structure" below */
 }
 
 #mainbox {
@@ -217,4 +215,50 @@ element-text,
 element-icon {
     background-color: inherit;
     text-color: inherit;
+}
+
+/*****----- Shared structure (radius + header image) -----*****/
+/*
+ * Same box layout as configs/session/rofi/power/powermenu.rasi (rounded
+ * corners, an image above the input row) but built on this file's own
+ * palette above — powermenu.rasi keeps its own separate colours on
+ * purpose and is not meant to match this theme.
+ *
+ * The window itself now carries no padding, so its only child (mainbox)
+ * — and the header image inside it — can reach the window's rounded
+ * border edge-to-edge. Every other direct child of mainbox (inputbar,
+ * message, listview, mode-switcher) gets its own left/right/bottom
+ * margin instead, to keep the same 15px inset those rows had before.
+ */
+#window {
+    padding: 0px;
+    border-radius: 16px;
+}
+
+#mainbox {
+    children: [ "header", "inputbar", "message", "listview", "mode-switcher" ];
+}
+
+#header {
+    expand: false;
+    background-color: transparent;
+    background-image: url("~/.dotfiles/.github/images/header-1800x900.jpg", width);
+    border-radius: 16px 16px 0px 0px;
+    padding: 50px 0px 0px 0px;
+}
+
+#inputbar {
+    margin: 0px 15px 0px 15px;
+}
+
+#message {
+    margin: 0px 15px 15px 15px;
+}
+
+#listview {
+    margin: 0px 15px 15px 15px;
+}
+
+#mode-switcher {
+    margin: 0px 15px 15px 15px;
 }
