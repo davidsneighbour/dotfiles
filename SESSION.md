@@ -138,7 +138,13 @@ restart rather than leaving `Super+Shift+r` with no bar at all.
 ## Keybinding architecture
 
 Defined entirely in `configs/session/i3/config`. `$mod` is `Mod4`
-(Super/Windows key). Full table:
+(Super/Windows key). Before adding or changing any binding here — especially
+one that invokes `exec` with a script and arguments, or that drives i3
+workspaces/marks/containers — read
+[`.agents/instructions/i3-keybindings.instructions.md`](.agents/instructions/i3-keybindings.instructions.md)
+first: `i3 -C -c` does not catch every way a binding can be broken, and that
+file documents the specific error shapes and how to actually verify a
+binding works. Full table:
 
 | Binding | Action |
 | --- | --- |

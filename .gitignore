@@ -17,7 +17,6 @@ bashrc/helpers/linker.sh
 /logs
 configs/dotbot/config.ai-skills.yaml
 
-.agents
 .claude/skills
 /protected/
 

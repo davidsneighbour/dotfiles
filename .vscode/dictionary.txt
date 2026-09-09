@@ -67,6 +67,7 @@ jsonnet
 jsonnetfmt
 Kando
 keybinding
+keysym
 Kollitsch
 libpam
 lighthousing
