@@ -48,6 +48,7 @@
     ~/.config/i3: configs/session/i3
     ~/.config/rofi: configs/session/rofi
     ~/.config/picom: configs/session/picom
+    ~/.config/terminator: configs/session/terminator
 
     # configs
     ~/.nvmrc: .nvmrc
