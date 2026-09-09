@@ -49,6 +49,7 @@
     ~/.config/rofi: configs/session/rofi
     ~/.config/picom: configs/session/picom
     ~/.config/terminator: configs/session/terminator
+    ~/.config/Thunar: configs/session/thunar
 
     # configs
     ~/.nvmrc: .nvmrc
