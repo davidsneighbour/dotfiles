@@ -102,7 +102,7 @@ The `/usr/bin/argon*` commands installed by Argon are only symlinks into `/etc/a
     -> /etc/argon/argon-uninstall.sh
 ```
 
-These symlinks should therefore be recreated by `install.sh` rather than treated as independent application files.
+The `/usr/bin/argon*` commands are symbolic links into `/etc/argon`. They are stored as symbolic links inside `rootfs/usr/bin/` and restored using `cp -a`, preserving the original link targets.
 
 ## Why this is vendored
 
@@ -294,4 +294,3 @@ __pycache__/
 Do not broadly ignore files inside `rootfs/etc/argon/`.
 
 Configuration, scripts, service definitions, and Argon state/version marker files should remain version-controlled unless they are confirmed to contain machine-generated volatile data.
-

@@ -22,7 +22,30 @@ Options:
 EOF
 }
 
+check_dependencies() {
+  local missing=0
+
+  if ! /usr/bin/python3 -c 'import smbus' >/dev/null 2>&1; then
+    printf 'Error: Python module "smbus" is missing.\n' >&2
+    printf 'Install package: python3-smbus\n' >&2
+    missing=1
+  fi
+
+  if ! /usr/bin/python3 -c 'import gpiod' >/dev/null 2>&1; then
+    printf 'Error: Python module "gpiod" is missing.\n' >&2
+    printf 'Install package: python3-libgpiod\n' >&2
+    missing=1
+  fi
+
+  if ((missing != 0)); then
+    return 1
+  fi
+}
+
 install_argon() {
+
+  check_dependencies
+
   if [[ ! -d "${ROOTFS}/etc/argon" ]]; then
     printf 'Error: snapshot not found: %s\n' "${ROOTFS}" >&2
     return 1
@@ -66,16 +89,16 @@ install_argon() {
 
 main() {
   case "${1:-}" in
-    --install)
-      install_argon
-      ;;
-    --help|-h)
-      usage
-      ;;
-    *)
-      usage >&2
-      return 2
-      ;;
+  --install)
+    install_argon
+    ;;
+  --help | -h)
+    usage
+    ;;
+  *)
+    usage >&2
+    return 2
+    ;;
   esac
 }
 
