@@ -1,5 +1,25 @@
 # Changelog
 
+## [2.9.0](https://github.com/davidsneighbour/dotfiles/compare/v2.8.0...v2.9.0) (2026-09-09)
+
+### Feat
+
+* **bash:** add wrapper to change background color in ssh command ([83c8356](https://github.com/davidsneighbour/dotfiles/commit/83c83564657f2e70975ae3fe8da0dd31749fb532))
+* **dotbot:** add Node updater to host profiles ([f8d5848](https://github.com/davidsneighbour/dotfiles/commit/f8d58482959ae8b4b4a946072760a5bc70364513))
+* **dotbot:** schedule weekly Node current update ([e4885c9](https://github.com/davidsneighbour/dotfiles/commit/e4885c91e10727ee97e2ec024bf74431dcf5e507))
+* **storage:** add gdrive mounts via ocamlfuse ([7c5f2f8](https://github.com/davidsneighbour/dotfiles/commit/7c5f2f8231bf09f08567d1f8ed4230dbbfa9fcc5))
+* **terminator:** configuration added ([2e389de](https://github.com/davidsneighbour/dotfiles/commit/2e389deeecff54310cf5c33636b5c16ab6a9dbcc))
+
+### Fix
+
+* **rofi:** update header image ([33adeac](https://github.com/davidsneighbour/dotfiles/commit/33adeac7b7ccd70d1aa01a0298751b4f2735d2b1))
+* **storage:** add gdrive mounts to session start ([623addd](https://github.com/davidsneighbour/dotfiles/commit/623adddfa6470c7373e5058d3990fa2209bc5a3a))
+* **terminator:** add dotbot mount ([f5312fe](https://github.com/davidsneighbour/dotfiles/commit/f5312fe32beea8be86c3631ff4415c53b0c8832d))
+
+### Build
+
+* **vscode:** update workspace configuration ([954ec4c](https://github.com/davidsneighbour/dotfiles/commit/954ec4cbeaf983394ccf6e3ae680b507ac46151e))
+
 ## [2.8.0](https://github.com/davidsneighbour/dotfiles/compare/v2.7.1...v2.8.0) (2026-09-09)
 
 ### Feat
