@@ -60,9 +60,7 @@ Requirements: Bash, `git`, `curl` for Discord notifications, and parser tools us
 ## `node-update.sh`
 
 Loads [`../../configs/system/npm/cron-node-update.sh`](../../configs/system/npm/cron-node-update.sh).
-That npm-owned cron script installs the latest Current Node.js release through
-NVM, sets the NVM default alias to that release, and installs the default global
-npm package list when the resolved default Node.js version changes.
+That npm-owned cron script installs the latest Current Node.js release through NVM, migrates globally installed npm packages from the active version, sets the NVM default alias to that release, and installs the default global npm package list when the resolved default Node.js version changes.
 
 Options:
 
@@ -75,8 +73,9 @@ Package source:
 via
 [`../../configs/system/npm/install-default-packages.ts`](../../configs/system/npm/install-default-packages.ts).
 
-Requirements: Bash, NVM installed under `~/.nvm`, Node.js, npm, and network
-access to the Node.js and npm registries.
+Locutus runs it weekly on Sunday at `04:15`, with timestamped logs under `~/.logs/cron/node-update-YYYYMMDD-HHMMSS.log`.
+
+Requirements: Bash, NVM installed under `~/.nvm`, Node.js, npm, and network access to the Node.js and npm registries.
 
 ## `synch_downloads.json`
 

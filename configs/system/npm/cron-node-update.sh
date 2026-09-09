@@ -14,9 +14,10 @@ print_help() {
 Usage:
   ${SCRIPT_NAME} [--dry-run] [--verbose] [--help]
 
-Install the latest Current Node.js release through NVM and set it as the
-default version. If the resolved default version changes, install the default
-global npm packages from configs/system/npm/default-packages.
+Updates NVM's "node" release to the latest available Node.js version, migrates
+globally installed npm packages from the active version, and sets it as the
+default. If the resolved default version changes, install the default global npm
+packages from configs/system/npm/default-packages.
 
 Options:
   --dry-run   Print the commands that would run.
@@ -158,6 +159,7 @@ main() {
   previous_active_version="$(current_node_version)"
   previous_default_version="$(nvm_version_or_none default)"
 
+  log_info "Node.js update started: $(date --iso-8601=seconds)"
   log_info "Current Node.js: ${previous_active_version}"
   log_info "Current NVM default: ${previous_default_version}"
   log_info "Checking for latest Current Node.js release."
@@ -169,6 +171,7 @@ main() {
   if [[ "${DRY_RUN}" == "true" ]]; then
     log_info "Would install default packages only if the resolved default version changes."
     install_default_packages
+    log_info "Node.js update completed: $(date --iso-8601=seconds)"
     return 0
   fi
 
@@ -181,11 +184,13 @@ main() {
 
   if [[ "${previous_default_version}" == "${current_default_version}" ]]; then
     log_info "Default Node.js version did not change; skipping default global npm packages."
+    log_info "Node.js update completed: $(date --iso-8601=seconds)"
     return 0
   fi
 
   log_info "Default Node.js version changed; installing default global npm packages."
   install_default_packages
+  log_info "Node.js update completed: $(date --iso-8601=seconds)"
 }
 
 main "$@"
