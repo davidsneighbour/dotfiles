@@ -1,0 +1,91 @@
+[global_config]
+  title_transmit_fg_color = "#282a36"
+  title_transmit_bg_color = "#50fa7b"
+  title_receive_fg_color = "#282a36"
+  title_receive_bg_color = "#ff79c6"
+  title_inactive_fg_color = "#f8f8f2"
+  title_inactive_bg_color = "#44475a"
+  inactive_color_offset = 0.61
+  suppress_multiple_term_dialog = True
+  title_hide_sizetext = True
+
+
+
+[keybindings]
+
+
+[profiles]
+  [[default]]
+    background_color = "#282a36"
+    background_image = None
+    # font = Anonymous Pro 12
+    font = Monaspace Krypton Ultra-Light 12
+    foreground_color = "#f8f8f2"
+    palette = "#262626:#e356a7:#42e66c:#e4f34a:#9b6bdf:#e64747:#75d7ec:#efa554:#7a7a7a:#ff79c6:#50fa7b:#f1fa8c:#bd93f9:#ff5555:#8be9fd:#ffb86c"
+    # use_system_font = False
+    bold_is_bright = True
+    copy_on_selection = True
+
+
+[layouts]
+  [[default]]
+    [[[child0]]]
+      type = Window
+      parent = ""
+      order = 0
+      position = 0:30
+      maximised = False
+      fullscreen = False
+      size = 950, 991
+      title = patrick@locutus:~
+      last_active_term = 9902d97d-0a5f-476d-9dd3-0e359f671a3b
+      last_active_window = True
+    [[[terminal1]]]
+      type = Terminal
+      parent = child0
+      order = 0
+      profile = default
+      uuid = 9902d97d-0a5f-476d-9dd3-0e359f671a3b
+  [[tripple]]
+    [[[child0]]]
+      type = Window
+      parent = ""
+      order = 0
+      position = 0:30
+      maximised = True
+      fullscreen = False
+      size = 1920, 1001
+      title = patrick@locutus:~
+      last_active_term = 9902d97d-0a5f-476d-9dd3-0e359f671a3b
+      last_active_window = True
+    [[[child1]]]
+      type = HPaned
+      parent = child0
+      order = 0
+      position = 958
+      ratio = 0.5002610966057441
+    [[[terminal2]]]
+      type = Terminal
+      parent = child1
+      order = 0
+      profile = default
+      uuid = 9902d97d-0a5f-476d-9dd3-0e359f671a3b
+    [[[child3]]]
+      type = VPaned
+      parent = child1
+      order = 1
+      position = 498
+      ratio = 0.5
+    [[[terminal4]]]
+      type = Terminal
+      parent = child3
+      order = 0
+      profile = default
+      uuid = 4b156fa9-b182-4ddb-b8c4-92dfe3eb2759
+    [[[terminal5]]]
+      type = Terminal
+      parent = child3
+      order = 1
+      profile = default
+      uuid = 43678d26-0514-4ff8-8c0d-456c42788dbb
+[plugins]
