@@ -1,4 +1,4 @@
-## `dnb_config_get` – TOML configuration retrieval for shell scripts
+# `dnb_config_get` – TOML configuration retrieval for shell scripts
 
 `dnb_config_get` is a single-file Bash CLI designed to **safely and predictably read values from TOML configuration files**. It is intended for use in dotfiles, launchers, automation scripts, and other shell-based tooling where:
 
@@ -170,11 +170,11 @@ This is **explicitly lossy** and should be avoided in new scripts.
 
 ## Exit codes
 
-| Code | Meaning                                            |
+| Code | Meaning |
 | ---: | -------------------------------------------------- |
-|    0 | Key found                                          |
-|    1 | Missing file/key or empty (when `--fail-on-empty`) |
-|    2 | TOML parse error or Python < 3.11                  |
+| 0 | Key found |
+| 1 | Missing file/key or empty (when `--fail-on-empty`) |
+| 2 | TOML parse error or Python < 3.11 |
 
 ## Dependency
 
@@ -241,7 +241,7 @@ If a missing key also prints `false`, there is no way to tell whether:
 
 This is not a tooling problem, it is a **fundamental limitation of string-based interfaces**.
 
-**Design decision**
+#### Design decision
 
 * Stdout is reserved exclusively for real values.
 * Exit codes signal success or failure.
@@ -274,7 +274,7 @@ In many configurations, these cases are semantically different:
 
 TOML allows empty strings and empty arrays, and they are valid data.
 
-**Design decision**
+#### Design decision
 
 * Empty values are treated as valid by default.
 * Strictness must be explicitly requested via `--fail-on-empty`.
@@ -286,7 +286,7 @@ This avoids accidental breakage when a configuration evolves.
 
 Whitespace can be meaningful in configuration values. Automatically trimming values would silently change semantics.
 
-**Design decision**
+#### Design decision
 
 * Values are returned exactly as stored.
 * `--trim-values` must be explicitly enabled.
@@ -335,7 +335,7 @@ Supporting quoted TOML keys containing dots would require:
 * additional parsing logic
 * more documentation and edge cases
 
-**Design decision**
+#### Design decision
 
 * Dot-separated paths are simple and predictable.
 * Quoted keys containing dots are not supported.
@@ -365,7 +365,7 @@ More robust serialisation (JSON) was intentionally excluded to keep the tool sma
 
 TOML parsing in Bash is impractical without external tools.
 
-**Design decision**
+#### Design decision
 
 * Require Python 3.11+.
 * Use `tomllib` from the standard library.

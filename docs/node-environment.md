@@ -1,4 +1,4 @@
-# Node Environment
+# Node environment
 
 Dotfiles set up a nvm environment that enables us to change the used node version on a per project (per folder) basis. The root of the project (which is linked to $HOME) contains a `.nvmrc` file that specifies `node` as required version which results in the latest version. Using `cd` will read an existing `.nvmrc` file and switch to the specified version. If no `cd` was used to open a terminal in a folder, use `cd .` to re-run the command and switch to the correct node version. Or "just" do `nvm use` like normal people would do.
 

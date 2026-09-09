@@ -1,4 +1,4 @@
-# DNB Bash library
+# DNB bash library
 
 ## Purpose
 

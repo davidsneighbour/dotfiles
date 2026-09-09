@@ -46,6 +46,7 @@ git --version
 gh --version
 ```
 
+<!-- markdownlint-disable-next-line title-case-style -->
 ### 2. Authenticate GitHub CLI
 
 The script uses `gh` for all GitHub-related operations. Log in once:
@@ -506,6 +507,7 @@ node github-manager.ts audit \
   --author-email hello@davidsneighbour.com
 ```
 
+<!-- markdownlint-disable-next-line title-case-style -->
 ### Show remote GitHub repository metadata
 
 ```bash
@@ -602,7 +604,7 @@ Using:
 git diff --name-only --diff-filter=U
 ```
 
-### Interrupted Git states
+### Interrupted git states
 
 By checking for Git metadata such as:
 
@@ -711,6 +713,7 @@ repo-four
   reason: Command failed: git fetch --prune
 ```
 
+<!-- markdownlint-disable-next-line title-case-style -->
 ## How remote GitHub lookup works
 
 The script uses `gh` instead of directly managing tokens or building raw HTTP requests internally.

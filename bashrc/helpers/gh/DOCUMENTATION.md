@@ -4,7 +4,7 @@ This file documents every file currently present in `bashrc/helpers/gh`.
 
 Parent index: [`../INDEX.md`](../INDEX.md).
 
-## Existing Markdown references
+## Existing markdown references
 
 * [`github-manager.md`](./github-manager.md)
 

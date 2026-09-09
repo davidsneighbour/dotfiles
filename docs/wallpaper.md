@@ -1,8 +1,8 @@
-## Wallpaper management script
+# Wallpaper management script
 
 A portable CLI tool to set desktop wallpapers across multiple Linux desktop environments with consistent logging and behaviour.
 
-### Core features
+## Core features
 
 * **Environment detection**
 
@@ -60,7 +60,7 @@ Optional runtime diagnostics: `--verbose`.
 
 Prints log messages to stdout in addition to writing the log file.
 
-### Design goals
+## Design goals
 
 * One consistent wallpaper command across systems
 * Avoid conflicts with desktop wallpaper managers (e.g. XFCE `xfdesktop`)
@@ -68,7 +68,7 @@ Prints log messages to stdout in addition to writing the log file.
 * Works across both X11 and Wayland environments
 * Fully scriptable and automation-friendly
 
-### Example
+## Example
 
 ```bash
 wallpaper-set.sh --wallpaper ~/Pictures/wallpapers/forest.jpg

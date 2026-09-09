@@ -4,7 +4,7 @@ This file documents every file currently present in `bashrc/helpers/remarkable`.
 
 Parent index: [`../INDEX.md`](../INDEX.md).
 
-## Existing Markdown references
+## Existing markdown references
 
 * [`README.md`](./README.md)
 

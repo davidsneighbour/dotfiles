@@ -29,25 +29,45 @@ Core principles:
 
 The repository is organised by *function*, not by technology.
 
-Common top-level areas (names may evolve):
+Top-level areas:
 
 * `bin/`
-  User-facing CLI commands and helpers
+  User-facing CLI commands
+
+* `bashrc/`
+  Interactive shell layer: `bashrc/helpers/` (feature-organised helpers such as `docker/`, `ai-usage/`,
+  `gh/`, `dotfiles/`, `skillz/`, each with its own `tests/` subdirectory when tested) and
+  `bashrc/partials/` (composable aliases/completions/exports/functions/prompt/topical pieces assembled
+  by `bashrc/bashrc`). `bashrc/INDEX.md` and the `DOCUMENTATION*.md` files under `bashrc/` and
+  `bashrc/partials/` are generated references — update the source, not these files directly, unless
+  told otherwise.
+
+* `configs/`
+  Static, non-secret configuration (dotbot, fonts, hosts, installs, packages, session, system, theme,
+  vscode) applied to the workstation
 
 * `protected/`
-  Private submodule for secrets, credentials, and local secure assets
+  Private submodule holding the secret counterpart to `configs/` (secrets, credentials, local secure
+  assets)
 
-* `lib/`
-  Shared Bash helpers and internal functions
+* `containers/`
+  Docker Compose service stacks, one directory per stack
 
-* `config/`
-  Static configuration files
+* `scripts/`
+  This repository's own Node/TS tooling (linting, release, Node-engine sync)
+
+* `tools/`
+  Standalone utilities (for example `unsplash-collections`), distinct from `bin/` and `scripts/`
 
 * `docs/`
   Human documentation (never required to operate the system)
 
 * `.github/`
   Repository-specific configuration (including optional `dnb.toml` files)
+
+* `.agents/instructions/`
+  Scoped, topic-grouped agent-instruction files (`bashrc/`, `logs/`, `session/`, …) — see
+  [Documentation rules](#documentation-rules)
 
 ### Related packages
 
@@ -72,7 +92,7 @@ All Bash code **MUST** comply with the following rules.
 
 ### Instructions
 
-For all Bash and shell-related code, including every file within bashrc/ and any file outside that directory that influences the Bash or interactive shell experience, .github/instructions/bashrc.instructions.md MUST be read and strictly adhered to.
+For all Bash and shell-related code, including every file within bashrc/ and any file outside that directory that influences the Bash or interactive shell experience, `.agents/instructions/bashrc/bashrc.instructions.md` MUST be read and strictly adhered to.
 
 ### Shell and safety
 
@@ -172,6 +192,28 @@ When Node.js is used:
 * Use static versions in `package.json`
 * Use npm as the package manager; `npm install` must work without issues
 
+## Common commands
+
+Run these from the repo root (npm, Node ^22/^24/^26 per `package.json` engines):
+
+* `npm run check` — full local gate: backup-runner test, ai-usage test, log-filename lint, shell test,
+  config lint, typecheck, markdown lint, shell lint. Run this before considering a change done.
+* `npm run test:shell` — `bashrc/helpers/tests/dotfiles-includes-test.sh` +
+  `bashrc/helpers/tests/desktop-helpers-health-check.sh`
+* `npm run test:ai-usage` — `node --experimental-strip-types bashrc/helpers/ai-usage/tests/ai-usage-test.ts`
+* `npm run test:backup-runner` — `node --experimental-strip-types bashrc/helpers/docker/tests/backup-runner-config-test.ts`
+* `npm run lint:shell` / `lint:shell:all` — shellcheck via `scripts/shell-quality.sh` (`lint-all` covers
+  the full tree, not just changed files)
+* `npm run lint:config` — `yamllint -c .yamllint.yml configs bashrc`
+* `npm run lint:markdown` / `lint:markdown:fix` — markdownlint-cli2
+* `npm run typecheck` — runs `typecheck:config`, `typecheck:scripts`, `typecheck:bash-helpers` (three
+  separate `tsconfig*.json` projects)
+* `npm run check:biome` / `check:biome:fix` — Biome check/format/lint combined
+* `npm run format:shell` — `scripts/shell-quality.sh format-write`
+
+There is no single-test runner; the `.ts` test files under `bashrc/helpers/**/tests/` are run directly
+with `node --experimental-strip-types <file>` for a targeted run.
+
 ## Docker and containers
 
 Containers are managed via **Docker Compose**.
@@ -220,7 +262,10 @@ Rules:
 * If a folder contains an `INDEX.md`, read it and follow the structure it lays out
 * Update `README.md` and `INDEX.md` files as you work on their counterparts
 * Add documentation for any change you make in the codebase
-* Read and apply any instructions under `.github/instructions/`, scoped by each file's `applyTo` field
+* Read and apply any instructions under `.agents/instructions/`, grouped by topic subfolder
+  (`bashrc/`, `logs/`, `session/`, …); files with an `applyTo` field are scoped by that glob, others
+  state their own scope inline (for example `.agents/instructions/session/i3-keybindings.instructions.md`,
+  also linked from `SESSION.md`)
 
 ### Quick instructions
 

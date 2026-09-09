@@ -1,4 +1,4 @@
-# transfer-remarkable
+# Transfer-remarkable
 
 Transfer PDF and EPUB documents to and from a reMarkable tablet over SSH.
 

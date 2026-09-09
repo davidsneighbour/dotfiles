@@ -1,4 +1,4 @@
-# Daily Git commit reports to Obsidian daily notes
+# Daily git commit reports to obsidian daily notes
 
 This setup adds Git commit summaries to an existing Obsidian daily note.
 
@@ -156,7 +156,7 @@ The runner scans only the direct subfolders there, for example:
 * `~/github.com/davidsneighbour/hugo-darkskies`
 * `~/github.com/davidsneighbour/kollitsch.dev`
 
-## Example Obsidian append call
+## Example obsidian append call
 
 The runner internally uses the same pattern as this working example:
 

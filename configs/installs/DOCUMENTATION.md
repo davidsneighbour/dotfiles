@@ -125,4 +125,3 @@ Taps `dart-lang/dart` and installs the shared Homebrew CLI tool set.
 Options: `--verbose`, `--dry-run`, `--help`.
 
 Requirements: Homebrew/Linuxbrew (`brew`) and network access.
-

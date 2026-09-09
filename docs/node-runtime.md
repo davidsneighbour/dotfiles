@@ -1,10 +1,10 @@
-# Node Runtime Execution with NVM
+# Node runtime execution with NVM
 
 This repository provides a wrapper script for running Node.js programs in environments where the normal shell initialisation process is not executed. This is particularly relevant for cron jobs, system services, and other non-interactive execution contexts.
 
 The wrapper ensures that Node.js managed by `nvm` can be used reliably without depending on shell startup files such as `.bashrc` or `.profile`.
 
-## Why This Wrapper Exists
+## Why this wrapper exists
 
 Node installed via `nvm` is not globally available by default. Instead, `nvm` modifies the environment dynamically when it is loaded in a shell.
 
@@ -12,7 +12,7 @@ Interactive shells typically load `nvm` through `.bashrc`, but non-interactive e
 
 ```bash
 node script.ts
-````
+```
 
 may fail in cron even though they work in a terminal session.
 
@@ -22,7 +22,7 @@ This wrapper solves that problem by explicitly resolving the correct Node runtim
 
 Example installation location:
 
-```
+```text
 ~/bin/node-run.sh
 ```
 
@@ -40,15 +40,15 @@ The wrapper performs the following steps:
 
 The wrapper does not modify Node runtime behaviour. It only determines which Node binary is used.
 
-## Version Resolution Strategy
+## Version resolution strategy
 
-### Fast Path Resolution
+### Fast path resolution
 
 For simple version identifiers, the wrapper resolves Node directly from the filesystem without loading `nvm`.
 
 Supported forms:
 
-```
+```text
 22
 v22
 22.12.0
@@ -57,7 +57,7 @@ v22.12.0
 
 Resolution occurs by scanning:
 
-```
+```text
 ~/.nvm/versions/node/
 ```
 
@@ -69,13 +69,13 @@ Benefits:
 * no shell overhead
 * ideal for cron jobs
 
-### NVM Fallback
+### NVM fallback
 
 For more complex selectors, the wrapper loads `nvm`.
 
 Examples:
 
-```
+```text
 lts/*
 node
 default
@@ -85,37 +85,37 @@ aliases
 
 This ensures compatibility with all `nvm` features.
 
-## Script Usage
+## Script usage
 
-### Run script with default Node
+### Run script with default node
 
-```
+```bash
 node-run.sh --script /path/to/job.ts
 ```
 
 The wrapper will attempt to use the current `nvm` default or `.nvmrc` if present.
 
-### Run script with explicit Node version
+### Run script with explicit node version
 
-```
+```bash
 node-run.sh --script /path/to/job.ts --node-version 22
 ```
 
 ### Use project `.nvmrc`
 
-```
+```bash
 node-run.sh --script job.ts --cwd /path/to/project
 ```
 
 The wrapper will change into the provided directory and run:
 
-```
+```bash
 nvm use
 ```
 
 ### Enable verbose output
 
-```
+```bash
 node-run.sh --script job.ts --node-version lts/* --verbose
 ```
 
@@ -126,11 +126,11 @@ Verbose mode prints:
 * working directory
 * executed script
 
-## Cron Integration
+## Cron integration
 
 Example cron job:
 
-```
+```text
 */5 * * * * /home/patrick/bin/node-run.sh --script /home/patrick/jobs/example.ts >> /home/patrick/.logs/cron/example.log 2>&1
 ```
 
@@ -140,13 +140,13 @@ This ensures:
 * compatibility with `nvm`
 * reliable execution in cron environments
 
-## TypeScript Execution
+## TypeScript execution
 
 Modern Node versions include built-in TypeScript support that strips type annotations at runtime.
 
 This allows scripts such as:
 
-```
+```bash
 node script.ts
 ```
 
@@ -162,7 +162,7 @@ However, Node does not perform full TypeScript compilation.
 
 Unsupported constructs may require additional flags:
 
-```
+```text
 --experimental-transform-types
 ```
 
@@ -170,7 +170,7 @@ or a separate runtime such as `tsx`.
 
 The wrapper does not modify TypeScript behaviour. It simply resolves the Node runtime.
 
-## Design Goals
+## Design goals
 
 The wrapper is designed to provide:
 

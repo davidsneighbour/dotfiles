@@ -14,15 +14,16 @@ A successful run may still print npm environment warnings that are outside the T
 
 ## Rules that prevent the collected diagnostics
 
+<!-- markdownlint-disable-next-line title-case-style -->
 ### Use explicit types at TypeScript boundaries
 
 Do not rely on JavaScript-style JSDoc comments to type parameters in `.ts` files. TypeScript does not use those comments as parameter annotations for strict `.ts` checking.
 
 For every function in a `.ts` file:
 
-- annotate parameters directly;
-- annotate return types for exported functions, CLI entry points, async helpers, parsers, and type guards;
-- type promise values explicitly when TypeScript cannot infer the resolved value.
+* annotate parameters directly;
+* annotate return types for exported functions, CLI entry points, async helpers, parsers, and type guards;
+* type promise values explicitly when TypeScript cannot infer the resolved value.
 
 This prevents `TS7006` implicit `any`, `TS7019` implicit `any[]` rest parameters, and confusing downstream `unknown` diagnostics.
 
@@ -32,9 +33,9 @@ Repository code must not use `any` as a shortcut for dynamic data. Use `unknown`
 
 When parsing JSON or consuming third-party API payloads:
 
-- keep the parsed value as `unknown`;
-- validate it with local type guards before reading properties;
-- narrow arrays with type-predicate filters, for example `.filter((tag): tag is string => ...)`.
+* keep the parsed value as `unknown`;
+* validate it with local type guards before reading properties;
+* narrow arrays with type-predicate filters, for example `.filter((tag): tag is string => ...)`.
 
 ### Respect `noPropertyAccessFromIndexSignature`
 
@@ -98,10 +99,10 @@ This prevents `TS2375` and `TS2379` diagnostics.
 
 CLI flag bags must have named types instead of `{}` or untyped objects.
 
-- define a raw flag type for string/boolean CLI values;
-- define a parsed options type for validated runtime values;
-- keep hyphenated flags as quoted keys, for example `"dry-run"`;
-- normalize aliases into one canonical parsed property.
+* define a raw flag type for string/boolean CLI values;
+* define a parsed options type for validated runtime values;
+* keep hyphenated flags as quoted keys, for example `"dry-run"`;
+* normalize aliases into one canonical parsed property.
 
 This prevents `TS2339` and `TS7053` diagnostics for parsed option objects.
 
@@ -122,9 +123,9 @@ This prevents widening defaults to `string` and later rejecting them as non-assi
 
 Process wrappers, command runners, and concurrent workers must declare their input and output shapes.
 
-- command argument arrays are `string[]`;
-- command result objects have explicit fields and types;
-- `new Promise` calls include the resolved type when no value is returned, for example `new Promise<void>(...)`;
-- `catch` callbacks and top-level `.catch` handlers accept `unknown` and format the error explicitly.
+* command argument arrays are `string[]`;
+* command result objects have explicit fields and types;
+* `new Promise` calls include the resolved type when no value is returned, for example `new Promise<void>(...)`;
+* `catch` callbacks and top-level `.catch` handlers accept `unknown` and format the error explicitly.
 
 This keeps failures observable while satisfying strict compiler settings.

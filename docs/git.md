@@ -1,4 +1,4 @@
-# Git Extras
+# Git extras
 
 ## Branching and workflow management
 

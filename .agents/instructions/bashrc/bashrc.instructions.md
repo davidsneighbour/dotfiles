@@ -4,6 +4,8 @@ description: This file provides instructions for configuring the .bashrc file fo
 applyTo: bashrc/**
 ---
 
+# Bashrc instructions
+
 ## Scope
 
 This instruction file applies to all Bash code in this repository, with an emphasis on interactive shell initialisation (`.bashrc`) and reusable Bash utilities.

@@ -1,4 +1,4 @@
-## Introducing `dnb_repo_config_get`: repository-local configuration for dotfiles
+# Introducing `dnb_repo_config_get`: repository-local configuration for dotfiles
 
 Over time, repositories tend to accumulate small, implicit bits of metadata. A launcher icon here, a role or visibility flag there, a note about what this repo is actually for. This information usually ends up scattered across scripts, README files, or worse, hard-coded into tooling.
 
@@ -142,7 +142,7 @@ dnb_repo_config_get repo.notes
 * They return exit code `0`.
 * They print nothing to stdout.
 
-This avoids conflating “missing” with “intentionally empty”.
+This avoids conflating "missing" with "intentionally empty".
 
 ### Numbers
 
@@ -288,7 +288,7 @@ Exit code:
 2
 ```
 
-This allows tooling to distinguish between “not configured” and “broken configuration”.
+This allows tooling to distinguish between "not configured" and "broken configuration".
 
 ## Discoverability: listing available keys
 

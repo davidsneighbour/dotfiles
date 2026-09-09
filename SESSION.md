@@ -141,7 +141,7 @@ Defined entirely in `configs/session/i3/config`. `$mod` is `Mod4`
 (Super/Windows key). Before adding or changing any binding here — especially
 one that invokes `exec` with a script and arguments, or that drives i3
 workspaces/marks/containers — read
-[`.agents/instructions/i3-keybindings.instructions.md`](.agents/instructions/i3-keybindings.instructions.md)
+[`.agents/instructions/session/i3-keybindings.instructions.md`](.agents/instructions/session/i3-keybindings.instructions.md)
 first: `i3 -C -c` does not catch every way a binding can be broken, and that
 file documents the specific error shapes and how to actually verify a
 binding works. Full table:
@@ -647,5 +647,5 @@ notifications, compositor, monitors, input sharing, workspace behaviour,
 window assignment, screen locking, suspend/logout controls, or related
 session services must update this file in the same change. Agents starting
 work on the desktop/session configuration should read `AGENTS.md` and this
-file, plus any applicable `.vscode/instructions/`, folder `README.md`, and
+file, plus any applicable `.agents/instructions/`, folder `README.md`, and
 `INDEX.md` files, before making changes.

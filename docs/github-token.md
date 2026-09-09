@@ -47,59 +47,59 @@ If you forget one repo, scripts will fail later.
 
 ### 3.1 READ tokens
 
-#### Token name:
+#### Token name
 
-```
+```text
 GITHUB_TOKEN_READ_PUBLIC
 GITHUB_TOKEN_READ_PRIVATE
 ```
 
-#### Permissions:
+#### Permissions
 
-##### Repository permissions:
+##### Repository permissions
 
 * **Metadata** → Read (required, auto-selected)
 * **Contents** → Read
 * **Issues** → Read (optional but useful)
 * **Pull requests** → Read (optional but useful)
 
-##### Everything else:
+##### Everything else
 
 → **No access**
 
 ### 3.2 CONTENT tokens
 
-#### Token name:
+#### Token name
 
-```
+```text
 GITHUB_TOKEN_CONTENT_PUBLIC
 GITHUB_TOKEN_CONTENT_PRIVATE
 ```
 
-#### Permissions:
+#### Permissions
 
-##### Repository permissions:
+##### Repository permissions
 
 * **Contents** → Read and write ✅ (core permission)
 * **Metadata** → Read (auto)
 * **Pull requests** → Read and write (recommended)
 * **Issues** → Read and write (optional, but practical)
 
-##### Everything else:
+##### Everything else
 
 → **No access**
 
 ### 3.3 ADMIN token (public first)
 
-#### Token name:
+#### Token name
 
-```
+```text
 GITHUB_TOKEN_ADMIN_PUBLIC
 ```
 
-#### Permissions:
+#### Permissions
 
-##### Repository permissions:
+##### Repository permissions
 
 * **Administration** → Read and write ✅ (critical)
 * **Metadata** → Read (auto)
@@ -149,19 +149,19 @@ GITHUB_TOKEN_ADMIN_PUBLIC='...'
 
 Test each token via your helper:
 
-#### Read
+### Read
 
 ```bash
 github-token run --role read --visibility public -- gh repo view davidsneighbour/dotfiles
 ```
 
-#### Content
+### Content
 
 ```bash
 github-token run --role content --visibility public -- gh api /repos/davidsneighbour/dotfiles/contents/
 ```
 
-#### Admin
+### Admin
 
 ```bash
 github-token run --role admin --visibility public -- gh api /repos/davidsneighbour/dotfiles/labels
@@ -203,11 +203,11 @@ Skip:
 
 Think of tokens like this:
 
-| Role    | What it means        |
+| Role | What it means |
 | ------- | -------------------- |
-| read    | "look only"          |
-| content | "change files"       |
-| admin   | "change repo itself" |
+| read | "look only" |
+| content | "change files" |
+| admin | "change repo itself" |
 
 ## 10. If something fails
 
