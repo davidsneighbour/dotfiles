@@ -242,7 +242,7 @@ element-icon {
 #header {
     expand: false;
     background-color: transparent;
-    background-image: url("~/.dotfiles/.github/images/header-1800x900.jpg", width);
+    background-image: url("~/.dotfiles/configs/session/i3/header-1800x900.jpg", width);
     border-radius: 16px 16px 0px 0px;
     padding: 50px 0px 0px 0px;
 }
