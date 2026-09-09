@@ -1,5 +1,24 @@
 # Changelog
 
+## [2.8.0](https://github.com/davidsneighbour/dotfiles/compare/v2.7.1...v2.8.0) (2026-09-09)
+
+### Feat
+
+* add argon one config ([f7cee1b](https://github.com/davidsneighbour/dotfiles/commit/f7cee1b014bd83a310c1c983c5e92f3cd330db78))
+* **git:** symlink gh CLI config via dotbot ([d552cac](https://github.com/davidsneighbour/dotfiles/commit/d552cac46a2654a5b7107d0337c96af648bf138a))
+* **rofi:** unify rounded header-image design across rofi surfaces ([3d70277](https://github.com/davidsneighbour/dotfiles/commit/3d70277d65bba80e0d721d9baedf3bd1b7a52574))
+
+### Fix
+
+* add check for requirements and fix README.md in argon one config ([9c676ac](https://github.com/davidsneighbour/dotfiles/commit/9c676ac50a6124149b24f644cc61f82bb8a418af))
+* generate skill dotbot config in cache ([f1c0206](https://github.com/davidsneighbour/dotfiles/commit/f1c0206ba9ab879d089ad4c3fddcde4331980e11))
+* restart polybar after i3lock ([46197fe](https://github.com/davidsneighbour/dotfiles/commit/46197fe6372281e7ddd76d0af3c014ef762e644e))
+
+### Build
+
+* **deps:** update dependencies ([e18cf11](https://github.com/davidsneighbour/dotfiles/commit/e18cf112c2ef7c7b45395ab8bb5e8fa2048d6412))
+* **vscode:** remove eslint extensions from recommendations ([2fa8a77](https://github.com/davidsneighbour/dotfiles/commit/2fa8a77a54a6783e3212dc1a62504234dbd9ca94))
+
 ## [2.7.1](https://github.com/davidsneighbour/dotfiles/compare/v2.7.0...v2.7.1) (2026-09-05)
 
 ### Fix
