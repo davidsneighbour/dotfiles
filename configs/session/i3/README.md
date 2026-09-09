@@ -45,6 +45,15 @@ at the repo root. This file only documents what lives in this folder.
   instead of raw i3 workspace names. It hides panel/dock windows such as
   the i3 Polybar instance, because they are session infrastructure rather
   than useful focus targets.
+* `Ctrl+Shift+Alt+F` shows the canonical, singleton Files workspace (a
+  two-pane Thunar environment: LEFT is user-controlled, RIGHT is where
+  `explore`/`xdg-open`/`gio open` directory requests land). Unlike the code
+  dynamic workspaces above, there is at most one Files workspace at a time,
+  reserved at i3 workspace number 90. Its ownership deliberately stays
+  outside `workspaces.yaml`/`workspaces.py` — see
+  [`../filemanager/README.md`](../filemanager/README.md) for the full
+  architecture; this file only documents the one keybinding
+  (`configs/applications.conf`) that invokes the controller.
 * `focus_follows_mouse no` mirrors xfwm4's own default (click-to-focus);
   dotfiles no longer manages XFCE's xfconf settings at all (see SESSION.md),
   but this stayed the intended i3 behaviour regardless.

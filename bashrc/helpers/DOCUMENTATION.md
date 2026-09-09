@@ -59,7 +59,11 @@ Requirements:
 
 ### `explore`
 
-Opens a directory in the system file manager via xdg-open or gio.
+Opens a directory in the canonical i3 Files workspace's RIGHT Thunar pane,
+by delegating to `configs/session/filemanager/file-manager --open --path`.
+Falls back to a plain, unmanaged Thunar window when i3 is not the running
+window manager (that controller's own fallback — see
+`configs/session/filemanager/README.md`).
 
 CLI option notes:
 
@@ -78,7 +82,32 @@ Functions/methods defined:
 
 Requirements:
 
-* bash and either xdg-open or gio.
+* bash and `configs/session/filemanager/file-manager`.
+
+### `thunar-standalone`
+
+Opens an ordinary, unmanaged Thunar window (`thunar --window`) on the
+current i3 workspace. Never touches the canonical Files workspace/marks
+owned by `configs/session/filemanager/file-manager`, never switches
+workspace, and never becomes the target of `explore`/XDG open requests —
+see `configs/session/filemanager/README.md`, "Standalone Thunar".
+
+CLI option notes:
+
+* --path PATH — directory to open. Default: `${HOME}`.
+* --verbose — print diagnostic output.
+* --help — show help.
+
+Functions/methods defined:
+
+* `thunar-standalone`
+* `_help`
+* `_log`
+* `_error`
+
+Requirements:
+
+* bash, `/usr/bin/thunar`.
 
 ### `fetch-and-run.sh`
 

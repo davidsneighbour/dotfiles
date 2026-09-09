@@ -130,3 +130,12 @@
           fi
         fi
       quiet: true
+
+    - description: "\e[1;38;5;103mSetting default directory handler (i3 Files workspace):\e[0m\e[1;38;5;66m"
+      command: |
+        if command -v xdg-mime >/dev/null 2>&1; then
+          xdg-mime default dnb-file-manager.desktop inode/directory
+        else
+          echo "[ERROR] xdg-mime not found; cannot set inode/directory default"
+        fi
+      quiet: true

@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Dnb file manager (Files workspace)
+Comment=Open a directory in the canonical i3 Files workspace (RIGHT pane)
+Exec=/home/patrick/.dotfiles/configs/session/filemanager/file-manager --open --path %f
+Icon=folder
+Terminal=false
+StartupNotify=false
+NoDisplay=true
+Categories=System;FileTools;FileManager;
+MimeType=inode/directory;

@@ -3,7 +3,10 @@
 ##
 # explore
 #
-# Opens a folder in the system's default file manager.
+# Opens a folder in the canonical Files workspace's RIGHT Thunar pane, via
+# configs/session/filemanager/file-manager. Falls back to a plain,
+# unmanaged Thunar window when i3 is not the running window manager (see
+# that controller's own fallback behaviour).
 #
 # FEATURES:
 # - Opens the current working directory when no path is provided
@@ -11,7 +14,9 @@
 # - Supports positional OR --path argument
 # - Accepts absolute paths or paths relative to $HOME
 # - Resolves ~ and relative paths safely
-# - Detects available file opener (xdg-open, gio)
+#
+# See configs/session/filemanager/README.md for the LEFT/RIGHT model this
+# helper delegates into. explore never touches LEFT.
 #
 # OPTIONS:
 #   --path <path>       Path to open
@@ -136,21 +141,21 @@ EOF
     return 1
   fi
 
-  # --- detect opener ---
-  local -a opener=()
-  if command -v xdg-open >/dev/null 2>&1; then
-    opener=(xdg-open)
-  elif command -v gio >/dev/null 2>&1; then
-    opener=(gio open)
-  else
-    _error "No supported file opener found (xdg-open or gio)"
+  # --- delegate to the canonical file-manager controller ---
+  local controller="${HOME}/.dotfiles/configs/session/filemanager/file-manager"
+
+  if [[ ! -x "${controller}" ]]; then
+    _error "File-manager controller not found or not executable: ${controller}"
     return 1
   fi
 
-  _log "Using opener: ${opener[*]}"
+  local -a controller_args=(--open --path "${resolved_path}")
+  [[ "${verbose}" == "true" ]] && controller_args+=(--verbose)
 
-  # --- open ---
-  "${opener[@]}" "${resolved_path}" >/dev/null 2>&1 &
+  if ! "${controller}" "${controller_args[@]}"; then
+    _error "file-manager --open --path ${resolved_path} failed"
+    return 1
+  fi
 
   _log "Opened: ${resolved_path}"
 }

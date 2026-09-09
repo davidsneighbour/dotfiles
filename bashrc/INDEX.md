@@ -47,14 +47,17 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`_cd_maybe_show_git_status`](./partials/_functions/change_directory.bash#L52) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L21) |
 | [`_cd_maybe_use_nvm`](./partials/_functions/change_directory.bash#L29) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L21) |
 | [`_codex`](./partials/_completions/codex#L1) | function | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L33) |
-| [`_default_path`](./helpers/explore#L57) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L76) |
-| [`_error`](./helpers/explore#L53) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L75) |
+| [`_default_path`](./helpers/explore#L62) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L81) |
+| [`_error`](./helpers/explore#L58) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L80) |
+| [`_error`](./helpers/thunar-standalone#L59) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L106) |
 | [`_git_find_commitlint_config`](./partials/_functions/git.bash#L33) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L85) |
 | [`_git_get_root`](./partials/_functions/git.bash#L29) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L85) |
 | [`_git_has_commitlint_config`](./partials/_functions/git.bash#L63) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L85) |
 | [`_git_should_use_cz`](./partials/_functions/git.bash#L67) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L85) |
-| [`_help`](./helpers/explore#L33) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L73) |
-| [`_log`](./helpers/explore#L49) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L74) |
+| [`_help`](./helpers/explore#L38) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L78) |
+| [`_help`](./helpers/thunar-standalone#L39) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L104) |
+| [`_log`](./helpers/explore#L54) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L79) |
+| [`_log`](./helpers/thunar-standalone#L55) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L105) |
 | [`_npm_completion`](./partials/_completions/npm#L1) | function | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L57) |
 | [`_robo`](./partials/_completions/robo#L1) | function | [./partials/DOCUMENTATION_completions.md](./partials/DOCUMENTATION_completions.md#L63) |
 | [`_ssh_hosts_completion`](./partials/completions#L82) | function | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L66) |
@@ -210,7 +213,7 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`expand_tilde`](./cronjobs/synch_downloads.sh#L38) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L61) |
 | [`expandHome`](./helpers/kando/kando-vscode-menu-creator.ts#L119) | method/function | [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md#L28) |
 | [`expandHomeDirectory`](./helpers/gh/github-manager.ts#L600) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L150) |
-| [`explore`](./helpers/explore#L28) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L59) |
+| [`explore`](./helpers/explore#L33) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L60) |
 | [`export_keybindings`](./partials/_functions/keybindings.bash#L5) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L159) |
 | [`extract_asset_url_fallback`](./installs/50-obsidian.sh#L104) | function | [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md#L41) |
 | [`extract_asset_url_with_jq`](./installs/50-obsidian.sh#L91) | function | [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md#L41) |
@@ -305,7 +308,7 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`helpers/docker/README.md`](./helpers/docker/README.md#L1) | file | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L9) |
 | [`helpers/DOCUMENTATION.md`](./helpers/DOCUMENTATION.md#L1) | file | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L13) |
 | [`helpers/dotbot`](./helpers/dotfiles#L1) | file | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L32) |
-| [`helpers/explore`](./helpers/explore#L1) | file | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L59) |
+| [`helpers/explore`](./helpers/explore#L1) | file | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L60) |
 | [`helpers/freshrss/DOCUMENTATION.md`](./helpers/freshrss/DOCUMENTATION.md#L1) | file | [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md#L1) |
 | [`helpers/freshrss/export.ts`](./helpers/freshrss/export.ts#L1) | file | [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md#L9) |
 | [`helpers/gh/cdg`](./helpers/gh/cdg#L1) | file | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L13) |
@@ -346,6 +349,7 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`helpers/screencaps.ts`](./helpers/screencaps.ts#L1) | file | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L189) |
 | [`helpers/set_max_listeners.cjs`](./helpers/set_max_listeners.cjs#L1) | file | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L282) |
 | [`helpers/synch-devspace.sh`](./helpers/synch-devspace.sh#L1) | file | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L290) |
+| [`helpers/thunar-standalone`](./helpers/thunar-standalone#L1) | file | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L87) |
 | [`helpers/update-npm.sh`](./helpers/update-npm.sh#L1) | file | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L335) |
 | [`helpers/web-mirror.sh`](./helpers/web-mirror.sh#L1) | file | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L343) |
 | [`helpText`](./helpers/screencaps.ts#L594) | method/function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L234) |
@@ -761,6 +765,7 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`sysinfo-mem`](./partials/_aliases/system.bash#L10) | alias | [./partials/DOCUMENTATION_aliases.md](./partials/DOCUMENTATION_aliases.md#L36) |
 | [`syslog`](./partials/aliases#L54) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L26) |
 | [`tail`](./partials/aliases#L79) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L22) |
+| [`thunar-standalone`](./helpers/thunar-standalone#L34) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L103) |
 | [`timestampNow`](./helpers/api/porkbun-api.ts#L113) | method/function | [./helpers/api/DOCUMENTATION.md](./helpers/api/DOCUMENTATION.md#L22) |
 | [`toBackupTomlConfig`](./helpers/docker/backup-runner.ts#L418) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L51) |
 | [`toCdata`](./helpers/freshrss/export.ts#L127) | method/function | [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md#L25) |

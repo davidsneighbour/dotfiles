@@ -147,6 +147,7 @@ Defined entirely in `configs/session/i3/config`. `$mod` is `Mod4`
 | `Ctrl+Shift+W` | Open Rofi VS Code workspace picker and launch the selection in a temporary dynamic Code workspace (`configs/session/rofi/workspaces.sh --newwindow --dynamic-workspace code`) |
 | `Ctrl+Shift+Alt+I` | Click a window, then show its WM_CLASS/role/title/PID/geometry in a floating terminal (`configs/session/i3/window-inspector.sh`) — see "Window rules" |
 | `Ctrl+Shift+Alt+E` | Toggle Enpass in/out of the scratchpad on the current workspace (`[con_mark="scratch-enpass"] scratchpad show`) — see "Window rules" |
+| `Ctrl+Shift+Alt+F` | Show the canonical, singleton Files workspace — a two-pane Thunar environment (LEFT user-controlled, RIGHT the external-open target) invoked via `configs/session/filemanager/file-manager --show` — see "Canonical Files workspace" below |
 | `Alt+Tab` (`Mod1+Tab`) | Open YAML-aware Rofi window switcher, all workspaces (`configs/session/rofi/window-switcher.sh`) — see "Rofi" below |
 | `Super+Enter` | Open terminal (`$terminal`, currently `xfce4-terminal`) |
 | `Super+Shift+Q` | Close focused window |
@@ -278,6 +279,25 @@ Validated non-interactively: `i3 -C -c configs/session/i3/config`. Validated
 live against a running i3 session: reload picks up the rule, the keybinding
 shows/hides/focuses the marked window, and toggling from a second workspace
 shows the same window there.
+
+<!-- markdownlint-disable-next-line title-case-style -->
+## Canonical Files workspace
+
+A singleton, i3-only two-pane Thunar workspace (LEFT user-controlled,
+RIGHT always the target of external directory-open requests —
+`explore`, `xdg-open`, `gio open`, "open in file manager" from any XDG-aware
+application). `Ctrl+Shift+Alt+F` shows it (creating it on first use).
+Reserved at i3 workspace number 90, identified purely by i3 container
+marks (`file-manager-left`/`file-manager-right`), derived from the live i3
+tree with no cache/state file. `configs/session/filemanager/file-manager`
+is the only place that knows how to create, repair, or retarget it; i3
+config only binds the keypress to it. A user-level XDG desktop entry
+(`configs/system/launchers/dnb-file-manager.desktop`, installed the same
+way as this repo's other custom launchers — see "Components that must
+only run under i3" below) and `xdg-mime default` (set idempotently by
+`configs/dotbot/config.yaml`'s `shell:` section) route `inode/directory`
+into the controller. Full architecture, invariants, and recovery
+semantics: [`configs/session/filemanager/README.md`](configs/session/filemanager/README.md).
 
 ## Rofi
 
@@ -436,6 +456,11 @@ Alt+Tab/Super+Tab still go to xfwm4's own default
   suspend).
 * The i3 config itself (`configs/session/i3/config`) and everything it
   `exec`/`exec_always`s.
+* `configs/session/filemanager/file-manager` — the canonical Files
+  workspace controller (see "Canonical Files workspace" above). Falls back
+  to a plain, unmanaged Thunar window when i3 is not the running window
+  manager, so `explore`/XDG opens still work under XFCE — see that
+  subsystem's own README for the fallback's exact scope.
 
 Workspace names are defined directly in `configs/session/i3/config`. The old
 `bashrc/workspaces` command folder and the XFCE-oriented

@@ -1,0 +1,118 @@
+#!/bin/bash
+
+##
+# thunar-standalone
+#
+# Opens an ordinary, unmanaged Thunar window on the current workspace.
+#
+# FEATURES:
+# - Opens $HOME when no path is provided
+# - Supports --path for an explicit starting directory
+# - Always forces a genuinely new Thunar window (thunar --window), never
+#   reuses/tabs into another window
+#
+# NOT DONE HERE (by design):
+# - Does not touch the canonical Files workspace/i3 marks managed by
+#   configs/session/filemanager/file-manager
+# - Does not switch workspace
+# - Does not change XDG/default-file-manager routing
+# - Never becomes the target of `explore` or other external-open requests
+#
+# See configs/session/filemanager/README.md for the canonical Files
+# workspace this command deliberately stays out of.
+#
+# OPTIONS:
+#   --path <path>       Directory to open (default: $HOME)
+#   --verbose           Enable verbose output
+#   --help              Show this help message
+#
+# EXAMPLES:
+#   thunar-standalone
+#   thunar-standalone --path "${HOME}/Downloads"
+##
+
+thunar-standalone() {
+  local path=""
+  local verbose="false"
+  local file_manager="/usr/bin/thunar"
+
+  _help() {
+    cat <<EOF
+Usage: $(basename "$0") [--path <path>] [--verbose] [--help]
+
+Opens an ordinary, unmanaged Thunar window on the current workspace.
+Never touches the canonical Files workspace (see
+configs/session/filemanager/README.md) and never becomes the target of
+future \`explore\` operations.
+
+Options:
+  --path <path>       Directory to open. Defaults to \${HOME}.
+  --verbose            Enable verbose output.
+  --help               Show this help message.
+EOF
+  }
+
+  _log() {
+    [[ "${verbose}" == "true" ]] && echo "[INFO] $1"
+  }
+
+  _error() {
+    echo "[ERROR] $1" >&2
+  }
+
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --path)
+        if [[ $# -lt 2 ]]; then
+          _error "Missing value for --path"
+          _help
+          return 1
+        fi
+        path="$2"
+        shift 2
+        ;;
+      --verbose)
+        verbose="true"
+        shift
+        ;;
+      --help)
+        _help
+        return 0
+        ;;
+      *)
+        _error "Unknown argument: $1"
+        _help
+        return 1
+        ;;
+    esac
+  done
+
+  if [[ -z "${path}" ]]; then
+    path="${HOME}"
+  fi
+
+  local resolved_path=""
+  resolved_path="${path/#\~/${HOME}}"
+  resolved_path="$(realpath -m "${resolved_path}" 2>/dev/null)"
+
+  if [[ ! -d "${resolved_path}" ]]; then
+    _error "Directory does not exist: ${resolved_path}"
+    return 1
+  fi
+
+  if [[ ! -x "${file_manager}" ]]; then
+    _error "File manager not found or not executable: ${file_manager}"
+    return 1
+  fi
+
+  _log "Opening standalone Thunar window: ${resolved_path}"
+
+  setsid "${file_manager}" --window "${resolved_path}" >/dev/null 2>&1 &
+  disown
+
+  _log "Launched"
+}
+
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+  thunar-standalone "$@"
+fi

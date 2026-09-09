@@ -35,6 +35,7 @@ Espanso
 exportfs
 extensionless
 fastfetch
+filemanager
 filepattern
 filezilla
 Flameshot
@@ -137,6 +138,8 @@ thailandiatour
 thailandiaviaggi
 thaitour
 thaiviaggi
+thunar
+Thunar
 timezone
 typechecks
 undici

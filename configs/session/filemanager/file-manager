@@ -1,0 +1,436 @@
+#!/bin/bash
+#
+# Canonical Thunar file-manager controller for the i3 session.
+#
+# Owns a single "Files" i3 workspace holding exactly two Thunar windows:
+#   file-manager-left   user-controlled, never retargeted by external requests
+#   file-manager-right  the target of every external directory-open request
+#
+# See README.md in this directory for the full architecture, invariants, and
+# recovery semantics. This script is the only place that knows how to create,
+# find, repair, or retarget the managed windows — i3 config and other
+# callers (explore, the XDG desktop entry) only ever invoke this controller.
+
+set -Eeuo pipefail
+
+FILE_MANAGER="/usr/bin/thunar"
+
+WS_NUM=90
+# U+E33C, a Nerd Font private-use glyph (same convention as the icon
+# codepoints in configs/session/i3/workspaces/workspaces.yaml).
+WS_ICON=$''
+WS_NAME="${WS_NUM}:${WS_ICON}"
+MARK_LEFT="file-manager-left"
+MARK_RIGHT="file-manager-right"
+DEFAULT_LEFT_DIR="${HOME}"
+
+POLL_ATTEMPTS=40
+POLL_INTERVAL="0.2"
+
+# shellcheck disable=SC2034 # consumed by sourced dnb logging helpers
+LOG_LEVEL="info"
+# shellcheck disable=SC2034 # consumed by sourced dnb logging helpers
+DNB_SETUP_LOG_FILE="${HOME}/.logs/filemanager/$(date +%Y%m%d-%H%M%S).log"
+
+BASHRC_PATH="${HOME}/.dotfiles/bashrc"
+for lib_file in "${BASHRC_PATH}"/lib/*/*.bash; do
+  # shellcheck disable=SC1090
+  [[ -f "${lib_file}" && -r "${lib_file}" ]] && source "${lib_file}"
+done
+
+if ! command -v dnb_log >/dev/null 2>&1; then
+  dnb_log() {
+    shift || true
+    printf '%s\n' "$*" >&2
+  }
+fi
+
+# jq program that flattens the i3 tree into one JSON object per window,
+# carrying the name of the workspace each window lives under (or null for
+# windows outside any workspace, e.g. the scratchpad or docked bars).
+read -r -d '' I3TREE_JQ <<'JQ' || true
+def with_ws(ws):
+  . as $n
+  | (if ($n.type == "workspace") then $n.name else ws end) as $curws
+  | (if ($n.window != null) then
+      [{id: $n.id, marks: ($n.marks // []), class: ($n.window_properties.class // ""), ws: $curws}]
+    else [] end)
+    + (([$n.nodes[]?, $n.floating_nodes[]?]) | map(with_ws($curws)) | add // [])
+;
+with_ws(null) | .[]
+JQ
+
+print_help() {
+  cat <<EOF
+Usage: $(basename "${0}") --show [--verbose]
+       $(basename "${0}") --open --path <directory> [--verbose]
+       $(basename "${0}") --status [--verbose]
+       $(basename "${0}") --help
+
+Canonical two-pane Thunar file-manager controller for the i3 session (see
+configs/session/filemanager/README.md for full architecture).
+
+Options:
+  --show               Create the canonical Files workspace if it does not
+                        exist, otherwise switch to it. Never creates a
+                        second Files workspace or duplicate managed windows.
+  --open --path <dir>  Ensure the canonical Files workspace and LEFT exist,
+                        then make the RIGHT pane show <dir>. LEFT is never
+                        changed. Switches to the Files workspace and
+                        focuses RIGHT.
+  --status              Read-only report on the current managed environment.
+                        Makes no changes.
+  --verbose             Enable verbose logging (also written under
+                        ~/.logs/filemanager/).
+  --help                Show this help message.
+
+Examples:
+  $(basename "${0}") --show
+  $(basename "${0}") --open --path "\${HOME}/Downloads"
+  $(basename "${0}") --status
+
+Notes:
+  * Requires: i3-msg, jq, ${FILE_MANAGER}
+  * Falls back to a plain, unmanaged Thunar window (no i3 involvement) when
+    i3 is not the running window manager.
+EOF
+}
+
+VERBOSE="false"
+ACTION=""
+OPEN_PATH=""
+
+while [[ $# -gt 0 ]]; do
+  case "${1}" in
+  --show)
+    ACTION="show"
+    shift
+    ;;
+  --open)
+    ACTION="open"
+    shift
+    ;;
+  --path)
+    if [[ $# -lt 2 ]]; then
+      printf 'Error: missing value for --path\n\n' >&2
+      print_help >&2
+      exit 1
+    fi
+    OPEN_PATH="${2}"
+    shift 2
+    ;;
+  --status)
+    ACTION="status"
+    shift
+    ;;
+  --verbose)
+    VERBOSE="true"
+    # shellcheck disable=SC2034 # consumed by sourced dnb logging helpers
+    LOG_LEVEL="debug"
+    shift
+    ;;
+  --help)
+    print_help
+    exit 0
+    ;;
+  *)
+    printf 'Error: unknown argument: %s\n\n' "${1}" >&2
+    print_help >&2
+    exit 1
+    ;;
+  esac
+done
+
+if [[ -z "${ACTION}" ]]; then
+  print_help
+  exit 1
+fi
+
+if [[ "${ACTION}" == "open" && -z "${OPEN_PATH}" ]]; then
+  printf 'Error: --open requires --path <directory>\n\n' >&2
+  print_help >&2
+  exit 1
+fi
+
+# dnb_log writes its console line to stdout by design; every caller below
+# captures a function's stdout via command substitution (container ids), so
+# these wrappers must not leak onto stdout or they corrupt that capture.
+log() { dnb_log info "$*" >&2; }
+vlog() { [[ "${VERBOSE}" == "true" ]] && dnb_log debug "$*" >&2; }
+fail() {
+  dnb_log error "$*" >&2
+  printf 'Error: %s\n' "$*" >&2
+  exit 1
+}
+
+if ! command -v i3-msg >/dev/null 2>&1; then
+  fail "i3-msg not found on PATH"
+fi
+if ! command -v jq >/dev/null 2>&1; then
+  fail "jq not found on PATH"
+fi
+if [[ ! -x "${FILE_MANAGER}" ]]; then
+  fail "File manager not found or not executable: ${FILE_MANAGER}"
+fi
+
+i3_running() {
+  i3-msg -t get_version >/dev/null 2>&1
+}
+
+i3_cmd() {
+  vlog "i3-msg: ${1}"
+  local result
+  result="$(i3-msg "${1}" 2>&1)" || {
+    dnb_log warn "i3-msg command failed: ${1} (${result})"
+    return 1
+  }
+  if ! printf '%s' "${result}" | jq -e '.[0].success' >/dev/null 2>&1; then
+    dnb_log warn "i3-msg command reported failure: ${1} (${result})"
+    return 1
+  fi
+  return 0
+}
+
+i3_tree_flat() {
+  i3-msg -t get_tree | jq -c "${I3TREE_JQ}"
+}
+
+thunar_ids() {
+  # ${1}: flat tree text
+  printf '%s' "${1}" | jq -r 'select(.class=="Thunar") | .id'
+}
+
+marked_id() {
+  # ${1}: flat tree text, ${2}: mark name
+  printf '%s' "${1}" | jq -r --arg m "${2}" 'select(.marks | index($m)) | .id' | head -n1
+}
+
+ws_of_id() {
+  # ${1}: flat tree text, ${2}: con id
+  printf '%s' "${1}" | jq -r --argjson id "${2}" 'select(.id==$id) | .ws' | head -n1
+}
+
+workspace_exists() {
+  i3-msg -t get_workspaces | jq -e --argjson n "${WS_NUM}" 'any(.[]; .num == $n)' >/dev/null 2>&1
+}
+
+# Launches a new Thunar window at ${1} and waits for its i3 container to
+# appear. Prints the new container id on stdout and returns 0, or prints
+# nothing and returns 1 if no new window was detected within the poll
+# budget. Distinguishes the new window from any pre-existing/unmanaged
+# Thunar windows by diffing the set of Thunar container ids before and
+# after launch.
+launch_and_detect() {
+  local path="${1}"
+  local before after attempt new_id
+
+  before="$(thunar_ids "$(i3_tree_flat)" | sort -u)"
+
+  setsid "${FILE_MANAGER}" --window "${path}" >/dev/null 2>&1 &
+  disown
+
+  for ((attempt = 0; attempt < POLL_ATTEMPTS; attempt++)); do
+    sleep "${POLL_INTERVAL}"
+    after="$(thunar_ids "$(i3_tree_flat)" | sort -u)"
+    new_id="$(comm -13 <(printf '%s\n' "${before}") <(printf '%s\n' "${after}") | head -n1)"
+    if [[ -n "${new_id}" ]]; then
+      printf '%s\n' "${new_id}"
+      return 0
+    fi
+  done
+
+  return 1
+}
+
+mark_container() {
+  # i3's `mark` (without --add) is unique: setting it here removes it from
+  # whichever container held it before, so callers never need to unmark
+  # the previous holder explicitly.
+  local con_id="${1}" mark="${2}"
+  i3_cmd "[con_id=${con_id}] mark ${mark}" || fail "Could not mark container ${con_id} as ${mark}"
+}
+
+ensure_workspace() {
+  if workspace_exists; then
+    vlog "Files workspace already exists (number ${WS_NUM})"
+    return 0
+  fi
+  vlog "Creating Files workspace ${WS_NAME}"
+  i3_cmd "workspace \"${WS_NAME}\"" || fail "Could not create Files workspace"
+  i3_cmd "split horizontal" || fail "Could not set Files workspace to horizontal split"
+}
+
+ensure_left() {
+  local flat left_id
+  flat="$(i3_tree_flat)"
+  left_id="$(marked_id "${flat}" "${MARK_LEFT}")"
+
+  if [[ -n "${left_id}" ]]; then
+    printf '%s\n' "${left_id}"
+    return 0
+  fi
+
+  log "LEFT missing, creating a new Thunar window at ${DEFAULT_LEFT_DIR}"
+  left_id="$(launch_and_detect "${DEFAULT_LEFT_DIR}")" || fail "Timed out waiting for the LEFT Thunar window to appear"
+  mark_container "${left_id}" "${MARK_LEFT}"
+  printf '%s\n' "${left_id}"
+}
+
+# Ensures the Files workspace and LEFT exist, repairing either if it is
+# missing or stranded on another workspace. Does not touch RIGHT.
+ensure_workspace_and_left() {
+  ensure_workspace
+  local left_id ws_name
+  left_id="$(ensure_left)"
+  ws_name="$(i3-msg -t get_workspaces | jq -r --argjson n "${WS_NUM}" '.[] | select(.num==$n) | .name')"
+
+  local flat current_ws
+  flat="$(i3_tree_flat)"
+  current_ws="$(ws_of_id "${flat}" "${left_id}")"
+  if [[ "${current_ws}" != "${ws_name}" ]]; then
+    log "LEFT was stranded on workspace '${current_ws}', moving it back"
+    i3_cmd "[con_id=${left_id}] move to workspace \"${ws_name}\"" || fail "Could not move LEFT back to the Files workspace"
+  fi
+
+  printf '%s\n' "${left_id}"
+}
+
+# Applies the canonical LEFT|RIGHT 50/50 layout. Only called after a
+# create/repair/replace operation, never on a plain --show of an already
+# intact environment (see README.md, "Layout convergence").
+enforce_layout() {
+  local ws_name="${1}" left_id="${2}" right_id="${3}"
+
+  i3_cmd "[con_id=${left_id}] move to workspace \"${ws_name}\"" || true
+  i3_cmd "[con_id=${right_id}] move to workspace \"${ws_name}\"" || true
+
+  i3_cmd "[con_id=${left_id}] focus" || true
+  i3_cmd "move left" || true
+  i3_cmd "[con_id=${right_id}] focus" || true
+  i3_cmd "move right" || true
+
+  i3_cmd "[con_id=${left_id}] resize set width 50 ppt" || true
+  i3_cmd "[con_id=${right_id}] resize set width 50 ppt" || true
+}
+
+action_show() {
+  if ! i3_running; then
+    log "i3 is not running; falling back to a plain standalone Thunar window"
+    setsid "${FILE_MANAGER}" --window "${DEFAULT_LEFT_DIR}" >/dev/null 2>&1 &
+    disown
+    return 0
+  fi
+
+  local was_existing="false"
+  workspace_exists && was_existing="true"
+
+  local left_id ws_name flat right_id created_right="false"
+  left_id="$(ensure_workspace_and_left)"
+  ws_name="$(i3-msg -t get_workspaces | jq -r --argjson n "${WS_NUM}" '.[] | select(.num==$n) | .name')"
+
+  flat="$(i3_tree_flat)"
+  right_id="$(marked_id "${flat}" "${MARK_RIGHT}")"
+  if [[ -z "${right_id}" ]]; then
+    log "RIGHT missing, creating a new Thunar window at ${DEFAULT_LEFT_DIR}"
+    right_id="$(launch_and_detect "${DEFAULT_LEFT_DIR}")" || fail "Timed out waiting for the RIGHT Thunar window to appear"
+    mark_container "${right_id}" "${MARK_RIGHT}"
+    created_right="true"
+  fi
+
+  if [[ "${was_existing}" == "false" || "${created_right}" == "true" ]]; then
+    enforce_layout "${ws_name}" "${left_id}" "${right_id}"
+  fi
+
+  i3_cmd "workspace \"${ws_name}\"" || true
+  if [[ "${was_existing}" == "false" ]]; then
+    i3_cmd "[con_id=${left_id}] focus" || true
+  fi
+}
+
+action_open() {
+  local requested_path resolved_path
+
+  requested_path="${OPEN_PATH}"
+  requested_path="${requested_path/#\~/${HOME}}"
+  resolved_path="$(realpath -m -- "${requested_path}" 2>/dev/null)" || fail "Could not resolve path: ${requested_path}"
+
+  if [[ ! -d "${resolved_path}" ]]; then
+    fail "Directory does not exist: ${resolved_path}"
+  fi
+
+  if ! i3_running; then
+    log "i3 is not running; falling back to a plain standalone Thunar window at ${resolved_path}"
+    setsid "${FILE_MANAGER}" --window "${resolved_path}" >/dev/null 2>&1 &
+    disown
+    return 0
+  fi
+
+  local left_id ws_name flat old_right_id new_right_id
+  left_id="$(ensure_workspace_and_left)"
+  ws_name="$(i3-msg -t get_workspaces | jq -r --argjson n "${WS_NUM}" '.[] | select(.num==$n) | .name')"
+
+  flat="$(i3_tree_flat)"
+  old_right_id="$(marked_id "${flat}" "${MARK_RIGHT}")"
+
+  log "Opening ${resolved_path} in RIGHT"
+  new_right_id="$(launch_and_detect "${resolved_path}")" || fail "Timed out waiting for the replacement RIGHT Thunar window to appear"
+  mark_container "${new_right_id}" "${MARK_RIGHT}"
+
+  enforce_layout "${ws_name}" "${left_id}" "${new_right_id}"
+
+  if [[ -n "${old_right_id}" && "${old_right_id}" != "${new_right_id}" ]]; then
+    vlog "Closing previous RIGHT window (container ${old_right_id})"
+    i3_cmd "[con_id=${old_right_id}] kill" || true
+  fi
+
+  i3_cmd "workspace \"${ws_name}\"" || true
+  i3_cmd "[con_id=${new_right_id}] focus" || true
+}
+
+action_status() {
+  printf 'i3 running: %s\n' "$(i3_running && echo yes || echo no)"
+
+  if ! i3_running; then
+    return 0
+  fi
+
+  if workspace_exists; then
+    local ws_name
+    ws_name="$(i3-msg -t get_workspaces | jq -r --argjson n "${WS_NUM}" '.[] | select(.num==$n) | .name')"
+    printf 'Files workspace: present (%s)\n' "${ws_name}"
+  else
+    printf 'Files workspace: absent (reserved number %s)\n' "${WS_NUM}"
+  fi
+
+  local flat left_id right_id
+  flat="$(i3_tree_flat)"
+  left_id="$(marked_id "${flat}" "${MARK_LEFT}")"
+  right_id="$(marked_id "${flat}" "${MARK_RIGHT}")"
+
+  if [[ -n "${left_id}" ]]; then
+    printf 'LEFT (%s): container %s on workspace %s\n' "${MARK_LEFT}" "${left_id}" "$(ws_of_id "${flat}" "${left_id}")"
+  else
+    printf 'LEFT (%s): absent\n' "${MARK_LEFT}"
+  fi
+
+  if [[ -n "${right_id}" ]]; then
+    printf 'RIGHT (%s): container %s on workspace %s\n' "${MARK_RIGHT}" "${right_id}" "$(ws_of_id "${flat}" "${right_id}")"
+  else
+    printf 'RIGHT (%s): absent\n' "${MARK_RIGHT}"
+  fi
+
+  local unmanaged
+  unmanaged="$(thunar_ids "${flat}" | grep -vxF -e "${left_id}" -e "${right_id}" || true)"
+  if [[ -n "${unmanaged}" ]]; then
+    printf 'Unmanaged Thunar windows: %s\n' "$(printf '%s' "${unmanaged}" | tr '\n' ' ')"
+  else
+    printf 'Unmanaged Thunar windows: none\n'
+  fi
+}
+
+case "${ACTION}" in
+show) action_show ;;
+open) action_open ;;
+status) action_status ;;
+*) fail "Unknown action: ${ACTION}" ;;
+esac
