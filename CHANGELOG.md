@@ -1,5 +1,25 @@
 # Changelog
 
+## [2.10.0](https://github.com/davidsneighbour/dotfiles/compare/v2.9.0...v2.10.0) (2026-09-09)
+
+### Feat
+
+* **filemanager:** add canonical two-pane Thunar workspace for i3 ([f6d9d07](https://github.com/davidsneighbour/dotfiles/commit/f6d9d077508bde4aa3b8aeda748d190d76af06bb))
+
+### Fix
+
+* **filemanager:** fix i3 exec syntax for Ctrl+Shift+Alt+F binding ([1924ac0](https://github.com/davidsneighbour/dotfiles/commit/1924ac0481f639c2c7e5660781f9f6f23e090d1b))
+* **filemanager:** stop i3_cmd warnings leaking into captured con ids ([71c5169](https://github.com/davidsneighbour/dotfiles/commit/71c5169e887650614172476df39d6b965cc3c877))
+
+### Docs
+
+* **ai:** restructure agent instructions and fix markdownlint repo-wide ([9e21cc5](https://github.com/davidsneighbour/dotfiles/commit/9e21cc5526b73007ae6e4ace00a332fd591a9871))
+* **i3:** add instructions for verifying i3 keybindings/workspace commands ([668b42a](https://github.com/davidsneighbour/dotfiles/commit/668b42a20a9d2bf1c9bd8c855ce1370a8dee0e82))
+
+### Chore
+
+* update unsplash plus collection data ([88f432c](https://github.com/davidsneighbour/dotfiles/commit/88f432cd50fa972459106fc99a949424d73ef78e))
+
 ## [2.9.0](https://github.com/davidsneighbour/dotfiles/compare/v2.8.0...v2.9.0) (2026-09-09)
 
 ### Feat
