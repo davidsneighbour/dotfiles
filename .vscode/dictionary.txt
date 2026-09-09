@@ -5,8 +5,8 @@ automount
 autostarted
 autostarting
 autostarts
-Bibata
 betterlockscreen
+Bibata
 bindsym
 biomejs
 bordercolor
@@ -26,8 +26,8 @@ dnbhq
 dotbot
 dreamhost
 drun
-Enpass
 enpass
+Enpass
 erasedups
 errexit
 esac
@@ -40,7 +40,11 @@ filezilla
 Flameshot
 fontconfig
 FUNCNAME
+gdrive
 getopts
+getwindowgeometry
+getwindowname
+getwindowpid
 gitmark
 gitmarker
 glone
@@ -51,6 +55,7 @@ hideemptyprojects
 hono
 hostinformation
 humanwhocodes
+i3lock
 ibus
 ignoreboth
 imagemin
@@ -59,7 +64,6 @@ inspectable
 journalctl
 jsonnet
 jsonnetfmt
-i3lock
 Kando
 keybinding
 Kollitsch
@@ -68,12 +72,13 @@ lighthousing
 linted
 lintstaged
 listview
-locutus
 lockscreen
+locutus
 LOGLEVEL
 mainbox
 mktemp
 Monaspace
+mountpoint
 msgvault
 nagbar
 ncurc
@@ -83,6 +88,7 @@ nohup
 nonexistent
 nostr
 ntfy
+ocamlfuse
 ollama
 openbox
 openpencil
@@ -92,6 +98,7 @@ Pango
 penpot
 pipefail
 pixelsize
+pkollitsch
 polybar
 Polybar
 PORKBUN
@@ -113,6 +120,7 @@ scratchpads
 SECKEY
 secp
 secretapikey
+selectwindow
 separatorcolor
 shellcheck
 shellenv
@@ -145,15 +153,11 @@ workspacedirs
 worktree
 XAUTHORITY
 xbindkeys
+xdotool
 xfconf
 xfsettingsd
-Xsettings
 xprop
+Xsettings
 xwininfo
-getwindowname
-getwindowpid
-getwindowgeometry
-selectwindow
-xdotool
 yarnpkg
 zseven
