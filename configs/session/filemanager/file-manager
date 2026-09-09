@@ -181,11 +181,11 @@ i3_cmd() {
   vlog "i3-msg: ${1}"
   local result
   result="$(i3-msg "${1}" 2>&1)" || {
-    dnb_log warn "i3-msg command failed: ${1} (${result})"
+    dnb_log warn "i3-msg command failed: ${1} (${result})" >&2
     return 1
   }
   if ! printf '%s' "${result}" | jq -e '.[0].success' >/dev/null 2>&1; then
-    dnb_log warn "i3-msg command reported failure: ${1} (${result})"
+    dnb_log warn "i3-msg command reported failure: ${1} (${result})" >&2
     return 1
   fi
   return 0
