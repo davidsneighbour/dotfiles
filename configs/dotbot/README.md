@@ -20,6 +20,8 @@ the configuration files to be named and composed.
 | `config.protected.yaml` | Protected/private configuration links. |
 | `includes.yaml` | Optional extra config chains loaded by the wrapper. |
 
+The `skillz` helper generates the AI skill symlink profile at `cache/dotbot/config.ai-skills.yaml` before it runs Dotbot. That cache file is derived from `SKILL_REPOSITORIES` in [bashrc/helpers/skillz](../../bashrc/helpers/skillz), is ignored by Git, and must not be edited by hand.
+
 ## Running profiles
 
 Run the default profile:
@@ -34,6 +36,7 @@ Run a named profile:
 dotfiles host-locutus
 dotfiles --config host-locutus
 dotfiles --config config.host-locutus.yaml
+dotfiles /absolute/path/to/config.yaml
 ```
 
 Choose a profile interactively:
@@ -42,8 +45,7 @@ Choose a profile interactively:
 dotfiles --list
 ```
 
-The wrapper resolves `host-locutus` to `config.host-locutus.yaml`. The default
-profile is always `config.yaml`.
+The wrapper resolves `host-locutus` to `config.host-locutus.yaml`. Absolute paths are used as written. The default profile is always `config.yaml`.
 
 ## Config format
 

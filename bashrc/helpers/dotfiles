@@ -2,12 +2,12 @@
 ################################################################################
 # dotfiles — dotbot wrapper script
 #
-# Runs configs/dotbot/config[.NAME].yaml via the brew-installed dotbot binary.
+# Runs configs/dotbot/config[.NAME].yaml, or an absolute config path, via the brew-installed dotbot binary.
 # Optional extra configs are read from configs/dotbot/includes.yaml.
 #
 # Usage:
-#   dotfiles [CONFIG_NAME]
-#   dotfiles --config CONFIG_NAME
+#   dotfiles [CONFIG_NAME|/ABSOLUTE/CONFIG.yaml]
+#   dotfiles --config CONFIG_NAME|/ABSOLUTE/CONFIG.yaml
 #   dotfiles --list
 #   dotfiles --help
 #
@@ -40,8 +40,8 @@ source_core_libs() {
 print_help() {
   cat <<'HELP'
 Usage:
-  dotfiles [CONFIG_NAME]
-  dotfiles --config CONFIG_NAME
+  dotfiles [CONFIG_NAME|/ABSOLUTE/CONFIG.yaml]
+  dotfiles --config CONFIG_NAME|/ABSOLUTE/CONFIG.yaml
   dotfiles --list
   dotfiles --help
 
@@ -50,6 +50,7 @@ Options:
                          Supported forms are equivalent:
                            host-locutus
                            config.host-locutus.yaml
+                           /absolute/path.yaml
   --list                 Select and run a config from configs/dotbot via gum.
   -h, --help             Show this help.
 
@@ -87,6 +88,9 @@ resolve_config_path() {
 
   if [[ -z "${raw_config_name}" ]]; then
     filename="${DEFAULT_CONFIG_FILE}"
+  elif [[ "${raw_config_name}" == /* ]]; then
+    printf '%s\n' "${raw_config_name}"
+    return 0
   else
     filename="$(normalize_config_to_filename "${raw_config_name}")"
   fi

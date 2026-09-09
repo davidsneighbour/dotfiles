@@ -120,6 +120,10 @@ resolve_included_config_paths "${CONFIGS_DIR}/config.host-locutus.yaml" resolved
 expected_paths=("${CONFIGS_DIR}/config.short.yaml")
 assert_array_equal expected_paths resolved_paths 'short include keys resolve to canonical config filenames'
 
+absolute_config_path="${TMPDIR}/external/config.project.yaml"
+resolved_config_path="$(resolve_config_path "${absolute_config_path}")"
+assert_equal "${absolute_config_path}" "${resolved_config_path}" 'absolute config paths resolve unchanged'
+
 write_file "${INCLUDES_FILE}" '---
 config.ai.yaml:
   - config.short.yaml

@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 set -Eeuo pipefail
 
@@ -26,7 +26,8 @@ AGENT_SKILL_ROOTS=(
 
 SCRIPT_PATH="$(readlink -f "${BASH_SOURCE[0]}")"
 REPO_ROOT="$(cd "$(dirname "${SCRIPT_PATH}")/../.." && pwd)"
-DOTBOT_CONFIG="${REPO_ROOT}/configs/dotbot/config.ai-skills.yaml"
+DOTBOT_CACHE_DIR="${REPO_ROOT}/cache/dotbot"
+DOTBOT_CONFIG="${DOTBOT_CACHE_DIR}/config.ai-skills.yaml"
 
 declare -A SKILL_PATHS=()
 TRUSTED_ROOTS=()
@@ -97,6 +98,8 @@ portable_path() {
 
 write_dotbot_config() {
   local root name trusted trusted_pattern
+
+  mkdir -p "${DOTBOT_CACHE_DIR}"
 
   trusted_pattern=""
   for trusted in "${TRUSTED_ROOTS[@]}"; do
@@ -207,8 +210,8 @@ main() {
   printf 'Regenerating %s...\n' "${DOTBOT_CONFIG}"
   write_dotbot_config
 
-  printf '\nRunning: dotfiles ai-skills\n\n'
-  dotfiles ai-skills
+  printf '\nRunning: dotfiles %s\n\n' "${DOTBOT_CONFIG}"
+  dotfiles "${DOTBOT_CONFIG}"
 
   show_symlinks
 

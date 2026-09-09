@@ -262,6 +262,24 @@ Requirements:
 * Node.js with TypeScript execution support.
 * ffmpeg and ffprobe.
 
+### `skillz`
+
+Generates the AI skill Dotbot profile from the configured skill repositories, writes it to `cache/dotbot/config.ai-skills.yaml`, runs that generated profile through `dotfiles`, and prints the installed skill symlinks. The cache profile is derived state and is ignored by Git.
+
+Functions/methods defined:
+
+* `die`
+* `compute_trusted_roots`
+* `collect_skills`
+* `portable_path`
+* `write_dotbot_config`
+* `show_symlinks`
+* `main`
+
+Requirements:
+
+* bash, the `dotfiles` helper, and the configured local skill repositories.
+
 ### `set_max_listeners.cjs`
 
 Node preload/snippet that raises EventEmitter.defaultMaxListeners to 20.
