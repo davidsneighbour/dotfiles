@@ -19,6 +19,10 @@
     ~/github.com/davidsneighbour/dotfiles/containers/hal2025/paperless/consume: /mnt/storage/Paperless/consume
 
 - crontab:
+    - cron: "15 4 * * 0"
+      comment: "weekly Node.js Current update"
+      command: mkdir -p "${HOME}/.logs/cron" && ${HOME}/.dotfiles/bashrc/cronjobs/node-update.sh >> "${HOME}/.logs/cron/node-update-$(date +\%Y\%m\%d-\%H\%M\%S).log" 2>&1
+
     - cron: "0 */2 * * *"
       command: ${HOME}/github.com/davidsneighbour/dotfiles/containers/hal2025/paperless/backup
 
