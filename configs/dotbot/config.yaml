@@ -50,6 +50,7 @@
     ~/.config/picom: configs/session/picom
     ~/.config/terminator: configs/session/terminator
     ~/.config/Thunar: configs/session/thunar
+    ~/.local/share/barrier/.barrier.conf: configs/session/barrier/barrier.conf
 
     # configs
     ~/.nvmrc: .nvmrc
@@ -61,7 +62,6 @@
     ~/.config/sublime-merge: configs/system/sublime-merge
     ~/.config/sublime-text: configs/system/sublime-text
     ~/.config/filezilla: configs/system/filezilla
-    ~/.barrier-server.config: configs/system/barrier/barrier-server.conf
 
     # git setup
     ~/.gitignore: configs/system/git/global.gitignore
