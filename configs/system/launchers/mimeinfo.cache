@@ -10,6 +10,7 @@ image/gif=google-chrome-beta.desktop;google-chrome-canary.desktop;google-chrome-
 image/jpeg=google-chrome-beta.desktop;google-chrome-canary.desktop;google-chrome-unstable.desktop;
 image/png=google-chrome-beta.desktop;google-chrome-canary.desktop;google-chrome-unstable.desktop;
 image/webp=google-chrome-beta.desktop;google-chrome-canary.desktop;google-chrome-unstable.desktop;
+inode/directory=dnb-file-manager.desktop;
 text/html=google-chrome-beta.desktop;google-chrome-canary.desktop;google-chrome-unstable.desktop;netflix.desktop;
 text/plain=dev.zed.Zed.desktop;
 text/xml=google-chrome-beta.desktop;google-chrome-canary.desktop;google-chrome-unstable.desktop;netflix.desktop;

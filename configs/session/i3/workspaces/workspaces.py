@@ -222,27 +222,6 @@ def get_i3_tree() -> dict[str, Any]:
     return parsed if isinstance(parsed, dict) else {}
 
 
-def workspace_icon_for_name(
-    workspace_name: str,
-    workspaces: list[Workspace],
-    dynamic_applications: dict[str, DynamicApplication],
-) -> str:
-    for workspace in workspaces:
-        if workspace_name == workspace.i3_name:
-            return workspace.icon
-
-    segments = workspace_name.split(":", 2)
-    if len(segments) >= 2:
-        dynamic_indicator = segments[1]
-        for application in dynamic_applications.values():
-            if application.workspace_prefix == dynamic_indicator:
-                return application.icon
-        if dynamic_indicator:
-            return dynamic_indicator
-
-    return ""
-
-
 def iter_windows(
     node: dict[str, Any],
     workspace_name: str = "",
@@ -305,9 +284,6 @@ def pango_escape(value: str) -> str:
 
 
 def command_window_switcher(args: argparse.Namespace) -> int:
-    config = load_config(args.config)
-    workspaces = load_workspaces(config)
-    dynamic_applications = load_dynamic_applications(config)
     windows = iter_windows(get_i3_tree())
 
     if not windows:
@@ -317,14 +293,12 @@ def command_window_switcher(args: argparse.Namespace) -> int:
         (
             con_id,
             (
-                "<span font='lucide'>"
-                f"{pango_escape(workspace_icon_for_name(workspace_name, workspaces, dynamic_applications))}"
-                "</span> "
                 f"<span color='#708CA9'>{pango_escape(window_class[:18])}</span> "
                 f"{pango_escape(title)}"
+                f"\0icon\x1f{window_class.lower()}"
             ),
         )
-        for con_id, workspace_name, window_class, title in windows
+        for con_id, _workspace_name, window_class, title in windows
     ]
 
     rofi = subprocess.run(
@@ -333,6 +307,7 @@ def command_window_switcher(args: argparse.Namespace) -> int:
             "-x11",
             "-dmenu",
             "-i",
+            "-show-icons",
             "-markup-rows",
             "-config",
             str(args.rofi_config),

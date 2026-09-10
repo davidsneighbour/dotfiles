@@ -7,7 +7,7 @@ possible. New allocations should use clean `10` or `100` steps such as `3020`,
 `3100`, or `3300`. Before adding a new container, pick a clean port that is not
 listed here, then add it to this table in the same change as the compose file.
 
-Preferred next free port: `3070`.
+Preferred next free port: `3080`.
 
 ### 3000 row
 
@@ -25,12 +25,13 @@ Preferred next free port: `3070`.
   Source: `containers/locutus/freshrss/docker-compose.yaml`.
 * `3060`: changedetection.io, container port `5000`.
   Source: `containers/locutus/changedetection/docker-compose.yaml`.
+* `3070`: Tasks, container instance managed outside this repository.
 * `3200`: Open WebUI, container port `8080`.
   Source: `containers/locutus/openwebui/docker-compose.yaml`.
 
 Preferred free slots in the `3000-3999` row, based on repository definitions:
 
-* `3070-3190` in `10` steps
+* `3080-3190` in `10` steps
 * `3210-3990` in `10` steps
 
 Avoid assigning arbitrary in-between ports such as `3006` or `3038`; keep those

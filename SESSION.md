@@ -395,10 +395,34 @@ Alt+Tab/Super+Tab still go to xfwm4's own default
 
 ## Screen lock
 
-* `xss-lock` is started once per session (`exec`, not `exec_always` — see
-  "Session startup" — in `configs/session/i3/configs/session-starts.conf`)
-  as `xss-lock --transfer-sleep-lock -- configs/session/i3lock/lock.sh`.
-  `lock.sh` resolves its own directory and runs `i3lock --nofork -i
+* `xss-lock` runs as the systemd --user unit
+  `configs/session/systemd/xss-lock.service` (`Restart=on-failure`), started
+  (and re-armed if it died) from
+  `configs/session/i3/configs/session-starts.conf` on every i3 restart via
+  `exec_always ... systemctl --user start xss-lock.service`. It previously
+  ran as a plain backgrounded `exec` shell job with no supervision: if it
+  ever died mid-session, nothing restarted it, and every subsequent
+  lock/suspend fell through to whatever locks the session without it
+  (LightDM/logind's own re-auth) — a path that never runs `lock.sh`, so
+  Polybar was never restarted either. Starting it via `systemctl --user
+  start` is a safe no-op when already running, so `exec_always` re-arms it
+  without ever duplicating it.
+* This system has `Linger=yes` (`loginctl show-user patrick`), so
+  `systemd --user` is a single persistent manager decoupled from any one
+  login session (its own "manager"-class pseudo session), not the graphical
+  seat0 session i3 runs in. That breaks `xss-lock`'s default cgroup-based
+  session lookup for units started this way (`Error getting session:
+  ... NoSessionForPID`), which would silently degrade
+  `--transfer-sleep-lock`'s suspend handling even though the unit looks
+  healthy. The fix (documented in the unit file, and matching upstream's own
+  example at `/usr/share/doc/xss-lock/xss-lock.service`) is to pass `xss-lock
+  -s "${XDG_SESSION_ID}"` explicitly, which requires `XDG_SESSION_ID` to
+  already be in the user manager's environment — `session-starts.conf` runs
+  `systemctl --user import-environment XDG_SESSION_ID` immediately before
+  starting the unit, in the same shell so ordering is guaranteed. Verified
+  live: after this, `loginctl session-status 5` shows the `xss-lock` sleep
+  inhibitor (`delay`, "Lock screen first") correctly held against session 5.
+* `lock.sh` resolves its own directory and runs `i3lock --nofork -i
   configs/session/i3lock/lockscreen.png` with a full path, so it works
   regardless of i3's `exec` environment (same rationale as the
   `Super+Shift+e` powermenu binding). If the installed `i3lock` binary

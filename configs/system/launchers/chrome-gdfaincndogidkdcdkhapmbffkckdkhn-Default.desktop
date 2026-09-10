@@ -1,0 +1,8 @@
+[Desktop Entry]
+Version=1.0
+Terminal=false
+Type=Application
+Name=Google Gemini
+Exec=/opt/google/chrome/google-chrome --profile-directory=Default --app-id=gdfaincndogidkdcdkhapmbffkckdkhn
+Icon=/home/patrick/.local/share/icons/hicolor/512x512/apps/chrome-gdfaincndogidkdcdkhapmbffkckdkhn-Default.png
+StartupWMClass=crx_gdfaincndogidkdcdkhapmbffkckdkhn

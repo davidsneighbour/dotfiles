@@ -1,0 +1,23 @@
+[Unit]
+Description=xss-lock screen locker (runs lock.sh on idle and before suspend)
+Documentation=man:xss-lock(1)
+
+[Service]
+# -s "${XDG_SESSION_ID}" is required, not cosmetic: this runs under the
+# shared systemd --user manager (see `loginctl show-user`, Linger=yes), which
+# is its own persistent "manager"-class login session, not the graphical
+# seat0 session i3 runs in. Without an explicit session ID, xss-lock's
+# cgroup-based session lookup (sd_pid_get_session) fails for units started
+# this way ("Error getting session: ... NoSessionForPID"), which silently
+# breaks --transfer-sleep-lock's suspend handling. `-s` sidesteps that
+# lookup entirely. XDG_SESSION_ID must be imported into the user manager's
+# environment before this unit starts (see session-starts.conf, which does
+# `systemctl --user import-environment XDG_SESSION_ID` right before starting
+# this unit) — this mirrors upstream's own documented pattern, see
+# /usr/share/doc/xss-lock/xss-lock.service.
+ExecStart=/usr/bin/xss-lock -l -s "${XDG_SESSION_ID}" -- %h/.dotfiles/configs/session/i3lock/lock.sh
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=default.target
