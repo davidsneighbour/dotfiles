@@ -1,32 +1,25 @@
 [global_config]
-  title_transmit_fg_color = "#282a36"
-  title_transmit_bg_color = "#50fa7b"
-  title_receive_fg_color = "#282a36"
-  title_receive_bg_color = "#ff79c6"
-  title_inactive_fg_color = "#f8f8f2"
-  title_inactive_bg_color = "#44475a"
   inactive_color_offset = 0.61
-  suppress_multiple_term_dialog = True
-  title_hide_sizetext = True
-
-
-
 [keybindings]
-
-
 [profiles]
   [[default]]
     background_color = "#282a36"
     background_image = None
-    # font = Anonymous Pro 12
     font = Monaspace Krypton Ultra-Light 12
     foreground_color = "#f8f8f2"
     palette = "#262626:#e356a7:#42e66c:#e4f34a:#9b6bdf:#e64747:#75d7ec:#efa554:#7a7a7a:#ff79c6:#50fa7b:#f1fa8c:#bd93f9:#ff5555:#8be9fd:#ffb86c"
-    # use_system_font = False
     bold_is_bright = True
     copy_on_selection = True
-
-
+  [[scratch]]
+    background_color = "#282a36"
+    background_darkness = 0.6
+    background_type = transparent
+    background_image = None
+    font = Monaspace Krypton Ultra-Light 12
+    foreground_color = "#f8f8f2"
+    palette = "#262626:#e356a7:#42e66c:#e4f34a:#9b6bdf:#e64747:#75d7ec:#efa554:#7a7a7a:#ff79c6:#50fa7b:#f1fa8c:#bd93f9:#ff5555:#8be9fd:#ffb86c"
+    bold_is_bright = True
+    copy_on_selection = True
 [layouts]
   [[default]]
     [[[child0]]]

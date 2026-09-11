@@ -84,7 +84,9 @@ LightDM
         │   configs/session/polybar/launch.sh via i3 exec_always)
         ├── background (xsetroot solid colour, then feh sets a
         │   fixed repo-committed wallpaper)
-        └── (no compositor, no notification daemon, no monitor rules —
+        ├── picom (compositor — shadows, RGBA/transparency; see
+        │   "Background")
+        └── (no notification daemon, no monitor rules —
             intentionally out of scope, see "Known limitations")
 ```
 
@@ -112,7 +114,8 @@ LightDM
       `~/.logs/polybar-i3/bar-YYYYMMDD.log`. **Non-fatal**: the script
       itself never exits in a way i3 acts on, and internally logs+returns
       rather than throwing if `polybar` or the config file is missing.
-5. Nothing else is started automatically. No compositor, no notification
+5. Nothing else is started automatically beyond `picom` (see "Background")
+   and the other `session-starts.conf` entries below. No notification
    daemon, no monitor/xrandr commands, no wallpaper-manager daemon. i3 has
    no session manager, so it never reads XDG autostart (`~/.config/
    autostart`) either way — dotfiles no longer manages an autostart pool
@@ -153,6 +156,7 @@ binding works. Full table:
 | `Ctrl+Shift+W` | Open Rofi VS Code workspace picker and launch the selection in a temporary dynamic Code workspace (`configs/session/rofi/workspaces.sh --newwindow --dynamic-workspace code`) |
 | `Ctrl+Shift+Alt+I` | Click a window, then show its WM_CLASS/role/title/PID/geometry in a floating terminal (`configs/session/i3/window-inspector.sh`) — see "Window rules" |
 | `Ctrl+Shift+Alt+E` | Toggle Enpass in/out of the scratchpad on the current workspace (`[con_mark="scratch-enpass"] scratchpad show`) — see "Window rules" |
+| `Ctrl+Shift+Alt+T` | Toggle the persistent scratch terminal in/out of the scratchpad on the current workspace, right half of the focused output (`configs/session/terminal/scratch-terminal --toggle`) — see "Scratch terminal" below |
 | `Ctrl+Shift+Alt+F` | Show the canonical, singleton Files workspace — a two-pane Thunar environment (LEFT user-controlled, RIGHT the external-open target) invoked via `configs/session/filemanager/file-manager --show` — see "Canonical Files workspace" below |
 | `Alt+Tab` (`Mod1+Tab`) | Open YAML-aware Rofi window switcher, all workspaces (`configs/session/rofi/window-switcher.sh`) — see "Rofi" below |
 | `Super+Enter` | Open terminal (`$terminal`, currently `xfce4-terminal`) |
@@ -286,6 +290,68 @@ live against a running i3 session: reload picks up the rule, the keybinding
 shows/hides/focuses the marked window, and toggling from a second workspace
 shows the same window there.
 
+### Scratch terminal
+
+A second, singleton scratchpad window — a persistent, Guake-style dropdown
+terminal built entirely from native i3 scratchpad behaviour, not a
+dedicated dropdown-terminal application. Full architecture, geometry
+rationale, and command reference:
+[`configs/session/terminal/README.md`](configs/session/terminal/README.md).
+
+* **Match criterion**: `window_role="scratch-terminal"`, set by
+  `terminator --role=scratch-terminal` when
+  `configs/session/terminal/scratch-terminal` launches it — the same
+  custom-role mechanism `window-inspector.sh` uses (see "Window rules"
+  above). Ordinary Terminator windows opened via `$mod+Return` carry no
+  role and never match.
+* **Rule** (`rules.conf`): `for_window [window_role="scratch-terminal"]
+  mark scratch-terminal, floating enable, move scratchpad` — marks, floats,
+  and scratchpads it the instant it maps, before the controller does
+  anything else.
+* **Mark**: `scratch-terminal`. Every controller operation (show, hide,
+  resize, focus, kill on `--restart`) targets this mark, never
+  class/title, so it can never touch an ordinary Terminator window.
+* **Keybinding**: `Ctrl+Shift+Alt+T` (see "Keybinding architecture"),
+  bound to `scratch-terminal --toggle`. Unlike the Enpass binding, this is
+  not a bare `[con_mark=...] scratchpad show` inline in the i3 config: the
+  controller also has to create the window on first use and recompute
+  right-half-of-output geometry on every show, so that logic lives in the
+  dedicated script rather than the i3 config itself.
+* **Appearance**: launched with `--profile scratch`, a transparent-
+  background Terminator profile defined only in
+  `configs/session/terminator/config`'s `[profiles] [[scratch]]` block
+  (`background_type = transparent`, `background_darkness = 0.85`),
+  rendered by the `picom` compositor already started from
+  `session-starts.conf`. Ordinary Terminator windows never pass
+  `--profile`, so they keep using `[[default]]` and stay opaque.
+* **Geometry**: recalculated on every show from the *currently focused*
+  workspace's `rect` (`i3-msg -t get_workspaces`), which i3 already reports
+  with Polybar's reserved dock-bar strut excluded — no separate
+  `xrandr`/EWMH lookup needed. No dimensions are hardcoded, so this stays
+  correct across resolution changes, output switches, and non-zero-origin
+  multi-monitor layouts.
+* **Lifecycle**: created lazily on first `--toggle`/`--show`, not
+  autostarted from `session-starts.conf` — see the README's "Lifecycle"
+  section for the tradeoff. Once created, the same Terminator process
+  persists (shell state, scrollback, running commands, SSH sessions
+  included) until `i3-msg restart`/logout or an explicit `--restart`.
+* **Does not follow workspace changes automatically** — switching
+  workspaces leaves it wherever it was; `Ctrl+Shift+Alt+T` again summons it
+  onto the newly focused workspace.
+* No Polybar workspace is created or exposed for it, for the same reason as
+  Enpass: it never occupies a normal workspace.
+
+Validated non-interactively: `bash -n
+configs/session/terminal/scratch-terminal`, `shellcheck
+configs/session/terminal/scratch-terminal`, `i3 -C -c
+configs/session/i3/config`. Validated live against a running i3 session:
+first toggle creates and shows exactly one instance with correct right-half
+geometry; toggle again hides it (shell state preserved); toggle from a
+different workspace summons the same window there; rapid repeated toggles
+never duplicate the window; `--restart` replaces only the marked terminal,
+confirmed against a concurrently open ordinary `$mod+Return` Terminator
+window which stayed untouched (no mark, tiled, unmoved) throughout.
+
 <!-- markdownlint-disable-next-line title-case-style -->
 ## Canonical Files workspace
 
@@ -390,8 +456,12 @@ Alt+Tab/Super+Tab still go to xfwm4's own default
 * `feh --bg-fill configs/session/i3/wallpaper.jpg` then overrides the solid
   colour with a fixed, repo-committed wallpaper image. i3-only — feh is
   invoked directly from `session-starts.conf`, with no backend detection.
-* No compositor is configured (Picom or otherwise) — out of scope per the
-  starter spec; see "Known limitations."
+* `picom --config ~/.config/picom/picom.conf` runs once per session
+  (plain `exec`, not `exec_always` — restarting it on every `i3-msg
+  restart` is unnecessary since it needs no re-arming) from
+  `session-starts.conf`, giving windows shadows and RGBA/transparency
+  support. This is what the "Scratch terminal" section's `[[scratch]]`
+  Terminator profile relies on for its transparent background.
 
 ## Screen lock
 
@@ -486,6 +556,9 @@ Alt+Tab/Super+Tab still go to xfwm4's own default
   suspend).
 * The i3 config itself (`configs/session/i3/config`) and everything it
   `exec`/`exec_always`s.
+* `configs/session/terminal/scratch-terminal` — the scratch terminal
+  controller (see "Scratch terminal" above). Targets i3's IPC directly and
+  fails fast if i3 is not running; it has no XFCE fallback.
 * `configs/session/filemanager/file-manager` — the canonical Files
   workspace controller (see "Canonical Files workspace" above). Falls back
   to a plain, unmanaged Thunar window when i3 is not the running window
@@ -605,8 +678,10 @@ a separate, explicit request — see the spec's scope-control section):
   under i3 otherwise. Auditing whether any of the removed autostart apps
   (Barrier, Dropbox, Discord, etc.) need an i3 `exec` line of their own is
   a deliberate follow-up, not part of this change.
-* No compositor (e.g. Picom) — windows will not have shadows/transparency;
-  add only if a specific problem needs it.
+* `picom` runs (see "Background" above), but with no host-specific tuning
+  beyond `~/.config/picom/picom.conf`'s defaults — it exists to support
+  shadows and the scratch terminal's transparency, not as a general
+  visual-effects layer.
 * No notification daemon — `notify-send` calls will silently do nothing
   under i3 right now.
 * No monitor-specific (`xrandr`) configuration — this host currently has a

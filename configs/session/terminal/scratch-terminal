@@ -1,0 +1,356 @@
+#!/bin/bash
+#
+# Persistent, summonable scratchpad terminal for the i3 session.
+#
+# Owns exactly one Terminator instance, identified by a stable
+# WM_WINDOW_ROLE (scratch-terminal), that i3's for_window rule
+# (configs/session/i3/configs/rules.conf) marks, floats, and sends to the
+# scratchpad as soon as it maps. This controller never matches ordinary
+# Terminator windows opened via $mod+Return — those carry no such role.
+#
+# See README.md in this directory for the full lifecycle and geometry
+# rationale. This script is the only place that knows how to create, show,
+# hide, or replace the managed window — the i3 keybinding only invokes it.
+
+set -Eeuo pipefail
+
+TERMINAL_BIN="/usr/bin/terminator"
+ROLE="scratch-terminal"
+MARK="scratch-terminal"
+# Transparent-background profile, defined only in
+# configs/session/terminator/config's [[scratch]] block — never applied to
+# ordinary Terminator windows, which use the [[default]] profile.
+PROFILE="scratch"
+
+POLL_ATTEMPTS=40
+POLL_INTERVAL="0.2"
+
+# shellcheck disable=SC2034 # consumed by sourced dnb logging helpers
+LOG_LEVEL="info"
+# shellcheck disable=SC2034 # consumed by sourced dnb logging helpers
+DNB_SETUP_LOG_FILE="${HOME}/.logs/terminal/$(date +%Y%m%d-%H%M%S).log"
+
+BASHRC_PATH="${HOME}/.dotfiles/bashrc"
+for lib_file in "${BASHRC_PATH}"/lib/*/*.bash; do
+  # shellcheck disable=SC1090
+  [[ -f "${lib_file}" && -r "${lib_file}" ]] && source "${lib_file}"
+done
+
+if ! command -v dnb_log >/dev/null 2>&1; then
+  dnb_log() {
+    shift || true
+    printf '%s\n' "$*" >&2
+  }
+fi
+
+# jq program that flattens the i3 tree into one JSON object per marked
+# window, carrying the name of the workspace each window lives under
+# (the pseudo-workspace "__i3_scratch" when hidden in the scratchpad).
+read -r -d '' I3TREE_JQ <<'JQ' || true
+def with_ws(ws):
+  . as $n
+  | (if ($n.type == "workspace") then $n.name else ws end) as $curws
+  | (if ($n.window != null) then
+      [{id: $n.id, marks: ($n.marks // []), ws: $curws}]
+    else [] end)
+    + (([$n.nodes[]?, $n.floating_nodes[]?]) | map(with_ws($curws)) | add // [])
+;
+with_ws(null) | .[]
+JQ
+
+print_help() {
+  cat <<EOF
+Usage: $(basename "${0}") --toggle [--verbose]
+       $(basename "${0}") --show [--verbose]
+       $(basename "${0}") --hide [--verbose]
+       $(basename "${0}") --restart [--verbose]
+       $(basename "${0}") --help
+
+Persistent, i3-scratchpad-backed dropdown terminal (Terminator). Owns
+exactly one instance, marked "${MARK}", distinguished from ordinary
+Terminator windows by WM_WINDOW_ROLE=${ROLE} (see
+configs/session/i3/configs/rules.conf).
+
+Options:
+  --toggle    Show the terminal on the focused workspace if hidden or shown
+              elsewhere, or hide it if it is already visible here. Creates
+              the terminal first if it does not exist yet.
+  --show      Show the terminal on the focused workspace, creating it first
+              if needed. Always recalculates geometry for the currently
+              focused output. Idempotent: never hides an already-visible
+              terminal.
+  --hide      Move the terminal into the scratchpad if it is visible.
+              Does not terminate its shell. No-op if it does not exist.
+  --restart   Kill and relaunch the managed terminal, then show it on the
+              focused workspace. Never affects ordinary Terminator windows.
+  --verbose   Enable verbose logging (also written under ~/.logs/terminal/).
+  --help      Show this help message.
+
+Examples:
+  $(basename "${0}") --toggle
+  $(basename "${0}") --show
+  $(basename "${0}") --restart
+
+Notes:
+  * Requires: i3-msg, jq, ${TERMINAL_BIN}
+  * Bound to Ctrl+Shift+Alt+T in configs/session/i3/configs/applications.conf
+  * Does not automatically follow workspace changes — press the shortcut
+    again on the new workspace to summon it there.
+EOF
+}
+
+VERBOSE="false"
+ACTION=""
+
+while [[ $# -gt 0 ]]; do
+  case "${1}" in
+  --toggle)
+    ACTION="toggle"
+    shift
+    ;;
+  --show)
+    ACTION="show"
+    shift
+    ;;
+  --hide)
+    ACTION="hide"
+    shift
+    ;;
+  --restart)
+    ACTION="restart"
+    shift
+    ;;
+  --verbose)
+    VERBOSE="true"
+    # shellcheck disable=SC2034 # consumed by sourced dnb logging helpers
+    LOG_LEVEL="debug"
+    shift
+    ;;
+  --help)
+    print_help
+    exit 0
+    ;;
+  *)
+    printf 'Error: unknown argument: %s\n\n' "${1}" >&2
+    print_help >&2
+    exit 1
+    ;;
+  esac
+done
+
+if [[ -z "${ACTION}" ]]; then
+  print_help
+  exit 1
+fi
+
+# dnb_log writes its console line to stdout by design; every caller below
+# captures a function's stdout via command substitution (ids/geometry), so
+# these wrappers must not leak onto stdout or they corrupt that capture.
+log() { dnb_log info "$*" >&2; }
+vlog() {
+  # Always returns 0, even when the condition below is false: under
+  # `set -e`, a bare `vlog "..."` call (i.e. not shielded by `||`/`&&`)
+  # would otherwise abort the whole script the moment VERBOSE is not
+  # "true", since `[[ false ]]` as the last command in the function makes
+  # the function itself return 1.
+  if [[ "${VERBOSE}" == "true" ]]; then
+    dnb_log debug "$*" >&2
+  fi
+  return 0
+}
+fail() {
+  dnb_log error "$*" >&2
+  printf 'Error: %s\n' "$*" >&2
+  exit 1
+}
+
+if ! command -v i3-msg >/dev/null 2>&1; then
+  fail "i3-msg not found on PATH"
+fi
+if ! command -v jq >/dev/null 2>&1; then
+  fail "jq not found on PATH"
+fi
+if [[ ! -x "${TERMINAL_BIN}" ]]; then
+  fail "Terminator not found or not executable: ${TERMINAL_BIN}"
+fi
+if ! i3-msg -t get_version >/dev/null 2>&1; then
+  fail "i3 is not running (i3-msg -t get_version failed)"
+fi
+
+i3_cmd() {
+  vlog "i3-msg: ${1}"
+  local result
+  result="$(i3-msg "${1}" 2>&1)" || {
+    dnb_log warn "i3-msg command failed: ${1} (${result})" >&2
+    return 1
+  }
+  if ! printf '%s' "${result}" | jq -e '.[0].success' >/dev/null 2>&1; then
+    dnb_log warn "i3-msg command reported failure: ${1} (${result})" >&2
+    return 1
+  fi
+  return 0
+}
+
+i3_tree_flat() {
+  i3-msg -t get_tree | jq -c "${I3TREE_JQ}"
+}
+
+# Prints the container id currently holding ${MARK}, or nothing if absent.
+marked_id() {
+  printf '%s' "$(i3_tree_flat)" | jq -r --arg m "${MARK}" 'select(.marks | index($m)) | .id' | head -n1
+}
+
+# Prints the workspace name the marked container currently lives under, or
+# nothing if the mark does not exist.
+marked_ws() {
+  printf '%s' "$(i3_tree_flat)" | jq -r --arg m "${MARK}" 'select(.marks | index($m)) | .ws' | head -n1
+}
+
+focused_workspace_name() {
+  i3-msg -t get_workspaces | jq -r '.[] | select(.focused==true) | .name'
+}
+
+# Prints "x y width height" for the workspace on the currently focused
+# output. i3 reports this rect with any reserved bar strut (Polybar's
+# internal/i3 dock bar) already excluded, so no separate xrandr/strut
+# lookup is needed.
+focused_rect() {
+  i3-msg -t get_workspaces | jq -r '.[] | select(.focused==true) | "\(.rect.x) \(.rect.y) \(.rect.width) \(.rect.height)"'
+}
+
+terminal_exists() {
+  [[ -n "$(marked_id)" ]]
+}
+
+# ${1}: workspace name to compare against. Returns success if the marked
+# terminal is currently shown on that workspace (as opposed to hidden in
+# the scratchpad, or shown on some other workspace).
+visible_on() {
+  local ws
+  ws="$(marked_ws)"
+  [[ -n "${ws}" && "${ws}" == "${1}" ]]
+}
+
+# Waits for ${MARK} to appear (after launch) or disappear (after kill).
+# ${1}: "present" or "absent".
+wait_for_mark() {
+  local want="${1}" attempt id
+  for ((attempt = 0; attempt < POLL_ATTEMPTS; attempt++)); do
+    id="$(marked_id)"
+    if [[ "${want}" == "present" && -n "${id}" ]]; then
+      return 0
+    fi
+    if [[ "${want}" == "absent" && -z "${id}" ]]; then
+      return 0
+    fi
+    sleep "${POLL_INTERVAL}"
+  done
+  return 1
+}
+
+launch_terminal() {
+  log "Launching scratch terminal (role=${ROLE}, profile=${PROFILE})"
+  setsid "${TERMINAL_BIN}" --role="${ROLE}" --profile="${PROFILE}" -T "Scratch Terminal" >/dev/null 2>&1 &
+  disown
+  wait_for_mark present || fail "Timed out waiting for the scratch terminal window to appear (rules.conf must mark window_role=${ROLE})"
+}
+
+# Applies the right-half-of-focused-output geometry and focuses the
+# terminal. Must be called only while the terminal is visible on the
+# focused workspace.
+apply_geometry() {
+  local rect x y width height
+  rect="$(focused_rect)"
+  read -r x y width height <<<"${rect}"
+
+  local half_width=$((width / 2))
+  local target_x=$((x + half_width))
+
+  vlog "Applying geometry: ${half_width}x${height}+${target_x}+${y} (focused output rect ${rect})"
+
+  i3_cmd "[con_mark=\"${MARK}\"] resize set ${half_width} px ${height} px" || fail "Could not resize the scratch terminal"
+  i3_cmd "[con_mark=\"${MARK}\"] move position ${target_x} px ${y} px" || fail "Could not move the scratch terminal"
+  i3_cmd "[con_mark=\"${MARK}\"] focus" || fail "Could not focus the scratch terminal"
+}
+
+# Applies geometry twice, with a short pause in between. A freshly mapped
+# Terminator/GTK window can still be negotiating its own natural size (from
+# VTE's default terminal grid) when the first resize/move lands, and can
+# silently override just the size a moment later (position observed to
+# stay correct; only width/height revert) — the second pass wins that
+# race. Only needed right after launch_terminal; an already-settled window
+# (one merely being toggled back into view) never re-triggers it.
+settle_geometry() {
+  apply_geometry
+  sleep 0.3
+  apply_geometry
+}
+
+action_toggle() {
+  if ! terminal_exists; then
+    launch_terminal
+    # A freshly created window has just been sent to the scratchpad by
+    # rules.conf; bring it out onto the focused workspace.
+    i3_cmd "[con_mark=\"${MARK}\"] scratchpad show" || fail "Could not show the scratch terminal"
+    settle_geometry
+    return 0
+  fi
+
+  # i3's "scratchpad show" already toggles relative to the focused
+  # workspace: hides if the marked window is shown here, otherwise shows
+  # it here (moving it from another workspace or from the scratchpad).
+  i3_cmd "[con_mark=\"${MARK}\"] scratchpad show" || fail "Could not toggle the scratch terminal"
+
+  if visible_on "$(focused_workspace_name)"; then
+    apply_geometry
+  fi
+}
+
+action_show() {
+  if ! terminal_exists; then
+    launch_terminal
+    i3_cmd "[con_mark=\"${MARK}\"] scratchpad show" || fail "Could not show the scratch terminal"
+    settle_geometry
+    return 0
+  fi
+
+  if ! visible_on "$(focused_workspace_name)"; then
+    i3_cmd "[con_mark=\"${MARK}\"] scratchpad show" || fail "Could not show the scratch terminal"
+  fi
+
+  apply_geometry
+}
+
+action_hide() {
+  if ! terminal_exists; then
+    vlog "No scratch terminal exists; nothing to hide"
+    return 0
+  fi
+
+  if [[ "$(marked_ws)" == "__i3_scratch" ]]; then
+    vlog "Scratch terminal already hidden"
+    return 0
+  fi
+
+  i3_cmd "[con_mark=\"${MARK}\"] move scratchpad" || fail "Could not hide the scratch terminal"
+}
+
+action_restart() {
+  if terminal_exists; then
+    log "Killing existing scratch terminal before restart"
+    i3_cmd "[con_mark=\"${MARK}\"] kill" || fail "Could not kill the existing scratch terminal"
+    wait_for_mark absent || fail "Timed out waiting for the old scratch terminal to close"
+  fi
+
+  launch_terminal
+  i3_cmd "[con_mark=\"${MARK}\"] scratchpad show" || fail "Could not show the scratch terminal"
+  settle_geometry
+}
+
+case "${ACTION}" in
+toggle) action_toggle ;;
+show) action_show ;;
+hide) action_hide ;;
+restart) action_restart ;;
+*) fail "Unknown action: ${ACTION}" ;;
+esac
