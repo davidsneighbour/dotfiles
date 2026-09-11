@@ -228,6 +228,20 @@ configs/session/i3/window-inspector.sh`, `shellcheck configs/session/i3/
 window-inspector.sh`, and `i3 -C -c configs/session/i3/config` (also
 covers `rules.conf`, via the `config` file's `include`).
 
+### Scratchpad mark convention
+
+Every `for_window` rule that sends a window straight to i3's scratchpad
+(`move scratchpad`) **must** mark it with a `scratch-` prefixed name (for
+example `scratch-enpass`, `scratch-terminal`). This is not just a naming
+habit: `configs/session/i3/workspaces/workspaces.py`'s
+`is_switchable_window()` filters out any window carrying a `scratch-`
+prefixed mark from the Rofi Alt+Tab window switcher (see "Rofi" below), so
+that scratchpad windows never clutter that list even while shown on a
+normal workspace — `scratchpad_state` alone cannot be used for this, since
+i3 resets it to `none` once a scratchpad window is shown. A new
+scratchpad-bound `for_window` rule that skips this prefix will silently
+leak into the Alt+Tab list; keep the mark and the filter in sync.
+
 ### Enpass scratchpad
 
 Enpass autostarts (`session-starts.conf`, see "Startup sequence") but must
@@ -397,7 +411,9 @@ Alt+Tab/Super+Tab still go to xfwm4's own default
     `10:code:dotfiles`, or current dynamic indicator names such as `10:`.
     Panel/dock windows such as the i3 Polybar instance are hidden from this
     switcher, because they are session infrastructure rather than useful
-    focus targets.
+    focus targets. Windows carrying a `scratch-` prefixed mark (Enpass,
+    the scratch terminal) are hidden too, even while shown on a normal
+    workspace — see "Scratchpad mark convention" under "Window rules".
   * `workspaces.sh` — the VS Code workspace picker, bound to
     `Ctrl+Shift+W` in `configs/session/i3/configs/applications.conf`.
     With `--dynamic-workspace code`, it creates a temporary i3 workspace,

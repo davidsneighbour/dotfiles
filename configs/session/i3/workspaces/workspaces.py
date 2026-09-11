@@ -265,12 +265,17 @@ def is_switchable_window(node: dict[str, Any]) -> bool:
 
     window_type = str(node.get("window_type", "")).lower()
     title = str(node.get("name", "")).lower()
+    marks = node.get("marks", [])
+    is_scratchpad_window = isinstance(marks, list) and any(
+        str(mark).startswith("scratch-") for mark in marks
+    )
 
     return (
         window_type != "dock"
         and window_class != "polybar"
         and window_instance != "polybar"
         and title != "polybar-i3bar"
+        and not is_scratchpad_window
     )
 
 
