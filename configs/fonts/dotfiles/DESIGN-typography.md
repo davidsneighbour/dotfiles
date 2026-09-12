@@ -6,6 +6,7 @@ The settled typography system is:
 
 * UI and content: Recursive Sans Linear.
 * Code and data: Monaspace Argon.
+* Rofi list items: Monaspace Argon for stable mixed labels.
 
 The source tree is `configs/fonts/dotfiles`. Dotbot installs it to `/home/patrick/.fonts/dotfiles`.
 

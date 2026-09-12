@@ -217,6 +217,11 @@ element-icon {
     text-color: inherit;
 }
 
+element-text {
+    /* Monospaced list labels keep Rofi rows visually stable across mixed names. */
+    font: "Monaspace Argon 11";
+}
+
 /*****----- Shared structure (radius + header image) -----*****/
 /*
  * Same box layout as configs/session/rofi/power/powermenu.rasi (rounded
