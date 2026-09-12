@@ -1,0 +1,5 @@
+[mcp_servers."GitMCP Docs"]
+url = "https://gitmcp.io/docs"
+
+[mcp_servers."dotfiles Docs"]
+url = "https://gitmcp.io/davidsneighbour/dotfiles"
