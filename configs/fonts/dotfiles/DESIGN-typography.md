@@ -52,6 +52,49 @@ The Nerd Font files are retained as desktop OTF files from Nerd Fonts `v3.4.0`. 
 
 Keep icon fonts ordered from most intentional to most specialised fallback: Lucide first for UI/action icons, Symbols Nerd Font Mono next for Nerd Font private-use glyphs and workspace/module symbols, and Font Awesome Brands last for brand-only glyphs.
 
+## Font family names
+
+Some applications, including VS Code, require font family names as strings instead of offering a font picker.
+
+Use these names for the selected font set:
+
+* UI/content font: `Recursive`
+* Recursive Sans Linear style: `Recursive:style=Sans Linear`
+* Recursive Sans Linear Light style: `Recursive:style=Sans Linear Light`
+* Code font: `Monaspace Argon`
+* Code fallback: `Monaspace Argon Frozen`
+* Argon Nerd Font: `MonaspiceAr Nerd Font`
+* Argon Nerd Font Mono: `MonaspiceAr Nerd Font Mono`
+* Argon Nerd Font short aliases: `MonaspiceAr NF`, `MonaspiceAr NFM`
+
+Use this to inspect family names from files:
+
+```bash
+fc-scan --format '%{family}\n' /home/patrick/.fonts/dotfiles/recursive/Recursive_VF_1.085.ttf /home/patrick/.fonts/dotfiles/monaspace/static/MonaspaceArgon-Regular.otf /home/patrick/.fonts/dotfiles/monaspace/frozen/MonaspaceArgonFrozen-Regular.ttf /home/patrick/.fonts/dotfiles/monaspace/nerdfonts/MonaspiceArNerdFont-Regular.otf /home/patrick/.fonts/dotfiles/monaspace/nerdfonts/MonaspiceArNerdFontMono-Regular.otf | sort -u
+```
+
+Use this to test the names after the font cache is current:
+
+```bash
+fc-cache -frv /home/patrick/.fonts/dotfiles
+fc-match 'Recursive:style=Sans Linear'
+fc-match 'Monaspace Argon'
+fc-match 'Monaspace Argon Frozen'
+fc-match 'MonaspiceAr Nerd Font'
+fc-match 'MonaspiceAr Nerd Font Mono'
+```
+
+For VS Code code editing, start with:
+
+```json
+{
+  "editor.fontFamily": "'Monaspace Argon', 'Symbols Nerd Font Mono', monospace",
+  "editor.fontLigatures": true
+}
+```
+
+Use `Monaspace Argon Frozen` in VS Code only if ligature or OpenType control does not behave correctly.
+
 ## Licenses
 
 Each family root contains its upstream license:
