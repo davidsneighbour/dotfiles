@@ -46,6 +46,9 @@ configs/session/i3/config              -> ~/.config/i3/config   (Dotbot link)
 configs/session/polybar/               -> (not symlinked; referenced by
                                             repo path directly from i3's
                                             exec_always — see "Polybar" below)
+configs/session/fonts/                 -> ~/.fonts/dotfiles     (via
+                                            configs/fonts/dotfiles compatibility
+                                            symlink and Dotbot's ~/.fonts link)
 configs/system/polybar/                -> ~/.config/polybar     (Dotbot link, XFCE bar, unchanged)
 configs/session/rofi/                  -> ~/.config/rofi        (Dotbot link, i3-only)
 ```
@@ -82,6 +85,8 @@ LightDM
         │   `rofi -show drun`)
         ├── Polybar (i3-ONLY copy — configs/session/polybar/, launched by
         │   configs/session/polybar/launch.sh via i3 exec_always)
+        ├── fonts (desktop typography set — configs/session/fonts/,
+        │   exposed at ~/.fonts/dotfiles through configs/fonts/dotfiles)
         ├── background (xsetroot solid colour, then feh sets a
         │   fixed repo-committed wallpaper)
         ├── picom (compositor — shadows, RGBA/transparency; see

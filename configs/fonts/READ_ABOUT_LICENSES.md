@@ -4,4 +4,4 @@ All fonts in this directory are available under open source licenses and if you 
 
 Again: Free as in Open Source according to their individual License.
 
-The compact dotfiles typography set lives in [`dotfiles/`](./dotfiles/). It uses Recursive Sans Linear for UI/content and Monaspace Argon for code/data. The retained Recursive and Monaspace roots each contain their upstream license file.
+The compact dotfiles typography set lives in [`../session/fonts/`](../session/fonts/) and is exposed here through the `dotfiles` compatibility symlink. It uses Recursive Sans Linear for UI/content and Monaspace Argon for code/data. The retained Recursive and Monaspace roots each contain their upstream license file.

@@ -8,7 +8,7 @@ The settled typography system is:
 * Code and data: Monaspace Argon.
 * Rofi list items: Monaspace Argon for stable mixed labels.
 
-The source tree is `configs/fonts/dotfiles`. Dotbot installs it to `/home/patrick/.fonts/dotfiles`.
+The source tree is `configs/session/fonts`. Dotbot exposes it through `configs/fonts/dotfiles` and installs it to `/home/patrick/.fonts/dotfiles`.
 
 ## Retained files
 
@@ -20,7 +20,7 @@ Installed file:
 
 Repository source:
 
-* `configs/fonts/dotfiles/recursive/Recursive_VF_1.085.ttf`
+* `configs/session/fonts/recursive/Recursive_VF_1.085.ttf`
 
 Rationale: the variable Recursive font exposes the Sans Linear styles needed for UI and content while keeping the repo small. The static TTC/OTC files and the `separate_statics` tree are removed because they duplicate this setup and add significant size.
 
@@ -41,9 +41,9 @@ Installed files:
 
 Repository source:
 
-* `configs/fonts/dotfiles/monaspace/static/`
-* `configs/fonts/dotfiles/monaspace/frozen/`
-* `configs/fonts/dotfiles/monaspace/nerdfonts/`
+* `configs/session/fonts/monaspace/static/`
+* `configs/session/fonts/monaspace/frozen/`
+* `configs/session/fonts/monaspace/nerdfonts/`
 
 Rationale: the normal Argon OTF files are for ligature-capable apps. The Frozen TTF files are for apps that cannot control OpenType features reliably. Only regular, italic, bold, and bold italic are retained for each. Wider widths, extra weights, and the variable build are removed for now.
 
@@ -100,8 +100,8 @@ Use `Monaspace Argon Frozen` in VS Code only if ligature or OpenType control doe
 
 Each family root contains its upstream license:
 
-* `configs/fonts/dotfiles/recursive/LICENSE.txt`
-* `configs/fonts/dotfiles/monaspace/LICENSE.txt`
+* `configs/session/fonts/recursive/LICENSE.txt`
+* `configs/session/fonts/monaspace/LICENSE.txt`
 
 ## Agent instructions
 
@@ -111,7 +111,7 @@ Each family root contains its upstream license:
 Use Recursive Sans Linear for dotfiles UI and content work.
 
 Installed font file: /home/patrick/.fonts/dotfiles/recursive/Recursive_VF_1.085.ttf
-Repository source: /home/patrick/github.com/davidsneighbour/dotfiles/configs/fonts/dotfiles/recursive/Recursive_VF_1.085.ttf
+Repository source: /home/patrick/github.com/davidsneighbour/dotfiles/configs/session/fonts/recursive/Recursive_VF_1.085.ttf
 
 Use fontconfig as Recursive:style=Sans Linear or Recursive:style=Sans Linear Light. Do not add Recursive static collections, separate static folders, webfonts, or version-number directories unless a real app cannot use the retained variable font.
 ```
@@ -124,7 +124,7 @@ Use Monaspace Argon for dotfiles code and data work.
 Installed normal Argon source: /home/patrick/.fonts/dotfiles/monaspace/static/
 Installed frozen fallback source: /home/patrick/.fonts/dotfiles/monaspace/frozen/
 Installed Argon Nerd Font source: /home/patrick/.fonts/dotfiles/monaspace/nerdfonts/
-Repository source: /home/patrick/github.com/davidsneighbour/dotfiles/configs/fonts/dotfiles/monaspace/
+Repository source: /home/patrick/github.com/davidsneighbour/dotfiles/configs/session/fonts/monaspace/
 
 Use Monaspace Argon in ligature-capable apps. Use Monaspace Argon Frozen only where OpenType controls are missing or unreliable. Use MonaspiceAr Nerd Font or MonaspiceAr Nerd Font Mono only when an Argon-shaped Nerd Font is specifically needed; use the existing Symbols Nerd Font fallback for ordinary desktop icons.
 ```

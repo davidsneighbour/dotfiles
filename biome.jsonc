@@ -6,6 +6,7 @@
       "**",
       "!build",
       "!configs/fonts",
+      "!configs/session/fonts",
       "!coverage",
       "!configs/theme/DNB-Bibata",
       "!configs/theme/Dracula",
