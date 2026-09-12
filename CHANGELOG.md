@@ -1,5 +1,35 @@
 # Changelog
 
+## [2.11.0](https://github.com/davidsneighbour/dotfiles/compare/v2.10.0...v2.11.0) (2026-09-12)
+
+### Feat
+
+* add font system ([0d1e8bd](https://github.com/davidsneighbour/dotfiles/commit/0d1e8bdfb2b9614896392f8566de10a6feac037f))
+* add launchers to session setup and set up launchers splitting ([47e23fb](https://github.com/davidsneighbour/dotfiles/commit/47e23fb354586faf52e03659fc2cf594351bea6e))
+* **i3:** allow target-less dynamic workspace launches ([ce27c45](https://github.com/davidsneighbour/dotfiles/commit/ce27c4510b3dd8eaf63f8fce9d2c486df8eb9a8a))
+* **session:** apply settled typography to i3, rofi, and polybar ([ad7d8f4](https://github.com/davidsneighbour/dotfiles/commit/ad7d8f4694eb40801959f9e7e7b6b5479e425062))
+* **terminal:** add persistent i3 scratchpad terminal ([d0d0ed2](https://github.com/davidsneighbour/dotfiles/commit/d0d0ed24ad22ba5d1c466395807f50ec3e981596))
+* **thunar:** add config to sessions setup ([a29d890](https://github.com/davidsneighbour/dotfiles/commit/a29d890517104450a0f373263f630d19ebf53c23))
+
+### Fix
+
+* **barrier:** move barrier configuration into session setup ([a9e82ce](https://github.com/davidsneighbour/dotfiles/commit/a9e82cee4e161bfabcaf4577c0b7879d5eeb6bd3))
+* **i3:** hide scratchpad windows from the alt-tab rofi switcher ([4860074](https://github.com/davidsneighbour/dotfiles/commit/4860074f8ccd8b55f99c1acd367de0df3f283bbf))
+* **i3:** update lock session to restart polybar after sleep ([2a0ee3f](https://github.com/davidsneighbour/dotfiles/commit/2a0ee3f4eaf8df830dfddc66095cf77b126d603f))
+* **thunar:** capitalise Thunar in accelerator map header comment ([212f0a5](https://github.com/davidsneighbour/dotfiles/commit/212f0a5b1fdf23c80c29382dcdf0a4ede696ecc9))
+
+### Docs
+
+* **fix:** update font instructions ([e503984](https://github.com/davidsneighbour/dotfiles/commit/e50398417ea52a1e8b0e4f7442598da8e15d6003))
+
+### Build
+
+* **vscode:** add mcp configuration for codex ([62c65f7](https://github.com/davidsneighbour/dotfiles/commit/62c65f744e5b425c3e9e6adb92aa30035e974d95))
+
+### Chore
+
+* **repository-updates:** drop stale Wonderland GitLab repos ([68d9f47](https://github.com/davidsneighbour/dotfiles/commit/68d9f47866e163fb2b1f2bfe3c1bb22a15de94c9))
+
 ## [2.10.0](https://github.com/davidsneighbour/dotfiles/compare/v2.9.0...v2.10.0) (2026-09-09)
 
 ### Feat
