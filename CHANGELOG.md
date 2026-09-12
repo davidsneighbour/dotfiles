@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.11.1](https://github.com/davidsneighbour/dotfiles/compare/v2.11.0...v2.11.1) (2026-09-12)
+
+### Fix
+
+* **fonts:** move session fonts into session directory ([4a2f22f](https://github.com/davidsneighbour/dotfiles/commit/4a2f22f6f9bb56fa60fcb8d2504ae59067200e26))
+* **rofi:** switch rofi font to Monaspace ([7548fe3](https://github.com/davidsneighbour/dotfiles/commit/7548fe3282fb55a9806c1f8a6a87a4323629a59b))
+
 ## [2.11.0](https://github.com/davidsneighbour/dotfiles/compare/v2.10.0...v2.11.0) (2026-09-12)
 
 ### Feat
