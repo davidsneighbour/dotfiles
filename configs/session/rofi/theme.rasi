@@ -67,8 +67,8 @@ configuration {
     dnb-red: #FF9580;
     dnb-yellow: #FFFF80;
 
-    /* locate font via `fc-list | grep 'Monaspace Argon'` */
-    font: "Monaspace Argon 11";
+    /* Recursive Sans Linear Light via variable-font axes: `fc-list | grep 'Recursive'` */
+    font: "Recursive 11 wght=300,CASL=0,MONO=0,CRSV=0.5";
 
     foreground: @dnb-foreground;
     background-color: transparent;

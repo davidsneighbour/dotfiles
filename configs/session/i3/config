@@ -7,7 +7,7 @@ set $mod Mod4
 set $terminal terminator
 
 # Appearance
-font pango:sans-serif 10
+font pango:Recursive 10 wght=300,CASL=0,MONO=0,CRSV=0.5
 focus_follows_mouse no
 default_border pixel 0
 default_floating_border pixel 0
