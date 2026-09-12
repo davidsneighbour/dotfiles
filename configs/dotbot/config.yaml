@@ -70,9 +70,6 @@
     ~/.git-templates: configs/system/git/.git-templates
     ~/.config/gh: configs/system/git/gh
 
-    # folders in ~/.local/share
-    ~/.local/share/applications: configs/system/launchers
-
     # theme configs
     ~/.icons/DNB-Bibata: configs/theme/DNB-Bibata
     ~/.icons/DNB: configs/theme/DNB
@@ -100,6 +97,26 @@
 
     # fixing emojis in chrome tab names (I know, right?)
     ~/.config/fontconfig/conf.d/01-emoji.conf: configs/system/fontconfig/01-emoji.conf
+
+- link:
+    ~/.local/share/applications:
+      path: configs/session/applications
+      create: true
+      relink: true
+
+- link:
+    configs/session/applications/:
+      glob: true
+      path: configs/session/launchers/*
+      create: true
+      relink: true
+
+- link:
+    configs/session/applications/:
+      glob: true
+      path: configs/system/launchers/*
+      create: true
+      relink: true
 
 - shell:
     - description: "\e[1;38;5;103mCreate logs directory if it doesn't exist:\e[0m\e[1;38;5;66m"

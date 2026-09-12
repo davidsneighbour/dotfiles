@@ -33,4 +33,7 @@ export default {
   ],
   '**/*.*': ['secretlint --no-glob'],
   '*.jsonnet': ['jsonnetfmt -i'],
+  'configs/session/applications/**': () => [
+    'find configs/session/applications -maxdepth 1 -type f -print -exec false {} +',
+  ],
 };
