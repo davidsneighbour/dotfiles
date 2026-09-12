@@ -423,6 +423,15 @@ Alt+Tab/Super+Tab still go to xfwm4's own default
     `[workspace] icon = "..."`, that icon becomes the dynamic workspace
     indicator. Otherwise the configured Code icon is used. i3 removes that
     workspace from the live workspace list when the last window closes.
+  * The same underlying mechanism (`configs/session/i3/workspaces/
+    workspaces.py launch --application <name>`) is also called directly,
+    with no Rofi picker, by fixed single-purpose launchers such as
+    `configs/system/launchers/chatgpt-app.desktop` (dynamic app
+    `chatgpt`, robot icon U+E1BB) — one program, no project/target to
+    pick, so `--target` is omitted and the app's own configured icon is
+    used. See
+    [`.agents/instructions/session/dynamic-workspace-launcher.instructions.md`](.agents/instructions/session/dynamic-workspace-launcher.instructions.md)
+    for the procedure to add another one.
 * i3's app launcher (drun) does not use `configs/session/rofi/config.rasi`
   directly. It calls `configs/session/i3/rofi.rasi` — a small, standalone
   override (per the starter spec's own requirement for one) that sets

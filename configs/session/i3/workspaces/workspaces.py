@@ -549,8 +549,8 @@ def command_launch(args: argparse.Namespace) -> int:
         print(f"Unknown dynamic application: {args.application}", file=sys.stderr)
         return 1
 
-    target = Path(args.target).expanduser()
-    indicator = project_workspace_icon(target) or application.icon
+    target = Path(args.target).expanduser() if args.target else None
+    indicator = (project_workspace_icon(target) if target else "") or application.icon
     number = next_dynamic_workspace_number()
     workspace_name = f"{number}:{indicator}"
 
@@ -559,7 +559,7 @@ def command_launch(args: argparse.Namespace) -> int:
         print(switch_result.stderr.strip() or "Could not create workspace", file=sys.stderr)
         return switch_result.returncode
 
-    command = [*application.command, str(target)]
+    command = [*application.command, *([str(target)] if target else [])]
     try:
         subprocess.Popen(command, start_new_session=True)
     except FileNotFoundError:
@@ -591,7 +591,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     launch = subparsers.add_parser("launch")
     launch.add_argument("--application", required=True)
-    launch.add_argument("--target", required=True)
+    launch.add_argument("--target", default=None)
     launch.add_argument("--label", default="")
     launch.set_defaults(func=command_launch)
 

@@ -34,3 +34,8 @@ dynamic:
     command:
       - code
       - --new-window
+  chatgpt:
+    icon: ""
+    workspace_prefix: chatgpt
+    command:
+      - /usr/bin/chatgpt
