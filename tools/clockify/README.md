@@ -83,6 +83,8 @@ With a running timer, the form pre-fills the current title, project, and start t
 
 `status` queries Clockify and uses a short cache, defaulting to 30 seconds, so Polybar can call it often without hammering the API. It also tracks active desktop time while no timer is running. Idle time is ignored when `xprintidle` is available.
 
+Successful time-entry changes reset both the short status cache and the local nudge counter. This means a yellow `nudge` state returns to `healthy` after you submit a completed manual entry, unless Clockify reports a running timer or an error.
+
 Configurable settings live under `settings` in `~/.config/dnb-clockify/config.json`:
 
 ```json

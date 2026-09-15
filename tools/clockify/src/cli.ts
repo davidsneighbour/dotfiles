@@ -793,6 +793,10 @@ async function commandEdit(args: string[], options: CliOptions): Promise<void> {
 }
 
 async function clearStatusCache(): Promise<void> {
+  await writeJsonFile(nudgePath, {
+    lastCheckedAt: Date.now(),
+    activeSeconds: 0,
+  } satisfies NudgeState);
   await writeJsonFile(statusCachePath, {
     createdAt: 0,
     data: {
