@@ -1,5 +1,28 @@
 # Changelog
 
+## [2.12.0](https://github.com/davidsneighbour/dotfiles/compare/v2.11.1...v2.12.0) (2026-09-15)
+
+### Feat
+
+* **applications:** add Hermes desktop launcher ([16db422](https://github.com/davidsneighbour/dotfiles/commit/16db422c19b46cfed7d023ff71d614b26748cf85))
+* **clockify:** add workstation tracking integration ([7c99a64](https://github.com/davidsneighbour/dotfiles/commit/7c99a64c5ac55fdedd8689dd17865852018b00d3))
+* **i3:** promote the focused window to a temporary icon workspace ([7f23223](https://github.com/davidsneighbour/dotfiles/commit/7f23223cece2ab0e686ee013ef70e7668a920738))
+
+### Fix
+
+* **clockify:** reset nudge counter on status cache clear ([e9f00e1](https://github.com/davidsneighbour/dotfiles/commit/e9f00e171dde58a3cbedd91d6ece281e1659c15d))
+* **clockify:** show explicit saved state and force-close the form window ([fb3ca4c](https://github.com/davidsneighbour/dotfiles/commit/fb3ca4c19362e4733cd249ddd6e510b8a779ac29))
+
+### Docs
+
+* **clockify:** mention nudge counter reset on form submit ([0d60043](https://github.com/davidsneighbour/dotfiles/commit/0d6004310654e6dda9b18ee8d30b9c3ca1c00c3b))
+* **fonts:** add font comparison specimen pages ([e48e4a0](https://github.com/davidsneighbour/dotfiles/commit/e48e4a09eb82394d314630496132d27e26f9853a))
+
+### Chore
+
+* **codex:** add MCP Docs and Netlify MCP servers ([a291fbf](https://github.com/davidsneighbour/dotfiles/commit/a291fbf681805d60ef351531a776c9cb5de4cc0a))
+* **thunar:** normalize accelerator map header casing ([c2c8c99](https://github.com/davidsneighbour/dotfiles/commit/c2c8c99f9403b8fb22e92248884e7fe6d9ea3a47))
+
 ## [2.11.1](https://github.com/davidsneighbour/dotfiles/compare/v2.11.0...v2.11.1) (2026-09-12)
 
 ### Fix
