@@ -17,7 +17,7 @@ Polybar starts from i3 through a non-interactive shell, so it may not inherit th
 
 The CLI keeps a short status cache, defaulting to 30 seconds. Polybar's hidden fallback refresher polls the wrapper every 300 seconds, which keeps the bar gentle on the Clockify API while still refreshing without manual action.
 
-The visible Polybar module is `custom/ipc`. After a successful form submit, the CLI clears the status cache and sends `polybar-msg action clockify hook 0`, so the indicator refreshes immediately when the bar has IPC enabled. A hidden `clockify-refresh` module still triggers the same hook every few minutes as a fallback.
+The visible Polybar module is `custom/ipc`. After a successful form submit, the CLI clears the status cache, resets the local nudge counter, and sends `polybar-msg action clockify hook 0`, so the indicator refreshes immediately when the bar has IPC enabled. A hidden `clockify-refresh` module still triggers the same hook every few minutes as a fallback.
 
 ## Token handling
 
