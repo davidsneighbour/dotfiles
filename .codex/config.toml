@@ -3,3 +3,13 @@ url = "https://gitmcp.io/docs"
 
 [mcp_servers."dotfiles Docs"]
 url = "https://gitmcp.io/davidsneighbour/dotfiles"
+
+[mcp_servers."MCP Docs"]
+url = "https://gitmcp.io/docs"
+
+[mcp_servers.netlify]
+command = "npx"
+args = [
+    "-y",
+    "@netlify/mcp",
+]
