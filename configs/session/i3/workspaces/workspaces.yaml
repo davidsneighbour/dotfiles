@@ -39,3 +39,30 @@ dynamic:
     workspace_prefix: chatgpt
     command:
       - /usr/bin/chatgpt
+
+promote:
+  fallback:
+    slug: window
+    icon: "\uE11D"
+  rules:
+    - class: Code
+      slug: code
+      icon: ""
+    - class: firefox
+      slug: web
+      icon: "\uE0E8"
+    - class: obsidian
+      slug: notes
+      icon: "\uE595"
+    - class: Sublime_text
+      slug: editor
+      icon: "\uE23E"
+    - class: Thunar
+      slug: files
+      icon: "\uE33C"
+    - class: Xfce4-terminal
+      slug: terminal
+      icon: "\uE795"
+    - class: Terminator
+      slug: terminal
+      icon: "\uE795"

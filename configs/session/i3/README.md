@@ -41,6 +41,7 @@ at the repo root. This file only documents what lives in this folder.
   the configured Code icon otherwise. For `.code-workspace` files, folder
   entries are checked too. i3 removes that workspace from its live list once
   the last window in it closes.
+* Focused-window promotion is configured in `workspaces/workspaces.yaml`'s `promote:` section. `Ctrl+Shift+Alt+N` moves the currently focused managed window into a fresh temporary workspace, using class/instance rules to choose the workspace icon and a fallback icon when no rule matches. Scratchpad and session-infrastructure windows are refused by the same switchable-window filter the Alt+Tab switcher uses.
 * The Alt+Tab window switcher reads the same YAML and shows workspace icons
   instead of raw i3 workspace names. It hides panel/dock windows such as
   the i3 Polybar instance, because they are session infrastructure rather

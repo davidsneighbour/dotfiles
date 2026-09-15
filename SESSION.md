@@ -161,6 +161,7 @@ binding works. Full table:
 | `Super+D` | Open Rofi (`drun`) — explicit, always-reliable fallback for the above |
 | `Ctrl+Shift+W` | Open Rofi VS Code workspace picker and launch the selection in a temporary dynamic Code workspace (`configs/session/rofi/workspaces.sh --newwindow --dynamic-workspace code`) |
 | `Ctrl+Shift+Alt+I` | Click a window, then show its WM_CLASS/role/title/PID/geometry in a floating terminal (`configs/session/i3/window-inspector.sh`) — see "Window rules" |
+| `Ctrl+Shift+Alt+N` | Move the focused managed window to a freshly created temporary icon workspace (`configs/session/i3/workspaces/workspaces.py promote-focused`) |
 | `Ctrl+Shift+Alt+E` | Toggle Enpass in/out of the scratchpad on the current workspace (`[con_mark="scratch-enpass"] scratchpad show`) — see "Window rules" |
 | `Ctrl+Shift+Alt+T` | Toggle the persistent scratch terminal in/out of the scratchpad on the current workspace, right half of the focused output (`configs/session/terminal/scratch-terminal --toggle`) — see "Scratch terminal" below |
 | `Ctrl+Shift+Alt+F` | Show the canonical, singleton Files workspace — a two-pane Thunar environment (LEFT user-controlled, RIGHT the external-open target) invoked via `configs/session/filemanager/file-manager --show` — see "Canonical Files workspace" below |
@@ -433,6 +434,7 @@ Alt+Tab/Super+Tab still go to xfwm4's own default
     `[workspace] icon = "..."`, that icon becomes the dynamic workspace
     indicator. Otherwise the configured Code icon is used. i3 removes that
     workspace from the live workspace list when the last window closes.
+  * `workspaces.py promote-focused` — the focused-window promotion controller, bound to `Ctrl+Shift+Alt+N` in `configs/session/i3/configs/applications.conf`. It reads the focused i3-managed window from `i3-msg -t get_tree`, rejects scratchpad and session-infrastructure windows using the same switchable-window filter as Alt+Tab, selects an icon from `workspaces.yaml`'s `promote.rules` class/instance mappings, falls back to `promote.fallback`, then moves that exact container id to a fresh dynamic workspace and switches to it. The configured `slug` values are metadata for maintainers; the visible workspace name stays `number:icon`, so Polybar renders only the icon just like the existing dynamic Code and ChatGPT workspaces.
   * The same underlying mechanism (`configs/session/i3/workspaces/
     workspaces.py launch --application <name>`) is also called directly,
     with no Rofi picker, by fixed single-purpose launchers such as

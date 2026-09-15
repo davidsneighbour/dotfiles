@@ -24,6 +24,9 @@ DEFAULT_POLYBAR_INCLUDE = (
     REPO_SESSION_DIR / "polybar" / "configs" / "07-module-i3.ini"
 )
 DEFAULT_ROFI_CONFIG = REPO_SESSION_DIR / "rofi" / "config.alt-tab-switcher.rasi"
+DEFAULT_PROMOTE_ICON = ""
+DEFAULT_PROMOTE_SLUG = "window"
+RESERVED_DYNAMIC_WORKSPACE_NUMBERS = {90}
 
 
 @dataclass(frozen=True)
@@ -43,6 +46,29 @@ class DynamicApplication:
     icon: str
     workspace_prefix: str
     command: list[str]
+
+
+@dataclass(frozen=True)
+class PromoteRule:
+    window_class: str
+    instance: str
+    slug: str
+    icon: str
+
+
+@dataclass(frozen=True)
+class PromoteConfig:
+    fallback_slug: str
+    fallback_icon: str
+    rules: list[PromoteRule]
+
+
+@dataclass(frozen=True)
+class PromotedWindow:
+    con_id: int
+    window_class: str
+    instance: str
+    title: str
 
 
 def load_config(config_path: Path) -> dict[str, Any]:
@@ -97,6 +123,59 @@ def load_dynamic_applications(config: dict[str, Any]) -> dict[str, DynamicApplic
         )
 
     return applications
+
+
+def load_promote_config(config: dict[str, Any]) -> PromoteConfig:
+    raw_promote = config.get("promote", {})
+    if raw_promote is None:
+        raw_promote = {}
+    if not isinstance(raw_promote, dict):
+        raise ValueError("promote must be an object")
+
+    raw_fallback = raw_promote.get("fallback", {})
+    if raw_fallback is None:
+        raw_fallback = {}
+    if not isinstance(raw_fallback, dict):
+        raise ValueError("promote.fallback must be an object")
+
+    fallback_slug = str(raw_fallback.get("slug", DEFAULT_PROMOTE_SLUG)).strip()
+    fallback_icon = str(raw_fallback.get("icon", DEFAULT_PROMOTE_ICON)).strip()
+
+    raw_rules = raw_promote.get("rules", [])
+    if not isinstance(raw_rules, list):
+        raise ValueError("promote.rules must be a list")
+
+    rules: list[PromoteRule] = []
+    for raw_rule in raw_rules:
+        if not isinstance(raw_rule, dict):
+            raise ValueError("each promote.rules entry must be an object")
+
+        window_class = str(raw_rule.get("class", "")).strip()
+        instance = str(raw_rule.get("instance", "")).strip()
+        slug = str(raw_rule.get("slug", fallback_slug or DEFAULT_PROMOTE_SLUG)).strip()
+        icon = str(raw_rule.get("icon", fallback_icon or DEFAULT_PROMOTE_ICON)).strip()
+
+        if not window_class and not instance:
+            raise ValueError("each promote.rules entry must set class or instance")
+        if not slug:
+            raise ValueError("each promote.rules entry must set slug")
+        if not icon:
+            raise ValueError("each promote.rules entry must set icon")
+
+        rules.append(
+            PromoteRule(
+                window_class=window_class,
+                instance=instance,
+                slug=slug,
+                icon=icon,
+            )
+        )
+
+    return PromoteConfig(
+        fallback_slug=fallback_slug or DEFAULT_PROMOTE_SLUG,
+        fallback_icon=fallback_icon or DEFAULT_PROMOTE_ICON,
+        rules=rules,
+    )
 
 
 def generate_i3_config(workspaces: list[Workspace]) -> str:
@@ -209,6 +288,39 @@ def i3_msg(*arguments: str) -> subprocess.CompletedProcess[str]:
     )
 
 
+def i3_result_succeeded(result: subprocess.CompletedProcess[str]) -> bool:
+    if result.returncode != 0:
+        return False
+
+    try:
+        parsed = json.loads(result.stdout)
+    except json.JSONDecodeError:
+        return False
+
+    if not isinstance(parsed, list):
+        return False
+
+    return all(
+        isinstance(item, dict) and item.get("success") is True for item in parsed
+    )
+
+
+def i3_result_error(result: subprocess.CompletedProcess[str]) -> str:
+    try:
+        parsed = json.loads(result.stdout)
+    except json.JSONDecodeError:
+        return result.stderr.strip()
+
+    if not isinstance(parsed, list):
+        return result.stderr.strip()
+
+    for item in parsed:
+        if isinstance(item, dict) and isinstance(item.get("error"), str):
+            return item["error"]
+
+    return result.stderr.strip()
+
+
 def get_i3_tree() -> dict[str, Any]:
     result = i3_msg("-t", "get_tree")
     if result.returncode != 0:
@@ -220,6 +332,46 @@ def get_i3_tree() -> dict[str, Any]:
         return {}
 
     return parsed if isinstance(parsed, dict) else {}
+
+
+def focused_window_node(node: dict[str, Any]) -> dict[str, Any] | None:
+    match = (
+        node
+        if node.get("focused") is True
+        and node.get("window") is not None
+        and isinstance(node.get("id"), int)
+        else None
+    )
+
+    for child_key in ("nodes", "floating_nodes"):
+        children = node.get(child_key, [])
+        if not isinstance(children, list):
+            continue
+        for child in children:
+            if not isinstance(child, dict):
+                continue
+            child_match = focused_window_node(child)
+            if child_match is not None:
+                return child_match
+
+    return match
+
+
+def window_from_node(node: dict[str, Any]) -> PromotedWindow:
+    properties = node.get("window_properties", {})
+    window_class = ""
+    instance = ""
+    if isinstance(properties, dict):
+        window_class = str(properties.get("class", ""))
+        instance = str(properties.get("instance", ""))
+
+    title = str(node.get("name", "")) or window_class or instance or "Window"
+    return PromotedWindow(
+        con_id=int(node["id"]),
+        window_class=window_class,
+        instance=instance,
+        title=title,
+    )
 
 
 def iter_windows(
@@ -377,7 +529,7 @@ def next_dynamic_workspace_number() -> int:
         and int(workspace["num"]) > 0
     }
     candidate = 10
-    while candidate in used_numbers:
+    while candidate in used_numbers or candidate in RESERVED_DYNAMIC_WORKSPACE_NUMBERS:
         candidate += 1
     return candidate
 
@@ -541,6 +693,77 @@ def project_workspace_icon(target: Path) -> str:
     return ""
 
 
+def promote_rule_matches(rule: PromoteRule, window: PromotedWindow) -> bool:
+    class_matches = (
+        not rule.window_class
+        or rule.window_class.casefold() == window.window_class.casefold()
+    )
+    instance_matches = (
+        not rule.instance or rule.instance.casefold() == window.instance.casefold()
+    )
+    return class_matches and instance_matches
+
+
+def promote_workspace_identity(
+    promote_config: PromoteConfig, window: PromotedWindow
+) -> tuple[str, str]:
+    for rule in promote_config.rules:
+        if promote_rule_matches(rule, window):
+            return rule.slug, rule.icon
+
+    return promote_config.fallback_slug, promote_config.fallback_icon
+
+
+def command_promote_focused(args: argparse.Namespace) -> int:
+    config = load_config(args.config)
+    promote_config = load_promote_config(config)
+    node = focused_window_node(get_i3_tree())
+
+    if node is None:
+        print("No focused i3-managed window found", file=sys.stderr)
+        return 1
+
+    if not is_switchable_window(node):
+        print("Focused window is not eligible for promotion", file=sys.stderr)
+        return 1
+
+    window = window_from_node(node)
+    slug, icon = promote_workspace_identity(promote_config, window)
+    number = next_dynamic_workspace_number()
+    workspace_name = f"{number}:{icon}"
+
+    move_result = i3_msg(
+        f"[con_id={window.con_id}]",
+        "move",
+        "container",
+        "to",
+        "workspace",
+        "number",
+        workspace_name,
+    )
+    if not i3_result_succeeded(move_result):
+        print(
+            i3_result_error(move_result) or "Could not move focused window",
+            file=sys.stderr,
+        )
+        return 1
+
+    switch_result = i3_msg("workspace", "number", workspace_name)
+    if not i3_result_succeeded(switch_result):
+        print(
+            i3_result_error(switch_result) or "Could not switch to promoted workspace",
+            file=sys.stderr,
+        )
+        return 1
+
+    if args.verbose:
+        print(
+            f"Promoted {window.title} ({window.window_class or window.instance or slug}) to {workspace_name}"
+        )
+
+    return 0
+
+
 def command_launch(args: argparse.Namespace) -> int:
     config = load_config(args.config)
     applications = load_dynamic_applications(config)
@@ -594,6 +817,10 @@ def build_parser() -> argparse.ArgumentParser:
     launch.add_argument("--target", default=None)
     launch.add_argument("--label", default="")
     launch.set_defaults(func=command_launch)
+
+    promote_focused = subparsers.add_parser("promote-focused")
+    promote_focused.add_argument("--verbose", action="store_true")
+    promote_focused.set_defaults(func=command_promote_focused)
 
     return parser
 
