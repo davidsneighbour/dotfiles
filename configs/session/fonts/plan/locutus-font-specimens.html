@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Locutus typography specimens</title>
+<style>
+@font-face {
+  font-family: "Recursive";
+  src: url("https://raw.githubusercontent.com/arrowtype/recursive/main/fonts/recursive_for_googlefonts/Recursive%5BCASL%2CCRSV%2CMONO%2Cslnt%2Cwght%5D.ttf") format("truetype");
+  font-weight: 300 1000;
+  font-style: oblique -15deg 0deg;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Monaspace Argon";
+  src: url("https://raw.githubusercontent.com/githubnext/monaspace/main/fonts/Variable%20Fonts/Monaspace%20Argon/Monaspace%20Argon%20Var.ttf") format("truetype");
+  font-weight: 200 800;
+  font-style: oblique -11deg 0deg;
+  font-display: swap;
+}
+@font-face {
+  font-family: "IBM Plex Sans";
+  src: url("https://raw.githubusercontent.com/google/fonts/main/ofl/ibmplexsans/IBMPlexSans%5Bwdth%2Cwght%5D.ttf") format("truetype");
+  font-weight: 100 700;
+  font-display: swap;
+}
+
+:root {
+  color-scheme: dark;
+  --bg:#111317;
+  --panel:#171a20;
+  --panel-2:#1d2129;
+  --line:#303641;
+  --text:#e7eaf0;
+  --muted:#9aa3af;
+  --accent:#8bd5ca;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:system-ui,sans-serif;
+}
+header {
+  position:sticky;
+  top:0;
+  z-index:10;
+  padding:18px 24px;
+  border-bottom:1px solid var(--line);
+  background:rgba(17,19,23,.94);
+  backdrop-filter:blur(10px);
+}
+h1 { margin:0 0 4px; font-size:20px; }
+header p { margin:0; color:var(--muted); font-size:13px; }
+main { max-width:1420px; margin:auto; padding:28px; }
+.system {
+  margin:0 0 34px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  overflow:hidden;
+  background:var(--panel);
+}
+.system > h2 {
+  margin:0;
+  padding:18px 20px 8px;
+  font:650 24px/1.2 system-ui,sans-serif;
+}
+.system > .meta {
+  padding:0 20px 18px;
+  color:var(--muted);
+  font:13px/1.5 system-ui,sans-serif;
+}
+.grid {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:1px;
+  background:var(--line);
+}
+.card {
+  background:var(--panel);
+  padding:20px;
+  min-height:180px;
+}
+.card.wide { grid-column:1 / -1; }
+.label {
+  margin-bottom:12px;
+  color:var(--muted);
+  font:600 11px/1 system-ui,sans-serif;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+.sample-ui { font-size:14px; line-height:1.35; }
+.sample-small { font-size:12px; line-height:1.35; }
+.sample-content { font-size:16px; line-height:1.55; max-width:74ch; }
+.sample-code {
+  font-size:14px;
+  line-height:1.55;
+  white-space:pre-wrap;
+  font-variant-ligatures:contextual common-ligatures discretionary-ligatures;
+  font-feature-settings:"calt" 1,"liga" 1,"dlig" 1;
+}
+.big {
+  font-size:44px;
+  line-height:1.1;
+  letter-spacing:-.025em;
+}
+.bar {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  padding:8px 12px;
+  border:1px solid var(--line);
+  border-radius:7px;
+  background:#0d1014;
+  white-space:nowrap;
+  overflow:hidden;
+}
+.bar .left,.bar .right { display:flex; gap:18px; align-items:center; }
+.workspace.active { color:var(--accent); font-weight:700; }
+.rofi {
+  max-width:760px;
+  margin:auto;
+  padding:14px;
+  border:1px solid #3a414d;
+  border-radius:10px;
+  background:#0f1217;
+}
+.search {
+  padding:9px 11px;
+  margin-bottom:10px;
+  border:1px solid #47505f;
+  border-radius:6px;
+  color:#fff;
+  background:#171b22;
+}
+.row { padding:7px 10px; border-radius:5px; }
+.row.sel { background:#29303b; color:#fff; }
+.dialog {
+  max-width:620px;
+  padding:20px;
+  border:1px solid #3b424e;
+  border-radius:10px;
+  background:var(--panel-2);
+}
+.dialog strong { font-weight:650; }
+.buttons { display:flex; justify-content:flex-end; gap:8px; margin-top:18px; }
+.button {
+  padding:7px 12px;
+  border:1px solid #4b5563;
+  border-radius:6px;
+}
+.button.primary { background:#e7eaf0; color:#12151a; border-color:#e7eaf0; }
+table { width:100%; border-collapse:collapse; font-size:13px; }
+td,th { padding:7px 9px; border-bottom:1px solid #2b3038; text-align:left; }
+th { color:var(--muted); font-weight:600; }
+.data td:nth-child(n+2), .data th:nth-child(n+2) { text-align:right; font-variant-numeric:tabular-nums; }
+.glyphs { font-size:20px; line-height:1.8; word-spacing:12px; }
+.note {
+  margin-top:30px;
+  padding:16px 18px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  color:var(--muted);
+  font:13px/1.55 system-ui,sans-serif;
+}
+.a .ui,.a .content { font-family:"Recursive",sans-serif; font-variation-settings:"MONO" 0,"CASL" 0,"CRSV" .5,"slnt" 0; }
+.a .mono,.a .code { font-family:"Monaspace Argon",monospace; }
+.b .ui,.b .content,.b .mono,.b .code { font-family:"Monaspace Argon",monospace; }
+.c .ui,.c .content { font-family:"IBM Plex Sans",sans-serif; }
+.c .mono,.c .code { font-family:"Monaspace Argon",monospace; }
+
+@media (max-width:850px) {
+  .grid { grid-template-columns:1fr; }
+  .card.wide { grid-column:auto; }
+  main { padding:14px; }
+  .big { font-size:34px; }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>Locutus typography specimens</h1>
+  <p>Actual webfont rendering. Compare at 100% browser zoom on the display you use most.</p>
+</header>
+<main>
+
+<section class="system a">
+  <h2>System A — Recursive + Monaspace Argon</h2>
+  <div class="meta">UI/content: Recursive Sans Linear · data/code: Monaspace Argon · proposed default</div>
+  <div class="grid">
+    <div class="card wide ui">
+      <div class="label">Large identity sample</div>
+      <div class="big">LOCUTUS / system interface / 0123456789</div>
+    </div>
+    <div class="card wide mono sample-small">
+      <div class="label">Polybar / i3</div>
+      <div class="bar"><div class="left"><span class="workspace active">1:term</span><span class="workspace">2:web</span><span class="workspace">3:code</span><span class="workspace">4:files</span><span>github.com/davidsneighbour/dotfiles</span></div><div class="right"><span>CPU 14%</span><span>RAM 23.7G</span><span>NET ↓1.2M ↑84K</span><span>18:48</span></div></div>
+    </div>
+    <div class="card ui sample-ui">
+      <div class="label">Rofi-style launcher</div>
+      <div class="rofi"><div class="search">Search applications…</div><div class="row sel">ChatGPT</div><div class="row">Chromium</div><div class="row">Files — Thunar</div><div class="row">Visual Studio Code</div><div class="row">Terminal</div></div>
+    </div>
+    <div class="card ui sample-ui">
+      <div class="label">Application interface</div>
+      <div class="dialog"><strong>Install available updates?</strong><p>This application will restart after installing the available updates. Unsaved changes may be lost.</p><div class="buttons"><span class="button">Cancel</span><span class="button primary">Install and restart</span></div></div>
+    </div>
+    <div class="card content sample-content">
+      <div class="label">Default browser content</div>
+      <p>Readable interface typography should disappear during use. Letterforms must remain distinct at small sizes, spacing should support rapid scanning, and longer passages should not acquire the mechanical rhythm of fixed-width text.</p>
+      <p><strong>Recursive Sans Linear</strong> keeps the technical character of the desktop without turning ordinary prose into code.</p>
+    </div>
+    <div class="card mono">
+      <div class="label">Data / numerals</div>
+      <table class="data"><thead><tr><th>Service</th><th>CPU</th><th>Memory</th><th>Latency</th></tr></thead><tbody><tr><td>browser</td><td>14.2%</td><td>3.84 GiB</td><td>18 ms</td></tr><tr><td>node</td><td>2.7%</td><td>684 MiB</td><td>4 ms</td></tr><tr><td>barrier</td><td>0.3%</td><td>91 MiB</td><td>1 ms</td></tr></tbody></table>
+    </div>
+    <div class="card wide code sample-code"><div class="label">Code / ligatures</div>const isReady = status !== "offline" && retries <= 3;
+const route = source => target;
+cache ??= new Map();
+
+if (value === null || value >= limit) {
+  console.log("Locutus -> ready :: != <= >= => === !==");
+}</div>
+    <div class="card wide mono glyphs"><div class="label">Glyph differentiation</div>0 O o  1 l I i  5 S s  2 Z z  B 8  rn m  vv w  {} [] () &lt;&gt; / \ | _ - + = * # @ &amp; ? !</div>
+  </div>
+</section>
+
+<section class="system b">
+  <h2>System B — Monaspace Argon everywhere</h2>
+  <div class="meta">UI/content/data/code: Monaspace Argon · deliberately monospaced control</div>
+  <div class="grid">
+    <div class="card wide ui"><div class="label">Large identity sample</div><div class="big">LOCUTUS / system interface / 0123456789</div></div>
+    <div class="card wide mono sample-small"><div class="label">Polybar / i3</div><div class="bar"><div class="left"><span class="workspace active">1:term</span><span class="workspace">2:web</span><span class="workspace">3:code</span><span class="workspace">4:files</span><span>github.com/davidsneighbour/dotfiles</span></div><div class="right"><span>CPU 14%</span><span>RAM 23.7G</span><span>NET ↓1.2M ↑84K</span><span>18:48</span></div></div></div>
+    <div class="card ui sample-ui"><div class="label">Rofi-style launcher</div><div class="rofi"><div class="search">Search applications…</div><div class="row sel">ChatGPT</div><div class="row">Chromium</div><div class="row">Files — Thunar</div><div class="row">Visual Studio Code</div><div class="row">Terminal</div></div></div>
+    <div class="card ui sample-ui"><div class="label">Application interface</div><div class="dialog"><strong>Install available updates?</strong><p>This application will restart after installing the available updates. Unsaved changes may be lost.</p><div class="buttons"><span class="button">Cancel</span><span class="button primary">Install and restart</span></div></div></div>
+    <div class="card content sample-content"><div class="label">Default browser content</div><p>Readable interface typography should disappear during use. Letterforms must remain distinct at small sizes, spacing should support rapid scanning, and longer passages should not acquire the mechanical rhythm of fixed-width text.</p><p><strong>Monaspace Argon</strong> gives the entire system one unmistakable visual voice, at the cost of density in prose.</p></div>
+    <div class="card mono"><div class="label">Data / numerals</div><table class="data"><thead><tr><th>Service</th><th>CPU</th><th>Memory</th><th>Latency</th></tr></thead><tbody><tr><td>browser</td><td>14.2%</td><td>3.84 GiB</td><td>18 ms</td></tr><tr><td>node</td><td>2.7%</td><td>684 MiB</td><td>4 ms</td></tr><tr><td>barrier</td><td>0.3%</td><td>91 MiB</td><td>1 ms</td></tr></tbody></table></div>
+    <div class="card wide code sample-code"><div class="label">Code / ligatures</div>const isReady = status !== "offline" && retries <= 3;
+const route = source => target;
+cache ??= new Map();
+
+if (value === null || value >= limit) {
+  console.log("Locutus -> ready :: != <= >= => === !==");
+}</div>
+    <div class="card wide mono glyphs"><div class="label">Glyph differentiation</div>0 O o  1 l I i  5 S s  2 Z z  B 8  rn m  vv w  {} [] () &lt;&gt; / \ | _ - + = * # @ &amp; ? !</div>
+  </div>
+</section>
+
+<section class="system c">
+  <h2>System C — IBM Plex Sans + Monaspace Argon</h2>
+  <div class="meta">UI/content: IBM Plex Sans · data/code: Monaspace Argon · conservative usability control</div>
+  <div class="grid">
+    <div class="card wide ui"><div class="label">Large identity sample</div><div class="big">LOCUTUS / system interface / 0123456789</div></div>
+    <div class="card wide mono sample-small"><div class="label">Polybar / i3</div><div class="bar"><div class="left"><span class="workspace active">1:term</span><span class="workspace">2:web</span><span class="workspace">3:code</span><span class="workspace">4:files</span><span>github.com/davidsneighbour/dotfiles</span></div><div class="right"><span>CPU 14%</span><span>RAM 23.7G</span><span>NET ↓1.2M ↑84K</span><span>18:48</span></div></div></div>
+    <div class="card ui sample-ui"><div class="label">Rofi-style launcher</div><div class="rofi"><div class="search">Search applications…</div><div class="row sel">ChatGPT</div><div class="row">Chromium</div><div class="row">Files — Thunar</div><div class="row">Visual Studio Code</div><div class="row">Terminal</div></div></div>
+    <div class="card ui sample-ui"><div class="label">Application interface</div><div class="dialog"><strong>Install available updates?</strong><p>This application will restart after installing the available updates. Unsaved changes may be lost.</p><div class="buttons"><span class="button">Cancel</span><span class="button primary">Install and restart</span></div></div></div>
+    <div class="card content sample-content"><div class="label">Default browser content</div><p>Readable interface typography should disappear during use. Letterforms must remain distinct at small sizes, spacing should support rapid scanning, and longer passages should not acquire the mechanical rhythm of fixed-width text.</p><p><strong>IBM Plex Sans</strong> is the usability-oriented control: restrained, technical, and comfortable for long sessions.</p></div>
+    <div class="card mono"><div class="label">Data / numerals</div><table class="data"><thead><tr><th>Service</th><th>CPU</th><th>Memory</th><th>Latency</th></tr></thead><tbody><tr><td>browser</td><td>14.2%</td><td>3.84 GiB</td><td>18 ms</td></tr><tr><td>node</td><td>2.7%</td><td>684 MiB</td><td>4 ms</td></tr><tr><td>barrier</td><td>0.3%</td><td>91 MiB</td><td>1 ms</td></tr></tbody></table></div>
+    <div class="card wide code sample-code"><div class="label">Code / ligatures</div>const isReady = status !== "offline" && retries <= 3;
+const route = source => target;
+cache ??= new Map();
+
+if (value === null || value >= limit) {
+  console.log("Locutus -> ready :: != <= >= => === !==");
+}</div>
+    <div class="card wide mono glyphs"><div class="label">Glyph differentiation</div>0 O o  1 l I i  5 S s  2 Z z  B 8  rn m  vv w  {} [] () &lt;&gt; / \ | _ - + = * # @ &amp; ? !</div>
+  </div>
+</section>
+
+<div class="note">
+  <strong>Evaluation method.</strong> View this at 100% browser zoom and judge the small samples first. Pay particular attention to the rofi list, dialog body text, polybar density, and the paragraph. The large heading is intentionally secondary: a desktop font system succeeds or fails at 12–16 px. The document loads the actual upstream variable font files, so an internet connection is required when opening it. Once one system is selected, keep that system's specimen as the canonical typography reference in the dotfiles documentation.
+</div>
+
+</main>
+</body>
+</html>

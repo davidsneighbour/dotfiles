@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Locutus typography specimens — Systems 1 vs 3</title>
+<style>
+@font-face {
+  font-family: "Recursive";
+  src: url("https://raw.githubusercontent.com/arrowtype/recursive/main/fonts/recursive_for_googlefonts/Recursive%5BCASL%2CCRSV%2CMONO%2Cslnt%2Cwght%5D.ttf") format("truetype");
+  font-weight: 300 1000;
+  font-style: oblique -15deg 0deg;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Monaspace Argon";
+  src: url("https://raw.githubusercontent.com/githubnext/monaspace/main/fonts/Variable%20Fonts/Monaspace%20Argon/Monaspace%20Argon%20Var.ttf") format("truetype");
+  font-weight: 200 800;
+  font-style: oblique -11deg 0deg;
+  font-display: swap;
+}
+@font-face {
+  font-family: "IBM Plex Sans";
+  src: url("https://raw.githubusercontent.com/google/fonts/main/ofl/ibmplexsans/IBMPlexSans%5Bwdth%2Cwght%5D.ttf") format("truetype");
+  font-weight: 100 700;
+  font-display: swap;
+}
+
+:root {
+  color-scheme: dark;
+  --bg:#111317;
+  --panel:#171a20;
+  --panel2:#1d2129;
+  --line:#303641;
+  --text:#e7eaf0;
+  --muted:#9aa3af;
+  --accent:#8bd5ca;
+}
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--text); font-family:system-ui,sans-serif; }
+header { position:sticky; top:0; z-index:10; padding:18px 24px; border-bottom:1px solid var(--line); background:rgba(17,19,23,.95); backdrop-filter:blur(10px); }
+h1 { margin:0 0 4px; font-size:20px; }
+header p { margin:0; color:var(--muted); font-size:13px; }
+main { max-width:1420px; margin:auto; padding:28px; }
+.system { margin:0 0 34px; border:1px solid var(--line); border-radius:14px; overflow:hidden; background:var(--panel); }
+.system > h2 { margin:0; padding:18px 20px 8px; font:650 24px/1.2 system-ui,sans-serif; }
+.meta { padding:0 20px 18px; color:var(--muted); font:13px/1.5 system-ui,sans-serif; }
+.grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1px; background:var(--line); }
+.card { background:var(--panel); padding:20px; min-height:180px; }
+.card.wide { grid-column:1/-1; }
+.label { margin-bottom:12px; color:var(--muted); font:600 11px/1 system-ui,sans-serif; letter-spacing:.12em; text-transform:uppercase; }
+.sample-ui { font-size:14px; line-height:1.35; }
+.sample-small { font-size:12px; line-height:1.35; }
+.sample-content { font-size:16px; line-height:1.55; max-width:74ch; }
+.sample-code { font-size:15px; line-height:1.7; white-space:pre-wrap; }
+.big { font-size:44px; line-height:1.1; letter-spacing:-.025em; }
+.bar { display:flex; align-items:center; justify-content:space-between; gap:18px; padding:8px 12px; border:1px solid var(--line); border-radius:7px; background:#0d1014; white-space:nowrap; overflow:hidden; }
+.bar .left,.bar .right { display:flex; gap:18px; align-items:center; }
+.workspace.active { color:var(--accent); font-weight:700; }
+.rofi { max-width:760px; margin:auto; padding:14px; border:1px solid #3a414d; border-radius:10px; background:#0f1217; }
+.search { padding:9px 11px; margin-bottom:10px; border:1px solid #47505f; border-radius:6px; color:#fff; background:#171b22; }
+.row { padding:7px 10px; border-radius:5px; }
+.row.sel { background:#29303b; color:#fff; }
+.dialog { max-width:620px; padding:20px; border:1px solid #3b424e; border-radius:10px; background:var(--panel2); }
+.dialog strong { font-weight:650; }
+.buttons { display:flex; justify-content:flex-end; gap:8px; margin-top:18px; }
+.button { padding:7px 12px; border:1px solid #4b5563; border-radius:6px; }
+.button.primary { background:#e7eaf0; color:#12151a; border-color:#e7eaf0; }
+table { width:100%; border-collapse:collapse; font-size:13px; }
+td,th { padding:7px 9px; border-bottom:1px solid #2b3038; text-align:left; }
+th { color:var(--muted); font-weight:600; }
+.data td:nth-child(n+2), .data th:nth-child(n+2) { text-align:right; font-variant-numeric:tabular-nums; }
+
+.a .ui,.a .content { font-family:"Recursive",sans-serif; font-variation-settings:"MONO" 0,"CASL" 0,"CRSV" .5,"slnt" 0; }
+.a .mono,.a .code { font-family:"Monaspace Argon",monospace; }
+.c .ui,.c .content { font-family:"IBM Plex Sans",sans-serif; }
+.c .mono,.c .code { font-family:"Monaspace Argon",monospace; }
+
+.ligature-section { margin:0 0 34px; border:1px solid var(--line); border-radius:14px; overflow:hidden; background:var(--panel); }
+.ligature-section h2 { margin:0; padding:18px 20px 8px; font-size:24px; }
+.ligature-grid { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line); }
+.lig-box { background:var(--panel); padding:20px; }
+.lig-title { font:650 15px/1.3 system-ui,sans-serif; margin-bottom:12px; }
+.lig-row { display:grid; grid-template-columns:92px 1fr; gap:16px; align-items:baseline; padding:10px 0; border-bottom:1px solid #2a3039; }
+.lig-row:last-child { border-bottom:0; }
+.lig-tag { color:var(--muted); font:600 12px/1 system-ui,sans-serif; text-transform:uppercase; letter-spacing:.08em; }
+.lig-sample { font-family:"Monaspace Argon",monospace; font-size:29px; line-height:1.4; word-spacing:10px; }
+.lig-off { font-variant-ligatures:none; font-feature-settings:"liga" 0,"calt" 0,"dlig" 0,"ss01" 0,"ss02" 0,"ss03" 0,"ss04" 0,"ss05" 0,"ss06" 0,"ss07" 0,"ss08" 0,"ss09" 0,"ss10" 0; }
+.lig-on { font-variant-ligatures:common-ligatures contextual discretionary-ligatures; font-feature-settings:"liga" 1,"calt" 1,"dlig" 1,"ss01" 1,"ss02" 1,"ss03" 1,"ss04" 1,"ss05" 1,"ss06" 1,"ss07" 1,"ss08" 1,"ss09" 1,"ss10" 1; }
+.rec-lig { font-family:"Recursive",monospace; font-variation-settings:"MONO" 1,"CASL" 0,"CRSV" .5,"slnt" 0; }
+.rec-lig-on { font-variant-ligatures:common-ligatures contextual discretionary-ligatures; font-feature-settings:"liga" 1,"calt" 1,"dlig" 1; }
+.rec-lig-off { font-variant-ligatures:none; font-feature-settings:"liga" 0,"calt" 0,"dlig" 0; }
+.note { margin-top:20px; padding:16px 18px; border:1px solid var(--line); border-radius:10px; color:var(--muted); font:13px/1.55 system-ui,sans-serif; }
+code { font-family:"Monaspace Argon",monospace; }
+@media(max-width:850px){ .grid,.ligature-grid{grid-template-columns:1fr}.card.wide{grid-column:auto}main{padding:14px}.big{font-size:34px}.lig-row{grid-template-columns:72px 1fr}.lig-sample{font-size:23px} }
+</style>
+</head>
+<body>
+<header>
+  <h1>Locutus typography specimens — Systems 1 vs 3</h1>
+  <p>Reduced comparison with explicit OpenType ligature tests.</p>
+</header>
+<main>
+
+<section class="system a">
+  <h2>System 1 — Recursive Sans Linear + Monaspace Argon</h2>
+  <div class="meta">UI/content: Recursive Sans Linear · data/code: Monaspace Argon</div>
+  <div class="grid">
+    <div class="card wide ui"><div class="label">Large identity sample</div><div class="big">LOCUTUS / system interface / 0123456789</div></div>
+    <div class="card wide mono sample-small"><div class="label">Polybar / i3</div><div class="bar"><div class="left"><span class="workspace active">1:term</span><span>2:web</span><span>3:code</span><span>4:files</span><span>github.com/davidsneighbour/dotfiles</span></div><div class="right"><span>CPU 14%</span><span>RAM 23.7G</span><span>NET ↓1.2M ↑84K</span><span>18:48</span></div></div></div>
+    <div class="card ui sample-ui"><div class="label">Rofi-style launcher</div><div class="rofi"><div class="search">Search applications…</div><div class="row sel">ChatGPT</div><div class="row">Chromium</div><div class="row">Files — Thunar</div><div class="row">Visual Studio Code</div><div class="row">Terminal</div></div></div>
+    <div class="card ui sample-ui"><div class="label">Application interface</div><div class="dialog"><strong>Install available updates?</strong><p>This application will restart after installing the available updates. Unsaved changes may be lost.</p><div class="buttons"><span class="button">Cancel</span><span class="button primary">Install and restart</span></div></div></div>
+    <div class="card content sample-content"><div class="label">Default browser content</div><p>Readable interface typography should disappear during use. Letterforms must remain distinct at small sizes, spacing should support rapid scanning, and longer passages should not acquire the mechanical rhythm of fixed-width text.</p><p><strong>Recursive Sans Linear</strong> keeps more humanist construction and movement in the letterforms.</p></div>
+    <div class="card mono"><div class="label">Data / numerals</div><table class="data"><thead><tr><th>Service</th><th>CPU</th><th>Memory</th><th>Latency</th></tr></thead><tbody><tr><td>browser</td><td>14.2%</td><td>3.84 GiB</td><td>18 ms</td></tr><tr><td>node</td><td>2.7%</td><td>684 MiB</td><td>4 ms</td></tr><tr><td>barrier</td><td>0.3%</td><td>91 MiB</td><td>1 ms</td></tr></tbody></table></div>
+  </div>
+</section>
+
+<section class="system c">
+  <h2>System 3 — IBM Plex Sans + Monaspace Argon</h2>
+  <div class="meta">UI/content: IBM Plex Sans · data/code: Monaspace Argon</div>
+  <div class="grid">
+    <div class="card wide ui"><div class="label">Large identity sample</div><div class="big">LOCUTUS / system interface / 0123456789</div></div>
+    <div class="card wide mono sample-small"><div class="label">Polybar / i3</div><div class="bar"><div class="left"><span class="workspace active">1:term</span><span>2:web</span><span>3:code</span><span>4:files</span><span>github.com/davidsneighbour/dotfiles</span></div><div class="right"><span>CPU 14%</span><span>RAM 23.7G</span><span>NET ↓1.2M ↑84K</span><span>18:48</span></div></div></div>
+    <div class="card ui sample-ui"><div class="label">Rofi-style launcher</div><div class="rofi"><div class="search">Search applications…</div><div class="row sel">ChatGPT</div><div class="row">Chromium</div><div class="row">Files — Thunar</div><div class="row">Visual Studio Code</div><div class="row">Terminal</div></div></div>
+    <div class="card ui sample-ui"><div class="label">Application interface</div><div class="dialog"><strong>Install available updates?</strong><p>This application will restart after installing the available updates. Unsaved changes may be lost.</p><div class="buttons"><span class="button">Cancel</span><span class="button primary">Install and restart</span></div></div></div>
+    <div class="card content sample-content"><div class="label">Default browser content</div><p>Readable interface typography should disappear during use. Letterforms must remain distinct at small sizes, spacing should support rapid scanning, and longer passages should not acquire the mechanical rhythm of fixed-width text.</p><p><strong>IBM Plex Sans</strong> is calmer and more neutral in paragraph text while retaining a technical character.</p></div>
+    <div class="card mono"><div class="label">Data / numerals</div><table class="data"><thead><tr><th>Service</th><th>CPU</th><th>Memory</th><th>Latency</th></tr></thead><tbody><tr><td>browser</td><td>14.2%</td><td>3.84 GiB</td><td>18 ms</td></tr><tr><td>node</td><td>2.7%</td><td>684 MiB</td><td>4 ms</td></tr><tr><td>barrier</td><td>0.3%</td><td>91 MiB</td><td>1 ms</td></tr></tbody></table></div>
+  </div>
+</section>
+
+<section class="ligature-section">
+  <h2>Ligature comparison</h2>
+  <div class="meta">These rows intentionally render the same character sequences with OpenType features disabled and enabled.</div>
+  <div class="ligature-grid">
+    <div class="lig-box">
+      <div class="lig-title">Monaspace Argon — used by both systems for code/data</div>
+      <div class="lig-row"><div class="lig-tag">Off</div><div class="lig-sample lig-off">== === != !== <= >= -> => &lt;- &lt;=> :: := ++ -- // /// /* */ && || ?? ...</div></div>
+      <div class="lig-row"><div class="lig-tag">On</div><div class="lig-sample lig-on">== === != !== <= >= -> => &lt;- &lt;=> :: := ++ -- // /// /* */ && || ?? ...</div></div>
+      <div class="lig-row"><div class="lig-tag">Code</div><div class="lig-sample lig-on">a != b && c >= d  |  x => y  |  left -> right  |  foo::bar  |  value ?? fallback</div></div>
+    </div>
+
+    <div class="lig-box">
+      <div class="lig-title">Recursive Mono Linear — optional alternative code face</div>
+      <div class="lig-row"><div class="lig-tag">Off</div><div class="lig-sample rec-lig rec-lig-off">== === != !== <= >= -> => &lt;- :: ++ -- // /// && || ?? += -= *= /=</div></div>
+      <div class="lig-row"><div class="lig-tag">On</div><div class="lig-sample rec-lig rec-lig-on">== === != !== <= >= -> => &lt;- :: ++ -- // /// && || ?? += -= *= /=</div></div>
+      <div class="lig-row"><div class="lig-tag">Code</div><div class="lig-sample rec-lig rec-lig-on">if (a !== b && count >= 3) result => next</div></div>
+    </div>
+  </div>
+  <div class="note">
+    If the ON and OFF rows look identical, that browser/rendering path is not applying the requested OpenType substitutions. The fonts being online is not the problem: webfonts can expose ligatures normally. Monaspace distributes its ligatures across OpenType features/stylistic sets, while Recursive exposes code ligatures through <code>dlig</code> in the standard family and also ships code-oriented builds with them enabled more aggressively.
+  </div>
+</section>
+
+</main>
+</body>
+</html>

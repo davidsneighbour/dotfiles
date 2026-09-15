@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Locutus typography specimen — Argon vs Neon</title>
+<style>
+@font-face {
+  font-family: "Recursive";
+  src: url("https://raw.githubusercontent.com/arrowtype/recursive/main/fonts/recursive_for_googlefonts/Recursive%5BCASL%2CCRSV%2CMONO%2Cslnt%2Cwght%5D.ttf") format("truetype");
+  font-weight: 300 1000;
+  font-style: oblique -15deg 0deg;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Monaspace Argon";
+  src: url("https://raw.githubusercontent.com/githubnext/monaspace/main/fonts/Variable%20Fonts/Monaspace%20Argon/Monaspace%20Argon%20Var.ttf") format("truetype");
+  font-weight: 200 800;
+  font-style: oblique -11deg 0deg;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Monaspace Neon";
+  src: url("https://raw.githubusercontent.com/githubnext/monaspace/main/fonts/Variable%20Fonts/Monaspace%20Neon/Monaspace%20Neon%20Var.ttf") format("truetype");
+  font-weight: 200 800;
+  font-style: oblique -11deg 0deg;
+  font-display: swap;
+}
+
+:root {
+  color-scheme: dark;
+  --bg:#111317;
+  --panel:#171a20;
+  --panel2:#1d2129;
+  --line:#303641;
+  --text:#e7eaf0;
+  --muted:#9aa3af;
+  --accent:#8bd5ca;
+}
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--text); font-family:system-ui,sans-serif; }
+header {
+  position:sticky;
+  top:0;
+  z-index:10;
+  padding:18px 24px;
+  border-bottom:1px solid var(--line);
+  background:rgba(17,19,23,.95);
+  backdrop-filter:blur(10px);
+}
+h1 { margin:0 0 4px; font-size:20px; }
+header p { margin:0; color:var(--muted); font-size:13px; }
+main { max-width:1420px; margin:auto; padding:28px; }
+.system {
+  margin:0 0 34px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  overflow:hidden;
+  background:var(--panel);
+}
+.system > h2 {
+  margin:0;
+  padding:18px 20px 8px;
+  font:650 24px/1.2 system-ui,sans-serif;
+}
+.meta {
+  padding:0 20px 18px;
+  color:var(--muted);
+  font:13px/1.5 system-ui,sans-serif;
+}
+.grid {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:1px;
+  background:var(--line);
+}
+.card {
+  background:var(--panel);
+  padding:20px;
+  min-height:180px;
+}
+.card.wide { grid-column:1/-1; }
+.label {
+  margin-bottom:12px;
+  color:var(--muted);
+  font:600 11px/1 system-ui,sans-serif;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+.ui {
+  font-family:"Recursive",sans-serif;
+  font-variation-settings:"MONO" 0,"CASL" 0,"CRSV" .5,"slnt" 0;
+}
+.sample-ui { font-size:14px; line-height:1.35; }
+.sample-small { font-size:12px; line-height:1.35; }
+.sample-content { font-size:16px; line-height:1.55; max-width:74ch; }
+.big { font-size:44px; line-height:1.1; letter-spacing:-.025em; }
+
+.argon .mono,.argon .code { font-family:"Monaspace Argon",monospace; }
+.neon .mono,.neon .code { font-family:"Monaspace Neon",monospace; }
+
+.bar {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  padding:8px 12px;
+  border:1px solid var(--line);
+  border-radius:7px;
+  background:#0d1014;
+  white-space:nowrap;
+  overflow:hidden;
+}
+.bar .left,.bar .right { display:flex; gap:18px; align-items:center; }
+.workspace.active { color:var(--accent); font-weight:700; }
+
+.rofi {
+  max-width:760px;
+  margin:auto;
+  padding:14px;
+  border:1px solid #3a414d;
+  border-radius:10px;
+  background:#0f1217;
+}
+.search {
+  padding:9px 11px;
+  margin-bottom:10px;
+  border:1px solid #47505f;
+  border-radius:6px;
+  color:#fff;
+  background:#171b22;
+}
+.row { padding:7px 10px; border-radius:5px; }
+.row.sel { background:#29303b; color:#fff; }
+
+.dialog {
+  max-width:620px;
+  padding:20px;
+  border:1px solid #3b424e;
+  border-radius:10px;
+  background:var(--panel2);
+}
+.dialog strong { font-weight:650; }
+.buttons { display:flex; justify-content:flex-end; gap:8px; margin-top:18px; }
+.button {
+  padding:7px 12px;
+  border:1px solid #4b5563;
+  border-radius:6px;
+}
+.button.primary {
+  background:#e7eaf0;
+  color:#12151a;
+  border-color:#e7eaf0;
+}
+
+table { width:100%; border-collapse:collapse; font-size:13px; }
+td,th {
+  padding:7px 9px;
+  border-bottom:1px solid #2b3038;
+  text-align:left;
+}
+th { color:var(--muted); font-weight:600; }
+.data td:nth-child(n+2), .data th:nth-child(n+2) {
+  text-align:right;
+  font-variant-numeric:tabular-nums;
+}
+
+.code {
+  font-size:15px;
+  line-height:1.7;
+  white-space:pre-wrap;
+}
+.terminal {
+  font-size:14px;
+  line-height:1.55;
+  white-space:pre-wrap;
+}
+.glyphs {
+  font-size:21px;
+  line-height:1.8;
+  word-spacing:12px;
+}
+
+.lig-row {
+  display:grid;
+  grid-template-columns:92px 1fr;
+  gap:16px;
+  align-items:baseline;
+  padding:10px 0;
+  border-bottom:1px solid #2a3039;
+}
+.lig-row:last-child { border-bottom:0; }
+.lig-tag {
+  color:var(--muted);
+  font:600 12px/1 system-ui,sans-serif;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+.lig-sample {
+  font-size:30px;
+  line-height:1.45;
+  word-spacing:10px;
+}
+.lig-off {
+  font-variant-ligatures:none;
+  font-feature-settings:
+    "liga" 0,"calt" 0,"dlig" 0,
+    "ss01" 0,"ss02" 0,"ss03" 0,"ss04" 0,"ss05" 0,
+    "ss06" 0,"ss07" 0,"ss08" 0,"ss09" 0,"ss10" 0;
+}
+.lig-on {
+  font-variant-ligatures:common-ligatures contextual discretionary-ligatures;
+  font-feature-settings:
+    "liga" 1,"calt" 1,"dlig" 1,
+    "ss01" 1,"ss02" 1,"ss03" 1,"ss04" 1,"ss05" 1,
+    "ss06" 1,"ss07" 1,"ss08" 1,"ss09" 1,"ss10" 1;
+}
+.note {
+  margin-top:20px;
+  padding:16px 18px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  color:var(--muted);
+  font:13px/1.55 system-ui,sans-serif;
+}
+
+@media(max-width:850px) {
+  .grid { grid-template-columns:1fr; }
+  .card.wide { grid-column:auto; }
+  main { padding:14px; }
+  .big { font-size:34px; }
+  .lig-row { grid-template-columns:72px 1fr; }
+  .lig-sample { font-size:23px; }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>Locutus typography specimen — Argon vs Neon</h1>
+  <p>Recursive Sans Linear is fixed for UI/content. Only the Monaspace code/data face changes.</p>
+</header>
+
+<main>
+
+<section class="system argon">
+  <h2>Variant A — Recursive Sans Linear + Monaspace Argon</h2>
+  <div class="meta">Current favourite · humanist monospace for code/data</div>
+
+  <div class="grid">
+    <div class="card wide ui">
+      <div class="label">UI/content identity</div>
+      <div class="big">LOCUTUS / system interface / 0123456789</div>
+    </div>
+
+    <div class="card wide mono sample-small">
+      <div class="label">Polybar / i3</div>
+      <div class="bar">
+        <div class="left">
+          <span class="workspace active">1:term</span>
+          <span>2:web</span>
+          <span>3:code</span>
+          <span>4:files</span>
+          <span>github.com/davidsneighbour/dotfiles</span>
+        </div>
+        <div class="right">
+          <span>CPU 14%</span>
+          <span>RAM 23.7G</span>
+          <span>NET ↓1.2M ↑84K</span>
+          <span>18:48</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card ui sample-ui">
+      <div class="label">Rofi-style launcher</div>
+      <div class="rofi">
+        <div class="search">Search applications…</div>
+        <div class="row sel">ChatGPT</div>
+        <div class="row">Chromium</div>
+        <div class="row">Files — Thunar</div>
+        <div class="row">Visual Studio Code</div>
+        <div class="row">Terminal</div>
+      </div>
+    </div>
+
+    <div class="card ui sample-ui">
+      <div class="label">Application interface</div>
+      <div class="dialog">
+        <strong>Install available updates?</strong>
+        <p>This application will restart after installing the available updates. Unsaved changes may be lost.</p>
+        <div class="buttons">
+          <span class="button">Cancel</span>
+          <span class="button primary">Install and restart</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mono">
+      <div class="label">Data / numerals</div>
+      <table class="data">
+        <thead><tr><th>Service</th><th>CPU</th><th>Memory</th><th>Latency</th></tr></thead>
+        <tbody>
+          <tr><td>browser</td><td>14.2%</td><td>3.84 GiB</td><td>18 ms</td></tr>
+          <tr><td>node</td><td>2.7%</td><td>684 MiB</td><td>4 ms</td></tr>
+          <tr><td>barrier</td><td>0.3%</td><td>91 MiB</td><td>1 ms</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card mono terminal">
+      <div class="label">Terminal</div>
+patrick@locutus ~/github.com/davidsneighbour/dotfiles
+$ git status --short
+ M configs/session/polybar/config.ini
+ M README.md
+?? docs/typography.md
+
+Node 26.8.1  npm 11.x  branch main
+    </div>
+
+    <div class="card wide code">
+      <div class="label">Code</div>
+const isReady = status !== "offline" && retries <= 3;
+const route = source => target;
+cache ??= new Map();
+
+if (value === null || value >= limit) {
+  console.log("Locutus -> ready :: != <= >= => === !==");
+}
+    </div>
+
+    <div class="card wide mono">
+      <div class="label">Ligatures — off vs on</div>
+      <div class="lig-row">
+        <div class="lig-tag">Off</div>
+        <div class="lig-sample lig-off">== === != !== <= >= -> => &lt;- &lt;=> :: := ++ -- // /// /* */ && || ?? ...</div>
+      </div>
+      <div class="lig-row">
+        <div class="lig-tag">On</div>
+        <div class="lig-sample lig-on">== === != !== <= >= -> => &lt;- &lt;=> :: := ++ -- // /// /* */ && || ?? ...</div>
+      </div>
+    </div>
+
+    <div class="card wide mono glyphs">
+      <div class="label">Glyph differentiation</div>
+      0 O o  1 l I i  5 S s  2 Z z  B 8  rn m  vv w  {} [] () &lt;&gt; / \ | _ - + = * # @ &amp; ? !
+    </div>
+  </div>
+</section>
+
+<section class="system neon">
+  <h2>Variant B — Recursive Sans Linear + Monaspace Neon</h2>
+  <div class="meta">More neo-grotesque / neutral monospace for code/data</div>
+
+  <div class="grid">
+    <div class="card wide ui">
+      <div class="label">UI/content identity</div>
+      <div class="big">LOCUTUS / system interface / 0123456789</div>
+    </div>
+
+    <div class="card wide mono sample-small">
+      <div class="label">Polybar / i3</div>
+      <div class="bar">
+        <div class="left">
+          <span class="workspace active">1:term</span>
+          <span>2:web</span>
+          <span>3:code</span>
+          <span>4:files</span>
+          <span>github.com/davidsneighbour/dotfiles</span>
+        </div>
+        <div class="right">
+          <span>CPU 14%</span>
+          <span>RAM 23.7G</span>
+          <span>NET ↓1.2M ↑84K</span>
+          <span>18:48</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card ui sample-ui">
+      <div class="label">Rofi-style launcher</div>
+      <div class="rofi">
+        <div class="search">Search applications…</div>
+        <div class="row sel">ChatGPT</div>
+        <div class="row">Chromium</div>
+        <div class="row">Files — Thunar</div>
+        <div class="row">Visual Studio Code</div>
+        <div class="row">Terminal</div>
+      </div>
+    </div>
+
+    <div class="card ui sample-ui">
+      <div class="label">Application interface</div>
+      <div class="dialog">
+        <strong>Install available updates?</strong>
+        <p>This application will restart after installing the available updates. Unsaved changes may be lost.</p>
+        <div class="buttons">
+          <span class="button">Cancel</span>
+          <span class="button primary">Install and restart</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mono">
+      <div class="label">Data / numerals</div>
+      <table class="data">
+        <thead><tr><th>Service</th><th>CPU</th><th>Memory</th><th>Latency</th></tr></thead>
+        <tbody>
+          <tr><td>browser</td><td>14.2%</td><td>3.84 GiB</td><td>18 ms</td></tr>
+          <tr><td>node</td><td>2.7%</td><td>684 MiB</td><td>4 ms</td></tr>
+          <tr><td>barrier</td><td>0.3%</td><td>91 MiB</td><td>1 ms</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card mono terminal">
+      <div class="label">Terminal</div>
+patrick@locutus ~/github.com/davidsneighbour/dotfiles
+$ git status --short
+ M configs/session/polybar/config.ini
+ M README.md
+?? docs/typography.md
+
+Node 26.8.1  npm 11.x  branch main
+    </div>
+
+    <div class="card wide code">
+      <div class="label">Code</div>
+const isReady = status !== "offline" && retries <= 3;
+const route = source => target;
+cache ??= new Map();
+
+if (value === null || value >= limit) {
+  console.log("Locutus -> ready :: != <= >= => === !==");
+}
+    </div>
+
+    <div class="card wide mono">
+      <div class="label">Ligatures — off vs on</div>
+      <div class="lig-row">
+        <div class="lig-tag">Off</div>
+        <div class="lig-sample lig-off">== === != !== <= >= -> => &lt;- &lt;=> :: := ++ -- // /// /* */ && || ?? ...</div>
+      </div>
+      <div class="lig-row">
+        <div class="lig-tag">On</div>
+        <div class="lig-sample lig-on">== === != !== <= >= -> => &lt;- &lt;=> :: := ++ -- // /// /* */ && || ?? ...</div>
+      </div>
+    </div>
+
+    <div class="card wide mono glyphs">
+      <div class="label">Glyph differentiation</div>
+      0 O o  1 l I i  5 S s  2 Z z  B 8  rn m  vv w  {} [] () &lt;&gt; / \ | _ - + = * # @ &amp; ? !
+    </div>
+  </div>
+</section>
+
+<div class="note">
+  Judge Argon vs Neon primarily in the polybar, terminal, code, and glyph-differentiation samples. Recursive Sans Linear is intentionally unchanged between the two variants. If Argon still wins, this file can be reduced to the Argon half and kept as the canonical Locutus typography specimen for the dotfiles documentation.
+</div>
+
+</main>
+</body>
+</html>
