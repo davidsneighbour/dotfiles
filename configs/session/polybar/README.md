@@ -15,7 +15,7 @@ at the repo root.
 | `config.ini` | The bar definition (`bar/i3bar`): left = configured i3 workspaces, centre = focused window title, right = CPU/memory/root filesystem/network/volume/date/tray. |
 | `launch.sh` | Starts the bar. Kills any previous instance for this user first, logs to `~/.logs/polybar-i3/`, never fails in a way i3 would notice. Run `launch.sh --help` for details. |
 | `configs/01-colours.ini` | Copied unchanged from `configs/system/polybar/configs/` (Dracula Pro palette). |
-| `configs/01-fonts.ini` | Copied unchanged. |
+| `configs/01-fonts.ini` | Session font mapping, including the larger Clockify-only Lucide slot. |
 | `configs/01-settings.ini` | Copied unchanged. |
 | `configs/07-module-i3.ini` | Generated official `internal/i3` workspace module. Static and dynamic workspaces render the icon stored after the numeric i3 workspace prefix. |
 | `configs/07-module-xwindow.ini` | Copied unchanged. `internal/xwindow` is generic EWMH, not XFCE-specific. |
@@ -24,8 +24,9 @@ at the repo root.
 | `configs/07-module-filesystem.ini` | New. `internal/fs`, `/` only. |
 | `configs/07-module-network.ini` | New. `internal/network`, interface `eno1` — **host-specific**, see the comment in that file. |
 | `configs/07-module-pulseaudio.ini` | Copied unchanged (same sink as the XFCE bar). |
-| `configs/07-module-date.ini` | Copied from the XFCE bar, simplified: dropped a click-to-open-calendar action that had an unescaped-URL syntax polybar flags as an error (`polybar -c config.ini -d ... i3bar`). |
+| `configs/07-module-date.ini` | Copied from the XFCE bar, simplified: left click opens Google Calendar through the module-level `click-left` handler, avoiding the older inline `%{A...}` URL escaping issue. |
 | `configs/07-module-tray.ini` | Copied unchanged. Uses the current module-based tray mechanism (`type = internal/tray` in `modules-right`), matching what the XFCE bar already does — no bar-level `tray-position`, which is the deprecated approach. |
+| `configs/07-module-clockify.ini` | Clockify status indicator. Left click opens the local form through `configs/session/clockify/polybar-clockify`. The visible indicator is a `custom/ipc` module so the form can refresh it immediately after submit; a hidden refresher preserves periodic fallback updates. Its wrapper uses the larger Clockify-only Lucide font slot so the icon is more legible without increasing bar height. |
 
 ## Deliberately not carried over from the XFCE bar
 
@@ -57,13 +58,18 @@ never running at the same time on the same display. See SESSION.md.
 
 ## Validating changes
 
-Safe (does not open any window, does not touch a live bar):
+Safe config-value checks. These commands only dump configured values and exit; they do not open, reload, or validate the rendered bar:
 
 ```bash
 polybar -c configs/session/polybar/config.ini --list-monitors
+polybar -c configs/session/polybar/config.ini -d modules-left i3bar
 polybar -c configs/session/polybar/config.ini -d modules-right i3bar
 ```
 
-`launch.sh` is `shellcheck`-clean. Only start the bar for real inside an
-actual i3 session — starting it from an XFCE session, or any session
-sharing this X display, would draw a second bar over the live one.
+To start or restart the i3 bar for real, run the launcher from inside the i3 session:
+
+```bash
+configs/session/polybar/launch.sh
+```
+
+`launch.sh` is `shellcheck`-clean. Only start the bar for real inside an actual i3 session — starting it from an XFCE session, or any session sharing this X display, would draw a second bar over the live one.

@@ -1,8 +1,0 @@
-#!/usr/bin/env xdg-open
-[Desktop Entry]
-Type=Application
-Name=Start Work Timer
-Icon=.icons/DNB/mdi--stopwatch-play-outline.svg
-Exec=/home/patrick/.bin/local/bin/clockify in -i
-Terminal=true
-Categories=Utility;

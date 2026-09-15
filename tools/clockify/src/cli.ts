@@ -1,0 +1,1350 @@
+#!/usr/bin/env node
+import { type ChildProcess, spawn, spawnSync } from "node:child_process";
+import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
+import {
+  createServer,
+  type IncomingMessage,
+  type ServerResponse,
+} from "node:http";
+import { homedir } from "node:os";
+import { dirname, join } from "node:path";
+import { URLSearchParams } from "node:url";
+
+const apiBase = "https://api.clockify.me/api/v1";
+const configPath = join(homedir(), ".config", "dnb-clockify", "config.json");
+const cacheDir = join(homedir(), ".cache", "dnb-clockify");
+const statusCachePath = join(cacheDir, "status.json");
+const nudgePath = join(cacheDir, "nudge.json");
+
+type OutputMode = "text" | "json";
+
+type CliOptions = {
+  json: boolean;
+  verbose: boolean;
+  quiet: boolean;
+};
+
+type ParsedArgs = {
+  command: string;
+  rest: string[];
+  options: CliOptions;
+};
+
+type Config = {
+  workspaceId?: string;
+  aliases: Record<string, ProjectAlias>;
+  settings: Settings;
+};
+
+type Settings = {
+  cacheSeconds: number;
+  nudgeMinutes: number;
+  idleSeconds: number;
+  formPort: number;
+};
+
+type ProjectAlias = {
+  id: string;
+  name: string;
+};
+
+type ClockifyUser = {
+  id: string;
+  activeWorkspace?: string;
+  defaultWorkspace?: string;
+};
+
+type ClockifyProject = {
+  id: string;
+  name: string;
+  archived?: boolean;
+};
+
+type TimeInterval = {
+  start: string;
+  end?: string | null;
+};
+
+type ClockifyTimeEntry = {
+  id: string;
+  description?: string;
+  projectId?: string;
+  timeInterval: TimeInterval;
+};
+
+type FormContext = {
+  token: string;
+  workspaceId: string;
+  config: Config;
+  projects: ClockifyProject[];
+  running: ClockifyTimeEntry | undefined;
+};
+
+type StatusState = "healthy" | "running" | "nudge" | "error";
+
+type StatusData = {
+  state: StatusState;
+  label: string;
+  colour: string;
+  entry?: ClockifyTimeEntry;
+  nudgeActiveSeconds: number;
+  cached: boolean;
+  error?: string;
+};
+
+type StatusCache = {
+  createdAt: number;
+  data: StatusData;
+};
+
+type NudgeState = {
+  lastCheckedAt: number;
+  activeSeconds: number;
+};
+
+class UserError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "UserError";
+  }
+}
+
+const defaultSettings: Settings = {
+  cacheSeconds: 30,
+  nudgeMinutes: 60,
+  idleSeconds: 300,
+  formPort: 39241,
+};
+
+function printHelp(): void {
+  console.log(`Usage: dnb-clockify <command> [options]
+
+Commands:
+  status [--json]                         Show current tracking state.
+  projects [--unmapped] [--json]          List Clockify projects.
+  start --project <project> --title <t>    Start a timer.
+  stop [--project <project>] [--title <t>] Stop or update the running timer.
+  add --project <project> --title <t> --start <time> --end <time>
+                                           Create a completed entry.
+  edit --id <entry-id> [--project <project>] [--title <t>] [--start <time>] [--end <time>]
+                                           Edit an existing entry.
+  prompt                                   Ask for fields in the terminal.
+  form [--open]                            Start a local HTML form on 127.0.0.1.
+  alias list                               List aliases and stale aliases.
+  alias set --alias <short> --project <p>  Add or update an alias.
+  alias remove --alias <short>             Remove an alias.
+  alias configure                          Configure aliases interactively.
+
+Global options:
+  --json       Print machine-readable JSON.
+  --verbose    Print more details where useful.
+  --quiet      Suppress optional details.
+  --help       Show this help.
+`);
+}
+
+function parseArgs(argv: string[]): ParsedArgs {
+  const rest: string[] = [];
+  const options: CliOptions = { json: false, verbose: false, quiet: false };
+  for (const arg of argv) {
+    if (arg === "--json") {
+      options.json = true;
+    } else if (arg === "--verbose") {
+      options.verbose = true;
+    } else if (arg === "--quiet") {
+      options.quiet = true;
+    } else {
+      rest.push(arg);
+    }
+  }
+  const command = rest.shift() ?? "help";
+  return { command, rest, options };
+}
+
+function getFlag(args: string[], name: string): string | undefined {
+  const prefix = `${name}=`;
+  for (let index = 0; index < args.length; index += 1) {
+    const value = args[index];
+    if (value === name) {
+      return args[index + 1];
+    }
+    if (value?.startsWith(prefix)) {
+      return value.slice(prefix.length);
+    }
+  }
+  return undefined;
+}
+
+function hasFlag(args: string[], name: string): boolean {
+  return args.includes(name);
+}
+
+function isAddressInUseError(error: unknown): boolean {
+  return (
+    error instanceof Error &&
+    "code" in error &&
+    (error as { code?: unknown }).code === "EADDRINUSE"
+  );
+}
+
+function firstAvailableCommand(commands: string[]): string | undefined {
+  for (const command of commands) {
+    if (
+      spawnSync("bash", ["-lc", `command -v ${command}`], { stdio: "ignore" })
+        .status === 0
+    ) {
+      return command;
+    }
+  }
+  return undefined;
+}
+
+function openUrl(url: string): void {
+  const chrome = firstAvailableCommand([
+    "google-chrome-stable",
+    "google-chrome",
+  ]);
+  if (chrome === undefined) {
+    spawn("xdg-open", [url], { detached: true, stdio: "ignore" }).unref();
+    return;
+  }
+
+  spawn(
+    chrome,
+    [
+      `--user-data-dir=${join(dirname(configPath), "chrome-profile")}`,
+      "--class=dnb-clockify-form",
+      "--name=dnb-clockify-form",
+      `--app=${url}`,
+    ],
+    { detached: true, stdio: "ignore" },
+  ).unref();
+}
+
+function refreshClockifyPolybar(): void {
+  spawnSync("polybar-msg", ["action", "clockify", "hook", "0"], {
+    stdio: "ignore",
+  });
+}
+
+function requireFlag(args: string[], name: string): string {
+  const value = getFlag(args, name);
+  if (value === undefined || value.trim() === "") {
+    throw new UserError(`Missing required option: ${name}`);
+  }
+  return value;
+}
+
+async function readJsonFile<T>(path: string): Promise<T | undefined> {
+  try {
+    return JSON.parse(await readFile(path, "utf8")) as T;
+  } catch (error) {
+    if (error instanceof Error && "code" in error && error.code === "ENOENT") {
+      return undefined;
+    }
+    throw error;
+  }
+}
+
+async function writeJsonFile(path: string, data: unknown): Promise<void> {
+  await mkdir(dirname(path), { recursive: true });
+  const temporaryPath = `${path}.tmp`;
+  await writeFile(temporaryPath, `${JSON.stringify(data, null, 2)}\n`, "utf8");
+  await rename(temporaryPath, path);
+}
+
+async function loadConfig(): Promise<Config> {
+  const stored = await readJsonFile<Partial<Config>>(configPath);
+  return {
+    workspaceId: stored?.workspaceId,
+    aliases: stored?.aliases ?? {},
+    settings: { ...defaultSettings, ...(stored?.settings ?? {}) },
+  };
+}
+
+async function saveConfig(config: Config): Promise<void> {
+  await writeJsonFile(configPath, config);
+}
+
+async function readEnvToken(): Promise<string> {
+  const existing = process.env.CLOCKIFY_TOKEN;
+  if (existing !== undefined && existing.trim() !== "") {
+    return existing.trim();
+  }
+  const envPath = join(homedir(), ".env");
+  try {
+    const content = await readFile(envPath, "utf8");
+    for (const line of content.split(/\r?\n/)) {
+      const match = /^CLOCKIFY_TOKEN=(.*)$/.exec(line.trim());
+      if (match?.[1] !== undefined) {
+        return match[1].replace(/^["']|["']$/g, "").trim();
+      }
+    }
+  } catch (error) {
+    if (
+      !(error instanceof Error && "code" in error && error.code === "ENOENT")
+    ) {
+      throw error;
+    }
+  }
+  throw new UserError(
+    "CLOCKIFY_TOKEN is not set in the environment or ~/.env.",
+  );
+}
+
+async function apiRequest<T>(
+  token: string,
+  path: string,
+  init: RequestInit = {},
+): Promise<T> {
+  const response = await fetch(`${apiBase}${path}`, {
+    ...init,
+    headers: {
+      "Content-Type": "application/json",
+      "X-Api-Key": token,
+      ...(init.headers ?? {}),
+    },
+  });
+  if (!response.ok) {
+    const body = await response.text();
+    throw new UserError(
+      `Clockify API request failed (${response.status}): ${body || response.statusText}`,
+    );
+  }
+  if (response.status === 204) {
+    return undefined as T;
+  }
+  return (await response.json()) as T;
+}
+
+async function getUser(token: string): Promise<ClockifyUser> {
+  return apiRequest<ClockifyUser>(token, "/user");
+}
+
+async function getWorkspaceId(token: string, config: Config): Promise<string> {
+  if (config.workspaceId !== undefined && config.workspaceId.trim() !== "") {
+    return config.workspaceId;
+  }
+  const user = await getUser(token);
+  const workspaceId = user.activeWorkspace ?? user.defaultWorkspace;
+  if (workspaceId === undefined) {
+    throw new UserError(
+      "Clockify did not return an active workspace. Set workspaceId in the config file.",
+    );
+  }
+  return workspaceId;
+}
+
+async function getProjects(
+  token: string,
+  workspaceId: string,
+): Promise<ClockifyProject[]> {
+  return apiRequest<ClockifyProject[]>(
+    token,
+    `/workspaces/${workspaceId}/projects?archived=false&page-size=5000`,
+  );
+}
+
+async function getRunningEntry(
+  token: string,
+  workspaceId: string,
+  userId: string,
+): Promise<ClockifyTimeEntry | undefined> {
+  const entries = await apiRequest<ClockifyTimeEntry[]>(
+    token,
+    `/workspaces/${workspaceId}/user/${userId}/time-entries?in-progress=true`,
+  );
+  return entries[0];
+}
+
+function normaliseName(value: string): string {
+  return value.trim().toLowerCase();
+}
+
+function projectDisplay(project: ClockifyProject, config: Config): string {
+  const alias = Object.entries(config.aliases).find(
+    ([, item]) => item.id === project.id,
+  )?.[0];
+  return alias === undefined ? project.name : `${alias} - ${project.name}`;
+}
+
+async function resolveProject(
+  token: string,
+  workspaceId: string,
+  config: Config,
+  value: string,
+): Promise<ClockifyProject> {
+  const projects = await getProjects(token, workspaceId);
+  const trimmed = value.trim();
+  const alias = config.aliases[trimmed];
+  if (alias !== undefined) {
+    const project = projects.find((candidate) => candidate.id === alias.id);
+    if (project === undefined) {
+      throw new UserError(
+        `Alias "${trimmed}" points to a project ID that no longer exists: ${alias.id}`,
+      );
+    }
+    return project;
+  }
+  const byId = projects.find((project) => project.id === trimmed);
+  if (byId !== undefined) {
+    return byId;
+  }
+  const exact = projects.find((project) => project.name === trimmed);
+  if (exact !== undefined) {
+    return exact;
+  }
+  const matches = projects.filter(
+    (project) => normaliseName(project.name) === normaliseName(trimmed),
+  );
+  if (matches.length === 1 && matches[0] !== undefined) {
+    return matches[0];
+  }
+  if (matches.length > 1) {
+    throw new UserError(
+      `Project name "${value}" is ambiguous. Use an alias or project ID.`,
+    );
+  }
+  throw new UserError(`Project not found: ${value}`);
+}
+
+function parseTimeInput(value: string): string {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    throw new UserError(`Invalid date/time: ${value}`);
+  }
+  return date.toISOString();
+}
+
+function localDateInputValue(value: Date): string {
+  const offsetMs = value.getTimezoneOffset() * 60_000;
+  return new Date(value.getTime() - offsetMs).toISOString().slice(0, 16);
+}
+
+async function createEntry(
+  token: string,
+  workspaceId: string,
+  projectId: string,
+  title: string,
+  start: string,
+  end?: string,
+): Promise<ClockifyTimeEntry> {
+  return apiRequest<ClockifyTimeEntry>(
+    token,
+    `/workspaces/${workspaceId}/time-entries`,
+    {
+      method: "POST",
+      body: JSON.stringify({
+        description: title,
+        projectId,
+        start,
+        ...(end === undefined ? {} : { end }),
+      }),
+    },
+  );
+}
+
+async function updateEntry(
+  token: string,
+  workspaceId: string,
+  entryId: string,
+  data: {
+    projectId?: string;
+    title?: string;
+    start?: string;
+    end?: string | null;
+  },
+): Promise<ClockifyTimeEntry> {
+  return apiRequest<ClockifyTimeEntry>(
+    token,
+    `/workspaces/${workspaceId}/time-entries/${entryId}`,
+    {
+      method: "PUT",
+      body: JSON.stringify({
+        ...(data.title === undefined ? {} : { description: data.title }),
+        ...(data.projectId === undefined ? {} : { projectId: data.projectId }),
+        ...(data.start === undefined ? {} : { start: data.start }),
+        ...(data.end === undefined ? {} : { end: data.end }),
+      }),
+    },
+  );
+}
+
+async function stopEntry(
+  token: string,
+  workspaceId: string,
+  entry: ClockifyTimeEntry,
+  end: string,
+): Promise<ClockifyTimeEntry> {
+  return updateEntry(token, workspaceId, entry.id, {
+    start: entry.timeInterval.start,
+    end,
+  });
+}
+
+function success(command: string, data: unknown, mode: OutputMode): void {
+  if (mode === "json") {
+    console.log(JSON.stringify({ ok: true, command, data }, null, 2));
+  }
+}
+
+function errorMessage(error: unknown, fallback: string): string {
+  if (error instanceof Error && error.message.trim() !== "") {
+    return error.message;
+  }
+  const message = String(error).trim();
+  return message === "" ? fallback : message;
+}
+
+function printError(command: string, error: unknown, mode: OutputMode): void {
+  const message = errorMessage(error, "Clockify command failed.");
+  if (mode === "json") {
+    console.log(
+      JSON.stringify({ ok: false, command, error: message }, null, 2),
+    );
+    return;
+  }
+  console.error(`Error: ${message}`);
+}
+
+async function commandProjects(
+  args: string[],
+  options: CliOptions,
+): Promise<void> {
+  const token = await readEnvToken();
+  const config = await loadConfig();
+  const workspaceId = await getWorkspaceId(token, config);
+  const projects = await getProjects(token, workspaceId);
+  const mappedIds = new Set(
+    Object.values(config.aliases).map((alias) => alias.id),
+  );
+  const filtered = hasFlag(args, "--unmapped")
+    ? projects.filter((project) => !mappedIds.has(project.id))
+    : projects;
+  const data = filtered.map((project) => ({
+    id: project.id,
+    name: project.name,
+    alias: Object.entries(config.aliases).find(
+      ([, alias]) => alias.id === project.id,
+    )?.[0],
+  }));
+  if (options.json) {
+    success("projects", data, "json");
+    return;
+  }
+  for (const project of data) {
+    console.log(`${project.alias ?? "-"}\t${project.name}\t${project.id}`);
+  }
+}
+
+async function computeStatus(useCache: boolean): Promise<StatusData> {
+  const token = await readEnvToken();
+  const config = await loadConfig();
+  if (useCache) {
+    const cached = await readJsonFile<StatusCache>(statusCachePath);
+    const maxAgeMs = config.settings.cacheSeconds * 1000;
+    if (cached !== undefined && Date.now() - cached.createdAt <= maxAgeMs) {
+      return { ...cached.data, cached: true };
+    }
+  }
+  const user = await getUser(token);
+  const workspaceId = await getWorkspaceId(token, config);
+  const entry = await getRunningEntry(token, workspaceId, user.id);
+  const nudgeActiveSeconds = await updateNudge(
+    entry === undefined,
+    config.settings,
+  );
+  const thresholdSeconds = config.settings.nudgeMinutes * 60;
+  const data: StatusData =
+    entry === undefined
+      ? nudgeActiveSeconds >= thresholdSeconds
+        ? {
+            state: "nudge",
+            label: "tracking nudge",
+            colour: "#f1fa8c",
+            nudgeActiveSeconds,
+            cached: false,
+          }
+        : {
+            state: "healthy",
+            label: "not tracking",
+            colour: "#50fa7b",
+            nudgeActiveSeconds,
+            cached: false,
+          }
+      : {
+          state: "running",
+          label:
+            entry.description === undefined || entry.description === ""
+              ? "tracking"
+              : entry.description,
+          colour: "#ff5555",
+          entry,
+          nudgeActiveSeconds: 0,
+          cached: false,
+        };
+  await writeJsonFile(statusCachePath, {
+    createdAt: Date.now(),
+    data,
+  } satisfies StatusCache);
+  return data;
+}
+
+async function updateNudge(
+  noTimer: boolean,
+  settings: Settings,
+): Promise<number> {
+  const now = Date.now();
+  const previous = (await readJsonFile<NudgeState>(nudgePath)) ?? {
+    lastCheckedAt: now,
+    activeSeconds: 0,
+  };
+  if (!noTimer) {
+    await writeJsonFile(nudgePath, {
+      lastCheckedAt: now,
+      activeSeconds: 0,
+    } satisfies NudgeState);
+    return 0;
+  }
+  const elapsedSeconds = Math.max(
+    0,
+    Math.min(600, Math.floor((now - previous.lastCheckedAt) / 1000)),
+  );
+  const idleSeconds = readIdleSeconds();
+  const activeIncrement =
+    idleSeconds === undefined || idleSeconds < settings.idleSeconds
+      ? elapsedSeconds
+      : 0;
+  const next = {
+    lastCheckedAt: now,
+    activeSeconds: previous.activeSeconds + activeIncrement,
+  } satisfies NudgeState;
+  await writeJsonFile(nudgePath, next);
+  return next.activeSeconds;
+}
+
+function readIdleSeconds(): number | undefined {
+  const result = spawnSync("xprintidle", [], { encoding: "utf8" });
+  if (result.status !== 0) {
+    return undefined;
+  }
+  const idleMs = Number.parseInt(result.stdout.trim(), 10);
+  return Number.isFinite(idleMs) ? Math.floor(idleMs / 1000) : undefined;
+}
+
+async function commandStatus(options: CliOptions): Promise<void> {
+  try {
+    const data = await computeStatus(true);
+    if (options.json) {
+      success("status", data, "json");
+      return;
+    }
+    const dot =
+      data.state === "running"
+        ? "red"
+        : data.state === "nudge"
+          ? "yellow"
+          : "green";
+    console.log(`${dot}: ${data.label}`);
+  } catch (error) {
+    const data: StatusData = {
+      state: "error",
+      label: error instanceof Error ? error.message : String(error),
+      colour: "#bd93f9",
+      nudgeActiveSeconds: 0,
+      cached: false,
+      error: error instanceof Error ? error.message : String(error),
+    };
+    await writeJsonFile(statusCachePath, {
+      createdAt: Date.now(),
+      data,
+    } satisfies StatusCache);
+    if (options.json) {
+      success("status", data, "json");
+      return;
+    }
+    console.log(`error: ${data.label}`);
+  }
+}
+
+async function commandStart(
+  args: string[],
+  options: CliOptions,
+): Promise<void> {
+  const token = await readEnvToken();
+  const config = await loadConfig();
+  const workspaceId = await getWorkspaceId(token, config);
+  const project = await resolveProject(
+    token,
+    workspaceId,
+    config,
+    requireFlag(args, "--project"),
+  );
+  const title = requireFlag(args, "--title");
+  const entry = await createEntry(
+    token,
+    workspaceId,
+    project.id,
+    title,
+    new Date().toISOString(),
+  );
+  await clearStatusCache();
+  if (options.json) {
+    success("start", entry, "json");
+    return;
+  }
+  console.log(`Started: ${title}`);
+}
+
+async function commandStop(args: string[], options: CliOptions): Promise<void> {
+  const token = await readEnvToken();
+  const config = await loadConfig();
+  const user = await getUser(token);
+  const workspaceId = await getWorkspaceId(token, config);
+  const running = await getRunningEntry(token, workspaceId, user.id);
+  if (running === undefined) {
+    throw new UserError("No running Clockify timer found.");
+  }
+  const title = getFlag(args, "--title");
+  const projectInput = getFlag(args, "--project");
+  if (title !== undefined || projectInput !== undefined) {
+    const project =
+      projectInput === undefined
+        ? undefined
+        : await resolveProject(token, workspaceId, config, projectInput);
+    await updateEntry(token, workspaceId, running.id, {
+      title,
+      projectId: project?.id,
+      start: running.timeInterval.start,
+      end: null,
+    });
+  }
+  const entry = await stopEntry(
+    token,
+    workspaceId,
+    running,
+    new Date().toISOString(),
+  );
+  await clearStatusCache();
+  if (options.json) {
+    success("stop", entry, "json");
+    return;
+  }
+  console.log("Stopped running timer.");
+}
+
+async function commandAdd(args: string[], options: CliOptions): Promise<void> {
+  const token = await readEnvToken();
+  const config = await loadConfig();
+  const workspaceId = await getWorkspaceId(token, config);
+  const project = await resolveProject(
+    token,
+    workspaceId,
+    config,
+    requireFlag(args, "--project"),
+  );
+  const title = requireFlag(args, "--title");
+  const start = parseTimeInput(requireFlag(args, "--start"));
+  const end = parseTimeInput(requireFlag(args, "--end"));
+  const entry = await createEntry(
+    token,
+    workspaceId,
+    project.id,
+    title,
+    start,
+    end,
+  );
+  await clearStatusCache();
+  if (options.json) {
+    success("add", entry, "json");
+    return;
+  }
+  console.log(`Added: ${title}`);
+}
+
+async function commandEdit(args: string[], options: CliOptions): Promise<void> {
+  const token = await readEnvToken();
+  const config = await loadConfig();
+  const workspaceId = await getWorkspaceId(token, config);
+  const entryId = requireFlag(args, "--id");
+  const projectInput = getFlag(args, "--project");
+  const project =
+    projectInput === undefined
+      ? undefined
+      : await resolveProject(token, workspaceId, config, projectInput);
+  const entry = await updateEntry(token, workspaceId, entryId, {
+    projectId: project?.id,
+    title: getFlag(args, "--title"),
+    start:
+      getFlag(args, "--start") === undefined
+        ? undefined
+        : parseTimeInput(requireFlag(args, "--start")),
+    end:
+      getFlag(args, "--end") === undefined
+        ? undefined
+        : parseTimeInput(requireFlag(args, "--end")),
+  });
+  await clearStatusCache();
+  if (options.json) {
+    success("edit", entry, "json");
+    return;
+  }
+  console.log(`Updated entry: ${entry.id}`);
+}
+
+async function clearStatusCache(): Promise<void> {
+  await writeJsonFile(statusCachePath, {
+    createdAt: 0,
+    data: {
+      state: "healthy",
+      label: "expired",
+      colour: "#50fa7b",
+      nudgeActiveSeconds: 0,
+      cached: true,
+    },
+  });
+}
+
+function staleAliases(
+  projects: ClockifyProject[],
+  config: Config,
+): Array<{
+  alias: string;
+  id: string;
+  cachedName: string;
+  currentName?: string;
+  stale: boolean;
+}> {
+  return Object.entries(config.aliases).map(([alias, item]) => {
+    const project = projects.find((candidate) => candidate.id === item.id);
+    return {
+      alias,
+      id: item.id,
+      cachedName: item.name,
+      currentName: project?.name,
+      stale: project === undefined || project.name !== item.name,
+    };
+  });
+}
+
+async function commandAlias(
+  args: string[],
+  options: CliOptions,
+): Promise<void> {
+  const subcommand = args[0] ?? "list";
+  const token = await readEnvToken();
+  const config = await loadConfig();
+  const workspaceId = await getWorkspaceId(token, config);
+  if (subcommand === "set") {
+    const alias = requireFlag(args, "--alias");
+    const project = await resolveProject(
+      token,
+      workspaceId,
+      config,
+      requireFlag(args, "--project"),
+    );
+    config.aliases[alias] = { id: project.id, name: project.name };
+    await saveConfig(config);
+    if (options.json) {
+      success("alias set", { alias, project }, "json");
+      return;
+    }
+    console.log(`Set ${alias} -> ${project.name}`);
+    return;
+  }
+  if (subcommand === "remove") {
+    const alias = requireFlag(args, "--alias");
+    delete config.aliases[alias];
+    await saveConfig(config);
+    if (options.json) {
+      success("alias remove", { alias }, "json");
+      return;
+    }
+    console.log(`Removed alias: ${alias}`);
+    return;
+  }
+  if (subcommand === "configure") {
+    await commandAliasConfigure(options);
+    return;
+  }
+  const projects = await getProjects(token, workspaceId);
+  const data = staleAliases(projects, config);
+  if (options.json) {
+    success("alias list", data, "json");
+    return;
+  }
+  for (const alias of data) {
+    const marker = alias.stale ? "stale" : "ok";
+    console.log(`${alias.alias}\t${marker}\t${alias.cachedName}\t${alias.id}`);
+  }
+}
+
+async function commandAliasConfigure(options: CliOptions): Promise<void> {
+  const token = await readEnvToken();
+  const config = await loadConfig();
+  const workspaceId = await getWorkspaceId(token, config);
+  const projects = await getProjects(token, workspaceId);
+  const project = await chooseProject(
+    projects,
+    config,
+    "Select project to alias",
+  );
+  const alias = await promptText(
+    "Alias",
+    Object.entries(config.aliases).find(
+      ([, item]) => item.id === project.id,
+    )?.[0] ?? "",
+  );
+  if (alias.trim() === "") {
+    throw new UserError("Alias must not be empty.");
+  }
+  config.aliases[alias.trim()] = { id: project.id, name: project.name };
+  await saveConfig(config);
+  if (options.json) {
+    success("alias configure", { alias, project }, "json");
+    return;
+  }
+  console.log(`Set ${alias.trim()} -> ${project.name}`);
+}
+
+async function commandPrompt(options: CliOptions): Promise<void> {
+  const status = await computeStatus(false);
+  const mode = await choose(
+    ["start", "stop", "add"],
+    status.state === "running" ? "stop" : "start",
+    "Action",
+  );
+  if (mode === "stop") {
+    await commandStop([], options);
+    return;
+  }
+  const token = await readEnvToken();
+  const config = await loadConfig();
+  const workspaceId = await getWorkspaceId(token, config);
+  const projects = await getProjects(token, workspaceId);
+  const project = await chooseProject(projects, config, "Project");
+  const title = await promptText("Title", "");
+  if (mode === "add") {
+    const start = await promptText("Start", localDateInputValue(new Date()));
+    const end = await promptText("End", localDateInputValue(new Date()));
+    const entry = await createEntry(
+      token,
+      workspaceId,
+      project.id,
+      title,
+      parseTimeInput(start),
+      parseTimeInput(end),
+    );
+    await clearStatusCache();
+    if (options.json) {
+      success("prompt", entry, "json");
+      return;
+    }
+    console.log(`Added: ${title}`);
+    return;
+  }
+  const entry = await createEntry(
+    token,
+    workspaceId,
+    project.id,
+    title,
+    new Date().toISOString(),
+  );
+  await clearStatusCache();
+  if (options.json) {
+    success("prompt", entry, "json");
+    return;
+  }
+  console.log(`Started: ${title}`);
+}
+
+async function chooseProject(
+  projects: ClockifyProject[],
+  config: Config,
+  prompt: string,
+): Promise<ClockifyProject> {
+  const labels = projects.map((project) => projectDisplay(project, config));
+  const selected = await choose(labels, labels[0] ?? "", prompt);
+  const index = labels.indexOf(selected);
+  const project = projects[index];
+  if (project === undefined) {
+    throw new UserError("No project selected.");
+  }
+  return project;
+}
+
+async function choose(
+  choices: string[],
+  defaultValue: string,
+  prompt: string,
+): Promise<string> {
+  if (choices.length === 0) {
+    throw new UserError(`No choices available for ${prompt}.`);
+  }
+  if (hasCommand("gum")) {
+    const child = spawn("gum", ["filter", "--placeholder", prompt], {
+      stdio: ["pipe", "pipe", "inherit"],
+    });
+    child.stdin?.write(`${choices.join("\n")}\n`);
+    child.stdin?.end();
+    const output = await collectChildOutput(child);
+    return output.trim() || defaultValue;
+  }
+  console.error(`${prompt}:`);
+  choices.forEach((choice, index) => console.error(`${index + 1}. ${choice}`));
+  const answer = await promptText("Number", "1");
+  const index = Number.parseInt(answer, 10) - 1;
+  return choices[index] ?? defaultValue;
+}
+
+async function promptText(
+  prompt: string,
+  defaultValue: string,
+): Promise<string> {
+  if (hasCommand("gum")) {
+    const args = ["input", "--placeholder", prompt];
+    if (defaultValue !== "") {
+      args.push("--value", defaultValue);
+    }
+    const child = spawn("gum", args, { stdio: ["inherit", "pipe", "inherit"] });
+    const output = await collectChildOutput(child);
+    return output.trim();
+  }
+  process.stderr.write(
+    `${prompt}${defaultValue === "" ? "" : ` [${defaultValue}]`}: `,
+  );
+  const input = await new Promise<string>((resolve) => {
+    process.stdin.once("data", (data: Buffer) =>
+      resolve(data.toString("utf8").trim()),
+    );
+  });
+  return input === "" ? defaultValue : input;
+}
+
+function hasCommand(command: string): boolean {
+  return (
+    spawnSync("bash", ["-lc", `command -v ${command}`], { stdio: "ignore" })
+      .status === 0
+  );
+}
+
+async function collectChildOutput(child: ChildProcess): Promise<string> {
+  let output = "";
+  child.stdout?.on("data", (chunk: Buffer) => {
+    output += chunk.toString("utf8");
+  });
+  const code = await new Promise<number | null>((resolve) =>
+    child.on("close", resolve),
+  );
+  if (code !== 0) {
+    throw new UserError("Interactive selection was cancelled.");
+  }
+  return output;
+}
+
+async function loadFormContext(config: Config): Promise<FormContext> {
+  const token = await readEnvToken();
+  const user = await getUser(token);
+  const workspaceId = await getWorkspaceId(token, config);
+  const projects = await getProjects(token, workspaceId);
+  const running = await getRunningEntry(token, workspaceId, user.id);
+
+  return {
+    token,
+    workspaceId,
+    config,
+    projects,
+    running,
+  };
+}
+
+async function commandForm(args: string[], options: CliOptions): Promise<void> {
+  const config = await loadConfig();
+  let context: Promise<FormContext> | undefined;
+  const getFormContext = (): Promise<FormContext> => {
+    context ??= loadFormContext(config);
+    return context;
+  };
+  const server = createServer(async (request, response) => {
+    try {
+      const formContext = await getFormContext();
+      if (request.method === "POST") {
+        await handleFormPost(
+          request,
+          response,
+          formContext.token,
+          formContext.workspaceId,
+          formContext.config,
+          formContext.running,
+        );
+        server.close();
+        return;
+      }
+      sendHtml(
+        response,
+        renderForm(
+          formContext.projects,
+          formContext.config,
+          formContext.running,
+        ),
+      );
+    } catch (error) {
+      response.statusCode = 500;
+      sendHtml(
+        response,
+        `<h1>Error</h1><p>${escapeHtml(errorMessage(error, "Clockify form request failed."))}</p>`,
+      );
+    }
+  });
+  const configuredUrl = `http://127.0.0.1:${config.settings.formPort}/`;
+  try {
+    await new Promise<void>((resolve, reject) => {
+      server.once("error", reject);
+      server.listen(config.settings.formPort, "127.0.0.1", () => {
+        server.off("error", reject);
+        resolve();
+      });
+    });
+  } catch (error) {
+    if (isAddressInUseError(error)) {
+      if (hasFlag(args, "--open")) {
+        openUrl(configuredUrl);
+      }
+      if (options.json) {
+        success("form", { url: configuredUrl, existing: true }, "json");
+      } else {
+        console.log(configuredUrl);
+      }
+      return;
+    }
+    throw error;
+  }
+  const address = server.address();
+  const port =
+    typeof address === "object" && address !== null
+      ? address.port
+      : config.settings.formPort;
+  const url = `http://127.0.0.1:${port}/`;
+  if (hasFlag(args, "--open")) {
+    openUrl(url);
+  }
+  if (options.json) {
+    success("form", { url }, "json");
+  } else {
+    console.log(url);
+  }
+}
+
+async function handleFormPost(
+  request: IncomingMessage,
+  response: ServerResponse,
+  token: string,
+  workspaceId: string,
+  config: Config,
+  running: ClockifyTimeEntry | undefined,
+): Promise<void> {
+  const body = await readRequestBody(request);
+  const form = new URLSearchParams(body);
+  const project = await resolveProject(
+    token,
+    workspaceId,
+    config,
+    form.get("project") ?? "",
+  );
+  const title = form.get("title") ?? "";
+  const start = parseTimeInput(form.get("start") ?? "");
+  const endValue = form.get("end") ?? "";
+  if (running === undefined) {
+    await createEntry(
+      token,
+      workspaceId,
+      project.id,
+      title,
+      start,
+      endValue.trim() === "" ? undefined : parseTimeInput(endValue),
+    );
+  } else if (endValue.trim() === "") {
+    await updateEntry(token, workspaceId, running.id, {
+      projectId: project.id,
+      title,
+      start,
+      end: null,
+    });
+  } else {
+    const end = parseTimeInput(endValue);
+    await updateEntry(token, workspaceId, running.id, {
+      projectId: project.id,
+      title,
+      start,
+      end,
+    });
+  }
+  await clearStatusCache();
+  refreshClockifyPolybar();
+  sendHtml(
+    response,
+    `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Clockify saved</title>
+<script>
+window.close();
+</script>
+</head>
+<body>
+<p>Saved.</p>
+</body>
+</html>`,
+  );
+}
+
+async function readRequestBody(request: IncomingMessage): Promise<string> {
+  let body = "";
+  for await (const chunk of request) {
+    body += chunk.toString();
+  }
+  return body;
+}
+
+function renderForm(
+  projects: ClockifyProject[],
+  config: Config,
+  running: ClockifyTimeEntry | undefined,
+): string {
+  const now = new Date();
+  const selectedProjectId = running?.projectId;
+  const title = running?.description ?? "";
+  const start =
+    running?.timeInterval.start === undefined
+      ? localDateInputValue(now)
+      : localDateInputValue(new Date(running.timeInterval.start));
+  const end = running === undefined ? "" : localDateInputValue(now);
+  const options = projects
+    .map((project) => {
+      const selected = project.id === selectedProjectId ? " selected" : "";
+      return `<option value="${escapeHtml(project.id)}"${selected}>${escapeHtml(projectDisplay(project, config))}</option>`;
+    })
+    .join("");
+  return `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clockify</title>
+<style>
+body{font-family:system-ui,sans-serif;margin:2rem;max-width:42rem;background:#f8f8f2;color:#282a36}
+label{display:block;margin:1rem 0 .35rem}
+input,select,button{box-sizing:border-box;width:100%;font:inherit;padding:.65rem;border:1px solid #6272a4;border-radius:4px;background:white;color:#282a36}
+button{margin-top:1.25rem;background:#44475a;color:#f8f8f2;cursor:pointer}
+</style>
+</head>
+<body>
+<h1>Clockify</h1>
+<form method="post">
+<label for="project">Project</label>
+<select id="project" name="project">${options}</select>
+<label for="title">Title</label>
+<input id="title" name="title" value="${escapeHtml(title)}" required>
+<label for="start">Start</label>
+<input id="start" name="start" type="datetime-local" value="${escapeHtml(start)}" required>
+<label for="end">End</label>
+<input id="end" name="end" type="datetime-local" value="${escapeHtml(end)}">
+<button type="submit">Save</button>
+</form>
+<script>
+document.querySelector("form")?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const form = event.currentTarget;
+  if (!(form instanceof HTMLFormElement)) {
+    return;
+  }
+  const button = form.querySelector("button");
+  if (button instanceof HTMLButtonElement) {
+    button.disabled = true;
+  }
+  try {
+    const data = new URLSearchParams();
+    for (const [name, value] of new FormData(form)) {
+      if (typeof value === "string") {
+        data.append(name, value);
+      }
+    }
+    const response = await fetch(form.action || window.location.href, {
+      method: "POST",
+      body: data,
+    });
+    if (!response.ok) {
+      document.body.innerHTML = await response.text();
+      return;
+    }
+    window.close();
+  } catch (error) {
+    const message =
+      error instanceof Error && error.message !== ""
+        ? error.message
+        : "Submitting the Clockify form failed.";
+    document.body.innerHTML = \`<h1>Error</h1><p>\${message}</p>\`;
+  }
+});
+</script>
+</body>
+</html>`;
+}
+
+function sendHtml(response: ServerResponse, html: string): void {
+  response.setHeader("content-type", "text/html; charset=utf-8");
+  response.end(html);
+}
+
+function escapeHtml(value: string): string {
+  return value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
+}
+
+async function main(): Promise<void> {
+  const parsed = parseArgs(process.argv.slice(2));
+  const outputMode: OutputMode = parsed.options.json ? "json" : "text";
+  try {
+    if (
+      parsed.command === "help" ||
+      parsed.command === "--help" ||
+      hasFlag(parsed.rest, "--help")
+    ) {
+      printHelp();
+      return;
+    }
+    if (parsed.command === "status") {
+      await commandStatus(parsed.options);
+    } else if (parsed.command === "projects") {
+      await commandProjects(parsed.rest, parsed.options);
+    } else if (parsed.command === "start") {
+      await commandStart(parsed.rest, parsed.options);
+    } else if (parsed.command === "stop") {
+      await commandStop(parsed.rest, parsed.options);
+    } else if (parsed.command === "add") {
+      await commandAdd(parsed.rest, parsed.options);
+    } else if (parsed.command === "edit") {
+      await commandEdit(parsed.rest, parsed.options);
+    } else if (parsed.command === "prompt") {
+      await commandPrompt(parsed.options);
+    } else if (parsed.command === "form") {
+      await commandForm(parsed.rest, parsed.options);
+    } else if (parsed.command === "alias") {
+      await commandAlias(parsed.rest, parsed.options);
+    } else {
+      throw new UserError(`Unknown command: ${parsed.command}`);
+    }
+  } catch (error) {
+    printError(parsed.command, error, outputMode);
+    process.exitCode = 1;
+    if (outputMode === "text" && error instanceof UserError) {
+      console.error("Run `dnb-clockify --help` for usage.");
+    }
+  }
+}
+
+await main();

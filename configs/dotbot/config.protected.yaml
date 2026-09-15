@@ -24,8 +24,6 @@
     ~/.config/filezilla/sitemanager.xml: protected/filezilla/sitemanager.xml
     ~/.config/filezilla/trustedcerts.xml: protected/filezilla/trustedcerts.xml
     ~/.crosspost.env: protected/crosspost.env
-    ~/.clockify-cli.yaml: protected/clockify-cli.yaml
-
     # fonts
     ~/.fonts/AkwePro: protected/fonts/AkwePro
     ~/.fonts/BahnPro: protected/fonts/BahnPro

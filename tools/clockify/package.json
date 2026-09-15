@@ -1,0 +1,22 @@
+{
+  "name": "@davidsneighbour/clockify",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Small Clockify CLI and local form for workstation time tracking.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "dnb-clockify": "src/cli.ts"
+  },
+  "scripts": {
+    "start": "node --experimental-strip-types src/cli.ts",
+    "typecheck": "tsc --project tsconfig.json --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "26.4.1",
+    "typescript": "7.0.2"
+  },
+  "engines": {
+    "node": "^22.0.0 || ^24.0.0 || ^26.0.0"
+  }
+}

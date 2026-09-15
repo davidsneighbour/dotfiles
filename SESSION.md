@@ -84,7 +84,8 @@ LightDM
         ├── Rofi (i3-only — configs/session/rofi/, invoked as
         │   `rofi -show drun`)
         ├── Polybar (i3-ONLY copy — configs/session/polybar/, launched by
-        │   configs/session/polybar/launch.sh via i3 exec_always)
+        │   configs/session/polybar/launch.sh via i3 exec_always; includes
+        │   the Clockify status indicator from configs/session/clockify/)
         ├── fonts (desktop typography set — configs/session/fonts/,
         │   exposed at ~/.fonts/dotfiles through configs/fonts/dotfiles)
         ├── background (xsetroot solid colour, then feh sets a
@@ -132,7 +133,7 @@ For every automatically started i3-session component:
 | --- | --- | --- | --- | --- |
 | Root background colour | i3 | `xsetroot -solid '#0B0D0F'` | `exec_always` | Non-fatal; i3 unaffected. |
 | Wallpaper | i3 | `feh --bg-fill configs/session/i3/wallpaper.jpg` | `exec_always` (not wrapped in `\|\| true`) | Fixed repo-committed image. |
-| Polybar | i3 | `configs/session/polybar/launch.sh` | `exec_always` (`sh -c ... \|\| true`) | Non-fatal; i3 remains usable with no bar if Polybar/its config is missing. |
+| Polybar | i3 | `configs/session/polybar/launch.sh` | `exec_always` (`sh -c ... \|\| true`) | Non-fatal; i3 remains usable with no bar if Polybar/its config is missing. Its left side includes the Clockify status indicator, which calls `configs/session/clockify/polybar-clockify` and opens the local form on left click. |
 | Enpass | i3 | `/opt/enpass/Enpass --minimize` | `exec` (once per session, see "Screen lock" rationale — no relaunch/re-prompt on restart) | Non-fatal; if Enpass is missing, i3 continues with no error surfaced. Its window is sent to the scratchpad by a `for_window` rule as soon as it appears — see "Window rules". |
 | xss-lock | i3 | `xss-lock --transfer-sleep-lock -- configs/session/i3lock/lock.sh` | `exec` (once per session, see "Screen lock") | Non-fatal to i3; if `xss-lock` is missing, `Super+L`/suspend simply do not lock the screen. |
 | Rofi | user keypress (`Super_L` release, or `$mod+d`) | `rofi -show drun` | `bindsym ... exec` | Non-fatal; a launcher failure does not affect the rest of the session. |
@@ -232,6 +233,10 @@ Validated non-interactively (parses without opening a window): `bash -n
 configs/session/i3/window-inspector.sh`, `shellcheck configs/session/i3/
 window-inspector.sh`, and `i3 -C -c configs/session/i3/config` (also
 covers `rules.conf`, via the `config` file's `include`).
+
+### Clockify form window
+
+The Clockify Polybar indicator opens `tools/clockify`'s local form through Chrome app mode, using the dedicated user profile at `~/.config/dnb-clockify/chrome-profile` and the stable window class `dnb-clockify-form`. `configs/session/i3/configs/rules.conf` floats that class, resizes it to `700x760`, and centres it on the current workspace. No workspace assignment is used, so the form stays with the workspace where it was opened.
 
 ### Scratchpad mark convention
 
@@ -474,9 +479,13 @@ Alt+Tab/Super+Tab still go to xfwm4's own default
   (e.g. nested X servers, Xephyr testing, a second concurrent seat), this
   script would kill the other session's bar too — treat that as a hard
   constraint on how this script may be reused.
-* Validated non-interactively (parses without opening a window):
-  `polybar -c configs/session/polybar/config.ini --list-monitors` and
-  `polybar -c configs/session/polybar/config.ini -d modules-right i3bar`.
+* Safe non-rendering checks:
+  `polybar -c configs/session/polybar/config.ini --list-monitors`,
+  `polybar -c configs/session/polybar/config.ini -d modules-left i3bar`,
+  and `polybar -c configs/session/polybar/config.ini -d modules-right i3bar`.
+  The `-d` commands only dump configured values and exit; they do not start,
+  reload, or visually validate the bar. Use `configs/session/polybar/launch.sh`
+  inside the i3 session to start or restart the real bar.
 
 ## Background
 

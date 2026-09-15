@@ -1,0 +1,133 @@
+#!/bin/bash
+
+set -euo pipefail
+
+REPO_ROOT="${REPO_ROOT:-${HOME}/.dotfiles}"
+CLOCKIFY_TOOL="${REPO_ROOT}/tools/clockify/src/cli.ts"
+NVM_DIR="${NVM_DIR:-${HOME}/.nvm}"
+ERROR_ICON=$'\uE4B1'
+NUDGE_ICON=$'\uE082'
+HEALTHY_ICON=$'\uE080'
+RUNNING_ICON=$'\uE083'
+
+find_node() {
+  local node_candidate=''
+  local node_path=''
+
+  if node_path="$(command -v node 2>/dev/null)" && [[ -x "${node_path}" ]]; then
+    printf '%s\n' "${node_path}"
+    return 0
+  fi
+
+  if [[ -d "${NVM_DIR}/versions/node" ]]; then
+    shopt -s nullglob
+    for node_path in "${NVM_DIR}"/versions/node/*/bin/node; do
+      [[ -x "${node_path}" ]] && node_candidate="${node_path}"
+    done
+    shopt -u nullglob
+  fi
+
+  if [[ -n "${node_candidate}" ]]; then
+    printf '%s\n' "${node_candidate}"
+    return 0
+  fi
+
+  return 1
+}
+
+print_help() {
+  cat <<EOF
+Usage: ${0##*/} --status|--open-form [--verbose] [--quiet]
+
+Options:
+  --status      Print the Polybar indicator.
+  --open-form   Open the local Clockify HTML form.
+  --verbose     Enable verbose mode for child commands.
+  --quiet       Disable verbose mode.
+  --help        Show this help.
+EOF
+}
+
+print_indicator() {
+  local colour="${1}"
+  local icon="${2}"
+
+  printf '%%{T6}%%{F%s}%s%%{F-}%%{T-}\n' "${colour}" "${icon}"
+}
+
+command=''
+quiet_mode='false'
+
+while [[ "$#" -gt 0 ]]; do
+  case "${1}" in
+  --status)
+    command='status'
+    ;;
+  --open-form)
+    command='open-form'
+    ;;
+  --verbose)
+    export DNB_VERBOSE='1'
+    ;;
+  --quiet)
+    quiet_mode='true'
+    ;;
+  --help)
+    print_help
+    exit 0
+    ;;
+  *)
+    printf 'Unknown option: %s\n\n' "${1}" >&2
+    print_help >&2
+    exit 1
+    ;;
+  esac
+  shift
+done
+
+if [[ "${quiet_mode}" == 'true' ]]; then
+  unset DNB_VERBOSE
+fi
+
+if [[ -z "${command}" ]]; then
+  print_help >&2
+  exit 1
+fi
+
+if [[ ! -f "${CLOCKIFY_TOOL}" ]]; then
+  print_indicator '#bd93f9' "${ERROR_ICON}"
+  exit 0
+fi
+
+if ! NODE_BIN="$(find_node)"; then
+  print_indicator '#bd93f9' "${ERROR_ICON}"
+  exit 0
+fi
+
+case "${command}" in
+status)
+  status_json="$("${NODE_BIN}" --experimental-strip-types "${CLOCKIFY_TOOL}" status --json 2>/dev/null || true)"
+  state="$(printf '%s' "${status_json}" | "${NODE_BIN}" -e "let data='';process.stdin.on('data',c=>data+=c);process.stdin.on('end',()=>{try{const parsed=JSON.parse(data);process.stdout.write(parsed.data?.state ?? 'error')}catch{process.stdout.write('error')}})")"
+  case "${state}" in
+  healthy)
+    print_indicator '#50fa7b' "${HEALTHY_ICON}"
+    ;;
+  running)
+    print_indicator '#ff5555' "${RUNNING_ICON}"
+    ;;
+  nudge)
+    print_indicator '#f1fa8c' "${NUDGE_ICON}"
+    ;;
+  *)
+    print_indicator '#bd93f9' "${ERROR_ICON}"
+    ;;
+  esac
+  ;;
+open-form)
+  "${NODE_BIN}" --experimental-strip-types "${CLOCKIFY_TOOL}" form --open --quiet >/dev/null 2>&1 &
+  ;;
+*)
+  print_help >&2
+  exit 1
+  ;;
+esac

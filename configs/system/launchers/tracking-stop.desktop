@@ -1,8 +1,0 @@
-#!/usr/bin/env xdg-open
-[Desktop Entry]
-Type=Application
-Name=Stop Work Timer
-Icon=.icons/DNB/mdi--stopwatch-stop-outline.svg
-Exec=/home/patrick/.bin/local/bin/clockify out
-Terminal=true
-Categories=Utility;
