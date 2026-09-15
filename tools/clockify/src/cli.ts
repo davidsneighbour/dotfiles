@@ -1282,6 +1282,8 @@ document.querySelector("form")?.addEventListener("submit", async (event) => {
       document.body.innerHTML = await response.text();
       return;
     }
+    document.body.innerHTML = "<h1>Saved</h1><p>You can close this window.</p>";
+    window.open("", "_self");
     window.close();
   } catch (error) {
     const message =
