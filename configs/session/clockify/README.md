@@ -2,7 +2,7 @@
 
 This folder connects the isolated `tools/clockify` CLI to the i3 desktop session.
 
-`polybar-clockify` is a small Bash wrapper used by the i3 Polybar copy. It calls the TypeScript tool, converts status JSON into a coloured Lucide indicator, and opens the local form on left click.
+`polybar-clockify` is a small Bash wrapper used by the i3 Polybar copy. It calls the TypeScript tool, converts status JSON into a coloured Lucide indicator, and opens the local form on left click. Right-clicking the module opens the full Clockify tracker overview (`https://app.clockify.me/tracker`) in the default browser via `xdg-open`, wired directly in `07-module-clockify.ini` since it doesn't touch any Clockify state.
 
 Polybar starts from i3 through a non-interactive shell, so it may not inherit the interactive NVM `PATH`. The wrapper resolves `node` from `PATH` first and then falls back to `~/.nvm/versions/node/*/bin/node`; if no usable Node binary is found, it prints the purple error indicator instead of leaving the module blank.
 
