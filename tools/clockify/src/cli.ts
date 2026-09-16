@@ -1240,13 +1240,20 @@ async function commandForm(args: string[], options: CliOptions): Promise<void> {
       ? address.port
       : config.settings.formPort;
   const url = `http://127.0.0.1:${port}/`;
+  const formContext = await getFormContext();
+  const running = formContext.running !== undefined;
   if (hasFlag(args, "--open")) {
     openUrl(url);
   }
   if (options.json) {
-    success("form", { url }, "json");
+    success("form", { url, running }, "json");
   } else {
     console.log(url);
+    console.log(
+      running
+        ? `Timer running: ${formContext.running?.description || "(untitled)"}`
+        : "No timer running.",
+    );
   }
 }
 

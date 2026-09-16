@@ -85,6 +85,8 @@ The interactive flow can start a timer, stop the running timer, or create a comp
 
 `dnb-clockify form` starts a one-shot local HTTP server bound to `127.0.0.1`. It prints the URL and waits for one submission. Run `npm run build` first — the command exits with an error pointing at that command if `dist/web/index.html` doesn't exist yet.
 
+Each time the server actually starts (not when it reuses an already-running one), it queries Clockify for the current running timer and prints the result (`Timer running: <title>` or `No timer running.`, or `running: true/false` with `--json`). This check is always live — the local server process holds no state of its own about the timer, so it's safe to kill and restart (see `--restart` below) at any time; the next start just re-checks Clockify directly.
+
 If the configured `formPort` is already in use, `form` reuses the existing server's URL instead of starting a new one. Pass `--restart` to instead kill whatever process is bound to that port (via `lsof`) and start a fresh server — useful if a previous form server is stuck.
 
 With no running timer, the form pre-fills `start` with the current time and leaves `end` empty. Submitting with an empty `end` starts a timer. Submitting with `end` set creates a completed entry.
