@@ -86,6 +86,7 @@
     "activityBarTop.foreground": "#e7e7e7",
     "activityBarTop.inactiveForeground": "#e7e7e799",
     "commandCenter.foreground": "#e7e7e7",
+    "commandCenter.background": "#730039",
     "statusBar.debuggingBackground": "#730039",
     "statusBar.debuggingForeground": "#e7e7e7"
   },
