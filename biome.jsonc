@@ -14,5 +14,15 @@
       "!logs",
       "!protected"
     ]
-  }
+  },
+  "overrides": [
+    {
+      "includes": ["tools/clockify/web/src/**/*.css"],
+      "css": {
+        "parser": {
+          "tailwindDirectives": true
+        }
+      }
+    }
+  ]
 }

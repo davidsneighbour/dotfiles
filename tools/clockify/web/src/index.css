@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+/*
+ * Dracula Pro palette, matching configs/session/polybar/configs/01-colours.ini.
+ * This form has no light theme — it is always dark, so the palette lives
+ * directly under :root instead of behind a .dark class.
+ */
+:root {
+  --background: #0b0d0f;
+  --foreground: #f8f8f2;
+  --card: #14171a;
+  --card-foreground: #f8f8f2;
+  --popover: #14171a;
+  --popover-foreground: #f8f8f2;
+  --primary: #9580ff;
+  --primary-foreground: #0b0d0f;
+  --secondary: #414d58;
+  --secondary-foreground: #f8f8f2;
+  --muted: #414d58;
+  --muted-foreground: #708ca9;
+  --accent: #ff80bf;
+  --accent-foreground: #0b0d0f;
+  --destructive: #ff9580;
+  --destructive-foreground: #0b0d0f;
+  --border: #414d58;
+  --input: #414d58;
+  --ring: #80ffea;
+  --radius: 0.5rem;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 0.25rem);
+  --radius-md: calc(var(--radius) - 0.125rem);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 0.25rem);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+}

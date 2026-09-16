@@ -22,6 +22,16 @@ npm start -- start --project aps --title "Write deployment notes"
 
 For a global helper, link `src/cli.ts` through your local bin path or call it with Node from shell glue.
 
+### Local form assets
+
+`dnb-clockify form` serves a small React/Tailwind/shadcn UI built with Vite. Build it once, and again after changing anything under `web/`:
+
+```bash
+npm run build
+```
+
+`npm run dev` starts a Vite dev server for iterating on the form's styling in isolation. `npm run typecheck` checks both the CLI (`tsconfig.json`) and the form (`web/tsconfig.json`).
+
 ## Commands
 
 ```bash
@@ -73,7 +83,7 @@ The interactive flow can start a timer, stop the running timer, or create a comp
 
 ## Local HTML form
 
-`dnb-clockify form` starts a one-shot local HTTP server bound to `127.0.0.1`. It prints the URL and waits for one submission.
+`dnb-clockify form` starts a one-shot local HTTP server bound to `127.0.0.1`. It prints the URL and waits for one submission. Run `npm run build` first — the command exits with an error pointing at that command if `dist/web/index.html` doesn't exist yet.
 
 With no running timer, the form pre-fills `start` with the current time and leaves `end` empty. Submitting with an empty `end` starts a timer. Submitting with `end` set creates a completed entry.
 

@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { type ChildProcess, spawn, spawnSync } from "node:child_process";
+import { existsSync } from "node:fs";
 import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import {
   createServer,
@@ -7,14 +8,23 @@ import {
   type ServerResponse,
 } from "node:http";
 import { homedir } from "node:os";
-import { dirname, join } from "node:path";
-import { URLSearchParams } from "node:url";
+import { dirname, extname, join, resolve as resolvePath, sep } from "node:path";
 
 const apiBase = "https://api.clockify.me/api/v1";
 const configPath = join(homedir(), ".config", "dnb-clockify", "config.json");
 const cacheDir = join(homedir(), ".cache", "dnb-clockify");
 const statusCachePath = join(cacheDir, "status.json");
 const nudgePath = join(cacheDir, "nudge.json");
+const packageRoot = join(import.meta.dirname, "..");
+const distWebDir = join(packageRoot, "dist", "web");
+const staticContentTypes: Record<string, string> = {
+  ".html": "text/html; charset=utf-8",
+  ".js": "text/javascript; charset=utf-8",
+  ".css": "text/css; charset=utf-8",
+  ".svg": "image/svg+xml",
+  ".woff2": "font/woff2",
+  ".json": "application/json; charset=utf-8",
+};
 
 type OutputMode = "text" | "json";
 
@@ -78,6 +88,21 @@ type FormContext = {
   config: Config;
   projects: ClockifyProject[];
   running: ClockifyTimeEntry | undefined;
+};
+
+type FormPageContext = {
+  projects: { id: string; name: string }[];
+  selectedProjectId: string | undefined;
+  title: string;
+  start: string;
+  end: string;
+};
+
+type FormSubmitPayload = {
+  projectId: string;
+  title: string;
+  start: string;
+  end: string;
 };
 
 type StatusState = "healthy" | "running" | "nudge" | "error";
@@ -1064,40 +1089,50 @@ async function loadFormContext(config: Config): Promise<FormContext> {
 
 async function commandForm(args: string[], options: CliOptions): Promise<void> {
   const config = await loadConfig();
+  if (!existsSync(join(distWebDir, "index.html"))) {
+    throw new UserError(
+      "Clockify form assets are not built. Run 'npm run build' in tools/clockify first.",
+    );
+  }
   let context: Promise<FormContext> | undefined;
   const getFormContext = (): Promise<FormContext> => {
     context ??= loadFormContext(config);
     return context;
   };
   const server = createServer(async (request, response) => {
+    const url = new URL(request.url ?? "/", "http://127.0.0.1");
     try {
-      const formContext = await getFormContext();
-      if (request.method === "POST") {
-        await handleFormPost(
-          request,
-          response,
-          formContext.token,
-          formContext.workspaceId,
-          formContext.config,
-          formContext.running,
-        );
+      if (request.method === "POST" && url.pathname === "/api/submit") {
+        const formContext = await getFormContext();
+        await submitFormEntry(request, formContext);
+        response.setHeader("content-type", "application/json; charset=utf-8");
+        response.end(JSON.stringify({ ok: true }));
         server.close();
         return;
       }
-      sendHtml(
-        response,
-        renderForm(
-          formContext.projects,
-          formContext.config,
-          formContext.running,
-        ),
-      );
+      if (request.method === "GET" && url.pathname === "/") {
+        const formContext = await getFormContext();
+        await serveFormPage(response, formContext);
+        return;
+      }
+      if (
+        request.method === "GET" &&
+        (await serveStaticFile(response, join(distWebDir, url.pathname)))
+      ) {
+        return;
+      }
+      response.statusCode = 404;
+      response.end("Not found");
     } catch (error) {
+      const message = errorMessage(error, "Clockify form request failed.");
+      if (request.method === "POST") {
+        response.statusCode = error instanceof UserError ? 400 : 502;
+        response.setHeader("content-type", "application/json; charset=utf-8");
+        response.end(JSON.stringify({ ok: false, error: message }));
+        return;
+      }
       response.statusCode = 500;
-      sendHtml(
-        response,
-        `<h1>Error</h1><p>${escapeHtml(errorMessage(error, "Clockify form request failed."))}</p>`,
-      );
+      sendHtml(response, `<h1>Error</h1><p>${escapeHtml(message)}</p>`);
     }
   });
   const configuredUrl = `http://127.0.0.1:${config.settings.formPort}/`;
@@ -1139,25 +1174,22 @@ async function commandForm(args: string[], options: CliOptions): Promise<void> {
   }
 }
 
-async function handleFormPost(
+async function submitFormEntry(
   request: IncomingMessage,
-  response: ServerResponse,
-  token: string,
-  workspaceId: string,
-  config: Config,
-  running: ClockifyTimeEntry | undefined,
+  formContext: FormContext,
 ): Promise<void> {
+  const { token, workspaceId, running, config } = formContext;
   const body = await readRequestBody(request);
-  const form = new URLSearchParams(body);
+  const payload = JSON.parse(body) as Partial<FormSubmitPayload>;
   const project = await resolveProject(
     token,
     workspaceId,
     config,
-    form.get("project") ?? "",
+    payload.projectId ?? "",
   );
-  const title = form.get("title") ?? "";
-  const start = parseTimeInput(form.get("start") ?? "");
-  const endValue = form.get("end") ?? "";
+  const title = payload.title ?? "";
+  const start = parseTimeInput(payload.start ?? "");
+  const endValue = payload.end ?? "";
   if (running === undefined) {
     await createEntry(
       token,
@@ -1185,22 +1217,6 @@ async function handleFormPost(
   }
   await clearStatusCache();
   refreshClockifyPolybar();
-  sendHtml(
-    response,
-    `<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<title>Clockify saved</title>
-<script>
-window.close();
-</script>
-</head>
-<body>
-<p>Saved.</p>
-</body>
-</html>`,
-  );
 }
 
 async function readRequestBody(request: IncomingMessage): Promise<string> {
@@ -1211,91 +1227,61 @@ async function readRequestBody(request: IncomingMessage): Promise<string> {
   return body;
 }
 
-function renderForm(
-  projects: ClockifyProject[],
-  config: Config,
-  running: ClockifyTimeEntry | undefined,
-): string {
+function buildFormPageContext(formContext: FormContext): FormPageContext {
+  const { projects, config, running } = formContext;
   const now = new Date();
-  const selectedProjectId = running?.projectId;
-  const title = running?.description ?? "";
   const start =
     running?.timeInterval.start === undefined
       ? localDateInputValue(now)
       : localDateInputValue(new Date(running.timeInterval.start));
   const end = running === undefined ? "" : localDateInputValue(now);
-  const options = projects
-    .map((project) => {
-      const selected = project.id === selectedProjectId ? " selected" : "";
-      return `<option value="${escapeHtml(project.id)}"${selected}>${escapeHtml(projectDisplay(project, config))}</option>`;
-    })
-    .join("");
-  return `<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Clockify</title>
-<style>
-body{font-family:system-ui,sans-serif;margin:2rem;max-width:42rem;background:#f8f8f2;color:#282a36}
-label{display:block;margin:1rem 0 .35rem}
-input,select,button{box-sizing:border-box;width:100%;font:inherit;padding:.65rem;border:1px solid #6272a4;border-radius:4px;background:white;color:#282a36}
-button{margin-top:1.25rem;background:#44475a;color:#f8f8f2;cursor:pointer}
-</style>
-</head>
-<body>
-<h1>Clockify</h1>
-<form method="post">
-<label for="project">Project</label>
-<select id="project" name="project">${options}</select>
-<label for="title">Title</label>
-<input id="title" name="title" value="${escapeHtml(title)}" required>
-<label for="start">Start</label>
-<input id="start" name="start" type="datetime-local" value="${escapeHtml(start)}" required>
-<label for="end">End</label>
-<input id="end" name="end" type="datetime-local" value="${escapeHtml(end)}">
-<button type="submit">Save</button>
-</form>
-<script>
-document.querySelector("form")?.addEventListener("submit", async (event) => {
-  event.preventDefault();
-  const form = event.currentTarget;
-  if (!(form instanceof HTMLFormElement)) {
-    return;
-  }
-  const button = form.querySelector("button");
-  if (button instanceof HTMLButtonElement) {
-    button.disabled = true;
+  return {
+    projects: projects.map((project) => ({
+      id: project.id,
+      name: projectDisplay(project, config),
+    })),
+    selectedProjectId: running?.projectId,
+    title: running?.description ?? "",
+    start,
+    end,
+  };
+}
+
+async function serveFormPage(
+  response: ServerResponse,
+  formContext: FormContext,
+): Promise<void> {
+  const html = await readFile(join(distWebDir, "index.html"), "utf8");
+  const context = buildFormPageContext(formContext);
+  const injected = html.replace(
+    "</head>",
+    `<script>window.__CLOCKIFY_CONTEXT__ = ${JSON.stringify(context)};</script></head>`,
+  );
+  sendHtml(response, injected);
+}
+
+async function serveStaticFile(
+  response: ServerResponse,
+  filePath: string,
+): Promise<boolean> {
+  const resolved = resolvePath(filePath);
+  if (resolved !== distWebDir && !resolved.startsWith(`${distWebDir}${sep}`)) {
+    return false;
   }
   try {
-    const data = new URLSearchParams();
-    for (const [name, value] of new FormData(form)) {
-      if (typeof value === "string") {
-        data.append(name, value);
-      }
-    }
-    const response = await fetch(form.action || window.location.href, {
-      method: "POST",
-      body: data,
-    });
-    if (!response.ok) {
-      document.body.innerHTML = await response.text();
-      return;
-    }
-    document.body.innerHTML = "<h1>Saved</h1><p>You can close this window.</p>";
-    window.open("", "_self");
-    window.close();
+    const data = await readFile(resolved);
+    response.setHeader(
+      "content-type",
+      staticContentTypes[extname(resolved)] ?? "application/octet-stream",
+    );
+    response.end(data);
+    return true;
   } catch (error) {
-    const message =
-      error instanceof Error && error.message !== ""
-        ? error.message
-        : "Submitting the Clockify form failed.";
-    document.body.innerHTML = \`<h1>Error</h1><p>\${message}</p>\`;
+    if (error instanceof Error && "code" in error && error.code === "ENOENT") {
+      return false;
+    }
+    throw error;
   }
-});
-</script>
-</body>
-</html>`;
 }
 
 function sendHtml(response: ServerResponse, html: string): void {

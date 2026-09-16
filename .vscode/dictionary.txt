@@ -124,6 +124,7 @@ secp
 secretapikey
 selectwindow
 separatorcolor
+shadcn
 shellcheck
 shellenv
 shfmt
@@ -147,6 +148,7 @@ undici
 updatestartuptty
 valkey
 vendored
+vite
 vulns
 webui
 windowcd
