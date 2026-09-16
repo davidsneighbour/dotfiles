@@ -132,19 +132,31 @@ check_rofi_imports() {
   local import_file
   local import_path
   local source_file
+  local rofi_root="${REPO_ROOT}/configs/session/rofi"
 
   while IFS=: read -r source_file import_line; do
     import_file="${import_line#*@import }"
     import_file="${import_file%\"}"
     import_file="${import_file#\"}"
-    import_path="$(dirname "${source_file}")/${import_file}"
-    if [[ -f "${import_path}" ]]; then
-      continue
-    fi
-    require_file "${import_path}.rasi"
+
+    # rofi resolves `@import "name"` against its own config search path,
+    # not just the importing file's own directory, so a name imported
+    # from a subdirectory (e.g. power/powermenu.rasi importing "theme")
+    # can still correctly resolve to a file at the rofi config root.
+    # Accept either location, with or without the .rasi extension.
+    for import_path in \
+      "$(dirname "${source_file}")/${import_file}" \
+      "$(dirname "${source_file}")/${import_file}.rasi" \
+      "${rofi_root}/${import_file}" \
+      "${rofi_root}/${import_file}.rasi"; do
+      if [[ -f "${import_path}" ]]; then
+        continue 2
+      fi
+    done
+    fail "Missing rofi @import target for \"${import_file}\" (imported from ${source_file})"
   done < <(
     grep -RE '^[[:space:]]*@import[[:space:]]+"[^"]+"' \
-      "${REPO_ROOT}/configs/session/rofi"
+      "${rofi_root}"
   )
 }
 

@@ -4,7 +4,24 @@ configuration {
     show-icons:                 false;
 }
 
+/*
+ * Import first so this file's own window/mainbox/header rules below can
+ * override the shared theme's generic ones — rofi's cascade is last-wins,
+ * so importing after those rules were defined used to let the shared
+ * #window/#mainbox silently replace this menu's own size, radius, and
+ * children list. Colours and the header image still come from the shared
+ * theme.rasi; only the names below are local aliases onto its palette so
+ * the rest of this file can keep using its own semantic names.
+ */
+@import "theme"
+@theme "theme"
 
+* {
+    background:     @dnb-background;
+    background-alt: @dnb-current;
+    foreground:     @dnb-foreground;
+    selected:       @active-background;
+}
 
 /*****----- Main Window -----*****/
 window {
@@ -37,10 +54,11 @@ mainbox {
     children:                    [ "header", "listview", "message" ];
 }
 
-
-
-@import "theme"
-@theme "theme"
+/* Reuses the shared theme's #header (image) rule; only the corner radius
+ * needs to match this window's own 20px instead of the shared 16px. */
+#header {
+    border-radius:                20px 20px 0px 0px;
+}
 
 /*****----- Listview -----*****/
 listview {

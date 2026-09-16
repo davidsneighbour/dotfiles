@@ -225,9 +225,10 @@ element-text {
 /*****----- Shared structure (radius + header image) -----*****/
 /*
  * Same box layout as configs/session/rofi/power/powermenu.rasi (rounded
- * corners, an image above the input row) but built on this file's own
- * palette above — powermenu.rasi keeps its own separate colours on
- * purpose and is not meant to match this theme.
+ * corners, an image above the input row) — powermenu.rasi imports this
+ * file and aliases its own `background`/`foreground`/`selected`/
+ * `background-alt` names onto the `dnb-*` palette below, so both share
+ * one colour scheme and this file's #header (image) rule.
  *
  * The window itself now carries no padding, so its only child (mainbox)
  * — and the header image inside it — can reach the window's rounded
