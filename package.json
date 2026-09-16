@@ -66,8 +66,8 @@
     "lint:biome:fix": "biome lint --write .",
     "lint:config": "yamllint -c .yamllint.yml configs bashrc",
     "lint:hook:commit": "lint-staged --quiet --config lint-staged.config.ts",
-    "lint:hook:commit:loud": "lint-staged --debug --verbose --config lint-staged.config.ts",
     "lint:hook:commit-msg": "node --experimental-strip-types scripts/lint-commit-message.ts",
+    "lint:hook:commit:loud": "lint-staged --debug --verbose --config lint-staged.config.ts",
     "lint:log-filenames": "node --experimental-strip-types scripts/lint-log-filenames.ts",
     "lint:markdown": "markdownlint-cli2 --config ./node_modules/@dnbhq/markdownlint-config/.markdownlint-cli2.jsonc \"**/*.{md,mdx}\" \"#CHANGELOG.md\" \"#configs/fonts\" \"#configs/session/fonts\" \"#configs/theme/Dracula\" \"#configs/system/sublime-text/Packages/Dracula Color Scheme\" \"#containers\" \"#logs\" \"#protected\" \"#scratch\" \"#configs/system/conky/scratch\" \"#configs/session/polybar/scratch\"",
     "lint:markdown:fix": "markdownlint-cli2 --config ./node_modules/@dnbhq/markdownlint-config/.markdownlint-cli2.jsonc --fix \"**/*.{md,mdx}\" \"#CHANGELOG.md\" \"#configs/fonts\" \"#configs/session/fonts\" \"#configs/theme/Dracula\" \"#configs/system/sublime-text/Packages/Dracula Color Scheme\" \"#containers\" \"#logs\" \"#protected\" \"#scratch\" \"#configs/system/conky/scratch\" \"#configs/session/polybar/scratch\"",
@@ -101,6 +101,10 @@
   "engines": {
     "node": "^22.0.0 || ^24.0.0 || ^26.0.0"
   },
+  "allowScripts": {
+    "sharp@0.35.3": true,
+    "simple-git-hooks@2.13.1": true
+  },
   "cspell": {
     "version": "0.2",
     "language": "en-GB",
@@ -123,8 +127,7 @@
     "commit-msg": "npm run lint:hook:commit-msg -- \"$1\""
   },
   "type": "module",
-  "allowScripts": {
-    "sharp@0.35.3": true,
-    "simple-git-hooks@2.13.1": true
-  }
+  "workspaces": [
+    "tools/*"
+  ]
 }

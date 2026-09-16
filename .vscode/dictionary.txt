@@ -52,6 +52,7 @@ glone
 gmailctl
 gotenberg
 guake
+handoff
 hideemptyprojects
 hono
 hostinformation
