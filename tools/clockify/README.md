@@ -43,7 +43,7 @@ dnb-clockify stop [--title <text>] [--project <alias|id|name>]
 dnb-clockify add --project <alias|id|name> --title <text> --start <time> --end <time>
 dnb-clockify edit --id <entry-id> [--project <alias|id|name>] [--title <text>] [--start <time>] [--end <time>]
 dnb-clockify prompt
-dnb-clockify form [--open]
+dnb-clockify form [--open] [--restart]
 dnb-clockify alias list
 dnb-clockify alias set --alias <short-name> --project <project>
 dnb-clockify alias remove --alias <short-name>
@@ -84,6 +84,8 @@ The interactive flow can start a timer, stop the running timer, or create a comp
 ## Local HTML form
 
 `dnb-clockify form` starts a one-shot local HTTP server bound to `127.0.0.1`. It prints the URL and waits for one submission. Run `npm run build` first — the command exits with an error pointing at that command if `dist/web/index.html` doesn't exist yet.
+
+If the configured `formPort` is already in use, `form` reuses the existing server's URL instead of starting a new one. Pass `--restart` to instead kill whatever process is bound to that port (via `lsof`) and start a fresh server — useful if a previous form server is stuck.
 
 With no running timer, the form pre-fills `start` with the current time and leaves `end` empty. Submitting with an empty `end` starts a timer. Submitting with `end` set creates a completed entry.
 

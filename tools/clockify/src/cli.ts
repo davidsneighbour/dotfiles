@@ -164,7 +164,7 @@ Commands:
   edit --id <entry-id> [--project <project>] [--title <t>] [--start <time>] [--end <time>]
                                            Edit an existing entry.
   prompt                                   Ask for fields in the terminal.
-  form [--open]                            Start a local HTML form on 127.0.0.1.
+  form [--open] [--restart]                Start a local HTML form on 127.0.0.1.
   alias list                               List aliases and stale aliases.
   alias set --alias <short> --project <p>  Add or update an alias.
   alias remove --alias <short>             Remove an alias.
@@ -260,6 +260,19 @@ function refreshClockifyPolybar(): void {
   spawnSync("polybar-msg", ["action", "clockify", "hook", "0"], {
     stdio: "ignore",
   });
+}
+
+function killProcessOnPort(port: number): void {
+  const result = spawnSync("lsof", ["-ti", `tcp:${port}`, "-sTCP:LISTEN"], {
+    encoding: "utf8",
+  });
+  const pids = (result.stdout ?? "")
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((line) => line !== "");
+  for (const pid of pids) {
+    spawnSync("kill", [pid], { stdio: "ignore" });
+  }
 }
 
 function requireFlag(args: string[], name: string): string {
@@ -1150,6 +1163,12 @@ async function commandForm(args: string[], options: CliOptions): Promise<void> {
     throw new UserError(
       "Clockify form assets are not built. Run 'npm run build' in tools/clockify first.",
     );
+  }
+  if (hasFlag(args, "--restart")) {
+    killProcessOnPort(config.settings.formPort);
+    await new Promise<void>((resolve) => {
+      setTimeout(resolve, 300);
+    });
   }
   let context: Promise<FormContext> | undefined;
   const getFormContext = (): Promise<FormContext> => {

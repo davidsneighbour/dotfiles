@@ -31,3 +31,5 @@ configs/session/clockify/polybar-clockify --open-form
 ```
 
 The form binds to `127.0.0.1` only. If the configured form port is already in use, `--open-form` reopens the existing local form URL instead of starting another server. The browser window opens through Chrome app mode with the dedicated profile at `~/.config/dnb-clockify/chrome-profile`; i3 floats and centres that window via the `dnb-clockify-form` class. After a successful submit, the page closes its own app window; it does not terminate Chrome or any other browser windows.
+
+If a previous form server is stuck (holding the port without responding), run `dnb-clockify form --restart` directly from `tools/clockify` to kill it and start a fresh one — see `tools/clockify/README.md`.
