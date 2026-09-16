@@ -95,6 +95,8 @@ With a running timer, the form pre-fills the current title, project, and start t
 
 Two quick-fill links sit next to the `start` field: "From last entry" sets `start` to the end of the most recent completed entry, and "Now" sets it to the current time. The last-entry lookup is cached for `lastEntryCacheSeconds` (default one hour) and is also refreshed immediately, without an extra API call, whenever a form submission completes or stops an entry.
 
+Entries created or stopped through the form get a `via:form` tag. Starting a timer or creating a completed entry (an "open") tags it; stopping a running timer (a "close") adds the tag to whatever tags the entry already had. Editing a running entry without stopping it does not change its tags. The `via:form` tag is created in the Clockify workspace the first time it's needed.
+
 ## Nudge and status
 
 `status` queries Clockify and uses a short cache, defaulting to 30 seconds, so Polybar can call it often without hammering the API. It also tracks active desktop time while no timer is running. Idle time is ignored when `xprintidle` is available.

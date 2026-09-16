@@ -82,6 +82,12 @@ type ClockifyTimeEntry = {
   description?: string;
   projectId?: string;
   timeInterval: TimeInterval;
+  tagIds?: string[];
+};
+
+type ClockifyTag = {
+  id: string;
+  name: string;
 };
 
 type FormContext = {
@@ -393,6 +399,42 @@ async function getProjects(
   );
 }
 
+const viaFormTagName = "via:form";
+
+async function getTags(
+  token: string,
+  workspaceId: string,
+): Promise<ClockifyTag[]> {
+  return apiRequest<ClockifyTag[]>(
+    token,
+    `/workspaces/${workspaceId}/tags?archived=false&page-size=5000`,
+  );
+}
+
+async function createTag(
+  token: string,
+  workspaceId: string,
+  name: string,
+): Promise<ClockifyTag> {
+  return apiRequest<ClockifyTag>(token, `/workspaces/${workspaceId}/tags`, {
+    method: "POST",
+    body: JSON.stringify({ name }),
+  });
+}
+
+async function resolveViaFormTagId(
+  token: string,
+  workspaceId: string,
+): Promise<string> {
+  const tags = await getTags(token, workspaceId);
+  const existing = tags.find((tag) => tag.name === viaFormTagName);
+  if (existing !== undefined) {
+    return existing.id;
+  }
+  const created = await createTag(token, workspaceId, viaFormTagName);
+  return created.id;
+}
+
 async function getRunningEntry(
   token: string,
   workspaceId: string,
@@ -516,6 +558,7 @@ async function createEntry(
   title: string,
   start: string,
   end?: string,
+  tagIds?: string[],
 ): Promise<ClockifyTimeEntry> {
   return apiRequest<ClockifyTimeEntry>(
     token,
@@ -527,6 +570,7 @@ async function createEntry(
         projectId,
         start,
         ...(end === undefined ? {} : { end }),
+        ...(tagIds === undefined ? {} : { tagIds }),
       }),
     },
   );
@@ -541,6 +585,7 @@ async function updateEntry(
     title?: string;
     start?: string;
     end?: string | null;
+    tagIds?: string[];
   },
 ): Promise<ClockifyTimeEntry> {
   return apiRequest<ClockifyTimeEntry>(
@@ -553,6 +598,7 @@ async function updateEntry(
         ...(data.projectId === undefined ? {} : { projectId: data.projectId }),
         ...(data.start === undefined ? {} : { start: data.start }),
         ...(data.end === undefined ? {} : { end: data.end }),
+        ...(data.tagIds === undefined ? {} : { tagIds: data.tagIds }),
       }),
     },
   );
@@ -1275,7 +1321,10 @@ async function submitFormEntry(
   const endValue = payload.end ?? "";
   if (running === undefined) {
     const end = endValue.trim() === "" ? undefined : parseTimeInput(endValue);
-    await createEntry(token, workspaceId, project.id, title, start, end);
+    const tagId = await resolveViaFormTagId(token, workspaceId);
+    await createEntry(token, workspaceId, project.id, title, start, end, [
+      tagId,
+    ]);
     if (end !== undefined) {
       await recordLastEntryEnd(end);
     }
@@ -1288,11 +1337,14 @@ async function submitFormEntry(
     });
   } else {
     const end = parseTimeInput(endValue);
+    const tagId = await resolveViaFormTagId(token, workspaceId);
+    const tagIds = [...new Set([...(running.tagIds ?? []), tagId])];
     await updateEntry(token, workspaceId, running.id, {
       projectId: project.id,
       title,
       start,
       end,
+      tagIds,
     });
     await recordLastEntryEnd(end);
   }
