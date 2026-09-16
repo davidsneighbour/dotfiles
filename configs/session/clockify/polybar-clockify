@@ -10,6 +10,15 @@ NUDGE_ICON=$'\uE082'
 HEALTHY_ICON=$'\uE080'
 RUNNING_ICON=$'\uE083'
 
+# Dracula Pro palette, matching configs/session/polybar/configs/01-colours.ini.
+# Polybar's ${colours.slug} interpolation only works inside .ini files, so
+# these hex values can't reference that file directly and must be kept in
+# sync with it by hand.
+COLOUR_ERROR='#9580FF'
+COLOUR_HEALTHY='#8AFF80'
+COLOUR_RUNNING='#FF9580'
+COLOUR_NUDGE='#FFFF80'
+
 find_node() {
   local node_candidate=''
   local node_path=''
@@ -95,12 +104,12 @@ if [[ -z "${command}" ]]; then
 fi
 
 if [[ ! -f "${CLOCKIFY_TOOL}" ]]; then
-  print_indicator '#bd93f9' "${ERROR_ICON}"
+  print_indicator "${COLOUR_ERROR}" "${ERROR_ICON}"
   exit 0
 fi
 
 if ! NODE_BIN="$(find_node)"; then
-  print_indicator '#bd93f9' "${ERROR_ICON}"
+  print_indicator "${COLOUR_ERROR}" "${ERROR_ICON}"
   exit 0
 fi
 
@@ -110,16 +119,16 @@ status)
   state="$(printf '%s' "${status_json}" | "${NODE_BIN}" -e "let data='';process.stdin.on('data',c=>data+=c);process.stdin.on('end',()=>{try{const parsed=JSON.parse(data);process.stdout.write(parsed.data?.state ?? 'error')}catch{process.stdout.write('error')}})")"
   case "${state}" in
   healthy)
-    print_indicator '#50fa7b' "${HEALTHY_ICON}"
+    print_indicator "${COLOUR_HEALTHY}" "${HEALTHY_ICON}"
     ;;
   running)
-    print_indicator '#ff5555' "${RUNNING_ICON}"
+    print_indicator "${COLOUR_RUNNING}" "${RUNNING_ICON}"
     ;;
   nudge)
-    print_indicator '#f1fa8c' "${NUDGE_ICON}"
+    print_indicator "${COLOUR_NUDGE}" "${NUDGE_ICON}"
     ;;
   *)
-    print_indicator '#bd93f9' "${ERROR_ICON}"
+    print_indicator "${COLOUR_ERROR}" "${ERROR_ICON}"
     ;;
   esac
   ;;
