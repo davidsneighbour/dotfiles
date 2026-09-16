@@ -122,9 +122,18 @@ export function App() {
         {error !== undefined && (
           <p className="text-sm text-destructive">{error}</p>
         )}
-        <Button type="submit" disabled={submitting} className="w-full">
-          {submitting ? "Saving…" : "Save"}
-        </Button>
+        <div className="flex gap-2">
+          <Button type="submit" disabled={submitting} className="flex-1">
+            {submitting ? "Saving…" : "Save"}
+          </Button>
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={() => window.close()}
+          >
+            Close
+          </Button>
+        </div>
       </form>
     </main>
   );
