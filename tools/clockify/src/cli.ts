@@ -1311,9 +1311,18 @@ async function serveFormPage(
   const context = buildFormPageContext(formContext);
   const injected = html.replace(
     "</head>",
-    `<script>window.__CLOCKIFY_CONTEXT__ = ${JSON.stringify(context)};</script></head>`,
+    `<script>window.__CLOCKIFY_CONTEXT__ = ${toInlineJson(context)};</script></head>`,
   );
   sendHtml(response, injected);
+}
+
+function toInlineJson(value: unknown): string {
+  return JSON.stringify(value)
+    .replaceAll("<", "\\u003c")
+    .replaceAll(">", "\\u003e")
+    .replaceAll("&", "\\u0026")
+    .replaceAll(" ", "\\u2028")
+    .replaceAll(" ", "\\u2029");
 }
 
 async function serveStaticFile(
