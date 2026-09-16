@@ -100,24 +100,26 @@ export function App() {
             required
           />
         </div>
-        <div className="space-y-1.5">
-          <Label htmlFor="start">Start</Label>
-          <Input
-            id="start"
-            type="datetime-local"
-            value={start}
-            onChange={(event) => setStart(event.target.value)}
-            required
-          />
-        </div>
-        <div className="space-y-1.5">
-          <Label htmlFor="end">End</Label>
-          <Input
-            id="end"
-            type="datetime-local"
-            value={end}
-            onChange={(event) => setEnd(event.target.value)}
-          />
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-1.5">
+            <Label htmlFor="start">Start</Label>
+            <Input
+              id="start"
+              type="datetime-local"
+              value={start}
+              onChange={(event) => setStart(event.target.value)}
+              required
+            />
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="end">End</Label>
+            <Input
+              id="end"
+              type="datetime-local"
+              value={end}
+              onChange={(event) => setEnd(event.target.value)}
+            />
+          </div>
         </div>
         {error !== undefined && (
           <p className="text-sm text-destructive">{error}</p>
