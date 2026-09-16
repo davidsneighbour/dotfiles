@@ -89,6 +89,8 @@ With no running timer, the form pre-fills `start` with the current time and leav
 
 With a running timer, the form pre-fills the current title, project, and start time, and sets `end` to now. Submitting with `end` set updates and stops the timer. Clearing `end` updates the running entry and keeps it running.
 
+Two quick-fill links sit next to the `start` field: "From last entry" sets `start` to the end of the most recent completed entry, and "Now" sets it to the current time. The last-entry lookup is cached for `lastEntryCacheSeconds` (default one hour) and is also refreshed immediately, without an extra API call, whenever a form submission completes or stops an entry.
+
 ## Nudge and status
 
 `status` queries Clockify and uses a short cache, defaulting to 30 seconds, so Polybar can call it often without hammering the API. It also tracks active desktop time while no timer is running. Idle time is ignored when `xprintidle` is available.
@@ -103,7 +105,8 @@ Configurable settings live under `settings` in `~/.config/dnb-clockify/config.js
     "cacheSeconds": 30,
     "nudgeMinutes": 60,
     "idleSeconds": 300,
-    "formPort": 39241
+    "formPort": 39241,
+    "lastEntryCacheSeconds": 3600
   },
   "aliases": {}
 }

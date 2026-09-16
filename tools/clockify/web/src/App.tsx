@@ -16,6 +16,7 @@ type FormPageContext = {
   title: string;
   start: string;
   end: string;
+  lastEntryEnd: string | null;
 };
 
 declare global {
@@ -27,6 +28,11 @@ declare global {
 const context = window.__CLOCKIFY_CONTEXT__;
 
 type SubmitResponse = { ok: true } | { ok: false; error: string };
+
+function localDateInputValue(value: Date): string {
+  const offsetMs = value.getTimezoneOffset() * 60_000;
+  return new Date(value.getTime() - offsetMs).toISOString().slice(0, 16);
+}
 
 export function App() {
   const [projectId, setProjectId] = useState(context.selectedProjectId ?? "");
@@ -102,7 +108,30 @@ export function App() {
         </div>
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-1.5">
-            <Label htmlFor="start">Start</Label>
+            <div className="flex items-center justify-between">
+              <Label htmlFor="start">Start</Label>
+              <div className="flex gap-2 text-xs">
+                <button
+                  type="button"
+                  className="text-primary underline-offset-4 hover:underline disabled:pointer-events-none disabled:opacity-50"
+                  disabled={context.lastEntryEnd === null}
+                  onClick={() =>
+                    setStart(
+                      localDateInputValue(new Date(context.lastEntryEnd ?? "")),
+                    )
+                  }
+                >
+                  From last entry
+                </button>
+                <button
+                  type="button"
+                  className="text-primary underline-offset-4 hover:underline"
+                  onClick={() => setStart(localDateInputValue(new Date()))}
+                >
+                  Now
+                </button>
+              </div>
+            </div>
             <Input
               id="start"
               type="datetime-local"

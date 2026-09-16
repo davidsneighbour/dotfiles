@@ -15,6 +15,7 @@ const configPath = join(homedir(), ".config", "dnb-clockify", "config.json");
 const cacheDir = join(homedir(), ".cache", "dnb-clockify");
 const statusCachePath = join(cacheDir, "status.json");
 const nudgePath = join(cacheDir, "nudge.json");
+const lastEntryPath = join(cacheDir, "last-entry.json");
 const packageRoot = join(import.meta.dirname, "..");
 const distWebDir = join(packageRoot, "dist", "web");
 const staticContentTypes: Record<string, string> = {
@@ -51,6 +52,7 @@ type Settings = {
   nudgeMinutes: number;
   idleSeconds: number;
   formPort: number;
+  lastEntryCacheSeconds: number;
 };
 
 type ProjectAlias = {
@@ -88,6 +90,7 @@ type FormContext = {
   config: Config;
   projects: ClockifyProject[];
   running: ClockifyTimeEntry | undefined;
+  lastEntryEnd: string | null;
 };
 
 type FormPageContext = {
@@ -96,6 +99,7 @@ type FormPageContext = {
   title: string;
   start: string;
   end: string;
+  lastEntryEnd: string | null;
 };
 
 type FormSubmitPayload = {
@@ -127,6 +131,11 @@ type NudgeState = {
   activeSeconds: number;
 };
 
+type LastEntryCache = {
+  createdAt: number;
+  end: string | null;
+};
+
 class UserError extends Error {
   constructor(message: string) {
     super(message);
@@ -139,6 +148,7 @@ const defaultSettings: Settings = {
   nudgeMinutes: 60,
   idleSeconds: 300,
   formPort: 39241,
+  lastEntryCacheSeconds: 3600,
 };
 
 function printHelp(): void {
@@ -380,6 +390,46 @@ async function getRunningEntry(
     `/workspaces/${workspaceId}/user/${userId}/time-entries?in-progress=true`,
   );
   return entries[0];
+}
+
+async function getRecentEntries(
+  token: string,
+  workspaceId: string,
+  userId: string,
+  pageSize: number,
+): Promise<ClockifyTimeEntry[]> {
+  return apiRequest<ClockifyTimeEntry[]>(
+    token,
+    `/workspaces/${workspaceId}/user/${userId}/time-entries?page-size=${pageSize}`,
+  );
+}
+
+async function getCachedLastEntryEnd(
+  token: string,
+  workspaceId: string,
+  userId: string,
+  config: Config,
+): Promise<string | null> {
+  const cached = await readJsonFile<LastEntryCache>(lastEntryPath);
+  const maxAgeMs = config.settings.lastEntryCacheSeconds * 1000;
+  if (cached !== undefined && Date.now() - cached.createdAt <= maxAgeMs) {
+    return cached.end;
+  }
+  const entries = await getRecentEntries(token, workspaceId, userId, 5);
+  const lastCompleted = entries.find(
+    (entry) =>
+      entry.timeInterval.end !== undefined && entry.timeInterval.end !== null,
+  );
+  const end = lastCompleted?.timeInterval.end ?? null;
+  await recordLastEntryEnd(end);
+  return end;
+}
+
+async function recordLastEntryEnd(end: string | null): Promise<void> {
+  await writeJsonFile(lastEntryPath, {
+    createdAt: Date.now(),
+    end,
+  } satisfies LastEntryCache);
 }
 
 function normaliseName(value: string): string {
@@ -1077,6 +1127,12 @@ async function loadFormContext(config: Config): Promise<FormContext> {
   const workspaceId = await getWorkspaceId(token, config);
   const projects = await getProjects(token, workspaceId);
   const running = await getRunningEntry(token, workspaceId, user.id);
+  const lastEntryEnd = await getCachedLastEntryEnd(
+    token,
+    workspaceId,
+    user.id,
+    config,
+  );
 
   return {
     token,
@@ -1084,6 +1140,7 @@ async function loadFormContext(config: Config): Promise<FormContext> {
     config,
     projects,
     running,
+    lastEntryEnd,
   };
 }
 
@@ -1191,14 +1248,11 @@ async function submitFormEntry(
   const start = parseTimeInput(payload.start ?? "");
   const endValue = payload.end ?? "";
   if (running === undefined) {
-    await createEntry(
-      token,
-      workspaceId,
-      project.id,
-      title,
-      start,
-      endValue.trim() === "" ? undefined : parseTimeInput(endValue),
-    );
+    const end = endValue.trim() === "" ? undefined : parseTimeInput(endValue);
+    await createEntry(token, workspaceId, project.id, title, start, end);
+    if (end !== undefined) {
+      await recordLastEntryEnd(end);
+    }
   } else if (endValue.trim() === "") {
     await updateEntry(token, workspaceId, running.id, {
       projectId: project.id,
@@ -1214,6 +1268,7 @@ async function submitFormEntry(
       start,
       end,
     });
+    await recordLastEntryEnd(end);
   }
   await clearStatusCache();
   refreshClockifyPolybar();
@@ -1228,7 +1283,7 @@ async function readRequestBody(request: IncomingMessage): Promise<string> {
 }
 
 function buildFormPageContext(formContext: FormContext): FormPageContext {
-  const { projects, config, running } = formContext;
+  const { projects, config, running, lastEntryEnd } = formContext;
   const now = new Date();
   const start =
     running?.timeInterval.start === undefined
@@ -1244,6 +1299,7 @@ function buildFormPageContext(formContext: FormContext): FormPageContext {
     title: running?.description ?? "",
     start,
     end,
+    lastEntryEnd,
   };
 }
 
