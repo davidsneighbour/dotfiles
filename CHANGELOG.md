@@ -1,5 +1,33 @@
 # Changelog
 
+## [2.13.0](https://github.com/davidsneighbour/dotfiles/compare/v2.12.0...v2.13.0) (2026-09-16)
+
+### Feat
+
+* **clockify:** add a --restart flag to the local form server ([4c3dca3](https://github.com/davidsneighbour/dotfiles/commit/4c3dca3a7f1147669a1dffb5c4ef58f43ac97b36)), closes [#578](https://github.com/davidsneighbour/dotfiles/issues/578)
+* **clockify:** add quick-fill start date links to the local form ([1605c6e](https://github.com/davidsneighbour/dotfiles/commit/1605c6e04d169f0bede8c70501451f0d16a12a9b)), closes [#579](https://github.com/davidsneighbour/dotfiles/issues/579)
+* **clockify:** check the running timer eagerly when the form server starts ([f40db3a](https://github.com/davidsneighbour/dotfiles/commit/f40db3a7e1e04013609c6a9faca927ce51a67e52))
+* **clockify:** rebuild local form with shadcn/ui and a Dracula dark theme ([cb9ecdf](https://github.com/davidsneighbour/dotfiles/commit/cb9ecdfc7c3f40933aba0ead636133d500a3e61a)), closes [#576](https://github.com/davidsneighbour/dotfiles/issues/576)
+* **clockify:** right-click Polybar icon opens the Clockify tracker overview ([b3e263a](https://github.com/davidsneighbour/dotfiles/commit/b3e263ad74cb2c74e60802dbe598cdba70e1b80c)), closes [#580](https://github.com/davidsneighbour/dotfiles/issues/580)
+* **clockify:** tag entries opened or closed via the form with via:form ([ff7c1dc](https://github.com/davidsneighbour/dotfiles/commit/ff7c1dc6ffb4c82660c908181e625c291ca0804d))
+
+### Fix
+
+* **clockify:** add a close button to the local form ([66bad1a](https://github.com/davidsneighbour/dotfiles/commit/66bad1a96695b3f0362a92736ff092330cc01247)), closes [#575](https://github.com/davidsneighbour/dotfiles/issues/575)
+* **clockify:** escape inline JSON in the local form page ([60af727](https://github.com/davidsneighbour/dotfiles/commit/60af727f758f575b980ce963cc3fa2b21fab995a))
+* **clockify:** lay out start and end date fields 50/50 in the local form ([8f8f953](https://github.com/davidsneighbour/dotfiles/commit/8f8f95372ee755ef93f5b03e84728e37aab53cf0)), closes [#577](https://github.com/davidsneighbour/dotfiles/issues/577)
+* **clockify:** sync polybar-clockify colours with the Dracula Pro palette ([0a27293](https://github.com/davidsneighbour/dotfiles/commit/0a272938fb4330d8985ff9903a3252dd24415ba1)), closes [#574](https://github.com/davidsneighbour/dotfiles/issues/574)
+* remove stray scratch file ([b3daae1](https://github.com/davidsneighbour/dotfiles/commit/b3daae1e5476632447e4ccbebe4fc0286d68df2a))
+* **rofi:** share one theme between the power menu and other rofi surfaces ([1047b29](https://github.com/davidsneighbour/dotfiles/commit/1047b295efe7bc6600c9d32f3e6284e366b516a5)), references [window/#mainbox](https://github.com/davidsneighbour/dotfiles/issues/mainbox) [#header](https://github.com/davidsneighbour/dotfiles/issues/header)
+
+### Build
+
+* **vscode:** update workspace colour-set ([90b9430](https://github.com/davidsneighbour/dotfiles/commit/90b9430ead1c71f5eaf7ce50dbcc66bf2c8ab03f))
+
+### Chore
+
+* **clockify:** remove PLAN.md handoff doc ([e2ec57d](https://github.com/davidsneighbour/dotfiles/commit/e2ec57d5a8bbe82564ce5e55894b4599d5dcd647))
+
 ## [2.12.0](https://github.com/davidsneighbour/dotfiles/compare/v2.11.1...v2.12.0) (2026-09-15)
 
 ### Feat
