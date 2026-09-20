@@ -1,0 +1,38 @@
+[Desktop Entry]
+Name=Invoke Community Edition (1.8.4)
+Exec=/home/patrick/.bin/local/Invoke.Community.Edition-latest_0959e8eb65de46e5f1965c15bf2aa56d.AppImage --no-sandbox %U
+Terminal=false
+Type=Application
+Icon=appimagekit_e1d39bc5f4907f8ed24e1a99796045df_invoke-community-edition
+StartupWMClass=Invoke Community Edition
+X-AppImage-Version=1.8.4
+Comment=Invoke Community Edition
+Categories=Utility;
+
+TryExec=/home/patrick/.bin/local/Invoke.Community.Edition-latest_0959e8eb65de46e5f1965c15bf2aa56d.AppImage
+X-AppImage-Old-Icon=invoke-community-edition
+X-AppImage-Old-Name=Invoke Community Edition
+X-AppImage-Identifier=e1d39bc5f4907f8ed24e1a99796045df
+Actions=AppImageLauncher-Remove-AppImage;
+X-AppImageLauncher-Version=3.0.0-beta-2 (git commit 96cb937), built on 2025-10-28 22:31:15 UTC
+
+[Desktop Action AppImageLauncher-Remove-AppImage]
+Name=Delete this AppImage
+Icon=AppImageLauncher
+Exec=/opt/appimagelauncher.AppDir/usr/lib/x86_64-linux-gnu/appimagelauncher/remove "/home/patrick/.bin/local/Invoke.Community.Edition-latest_0959e8eb65de46e5f1965c15bf2aa56d.AppImage"
+Name[ast]=Desaniciar AppImage del sistema
+Name[cs]=Odebrat AppImage ze systému
+Name[de]=Dieses AppImage löschen
+Name[en]=Delete this AppImage
+Name[es]=Eliminar Appimage del Sistema
+Name[fr]=Supprimer cette AppImage
+Name[it]=Rimuovi questa AppImage
+Name[ko]=이 AppImage 삭제
+Name[nb_NO]=Slett AppImage
+Name[nl]=AppImage deïnstalleren
+Name[pl]=Usuń AppImage z systemu
+Name[pt]=Remover AppImage do sistema
+Name[pt_BR]=Remover AppImage do sistema
+Name[ru]=Удалить AppImage
+Name[tr]=Bu AppImage uygulamasını sil
+Name[zh_Hans]=删除此 AppImage
