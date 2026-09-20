@@ -431,6 +431,15 @@ def is_switchable_window(node: dict[str, Any]) -> bool:
     )
 
 
+def vscode_workspace_label(title: str) -> str:
+    suffix = " - Visual Studio Code"
+    if not title.endswith(suffix):
+        return ""
+    remainder = title[: -len(suffix)]
+    workspace = remainder.rsplit(" - ", 1)[-1].strip()
+    return workspace
+
+
 def pango_escape(value: str) -> str:
     return (
         value.replace("&", "&amp;")
@@ -446,17 +455,21 @@ def command_window_switcher(args: argparse.Namespace) -> int:
     if not windows:
         return 0
 
-    entries = [
-        (
-            con_id,
+    entries = []
+    for con_id, _workspace_name, window_class, title in windows:
+        label = window_class
+        if window_class.lower() == "code":
+            label = vscode_workspace_label(title) or window_class
+        entries.append(
             (
-                f"<span color='#708CA9'>{pango_escape(window_class[:18])}</span> "
-                f"{pango_escape(title)}"
-                f"\0icon\x1f{window_class.lower()}"
-            ),
+                con_id,
+                (
+                    f"<span color='#708CA9'>{pango_escape(label[:18])}</span> "
+                    f"{pango_escape(title)}"
+                    f"\0icon\x1f{window_class.lower()}"
+                ),
+            )
         )
-        for con_id, _workspace_name, window_class, title in windows
-    ]
 
     rofi = subprocess.run(
         [
