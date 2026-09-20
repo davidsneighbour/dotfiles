@@ -21,6 +21,8 @@ dailynote
 dasel
 davidsneighbour
 Devilspie
+dialog
+dialogs
 dmenu
 dnbhq
 dotbot

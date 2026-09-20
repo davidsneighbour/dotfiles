@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { ClientManagerDialog } from "@/components/client-manager";
+import { ProjectManagerDialog } from "@/components/project-manager";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,8 +12,18 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+type ClientItem = { id: string; name: string };
+
+type ProjectItem = {
+  id: string;
+  name: string;
+  clientId: string | undefined;
+  color: string | undefined;
+};
+
 type FormPageContext = {
-  projects: { id: string; name: string }[];
+  projects: ProjectItem[];
+  clients: ClientItem[];
   selectedProjectId: string | undefined;
   title: string;
   start: string;
@@ -35,6 +47,8 @@ function localDateInputValue(value: Date): string {
 }
 
 export function App() {
+  const [clients, setClients] = useState(context.clients);
+  const [projects, setProjects] = useState(context.projects);
   const [projectId, setProjectId] = useState(context.selectedProjectId ?? "");
   const [title, setTitle] = useState(context.title);
   const [start, setStart] = useState(context.start);
@@ -83,13 +97,49 @@ export function App() {
       <h1 className="text-lg font-semibold">Clockify</h1>
       <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
         <div className="space-y-1.5">
-          <Label htmlFor="project">Project</Label>
+          <div className="flex items-center justify-between">
+            <Label htmlFor="project">Project</Label>
+            <div className="flex gap-3 text-xs">
+              <ClientManagerDialog
+                clients={clients}
+                onChanged={(nextClients, nextProjects) => {
+                  setClients(nextClients);
+                  setProjects(nextProjects);
+                }}
+                trigger={
+                  <button
+                    type="button"
+                    className="text-primary underline-offset-4 hover:underline"
+                  >
+                    Clients
+                  </button>
+                }
+              />
+              <ProjectManagerDialog
+                clients={clients}
+                projects={projects}
+                onChanged={(nextClients, nextProjects) => {
+                  setClients(nextClients);
+                  setProjects(nextProjects);
+                }}
+                onCreated={setProjectId}
+                trigger={
+                  <button
+                    type="button"
+                    className="text-primary underline-offset-4 hover:underline"
+                  >
+                    Projects
+                  </button>
+                }
+              />
+            </div>
+          </div>
           <Select value={projectId} onValueChange={setProjectId}>
             <SelectTrigger id="project">
               <SelectValue placeholder="Select a project" />
             </SelectTrigger>
             <SelectContent>
-              {context.projects.map((project) => (
+              {projects.map((project) => (
                 <SelectItem key={project.id} value={project.id}>
                   {project.name}
                 </SelectItem>

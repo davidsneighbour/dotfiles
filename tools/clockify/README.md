@@ -38,6 +38,13 @@ npm run build
 dnb-clockify status
 dnb-clockify projects
 dnb-clockify projects --unmapped
+dnb-clockify projects add --name <name> --client <client-id|name> [--color <hex>]
+dnb-clockify projects edit --id <project-id> [--name <name>] [--client <client-id|name>] [--color <hex>]
+dnb-clockify projects remove --id <project-id>
+dnb-clockify client list
+dnb-clockify client add --name <name>
+dnb-clockify client edit --id <client-id> --name <name>
+dnb-clockify client remove --id <client-id>
 dnb-clockify start --project <alias|id|name> --title <text>
 dnb-clockify stop [--title <text>] [--project <alias|id|name>]
 dnb-clockify add --project <alias|id|name> --title <text> --start <time> --end <time>
@@ -49,6 +56,10 @@ dnb-clockify alias set --alias <short-name> --project <project>
 dnb-clockify alias remove --alias <short-name>
 dnb-clockify alias configure
 ```
+
+Client and project "removal" always archives — Clockify rejects hard-deleting a client or project
+that has time entries logged against it, so this tool never attempts that. `projects edit`/`client
+edit` only change the fields you pass; omitted fields keep their current value.
 
 Add `--json` to commands when another tool or agent should parse the result. JSON responses use stable top-level `ok`, `command`, and `data` fields on success, and `ok`, `command`, and `error` fields on failure.
 
@@ -94,6 +105,13 @@ With no running timer, the form pre-fills `start` with the current time and leav
 With a running timer, the form pre-fills the current title, project, and start time, and sets `end` to now. Submitting with `end` set updates and stops the timer. Clearing `end` updates the running entry and keeps it running.
 
 Two quick-fill links sit next to the `start` field: "From last entry" sets `start` to the end of the most recent completed entry, and "Now" sets it to the current time. The last-entry lookup is cached for `lastEntryCacheSeconds` (default one hour) and is also refreshed immediately, without an extra API call, whenever a form submission completes or stops an entry.
+
+Two links next to the "Project" field, "Clients" and "Projects", open small dialogs to add, rename,
+or archive ("Delete") clients and projects without leaving the form. Creating a project requires
+picking a client; the project dialog has its own "+ new client" shortcut so you never have to back
+out of it to create one first. Colors are chosen from a fixed swatch grid rather than typed in.
+Saving updates the form immediately — no reload — and creating a new project selects it right away
+in the time-tracking form above.
 
 Entries created or stopped through the form get a `via:form` tag. Starting a timer or creating a completed entry (an "open") tags it; stopping a running timer (a "close") adds the tag to whatever tags the entry already had. Editing a running entry without stopping it does not change its tags. The `via:form` tag is created in the Clockify workspace the first time it's needed.
 

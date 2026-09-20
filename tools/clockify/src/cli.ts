@@ -70,6 +70,16 @@ type ClockifyProject = {
   id: string;
   name: string;
   archived?: boolean;
+  clientId?: string;
+  color?: string;
+  billable?: boolean;
+  public?: boolean;
+};
+
+type ClockifyClient = {
+  id: string;
+  name: string;
+  archived?: boolean;
 };
 
 type TimeInterval = {
@@ -95,12 +105,19 @@ type FormContext = {
   workspaceId: string;
   config: Config;
   projects: ClockifyProject[];
+  clients: ClockifyClient[];
   running: ClockifyTimeEntry | undefined;
   lastEntryEnd: string | null;
 };
 
 type FormPageContext = {
-  projects: { id: string; name: string }[];
+  projects: {
+    id: string;
+    name: string;
+    clientId: string | undefined;
+    color: string | undefined;
+  }[];
+  clients: { id: string; name: string }[];
   selectedProjectId: string | undefined;
   title: string;
   start: string;
@@ -163,6 +180,15 @@ function printHelp(): void {
 Commands:
   status [--json]                         Show current tracking state.
   projects [--unmapped] [--json]          List Clockify projects.
+  projects add --name <n> --client <c> [--color <hex>]
+                                           Create a project.
+  projects edit --id <id> [--name <n>] [--client <c>] [--color <hex>]
+                                           Edit a project.
+  projects remove --id <id>               Archive a project.
+  client list                             List Clockify clients.
+  client add --name <n>                   Create a client.
+  client edit --id <id> --name <n>        Rename a client.
+  client remove --id <id>                 Archive a client.
   start --project <project> --title <t>    Start a timer.
   stop [--project <project>] [--title <t>] Stop or update the running timer.
   add --project <project> --title <t> --start <time> --end <time>
@@ -397,6 +423,128 @@ async function getProjects(
     token,
     `/workspaces/${workspaceId}/projects?archived=false&page-size=5000`,
   );
+}
+
+async function createProject(
+  token: string,
+  workspaceId: string,
+  input: { name: string; clientId: string; color?: string },
+): Promise<ClockifyProject> {
+  return apiRequest<ClockifyProject>(
+    token,
+    `/workspaces/${workspaceId}/projects`,
+    {
+      method: "POST",
+      body: JSON.stringify({
+        name: input.name,
+        clientId: input.clientId,
+        ...(input.color === undefined ? {} : { color: input.color }),
+      }),
+    },
+  );
+}
+
+async function updateProject(
+  token: string,
+  workspaceId: string,
+  current: ClockifyProject,
+  overrides: {
+    name?: string;
+    clientId?: string;
+    color?: string;
+    archived?: boolean;
+  },
+): Promise<ClockifyProject> {
+  return apiRequest<ClockifyProject>(
+    token,
+    `/workspaces/${workspaceId}/projects/${current.id}`,
+    {
+      method: "PUT",
+      body: JSON.stringify({
+        name: overrides.name ?? current.name,
+        archived: overrides.archived ?? current.archived ?? false,
+        clientId: overrides.clientId ?? current.clientId,
+        color: overrides.color ?? current.color,
+        // Clockify's PUT rejects the request with a 403 if these are omitted,
+        // even though they're not part of what this tool lets you edit.
+        isPublic: current.public ?? true,
+        billable: current.billable ?? true,
+      }),
+    },
+  );
+}
+
+async function getClients(
+  token: string,
+  workspaceId: string,
+): Promise<ClockifyClient[]> {
+  return apiRequest<ClockifyClient[]>(
+    token,
+    `/workspaces/${workspaceId}/clients?archived=false&page-size=5000`,
+  );
+}
+
+async function createClient(
+  token: string,
+  workspaceId: string,
+  name: string,
+): Promise<ClockifyClient> {
+  return apiRequest<ClockifyClient>(
+    token,
+    `/workspaces/${workspaceId}/clients`,
+    {
+      method: "POST",
+      body: JSON.stringify({ name }),
+    },
+  );
+}
+
+async function updateClient(
+  token: string,
+  workspaceId: string,
+  current: ClockifyClient,
+  overrides: { name?: string; archived?: boolean },
+): Promise<ClockifyClient> {
+  return apiRequest<ClockifyClient>(
+    token,
+    `/workspaces/${workspaceId}/clients/${current.id}`,
+    {
+      method: "PUT",
+      body: JSON.stringify({
+        name: overrides.name ?? current.name,
+        archived: overrides.archived ?? current.archived ?? false,
+      }),
+    },
+  );
+}
+
+async function resolveClient(
+  token: string,
+  workspaceId: string,
+  value: string,
+): Promise<ClockifyClient> {
+  const clients = await getClients(token, workspaceId);
+  const trimmed = value.trim();
+  const byId = clients.find((client) => client.id === trimmed);
+  if (byId !== undefined) {
+    return byId;
+  }
+  const exact = clients.find((client) => client.name === trimmed);
+  if (exact !== undefined) {
+    return exact;
+  }
+  const matches = clients.filter(
+    (client) => normaliseName(client.name) === normaliseName(trimmed),
+  );
+  if (matches.length === 1 && matches[0] !== undefined) {
+    return matches[0];
+  }
+  if (matches.length > 1) {
+    throw new UserError(
+      `Client name "${value}" is ambiguous. Use the client ID.`,
+    );
+  }
+  throw new UserError(`Client not found: ${value}`);
 }
 
 const viaFormTagName = "via:form";
@@ -645,6 +793,15 @@ async function commandProjects(
   args: string[],
   options: CliOptions,
 ): Promise<void> {
+  const subcommand = args[0];
+  if (
+    subcommand === "add" ||
+    subcommand === "edit" ||
+    subcommand === "remove"
+  ) {
+    await commandProjectMutate(subcommand, args.slice(1), options);
+    return;
+  }
   const token = await readEnvToken();
   const config = await loadConfig();
   const workspaceId = await getWorkspaceId(token, config);
@@ -668,6 +825,122 @@ async function commandProjects(
   }
   for (const project of data) {
     console.log(`${project.alias ?? "-"}\t${project.name}\t${project.id}`);
+  }
+}
+
+async function commandProjectMutate(
+  subcommand: "add" | "edit" | "remove",
+  args: string[],
+  options: CliOptions,
+): Promise<void> {
+  const token = await readEnvToken();
+  const config = await loadConfig();
+  const workspaceId = await getWorkspaceId(token, config);
+  if (subcommand === "add") {
+    const name = requireFlag(args, "--name");
+    const client = await resolveClient(
+      token,
+      workspaceId,
+      requireFlag(args, "--client"),
+    );
+    const project = await createProject(token, workspaceId, {
+      name,
+      clientId: client.id,
+      color: getFlag(args, "--color"),
+    });
+    if (options.json) {
+      success("projects add", project, "json");
+      return;
+    }
+    console.log(`Added project: ${project.name}`);
+    return;
+  }
+  const id = requireFlag(args, "--id");
+  const projects = await getProjects(token, workspaceId);
+  const current = projects.find((project) => project.id === id);
+  if (current === undefined) {
+    throw new UserError(`Project not found: ${id}`);
+  }
+  if (subcommand === "remove") {
+    const project = await updateProject(token, workspaceId, current, {
+      archived: true,
+    });
+    if (options.json) {
+      success("projects remove", project, "json");
+      return;
+    }
+    console.log(`Archived project: ${project.name}`);
+    return;
+  }
+  const clientInput = getFlag(args, "--client");
+  const clientId =
+    clientInput === undefined
+      ? undefined
+      : (await resolveClient(token, workspaceId, clientInput)).id;
+  const project = await updateProject(token, workspaceId, current, {
+    name: getFlag(args, "--name"),
+    clientId,
+    color: getFlag(args, "--color"),
+  });
+  if (options.json) {
+    success("projects edit", project, "json");
+    return;
+  }
+  console.log(`Updated project: ${project.name}`);
+}
+
+async function commandClient(
+  args: string[],
+  options: CliOptions,
+): Promise<void> {
+  const subcommand = args[0] ?? "list";
+  const token = await readEnvToken();
+  const config = await loadConfig();
+  const workspaceId = await getWorkspaceId(token, config);
+  if (subcommand === "add") {
+    const client = await createClient(
+      token,
+      workspaceId,
+      requireFlag(args, "--name"),
+    );
+    if (options.json) {
+      success("client add", client, "json");
+      return;
+    }
+    console.log(`Added client: ${client.name}`);
+    return;
+  }
+  if (subcommand === "edit" || subcommand === "remove") {
+    const id = requireFlag(args, "--id");
+    const clients = await getClients(token, workspaceId);
+    const current = clients.find((client) => client.id === id);
+    if (current === undefined) {
+      throw new UserError(`Client not found: ${id}`);
+    }
+    const client =
+      subcommand === "remove"
+        ? await updateClient(token, workspaceId, current, { archived: true })
+        : await updateClient(token, workspaceId, current, {
+            name: getFlag(args, "--name"),
+          });
+    if (options.json) {
+      success(`client ${subcommand}`, client, "json");
+      return;
+    }
+    console.log(
+      subcommand === "remove"
+        ? `Archived client: ${client.name}`
+        : `Updated client: ${client.name}`,
+    );
+    return;
+  }
+  const clients = await getClients(token, workspaceId);
+  if (options.json) {
+    success("client list", clients, "json");
+    return;
+  }
+  for (const client of clients) {
+    console.log(`${client.id}\t${client.name}`);
   }
 }
 
@@ -1185,6 +1458,7 @@ async function loadFormContext(config: Config): Promise<FormContext> {
   const user = await getUser(token);
   const workspaceId = await getWorkspaceId(token, config);
   const projects = await getProjects(token, workspaceId);
+  const clients = await getClients(token, workspaceId);
   const running = await getRunningEntry(token, workspaceId, user.id);
   const lastEntryEnd = await getCachedLastEntryEnd(
     token,
@@ -1198,9 +1472,112 @@ async function loadFormContext(config: Config): Promise<FormContext> {
     workspaceId,
     config,
     projects,
+    clients,
     running,
     lastEntryEnd,
   };
+}
+
+async function refreshFormLists(formContext: FormContext): Promise<void> {
+  formContext.clients = await getClients(
+    formContext.token,
+    formContext.workspaceId,
+  );
+  formContext.projects = await getProjects(
+    formContext.token,
+    formContext.workspaceId,
+  );
+}
+
+function sendJson(response: ServerResponse, data: unknown): void {
+  response.setHeader("content-type", "application/json; charset=utf-8");
+  response.end(JSON.stringify(data));
+}
+
+async function handleClientCreate(
+  request: IncomingMessage,
+  formContext: FormContext,
+): Promise<void> {
+  const body = JSON.parse(await readRequestBody(request)) as {
+    name?: string;
+  };
+  const name = (body.name ?? "").trim();
+  if (name === "") {
+    throw new UserError("Client name is required.");
+  }
+  await createClient(formContext.token, formContext.workspaceId, name);
+  await refreshFormLists(formContext);
+}
+
+async function handleClientUpdate(
+  request: IncomingMessage,
+  formContext: FormContext,
+): Promise<void> {
+  const body = JSON.parse(await readRequestBody(request)) as {
+    id?: string;
+    name?: string;
+    archived?: boolean;
+  };
+  const current = formContext.clients.find((client) => client.id === body.id);
+  if (current === undefined) {
+    throw new UserError("Client not found.");
+  }
+  await updateClient(formContext.token, formContext.workspaceId, current, {
+    name: body.name,
+    archived: body.archived,
+  });
+  await refreshFormLists(formContext);
+}
+
+async function handleProjectCreate(
+  request: IncomingMessage,
+  formContext: FormContext,
+): Promise<void> {
+  const body = JSON.parse(await readRequestBody(request)) as {
+    name?: string;
+    clientId?: string;
+    color?: string;
+  };
+  const name = (body.name ?? "").trim();
+  const clientId = (body.clientId ?? "").trim();
+  if (name === "") {
+    throw new UserError("Project name is required.");
+  }
+  if (clientId === "") {
+    throw new UserError("Client is required.");
+  }
+  await createProject(formContext.token, formContext.workspaceId, {
+    name,
+    clientId,
+    color: body.color,
+  });
+  await refreshFormLists(formContext);
+}
+
+async function handleProjectUpdate(
+  request: IncomingMessage,
+  formContext: FormContext,
+): Promise<void> {
+  const body = JSON.parse(await readRequestBody(request)) as {
+    id?: string;
+    name?: string;
+    clientId?: string;
+    color?: string;
+    archived?: boolean;
+  };
+  const current = formContext.projects.find(
+    (project) => project.id === body.id,
+  );
+  if (current === undefined) {
+    throw new UserError("Project not found.");
+  }
+  await updateProject(formContext.token, formContext.workspaceId, current, {
+    name: body.name,
+    clientId: body.clientId,
+    color: body.color,
+    archived: body.archived,
+  });
+  await refreshFormLists(formContext);
 }
 
 async function commandForm(args: string[], options: CliOptions): Promise<void> {
@@ -1227,9 +1604,54 @@ async function commandForm(args: string[], options: CliOptions): Promise<void> {
       if (request.method === "POST" && url.pathname === "/api/submit") {
         const formContext = await getFormContext();
         await submitFormEntry(request, formContext);
-        response.setHeader("content-type", "application/json; charset=utf-8");
-        response.end(JSON.stringify({ ok: true }));
+        sendJson(response, { ok: true });
         server.close();
+        return;
+      }
+      if (request.method === "POST" && url.pathname === "/api/clients/create") {
+        const formContext = await getFormContext();
+        await handleClientCreate(request, formContext);
+        sendJson(response, {
+          ok: true,
+          clients: formContext.clients,
+          projects: formContext.projects,
+        });
+        return;
+      }
+      if (request.method === "POST" && url.pathname === "/api/clients/update") {
+        const formContext = await getFormContext();
+        await handleClientUpdate(request, formContext);
+        sendJson(response, {
+          ok: true,
+          clients: formContext.clients,
+          projects: formContext.projects,
+        });
+        return;
+      }
+      if (
+        request.method === "POST" &&
+        url.pathname === "/api/projects/create"
+      ) {
+        const formContext = await getFormContext();
+        await handleProjectCreate(request, formContext);
+        sendJson(response, {
+          ok: true,
+          clients: formContext.clients,
+          projects: formContext.projects,
+        });
+        return;
+      }
+      if (
+        request.method === "POST" &&
+        url.pathname === "/api/projects/update"
+      ) {
+        const formContext = await getFormContext();
+        await handleProjectUpdate(request, formContext);
+        sendJson(response, {
+          ok: true,
+          clients: formContext.clients,
+          projects: formContext.projects,
+        });
         return;
       }
       if (request.method === "GET" && url.pathname === "/") {
@@ -1361,7 +1783,7 @@ async function readRequestBody(request: IncomingMessage): Promise<string> {
 }
 
 function buildFormPageContext(formContext: FormContext): FormPageContext {
-  const { projects, config, running, lastEntryEnd } = formContext;
+  const { projects, clients, config, running, lastEntryEnd } = formContext;
   const now = new Date();
   const start =
     running?.timeInterval.start === undefined
@@ -1372,7 +1794,10 @@ function buildFormPageContext(formContext: FormContext): FormPageContext {
     projects: projects.map((project) => ({
       id: project.id,
       name: projectDisplay(project, config),
+      clientId: project.clientId,
+      color: project.color,
     })),
+    clients: clients.map((client) => ({ id: client.id, name: client.name })),
     selectedProjectId: running?.projectId,
     title: running?.description ?? "",
     start,
@@ -1470,6 +1895,8 @@ async function main(): Promise<void> {
       await commandForm(parsed.rest, parsed.options);
     } else if (parsed.command === "alias") {
       await commandAlias(parsed.rest, parsed.options);
+    } else if (parsed.command === "client") {
+      await commandClient(parsed.rest, parsed.options);
     } else {
       throw new UserError(`Unknown command: ${parsed.command}`);
     }
