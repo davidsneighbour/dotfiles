@@ -1580,6 +1580,39 @@ async function handleProjectUpdate(
   await refreshFormLists(formContext);
 }
 
+async function restartFormDetached(
+  args: string[],
+  options: CliOptions,
+  config: Config,
+): Promise<void> {
+  const childArgs = [
+    "--experimental-strip-types",
+    join(import.meta.dirname, "cli.ts"),
+    "form",
+    ...(hasFlag(args, "--open") ? ["--open"] : []),
+  ];
+  spawn(process.execPath, childArgs, {
+    detached: true,
+    stdio: "ignore",
+  }).unref();
+
+  const url = `http://127.0.0.1:${config.settings.formPort}/`;
+  const token = await readEnvToken();
+  const user = await getUser(token);
+  const workspaceId = await getWorkspaceId(token, config);
+  const running = await getRunningEntry(token, workspaceId, user.id);
+  if (options.json) {
+    success("form", { url, running: running !== undefined }, "json");
+    return;
+  }
+  console.log(url);
+  console.log(
+    running !== undefined
+      ? `Timer running: ${running.description || "(untitled)"}`
+      : "No timer running.",
+  );
+}
+
 async function commandForm(args: string[], options: CliOptions): Promise<void> {
   const config = await loadConfig();
   if (!existsSync(join(distWebDir, "index.html"))) {
@@ -1592,6 +1625,8 @@ async function commandForm(args: string[], options: CliOptions): Promise<void> {
     await new Promise<void>((resolve) => {
       setTimeout(resolve, 300);
     });
+    await restartFormDetached(args, options, config);
+    return;
   }
   let context: Promise<FormContext> | undefined;
   const getFormContext = (): Promise<FormContext> => {

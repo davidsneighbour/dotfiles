@@ -23,6 +23,14 @@ Applies on top of the root `AGENTS.md`. Scope: this folder only.
   feature that needs multiple round trips before the final submit (e.g. creating a client or project
   inline, then still submitting the time entry) requires the server to stay alive across more than one
   request — don't assume today's "closes after first POST" behaviour when adding endpoints.
+* **`form --restart` runs the actual server as a detached child, not inline.** `restartFormDetached()`
+  kills whatever holds the port, spawns a fresh, detached-and-unref'd `form` process, does its own
+  lightweight Clockify call to report the current running-timer state, and returns — so the `--restart`
+  invocation itself exits immediately instead of blocking like a plain
+  `form` call does. A plain `dnb-clockify form` (no `--restart`) still blocks in the foreground until a
+  submission closes it; that's unchanged and is why callers like `polybar-clockify` background it with
+  `&` themselves. If you add more startup-time reporting to `commandForm`, mirror it in
+  `restartFormDetached()` too, since it deliberately doesn't call `commandForm` recursively.
 * Clockify is the only source of truth. There is no local database; local files
   (`~/.config/dnb-clockify/config.json`, `~/.cache/dnb-clockify/*.json`) hold only aliases, settings,
   and short-lived caches (status, nudge counter, last-entry-end). Don't cache anything that would let
