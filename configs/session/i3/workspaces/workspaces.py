@@ -464,7 +464,7 @@ def command_window_switcher(args: argparse.Namespace) -> int:
             (
                 con_id,
                 (
-                    f"<span color='#708CA9'>{pango_escape(label[:18])}</span> "
+                    f"<span color='#FF5555'>{pango_escape(label[:18])}</span> "
                     f"{pango_escape(title)}"
                     f"\0icon\x1f{window_class.lower()}"
                 ),
