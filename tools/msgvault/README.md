@@ -35,11 +35,6 @@ Functions/methods defined:
 * `dnb_msgvault_log`
 * `dnb_msgvault_abort`
 * `dnb_msgvault_report_failure`
-* `dnb_msgvault_backup_interval_seconds`
-* `dnb_msgvault_backup_is_due`
-* `dnb_msgvault_write_backup_lock`
-* `dnb_msgvault_run_backup`
-* `dnb_msgvault_maybe_run_backup`
 
 Requirements:
 
@@ -111,23 +106,26 @@ click-left = xfce4-terminal --title "msgvault sync" --command "${HOME}/.dotfiles
 
 ## `backup`
 
-Creates and verifies a msgvault backup snapshot repository using `msgvault backup`.
+Creates and verifies a msgvault backup snapshot repository using msgvault's native [backup format](https://www.msgvault.io/docs/usage/backup/) (`msgvault backup init/create/verify/list`), not a raw file copy. Snapshots are content-addressed and incremental: unchanged attachments and database pages are not re-stored, so repeat runs after the first full snapshot are fast (a same-day re-run with no new mail took ~2s and added 112B). `backup create` is proxied through the msgvault daemon, which briefly pauses conflicting maintenance operations to pin a consistent read of the database — so this is safe to run while `sync.sh`/`manual-sync.sh` are active.
 
 Default paths:
 
 * Source: `~/.msgvault`
-* Target: `DNB_MSGVAULT_CONFIG_BACKUP_DIR` from `tools/msgvault/config.env`
+* Target: `DNB_MSGVAULT_CONFIG_BACKUP_DIR` from `tools/msgvault/config.env`, currently `/mnt/storage/Backup/msgvault`
 * Backup log file: `~/.logs/msgvault/backup-YYYYMMDD-HHMM.log`
+* Duration log: `~/.logs/msgvault/backup-durations.log`
 
 The backup target is configured in the sourceable `config.env` file in this
 folder:
 
 ```bash
-DNB_MSGVAULT_CONFIG_BACKUP_DIR="/mnt/storage/02_BACKUP/MSGVAULT"
+DNB_MSGVAULT_CONFIG_BACKUP_DIR="/mnt/storage/Backup/msgvault"
 ```
 
 Set `DNB_MSGVAULT_BACKUP_DIR` in the environment to override the configured
 default for one run.
+
+`/mnt/storage/Backup/msgvault.bak` is the old pre-daemon `rsync` mirror of `~/.msgvault` (raw SQLite copy, plus tokens and `client_secret.json` in plaintext) that this repository replaced — kept only until the new snapshot history is trusted, then safe to delete.
 
 What it backs up:
 
@@ -141,7 +139,7 @@ What it intentionally does not back up yet:
 * OAuth token files.
 * Any plaintext secret material.
 
-msgvault v0.17.0 backup repositories are not encrypted yet, and config/tokens may contain live credentials. Keep those files in a separate encrypted system backup for now. Once msgvault adds encryption, retention, and pruning support, this helper can be extended to include config and tokens safely.
+msgvault backup repositories are not encrypted yet, and config/tokens may contain live credentials. Keep those files in a separate encrypted system backup for now. Once msgvault adds encryption, retention, and pruning support, this helper can be extended to include config and tokens safely.
 
 CLI option notes:
 
@@ -154,6 +152,8 @@ CLI option notes:
 * --verbose — print additional progress and pass verbose mode to msgvault.
 * --quiet — disable verbose mode even when `DNB_VERBOSE=1`.
 * --help — show help.
+
+Duration tracking: every successful (non-dry-run) run appends one line to `~/.logs/msgvault/backup-durations.log` with the snapshot-creation time and total wrapper run time in seconds (`timestamp=... tag=... create_seconds=... total_seconds=...`), so run times can be analysed later (e.g. capacity planning, spotting a snapshot that suddenly takes much longer than usual). Override the path with `DNB_MSGVAULT_BACKUP_DURATIONS_FILE`.
 
 Manual usage examples:
 
@@ -189,6 +189,7 @@ Functions/methods defined:
 * `log_info`
 * `log_verbose`
 * `die`
+* `record_backup_duration`
 * `handle_error`
 * `shell_quote`
 * `run_command`

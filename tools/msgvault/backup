@@ -24,6 +24,7 @@ DEFAULT_TARGET="${DNB_MSGVAULT_BACKUP_DIR:-${DNB_MSGVAULT_CONFIG_BACKUP_DIR}}"
 LOG_DIR="${HOME}/.logs/msgvault"
 LOG_FILE="${DNB_MSGVAULT_BACKUP_LOG_FILE:-${LOG_DIR}/backup-$(date +%Y%m%d-%H%M).log}"
 LOG_TO_STDOUT="${DNB_MSGVAULT_LOG_TO_STDOUT:-1}"
+DURATIONS_FILE="${DNB_MSGVAULT_BACKUP_DURATIONS_FILE:-${LOG_DIR}/backup-durations.log}"
 
 SOURCE="${DEFAULT_SOURCE}"
 TARGET="${DEFAULT_TARGET}"
@@ -59,6 +60,11 @@ Configuration:
   ${DNB_MSGVAULT_CONFIG_FILE}
     DNB_MSGVAULT_CONFIG_BACKUP_DIR sets the default backup repository.
   DNB_MSGVAULT_BACKUP_DIR overrides the configured default.
+
+Duration tracking:
+  Each successful run appends one line to ${DURATIONS_FILE}
+  with the snapshot creation time and total wrapper run time, in seconds.
+  Override the path with DNB_MSGVAULT_BACKUP_DURATIONS_FILE.
 
 Secret handling:
   This wrapper intentionally does not pass --include-config, --include-tokens,
@@ -111,6 +117,19 @@ log_verbose() {
 die() {
   log_line "ERROR" "${1}"
   exit 1
+}
+
+record_backup_duration() {
+  local create_seconds="${1}"
+  local total_seconds="${2}"
+
+  if [[ "${DRY_RUN}" == "true" ]]; then
+    return 0
+  fi
+
+  mkdir -p "${LOG_DIR}"
+  printf 'timestamp=%s tag=%s create_seconds=%s total_seconds=%s\n' \
+    "$(date --iso-8601=seconds)" "${TAG}" "${create_seconds}" "${total_seconds}" >>"${DURATIONS_FILE}"
 }
 
 handle_error() {
@@ -368,6 +387,11 @@ validate_arguments() {
 }
 
 main() {
+  local run_started_epoch
+  local create_started_epoch
+  local create_seconds
+  local total_seconds
+
   trap 'handle_error "${LINENO}" "${BASH_COMMAND}"' ERR
 
   parse_arguments "$@"
@@ -384,12 +408,23 @@ main() {
   log_info "Tag: ${TAG}"
   log_info "Log file: ${LOG_FILE}"
 
+  run_started_epoch="$(date +%s)"
+
   ensure_repository
+
+  create_started_epoch="$(date +%s)"
   create_backup
+  create_seconds="$(($(date +%s) - create_started_epoch))"
+  log_info "Snapshot creation took ${create_seconds}s."
+
   verify_backup
 
   log_info "Available backups:"
   list_backups
+
+  total_seconds="$(($(date +%s) - run_started_epoch))"
+  log_info "Total backup run took ${total_seconds}s."
+  record_backup_duration "${create_seconds}" "${total_seconds}"
 
   log_info "msgvault backup wrapper finished successfully."
 }
