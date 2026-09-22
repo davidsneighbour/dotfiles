@@ -2,6 +2,10 @@
 
 This folder contains standalone msgvault helper commands used by cron, Polybar, and manual maintenance.
 
+## Concurrency
+
+Since msgvault's [daemon migration](https://www.msgvault.io/docs/guides/daemon-migration/), a background daemon is the single writer to the archive; CLI commands talk to it over HTTP instead of opening the SQLite database directly. Concurrent mutating operations (sync, import, embeddings) queue inside the daemon and print a `Waiting: ...` message rather than racing on the database, so `sync.sh` and `manual-sync.sh` no longer need — and no longer implement — their own PID-based lock file. Read-only commands still run immediately, even while a write is queued. `msgvault daemon status` shows whether the daemon is running.
+
 ## `sync.sh`
 
 Runs `msgvault sync --verbose`, logs the run, and records a Polybar issue when sync fails. Backups are managed separately by `backup` so the sync cronjob does not mirror config files or OAuth tokens.
@@ -10,8 +14,6 @@ Default paths:
 
 * Sync log file: `~/.logs/msgvault/sync-YYYYMMDD.log`
 * Manual sync log file: `~/.logs/msgvault/manual-YYYYMMDD-HHMM.log`
-* Runtime state directory: `~/.local/state/msgvault`
-* Lock file: `~/.local/state/msgvault/msgvault.lock`
 * msgvault binary: `~/.local/bin/msgvault`
 
 CLI option notes:
@@ -31,11 +33,6 @@ Functions/methods defined:
 * `print_help`
 * `parse_arguments`
 * `dnb_msgvault_log`
-* `dnb_msgvault_lock_value`
-* `dnb_msgvault_lock_is_active`
-* `dnb_msgvault_remove_stale_lock`
-* `dnb_msgvault_create_lock`
-* `dnb_msgvault_cleanup_lock`
 * `dnb_msgvault_abort`
 * `dnb_msgvault_report_failure`
 * `dnb_msgvault_backup_interval_seconds`
@@ -77,13 +74,12 @@ Requirements:
 
 ## `manual-sync.sh`
 
-Runs a visible manual `msgvault sync --verbose` for launchers such as Polybar click actions. It shares the scheduled sync lock file and writes `manual-YYYYMMDD-HHMM.log` under `~/.logs/msgvault`.
+Runs a visible manual `msgvault sync --verbose` for launchers such as Polybar click actions. It writes `manual-YYYYMMDD-HHMM.log` under `~/.logs/msgvault`. Concurrent invocations (e.g. overlapping with the scheduled cron sync) are serialized by the msgvault daemon itself rather than by a script-level lock — see [Concurrency](#concurrency) below.
 
 CLI option notes:
 
 * --msgvault-bin PATH — msgvault executable path; default is `~/.local/bin/msgvault`.
 * --log-dir PATH — manual log directory; default is `~/.logs/msgvault`.
-* --lock-file PATH — shared msgvault lock file; default is `~/.local/state/msgvault/msgvault.lock`.
 * --pause-on-exit — wait for Enter before exiting, useful from terminal launchers.
 * --verbose — print extra progress messages.
 * --help — show help.
@@ -96,11 +92,6 @@ Functions/methods defined:
 * `init_logging`
 * `log_verbose`
 * `pause_before_exit`
-* `create_lock`
-* `cleanup_lock`
-* `lock_value`
-* `lock_is_active`
-* `remove_stale_lock`
 * `abort_run`
 * `run_msgvault_sync`
 * `main`

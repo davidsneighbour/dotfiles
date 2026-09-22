@@ -22,8 +22,6 @@ fi
 
 LOG_BASE_DIR="${HOME}/.logs/msgvault"
 LOG_FILE="${LOG_BASE_DIR}/sync-$(date +%Y%m%d).log"
-STATE_DIR="${DNB_MSGVAULT_STATE_DIR:-${HOME}/.local/state/msgvault}"
-LOCK_FILE="${DNB_MSGVAULT_LOCK_FILE:-${STATE_DIR}/msgvault.lock}"
 MSGVAULT_BIN="${HOME}/.local/bin/msgvault"
 MSGVAULT_DIR="${DNB_MSGVAULT_DIR:-${HOME}/.msgvault}"
 MSGVAULT_BACKUP_DIR="${DNB_MSGVAULT_BACKUP_DIR:-${DNB_MSGVAULT_CONFIG_BACKUP_DIR}}"
@@ -61,8 +59,6 @@ Environment:
   DNB_MSGVAULT_CONFIG_FILE         sourceable config file.
   DNB_MSGVAULT_BACKUP_DIR          override configured backup directory.
   DNB_MSGVAULT_BACKUP_INTERVAL_HOURS
-  DNB_MSGVAULT_STATE_DIR           runtime state directory for shared locks.
-  DNB_MSGVAULT_LOCK_FILE           shared sync lock file.
   DNB_POLYBAR_ISSUES_FILE          Polybar issues file.
   DNB_MSGVAULT_POLYBAR_ISSUE_ID    Polybar issue id.
 HELP
@@ -107,7 +103,6 @@ parse_arguments() {
 
 parse_arguments "$@"
 mkdir -p "${LOG_BASE_DIR}"
-mkdir -p "${STATE_DIR}"
 
 # dnb_msgvault_log
 #
@@ -127,154 +122,10 @@ dnb_msgvault_log() {
   echo "${message}" >>"${LOG_FILE}"
 }
 
-# dnb_msgvault_create_lock
-#
-# Create the script-level lock file for the current cronjob run.
-#
-# Parameters:
-#   None.
-#
-# Behaviour:
-#   Creates LOCK_FILE atomically using noclobber. If the file already exists,
-#   the function logs the existing lock content and returns 1. The caller should
-#   then exit without running sync or backup.
-#
-# Example:
-#   if ! dnb_msgvault_create_lock; then
-#     exit 0
-#   fi
-dnb_msgvault_lock_value() {
-  local key="${1}"
-
-  awk -F= -v key="${key}" '$1 == key { print $2; exit }' "${LOCK_FILE}" 2>/dev/null
-}
-
-dnb_msgvault_lock_is_active() {
-  local lock_pid
-  local lock_host
-  local current_host
-  local lock_cmdline
-
-  [[ -f "${LOCK_FILE}" ]] || return 1
-
-  lock_pid="$(dnb_msgvault_lock_value "pid")"
-  lock_host="$(dnb_msgvault_lock_value "host")"
-  current_host="$(hostname 2>/dev/null || echo "unknown")"
-
-  if [[ -n "${lock_host}" && "${lock_host}" != "${current_host}" ]]; then
-    return 0
-  fi
-
-  if [[ ! "${lock_pid}" =~ ^[0-9]+$ ]]; then
-    return 1
-  fi
-
-  kill -0 "${lock_pid}" 2>/dev/null || return 1
-
-  if [[ -r "/proc/${lock_pid}/cmdline" ]]; then
-    lock_cmdline="$(tr '\0' ' ' <"/proc/${lock_pid}/cmdline" 2>/dev/null || echo "")"
-    case "${lock_cmdline}" in
-    *msgvault/sync.sh* | *msgvault/manual-sync.sh* | *msgvault.sh* | *msgvault-manual-sync.sh*)
-      return 0
-      ;;
-    *)
-      return 1
-      ;;
-    esac
-  fi
-
-  return 0
-}
-
-dnb_msgvault_remove_stale_lock() {
-  [[ -f "${LOCK_FILE}" ]] || return 1
-
-  if dnb_msgvault_lock_is_active; then
-    return 1
-  fi
-
-  {
-    echo "============================================================"
-    echo "Stale lock removed: $(date --iso-8601=seconds)"
-    echo "Lock file: ${LOCK_FILE}"
-    echo "Previous lock content:"
-    sed 's/^/  /' "${LOCK_FILE}" 2>/dev/null || echo "  Could not read lock file."
-    echo "============================================================"
-    echo
-  } >>"${LOG_FILE}"
-
-  rm -f "${LOCK_FILE}"
-}
-
-dnb_msgvault_create_lock() {
-  local started_at
-  local host_name
-  local lock_dir
-  local attempt
-
-  started_at="$(date --iso-8601=seconds)"
-  host_name="$(hostname 2>/dev/null || echo "unknown")"
-  lock_dir="$(dirname "${LOCK_FILE}")"
-  mkdir -p "${lock_dir}"
-
-  for attempt in 1 2; do
-    if (
-      set -o noclobber
-      {
-        echo "started_at=${started_at}"
-        echo "pid=$$"
-        echo "host=${host_name}"
-        echo "log_file=${LOG_FILE}"
-        echo "mode=cron"
-      } >"${LOCK_FILE}"
-    ) 2>/dev/null; then
-      return 0
-    fi
-
-    if [[ "${attempt}" -eq 1 ]] && dnb_msgvault_remove_stale_lock; then
-      continue
-    fi
-
-    {
-      echo "============================================================"
-      echo "Run skipped: $(date --iso-8601=seconds)"
-      echo "Reason: lock file exists: ${LOCK_FILE}"
-      echo "Existing lock content:"
-      sed 's/^/  /' "${LOCK_FILE}" 2>/dev/null || echo "  Could not read lock file."
-      echo "============================================================"
-      echo
-    } >>"${LOG_FILE}"
-
-    return 1
-  done
-
-  return 1
-}
-
-# dnb_msgvault_cleanup_lock
-#
-# Remove the script-level lock file created by this process.
-#
-# Parameters:
-#   None.
-#
-# Behaviour:
-#   Removes LOCK_FILE on normal exit or failure. The lock file is only removed
-#   when it still belongs to the current process PID.
-#
-# Example:
-#   trap dnb_msgvault_cleanup_lock EXIT
-dnb_msgvault_cleanup_lock() {
-  if [[ -f "${LOCK_FILE}" ]] && grep -qx "pid=$$" "${LOCK_FILE}" 2>/dev/null; then
-    rm -f "${LOCK_FILE}"
-  fi
-}
-
 dnb_msgvault_abort() {
   local exit_code="${1:-143}"
 
   dnb_msgvault_log "Run interrupted: $(date --iso-8601=seconds)"
-  dnb_msgvault_cleanup_lock
   exit "${exit_code}"
 }
 
@@ -499,11 +350,6 @@ dnb_msgvault_maybe_run_backup() {
   return 0
 }
 
-if ! dnb_msgvault_create_lock; then
-  exit 0
-fi
-
-trap dnb_msgvault_cleanup_lock EXIT
 trap 'dnb_msgvault_abort 129' HUP
 trap 'dnb_msgvault_abort 130' INT
 trap 'dnb_msgvault_abort 143' TERM
@@ -527,7 +373,6 @@ fi
 {
   echo "============================================================"
   echo "Run started: $(date --iso-8601=seconds)"
-  echo "Lock file: ${LOCK_FILE}"
   echo "Command: ${MSGVAULT_BIN} sync"
   echo "------------------------------------------------------------"
 } >>"${LOG_FILE}"
