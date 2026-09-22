@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.14.1](https://github.com/davidsneighbour/dotfiles/compare/v2.14.0...v2.14.1) (2026-09-22)
+
+### Fix
+
+* **clockify:** stop leaking internal error details to form clients ([cf4cbae](https://github.com/davidsneighbour/dotfiles/commit/cf4cbae1721dc51548e7234fd63bb543894aa2ac)), references [#7](https://github.com/davidsneighbour/dotfiles/issues/7)
+
+### Chore
+
+* **deps:** add overrides to close npm vulnerability alerts ([d82a9be](https://github.com/davidsneighbour/dotfiles/commit/d82a9be6e908c2620d25d26ae497693eb2069b0f))
+* **deps:** update dependency @types/node to v26.6.2 ([#581](https://github.com/davidsneighbour/dotfiles/issues/581)) ([74f0c4c](https://github.com/davidsneighbour/dotfiles/commit/74f0c4c947df0e133f5059b6c5240228c592830c))
+* **deps:** update dependency playwright to v1.63.0 ([#572](https://github.com/davidsneighbour/dotfiles/issues/572)) ([d58acd8](https://github.com/davidsneighbour/dotfiles/commit/d58acd85283dc76645f7605933e30a5fe359c4dc))
+
 ## [2.14.0](https://github.com/davidsneighbour/dotfiles/compare/v2.13.0...v2.14.0) (2026-09-22)
 
 ### Feat
