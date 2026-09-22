@@ -49,7 +49,7 @@ Usage:
 
 Description:
   Run msgvault sync for scheduled automation. The sync log is written to
-  ${LOG_FILE}. Backups are handled by bashrc/helpers/msgvault/backup.
+  ${LOG_FILE}. Backups are handled by tools/msgvault/backup.
 
 Options:
   --verbose  Enable verbose helper diagnostics through DNB_VERBOSE=1.
@@ -493,7 +493,7 @@ dnb_msgvault_run_backup() {
 #   dnb_msgvault_maybe_run_backup
 dnb_msgvault_maybe_run_backup() {
   if [[ "${VERBOSE}" == "true" ]]; then
-    dnb_msgvault_log "Backup skipped: managed separately by bashrc/helpers/msgvault/backup."
+    dnb_msgvault_log "Backup skipped: managed separately by tools/msgvault/backup."
   fi
 
   return 0

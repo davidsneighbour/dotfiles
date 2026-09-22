@@ -75,16 +75,15 @@ Important grouped docs:
 * [`helpers/gh/DOCUMENTATION.md`](./helpers/gh/DOCUMENTATION.md)
 * [`helpers/kando/DOCUMENTATION.md`](./helpers/kando/DOCUMENTATION.md)
 * [`helpers/logs/DOCUMENTATION.md`](./helpers/logs/DOCUMENTATION.md)
-* [`helpers/msgvault/DOCUMENTATION.md`](./helpers/msgvault/DOCUMENTATION.md)
 * [`helpers/remarkable/DOCUMENTATION.md`](./helpers/remarkable/DOCUMENTATION.md)
 
-Top-level helper commands and support files are documented in [`helpers/DOCUMENTATION.md`](./helpers/DOCUMENTATION.md), including `dotbot`, `explore`, `github-token`, `interface-restart`, `lpack`, `msgvault/`, `node-run`, `screencaps.ts`, `set_max_listeners.cjs`, `synch-devspace.sh`, `thunar-standalone`, `update-npm.sh`, and `web-mirror.sh`.
+Top-level helper commands and support files are documented in [`helpers/DOCUMENTATION.md`](./helpers/DOCUMENTATION.md), including `dotbot`, `explore`, `github-token`, `interface-restart`, `lpack`, `node-run`, `screencaps.ts`, `set_max_listeners.cjs`, `synch-devspace.sh`, `thunar-standalone`, `update-npm.sh`, and `web-mirror.sh`.
 
 ## Cron jobs
 
 Folder documentation: [`cronjobs/DOCUMENTATION.md`](./cronjobs/DOCUMENTATION.md).
 
-This folder contains scheduled automation for Docker backups, disk-space Discord alerts, repository updates, and download synchronisation. The msgvault cron commands live under [`helpers/msgvault/`](./helpers/msgvault/DOCUMENTATION.md) so related sync and backup helpers stay together.
+This folder contains scheduled automation for Docker backups, disk-space Discord alerts, repository updates, and download synchronisation. The msgvault cron commands now live under [`tools/msgvault/`](../tools/msgvault/README.md) so related sync and backup helpers stay together.
 
 ## Documentation coverage note
 

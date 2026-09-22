@@ -1,6 +1,4 @@
-# Bashrc/helpers/msgvault documentation
-
-Parent index: [`../INDEX.md`](../INDEX.md).
+# Tools/msgvault
 
 This folder contains standalone msgvault helper commands used by cron, Polybar, and manual maintenance.
 
@@ -25,7 +23,7 @@ CLI option notes:
 The `locutus` sync cron entry is managed in `configs/dotbot/config.host-locutus.yaml`:
 
 ```cron
-*/2 * * * * ${HOME}/.dotfiles/bashrc/helpers/msgvault/sync.sh
+*/2 * * * * ${HOME}/.dotfiles/tools/msgvault/sync.sh
 ```
 
 Functions/methods defined:
@@ -113,11 +111,11 @@ Requirements:
 
 ## Polybar caller
 
-The Polybar module in `configs/system/polybar/configs/07-module-msgvault.ini` calls these helper commands directly:
+The Polybar module in `configs/session/polybar/configs/07-module-msgvault.ini` calls these helper commands directly:
 
 ```ini
-exec = ${HOME}/.dotfiles/bashrc/helpers/msgvault/indicator.sh --issues-file ~/.config/polybar/issues.toml --log-dir ~/.logs/msgvault --healthy-window-minutes 5 --show-unread
-click-left = xfce4-terminal --title "msgvault sync" --command "${HOME}/.dotfiles/bashrc/helpers/msgvault/manual-sync.sh --pause-on-exit --verbose"
+exec = ${HOME}/.dotfiles/tools/msgvault/indicator.sh --issues-file ~/.config/polybar/issues.toml --log-dir ~/.logs/msgvault --healthy-window-minutes 5 --show-unread
+click-left = xfce4-terminal --title "msgvault sync" --command "${HOME}/.dotfiles/tools/msgvault/manual-sync.sh --pause-on-exit --verbose"
 ```
 
 ## `backup`
@@ -127,7 +125,7 @@ Creates and verifies a msgvault backup snapshot repository using `msgvault backu
 Default paths:
 
 * Source: `~/.msgvault`
-* Target: `DNB_MSGVAULT_CONFIG_BACKUP_DIR` from `bashrc/helpers/msgvault/config.env`
+* Target: `DNB_MSGVAULT_CONFIG_BACKUP_DIR` from `tools/msgvault/config.env`
 * Backup log file: `~/.logs/msgvault/backup-YYYYMMDD-HHMM.log`
 
 The backup target is configured in the sourceable `config.env` file in this
@@ -169,17 +167,17 @@ CLI option notes:
 Manual usage examples:
 
 ```bash
-bashrc/helpers/msgvault/backup
-bashrc/helpers/msgvault/backup --dry-run
-bashrc/helpers/msgvault/backup --verify-all
-bashrc/helpers/msgvault/backup --source "${HOME}/.msgvault"
+tools/msgvault/backup
+tools/msgvault/backup --dry-run
+tools/msgvault/backup --verify-all
+tools/msgvault/backup --source "${HOME}/.msgvault"
 ```
 
 Restore-test manually into a temporary directory:
 
 ```bash
 rm -rf /tmp/msgvault-restore-test
-source bashrc/helpers/msgvault/config.env
+source tools/msgvault/config.env
 msgvault --home "${HOME}/.msgvault" backup restore \
   --repo "${DNB_MSGVAULT_CONFIG_BACKUP_DIR}" \
   --target /tmp/msgvault-restore-test
@@ -190,7 +188,7 @@ msgvault --home /tmp/msgvault-restore-test stats
 The daily `locutus` backup cron entry is managed in `configs/dotbot/config.host-locutus.yaml`:
 
 ```cron
-30 3 * * * LOG_FILE="${HOME}/.logs/msgvault/backup-$(date +\%Y\%m\%d-\%H\%M).log"; mkdir -p "${HOME}/.logs/msgvault" && DNB_MSGVAULT_BACKUP_LOG_FILE="${LOG_FILE}" DNB_MSGVAULT_LOG_TO_STDOUT=0 ${HOME}/.dotfiles/bashrc/helpers/msgvault/backup --source "${HOME}/.msgvault" >> "${LOG_FILE}" 2>&1
+30 3 * * * LOG_FILE="${HOME}/.logs/msgvault/backup-$(date +\%Y\%m\%d-\%H\%M).log"; mkdir -p "${HOME}/.logs/msgvault" && DNB_MSGVAULT_BACKUP_LOG_FILE="${LOG_FILE}" DNB_MSGVAULT_LOG_TO_STDOUT=0 ${HOME}/.dotfiles/tools/msgvault/backup --source "${HOME}/.msgvault" >> "${LOG_FILE}" 2>&1
 ```
 
 Functions/methods defined:

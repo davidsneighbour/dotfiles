@@ -23,7 +23,6 @@ Bash helpers are standalone helper commands unless noted otherwise. Several Type
 * [`kando/`](./kando/DOCUMENTATION.md)
 * [`logs/`](./logs/DOCUMENTATION.md)
 * [`mailbox-monitor/`](./mailbox-monitor/README.md)
-* [`msgvault/`](./msgvault/DOCUMENTATION.md)
 * `packages/`
 * [`remarkable/`](./remarkable/DOCUMENTATION.md)
 * [`tests/`](#tests)
@@ -483,16 +482,6 @@ See [`mailbox-monitor/README.md`](./mailbox-monitor/README.md).
 
 * `mailbox-monitor/monitor-mailboxes.mjs`: Logs in to a hosting control panel with Playwright, reads mailbox usage, and sends a Discord alert above a configured threshold. Configured via a gitignored `.env` file (see `.env.template` conventions in AGENTS.md); intended to run from cron on a personal machine.
 * `mailbox-monitor/run-mailbox-monitor.sh`: Cron entrypoint wrapper for the monitor script.
-
-### `msgvault/`
-
-See [`msgvault/DOCUMENTATION.md`](./msgvault/DOCUMENTATION.md).
-
-* `msgvault/sync.sh`: Runs `msgvault sync`, logs the run, and records a Polybar issue on failure.
-* `msgvault/backup`: Backs up msgvault config/state separately from the sync cronjob.
-* `msgvault/manual-sync.sh`: Manual/interactive sync entrypoint.
-* `msgvault/indicator.sh`: Prints the Polybar status indicator (issue state, sync freshness, optional unread count).
-* `msgvault/config.env`: Sourceable helper defaults (e.g. backup directory).
 
 ### `packages/`
 

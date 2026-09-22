@@ -4,7 +4,7 @@ set -Eeuo pipefail
 
 SCRIPT_NAME="$(basename "${BASH_SOURCE[0]}")"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
-DOTFILES_DIR="${DNB_DOTFILES_DIR:-$(cd "${SCRIPT_DIR}/../../.." && pwd -P)}"
+DOTFILES_DIR="${DNB_DOTFILES_DIR:-$(cd "${SCRIPT_DIR}/../.." && pwd -P)}"
 LOG_DIR="${DNB_MSGVAULT_MANUAL_LOG_DIR:-${HOME}/.logs/msgvault}"
 STATE_DIR="${DNB_MSGVAULT_STATE_DIR:-${HOME}/.local/state/msgvault}"
 LOCK_FILE="${DNB_MSGVAULT_LOCK_FILE:-${STATE_DIR}/msgvault.lock}"
