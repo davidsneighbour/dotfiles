@@ -11,6 +11,10 @@
     "target": "ES2022",
     "types": ["node"]
   },
-  "include": ["download-unsplash.ts"],
+  "include": [
+    "download-collection.ts",
+    "download-plus-collections.ts",
+    "lib.ts"
+  ],
   "exclude": ["browser-profile", "downloads", "node_modules", "state"]
 }

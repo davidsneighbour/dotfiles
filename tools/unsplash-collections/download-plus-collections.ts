@@ -1,11 +1,24 @@
 #!/usr/bin/env -S node --experimental-strip-types
 
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir } from "node:fs/promises";
 import { basename, dirname, extname, resolve } from "node:path";
 import process from "node:process";
-import { createInterface } from "node:readline/promises";
 import { fileURLToPath } from "node:url";
-import { chromium, type Page } from "playwright";
+import type { Page } from "playwright";
+import {
+  attemptDownloadAllButton,
+  launchPersistentBrowser,
+  log,
+  normaliseHref,
+  parsePositiveInteger,
+  pickRandomIndex,
+  randomDelay,
+  readJsonArray,
+  safeFilename,
+  verbose,
+  waitForEnter,
+  writeJson,
+} from "./lib.ts";
 
 const COLLECTIONS_URL = "https://unsplash.com/@unsplashplus/collections";
 const TOOL_DIR = dirname(fileURLToPath(import.meta.url));
@@ -53,8 +66,8 @@ function printHelp(): void {
   console.log(
     `
 Usage:
-  npm start -- [options]
-  node --experimental-strip-types download-unsplash.ts [options]
+  npm run download:plus-collections -- [options]
+  node --experimental-strip-types download-plus-collections.ts [options]
 
 Options:
   --collect-only          Collect links and update the queue without downloads.
@@ -72,16 +85,6 @@ Options:
   --help                 Show this help.
 `.trim(),
   );
-}
-
-function parsePositiveInteger(name: string, value: string): number {
-  const parsed = Number.parseInt(value, 10);
-
-  if (!Number.isInteger(parsed) || parsed < 0) {
-    throw new Error(`${name} must be a positive integer or zero.`);
-  }
-
-  return parsed;
 }
 
 function parseArgs(args: readonly string[]): CliOptions {
@@ -163,18 +166,6 @@ function parseArgs(args: readonly string[]): CliOptions {
   return options;
 }
 
-function log(options: CliOptions, message: string): void {
-  if (!options.quiet) {
-    console.log(message);
-  }
-}
-
-function verbose(options: CliOptions, message: string): void {
-  if (options.verbose && !options.quiet) {
-    console.log(message);
-  }
-}
-
 function createStatePaths(stateDir: string): StatePaths {
   return {
     cache: resolve(stateDir, "collections-cache.json"),
@@ -182,34 +173,6 @@ function createStatePaths(stateDir: string): StatePaths {
     failed: resolve(stateDir, "failed.json"),
     queue: resolve(stateDir, "queue.json"),
   };
-}
-
-async function readJsonArray<T>(path: string): Promise<T[]> {
-  try {
-    const raw = await readFile(path, "utf8");
-    const parsed: unknown = JSON.parse(raw);
-
-    if (!Array.isArray(parsed)) {
-      throw new Error(`${path} must contain a JSON array.`);
-    }
-
-    return parsed as T[];
-  } catch (error) {
-    if (error instanceof Error && "code" in error && error.code === "ENOENT") {
-      return [];
-    }
-
-    throw error;
-  }
-}
-
-async function writeJson(path: string, value: unknown): Promise<void> {
-  await mkdir(dirname(path), { recursive: true });
-  await writeFile(path, `${JSON.stringify(value, null, 2)}\n`, "utf8");
-}
-
-function normaliseHref(href: string): string {
-  return new URL(href, "https://unsplash.com").toString();
 }
 
 function uniqueItems(items: readonly CollectionItem[]): CollectionItem[] {
@@ -231,31 +194,6 @@ function removeCompleted(
   const completedHrefs = new Set(completed.map((item) => item.href));
 
   return items.filter((item) => !completedHrefs.has(item.href));
-}
-
-function pickRandomIndex(length: number): number {
-  return Math.floor(Math.random() * length);
-}
-
-function randomDelay(minDelayMs: number, maxDelayMs: number): number {
-  if (minDelayMs === maxDelayMs) {
-    return minDelayMs;
-  }
-
-  return minDelayMs + Math.floor(Math.random() * (maxDelayMs - minDelayMs + 1));
-}
-
-async function waitForEnter(message: string): Promise<void> {
-  const readline = createInterface({
-    input: process.stdin,
-    output: process.stdout,
-  });
-
-  try {
-    await readline.question(message);
-  } finally {
-    readline.close();
-  }
 }
 
 async function collectCollections(
@@ -323,16 +261,6 @@ async function collectCollections(
   return items;
 }
 
-function safeFilename(value: string): string {
-  return value
-    .normalize("NFKD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-zA-Z0-9._-]+/g, "-")
-    .replace(/^-+|-+$/g, "")
-    .slice(0, 120)
-    .toLowerCase();
-}
-
 function createDownloadPath(
   downloadsDir: string,
   item: CollectionItem,
@@ -364,19 +292,23 @@ async function downloadCollection(
 
   await page.goto(item.href, { waitUntil: "domcontentloaded" });
 
-  const button = page.getByRole("button", { name: /^download all$/i });
-  await button.waitFor({ timeout: 120_000 });
+  const outcome = await attemptDownloadAllButton(page, {
+    buttonMs: 120_000,
+    downloadMs: 300_000,
+    paywallCheckMs: 1_000,
+  });
 
-  const downloadPromise = page.waitForEvent("download", { timeout: 300_000 });
-  await button.click();
-  const download = await downloadPromise;
+  if (outcome.status !== "downloaded") {
+    throw new Error(`Download all was not available (${outcome.reason}).`);
+  }
+
   const filename = createDownloadPath(
     options.downloadsDir,
     item,
-    download.suggestedFilename(),
+    outcome.download.suggestedFilename(),
   );
 
-  await download.saveAs(filename);
+  await outcome.download.saveAs(filename);
 
   return {
     ...item,
@@ -467,15 +399,10 @@ async function main(): Promise<void> {
     return;
   }
 
-  await mkdir(options.profileDir, { recursive: true });
   await mkdir(options.stateDir, { recursive: true });
 
   const paths = createStatePaths(options.stateDir);
-  const context = await chromium.launchPersistentContext(options.profileDir, {
-    acceptDownloads: true,
-    headless: false,
-  });
-  const page = context.pages()[0] ?? (await context.newPage());
+  const { context, page } = await launchPersistentBrowser(options.profileDir);
 
   try {
     if (!options.downloadOnly) {
@@ -498,6 +425,6 @@ async function main(): Promise<void> {
 
 main().catch((error: unknown) => {
   const message = error instanceof Error ? error.message : String(error);
-  console.error(`download-unsplash failed: ${message}`);
+  console.error(`download-plus-collections failed: ${message}`);
   process.exitCode = 1;
 });
