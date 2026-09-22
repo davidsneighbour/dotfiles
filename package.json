@@ -129,5 +129,16 @@
   "type": "module",
   "workspaces": [
     "tools/*"
-  ]
+  ],
+  "overrides": {
+    "sharp": "0.35.4",
+    "svgo": "4.1.0",
+    "js-yaml": "4.3.2",
+    "linkify-it": "5.0.2",
+    "markdown-it": "14.2.0",
+    "markdownlint-cli2": {
+      "js-yaml": "5.2.2",
+      "smol-toml": "1.7.1"
+    }
+  }
 }
