@@ -1703,9 +1703,15 @@ async function commandForm(args: string[], options: CliOptions): Promise<void> {
       response.statusCode = 404;
       response.end("Not found");
     } catch (error) {
-      const message = errorMessage(error, "Clockify form request failed.");
+      const isUserError = error instanceof UserError;
+      if (!isUserError) {
+        console.error("Clockify form request failed.", error);
+      }
+      const message = isUserError
+        ? errorMessage(error, "Clockify form request failed.")
+        : "Clockify form request failed.";
       if (request.method === "POST") {
-        response.statusCode = error instanceof UserError ? 400 : 502;
+        response.statusCode = isUserError ? 400 : 502;
         response.setHeader("content-type", "application/json; charset=utf-8");
         response.end(JSON.stringify({ ok: false, error: message }));
         return;
