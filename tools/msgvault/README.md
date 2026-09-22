@@ -125,21 +125,14 @@ DNB_MSGVAULT_CONFIG_BACKUP_DIR="/mnt/storage/Backup/msgvault"
 Set `DNB_MSGVAULT_BACKUP_DIR` in the environment to override the configured
 default for one run.
 
-`/mnt/storage/Backup/msgvault.bak` is the old pre-daemon `rsync` mirror of `~/.msgvault` (raw SQLite copy, plus tokens and `client_secret.json` in plaintext) that this repository replaced — kept only until the new snapshot history is trusted, then safe to delete.
-
 What it backs up:
 
 * The msgvault SQLite archive database.
 * Attachments referenced by the archive.
 * Deleted-content audit data when present.
+* `config.toml` and OAuth token files (`--include-config --include-tokens --allow-plaintext-secrets`).
 
-What it intentionally does not back up yet:
-
-* `config.toml`.
-* OAuth token files.
-* Any plaintext secret material.
-
-msgvault backup repositories are not encrypted yet, and config/tokens may contain live credentials. Keep those files in a separate encrypted system backup for now. Once msgvault adds encryption, retention, and pruning support, this helper can be extended to include config and tokens safely.
+msgvault backup repositories are not encrypted yet, so config/tokens land in the repository in plaintext. That's an acceptable trade-off here specifically because `TARGET` (`/mnt/storage/Backup/msgvault`) is locally-attached, access-controlled storage — not shared, synced, or remotely reachable. If `TARGET` ever changes to something less trusted, drop these three flags from `create_backup()` in the `backup` script first.
 
 CLI option notes:
 
@@ -176,10 +169,10 @@ msgvault --home "${HOME}/.msgvault" backup restore \
 msgvault --home /tmp/msgvault-restore-test stats
 ```
 
-The daily `locutus` backup cron entry is managed in `configs/dotbot/config.host-locutus.yaml`:
+The `locutus` backup cron entry (every 3 hours) is managed in `configs/dotbot/config.host-locutus.yaml`:
 
 ```cron
-30 3 * * * LOG_FILE="${HOME}/.logs/msgvault/backup-$(date +\%Y\%m\%d-\%H\%M).log"; mkdir -p "${HOME}/.logs/msgvault" && DNB_MSGVAULT_BACKUP_LOG_FILE="${LOG_FILE}" DNB_MSGVAULT_LOG_TO_STDOUT=0 ${HOME}/.dotfiles/tools/msgvault/backup --source "${HOME}/.msgvault" >> "${LOG_FILE}" 2>&1
+0 */3 * * * LOG_FILE="${HOME}/.logs/msgvault/backup-$(date +\%Y\%m\%d-\%H\%M).log"; mkdir -p "${HOME}/.logs/msgvault" && DNB_MSGVAULT_BACKUP_LOG_FILE="${LOG_FILE}" DNB_MSGVAULT_LOG_TO_STDOUT=0 ${HOME}/.dotfiles/tools/msgvault/backup --source "${HOME}/.msgvault" >> "${LOG_FILE}" 2>&1
 ```
 
 Functions/methods defined:

@@ -67,11 +67,12 @@ Duration tracking:
   Override the path with DNB_MSGVAULT_BACKUP_DURATIONS_FILE.
 
 Secret handling:
-  This wrapper intentionally does not pass --include-config, --include-tokens,
-  or --allow-plaintext-secrets. msgvault v0.17.0 backup repositories are not
-  encrypted yet, and config/tokens may contain live credentials. Handle those
-  files through a separate encrypted system backup until msgvault ships
-  encryption, retention, and pruning support.
+  This wrapper passes --include-config, --include-tokens, and
+  --allow-plaintext-secrets, so snapshots include config.toml and OAuth
+  tokens in plaintext. msgvault backup repositories are not encrypted yet;
+  this is acceptable only because TARGET lives on locally-attached, access-
+  controlled storage. Do not point TARGET at anything shared, synced, or
+  remotely accessible.
 
 Examples:
   ${SCRIPT_NAME}
@@ -276,7 +277,7 @@ create_backup() {
   local -a command_args=()
 
   msgvault_base_command command_args
-  command_args+=(backup create --repo "${TARGET}" --tag "${TAG}")
+  command_args+=(backup create --repo "${TARGET}" --tag "${TAG}" --include-config --include-tokens --allow-plaintext-secrets)
   run_command "${command_args[@]}"
 }
 
