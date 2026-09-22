@@ -1,5 +1,29 @@
 # Changelog
 
+## [2.14.0](https://github.com/davidsneighbour/dotfiles/compare/v2.13.0...v2.14.0) (2026-09-22)
+
+### Feat
+
+* **clockify:** add client and project management to the form and CLI ([1faac87](https://github.com/davidsneighbour/dotfiles/commit/1faac8708b32ac08ee996ce398324fc5ba5e1340))
+* **msgvault:** back up every 3 hours, include config and tokens ([06d9b46](https://github.com/davidsneighbour/dotfiles/commit/06d9b46f12501f7e3b25566e5e49f6ad19d1c320))
+* **tools:** add single-page unsplash downloader and untrack state ([dd8fc72](https://github.com/davidsneighbour/dotfiles/commit/dd8fc7280f56280b0cf7666ed8b2248889abdf9c))
+
+### Fix
+
+* **clockify:** exit form --restart immediately instead of blocking ([202f401](https://github.com/davidsneighbour/dotfiles/commit/202f401ea527965c2049a50cfca845c07c10dafc))
+* **i3:** show VS Code workspace name instead of "code" in alt-tab switcher ([36a0525](https://github.com/davidsneighbour/dotfiles/commit/36a052534132e754eb51deba558f404d76fcd642))
+* **i3:** use a darker red for alt-tab switcher window labels ([c4251fd](https://github.com/davidsneighbour/dotfiles/commit/c4251fd1685a7e53abd82fb31b48f02837a8fbe7))
+
+### Refactor
+
+* **msgvault:** drop script-level lock, daemon serializes now ([6b2e211](https://github.com/davidsneighbour/dotfiles/commit/6b2e211941b4c2c0932940ffe93a6fa2f8b96e3e))
+* **msgvault:** move bashrc/helpers/msgvault to tools/msgvault ([32673a9](https://github.com/davidsneighbour/dotfiles/commit/32673a9267a57815dd05a88ac57036722f32c6f1))
+* **msgvault:** retire dead rsync backup path, track backup duration ([2feff4f](https://github.com/davidsneighbour/dotfiles/commit/2feff4f1ecbb9f2370a0bee6101e208713734710))
+
+### Chore
+
+* cleanup launchers ([5eb8b47](https://github.com/davidsneighbour/dotfiles/commit/5eb8b4788a16aad7f027d7858290d7519ef115d6))
+
 ## [2.13.0](https://github.com/davidsneighbour/dotfiles/compare/v2.12.0...v2.13.0) (2026-09-16)
 
 ### Feat
