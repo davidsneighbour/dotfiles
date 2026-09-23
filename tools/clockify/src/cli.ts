@@ -106,8 +106,15 @@ type FormContext = {
   config: Config;
   projects: ClockifyProject[];
   clients: ClockifyClient[];
+  tags: ClockifyTag[];
   running: ClockifyTimeEntry | undefined;
   lastEntryEnd: string | null;
+  recentEntries: RecentEntry[];
+};
+
+type RecentEntry = {
+  projectId: string;
+  title: string;
 };
 
 type FormPageContext = {
@@ -118,11 +125,14 @@ type FormPageContext = {
     color: string | undefined;
   }[];
   clients: { id: string; name: string }[];
+  tags: { id: string; name: string }[];
   selectedProjectId: string | undefined;
+  selectedTagIds: string[];
   title: string;
   start: string;
   end: string;
   lastEntryEnd: string | null;
+  recentEntries: RecentEntry[];
 };
 
 type FormSubmitPayload = {
@@ -130,6 +140,7 @@ type FormSubmitPayload = {
   title: string;
   start: string;
   end: string;
+  tagIds: string[];
 };
 
 type StatusState = "healthy" | "running" | "nudge" | "error";
@@ -605,6 +616,30 @@ async function getRecentEntries(
     token,
     `/workspaces/${workspaceId}/user/${userId}/time-entries?page-size=${pageSize}`,
   );
+}
+
+function buildRecentEntries(
+  entries: ClockifyTimeEntry[],
+  limit: number,
+): RecentEntry[] {
+  const seen = new Set<string>();
+  const result: RecentEntry[] = [];
+  for (const entry of entries) {
+    const title = (entry.description ?? "").trim();
+    if (entry.projectId === undefined || title === "") {
+      continue;
+    }
+    const key = `${entry.projectId}\u0000${title}`;
+    if (seen.has(key)) {
+      continue;
+    }
+    seen.add(key);
+    result.push({ projectId: entry.projectId, title });
+    if (result.length >= limit) {
+      break;
+    }
+  }
+  return result;
 }
 
 async function getCachedLastEntryEnd(
@@ -1459,6 +1494,7 @@ async function loadFormContext(config: Config): Promise<FormContext> {
   const workspaceId = await getWorkspaceId(token, config);
   const projects = await getProjects(token, workspaceId);
   const clients = await getClients(token, workspaceId);
+  const tags = await getTags(token, workspaceId);
   const running = await getRunningEntry(token, workspaceId, user.id);
   const lastEntryEnd = await getCachedLastEntryEnd(
     token,
@@ -1466,6 +1502,13 @@ async function loadFormContext(config: Config): Promise<FormContext> {
     user.id,
     config,
   );
+  const recentTimeEntries = await getRecentEntries(
+    token,
+    workspaceId,
+    user.id,
+    200,
+  );
+  const recentEntries = buildRecentEntries(recentTimeEntries, 100);
 
   return {
     token,
@@ -1473,8 +1516,10 @@ async function loadFormContext(config: Config): Promise<FormContext> {
     config,
     projects,
     clients,
+    tags,
     running,
     lastEntryEnd,
+    recentEntries,
   };
 }
 
@@ -1578,6 +1623,37 @@ async function handleProjectUpdate(
     archived: body.archived,
   });
   await refreshFormLists(formContext);
+}
+
+async function handleTagCreate(
+  request: IncomingMessage,
+  formContext: FormContext,
+): Promise<void> {
+  const body = JSON.parse(await readRequestBody(request)) as {
+    name?: string;
+  };
+  const name = (body.name ?? "").trim();
+  if (name === "") {
+    throw new UserError("Tag name is required.");
+  }
+  if (name === viaFormTagName) {
+    throw new UserError(`Tag name "${viaFormTagName}" is reserved.`);
+  }
+  const existing = formContext.tags.find(
+    (tag) => normaliseName(tag.name) === normaliseName(name),
+  );
+  if (existing === undefined) {
+    const created = await createTag(
+      formContext.token,
+      formContext.workspaceId,
+      name,
+    );
+    formContext.tags = [...formContext.tags, created];
+  }
+}
+
+function visibleTags(formContext: FormContext): ClockifyTag[] {
+  return formContext.tags.filter((tag) => tag.name !== viaFormTagName);
 }
 
 async function restartFormDetached(
@@ -1689,6 +1765,12 @@ async function commandForm(args: string[], options: CliOptions): Promise<void> {
         });
         return;
       }
+      if (request.method === "POST" && url.pathname === "/api/tags/create") {
+        const formContext = await getFormContext();
+        await handleTagCreate(request, formContext);
+        sendJson(response, { ok: true, tags: visibleTags(formContext) });
+        return;
+      }
       if (request.method === "GET" && url.pathname === "/") {
         const formContext = await getFormContext();
         await serveFormPage(response, formContext);
@@ -1782,26 +1864,37 @@ async function submitFormEntry(
   const title = payload.title ?? "";
   const start = parseTimeInput(payload.start ?? "");
   const endValue = payload.end ?? "";
+  const chosenTagIds = payload.tagIds ?? [];
   if (running === undefined) {
     const end = endValue.trim() === "" ? undefined : parseTimeInput(endValue);
     const tagId = await resolveViaFormTagId(token, workspaceId);
-    await createEntry(token, workspaceId, project.id, title, start, end, [
-      tagId,
-    ]);
+    const tagIds = [...new Set([...chosenTagIds, tagId])];
+    await createEntry(
+      token,
+      workspaceId,
+      project.id,
+      title,
+      start,
+      end,
+      tagIds,
+    );
     if (end !== undefined) {
       await recordLastEntryEnd(end);
     }
   } else if (endValue.trim() === "") {
+    const tagId = await resolveViaFormTagId(token, workspaceId);
+    const tagIds = [...new Set([...chosenTagIds, tagId])];
     await updateEntry(token, workspaceId, running.id, {
       projectId: project.id,
       title,
       start,
       end: null,
+      tagIds,
     });
   } else {
     const end = parseTimeInput(endValue);
     const tagId = await resolveViaFormTagId(token, workspaceId);
-    const tagIds = [...new Set([...(running.tagIds ?? []), tagId])];
+    const tagIds = [...new Set([...chosenTagIds, tagId])];
     await updateEntry(token, workspaceId, running.id, {
       projectId: project.id,
       title,
@@ -1824,13 +1917,21 @@ async function readRequestBody(request: IncomingMessage): Promise<string> {
 }
 
 function buildFormPageContext(formContext: FormContext): FormPageContext {
-  const { projects, clients, config, running, lastEntryEnd } = formContext;
+  const { projects, clients, config, running, lastEntryEnd, recentEntries } =
+    formContext;
   const now = new Date();
   const start =
     running?.timeInterval.start === undefined
       ? localDateInputValue(now)
       : localDateInputValue(new Date(running.timeInterval.start));
   const end = running === undefined ? "" : localDateInputValue(now);
+  const tags = visibleTags(formContext);
+  const viaFormTag = formContext.tags.find(
+    (tag) => tag.name === viaFormTagName,
+  );
+  const selectedTagIds = (running?.tagIds ?? []).filter(
+    (tagId) => tagId !== viaFormTag?.id,
+  );
   return {
     projects: projects.map((project) => ({
       id: project.id,
@@ -1839,11 +1940,14 @@ function buildFormPageContext(formContext: FormContext): FormPageContext {
       color: project.color,
     })),
     clients: clients.map((client) => ({ id: client.id, name: client.name })),
+    tags: tags.map((tag) => ({ id: tag.id, name: tag.name })),
     selectedProjectId: running?.projectId,
+    selectedTagIds,
     title: running?.description ?? "",
     start,
     end,
     lastEntryEnd,
+    recentEntries,
   };
 }
 
