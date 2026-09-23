@@ -24,6 +24,7 @@ or toggling an individual application must use `Ctrl+Shift+Alt+<key>`
 | `Ctrl+Shift+Alt+T` | Toggle the persistent scratch terminal in/out of the scratchpad on the current workspace, right half of the focused output (`configs/session/terminal/scratch-terminal --toggle`) — see "Scratch terminal" in `SESSION.md` |
 | `Ctrl+Shift+Alt+F` | Show the canonical, singleton Files workspace — a two-pane Thunar environment (LEFT user-controlled, RIGHT the external-open target) invoked via `configs/session/filemanager/file-manager --show` — see "Canonical Files workspace" in `SESSION.md` |
 | `Alt+Tab` (`Mod1+Tab`) | Open YAML-aware Rofi window switcher, all workspaces (`configs/session/rofi/window-switcher.sh`) — see "Rofi" in `SESSION.md` |
+| `Ctrl+Space` | Show the Kando pie menu named "Main" (`kando --menu "Main"`, delivered to the already-running Kando singleton) — see "Known exception: `Ctrl+Space`" below |
 | `Super+Enter` | Open terminal (`$terminal`, currently `xfce4-terminal`) |
 | `Super+Shift+Q` | Close focused window |
 | `Super+Shift+C` | Reload i3 config |
@@ -47,3 +48,13 @@ is also a common "close tab/window" shortcut in browsers, so it carries the
 same collision risk the rule exists to prevent. Flagged here rather than
 changed silently — migrate it (and update this table) the next time it's
 touched, or on explicit request.
+
+## Known exception: `Ctrl+Space`
+
+`Ctrl+Space` was bound to Kando on explicit request even though it is a
+transient overlay menu (same class as the Rofi/window-switcher bindings
+above it, not a "program-launch" binding), and bare `Ctrl+Space` is a common
+IME input-method-switch shortcut and editor autocomplete trigger (e.g. VS
+Code). i3's global grab swallows it everywhere while this binding is
+active. Flagged here rather than silently avoided — revisit if it turns out
+to collide with something in daily use.
