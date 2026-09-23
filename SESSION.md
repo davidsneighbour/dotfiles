@@ -152,33 +152,11 @@ one that invokes `exec` with a script and arguments, or that drives i3
 workspaces/marks/containers — read
 [`.agents/instructions/session/i3-keybindings.instructions.md`](.agents/instructions/session/i3-keybindings.instructions.md)
 first: `i3 -C -c` does not catch every way a binding can be broken, and that
-file documents the specific error shapes and how to actually verify a
-binding works. Full table:
-
-| Binding | Action |
-| --- | --- |
-| `Super` (bare, release) | Open Rofi (`drun`) — see "Bare Super key limitation" below |
-| `Super+D` | Open Rofi (`drun`) — explicit, always-reliable fallback for the above |
-| `Ctrl+Shift+W` | Open Rofi VS Code workspace picker and launch the selection in a temporary dynamic Code workspace (`configs/session/rofi/workspaces.sh --newwindow --dynamic-workspace code`) |
-| `Ctrl+Shift+Alt+I` | Click a window, then show its WM_CLASS/role/title/PID/geometry in a floating terminal (`configs/session/i3/window-inspector.sh`) — see "Window rules" |
-| `Ctrl+Shift+Alt+N` | Move the focused managed window to a freshly created temporary icon workspace (`configs/session/i3/workspaces/workspaces.py promote-focused`) |
-| `Ctrl+Shift+Alt+E` | Toggle Enpass in/out of the scratchpad on the current workspace (`[con_mark="scratch-enpass"] scratchpad show`) — see "Window rules" |
-| `Ctrl+Shift+Alt+T` | Toggle the persistent scratch terminal in/out of the scratchpad on the current workspace, right half of the focused output (`configs/session/terminal/scratch-terminal --toggle`) — see "Scratch terminal" below |
-| `Ctrl+Shift+Alt+F` | Show the canonical, singleton Files workspace — a two-pane Thunar environment (LEFT user-controlled, RIGHT the external-open target) invoked via `configs/session/filemanager/file-manager --show` — see "Canonical Files workspace" below |
-| `Alt+Tab` (`Mod1+Tab`) | Open YAML-aware Rofi window switcher, all workspaces (`configs/session/rofi/window-switcher.sh`) — see "Rofi" below |
-| `Super+Enter` | Open terminal (`$terminal`, currently `xfce4-terminal`) |
-| `Super+Shift+Q` | Close focused window |
-| `Super+Shift+C` | Reload i3 config |
-| `Super+Shift+R` | Restart i3 in place |
-| `Super+Shift+E` | Exit i3, with an `i3-nagbar` confirmation prompt |
-| `Super+L` | Lock the screen (`loginctl lock-session`, caught by `xss-lock`) |
-| `Super+1`..`Super+9` | Switch to generated numbered icon workspace 1-9 |
-| `Super+Shift+1`..`Super+Shift+9` | Move focused window to generated numbered icon workspace 1-9 |
-| `Super+Arrow` | Move focus |
-| `Super+Shift+Arrow` | Move focused window |
-| `Super+F` | Toggle fullscreen |
-| `Super+Space` | Toggle floating |
-| `Super+R` | Enter resize mode (`Arrow` keys resize, `Enter`/`Escape` to leave) |
+file documents the specific error shapes, the mandatory rule that
+program-launch bindings use `Ctrl+Shift+Alt+<key>`, and how to actually
+verify a binding works. Full table, which **MUST** be kept in sync with any
+binding change:
+[`docs/i3-keybindings.md`](docs/i3-keybindings.md).
 
 ### Bare `Super` key limitation
 

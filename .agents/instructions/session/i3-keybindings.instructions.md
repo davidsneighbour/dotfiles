@@ -19,6 +19,36 @@ This file exists because custom i3 keybindings/workspace commands in this
 repository have repeatedly failed in ways `i3 -C -c` does not catch, and the
 failure only surfaces the first time the binding actually fires.
 
+<!-- markdownlint-disable-next-line title-case-style -->
+## Rule: program-launch bindings MUST use Ctrl+Shift+Alt
+
+Any binding whose job is to start, focus, or toggle an individual
+application (Obsidian, Sublime Text, a VS Code workspace, a scratchpad
+terminal, etc.) **MUST** use `Control+Shift+Mod1+<key>` (Ctrl+Shift+Alt).
+Bare `Control+Shift+<key>`, with no `Mod1`, **MUST NOT** be used for this
+purpose.
+
+Rationale: i3's `bindsym` grabs are global X11 key grabs. i3 intercepts the
+exact combination unconditionally, regardless of which window has focus —
+the focused application never receives that keystroke at all while i3 owns
+the binding. `Ctrl+Shift+<letter>` is one of the most heavily used combo
+spaces in GTK/Electron/browser-style software (for example, `Ctrl+Shift+S`
+is "Save As" in a lot of applications, including Sublime Text itself, one
+of the apps launched from this file). Binding a program launcher to a bare
+`Ctrl+Shift+<letter>` combo silently breaks that shortcut inside whatever
+application is focused, every time it's pressed, with no error from either
+i3 or the app.
+
+This does not apply to bindings that are not launching/focusing/toggling an
+application window — window management, resize mode, workspace switching,
+i3 session control, etc. — which follow this file's other conventions
+instead.
+
+`docs/i3-keybindings.md` is the authoritative, human-readable table of every
+binding in this repository. It **MUST** be kept in sync whenever a binding
+is added, changed, or removed — see "Before opening a PR / committing"
+below.
+
 ## The core gotcha: `i3 -C -c` does not validate `exec` payloads
 
 `i3 -C -c configs/session/i3/config` checks the config's own grammar (known
@@ -197,5 +227,6 @@ need to guarantee a specific icon on first creation.
 * If the binding is a repeat/idempotent action (like a workspace
   show/create toggle), fire it twice in a row and confirm the second run
   doesn't duplicate anything.
-* Update `SESSION.md`'s keybinding table in the same change — it is the
-  authoritative source for what every binding does.
+* Update `docs/i3-keybindings.md`'s table in the same change — it is the
+  authoritative source for what every binding does. Add, change, or remove
+  the row for any binding touched, including the modifier check above.
