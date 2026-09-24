@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=Openscreen (1.2.0) (1)
+Name=Openscreen (1.2.0)
 Exec=/home/patrick/.bin/local/Openscreen-Linux-latest_07d62f44dc3d18b0089f201027c420b1.AppImage --no-sandbox %U
 Terminal=false
 Type=Application

@@ -39,6 +39,11 @@ dynamic:
     workspace_prefix: chatgpt
     command:
       - /usr/bin/chatgpt
+  claude:
+    icon: ""
+    workspace_prefix: chatgpt
+    command:
+      - /usr/bin/claude-desktop
 
 promote:
   fallback:

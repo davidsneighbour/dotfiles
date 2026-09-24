@@ -1,0 +1,4 @@
+[MIME Cache]
+inode/directory=dnb-file-manager.desktop;
+x-scheme-handler/claude=claude.desktop;
+x-scheme-handler/claude-cli=claude-code-url-handler.desktop;

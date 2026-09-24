@@ -2,7 +2,8 @@
 [Desktop Entry]
 Version=1.1
 Type=Application
-Name=ChatGPT (app)
+Name=ChatGPT
+GenericName=AI Assistant
 Icon=chatgpt
 Exec=/home/patrick/.dotfiles/configs/session/i3/workspaces/workspaces.py launch --application chatgpt
 Path=/home/patrick
