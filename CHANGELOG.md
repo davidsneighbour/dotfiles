@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.15.1](https://github.com/davidsneighbour/dotfiles/compare/v2.15.0...v2.15.1) (2026-09-24)
+
+### Fix
+
+* **msgvault:** float and centre manual-sync terminal ([0ddb0f3](https://github.com/davidsneighbour/dotfiles/commit/0ddb0f32789bbbd33d1bcb2a79c9b91a37040002))
+
 ## [2.15.0](https://github.com/davidsneighbour/dotfiles/compare/v2.14.1...v2.15.0) (2026-09-24)
 
 ### Feat
