@@ -1,5 +1,23 @@
 # Changelog
 
+## [2.15.0](https://github.com/davidsneighbour/dotfiles/compare/v2.14.1...v2.15.0) (2026-09-24)
+
+### Feat
+
+* **clockify:** add project/title typeahead, end-now button, and tag picker ([5b411ee](https://github.com/davidsneighbour/dotfiles/commit/5b411ee524f6598cc0591a2eb48eb83ca72da03e))
+* **i3:** bind Ctrl+Space to trigger the Kando pie menu ([df83871](https://github.com/davidsneighbour/dotfiles/commit/df83871e37d0f5f43f2a956b0c12a873a1f3b6dd))
+
+### Fix
+
+* **i3:** quote the Kando exec payload correctly ([5dbeacb](https://github.com/davidsneighbour/dotfiles/commit/5dbeacbae325e2fdfe9a6624430a9cb790293733))
+* **i3:** require Ctrl+Shift+Alt for program-launch bindings ([28359a3](https://github.com/davidsneighbour/dotfiles/commit/28359a30b496152ee6c3ebf5214127e29b62d976))
+* **launchers:** consolidate launchers ([2e421f9](https://github.com/davidsneighbour/dotfiles/commit/2e421f973f75f7cb4de72f2eebfe41c7636dcf18))
+* **msgvault:** export PATH in backup script for cron runs ([6da449d](https://github.com/davidsneighbour/dotfiles/commit/6da449dc35a5c8156d42acea17e1dcd36e6a3ef3))
+
+### Build
+
+* **deps:** update dependencies ([1a91dad](https://github.com/davidsneighbour/dotfiles/commit/1a91dad9dbd867586d3ad5a1e86fb94dad5b0db1))
+
 ## [2.14.1](https://github.com/davidsneighbour/dotfiles/compare/v2.14.0...v2.14.1) (2026-09-22)
 
 ### Fix
