@@ -1,0 +1,59 @@
+#!/bin/bash
+#
+# Floating, centered Terminator window that runs manual-sync.sh, for the
+# msgvault Polybar module's click-left action (see
+# configs/session/polybar/configs/07-module-msgvault.ini).
+#
+# Terminator auto-applies its saved "default" layout (in
+# configs/session/terminator/config's [layouts][[default]] block) whenever
+# it is launched without -l, which hardcodes the window's own
+# position/size (currently top-left-ish, near full height). A for_window
+# rule's one-shot resize/move (configs/session/i3/configs/rules.conf) can
+# lose to that layout negotiation the same way the scratch-terminal
+# dropdown's comments describe for VTE's own size negotiation, so this
+# script pins the geometry itself, twice, after the window is confirmed
+# mapped — the same technique configs/session/terminal/scratch-terminal
+# uses for its settle_geometry.
+
+set -Eeuo pipefail
+
+TERMINAL_BIN="/usr/bin/terminator"
+ROLE="msgvault-sync"
+WIDTH=640
+HEIGHT=420
+POLL_ATTEMPTS=40
+POLL_INTERVAL="0.2"
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+
+if [[ ! -x "${TERMINAL_BIN}" ]]; then
+  printf 'Error: Terminator not found or not executable: %s\n' "${TERMINAL_BIN}" >&2
+  exit 1
+fi
+
+setsid "${TERMINAL_BIN}" \
+  --role="${ROLE}" \
+  --profile="scratch" \
+  -T "msgvault sync" \
+  -x "${SCRIPT_DIR}/manual-sync.sh" --pause-on-exit --verbose \
+  >/dev/null 2>&1 &
+disown
+
+role_mapped() {
+  i3-msg -t get_tree |
+    jq -e --arg r "${ROLE}" '.. | objects | select(.window_properties?.window_role == $r)' \
+      >/dev/null 2>&1
+}
+
+for ((attempt = 0; attempt < POLL_ATTEMPTS; attempt++)); do
+  role_mapped && break
+  sleep "${POLL_INTERVAL}"
+done
+
+apply_geometry() {
+  i3-msg "[window_role=\"${ROLE}\"] floating enable, resize set ${WIDTH} px ${HEIGHT} px, move position center" >/dev/null
+}
+
+apply_geometry
+sleep 0.3
+apply_geometry
