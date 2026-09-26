@@ -41,7 +41,6 @@
     # system setup
     ~/.face.icon: configs/system/face.icon
     ~/.face: configs/system/face.icon
-    ~/.config/conky: configs/system/conky
     ~/.config/user-dirs.dirs: configs/system/user-dirs.dirs
 
     # i3 session
