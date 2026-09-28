@@ -51,6 +51,7 @@ configs/session/fonts/                 -> ~/.fonts/dotfiles     (via
                                             symlink and Dotbot's ~/.fonts link)
 configs/system/polybar/                -> ~/.config/polybar     (Dotbot link, XFCE bar, unchanged)
 configs/session/rofi/                  -> ~/.config/rofi        (Dotbot link, i3-only)
+configs/session/dunst/                 -> ~/.config/dunst       (Dotbot link, notification daemon)
 ```
 
 Dotbot config: `configs/dotbot/config.yaml`, run via the `dotfiles` wrapper
@@ -488,10 +489,12 @@ Alt+Tab/Super+Tab still go to xfwm4's own default
   The dotfiles do not pin which of the two D-Bus activates. On this host
   dunst is the owner; check with
   `busctl --user status org.freedesktop.Notifications` (look at `Comm=`).
-* The dotfiles contain no dunst configuration, so dunst uses the system
-  defaults from `/etc/xdg/dunst/dunstrc`: left-click closes a
-  notification, middle-click runs its action and closes it, right-click
-  closes all notifications.
+* dunst reads `configs/session/dunst/dunstrc` (Dotbot-linked to
+  `~/.config/dunst`; Dracula colours). Its mouse bindings are the dunst
+  defaults: left-click closes a notification, middle-click runs its action
+  and closes it, right-click closes all notifications. Apply changes with
+  `dunstctl reload`; dunst logs config warnings to
+  `journalctl --user -u dunst`.
 * `configs/session/storage/gdrive-mounts.sh` depends on the middle-click
   action: its "Re-authorise" notification starts the Google Drive sign-in
   (see `configs/session/storage/README.md`).

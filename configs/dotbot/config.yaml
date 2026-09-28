@@ -44,6 +44,7 @@
     ~/.config/user-dirs.dirs: configs/system/user-dirs.dirs
 
     # i3 session
+    ~/.config/dunst: configs/session/dunst
     ~/.config/i3: configs/session/i3
     ~/.config/rofi: configs/session/rofi
     ~/.config/terminator: configs/session/terminator

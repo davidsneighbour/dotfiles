@@ -171,3 +171,5 @@ xwininfo
 yarnpkg
 zseven
 skillwerk
+dunst
+dunstrc
