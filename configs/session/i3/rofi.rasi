@@ -22,6 +22,5 @@ configuration {
     matching: "fuzzy";
     case-sensitive: false;
     show-icons: true;
-    width: 40;
     location: 0;
 }
