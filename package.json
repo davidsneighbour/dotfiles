@@ -139,6 +139,9 @@
     "markdownlint-cli2": {
       "js-yaml": "5.2.2",
       "smol-toml": "1.7.1"
+    },
+    "release-it": {
+      "undici": "7.29.1"
     }
   }
 }
