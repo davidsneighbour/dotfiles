@@ -1,5 +1,35 @@
 # Changelog
 
+## [2.16.0](https://github.com/davidsneighbour/dotfiles/compare/v2.15.1...v2.16.0) (2026-09-28)
+
+### Feat
+
+* **i3:** start programs from the launcher on a new workspace ([8fc98e2](https://github.com/davidsneighbour/dotfiles/commit/8fc98e2c5a41987382e95a19f3d90247dedbfec5))
+* **session:** manage notification daemon config with dotbot ([7edb17c](https://github.com/davidsneighbour/dotfiles/commit/7edb17c6731fd7356657a098c4ca82e1f8e7f877))
+
+### Fix
+
+* **gdrive:** fix re-authentication process for gdrive ([8248ad4](https://github.com/davidsneighbour/dotfiles/commit/8248ad4b497ee8e428e34904c455daf376975bb5))
+* remove conky setup ([275e47b](https://github.com/davidsneighbour/dotfiles/commit/275e47b2d15bf150f7d26583e4979a031d6d1a97))
+* **rofi:** header image sizing for all dialogues ([7d8b906](https://github.com/davidsneighbour/dotfiles/commit/7d8b9063fa85480b7ff57d3c8429168f619ad698))
+* **skillz:** adapt skillz to new skillwerk repo format ([e387f6d](https://github.com/davidsneighbour/dotfiles/commit/e387f6d1187d2a3716a95a33830be544c0c4e02e))
+* use flatter aspect ratio for rofi menu header image ([21a9590](https://github.com/davidsneighbour/dotfiles/commit/21a959053efc6273fd3df98a924422b9b4001609))
+
+### Docs
+
+* **i3:** document notification daemon and remove terminal transparency ([56d7238](https://github.com/davidsneighbour/dotfiles/commit/56d7238993752a5793ceb5caee2dc42c504f971c))
+* **i3:** remove compositor references ([fb81829](https://github.com/davidsneighbour/dotfiles/commit/fb8182966e4a0468a4009689c60fd83f942e50ce))
+
+### Build
+
+* **deps:** update dependencies ([45a2a14](https://github.com/davidsneighbour/dotfiles/commit/45a2a148b2ca97078e3105d574f4183a7f4d8fb6))
+* **deps:** update dependencies ([5dbf2fc](https://github.com/davidsneighbour/dotfiles/commit/5dbf2fc964be9f12e97cc12e24d92c4dfdeac787))
+
+### Chore
+
+* **deps:** update dependency lucide-react to v1.48.0 ([#582](https://github.com/davidsneighbour/dotfiles/issues/582)) ([efcc6e9](https://github.com/davidsneighbour/dotfiles/commit/efcc6e9c9388bf0cc14bf4151bdaae4480f7c9eb))
+* **thunar:** update accelerator map header written by thunar ([1c14b56](https://github.com/davidsneighbour/dotfiles/commit/1c14b560868fd92e02fd31500eb233ad53b8eb7c))
+
 ## [2.15.1](https://github.com/davidsneighbour/dotfiles/compare/v2.15.0...v2.15.1) (2026-09-24)
 
 ### Fix
