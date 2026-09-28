@@ -1789,9 +1789,13 @@ async function commandForm(args: string[], options: CliOptions): Promise<void> {
       if (!isUserError) {
         console.error("Clockify form request failed.", error);
       }
-      const message = isUserError
-        ? errorMessage(error, "Clockify form request failed.")
-        : "Clockify form request failed.";
+      // Only a UserError's own message reaches the client. Do not use
+      // errorMessage() here: its String(error) fallback can carry stack
+      // trace details of other errors (CodeQL js/stack-trace-exposure).
+      const message =
+        error instanceof UserError && error.message.trim() !== ""
+          ? error.message
+          : "Clockify form request failed.";
       if (request.method === "POST") {
         response.statusCode = isUserError ? 400 : 502;
         response.setHeader("content-type", "application/json; charset=utf-8");
