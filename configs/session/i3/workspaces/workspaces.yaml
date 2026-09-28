@@ -45,10 +45,13 @@ dynamic:
     command:
       - /usr/bin/claude-desktop
 
-promote:
-  fallback:
-    slug: window
-    icon: "\uE11D"
+window_icons:
+  # Icon for a window whose class/instance matches no rule below.
+  fallback: "\uE11D"
+  # Window class (or instance) -> workspace icon. Used by promote-focused
+  # (Ctrl+Shift+Alt+N) and by launch-command (Rofi, new workspace).
+  # Find a class with configs/session/i3/window-inspector.sh. slug is optional.
+  # How to add an icon: configs/session/i3/README.md, "Add an icon for a program".
   rules:
     - class: Code
       slug: code

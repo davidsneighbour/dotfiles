@@ -34,6 +34,16 @@ needs exactly two inputs:
    dynamic app both use U+E1BB, a robot glyph). This is
    `dynamic.<name>.icon`.
 
+Any program started from Rofi with bare `Super` or `Super+Shift+D` already
+opens on a new dynamic workspace through `workspaces.py launch-command`,
+without a `dynamic.*` entry. Its icon comes from `window_icons.rules`
+(window class → icon) in `workspaces.yaml`. To change the icon of such a
+program, add a `window_icons.rules` entry instead of a `dynamic.*` entry.
+Add a `dynamic.*` entry only for a fixed launcher (`.desktop` file or
+`bindsym`) that calls `workspaces.py launch --application <name>`. A
+`dynamic.*` entry also gives `launch-command` its icon at once when the
+Rofi command runs the same executable.
+
 ## Step 1 — resolve the icon to an actual glyph character
 
 Callers often hand you the icon as an HTML decimal entity

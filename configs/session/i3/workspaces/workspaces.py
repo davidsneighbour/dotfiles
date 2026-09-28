@@ -4,8 +4,10 @@ from __future__ import annotations
 
 import argparse
 import json
+import shutil
 import subprocess
 import sys
+import time
 import tomllib
 from dataclasses import dataclass
 from pathlib import Path
@@ -24,9 +26,12 @@ DEFAULT_POLYBAR_INCLUDE = (
     REPO_SESSION_DIR / "polybar" / "configs" / "07-module-i3.ini"
 )
 DEFAULT_ROFI_CONFIG = REPO_SESSION_DIR / "rofi" / "config.alt-tab-switcher.rasi"
-DEFAULT_PROMOTE_ICON = ""
-DEFAULT_PROMOTE_SLUG = "window"
+DEFAULT_WINDOW_ICON = ""
+DEFAULT_WINDOW_SLUG = "window"
 RESERVED_DYNAMIC_WORKSPACE_NUMBERS = {90}
+# How long `set-workspace-icon` waits for the launched program's first window.
+WINDOW_ICON_WAIT_SECONDS = 15.0
+WINDOW_ICON_POLL_SECONDS = 0.25
 
 
 @dataclass(frozen=True)
@@ -49,7 +54,7 @@ class DynamicApplication:
 
 
 @dataclass(frozen=True)
-class PromoteRule:
+class WindowIconRule:
     window_class: str
     instance: str
     slug: str
@@ -57,10 +62,9 @@ class PromoteRule:
 
 
 @dataclass(frozen=True)
-class PromoteConfig:
-    fallback_slug: str
+class WindowIconConfig:
     fallback_icon: str
-    rules: list[PromoteRule]
+    rules: list[WindowIconRule]
 
 
 @dataclass(frozen=True)
@@ -125,45 +129,39 @@ def load_dynamic_applications(config: dict[str, Any]) -> dict[str, DynamicApplic
     return applications
 
 
-def load_promote_config(config: dict[str, Any]) -> PromoteConfig:
-    raw_promote = config.get("promote", {})
-    if raw_promote is None:
-        raw_promote = {}
-    if not isinstance(raw_promote, dict):
-        raise ValueError("promote must be an object")
+def load_window_icon_config(config: dict[str, Any]) -> WindowIconConfig:
+    if "promote" in config:
+        raise ValueError("promote: was renamed to window_icons: in workspaces.yaml")
 
-    raw_fallback = raw_promote.get("fallback", {})
-    if raw_fallback is None:
-        raw_fallback = {}
-    if not isinstance(raw_fallback, dict):
-        raise ValueError("promote.fallback must be an object")
+    raw_icons = config.get("window_icons", {})
+    if raw_icons is None:
+        raw_icons = {}
+    if not isinstance(raw_icons, dict):
+        raise ValueError("window_icons must be an object")
 
-    fallback_slug = str(raw_fallback.get("slug", DEFAULT_PROMOTE_SLUG)).strip()
-    fallback_icon = str(raw_fallback.get("icon", DEFAULT_PROMOTE_ICON)).strip()
+    fallback_icon = str(raw_icons.get("fallback", DEFAULT_WINDOW_ICON)).strip()
 
-    raw_rules = raw_promote.get("rules", [])
+    raw_rules = raw_icons.get("rules", [])
     if not isinstance(raw_rules, list):
-        raise ValueError("promote.rules must be a list")
+        raise ValueError("window_icons.rules must be a list")
 
-    rules: list[PromoteRule] = []
+    rules: list[WindowIconRule] = []
     for raw_rule in raw_rules:
         if not isinstance(raw_rule, dict):
-            raise ValueError("each promote.rules entry must be an object")
+            raise ValueError("each window_icons.rules entry must be an object")
 
         window_class = str(raw_rule.get("class", "")).strip()
         instance = str(raw_rule.get("instance", "")).strip()
-        slug = str(raw_rule.get("slug", fallback_slug or DEFAULT_PROMOTE_SLUG)).strip()
-        icon = str(raw_rule.get("icon", fallback_icon or DEFAULT_PROMOTE_ICON)).strip()
+        slug = str(raw_rule.get("slug", "")).strip()
+        icon = str(raw_rule.get("icon", "")).strip()
 
         if not window_class and not instance:
-            raise ValueError("each promote.rules entry must set class or instance")
-        if not slug:
-            raise ValueError("each promote.rules entry must set slug")
+            raise ValueError("each window_icons.rules entry must set class or instance")
         if not icon:
-            raise ValueError("each promote.rules entry must set icon")
+            raise ValueError("each window_icons.rules entry must set icon")
 
         rules.append(
-            PromoteRule(
+            WindowIconRule(
                 window_class=window_class,
                 instance=instance,
                 slug=slug,
@@ -171,9 +169,8 @@ def load_promote_config(config: dict[str, Any]) -> PromoteConfig:
             )
         )
 
-    return PromoteConfig(
-        fallback_slug=fallback_slug or DEFAULT_PROMOTE_SLUG,
-        fallback_icon=fallback_icon or DEFAULT_PROMOTE_ICON,
+    return WindowIconConfig(
+        fallback_icon=fallback_icon or DEFAULT_WINDOW_ICON,
         rules=rules,
     )
 
@@ -706,7 +703,7 @@ def project_workspace_icon(target: Path) -> str:
     return ""
 
 
-def promote_rule_matches(rule: PromoteRule, window: PromotedWindow) -> bool:
+def window_icon_rule_matches(rule: WindowIconRule, window: PromotedWindow) -> bool:
     class_matches = (
         not rule.window_class
         or rule.window_class.casefold() == window.window_class.casefold()
@@ -717,19 +714,19 @@ def promote_rule_matches(rule: PromoteRule, window: PromotedWindow) -> bool:
     return class_matches and instance_matches
 
 
-def promote_workspace_identity(
-    promote_config: PromoteConfig, window: PromotedWindow
+def window_icon_identity(
+    icon_config: WindowIconConfig, window: PromotedWindow
 ) -> tuple[str, str]:
-    for rule in promote_config.rules:
-        if promote_rule_matches(rule, window):
-            return rule.slug, rule.icon
+    for rule in icon_config.rules:
+        if window_icon_rule_matches(rule, window):
+            return rule.slug or DEFAULT_WINDOW_SLUG, rule.icon
 
-    return promote_config.fallback_slug, promote_config.fallback_icon
+    return DEFAULT_WINDOW_SLUG, icon_config.fallback_icon
 
 
 def command_promote_focused(args: argparse.Namespace) -> int:
     config = load_config(args.config)
-    promote_config = load_promote_config(config)
+    icon_config = load_window_icon_config(config)
     node = focused_window_node(get_i3_tree())
 
     if node is None:
@@ -741,7 +738,7 @@ def command_promote_focused(args: argparse.Namespace) -> int:
         return 1
 
     window = window_from_node(node)
-    slug, icon = promote_workspace_identity(promote_config, window)
+    slug, icon = window_icon_identity(icon_config, window)
     number = next_dynamic_workspace_number()
     workspace_name = f"{number}:{icon}"
 
@@ -804,6 +801,151 @@ def command_launch(args: argparse.Namespace) -> int:
     return 0
 
 
+def i3_quote(value: str) -> str:
+    escaped = value.replace("\\", "\\\\").replace('"', '\\"')
+    return f'"{escaped}"'
+
+
+def resolve_executable(executable: str) -> str:
+    found = shutil.which(executable)
+    return str(Path(found).resolve()) if found else executable
+
+
+def dynamic_icon_for_command(
+    applications: dict[str, DynamicApplication], argv: list[str]
+) -> str:
+    """Return the icon of the dynamic application that runs the same executable."""
+    wanted = resolve_executable(argv[0])
+    for application in applications.values():
+        if application.command and resolve_executable(application.command[0]) == wanted:
+            return application.icon
+    return ""
+
+
+def find_workspace_node(node: dict[str, Any], number: int) -> dict[str, Any] | None:
+    if node.get("type") == "workspace" and node.get("num") == number:
+        return node
+
+    for child_key in ("nodes", "floating_nodes"):
+        children = node.get(child_key, [])
+        if not isinstance(children, list):
+            continue
+        for child in children:
+            if isinstance(child, dict):
+                match = find_workspace_node(child, number)
+                if match is not None:
+                    return match
+
+    return None
+
+
+def first_window_node(node: dict[str, Any]) -> dict[str, Any] | None:
+    if node.get("window") is not None and isinstance(node.get("id"), int):
+        return node
+
+    for child_key in ("nodes", "floating_nodes"):
+        children = node.get(child_key, [])
+        if not isinstance(children, list):
+            continue
+        for child in children:
+            if isinstance(child, dict):
+                match = first_window_node(child)
+                if match is not None:
+                    return match
+
+    return None
+
+
+def command_launch_command(args: argparse.Namespace) -> int:
+    argv = list(args.argv)
+    if argv and argv[0] == "--":
+        argv = argv[1:]
+    if not argv:
+        print("launch-command needs a command to run", file=sys.stderr)
+        return 2
+
+    config = load_config(args.config)
+    icon_config = load_window_icon_config(config)
+    known_icon = dynamic_icon_for_command(load_dynamic_applications(config), argv)
+    number = next_dynamic_workspace_number()
+    workspace_name = f"{number}:{known_icon or icon_config.fallback_icon}"
+
+    switch_result = i3_msg("workspace", "number", workspace_name)
+    if not i3_result_succeeded(switch_result):
+        print(
+            i3_result_error(switch_result) or "Could not create workspace",
+            file=sys.stderr,
+        )
+        return 1
+
+    # Without a dynamic.* match the window class decides the icon, and that
+    # is only known once the window exists. Start the watcher before the
+    # program so that it cannot miss a fast window.
+    if not known_icon:
+        subprocess.Popen(
+            [
+                sys.executable,
+                str(Path(__file__).resolve()),
+                "--config",
+                str(args.config),
+                "set-workspace-icon",
+                "--workspace-number",
+                str(number),
+            ],
+            start_new_session=True,
+            stdin=subprocess.DEVNULL,
+            stdout=subprocess.DEVNULL,
+        )
+
+    try:
+        subprocess.Popen(
+            argv,
+            start_new_session=True,
+            stdin=subprocess.DEVNULL,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+    except FileNotFoundError:
+        print(f"Command not found: {argv[0]}", file=sys.stderr)
+        return 1
+
+    if args.verbose:
+        print(f"Started {' '.join(argv)} on workspace {workspace_name}")
+
+    return 0
+
+
+def command_set_workspace_icon(args: argparse.Namespace) -> int:
+    icon_config = load_window_icon_config(load_config(args.config))
+    deadline = time.monotonic() + args.timeout
+
+    while time.monotonic() < deadline:
+        workspace = find_workspace_node(get_i3_tree(), args.workspace_number)
+        window_node = first_window_node(workspace) if workspace is not None else None
+        if workspace is not None and window_node is not None:
+            _slug, icon = window_icon_identity(icon_config, window_from_node(window_node))
+            current_name = str(workspace.get("name", ""))
+            new_name = f"{args.workspace_number}:{icon}"
+            if current_name == new_name:
+                return 0
+
+            rename_result = i3_msg(
+                "rename", "workspace", i3_quote(current_name), "to", i3_quote(new_name)
+            )
+            if not i3_result_succeeded(rename_result):
+                print(
+                    i3_result_error(rename_result) or "Could not rename workspace",
+                    file=sys.stderr,
+                )
+                return 1
+            return 0
+
+        time.sleep(WINDOW_ICON_POLL_SECONDS)
+
+    # No window appeared in time: the workspace keeps the fallback icon.
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="Manage i3 session workspaces from configs/session/i3/workspaces/workspaces.yaml."
@@ -830,6 +972,22 @@ def build_parser() -> argparse.ArgumentParser:
     launch.add_argument("--target", default=None)
     launch.add_argument("--label", default="")
     launch.set_defaults(func=command_launch)
+
+    launch_command = subparsers.add_parser(
+        "launch-command",
+        help="Start any command on a new dynamic workspace (used by the Rofi launcher).",
+    )
+    launch_command.add_argument("--verbose", action="store_true")
+    launch_command.add_argument("argv", nargs=argparse.REMAINDER)
+    launch_command.set_defaults(func=command_launch_command)
+
+    set_workspace_icon = subparsers.add_parser(
+        "set-workspace-icon",
+        help="Wait for the first window on a workspace and set its icon from window_icons.",
+    )
+    set_workspace_icon.add_argument("--workspace-number", type=int, required=True)
+    set_workspace_icon.add_argument("--timeout", type=float, default=WINDOW_ICON_WAIT_SECONDS)
+    set_workspace_icon.set_defaults(func=command_set_workspace_icon)
 
     promote_focused = subparsers.add_parser("promote-focused")
     promote_focused.add_argument("--verbose", action="store_true")

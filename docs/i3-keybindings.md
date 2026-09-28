@@ -13,8 +13,9 @@ or toggling an individual application must use `Ctrl+Shift+Alt+<key>`
 
 | Binding | Action |
 | --- | --- |
-| `Super` (bare, release) | Open Rofi (`drun`) — see "Bare Super key limitation" below |
-| `Super+D` | Open Rofi (`drun`) — explicit, always-reliable fallback for the above |
+| `Super` (bare, release) | Open Rofi (`drun`), prompt "start program in new workspace": starts the selection on a new dynamic workspace (`workspaces.py launch-command`) — see "Bare Super key limitation" below |
+| `Super+Shift+D` | Same as bare `Super` — explicit, always-reliable fallback for it |
+| `Super+D` | Open Rofi (`drun`), prompt "start program in current workspace": starts the selection on the current workspace |
 | `Ctrl+Shift+W` | Open Rofi VS Code workspace picker and launch the selection in a temporary dynamic Code workspace (`configs/session/rofi/workspaces.sh --newwindow --dynamic-workspace code`) |
 | `Ctrl+Shift+Alt+O` | Launch/focus Obsidian (`/opt/Obsidian/obsidian vault=notes`), assigned to its own workspace via `rules.conf`'s `assign [class="obsidian"] $ws5` |
 | `Ctrl+Shift+Alt+S` | Launch/focus Sublime Text (`/usr/bin/subl`) |

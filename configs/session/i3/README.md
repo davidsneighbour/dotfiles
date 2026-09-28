@@ -41,7 +41,9 @@ at the repo root. This file only documents what lives in this folder.
   the configured Code icon otherwise. For `.code-workspace` files, folder
   entries are checked too. i3 removes that workspace from its live list once
   the last window in it closes.
-* Focused-window promotion is configured in `workspaces/workspaces.yaml`'s `promote:` section. `Ctrl+Shift+Alt+N` moves the currently focused managed window into a fresh temporary workspace, using class/instance rules to choose the workspace icon and a fallback icon when no rule matches. Scratchpad and session-infrastructure windows are refused by the same switchable-window filter the Alt+Tab switcher uses.
+* Workspace icons by window class are configured in `workspaces/workspaces.yaml`'s `window_icons:` section: a `fallback` icon plus class/instance `rules`. Find a window's class with `window-inspector.sh`. Two features use it:
+  * `Ctrl+Shift+Alt+N` moves the currently focused managed window into a fresh temporary workspace, using these rules to choose the workspace icon. Scratchpad and session-infrastructure windows are refused by the same switchable-window filter the Alt+Tab switcher uses.
+  * Bare `Super` (and `Super+Shift+D`) starts the program selected in Rofi on a new dynamic workspace through `workspaces.py launch-command`. When the command runs the same executable as a `dynamic:` entry, that entry's icon is used at once. Otherwise the workspace starts with the fallback icon, and `workspaces.py set-workspace-icon` renames it from these rules when the first window appears (it waits up to 15 seconds). `Super+D` starts the program on the current workspace.
 * The Alt+Tab window switcher reads the same YAML and shows workspace icons
   instead of raw i3 workspace names. It hides panel/dock windows such as
   the i3 Polybar instance, because they are session infrastructure rather
@@ -62,6 +64,34 @@ at the repo root. This file only documents what lives in this folder.
   cannot break the rest of i3 (backgrounded, `sh -c '... || true'` where the
   underlying command could reasonably fail). i3 itself, the terminal, and
   the launcher keybindings do not depend on any of them succeeding.
+
+## Add an icon for a program
+
+Programs started on a new workspace (bare `Super`, `Super+Shift+D`, or `Ctrl+Shift+Alt+N`) get their workspace icon from `window_icons.rules` in [`workspaces/workspaces.yaml`](workspaces/workspaces.yaml). A program without a rule gets the `fallback` icon.
+
+1. Find the window class. Press `Ctrl+Shift+Alt+I` (`window-inspector.sh`), click the program's window, and copy the `class` value, for example `firefox`. Matching ignores upper and lower case. For a program whose windows share a class with another program, use `instance` instead of `class`.
+2. Choose a glyph from one of the icon fonts that Polybar loads (see `configs/session/polybar/configs/01-fonts.ini`) and note its codepoint, for example `U+E0E8`.
+3. Add a rule under `window_icons.rules`. Write the icon as a `\uXXXX` escape in double quotes (or paste the glyph itself). `slug` is an optional note for maintainers:
+
+   ```yaml
+   window_icons:
+     rules:
+       - class: firefox
+         slug: web
+         icon: "\uE0E8"
+   ```
+
+4. Check that the codepoint is correct. Editors and terminals often change private-use glyphs when you paste them:
+
+   ```bash
+   python3 -c "
+   import yaml
+   d = yaml.safe_load(open('configs/session/i3/workspaces/workspaces.yaml'))
+   print([(r['class'], hex(ord(r['icon']))) for r in d['window_icons']['rules'] if 'class' in r])
+   "
+   ```
+
+You do not need to reload i3. `workspaces.py` reads `workspaces.yaml` each time it runs, so the rule applies from the next launch. The first rule that matches wins.
 
 ## Rofi
 
@@ -111,14 +141,16 @@ bare modifier on its own. The bare-`Super`-opens-launcher requirement is
 implemented as:
 
 ```text
-bindsym --release Super_L exec --no-startup-id $rofi
+bindsym --release Super_L exec --no-startup-id $rofi_new_workspace
 ```
 
 `--release` means this only fires when `Super_L` is pressed and released
 without any other key in between, so it does not fight with the
 `$mod+<key>` bindings below it. If this keysym-based binding is ever
-unreliable on a given keyboard layout or X11 setup, `$mod+d` is the
+unreliable on a given keyboard layout or X11 setup, `$mod+Shift+d` is the
 documented, unconditionally reliable fallback for the same command.
+`$mod+d` opens the same launcher, but starts the program on the current
+workspace.
 
 ## Validating changes
 

@@ -414,7 +414,7 @@ Alt+Tab/Super+Tab still go to xfwm4's own default
     `[workspace] icon = "..."`, that icon becomes the dynamic workspace
     indicator. Otherwise the configured Code icon is used. i3 removes that
     workspace from the live workspace list when the last window closes.
-  * `workspaces.py promote-focused` — the focused-window promotion controller, bound to `Ctrl+Shift+Alt+N` in `configs/session/i3/configs/applications.conf`. It reads the focused i3-managed window from `i3-msg -t get_tree`, rejects scratchpad and session-infrastructure windows using the same switchable-window filter as Alt+Tab, selects an icon from `workspaces.yaml`'s `promote.rules` class/instance mappings, falls back to `promote.fallback`, then moves that exact container id to a fresh dynamic workspace and switches to it. The configured `slug` values are metadata for maintainers; the visible workspace name stays `number:icon`, so Polybar renders only the icon just like the existing dynamic Code and ChatGPT workspaces.
+  * `workspaces.py promote-focused` — the focused-window promotion controller, bound to `Ctrl+Shift+Alt+N` in `configs/session/i3/configs/applications.conf`. It reads the focused i3-managed window from `i3-msg -t get_tree`, rejects scratchpad and session-infrastructure windows using the same switchable-window filter as Alt+Tab, selects an icon from `workspaces.yaml`'s `window_icons.rules` class/instance mappings, falls back to `window_icons.fallback`, then moves that exact container id to a fresh dynamic workspace and switches to it. The optional `slug` values are metadata for maintainers; the visible workspace name stays `number:icon`, so Polybar renders only the icon just like the existing dynamic Code and ChatGPT workspaces.
   * The same underlying mechanism (`configs/session/i3/workspaces/
     workspaces.py launch --application <name>`) is also called directly,
     with no Rofi picker, by fixed single-purpose launchers such as
@@ -436,7 +436,25 @@ Alt+Tab/Super+Tab still go to xfwm4's own default
   so there is no second theme to keep in sync — only the functional
   settings are i3-specific.
 * Invoked as `rofi -show drun -config <repo>/configs/session/i3/rofi.rasi`
-  (the i3 config's `$rofi` variable).
+  plus a per-binding prompt set with `-display-drun` (it overrides
+  `display-drun` from `theme.rasi` for this menu only):
+  * Bare `Super` and `Super+Shift+D` (`$rofi_new_workspace`), prompt
+    "start program in new workspace": `-run-command` and
+    `-run-shell-command` pass the selected command to
+    `workspaces.py launch-command`. That creates the next dynamic workspace
+    (10+), switches to it, and starts the program there. Icon: the icon of
+    a `dynamic:` entry that runs the same executable, else
+    `window_icons.fallback`, which `workspaces.py set-workspace-icon`
+    replaces with the matching `window_icons.rules` icon once the first
+    window appears on that workspace (it polls for up to 15 seconds).
+    Programs start without startup notification, so a slow program opens
+    on whichever workspace is focused when its window appears. A
+    single-instance program that only raises an existing window leaves the
+    new workspace empty, and i3 removes it when you leave it.
+  * `Super+D` (`$rofi_current_workspace`), prompt "start program in current
+    workspace": starts the program on the current workspace.
+  * i3 does not expand a `$variable` inside another `set` value, so both
+    variables contain the full rofi command.
 * Validated non-interactively (parses without opening a window):
   `rofi -config configs/session/i3/rofi.rasi -dump-config` and `-dump-theme`.
 
