@@ -46,7 +46,6 @@
     # i3 session
     ~/.config/i3: configs/session/i3
     ~/.config/rofi: configs/session/rofi
-    ~/.config/picom: configs/session/picom
     ~/.config/terminator: configs/session/terminator
     ~/.config/Thunar: configs/session/thunar
     ~/.local/share/barrier/.barrier.conf: configs/session/barrier/barrier.conf

@@ -90,8 +90,6 @@ LightDM
         │   exposed at ~/.fonts/dotfiles through configs/fonts/dotfiles)
         ├── background (xsetroot solid colour, then feh sets a
         │   fixed repo-committed wallpaper)
-        ├── picom (compositor — shadows, RGBA/transparency; see
-        │   "Background")
         └── (no notification daemon, no monitor rules —
             intentionally out of scope, see "Known limitations")
 ```
