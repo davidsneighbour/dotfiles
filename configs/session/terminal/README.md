@@ -76,8 +76,8 @@ background_darkness = 0.85
 ```
 
 `background_darkness` is the background's alpha (0 = fully transparent,
-1 = fully opaque); rendering requires a running compositor, which
-`session-starts.conf` already starts (`picom`). Ordinary `$mod+Return`
+1 = fully opaque); rendering requires a running compositor, and the i3
+session starts none, so the window is not rendered transparent. Ordinary `$mod+Return`
 Terminator windows and `window-inspector.sh`'s report terminal are
 unaffected — neither passes `--profile`, so both keep using
 `[[default]]`. Adjust `background_darkness` in that one file to change the

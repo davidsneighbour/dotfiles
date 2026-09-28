@@ -118,8 +118,8 @@ LightDM
       `~/.logs/polybar-i3/bar-YYYYMMDD.log`. **Non-fatal**: the script
       itself never exits in a way i3 acts on, and internally logs+returns
       rather than throwing if `polybar` or the config file is missing.
-5. Nothing else is started automatically beyond `picom` (see "Background")
-   and the other `session-starts.conf` entries below. No notification
+5. Nothing else is started automatically beyond the other
+   `session-starts.conf` entries below. No notification
    daemon, no monitor/xrandr commands, no wallpaper-manager daemon. i3 has
    no session manager, so it never reads XDG autostart (`~/.config/
    autostart`) either way — dotfiles no longer manages an autostart pool
@@ -321,9 +321,9 @@ rationale, and command reference:
 * **Appearance**: launched with `--profile scratch`, a transparent-
   background Terminator profile defined only in
   `configs/session/terminator/config`'s `[profiles] [[scratch]]` block
-  (`background_type = transparent`, `background_darkness = 0.85`),
-  rendered by the `picom` compositor already started from
-  `session-starts.conf`. Ordinary Terminator windows never pass
+  (`background_type = transparent`, `background_darkness = 0.85`).
+  The session starts no compositor, so the background is not rendered
+  transparent. Ordinary Terminator windows never pass
   `--profile`, so they keep using `[[default]]` and stay opaque.
 * **Geometry**: recalculated on every show from the *currently focused*
   workspace's `rect` (`i3-msg -t get_workspaces`), which i3 already reports
@@ -473,12 +473,6 @@ Alt+Tab/Super+Tab still go to xfwm4's own default
 * `feh --bg-fill configs/session/i3/wallpaper.jpg` then overrides the solid
   colour with a fixed, repo-committed wallpaper image. i3-only — feh is
   invoked directly from `session-starts.conf`, with no backend detection.
-* `picom --config ~/.config/picom/picom.conf` runs once per session
-  (plain `exec`, not `exec_always` — restarting it on every `i3-msg
-  restart` is unnecessary since it needs no re-arming) from
-  `session-starts.conf`, giving windows shadows and RGBA/transparency
-  support. This is what the "Scratch terminal" section's `[[scratch]]`
-  Terminator profile relies on for its transparent background.
 
 ## Screen lock
 
@@ -695,10 +689,7 @@ a separate, explicit request — see the spec's scope-control section):
   under i3 otherwise. Auditing whether any of the removed autostart apps
   (Barrier, Dropbox, Discord, etc.) need an i3 `exec` line of their own is
   a deliberate follow-up, not part of this change.
-* `picom` runs (see "Background" above), but with no host-specific tuning
-  beyond `~/.config/picom/picom.conf`'s defaults — it exists to support
-  shadows and the scratch terminal's transparency, not as a general
-  visual-effects layer.
+* No compositor — windows have no shadows and no RGBA transparency.
 * No notification daemon — `notify-send` calls will silently do nothing
   under i3 right now.
 * No monitor-specific (`xrandr`) configuration — this host currently has a
