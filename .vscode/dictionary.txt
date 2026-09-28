@@ -170,3 +170,4 @@ Xsettings
 xwininfo
 yarnpkg
 zseven
+skillwerk
