@@ -12,8 +12,6 @@
     copy_on_selection = True
   [[scratch]]
     background_color = "#282a36"
-    background_darkness = 0.6
-    background_type = transparent
     background_image = None
     font = Monaspace Krypton Ultra-Light 12
     foreground_color = "#f8f8f2"

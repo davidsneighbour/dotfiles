@@ -90,8 +90,10 @@ LightDM
         │   exposed at ~/.fonts/dotfiles through configs/fonts/dotfiles)
         ├── background (xsetroot solid colour, then feh sets a
         │   fixed repo-committed wallpaper)
-        └── (no notification daemon, no monitor rules —
-            intentionally out of scope, see "Known limitations")
+        ├── notifications (dunst, D-Bus-activated on the first
+        │   notification — not started by i3, see "Notifications")
+        └── (no monitor rules — intentionally out of scope, see
+            "Known limitations")
 ```
 
 ## Startup sequence (i3 session)
@@ -119,8 +121,10 @@ LightDM
       itself never exits in a way i3 acts on, and internally logs+returns
       rather than throwing if `polybar` or the config file is missing.
 5. Nothing else is started automatically beyond the other
-   `session-starts.conf` entries below. No notification
-   daemon, no monitor/xrandr commands, no wallpaper-manager daemon. i3 has
+   `session-starts.conf` entries below. No monitor/xrandr commands, no
+   wallpaper-manager daemon. The notification daemon (dunst) is not
+   started here: D-Bus starts it on the first notification (see
+   "Notifications"). i3 has
    no session manager, so it never reads XDG autostart (`~/.config/
    autostart`) either way — dotfiles no longer manages an autostart pool
    for any session, see "Components that must only run under XFCE".
@@ -318,13 +322,12 @@ rationale, and command reference:
   controller also has to create the window on first use and recompute
   right-half-of-output geometry on every show, so that logic lives in the
   dedicated script rather than the i3 config itself.
-* **Appearance**: launched with `--profile scratch`, a transparent-
-  background Terminator profile defined only in
-  `configs/session/terminator/config`'s `[profiles] [[scratch]]` block
-  (`background_type = transparent`, `background_darkness = 0.85`).
-  The session starts no compositor, so the background is not rendered
-  transparent. Ordinary Terminator windows never pass
-  `--profile`, so they keep using `[[default]]` and stay opaque.
+* **Appearance**: launched with `--profile scratch`, a Terminator profile
+  defined only in `configs/session/terminator/config`'s `[profiles]
+  [[scratch]]` block. It has an opaque background with the same colours
+  and font as `[[default]]`; the session starts no compositor, so a
+  transparent background would have no effect. Ordinary Terminator
+  windows never pass `--profile`, so they use `[[default]]`.
 * **Geometry**: recalculated on every show from the *currently focused*
   workspace's `rect` (`i3-msg -t get_workspaces`), which i3 already reports
   with Polybar's reserved dock-bar strut excluded — no separate
@@ -473,6 +476,25 @@ Alt+Tab/Super+Tab still go to xfwm4's own default
 * `feh --bg-fill configs/session/i3/wallpaper.jpg` then overrides the solid
   colour with a fixed, repo-committed wallpaper image. i3-only — feh is
   invoked directly from `session-starts.conf`, with no backend detection.
+
+## Notifications
+
+* dunst (`apt: dunst`) is the notification daemon. i3 does not start it:
+  the first `notify-send` call makes D-Bus activate the systemd user unit
+  `dunst.service` (`/usr/lib/systemd/user/dunst.service`, `Type=dbus`,
+  `BusName=org.freedesktop.Notifications`), which then keeps running.
+* xfce4-notifyd also installs a D-Bus service file for the same name
+  (`/usr/share/dbus-1/services/org.xfce.xfce4-notifyd.Notifications.service`).
+  The dotfiles do not pin which of the two D-Bus activates. On this host
+  dunst is the owner; check with
+  `busctl --user status org.freedesktop.Notifications` (look at `Comm=`).
+* The dotfiles contain no dunst configuration, so dunst uses the system
+  defaults from `/etc/xdg/dunst/dunstrc`: left-click closes a
+  notification, middle-click runs its action and closes it, right-click
+  closes all notifications.
+* `configs/session/storage/gdrive-mounts.sh` depends on the middle-click
+  action: its "Re-authorise" notification starts the Google Drive sign-in
+  (see `configs/session/storage/README.md`).
 
 ## Screen lock
 
@@ -636,6 +658,7 @@ terminator apt: terminator (`$terminal`, $mod+Return; also window-inspector.sh's
 xdotool    apt: xdotool    (window-inspector.sh's click-to-select and window queries)
 xprop      apt: x11-utils  (window-inspector.sh's WM_CLASS/role queries)
 wmctrl     apt: wmctrl     (window-inspector.sh's desktop/PID listing)
+dunst      apt: dunst      (notification daemon, D-Bus-activated — see "Notifications")
 ```
 
 Explicitly **not** used, despite being mentioned as possibilities in the
@@ -666,6 +689,7 @@ rofi -config configs/session/i3/rofi.rasi -dump-config   # validate the i3 Rofi 
 tail -f ~/.logs/polybar-i3/bar-$(date +%Y%m%d).log           # i3 Polybar's own log
 cat ~/.xsession-errors | tail -100                            # general X session errors
 configs/session/i3/check.sh                                   # read-only: installed/running summary
+busctl --user status org.freedesktop.Notifications | grep -E '^(PID|Comm)='  # which notification daemon is active
 ```
 
 `configs/session/i3/check.sh` bundles the executable/config/process/log
@@ -690,8 +714,6 @@ a separate, explicit request — see the spec's scope-control section):
   (Barrier, Dropbox, Discord, etc.) need an i3 `exec` line of their own is
   a deliberate follow-up, not part of this change.
 * No compositor — windows have no shadows and no RGBA transparency.
-* No notification daemon — `notify-send` calls will silently do nothing
-  under i3 right now.
 * No monitor-specific (`xrandr`) configuration — this host currently has a
   single monitor (`DP-1`, 1920x1080, confirmed via
   `polybar --list-monitors`); multi-monitor behaviour is untested.

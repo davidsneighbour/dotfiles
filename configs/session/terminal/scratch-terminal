@@ -17,7 +17,7 @@ set -Eeuo pipefail
 TERMINAL_BIN="/usr/bin/terminator"
 ROLE="scratch-terminal"
 MARK="scratch-terminal"
-# Transparent-background profile, defined only in
+# Scratch-terminal profile, defined only in
 # configs/session/terminator/config's [[scratch]] block — never applied to
 # ordinary Terminator windows, which use the [[default]] profile.
 PROFILE="scratch"
