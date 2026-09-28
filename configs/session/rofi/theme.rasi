@@ -240,12 +240,12 @@ element-text {
     padding: 0px;
     //border-radius: 16px;
     /*
-     * Header aspect ratio (2:1, header-1800x900.jpg). rofi has no
+     * Header aspect ratio (3:1, header-1800x600.jpg). rofi has no
      * `aspect-ratio`, and a `%` distance is taken from the monitor width
      * horizontally but from the monitor height vertically, so a `%` width
      * cannot drive the header height. The width is therefore fixed in px
-     * and #header's top padding is set to half of the inner width:
-     *   header = (width - 2 * border) / 2 = (960 - 2) / 2 = 479px
+     * and #header's top padding is set to a third of the inner width:
+     *   header = (width - 2 * border) / 3 = (960 - 2) / 3 = 319px
      * Change both values together. Any rofi call that overrides the
      * window width must also override #header padding the same way
      * (see power/powermenu.rasi and power/powermenu.sh).
@@ -260,10 +260,10 @@ element-text {
 #header {
     expand: false;
     background-color: transparent;
-    background-image: url("~/.dotfiles/configs/session/i3/header-1800x900.jpg", width);
+    background-image: url("~/.dotfiles/configs/session/i3/header-1800x600.jpg", width);
     //border-radius: 16px 16px 0px 0px;
-    /* Full 2:1 image height for the #window width above: (960 - 2) / 2. */
-    padding: 479px 0px 0px 0px;
+    /* Full 3:1 image height for the #window width above: (960 - 2) / 3. */
+    padding: 319px 0px 0px 0px;
 }
 
 #inputbar {

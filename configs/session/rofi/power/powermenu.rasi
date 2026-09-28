@@ -56,11 +56,11 @@ mainbox {
 
 /* Reuses the shared theme's #header (image) rule; only the corner radius
  * needs to match this window's own 20px instead of the shared 16px, and
- * the height must match this window's own width so the full 2:1 image
- * shows: width 500px, border 0px -> 500 / 2 = 250px. */
+ * the height must match this window's own width so the full 3:1 image
+ * shows: width 500px, border 0px -> 500 / 3 = 167px. */
 #header {
     border-radius:                20px 20px 0px 0px;
-    padding:                      250px 0px 0px 0px;
+    padding:                      167px 0px 0px 0px;
 }
 
 /*****----- Listview -----*****/

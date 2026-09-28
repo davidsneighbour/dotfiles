@@ -36,7 +36,7 @@ confirm_cmd() {
   rofi \
     -theme-str 'window {location: center; anchor: center; fullscreen: false; width: 350px;}' \
     -theme-str 'mainbox {children: [ "header", "message", "listview" ];}' \
-    -theme-str 'header {padding: 175px 0px 0px 0px;}' \
+    -theme-str 'header {padding: 117px 0px 0px 0px;}' \
     -theme-str 'message {margin: 15px 15px 0px 15px;}' \
     -theme-str 'listview {columns: 2; lines: 1;}' \
     -theme-str 'element-text {horizontal-align: 0.5;}' \
