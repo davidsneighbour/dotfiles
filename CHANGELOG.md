@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.16.2](https://github.com/davidsneighbour/dotfiles/compare/v2.16.1...v2.16.2) (2026-09-29)
+
+### Fix
+
+* **msgvault:** keep synch terminal in the top left ([7baffab](https://github.com/davidsneighbour/dotfiles/commit/7baffab53c373101d5ac285758d2728e9a82ed75))
+
 ## [2.16.1](https://github.com/davidsneighbour/dotfiles/compare/v2.16.0...v2.16.1) (2026-09-29)
 
 ### Fix
