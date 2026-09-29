@@ -1,7 +1,7 @@
 #!/bin/bash
 #
-# Floating, centered Terminator window that runs manual-sync.sh, for the
-# msgvault Polybar module's click-left action (see
+# Floating Terminator window that runs manual-sync.sh, for the msgvault
+# Polybar module's click-left action (see
 # configs/session/polybar/configs/07-module-msgvault.ini).
 #
 # Terminator auto-applies its saved "default" layout (in
@@ -11,9 +11,14 @@
 # rule's one-shot resize/move (configs/session/i3/configs/rules.conf) can
 # lose to that layout negotiation the same way the scratch-terminal
 # dropdown's comments describe for VTE's own size negotiation, so this
-# script pins the geometry itself, twice, after the window is confirmed
+# script pins the size itself, twice, after the window is confirmed
 # mapped — the same technique configs/session/terminal/scratch-terminal
 # uses for its settle_geometry.
+#
+# The window is deliberately NOT moved: it stays in the top-left corner
+# where the layout places it. A centred window covers the browser's
+# re-login form when msgvault asks for OAuth again, so the username and
+# password fields cannot be reached.
 
 set -Eeuo pipefail
 
@@ -51,7 +56,7 @@ for ((attempt = 0; attempt < POLL_ATTEMPTS; attempt++)); do
 done
 
 apply_geometry() {
-  i3-msg "[window_role=\"${ROLE}\"] floating enable, resize set ${WIDTH} px ${HEIGHT} px, move position center" >/dev/null
+  i3-msg "[window_role=\"${ROLE}\"] floating enable, resize set ${WIDTH} px ${HEIGHT} px" >/dev/null
 }
 
 apply_geometry
