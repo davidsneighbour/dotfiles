@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.16.1](https://github.com/davidsneighbour/dotfiles/compare/v2.16.0...v2.16.1) (2026-09-29)
+
+### Fix
+
+* **clockify:** stop exposing stack trace data in form error responses ([32e45db](https://github.com/davidsneighbour/dotfiles/commit/32e45dbbc8d5cdc01ba2051eca78ba377a8d537d)), closes [#7](https://github.com/davidsneighbour/dotfiles/issues/7)
+
 ## [2.16.0](https://github.com/davidsneighbour/dotfiles/compare/v2.15.1...v2.16.0) (2026-09-28)
 
 ### Feat
