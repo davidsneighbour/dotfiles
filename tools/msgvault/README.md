@@ -6,9 +6,37 @@ This folder contains standalone msgvault helper commands used by cron, Polybar, 
 
 Since msgvault's [daemon migration](https://www.msgvault.io/docs/guides/daemon-migration/), a background daemon is the single writer to the archive; CLI commands talk to it over HTTP instead of opening the SQLite database directly. Concurrent mutating operations (sync, import, embeddings) queue inside the daemon and print a `Waiting: ...` message rather than racing on the database, so `sync.sh` and `manual-sync.sh` no longer need — and no longer implement — their own PID-based lock file. Read-only commands still run immediately, even while a write is queued. `msgvault daemon status` shows whether the daemon is running.
 
+## Re-authorise an account
+
+msgvault accesses Gmail with an OAuth token, not with the account password. Google revokes these tokens when the account password changes, and when access is removed in [Google account permissions](https://myaccount.google.com/permissions). After that, every sync fails for that account with this error, and the Polybar icon turns red:
+
+```text
+pkollitsch@gmail.com: sync failed: get profile: unauthorized (401): token may be invalid
+```
+
+To fix it, force a new OAuth flow for the affected account:
+
+```bash
+msgvault add-account pkollitsch@gmail.com --force
+```
+
+`--force` is required. Without it, `add-account` finds the existing (revoked) token file in `~/.msgvault/tokens/`, and skips the browser sign-in. With `--force`, it deletes the old token and opens the browser for a fresh authorisation. Sign in with the same Google account that you give on the command line. The archived mail is not changed.
+
+Then confirm that the sync works again:
+
+```bash
+tools/msgvault/manual-sync.sh --verbose
+```
+
+The next successful `sync.sh` run removes the `msgvault-sync` Polybar issue, and the icon goes back to green.
+
 ## `sync.sh`
 
 Runs `msgvault sync --verbose`, logs the run, and records a Polybar issue when sync fails. Backups are managed separately by `backup` so the sync cronjob does not mirror config files or OAuth tokens.
+
+Polybar status: when sync fails, `sync.sh` adds the `msgvault-sync` issue to `~/.config/polybar/issues.toml` (via `dnb_msgvault_add_polybar_issue` from `bashrc/lib/45-workspace/dnb-issues.bash`), and `indicator.sh` shows the icon in red. The next successful sync removes the issue again (via `dnb_polybar_issue_remove`), so the icon goes back to green.
+
+Retired accounts: msgvault keeps old accounts in the archive and logs `Skipping <account> (no OAuth token ...)` for them on every run. Accounts listed in `DNB_MSGVAULT_IGNORED_ACCOUNTS` in `config.env` (space-separated) are filtered from the sync log. Currently this is `patrick@davids-neighbour.com`, which was replaced by `patrick@davidsneighbour.dev`.
 
 Default paths:
 
@@ -35,10 +63,12 @@ Functions/methods defined:
 * `dnb_msgvault_log`
 * `dnb_msgvault_abort`
 * `dnb_msgvault_report_failure`
+* `dnb_msgvault_clear_failure`
+* `dnb_msgvault_filter_output`
 
 Requirements:
 
-* Bash, `msgvault`, configured log directory, and the Polybar issue command/path expected by `dnb_msgvault_add_polybar_issue`.
+* Bash, `msgvault`, configured log directory, and `bashrc/lib/45-workspace/dnb-issues.bash` for `dnb_msgvault_add_polybar_issue` and `dnb_polybar_issue_remove`.
 
 ## `indicator.sh`
 

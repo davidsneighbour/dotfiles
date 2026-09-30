@@ -204,6 +204,145 @@ PY
   return 0
 }
 
+# dnb_polybar_issue_remove
+#
+# Remove an issue entry from a TOML issue source file.
+#
+# Usage:
+#   dnb_polybar_issue_remove --id <identifier> [--file <path>] [--log-file <path>] [--verbose]
+#   dnb_polybar_issue_remove --help
+#
+# Returns:
+#   0 on success (also when the file or the issue does not exist), non-zero on
+#   validation or write failure.
+dnb_polybar_issue_remove() {
+  local id=''
+  local issues_file="${DNB_POLYBAR_ISSUES_FILE:-${HOME}/.config/polybar/issues.toml}"
+  local verbose='0'
+  local log_file="${DNB_POLYBAR_ISSUES_LOG_FILE:-}"
+
+  if [[ "$#" -eq 0 || "${1:-}" == '--help' ]]; then
+    cat <<EOF2
+${FUNCNAME[0]} - remove a polybar issue
+
+Usage:
+  ${FUNCNAME[0]} --id <identifier> [--file <path>] [--log-file <path>] [--verbose]
+  ${FUNCNAME[0]} --help
+EOF2
+    return 0
+  fi
+
+  while [[ "$#" -gt 0 ]]; do
+    case "${1}" in
+    --id)
+      shift
+      [[ "$#" -gt 0 ]] || {
+        echo "ERROR: --id requires a value" >&2
+        return 1
+      }
+      id="${1}"
+      shift
+      ;;
+    --file)
+      shift
+      [[ "$#" -gt 0 ]] || {
+        echo "ERROR: --file requires a value" >&2
+        return 1
+      }
+      issues_file="${1}"
+      shift
+      ;;
+    --log-file)
+      shift
+      [[ "$#" -gt 0 ]] || {
+        echo "ERROR: --log-file requires a value" >&2
+        return 1
+      }
+      log_file="${1}"
+      shift
+      ;;
+    --verbose)
+      verbose='1'
+      shift
+      ;;
+    *)
+      echo "ERROR: Unknown option: ${1}" >&2
+      return 1
+      ;;
+    esac
+  done
+
+  [[ -n "${id}" ]] || {
+    echo 'ERROR: --id is required' >&2
+    return 1
+  }
+
+  # Nothing to remove. Return early so the file is not rewritten on every call.
+  if [[ ! -f "${issues_file}" ]] || ! grep -qF "\"${id}\"" "${issues_file}"; then
+    return 0
+  fi
+
+  python3 - "${issues_file}" "${id}" <<'PY'
+import sys
+from pathlib import Path
+
+import tomllib
+
+path = Path(sys.argv[1])
+issue_id = sys.argv[2]
+
+doc = tomllib.loads(path.read_text(encoding="utf-8"))
+issues = doc.get("issue", [])
+if not isinstance(issues, list):
+    issues = []
+
+lines = ["# Polybar issue indicator source", ""]
+for item in issues:
+    if not isinstance(item, dict):
+        continue
+    iid = str(item.get("id", "")).strip()
+    if not iid or iid == issue_id:
+        continue
+    iprio = item.get("prio", 1)
+    try:
+        iprio = int(iprio)
+    except Exception:
+        iprio = 1
+    iprio = min(max(iprio, 1), 3)
+
+    lines.append("[[issue]]")
+    lines.append(f'id = "{iid.replace(chr(34), r"\\\"")}"')
+    lines.append(f"prio = {iprio}")
+
+    ilabel = item.get("label", "")
+    if isinstance(ilabel, str) and ilabel:
+        lines.append(f'label = "{ilabel.replace(chr(34), r"\\\"")}"')
+
+    idesc = item.get("description", "")
+    if isinstance(idesc, str) and idesc:
+        lines.append(f'description = "{idesc.replace(chr(34), r"\\\"")}"')
+
+    lines.append("")
+
+path.write_text("\n".join(lines).rstrip() + "\n", encoding="utf-8")
+PY
+  local py_exit_code="$?"
+  if [[ "${py_exit_code}" -ne 0 ]]; then
+    echo "ERROR: failed to remove issue '${id}' from ${issues_file}" >&2
+    return "${py_exit_code}"
+  fi
+
+  if [[ "${verbose}" == '1' ]]; then
+    echo "Issue '${id}' removed from ${issues_file}" >&2
+  fi
+
+  if [[ -n "${log_file}" ]]; then
+    printf "Issue '%s' removed from %s\n" "${id}" "${issues_file}" >>"${log_file}"
+  fi
+
+  return 0
+}
+
 # dnb_msgvault_add_polybar_issue
 #
 # Add a msgvault sync failure issue via dnb_polybar_issue_add.

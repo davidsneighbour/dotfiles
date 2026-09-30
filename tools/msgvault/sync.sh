@@ -5,6 +5,10 @@ set -uo pipefail
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:${HOME}/.local/bin"
 
 SCRIPT_NAME="$(basename "${0}")"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+DOTFILES_DIR="${DNB_DOTFILES_DIR:-$(cd "${SCRIPT_DIR}/../.." && pwd -P)}"
+DNB_MSGVAULT_CONFIG_FILE="${DNB_MSGVAULT_CONFIG_FILE:-${SCRIPT_DIR}/config.env}"
+ISSUES_LIB="${DOTFILES_DIR}/bashrc/lib/45-workspace/dnb-issues.bash"
 
 LOG_BASE_DIR="${HOME}/.logs/msgvault"
 LOG_FILE="${LOG_BASE_DIR}/sync-$(date +%Y%m%d).log"
@@ -31,6 +35,9 @@ Options:
 Environment:
   DNB_POLYBAR_ISSUES_FILE          Polybar issues file.
   DNB_MSGVAULT_POLYBAR_ISSUE_ID    Polybar issue id.
+  DNB_MSGVAULT_CONFIG_FILE         Helper config (default: ${SCRIPT_DIR}/config.env).
+  DNB_MSGVAULT_IGNORED_ACCOUNTS    Space-separated retired accounts whose
+                                   "no OAuth token" skip line is not logged.
 HELP
 }
 
@@ -73,6 +80,16 @@ parse_arguments() {
 
 parse_arguments "$@"
 mkdir -p "${LOG_BASE_DIR}"
+
+if [[ -f "${DNB_MSGVAULT_CONFIG_FILE}" ]]; then
+  # shellcheck source=/dev/null
+  source "${DNB_MSGVAULT_CONFIG_FILE}"
+fi
+
+if [[ -f "${ISSUES_LIB}" ]]; then
+  # shellcheck source=/dev/null
+  source "${ISSUES_LIB}"
+fi
 
 # dnb_msgvault_log
 #
@@ -129,6 +146,56 @@ dnb_msgvault_report_failure() {
   fi
 }
 
+# dnb_msgvault_clear_failure
+#
+# Remove the msgvault Polybar issue after a successful sync, so the indicator
+# stops showing red once the problem is fixed.
+#
+# Behaviour:
+#   Calls dnb_polybar_issue_remove if the helper function is available.
+#   Logs a warning when the issue cannot be removed.
+#
+# Example:
+#   dnb_msgvault_clear_failure
+dnb_msgvault_clear_failure() {
+  if ! declare -F dnb_polybar_issue_remove >/dev/null 2>&1; then
+    dnb_msgvault_log "WARN: dnb_polybar_issue_remove is not available"
+    return 0
+  fi
+
+  if ! dnb_polybar_issue_remove \
+    --id "${POLYBAR_ISSUE_ID}" \
+    --file "${POLYBAR_ISSUES_FILE}" \
+    --log-file "${LOG_FILE}"; then
+    dnb_msgvault_log "WARN: failed to remove polybar issue for msgvault"
+  fi
+}
+
+# dnb_msgvault_filter_output
+#
+# Copy msgvault output from stdin to stdout, without the "Skipping <account>
+# (no OAuth token ..." line for accounts in DNB_MSGVAULT_IGNORED_ACCOUNTS.
+# These retired accounts stay in the archive, but are not synced any more.
+#
+# Example:
+#   msgvault sync 2>&1 | dnb_msgvault_filter_output >>"${LOG_FILE}"
+dnb_msgvault_filter_output() {
+  local account=""
+  local -a patterns=()
+
+  for account in ${DNB_MSGVAULT_IGNORED_ACCOUNTS:-}; do
+    patterns+=(-e "Skipping ${account} (no OAuth token")
+  done
+
+  if [[ "${#patterns[@]}" -eq 0 ]]; then
+    cat
+    return 0
+  fi
+
+  # grep exits 1 when every line is filtered out; that is not an error here.
+  grep -v -F "${patterns[@]}" || true
+}
+
 trap 'dnb_msgvault_abort 129' HUP
 trap 'dnb_msgvault_abort 130' INT
 trap 'dnb_msgvault_abort 143' TERM
@@ -156,8 +223,8 @@ fi
   echo "------------------------------------------------------------"
 } >>"${LOG_FILE}"
 
-"${MSGVAULT_BIN}" sync --verbose >>"${LOG_FILE}" 2>&1
-sync_exit_code="$?"
+"${MSGVAULT_BIN}" sync --verbose 2>&1 | dnb_msgvault_filter_output >>"${LOG_FILE}"
+sync_exit_code="${PIPESTATUS[0]}"
 
 if [[ "${sync_exit_code}" -ne 0 ]]; then
   failure_reason="msgvault sync failed with exit code ${sync_exit_code}"
@@ -173,6 +240,8 @@ if [[ "${sync_exit_code}" -ne 0 ]]; then
   dnb_msgvault_report_failure "${failure_reason}"
   exit "${sync_exit_code}"
 fi
+
+dnb_msgvault_clear_failure
 
 {
   echo "------------------------------------------------------------"
