@@ -69,6 +69,7 @@ export function App() {
   const [start, setStart] = useState(context.start);
   const [end, setEnd] = useState(context.end);
   const [tagIds, setTagIds] = useState<string[]>(context.selectedTagIds);
+  const [newTagOpen, setNewTagOpen] = useState(false);
   const [newTagName, setNewTagName] = useState("");
   const [tagBusy, setTagBusy] = useState(false);
   const [tagError, setTagError] = useState<string | undefined>(undefined);
@@ -152,6 +153,7 @@ export function App() {
     }
     setTags(result.tags);
     setNewTagName("");
+    setNewTagOpen(false);
     const created = result.tags.find(
       (tag) => tag.name.toLowerCase() === name.toLowerCase(),
     );
@@ -359,7 +361,22 @@ export function App() {
           </div>
         </div>
         <div className="space-y-1.5">
-          <Label>Tags</Label>
+          <div className="flex items-center justify-between">
+            <Label>Tags</Label>
+            <div className="flex gap-2 text-xs">
+              <button
+                type="button"
+                className="text-primary underline-offset-4 hover:underline"
+                aria-expanded={newTagOpen}
+                onClick={() => {
+                  setNewTagOpen((open) => !open);
+                  setTagError(undefined);
+                }}
+              >
+                {newTagOpen ? "Cancel" : "New tag"}
+              </button>
+            </div>
+          </div>
           <div className="flex flex-wrap gap-1.5">
             {tags.map((tag) => {
               const active = tagIds.includes(tag.id);
@@ -385,27 +402,34 @@ export function App() {
               </span>
             )}
           </div>
-          <div className="flex gap-2">
-            <Input
-              placeholder="New tag"
-              value={newTagName}
-              onChange={(event) => setNewTagName(event.target.value)}
-              onKeyDown={(event) => {
-                if (event.key === "Enter") {
-                  event.preventDefault();
-                  void handleAddTag();
-                }
-              }}
-            />
-            <Button
-              type="button"
-              size="sm"
-              disabled={tagBusy || newTagName.trim() === ""}
-              onClick={() => void handleAddTag()}
-            >
-              Add
-            </Button>
-          </div>
+          {newTagOpen && (
+            <div className="flex gap-2">
+              <Input
+                placeholder="New tag"
+                value={newTagName}
+                autoFocus
+                onChange={(event) => setNewTagName(event.target.value)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    event.preventDefault();
+                    void handleAddTag();
+                  } else if (event.key === "Escape") {
+                    event.preventDefault();
+                    setNewTagOpen(false);
+                    setTagError(undefined);
+                  }
+                }}
+              />
+              <Button
+                type="button"
+                size="sm"
+                disabled={tagBusy || newTagName.trim() === ""}
+                onClick={() => void handleAddTag()}
+              >
+                Add
+              </Button>
+            </div>
+          )}
           {tagError !== undefined && (
             <p className="text-sm text-destructive">{tagError}</p>
           )}
