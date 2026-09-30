@@ -8,7 +8,7 @@
   "bugs": "https://github.com/davidsneighbour/dotfiles/issues",
   "homepage": "https://github.com/davidsneighbour/dotfiles#readme",
   "devDependencies": {
-    "@biomejs/biome": "2.5.14",
+    "@biomejs/biome": "2.5.15",
     "@clack/prompts": "1.8.1",
     "@commitlint/cli": "21.2.2",
     "@commitlint/config-conventional": "21.2.2",
@@ -29,7 +29,7 @@
     "cz-git": "1.14.0",
     "debug": "4.4.3",
     "deepmerge": "4.3.1",
-    "dotenv": "18.0.4",
+    "dotenv": "18.0.5",
     "fixpack": "4.0.0",
     "fs-extra": "11.4.1",
     "lint-staged": "17.3.0",
@@ -103,7 +103,7 @@
   },
   "allowScripts": {
     "sharp@0.35.3": true,
-    "simple-git-hooks@2.13.1": true
+    "simple-git-hooks@2.14.0": true
   },
   "cspell": {
     "version": "0.2",
@@ -135,9 +135,9 @@
     "svgo": "4.1.0",
     "js-yaml": "4.3.2",
     "linkify-it": "5.0.2",
-    "markdown-it": "14.2.0",
+    "markdown-it": "14.3.2",
     "markdownlint-cli2": {
-      "js-yaml": "5.2.2",
+      "js-yaml": "5.4.2",
       "smol-toml": "1.7.1"
     },
     "release-it": {
