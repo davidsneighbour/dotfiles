@@ -1,5 +1,25 @@
 # Changelog
 
+## [2.17.0](https://github.com/davidsneighbour/dotfiles/compare/v2.16.3...v2.17.0) (2026-09-30)
+
+### Feat
+
+* add interface sounds for notifications ([d5d37d0](https://github.com/davidsneighbour/dotfiles/commit/d5d37d031848ee3fceea9110888a5b360b9948a8))
+
+### Fix
+
+* add statuss alias to git config ([9bcb6dd](https://github.com/davidsneighbour/dotfiles/commit/9bcb6dd0276b3eaf85ec6e509feb096b5b2e8f60))
+* **clockify:** hide new tag field behind toggle ([c137dab](https://github.com/davidsneighbour/dotfiles/commit/c137dabaf7f17945b0e8222ea84f188341dbadbb))
+
+### Build
+
+* **deps:** update dependencies ([c45dca1](https://github.com/davidsneighbour/dotfiles/commit/c45dca1d779ba25ee9fe1cd3cf04000e4d10f16a))
+* **deps:** update dependencies and fix audit findings ([683aa19](https://github.com/davidsneighbour/dotfiles/commit/683aa19a1e6fc45d1e07b9034b71a831de4110f3)), closes [#286](https://github.com/davidsneighbour/dotfiles/issues/286) [#287](https://github.com/davidsneighbour/dotfiles/issues/287) [#290](https://github.com/davidsneighbour/dotfiles/issues/290)
+
+### Chore
+
+* **session:** remove Kando pie menu and helper ([7849def](https://github.com/davidsneighbour/dotfiles/commit/7849def9702e968d3fd26c01bce0776680fb042e))
+
 ## [2.16.3](https://github.com/davidsneighbour/dotfiles/compare/v2.16.2...v2.16.3) (2026-09-30)
 
 ### Fix
