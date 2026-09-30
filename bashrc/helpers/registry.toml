@@ -5,7 +5,6 @@ paths=[
     "docker",
     "freshrss",
     "gh",
-    "kando",
     "logs",
     "obsidian",
     "packages",

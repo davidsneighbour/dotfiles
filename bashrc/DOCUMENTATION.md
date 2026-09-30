@@ -73,7 +73,6 @@ Important grouped docs:
 * [`helpers/docker/examples/DOCUMENTATION.md`](./helpers/docker/examples/DOCUMENTATION.md)
 * [`helpers/freshrss/DOCUMENTATION.md`](./helpers/freshrss/DOCUMENTATION.md)
 * [`helpers/gh/DOCUMENTATION.md`](./helpers/gh/DOCUMENTATION.md)
-* [`helpers/kando/DOCUMENTATION.md`](./helpers/kando/DOCUMENTATION.md)
 * [`helpers/logs/DOCUMENTATION.md`](./helpers/logs/DOCUMENTATION.md)
 * [`helpers/remarkable/DOCUMENTATION.md`](./helpers/remarkable/DOCUMENTATION.md)
 

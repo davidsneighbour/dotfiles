@@ -20,7 +20,6 @@ Bash helpers are standalone helper commands unless noted otherwise. Several Type
 * [`docker/examples/`](./docker/examples/DOCUMENTATION.md)
 * [`freshrss/`](./freshrss/DOCUMENTATION.md)
 * [`gh/`](./gh/DOCUMENTATION.md)
-* [`kando/`](./kando/DOCUMENTATION.md)
 * [`logs/`](./logs/DOCUMENTATION.md)
 * [`mailbox-monitor/`](./mailbox-monitor/README.md)
 * `packages/`
@@ -460,12 +459,6 @@ See [`gh/DOCUMENTATION.md`](./gh/DOCUMENTATION.md).
 * `gh/github-manager.md`: Existing detailed guide for github-manager.ts.
 * `gh/github-manager.ts`: GitHub repository manager for inventory, pull, status, audit, remote listing, topic cloning, and sync-all workflows.
 * `gh/label-migration.sh`: Migrates GitHub issue/PR labels between repositories or from a definition source using gh.
-
-### `kando/`
-
-See [`kando/DOCUMENTATION.md`](./kando/DOCUMENTATION.md).
-
-* `kando/kando-vscode-menu-creator.ts`: Updates a Kando menu from VS Code .code-workspace files.
 
 ### `logs/`
 

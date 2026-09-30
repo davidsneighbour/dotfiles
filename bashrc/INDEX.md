@@ -211,7 +211,6 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`executeTomlTask`](./helpers/docker/backup-runner.ts#L483) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L56) |
 | [`expand_path`](./cronjobs/git_updates.sh#L135) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L33) |
 | [`expand_tilde`](./cronjobs/synch_downloads.sh#L38) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L61) |
-| [`expandHome`](./helpers/kando/kando-vscode-menu-creator.ts#L119) | method/function | [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md#L28) |
 | [`expandHomeDirectory`](./helpers/gh/github-manager.ts#L600) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L150) |
 | [`explore`](./helpers/explore#L33) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L60) |
 | [`export_keybindings`](./partials/_functions/keybindings.bash#L5) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L159) |
@@ -323,8 +322,6 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`helpers/github-token`](./helpers/github-token#L1) | file | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L82) |
 | [`helpers/INDEX.md`](./helpers/INDEX.md#L1) | file | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L1) |
 | [`helpers/interface-restart`](./helpers/interface-restart#L1) | file | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L122) |
-| [`helpers/kando/DOCUMENTATION.md`](./helpers/kando/DOCUMENTATION.md#L1) | file | [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md#L1) |
-| [`helpers/kando/kando-vscode-menu-creator.ts`](./helpers/kando/kando-vscode-menu-creator.ts#L1) | file | [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md#L9) |
 | [`helpers/logs/cleanup.ts`](./helpers/logs/cleanup.ts#L1) | file | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L15) |
 | [`helpers/logs/config.toml`](./helpers/logs/config.toml#L1) | file | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L25) |
 | [`helpers/logs/DOCUMENTATION.md`](./helpers/logs/DOCUMENTATION.md#L1) | file | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L1) |
@@ -389,8 +386,6 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`isGhRepositorySummaryArray`](./helpers/gh/github-manager.ts#L1454) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L186) |
 | [`isGhRepositoryTag`](./helpers/gh/github-manager.ts#L1462) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L187) |
 | [`isGhRepositoryTagArray`](./helpers/gh/github-manager.ts#L1484) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L188) |
-| [`isMenuObject`](./helpers/kando/kando-vscode-menu-creator.ts#L280) | method/function | [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md#L38) |
-| [`isMenuRootObject`](./helpers/kando/kando-vscode-menu-creator.ts#L272) | method/function | [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md#L37) |
 | [`isMergeInProgress`](./helpers/gh/github-manager.ts#L985) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L165) |
 | [`isNullableString`](./helpers/gh/github-manager.ts#L1432) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L184) |
 | [`isRebaseInProgress`](./helpers/gh/github-manager.ts#L989) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L166) |
@@ -439,7 +434,6 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`lib/README.md`](./lib/README.md#L1) | file | [./lib/README.md](./lib/README.md#L1) |
 | [`list_packages`](./helpers/packages/create.sh#L180) | function | [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md#L45) |
 | [`listDownloadableRemoteDocuments`](./helpers/remarkable/transfer.ts#L891) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L62) |
-| [`listWorkspaceFiles`](./helpers/kando/kando-vscode-menu-creator.ts#L216) | method/function | [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md#L35) |
 | [`ll`](./partials/aliases#L30) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L21) |
 | [`lla`](./partials/aliases#L28) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L21) |
 | [`load_env`](./cronjobs/git_updates.sh#L94) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L33) |
@@ -501,14 +495,11 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`main`](./helpers/docker/examples/backup.ts#L26) | method/function | [./helpers/docker/examples/DOCUMENTATION.md](./helpers/docker/examples/DOCUMENTATION.md#L18) |
 | [`main`](./helpers/freshrss/export.ts#L652) | method/function | [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md#L40) |
 | [`main`](./helpers/gh/github-manager.ts#L423) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L145) |
-| [`main`](./helpers/kando/kando-vscode-menu-creator.ts#L417) | method/function | [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md#L43) |
 | [`main`](./helpers/logs/cleanup.ts#L682) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L60) |
 | [`main`](./helpers/raindrop.io/getTags.ts#L240) | method/function | [./helpers/raindrop.io/DOCUMENTATION.md](./helpers/raindrop.io/DOCUMENTATION.md#L28) |
 | [`main`](./helpers/remarkable/transfer.ts#L1163) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L69) |
 | [`main`](./helpers/screencaps.ts#L764) | method/function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L52) |
 | [`make_zip_name`](./helpers/packages/create.sh#L239) | function | [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md#L49) |
-| [`makeChildEntry`](./helpers/kando/kando-vscode-menu-creator.ts#L247) | method/function | [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md#L36) |
-| [`menus`](./helpers/kando/kando-vscode-menu-creator.ts#L300) | method/function | [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md#L15) |
 | [`mergeScaleFilter`](./helpers/screencaps.ts#L385) | method/function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L230) |
 | [`moveFile`](./helpers/logs/cleanup.ts#L245) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L41) |
 | [`mv`](./partials/_aliases/system.bash#L13) | alias | [./partials/DOCUMENTATION_aliases.md](./partials/DOCUMENTATION_aliases.md#L37) |
@@ -529,13 +520,11 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`parseArgs`](./helpers/docker/backup-runner.ts#L127) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L37) |
 | [`parseArgs`](./helpers/freshrss/export.ts#L184) | method/function | [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md#L28) |
 | [`parseArgs`](./helpers/gh/github-manager.ts#L439) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L146) |
-| [`parseArgs`](./helpers/kando/kando-vscode-menu-creator.ts#L148) | method/function | [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md#L31) |
 | [`parseArgs`](./helpers/logs/cleanup.ts#L127) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L37) |
 | [`parseArgs`](./helpers/raindrop.io/getTags.ts#L80) | method/function | [./helpers/raindrop.io/DOCUMENTATION.md](./helpers/raindrop.io/DOCUMENTATION.md#L25) |
 | [`parseArgs`](./helpers/screencaps.ts#L652) | method/function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L235) |
 | [`parseArguments`](./helpers/remarkable/transfer.ts#L230) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L45) |
 | [`parseBooleanEnv`](./helpers/remarkable/transfer.ts#L179) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L43) |
-| [`parseCommaList`](./helpers/kando/kando-vscode-menu-creator.ts#L137) | method/function | [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md#L30) |
 | [`parseFormat`](./helpers/screencaps.ts#L319) | method/function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L225) |
 | [`parseIntStrict`](./helpers/screencaps.ts#L340) | method/function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L227) |
 | [`parseJobs`](./helpers/screencaps.ts#L351) | method/function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L228) |
@@ -588,7 +577,6 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`partials/functions`](./partials/functions#L1) | file | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L49) |
 | [`partials/prompt`](./partials/prompt#L1) | file | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L72) |
 | [`pathExists`](./helpers/docker/backup-runner.ts#L205) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L39) |
-| [`pathExists`](./helpers/kando/kando-vscode-menu-creator.ts#L182) | method/function | [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md#L33) |
 | [`pi-reboot`](./partials/aliases#L116) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L41) |
 | [`pi-shutdown`](./partials/aliases#L115) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L41) |
 | [`pick_archiver`](./helpers/web-mirror.sh#L87) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L364) |
@@ -624,7 +612,6 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`printHelp`](./helpers/docker/backup-runner.ts#L96) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L36) |
 | [`printHelp`](./helpers/freshrss/export.ts#L144) | method/function | [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md#L27) |
 | [`printHelp`](./helpers/gh/github-manager.ts#L540) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L147) |
-| [`printHelp`](./helpers/kando/kando-vscode-menu-creator.ts#L75) | method/function | [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md#L27) |
 | [`printHelp`](./helpers/logs/cleanup.ts#L79) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L34) |
 | [`printHelp`](./helpers/remarkable/transfer.ts#L81) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L42) |
 | [`printSummary`](./helpers/api/porkbun-api.ts#L340) | method/function | [./helpers/api/DOCUMENTATION.md](./helpers/api/DOCUMENTATION.md#L27) |
@@ -637,7 +624,6 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`read_and_resolve_package_paths`](./helpers/packages/create.sh#L219) | function | [./helpers/packages/DOCUMENTATION.md](./helpers/packages/DOCUMENTATION.md#L48) |
 | [`read_json_bool`](./cronjobs/synch_downloads.sh#L60) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L61) |
 | [`read_json_str`](./cronjobs/synch_downloads.sh#L54) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L61) |
-| [`readMenuJson`](./helpers/kando/kando-vscode-menu-creator.ts#L195) | method/function | [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md#L34) |
 | [`readOptionValue`](./helpers/remarkable/transfer.ts#L210) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L44) |
 | [`releaseLock`](./helpers/logs/cleanup.ts#L487) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L52) |
 | [`reload`](./partials/aliases#L9) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L17) |
@@ -675,7 +661,6 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`runCommand`](./helpers/logs/cleanup.ts#L204) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L40) |
 | [`runCommand`](./helpers/remarkable/transfer.ts#L456) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L48) |
 | [`safe_slug`](./helpers/web-mirror.sh#L81) | function | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L363) |
-| [`safeJsonPreview`](./helpers/kando/kando-vscode-menu-creator.ts#L129) | method/function | [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md#L29) |
 | [`safeName`](./helpers/docker/backup-runner.ts#L227) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L42) |
 | [`sanitiseFileName`](./helpers/remarkable/transfer.ts#L838) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L60) |
 | [`scp`](./partials/aliases#L57) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L27) |
@@ -696,7 +681,6 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`strip_ansi`](./helpers/daily-reports/commit-report-to-dailynote.sh#L174) | function | [./helpers/daily-reports/DOCUMENTATION.md](./helpers/daily-reports/DOCUMENTATION.md#L53) |
 | [`subl`](./partials/aliases#L81) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L32) |
 | [`sudo`](./partials/aliases#L91) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L35) |
-| [`summariseChange`](./helpers/kando/kando-vscode-menu-creator.ts#L394) | method/function | [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md#L42) |
 | [`sysinfo`](./partials/_aliases/system.bash#L6) | alias | [./partials/DOCUMENTATION_aliases.md](./partials/DOCUMENTATION_aliases.md#L32) |
 | [`sysinfo-cpu`](./partials/_aliases/system.bash#L8) | alias | [./partials/DOCUMENTATION_aliases.md](./partials/DOCUMENTATION_aliases.md#L34) |
 | [`sysinfo-full`](./partials/_aliases/system.bash#L7) | alias | [./partials/DOCUMENTATION_aliases.md](./partials/DOCUMENTATION_aliases.md#L33) |
@@ -711,7 +695,6 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`toFolderSlug`](./helpers/logs/cleanup.ts#L352) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L45) |
 | [`topics`](./helpers/gh/github-manager.ts#L319) | method/function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L9) |
 | [`toRssItem`](./helpers/freshrss/export.ts#L532) | method/function | [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md#L37) |
-| [`updateTargetMenu`](./helpers/kando/kando-vscode-menu-creator.ts#L291) | method/function | [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md#L39) |
 | [`uploadDocument`](./helpers/remarkable/transfer.ts#L701) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L55) |
 | [`uploadToRemarkable`](./helpers/remarkable/transfer.ts#L738) | method/function | [./helpers/remarkable/DOCUMENTATION.md](./helpers/remarkable/DOCUMENTATION.md#L56) |
 | [`usage`](./helpers/gh/label-migration.sh#L13) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L210) |
@@ -739,15 +722,12 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`vlc-prev`](./partials/aliases#L105) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L38) |
 | [`vlc-stop`](./partials/aliases#L107) | alias | [./partials/DOCUMENTATION.md](./partials/DOCUMENTATION.md#L38) |
 | [`vlog`](./cronjobs/git_updates.sh#L43) | function | [./cronjobs/DOCUMENTATION.md](./cronjobs/DOCUMENTATION.md#L33) |
-| [`vlog`](./helpers/kando/kando-vscode-menu-creator.ts#L175) | method/function | [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md#L32) |
 | [`vscode_add_mcp`](./partials/_functions/vscode.bash#L7) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L193) |
 | [`vscode_setup`](./partials/_functions/vscode.bash#L117) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L193) |
 | [`walk`](./helpers/docker/backup-runner.ts#L293) | method/function | [./helpers/docker/DOCUMENTATION.md](./helpers/docker/DOCUMENTATION.md#L47) |
 | [`walk`](./helpers/logs/cleanup.ts#L405) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L49) |
 | [`warn`](./helpers/gh/label-migration.sh#L68) | function | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L213) |
 | [`who_created_branches`](./partials/_functions/git_branch_creator.bash#L6) | function | [./partials/DOCUMENTATION_functions.md](./partials/DOCUMENTATION_functions.md#L115) |
-| [`writeBackup`](./helpers/kando/kando-vscode-menu-creator.ts#L359) | method/function | [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md#L40) |
 | [`writeOutputFile`](./helpers/freshrss/export.ts#L640) | method/function | [./helpers/freshrss/DOCUMENTATION.md](./helpers/freshrss/DOCUMENTATION.md#L39) |
 | [`writeRunArtifacts`](./helpers/api/porkbun-api.ts#L422) | method/function | [./helpers/api/DOCUMENTATION.md](./helpers/api/DOCUMENTATION.md#L29) |
 | [`writeTaskLog`](./helpers/logs/cleanup.ts#L453) | method/function | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L50) |
-| [`writeUpdatedMenu`](./helpers/kando/kando-vscode-menu-creator.ts#L380) | method/function | [./helpers/kando/DOCUMENTATION.md](./helpers/kando/DOCUMENTATION.md#L41) |
