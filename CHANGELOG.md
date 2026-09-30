@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.16.3](https://github.com/davidsneighbour/dotfiles/compare/v2.16.2...v2.16.3) (2026-09-30)
+
+### Fix
+
+* **msgvault:** show sync failures in polybar and ignore retired account ([cfe0b3e](https://github.com/davidsneighbour/dotfiles/commit/cfe0b3e9e999eab82cb3b32a9b5a9c5a48e20be5))
+
 ## [2.16.2](https://github.com/davidsneighbour/dotfiles/compare/v2.16.1...v2.16.2) (2026-09-29)
 
 ### Fix
