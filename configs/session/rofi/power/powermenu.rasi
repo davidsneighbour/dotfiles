@@ -1,4 +1,42 @@
 
+/*****----- Layout -----*****/
+/* How the widgets are nested. The names are the selectors used in this
+ * file (and in the shared theme.rasi). Search for a name to find its rule.
+ *
+ * +- window ------------------------------------------------------------+
+ * |  500px wide, no padding, no border, no radius                       |
+ * | +- mainbox -------------------------------------------------------+ |
+ * | |  children: [ header, listview, message ], no spacing            | |
+ * | | +- header (#header) ------------------------------------------+ | |
+ * | | |  image from theme.rasi, 167px tall (top padding = 500 / 3)  | | |
+ * | | +-------------------------------------------------------------+ | |
+ * | | +- listview --------------------------------------------------+ | |
+ * | | |  4 columns, 1 line, margin 28 28 20 28, spacing 28px        | | |
+ * | | | +- element -+  +- element -+  +- element -+  +- element -+  | | |
+ * | | | | 90 x 90px |  |           |  |           |  |           |  | | |
+ * | | | | +-------+ |  | +-------+ |  | +-------+ |  | +-------+ |  | | |
+ * | | | | |element| |  | |element| |  | |element| |  | |element| |  | | |
+ * | | | | | -text | |  | | -text | |  | | -text | |  | | -text | |  | | |
+ * | | | | +-------+ |  | +-------+ |  | +-------+ |  | +-------+ |  | | |
+ * | | | +-----------+  +-----------+  +-----------+  +-----------+  | | |
+ * | | +-------------------------------------------------------------+ | |
+ * | | +- message ---------------------------------------------------+ | |
+ * | | |  margin 0 15 15 15, padding 15px                            | | |
+ * | | | +- textbox -----------------------------------------------+ | | |
+ * | | | |  "Last Login: ... | Uptime: ..." (the -mesg text)       | | | |
+ * | | | +---------------------------------------------------------+ | | |
+ * | | +-------------------------------------------------------------+ | |
+ * | +-----------------------------------------------------------------+ |
+ * +---------------------------------------------------------------------+
+ *
+ * element states: `element normal.normal`, `element alternate.normal`
+ * (unselected) and `element selected.normal` (highlighted button).
+ *
+ * The confirmation dialogue (confirm_cmd in powermenu.sh) uses the same
+ * widgets, but overrides them with -theme-str: window 350px, header
+ * 117px, children [ header, message, listview ], 2 columns.
+ */
+
 /*****----- Configuration -----*****/
 configuration {
     show-icons:                 false;
@@ -25,7 +63,6 @@ configuration {
 
 /*****----- Main Window -----*****/
 window {
-    transparency:                "real";
     location:                    center;
     anchor:                      center;
     fullscreen:                  false;
@@ -35,7 +72,7 @@ window {
 
     padding:                     0px;
     border:                      0px solid;
-    border-radius:               20px;
+    border-radius:               0px;
     border-color:                @selected;
     cursor:                      "default";
     background-color:            @background;
@@ -54,16 +91,27 @@ mainbox {
     children:                    [ "header", "listview", "message" ];
 }
 
-/* Reuses the shared theme's #header (image) rule; only the corner radius
- * needs to match this window's own 20px instead of the shared 16px, and
- * the height must match this window's own width so the full 3:1 image
+/* Reuses the shared theme's #header (image) rule. The system has no
+ * compositor transparency, so the outer corners have no radius. The
+ * height must match this window's own width so the full 3:1 image
  * shows: width 500px, border 0px -> 500 / 3 = 167px. */
 #header {
-    border-radius:                20px 20px 0px 0px;
+    border-radius:                0px;
     padding:                      167px 0px 0px 0px;
 }
 
 /*****----- Listview -----*****/
+/*
+ * rofi has no flexbox. The nearest match is the listview grid: it splits
+ * its inner width into `columns` equal cells, with `spacing` between them.
+ * To get `justify-content: space-evenly`, the horizontal margin is the
+ * same as the spacing, and both are calculated so that each cell is
+ * exactly one circle wide:
+ *   cell = (width - 2 * margin - (columns - 1) * spacing) / columns
+ *        = (500 - 2 * 28 - 3 * 28) / 4 = 90px
+ * Change these values together with the element size below. The
+ * confirmation dialogue in powermenu.sh does the same for its 2 columns.
+ */
 listview {
     enabled:                     true;
     columns:                     4;
@@ -76,29 +124,54 @@ listview {
     fixed-height:                true;
     fixed-columns:               true;
 
-    spacing:                     15px;
-    margin:                      15px;
+    spacing:                     28px;
+    margin:                      28px 28px 20px 28px;
     background-color:            transparent;
     cursor:                      "default";
 }
 
 /*****----- Elements -----*****/
+/*
+ * Each element is a 90px circle with the icon in its centre. The width
+ * comes from the listview cell above. rofi has no `height` or
+ * `aspect-ratio` for a box, so the height comes from the icon line
+ * (27px for "lucide 24" at the `dpi: 72` in config.rasi) plus the
+ * vertical padding: 28px + 27px + 35px = 90px. The padding is not
+ * symmetric because the glyphs sit 3px low in their line box; this
+ * moves them to the true centre of the circle. If the font, its size,
+ * or the dpi change, measure the line height again and change the
+ * padding. The radius is half the diameter (a `%` radius is taken from
+ * the monitor size, not from the element).
+ */
 element {
     enabled:                     true;
-    padding:                     28px 10px;
-    border-radius:               100%;
+    orientation:                 horizontal;
+    children:                    [ "element-text" ];
+    padding:                     28px 0px 35px 0px;
+    border-radius:               45px;
     background-color:            @background-alt;
     text-color:                  @foreground;
     cursor:                      pointer;
 }
 element-text {
-    font: "lucide 24";
+    font:                        "lucide 24";
     //font:                        "feather bold 32";
+    expand:                      true;
     background-color:            transparent;
     text-color:                  inherit;
     cursor:                      inherit;
     vertical-align:              0.5;
     horizontal-align:            0.5;
+}
+/*
+ * The shared theme sets a transparent background for the normal and
+ * alternate states. These rules come after the import, so they win and
+ * every button shows as a filled circle, not only the selected one.
+ */
+element normal.normal,
+element alternate.normal {
+    background-color:            @background-alt;
+    text-color:                  @foreground;
 }
 element selected.normal {
     background-color:            var(selected);

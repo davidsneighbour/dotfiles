@@ -38,7 +38,7 @@ confirm_cmd() {
     -theme-str 'mainbox {children: [ "header", "message", "listview" ];}' \
     -theme-str 'header {padding: 117px 0px 0px 0px;}' \
     -theme-str 'message {margin: 15px 15px 0px 15px;}' \
-    -theme-str 'listview {columns: 2; lines: 1;}' \
+    -theme-str 'listview {columns: 2; lines: 1; margin: 20px 57px; spacing: 56px;}' \
     -theme-str 'element-text {horizontal-align: 0.5;}' \
     -theme-str 'textbox {horizontal-align: 0.5;}' \
     -dmenu \
