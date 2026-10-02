@@ -1,5 +1,23 @@
 # Changelog
 
+## [2.18.0](https://github.com/davidsneighbour/dotfiles/compare/v2.17.0...v2.18.0) (2026-10-02)
+
+### Feat
+
+* **gh:** add clone-all command to github-manager ([147e80c](https://github.com/davidsneighbour/dotfiles/commit/147e80ccd08224dd8e9b6179b89922d78beb9993))
+
+### Fix
+
+* **rofi:** update power menu design ([bbba32b](https://github.com/davidsneighbour/dotfiles/commit/bbba32b53e85143a9d6ff81a3846507afce0f3d0))
+
+### Build
+
+* **deps:** override basic-ftp to 6.2.1 for get-uri ([0374366](https://github.com/davidsneighbour/dotfiles/commit/037436659193bafbbc232278eab9db152eca459f))
+
+### Chore
+
+* **session:** add Claude desktop launcher and update Thunar shortcuts ([e83ab17](https://github.com/davidsneighbour/dotfiles/commit/e83ab1777815afcdc1239dbb82cf66f7df233aa7))
+
 ## [2.17.0](https://github.com/davidsneighbour/dotfiles/compare/v2.16.3...v2.17.0) (2026-09-30)
 
 ### Feat
