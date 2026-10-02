@@ -83,6 +83,8 @@ This repository keeps its cron plugin locally for managed cron entries:
 Plugin paths are resolved by Dotbot from the repository root because the wrapper
 runs Dotbot with `--base-directory` set to the dotfiles repository.
 
+Cron entries default to `state: present`. Assign a stable `id` when a job command can change, so reapplying a runtime-path update replaces the old job rather than adding another one. Entries without an ID retain their existing command-and-comment identity. Use `state: absent` with the original command and comment to remove that managed job while preserving other entries. The reporting migration uses this in `tools/git-commit-reports/dotbot.yaml`. Run `npm run test:dotbot-crontab` to verify removal and repeated installation without touching the installed crontab.
+
 ## Include chains
 
 Dotbot itself accepts multiple `--config-file` values. The `dotfiles` wrapper

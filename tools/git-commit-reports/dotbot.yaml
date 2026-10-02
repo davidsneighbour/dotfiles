@@ -1,0 +1,21 @@
+---
+- plugins:
+    - configs/dotbot/plugins/crontab.py
+
+- crontab:
+    - state: absent
+      cron: "50 7,15,23 * * *"
+      comment: "create daily repo log in obsidian for previous day"
+      command: ${HOME}/.dotfiles/bashrc/helpers/daily-reports/commit-report-to-dailynote.sh --usernames "$HOME/github.com" --date "$(date -d 'yesterday' +\%F)"  >> "$HOME/.logs/cron/daily-report-cron-$(date +\%Y\%m\%d-\%H\%M\%S).log" 2>&1
+    - state: absent
+      cron: "0 8 * * *"
+      comment: "create daily repo log in obsidian for previous day"
+      command: ${HOME}/github.com/davidsneighbour/notes/.obsidian/scripts/daily-reports/github-daily-report.sh
+    - id: git-commit-reports-daily
+      cron: "0 8 * * *"
+      comment: "sync canonical Git commit archive daily"
+      command: /bin/bash "${HOME}/.dotfiles/tools/git-commit-reports/cron.sh" --node "${HOME}/.nvm/versions/node/v26.8.1/bin/node" --vault "${HOME}/github.com/davidsneighbour/notes" --if-due --quiet
+    - id: git-commit-reports-catch-up
+      cron: "15 * * * *"
+      comment: "catch up missed Git commit archive sync"
+      command: /bin/bash "${HOME}/.dotfiles/tools/git-commit-reports/cron.sh" --node "${HOME}/.nvm/versions/node/v26.8.1/bin/node" --vault "${HOME}/github.com/davidsneighbour/notes" --if-due --quiet

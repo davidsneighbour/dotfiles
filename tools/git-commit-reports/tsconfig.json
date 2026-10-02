@@ -1,0 +1,9 @@
+{
+  "extends": "@dnbhq/tsconfig/cli",
+  "compilerOptions": {
+    "noEmit": true,
+    "strict": true,
+    "noUncheckedIndexedAccess": true
+  },
+  "include": ["src/**/*.ts", "tests/**/*.ts"]
+}

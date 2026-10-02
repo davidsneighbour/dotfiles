@@ -1,6 +1,6 @@
 # Daily reports helpers
 
-This folder contains consolidated helpers for generating commit reports and updating daily notes.
+These are legacy manual helpers for generating commit reports and updating daily notes. Scheduled reporting on locutus uses [the canonical commit archive](../../../tools/git-commit-reports/README.md). Retain these scripts for rollback; do not add new cron entries for them.
 
 ## Scripts
 

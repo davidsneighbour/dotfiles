@@ -15,4 +15,4 @@ config.yaml:
   - config.protected.yaml
 
 host-locutus:
-  - ${HOME}/github.com/davidsneighbour/notes/.obsidian/scripts/daily-reports/dotbot.yaml
+  - ../../tools/git-commit-reports/dotbot.yaml

@@ -1,0 +1,20 @@
+{
+  "name": "@davidsneighbour/git-commit-reports",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Explicit Git commit imports into an Obsidian vault",
+  "scripts": {
+    "import": "node --experimental-strip-types src/cli.ts",
+    "test": "node --experimental-strip-types --test tests/*.test.ts",
+    "typecheck": "tsc --project tsconfig.json",
+    "sync": "bash sync.sh",
+    "archive": "bash sync.sh --archive"
+  },
+  "dependencies": {
+    "yaml": "2.9.0"
+  },
+  "engines": {
+    "node": "^22.0.0 || ^24.0.0 || ^26.0.0"
+  }
+}

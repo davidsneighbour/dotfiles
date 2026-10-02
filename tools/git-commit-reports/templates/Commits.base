@@ -1,0 +1,58 @@
+filters:
+  and:
+    - file.inFolder("23 Eventlog/Github/items")
+    - 'type == "git-commit"'
+formulas:
+  commit: 'file.asLink(title)'
+properties:
+  formula.commit:
+    displayName: Commit
+  date:
+    displayName: Date
+  repositories:
+    displayName: Repositories
+  commit_type:
+    displayName: Type
+  commit_scope:
+    displayName: Scope
+  labels:
+    displayName: Labels
+  status:
+    displayName: Observed status
+  metadata_complete:
+    displayName: Complete metadata
+views:
+  - type: table
+    name: All
+    order: &columns
+      - formula.commit
+      - date
+      - repositories
+      - commit_type
+      - commit_scope
+      - labels
+      - status
+      - metadata_complete
+    sort: &sorting
+      - property: date
+        direction: DESC
+  - type: table
+    name: Current
+    filters: 'status == "reachable"'
+    order: *columns
+    sort: *sorting
+  - type: table
+    name: Unreachable
+    filters: 'status == "unreachable"'
+    order: *columns
+    sort: *sorting
+  - type: table
+    name: Uncertain
+    filters: 'status == "unknown" || metadata_complete != true'
+    order: *columns
+    sort: *sorting
+  - type: table
+    name: Merges
+    filters: 'is_merge == true'
+    order: *columns
+    sort: *sorting

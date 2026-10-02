@@ -24,12 +24,16 @@ class Crontab(dotbot.Plugin):
             cronjob_tokens = []
             legacy_cronjob_rows = []
             for entry in data:
+                state = entry.get("state", "present")
+                if state not in ("present", "absent"):
+                    raise ValueError("Cron state must be present or absent")
                 row = self._format_row(entry)
                 unscoped_row = self._format_unscoped_row(entry)
                 token = self._entry_token(entry)
                 legacy_row = self._format_legacy_row(entry)
-                self._log.lowinfo("Add {}".format(row))
-                cronjob_rows.append(row)
+                self._log.lowinfo("{} {}".format(state, row))
+                if state == "present":
+                    cronjob_rows.append(row)
                 unscoped_cronjob_rows.append(unscoped_row)
                 cronjob_tokens.append(token)
                 legacy_cronjob_rows.append(legacy_row)
@@ -64,7 +68,13 @@ class Crontab(dotbot.Plugin):
         return "{} {} {}".format(entry["cron"], entry["command"], self._comment)
 
     def _entry_token(self, entry):
-        identity = "{}\n{}".format(entry.get("comment", ""), entry["command"])
+        identity = entry.get("id")
+        if identity is not None:
+            if not isinstance(identity, str) or not identity.strip():
+                raise ValueError("Cron id must be a non-empty string")
+            identity = "id:{}".format(identity)
+        else:
+            identity = "{}\n{}".format(entry.get("comment", ""), entry["command"])
         digest = hashlib.sha256(identity.encode("utf-8")).hexdigest()[:12]
         return "{}:{}".format(self._comment, digest)
 
