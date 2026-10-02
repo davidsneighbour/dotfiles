@@ -15,7 +15,7 @@ Documentation=man:xss-lock(1)
 # `systemctl --user import-environment XDG_SESSION_ID` right before starting
 # this unit) — this mirrors upstream's own documented pattern, see
 # /usr/share/doc/xss-lock/xss-lock.service.
-ExecStart=/usr/bin/xss-lock -l -s "${XDG_SESSION_ID}" -- %h/.dotfiles/configs/session/i3lock/lock.sh
+ExecStart=/usr/bin/xss-lock -l -s "${XDG_SESSION_ID}" -- %h/.dotfiles/configs/session/i3/lock.sh
 Restart=on-failure
 RestartSec=2
 

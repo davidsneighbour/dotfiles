@@ -138,7 +138,7 @@ For every automatically started i3-session component:
 | Wallpaper | i3 | `feh --bg-fill configs/session/i3/wallpaper.jpg` | `exec_always` (not wrapped in `\|\| true`) | Fixed repo-committed image. |
 | Polybar | i3 | `configs/session/polybar/launch.sh` | `exec_always` (`sh -c ... \|\| true`) | Non-fatal; i3 remains usable with no bar if Polybar/its config is missing. Its left side includes the Clockify status indicator, which calls `configs/session/clockify/polybar-clockify` and opens the local form on left click. |
 | Enpass | i3 | `/opt/enpass/Enpass --minimize` | `exec` (once per session, see "Screen lock" rationale — no relaunch/re-prompt on restart) | Non-fatal; if Enpass is missing, i3 continues with no error surfaced. Its window is sent to the scratchpad by a `for_window` rule as soon as it appears — see "Window rules". |
-| xss-lock | i3 | `xss-lock --transfer-sleep-lock -- configs/session/i3lock/lock.sh` | `exec` (once per session, see "Screen lock") | Non-fatal to i3; if `xss-lock` is missing, `Super+L`/suspend simply do not lock the screen. |
+| xss-lock | i3 | `xss-lock --transfer-sleep-lock -- configs/session/i3/lock.sh` | `exec` (once per session, see "Screen lock") | Non-fatal to i3; if `xss-lock` is missing, `Super+L`/suspend simply do not lock the screen. |
 | Rofi | user keypress (`Super_L` release, or `$mod+d`) | `rofi -show drun` | `bindsym ... exec` | Non-fatal; a launcher failure does not affect the rest of the session. |
 | Terminal | user keypress (`$mod+Return`) | `xfce4-terminal` | `bindsym ... exec` | Non-fatal. |
 
@@ -547,12 +547,12 @@ Alt+Tab/Super+Tab still go to xfwm4's own default
   live: after this, `loginctl session-status 5` shows the `xss-lock` sleep
   inhibitor (`delay`, "Lock screen first") correctly held against session 5.
 * `lock.sh` resolves its own directory and runs `i3lock --nofork -i
-  configs/session/i3lock/lockscreen.png` with a full path, so it works
+  configs/session/i3/lockscreen.png` with a full path, so it works
   regardless of i3's `exec` environment (same rationale as the
   `Super+Shift+e` powermenu binding). If the installed `i3lock` binary
   supports the i3lock-colour option set, `lock.sh` also applies the
   Dracula-style colours, clock, indicator, and media-key pass-through flags
-  adapted from `configs/session/i3lock/lock2.sh`; vanilla i3lock falls back
+  adapted from `configs/session/i3/lock2.sh`; vanilla i3lock falls back
   to the image-only lock command. `--nofork` is required: xss-lock tracks
   lock/unlock by waiting for the locker process to exit, and i3lock
   daemonises (forks, parent exits immediately) unless told not to — see
@@ -578,14 +578,14 @@ Alt+Tab/Super+Tab still go to xfwm4's own default
 * The Rofi power menu's `lock` entry
   (`configs/session/rofi/power/powermenu.sh`) does not go through
   `xss-lock`/`loginctl`: it prefers `betterlockscreen` if installed, then
-  falls back to calling `configs/session/i3lock/lock.sh` directly (same
+  falls back to calling `configs/session/i3/lock.sh` directly (same
   lockscreen image as `Super+L`), then to a plain `i3lock` with no image if
   neither is present. This keeps the power menu working under XFCE too,
   where `xss-lock` is never started (see "Components that must only run
   under i3").
 * Validated non-interactively (parses, does not open a window):
-  `bash -n configs/session/i3lock/lock.sh`, `shellcheck
-  configs/session/i3lock/lock.sh`, and `i3 -C -c configs/session/i3/config`.
+  `bash -n configs/session/i3/lock.sh`, `shellcheck
+  configs/session/i3/lock.sh`, and `i3 -C -c configs/session/i3/config`.
 
 ## Environment variables relevant to the session
 
@@ -605,7 +605,7 @@ Alt+Tab/Super+Tab still go to xfwm4's own default
 
 * `configs/session/rofi/` — see "Rofi" above.
 * `configs/session/polybar/` and its `launch.sh`.
-* `configs/session/i3lock/lock.sh` and the `xss-lock` daemon that runs it
+* `configs/session/i3/lock.sh` and the `xss-lock` daemon that runs it
   (started via `session-starts.conf`, triggered by `Super+L` and by
   suspend).
 * The i3 config itself (`configs/session/i3/config`) and everything it
