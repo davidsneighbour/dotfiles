@@ -11,6 +11,7 @@
  * - Fetch GitHub repositories for an owner via `gh`
  * - Retrieve repository metadata and tags
  * - Clone repositories filtered by topic
+ * - Clone all repositories of an owner, filtered by visibility and archived state
  *
  * Behaviour:
  * - Global startup failures stop the run
@@ -29,6 +30,8 @@
  *   node github-manager.ts audit --author-email hello@example.com
  *   node github-manager.ts remote-list --owner davidsneighbour
  *   node github-manager.ts clone-by-topic --owner davidsneighbour --topic hugo
+ *   node github-manager.ts clone-all --visibility public
+ *   node github-manager.ts clone-all --visibility private --only-archived
  *   node github-manager.ts sync-all --owner davidsneighbour --topic astro
  */
 
@@ -51,13 +54,19 @@ type CommandName =
   | "audit-manual"
   | "remote-list"
   | "clone-by-topic"
+  | "clone-all"
   | "sync-all";
+
+type ArchivedMode = "exclude" | "include" | "only";
+
+type VisibilityFilter = "all" | "public" | "private" | "internal";
 
 interface CliConfig {
   basePath: string;
   owner: string;
   topicFilters: string[];
-  includeArchived: boolean;
+  archivedMode: ArchivedMode;
+  visibility: VisibilityFilter;
   includeForks: boolean;
   dryRun: boolean;
   verbose: boolean;
@@ -185,6 +194,12 @@ interface RepoOperationResult<T> {
 const DEFAULT_BASE_PATH = "~/github.com/davidsneighbour";
 const DEFAULT_OWNER = "davidsneighbour";
 const DEFAULT_ALLOWED_AUTHOR_EMAILS: string[] = [];
+const VISIBILITY_FILTERS: readonly VisibilityFilter[] = [
+  "all",
+  "public",
+  "private",
+  "internal",
+];
 
 const commandRegistry: Record<CommandName, CommandDefinition> = {
   help: {
@@ -368,6 +383,33 @@ const commandRegistry: Record<CommandName, CommandDefinition> = {
       }
     },
   },
+  "clone-all": {
+    name: "clone-all",
+    description:
+      "Clone all remote repositories of an owner, filtered by visibility and archived state.",
+    run: async ({ config }) => {
+      const repositories = await fetchRemoteRepositories(config);
+
+      if (repositories.length === 0) {
+        log(
+          "warn",
+          `No repositories matched for owner "${config.owner}" (visibility=${config.visibility}, archived=${config.archivedMode}).`,
+        );
+        return;
+      }
+
+      log(
+        "info",
+        `Found ${repositories.length} repositories for "${config.owner}" (visibility=${config.visibility}, archived=${config.archivedMode}).`,
+      );
+
+      for (const repo of repositories) {
+        await runRepoOperationAsync(repo.nameWithOwner, "clone", async () => {
+          await cloneRepositoryIfMissing(repo, config);
+        });
+      }
+    },
+  },
   "sync-all": {
     name: "sync-all",
     description:
@@ -441,7 +483,8 @@ function parseArgs(argv: string[]): CliConfig {
     basePath: expandHomeDirectory(DEFAULT_BASE_PATH),
     owner: DEFAULT_OWNER,
     topicFilters: [],
-    includeArchived: false,
+    archivedMode: "exclude",
+    visibility: "all",
     includeForks: false,
     dryRun: false,
     verbose: false,
@@ -509,8 +552,27 @@ function parseArgs(argv: string[]): CliConfig {
       }
 
       case "--include-archived":
-        config.includeArchived = true;
+        config.archivedMode = resolveArchivedMode(
+          config.archivedMode,
+          "include",
+        );
         break;
+
+      case "--only-archived":
+        config.archivedMode = resolveArchivedMode(config.archivedMode, "only");
+        break;
+
+      case "--visibility": {
+        const value = rest[index + 1];
+        if (!value || !isVisibilityFilter(value)) {
+          throw new Error(
+            `--visibility requires one of: ${VISIBILITY_FILTERS.join(", ")}.`,
+          );
+        }
+        config.visibility = value;
+        index += 1;
+        break;
+      }
 
       case "--include-forks":
         config.includeForks = true;
@@ -536,6 +598,23 @@ function parseArgs(argv: string[]): CliConfig {
   return config;
 }
 
+function resolveArchivedMode(
+  current: ArchivedMode,
+  requested: ArchivedMode,
+): ArchivedMode {
+  if (current !== "exclude" && current !== requested) {
+    throw new Error(
+      "--include-archived and --only-archived cannot be used together.",
+    );
+  }
+
+  return requested;
+}
+
+function isVisibilityFilter(value: string): value is VisibilityFilter {
+  return (VISIBILITY_FILTERS as readonly string[]).includes(value);
+}
+
 function printHelp(): void {
   const commandName = getCommandName();
 
@@ -552,6 +631,7 @@ Commands:
   audit-manual      Run audit and print only repositories needing manual intervention
   remote-list       List remote repositories with metadata and tags
   clone-by-topic    Clone remote repositories filtered by topic
+  clone-all         Clone all remote repositories of the owner
   sync-all          Pull, status, audit, and optionally clone-by-topic
   help              Show this help output
 
@@ -562,7 +642,10 @@ Options:
                           Default: ${DEFAULT_OWNER}
   --topic <topic>         Topic filter, repeatable
   --author-email <email>  Allowed commit author email, repeatable
+  --visibility <value>    Remote visibility filter: all, public, private, internal
+                          Default: all
   --include-archived      Include archived repositories
+  --only-archived         Only archived repositories
   --include-forks         Include fork repositories
   --dry-run               Print actions without changing anything
   --verbose               Show additional output
@@ -576,6 +659,8 @@ Examples:
   ${commandName} audit-manual --author-email patrick@example.com
   ${commandName} remote-list --owner davidsneighbour
   ${commandName} clone-by-topic --owner davidsneighbour --topic hugo --topic astro
+  ${commandName} clone-all --visibility public
+  ${commandName} clone-all --visibility private --only-archived --dry-run
   ${commandName} sync-all --topic hugo --author-email hello@example.com
 `.trim(),
   );
@@ -1275,8 +1360,14 @@ async function fetchRemoteRepositories(
     ].join(","),
   ];
 
-  if (!config.includeArchived) {
+  if (config.archivedMode === "exclude") {
     args.push("--no-archived");
+  } else if (config.archivedMode === "only") {
+    args.push("--archived");
+  }
+
+  if (config.visibility !== "all") {
+    args.push("--visibility", config.visibility);
   }
 
   if (!config.includeForks) {

@@ -125,7 +125,7 @@ Documentation status: this is an existing Markdown document. The implementation-
 
 ### `gh/github-manager.ts`
 
-GitHub repository manager for inventory, pull, status, audit, remote listing, topic cloning, and sync-all workflows.
+GitHub repository manager for inventory, pull, status, audit, remote listing, topic cloning, clone-all, and sync-all workflows.
 
 CLI option notes:
 
@@ -133,18 +133,22 @@ CLI option notes:
 * --owner NAME — GitHub owner/user.
 * --topic TOPIC — topic filter; repeatable.
 * --author-email EMAIL — allowed author email; repeatable.
+* --visibility VALUE — remote visibility filter: all, public, private, or internal.
 * --include-archived — include archived repos.
+* --only-archived — only archived repos.
 * --include-forks — include forks.
 * --dry-run — preview changes.
 * --verbose — extra output.
 * --help — show help.
-* Commands: inventory, pull, status, audit, audit-manual, remote-list, clone-by-topic, sync-all, help.
+* Commands: inventory, pull, status, audit, audit-manual, remote-list, clone-by-topic, clone-all, sync-all, help.
 
 Functions/methods defined:
 
 * `main`
 * `parseArgs`
 * `printHelp`
+* `resolveArchivedMode`
+* `isVisibilityFilter`
 * `getCommandName`
 * `isCommandName`
 * `expandHomeDirectory`

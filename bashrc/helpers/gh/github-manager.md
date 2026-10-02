@@ -19,6 +19,7 @@ It is built to work with a local repository root such as `~/github.com/davidsnei
 * Query GitHub repositories for a given owner via `gh`
 * Retrieve repository metadata such as description, homepage, visibility, default branch, topics, latest release, and tags
 * Clone repositories that match one or more GitHub repository topics
+* Clone all repositories of an owner, filtered by visibility and archived state
 * Continue with the next repository when a single repository fails during `pull`, `status`, `audit`, or clone operations
 
 ## Requirements
@@ -337,6 +338,36 @@ Current behaviour for multiple topics is strict matching:
 
 * a repository must contain *all* requested topics to match
 
+### `clone-all`
+
+Clone all repositories of the configured owner from GitHub.
+
+Use `--visibility` and the archived options to select which repositories to clone. Forks are excluded unless `--include-forks` is supplied.
+
+If the local destination folder already exists, the repository is skipped.
+
+If cloning a particular repository fails, the script reports the error and continues with the next one.
+
+Only public, unarchived repositories:
+
+```bash
+node github-manager.ts clone-all --visibility public
+```
+
+Only private, archived repositories:
+
+```bash
+node github-manager.ts clone-all --visibility private --only-archived
+```
+
+All repositories, including archived ones, as a dry run:
+
+```bash
+node github-manager.ts clone-all --include-archived --dry-run
+```
+
+The local destination is `<base-path>/<repository-name>`. When you use `--owner` for a different account, also set `--base-path`, otherwise the repositories are cloned into the default `~/github.com/davidsneighbour` folder.
+
 ### `sync-all`
 
 Run a combined workflow:
@@ -415,6 +446,18 @@ node github-manager.ts audit \
   --author-email hello@davidsneighbour.com
 ```
 
+### `--visibility <value>`
+
+Filter remote GitHub queries by repository visibility. Allowed values are `all`, `public`, `private`, and `internal`.
+
+Default: `all`
+
+Example:
+
+```bash
+node github-manager.ts clone-all --visibility public
+```
+
 ### `--include-archived`
 
 Include archived repositories in remote GitHub queries.
@@ -425,6 +468,18 @@ Example:
 
 ```bash
 node github-manager.ts remote-list --include-archived
+```
+
+### `--only-archived`
+
+Show or clone only archived repositories in remote GitHub queries.
+
+You cannot use this option together with `--include-archived`.
+
+Example:
+
+```bash
+node github-manager.ts clone-all --only-archived
 ```
 
 ### `--include-forks`

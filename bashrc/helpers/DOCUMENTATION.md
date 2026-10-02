@@ -457,7 +457,7 @@ See [`gh/DOCUMENTATION.md`](./gh/DOCUMENTATION.md).
 * `gh/git-verify-committer.sh`: Validates Git commit author/committer identity for recent commits.
 * `gh/git-verify-identity.sh`: Validates the local repository Git identity configuration.
 * `gh/github-manager.md`: Existing detailed guide for github-manager.ts.
-* `gh/github-manager.ts`: GitHub repository manager for inventory, pull, status, audit, remote listing, topic cloning, and sync-all workflows.
+* `gh/github-manager.ts`: GitHub repository manager for inventory, pull, status, audit, remote listing, topic cloning, clone-all, and sync-all workflows.
 * `gh/label-migration.sh`: Migrates GitHub issue/PR labels between repositories or from a definition source using gh.
 
 ### `logs/`
