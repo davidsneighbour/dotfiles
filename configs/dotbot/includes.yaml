@@ -13,6 +13,3 @@
 config.yaml:
   # - ${HOME}/github.com/davidsneighbour/example-project/dotbot.yaml
   - config.protected.yaml
-
-host-locutus:
-  - ../../tools/git-commit-reports/dotbot.yaml

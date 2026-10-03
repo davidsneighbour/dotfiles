@@ -1,7 +1,6 @@
 paths=[
     "_lib",
     "api",
-    "daily-reports",
     "docker",
     "freshrss",
     "gh",

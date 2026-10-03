@@ -1,0 +1,21 @@
+{
+  // Repository-specific markdownlint-cli2 options. Rules and custom rules come
+  // from @dnbhq/markdownlint-config, which every lint call passes via
+  // `--config`; markdownlint-cli2 merges this file on top of it. Top-level
+  // properties replace the shared ones, so `ignores` must repeat the shared
+  // `node_modules` entry.
+  "ignores": [
+    "**/node_modules",
+    "CHANGELOG.md",
+    "configs/fonts",
+    "configs/session/fonts",
+    "configs/theme/Dracula",
+    "configs/system/sublime-text/Packages/Dracula Color Scheme",
+    "containers",
+    "logs",
+    "protected",
+    "scratch",
+    "configs/session/conky/scratch",
+    "configs/session/polybar/scratch"
+  ]
+}

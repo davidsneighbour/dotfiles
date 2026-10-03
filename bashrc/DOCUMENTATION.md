@@ -68,7 +68,6 @@ Important grouped docs:
 * [`helpers/_lib/DOCUMENTATION.md`](./helpers/_lib/DOCUMENTATION.md)
 * [`helpers/api/DOCUMENTATION.md`](./helpers/api/DOCUMENTATION.md)
 * [`helpers/bash/DOCUMENTATION.md`](./helpers/bash/DOCUMENTATION.md)
-* [`helpers/daily-reports/DOCUMENTATION.md`](./helpers/daily-reports/DOCUMENTATION.md)
 * [`helpers/docker/DOCUMENTATION.md`](./helpers/docker/DOCUMENTATION.md)
 * [`helpers/docker/examples/DOCUMENTATION.md`](./helpers/docker/examples/DOCUMENTATION.md)
 * [`helpers/freshrss/DOCUMENTATION.md`](./helpers/freshrss/DOCUMENTATION.md)

@@ -15,7 +15,6 @@ Bash helpers are standalone helper commands unless noted otherwise. Several Type
 * [`api/`](./api/DOCUMENTATION.md)
 * [`ai-usage/`](./ai-usage/DOCUMENTATION.md)
 * [`bash/`](./bash/DOCUMENTATION.md)
-* [`daily-reports/`](./daily-reports/DOCUMENTATION.md)
 * [`docker/`](./docker/DOCUMENTATION.md)
 * [`docker/examples/`](./docker/examples/DOCUMENTATION.md)
 * [`freshrss/`](./freshrss/DOCUMENTATION.md)
@@ -417,14 +416,6 @@ See [`api/DOCUMENTATION.md`](./api/DOCUMENTATION.md).
 See [`bash/DOCUMENTATION.md`](./bash/DOCUMENTATION.md).
 
 * `bash/startup-profiler.sh`: Profiles Bash startup with xtrace timestamps and writes a TSV report of slow startup lines.
-
-### `daily-reports/`
-
-See [`daily-reports/DOCUMENTATION.md`](./daily-reports/DOCUMENTATION.md).
-
-* `daily-reports/README.md`: Existing overview for daily report helpers.
-* `daily-reports/commit-report-to-dailynote.sh`: Generates commit reports and replaces the marked daily-repo-logs block in matching Obsidian daily notes.
-* `daily-reports/commits-to-notes.sh`: Generates Markdown commit reports for one repository, direct child repositories, or username directory trees.
 
 ### `docker/`
 
