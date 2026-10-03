@@ -48,6 +48,7 @@ at the repo root. This file only documents what lives in this folder.
   instead of raw i3 workspace names. It hides panel/dock windows such as
   the i3 Polybar instance, because they are session infrastructure rather
   than useful focus targets.
+  The Alt+Tab switcher recognises both `Code` and `com.microsoft.VSCode` window classes. Its first column shows the VS Code project name from the window title, or `Code` when no project name is available.
 * `Ctrl+Shift+Alt+F` shows the canonical, singleton Files workspace (a
   two-pane Thunar environment: LEFT is user-controlled, RIGHT is where
   `explore`/`xdg-open`/`gio open` directory requests land). Unlike the code

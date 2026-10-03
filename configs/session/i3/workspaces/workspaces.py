@@ -455,8 +455,8 @@ def command_window_switcher(args: argparse.Namespace) -> int:
     entries = []
     for con_id, _workspace_name, window_class, title in windows:
         label = window_class
-        if window_class.lower() == "code":
-            label = vscode_workspace_label(title) or window_class
+        if window_class.lower() in {"code", "com.microsoft.vscode"}:
+            label = vscode_workspace_label(title) or "Code"
         entries.append(
             (
                 con_id,

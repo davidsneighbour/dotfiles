@@ -405,6 +405,7 @@ Alt+Tab/Super+Tab still go to xfwm4's own default
     focus targets. Windows carrying a `scratch-` prefixed mark (Enpass,
     the scratch terminal) are hidden too, even while shown on a normal
     workspace — see "Scratchpad mark convention" under "Window rules".
+    VS Code windows with either the `Code` or `com.microsoft.VSCode` class show the project name extracted from their title in the first column, with `Code` as the fallback.
   * `workspaces.sh` — the VS Code workspace picker, bound to
     `Ctrl+Shift+W` in `configs/session/i3/configs/applications.conf`.
     With `--dynamic-workspace code`, it creates a temporary i3 workspace,
