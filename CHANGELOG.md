@@ -1,5 +1,26 @@
 # Changelog
 
+## [2.19.0](https://github.com/davidsneighbour/dotfiles/compare/v2.18.0...v2.19.0) (2026-10-03)
+
+### Feat
+
+* **workspace:** add Git commit archive and cron sync ([eefb033](https://github.com/davidsneighbour/dotfiles/commit/eefb033f67efa9076b2c5ad836389881e4a131ff))
+
+### Fix
+
+* remove git commit log event log ([04aa950](https://github.com/davidsneighbour/dotfiles/commit/04aa950b16b96a4de253fff00c757de3125e16ba))
+* update session wallpaper ([fd46ced](https://github.com/davidsneighbour/dotfiles/commit/fd46ced7aa3d7a5abba34e0c652cbfb508170791))
+
+### Build
+
+* **deps:** update dependencies ([f5af07e](https://github.com/davidsneighbour/dotfiles/commit/f5af07ebbb5df2b26e58feb1ac84d1f1f5dbb644))
+* **deps:** update dependencies ([2b7def0](https://github.com/davidsneighbour/dotfiles/commit/2b7def0a39908878eac7e6fe83957738d3f15678))
+
+### Chore
+
+* **deps:** update dependency vite to v8.3.1 ([#583](https://github.com/davidsneighbour/dotfiles/issues/583)) ([9726e8c](https://github.com/davidsneighbour/dotfiles/commit/9726e8c15b80024e4dcb8c94001327b1f0b01aba))
+* **session:** move i3lock files into i3 config directory ([e2445e8](https://github.com/davidsneighbour/dotfiles/commit/e2445e8280a187126b701c400d07c8fda243151a))
+
 ## [2.18.0](https://github.com/davidsneighbour/dotfiles/compare/v2.17.0...v2.18.0) (2026-10-02)
 
 ### Feat
