@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.19.1](https://github.com/davidsneighbour/dotfiles/compare/v2.19.0...v2.19.1) (2026-10-03)
+
+### Fix
+
+* **i3:** adapt to new vscode class name ([a89caf5](https://github.com/davidsneighbour/dotfiles/commit/a89caf5dde0fd8974ce6dd44c21e29bb4d2f4035))
+
 ## [2.19.0](https://github.com/davidsneighbour/dotfiles/compare/v2.18.0...v2.19.0) (2026-10-03)
 
 ### Feat
