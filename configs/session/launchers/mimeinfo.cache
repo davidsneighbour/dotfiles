@@ -1,4 +1,11 @@
 [MIME Cache]
+application/enpasscard=enpass.desktop;
 inode/directory=dnb-file-manager.desktop;
 x-scheme-handler/claude=claude.desktop;com.anthropic.Claude.desktop;
 x-scheme-handler/claude-cli=claude-code-url-handler.desktop;
+x-scheme-handler/cloudkit-7adb8cc6tf.in.sinew.walletx=enpass.desktop;
+x-scheme-handler/enpass=enpass.desktop;
+x-scheme-handler/enpassauth=enpass.desktop;
+x-scheme-handler/enpasscard=enpass.desktop;
+x-scheme-handler/enpassshare=enpass.desktop;
+x-scheme-handler/enpassstart=enpass.desktop;

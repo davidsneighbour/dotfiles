@@ -48,3 +48,7 @@ enough. Most files are installed onto the workstation as symlinks by
 | `xfce` | XFCE keyboard shortcuts and window-manager (`xfwm4`) settings. | Yes — two `xfconf` XML files |
 
 Root-level dotfiles under `configs/system/` (`.hidden`, `.pam_environment`, `.czrc`, `face.icon`, `user-dirs.dirs`, `repository_updates.toml`) are Dotbot-linked or cron-config individually; see `configs/dotbot/config.yaml` for the authoritative list.
+
+## Session colour scheme
+
+[`session/colour-scheme/`](session/colour-scheme/README.md) owns the global dark preference and individual tool compatibility data. i3 and desktop launchers call `bashrc/helpers/session-colour-scheme`; configs are read directly from the repository.

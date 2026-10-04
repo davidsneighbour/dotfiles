@@ -1,4 +1,5 @@
 <!-- markdownlint-disable-next-line title-case-style -->
+<!-- markdownlint-disable-next-line dnb-title-case-style -->
 # i3 session configuration
 
 A minimal, deliberately small i3 starter configuration. It is linked to
@@ -164,3 +165,7 @@ Restart it in place with `Super+Shift+r`, or `i3-msg restart`.
 
 For a broader "is everything installed and running" check, run
 [`check.sh`](./check.sh) (read-only, safe to run from any session).
+
+## Colour scheme
+
+`configs/session-starts.conf` maintains the dark preference through the shared [session colour-scheme layer](../colour-scheme/README.md). Enpass startup and the assistant binding use its per-tool compatibility config. The Enpass override changes only the app environment.

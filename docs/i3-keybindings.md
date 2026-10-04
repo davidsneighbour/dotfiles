@@ -1,4 +1,5 @@
 <!-- markdownlint-disable-next-line title-case-style -->
+<!-- markdownlint-disable-next-line dnb-title-case-style -->
 # i3 keybindings
 
 Authoritative table of every i3 keybinding defined in
@@ -21,7 +22,7 @@ or toggling an individual application must use `Ctrl+Shift+Alt+<key>`
 | `Ctrl+Shift+Alt+S` | Launch/focus Sublime Text (`/usr/bin/subl`) |
 | `Ctrl+Shift+Alt+I` | Click a window, then show its WM_CLASS/role/title/PID/geometry in a floating terminal (`configs/session/i3/window-inspector.sh`) — see "Window rules" in `SESSION.md` |
 | `Ctrl+Shift+Alt+N` | Move the focused managed window to a freshly created temporary icon workspace (`configs/session/i3/workspaces/workspaces.py promote-focused`) |
-| `Ctrl+Shift+Alt+E` | Toggle Enpass in/out of the scratchpad on the current workspace (`[con_mark="scratch-enpass"] scratchpad show`) — see "Window rules" in `SESSION.md` |
+| `Ctrl+Shift+Alt+E` | Open the Enpass assistant (`session-colour-scheme --tool enpass -- showassistant`) with its app-specific dark-mode compatibility environment |
 | `Ctrl+Shift+Alt+T` | Toggle the persistent scratch terminal in/out of the scratchpad on the current workspace, right half of the focused output (`configs/session/terminal/scratch-terminal --toggle`) — see "Scratch terminal" in `SESSION.md` |
 | `Ctrl+Shift+Alt+F` | Show the canonical, singleton Files workspace — a two-pane Thunar environment (LEFT user-controlled, RIGHT the external-open target) invoked via `configs/session/filemanager/file-manager --show` — see "Canonical Files workspace" in `SESSION.md` |
 | `Alt+Tab` (`Mod1+Tab`) | Open YAML-aware Rofi window switcher, all workspaces (`configs/session/rofi/window-switcher.sh`) — see "Rofi" in `SESSION.md` |

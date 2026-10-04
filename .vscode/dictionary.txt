@@ -28,7 +28,6 @@ dnbhq
 dotbot
 dreamhost
 drun
-enpass
 Enpass
 erasedups
 errexit

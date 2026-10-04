@@ -1,0 +1,118 @@
+#!/bin/bash
+# Apply the session preference, or launch one tool with isolated overrides.
+set -euo pipefail
+
+repo_root="$(builtin cd -- "$(dirname -- "$(readlink -f -- "${BASH_SOURCE[0]}")")/../.." && pwd)"
+config_root="${repo_root}/configs/session/colour-scheme"
+# shellcheck source=bashrc/lib/00-core/dnb-core-colors.bash
+source "${repo_root}/bashrc/lib/00-core/dnb-core-colors.bash"
+# shellcheck source=bashrc/lib/00-core/dnb-core-log.bash
+source "${repo_root}/bashrc/lib/00-core/dnb-core-log.bash"
+
+usage() {
+  cat <<'HELP'
+Usage: session-colour-scheme --apply [--verbose | --quiet]
+       session-colour-scheme --tool NAME [--verbose | --quiet] -- [APP ARGUMENTS...]
+
+--apply       Maintain the global prefer-dark setting (no desktop identity change).
+--tool NAME   Launch a configured tool with process-local environment overrides.
+--verbose     Log diagnostics; also enabled by DNB_VERBOSE=1.
+--quiet       Disable verbose logging, including DNB_VERBOSE.
+--help        Show this help. App arguments must follow --.
+HELP
+}
+fail() {
+  printf 'session-colour-scheme: %s\n' "${1}" >&2
+  usage >&2
+  exit 1
+}
+
+mode=''
+tool=''
+quiet='false'
+while [[ ${#} -gt 0 ]]; do
+  case "${1}" in
+  --help)
+    usage
+    exit 0
+    ;;
+  --apply)
+    [[ -z "${mode}" ]] || fail 'Choose only one mode.'
+    mode='apply'
+    shift
+    ;;
+  --tool)
+    [[ -z "${mode}" && ${#} -ge 2 ]] || {
+      usage >&2
+      fail '--tool requires a name and no other mode.'
+    }
+    mode='tool'
+    tool="${2}"
+    shift 2
+    ;;
+  --verbose)
+    export DNB_VERBOSE=1
+    shift
+    ;;
+  --quiet)
+    quiet='true'
+    shift
+    ;;
+  --)
+    shift
+    break
+    ;;
+  *)
+    usage >&2
+    fail "Unknown option: ${1}"
+    ;;
+  esac
+done
+[[ -n "${mode}" ]] || {
+  usage
+  exit 1
+}
+if [[ "${quiet}" == 'true' ]]; then unset DNB_VERBOSE; fi
+if [[ "${DNB_VERBOSE:-}" == '1' ]]; then
+  mkdir -p -- "${HOME}/.logs/colour-scheme"
+  DNB_SETUP_LOG_FILE="${HOME}/.logs/colour-scheme/$(date +%Y%m%d-%H%M%S).log"
+  __LOGFILE="${DNB_SETUP_LOG_FILE}"
+  dnb_log_init >/dev/null
+  dnb_log info "Colour-scheme mode: ${mode}" >&2
+fi
+
+if [[ "${mode}" == 'apply' ]]; then
+  [[ ${#} -eq 0 ]] || fail '--apply does not accept app arguments.'
+  [[ -r "${config_root}/preference" ]] || fail 'Missing session preference file.'
+  preference="$(cat -- "${config_root}/preference")"
+  [[ "${preference}" == 'prefer-dark' ]] || fail 'Only prefer-dark is supported by this session.'
+  command -v gsettings >/dev/null || fail 'Install gsettings (libglib2.0-bin) to apply the preference.'
+  current="$(gsettings get org.gnome.desktop.interface color-scheme)" || fail 'Cannot read the GNOME colour-scheme setting.'
+  if [[ "${current}" != "'${preference}'" ]]; then
+    gsettings writable org.gnome.desktop.interface color-scheme | /bin/grep -qx true || fail 'The colour-scheme setting is not writable.'
+    gsettings set org.gnome.desktop.interface color-scheme "${preference}" || fail 'Cannot set prefer-dark.'
+    [[ "$(gsettings get org.gnome.desktop.interface color-scheme)" == "'${preference}'" ]] || fail 'prefer-dark did not persist; check dconf permissions.'
+  fi
+  exit 0
+fi
+
+[[ "${tool}" =~ ^[a-z0-9][a-z0-9-]*$ ]] || fail 'Tool names must contain lowercase letters, digits, or hyphens.'
+profile="${config_root}/tools/${tool}.conf"
+[[ -r "${profile}" ]] || fail "Missing tool config: ${profile}"
+executable=''
+overrides=()
+while IFS= read -r line || [[ -n "${line}" ]]; do
+  [[ -z "${line}" || "${line}" == \#* ]] && continue
+  [[ "${line}" =~ ^[a-zA-Z_][a-zA-Z0-9_]*= ]] || fail "Invalid assignment in ${profile}"
+  key="${line%%=*}"
+  value="${line#*=}"
+  if [[ "${key}" == 'executable' ]]; then
+    [[ -z "${executable}" ]] || fail "Duplicate executable in ${profile}"
+    executable="${value}"
+  else
+    overrides+=("${line}")
+  fi
+done <"${profile}"
+[[ "${executable}" == /* && -x "${executable}" && ! -d "${executable}" ]] || fail "Tool executable is missing or not executable: ${executable}"
+# env applies assignments only to the child; config values are never evaluated.
+exec /usr/bin/env -- "${overrides[@]}" "${executable}" "${@}"

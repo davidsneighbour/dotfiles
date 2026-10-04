@@ -5,6 +5,7 @@ This file is the central documentation map for every helper command, support fil
 The implementation remains authoritative. Existing README or Markdown files are referenced from the relevant sections, and undocumented implementation details are summarised here.
 
 <!-- markdownlint-disable-next-line title-case-style -->
+<!-- markdownlint-disable-next-line dnb-title-case-style -->
 ## Execution and TypeScript note
 
 Bash helpers are standalone helper commands unless noted otherwise. Several TypeScript files have Node shebangs but are still `.ts` source files; run them with the repository `node-run` helper, a Node version that supports direct type stripping, `ts-node`, or an equivalent TypeScript runner. Do not assume plain `node file.ts` works on older Node releases.
@@ -487,3 +488,7 @@ No dedicated documentation file; run via `npm run test:shell`.
 
 * `tests/dotfiles-includes-test.sh`: Sources the `dotfiles` helper and asserts its internal include/config-resolution functions behave correctly.
 * `tests/desktop-helpers-health-check.sh`: Smoke-checks desktop helper scripts and local config references without launching a desktop session.
+
+### `session-colour-scheme`
+
+Applies the i3 dark preference with `--apply`, or launches a configured tool with `--tool NAME -- [arguments]`. See [the configuration and extension guide](../../configs/session/colour-scheme/README.md). Internal `usage` prints help; `fail` reports an actionable error on stderr and exits non-zero.
