@@ -122,6 +122,35 @@ test("reports regenerate identically, use Bangkok dates and ISO weeks, clean sta
     );
     assert.deepEqual(generateReports(db, output), { files: 4, removed: 0 });
     assert.equal(readFileSync(day, "utf8"), first);
+    const addExample = db.prepare(`INSERT INTO commits
+      (repository_id, hash, author_name, author_email, author_date, committer_name,
+       committer_email, committer_date, subject, body, parent_count, collected_at)
+      SELECT repository_id, ?, author_name, author_email, author_date, committer_name,
+       committer_email, committer_date, ?, body, parent_count, collected_at
+      FROM commits WHERE hash=?`);
+    for (let index = 0; index < 25; index++) {
+      addExample.run(
+        index.toString(16).padStart(40, "0"),
+        `rank-${index}`,
+        "a".repeat(40),
+      );
+    }
+    generateReports(db, output);
+    for (const file of [
+      day,
+      join(output, "weekly", "2026-W40.md"),
+      join(output, "monthly", "2026-10.md"),
+      join(output, "repositories", `${id}.md`),
+    ]) {
+      const report = readFileSync(file, "utf8");
+      assert.match(report, /Commits: 26/);
+      const examples = report
+        .split("\n")
+        .filter((line) => line.startsWith("* "));
+      assert.equal(examples.length, 20);
+      assert.match(examples[0] ?? "", /rank-0 /);
+      assert.match(examples[19] ?? "", /rank-19 /);
+    }
     writeFileSync(join(output, "personal.md"), "Keep this");
     db.prepare("UPDATE commits SET committer_date=?").run(
       "2026-10-04T18:30:00Z",

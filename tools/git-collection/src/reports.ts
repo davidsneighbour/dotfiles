@@ -68,16 +68,33 @@ export function generateReports(
         count(DISTINCT repository_id) AS repositories, count(DISTINCT author_email) AS authors
         FROM v_commits GROUP BY ${dimension.expression} ORDER BY label`)
         .all();
+      const examplesByGroup = new Map<
+        string,
+        { repository: unknown; hash: unknown; subject: unknown }[]
+      >();
+      const recent = db.prepare(`SELECT label, repository, hash, subject FROM (
+        SELECT ${dimension.expression} AS label, repository, hash, subject,
+        row_number() OVER (PARTITION BY ${dimension.expression}
+          ORDER BY unixepoch(committer_date) DESC, hash) AS position
+        FROM v_commits
+      ) WHERE position <= 20 ORDER BY label, position`);
+      for (const commit of recent.iterate()) {
+        const label = String(commit.label);
+        const examples = examplesByGroup.get(label) ?? [];
+        examples.push({
+          repository: commit.repository,
+          hash: commit.hash,
+          subject: commit.subject,
+        });
+        examplesByGroup.set(label, examples);
+      }
       for (const group of groups) {
         const filename = `${dimension.folder}/${String(group.label)}.md`;
         if (!filePattern.test(filename))
           throw new Error(
             "Invalid report date or repository ID. Check catalogue metadata.",
           );
-        const examples = db
-          .prepare(`SELECT repository, hash, subject FROM v_commits WHERE ${dimension.expression}=?
-          ORDER BY unixepoch(committer_date) DESC, hash LIMIT 20`)
-          .all(group.label ?? null);
+        const examples = examplesByGroup.get(String(group.label)) ?? [];
         const title =
           dimension.folder === "repositories"
             ? (examples[0]?.repository ?? group.label)

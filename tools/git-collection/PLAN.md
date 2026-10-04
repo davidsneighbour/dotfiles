@@ -20,7 +20,7 @@ Updated: 4 October 2026. The folder-local implementation, initial live backfill,
 * [x] Milestone 10: Resumable statistics and file enrichment pass for unusual paths, binary files, merges, empty commits, and failed batches. Partial clones do not fetch missing blobs. Tags, branch containment, conventional commit fields, and GitHub data remain optional future work.
 * [ ] Milestone 11: Daily, ISO-weekly, monthly, and repository summaries pass deterministic regeneration, stale-file removal, and ownership checks. Live Obsidian output is pending because a vault destination is outside the folder-only scope.
 
-Implemented commands and complete usage are in [README.md](README.md). Runtime databases, interface dependencies, and fixtures are ignored under `state/`; generated reports are ignored under `reports/`. A folder-local Markdown configuration excludes runtime dependencies and generated reports from source-documentation linting. The configured roots remain the five explicit dotfiles repositories. The installed schedules refresh metadata, file enrichment, and local reports under one lock; existing jobs remain unchanged.
+Implemented commands and complete usage are in [README.md](README.md). Runtime databases, interface dependencies, and fixtures are ignored under `state/`; generated reports are ignored under `reports/`. A folder-local Markdown configuration excludes runtime dependencies and generated reports from source-documentation linting. After the user approved wider collection, the configured roots now cover 360 repositories under the selected parent directory, retaining the protected dotfiles target. The installed schedules refresh metadata, file enrichment, and local reports under one lock; existing jobs remain unchanged.
 
 ### Verification
 
@@ -28,7 +28,7 @@ Verified on 4 October 2026 with Node 26.8.1 and Git 2.53.0: all 16 tests pass, s
 
 Measured in the latest synthetic 100,000-commit fixture: initial import 4,910 ms; unchanged scan 25 ms; phrase search 0.81 ms; database size 61,063,168 bytes. These are measurements of one local fixture run, not estimates for the live repository collection. Live scope measurements are recorded below.
 
-### Live scope and results
+### Initial dotfiles pilot
 
 The user selected `~/github.com/davidsneighbour/` and excluded everything except `dotfiles*` for now. `config.local.json` contains the verified real paths of its five current matching directory entries, with `maxDepth: 0` and no additional exclusions. All other projects and nested repositories are excluded by this explicit root list. New matching directories will not be added automatically. `dotfiles-protected` is a symlink, so its verified target is supplied directly; discovery does not traverse the link.
 
@@ -47,7 +47,13 @@ The requested scope was rechecked and scanned again on 4 October 2026: five repo
 
 File enrichment completed for all 2,003 commits without failures and stored 301,914 changed-file records. A repeat enrichment skipped all completed records. Reports produced 480 files, and repeat generation passed. Six Datasette HTTP checks pass against the live catalogue. Integrity verification passes, and an additional verified snapshot includes the completed enrichment.
 
-Current database: `state/catalogue.sqlite` (101,158,912 bytes after enrichment). Live results and the latest snapshot path are recorded in `state/live-validation.json`. The snapshot/restore/rebuild comparison files are under `state/recovery/2026-10-04T04-07-01-582Z/`; the enriched snapshot is under `state/backups/`. Configuration, databases, snapshots, reports, and validation state remain private local, gitignored files inside this folder.
+Initial pilot database: `state/catalogue.sqlite` (101,158,912 bytes after enrichment). Live results and the latest snapshot path are recorded in `state/live-validation.json`. The snapshot/restore/rebuild comparison files are under `state/recovery/2026-10-04T04-07-01-582Z/`; the enriched snapshot is under `state/backups/`. Configuration, databases, snapshots, reports, and validation state remain private local, gitignored files inside this folder.
+
+### Approved wider scope
+
+On 4 October 2026 the user approved moving beyond the dotfiles pilot. Discovery under `~/github.com/davidsneighbour/` at depth one reported no errors. `config.local.json` now lists 360 verified real repository roots, including the existing `dotfiles/protected` target, with `maxDepth: 0`. This explicit inventory excludes nested repositories and symlink traversal; new repositories need a configuration update. The previous five-root configuration is retained in ignored `state/config-dotfiles-only.json`, and the verified pre-expansion snapshot is `state/backups/before-wide-scope-20261004.sqlite`.
+
+The backfill scanned all 360 repositories without failures, added 294,357 commits in 30,902 ms, and brought the catalogue to 296,362 commits. Integrity verification passes. A repeat scan added zero commits; six empty repositories have no saved ref tips and are reported as full scans with zero commits. None of the 360 repositories is shallow. Optional file enrichment advances by 500 commits per scheduled run and is incomplete for the wider history. Reports use all collected metadata. The initial wide report run exposed repeated full scans per report; recent examples now use one window query per report type. All 16 tests pass, including the per-group 20-example limit and deterministic tie ordering. The complete scheduled run scanned all 360 roots, enriched 500 pending commits without failures, and generated 10,217 reports. Independent report regeneration matches every generated file. Results are recorded in ignored `state/expanded-validation.json`.
 
 ### Scheduled operation
 
@@ -56,8 +62,8 @@ Verified on 4 October 2026: the locutus Dotbot profile defines stable IDs `git-c
 ### Next actions
 
 1. Manual collection is ready: use the commands in [README.md](README.md) with `config.local.json` and `state/catalogue.sqlite`.
-2. Review the local reports and catalogue before widening discovery. The cron jobs are installed and verified; observe consecutive daily executions in `~/.logs/git-collection/`. Keep the five explicit roots until the user authorises wider collection.
-3. If Obsidian reports are wanted, the user supplies an owned vault subfolder and authorises that destination. The 480 current reports already exist inside this folder and can be regenerated safely.
+2. The wider scope is approved and configured. Review the expanded reports and observe consecutive daily executions in `~/.logs/git-collection/`. Optional file enrichment continues in bounded batches.
+3. If Obsidian reports are wanted, the user supplies an owned vault subfolder and authorises that destination. Generated local reports already exist inside this folder and can be regenerated safely.
 
 ### Milestone 1 — specification and data model
 

@@ -6,9 +6,9 @@ See [PLAN.md](PLAN.md) for current progress, [SCHEMA.md](SCHEMA.md) for collecti
 
 ## Current local scope
 
-The initial live catalogue is `tools/git-collection/state/catalogue.sqlite`. Its ignored `config.local.json` lists the five currently matched `dotfiles*` entries under `~/github.com/davidsneighbour/`: `dotfiles`, `dotfiles-ai`, `dotfiles-containers`, `dotfiles-containers-pi`, and `dotfiles-protected`. The last entry is a symlink; the configuration uses its verified real target, `dotfiles/protected`. Each root is scanned at depth zero, so other projects and nested repositories are excluded. New matching directories require an explicit configuration update.
+The live catalogue is `tools/git-collection/state/catalogue.sqlite`. After review of the dotfiles pilot, the user approved wider collection under `~/github.com/davidsneighbour/`. The ignored `config.local.json` lists 360 verified real repository roots: top-level repositories discovered at depth one, plus the existing `dotfiles/protected` target. Collection uses these explicit roots at depth zero, so nested repositories and symlink traversal remain excluded. Newly created repositories need a configuration update.
 
-The live catalogue contains 2,003 commits, with completed file enrichment and 480 generated reports. See [PLAN.md](PLAN.md) for measurements and recovery evidence. To update this scope manually, run:
+The expanded backfill collected 294,357 additional commits without failures, bringing the catalogue to 296,362 commits. File enrichment remains optional and incomplete for the wider history; scheduled updates process up to 500 pending commits per run. Reports cover all collected metadata regardless of enrichment progress. See [PLAN.md](PLAN.md) for verification and the snapshot taken before widening the scope. To update this scope manually, run:
 
 ```bash
 node tools/git-collection/src/cli.ts scan --all --config tools/git-collection/config.local.json --database tools/git-collection/state/catalogue.sqlite
@@ -71,7 +71,7 @@ node tools/git-collection/src/daily.ts --config tools/git-collection/config.loca
 
 For cron, use absolute paths to Node, the runner, the configuration, and the database. Get Node's current path with `node -p 'process.execPath'`; cron does not automatically load an interactive Node version manager. The installed jobs use `/usr/bin/flock -w 300` to serialise scheduled updates. A lock timeout exits unsuccessfully and is reported by cron. `--output` runs collection, resumable file enrichment, and report generation in order, stopping on the first failure and recording each stage in the same log. Without `--output`, the runner only collects metadata.
 
-The locutus host profile in `configs/dotbot/config.host-locutus.yaml` defines two jobs: daily at 08:15 Asia/Bangkok and at startup. Both use the existing five-repository `config.local.json`, `state/catalogue.sqlite`, and local `reports/`. Stable Dotbot IDs allow repeat installation without duplicate jobs. Existing jobs are preserved. The command pins the verified Node 26.8.1 executable; if that version is removed, update its absolute path in the host profile and reapply Dotbot. Inspect installed jobs with `crontab -l`. Run the daily command above with `--output tools/git-collection/reports` to refresh the same review output manually. These jobs read local Git history; they do not fetch repositories or write into an Obsidian vault.
+The locutus host profile in `configs/dotbot/config.host-locutus.yaml` defines two jobs: daily at 08:15 Asia/Bangkok and at startup. Both use the expanded 360-repository `config.local.json`, `state/catalogue.sqlite`, and local `reports/`. Stable Dotbot IDs allow repeat installation without duplicate jobs. Existing jobs are preserved. The command pins the verified Node 26.8.1 executable; if that version is removed, update its absolute path in the host profile and reapply Dotbot. Inspect installed jobs with `crontab -l`. Run the daily command above with `--output tools/git-collection/reports` to refresh the same review output manually. These jobs read local Git history; they do not fetch repositories or write into an Obsidian vault.
 
 ## Backup and recovery
 
@@ -111,7 +111,7 @@ Pruned objects, missing clones, and unavailable shallow or partial-clone objects
 node tools/git-collection/src/cli.ts reports --database tools/git-collection/state/catalogue.sqlite --output tools/git-collection/reports
 ```
 
-The output includes `daily/`, `weekly/`, `monthly/`, and `repositories/`, plus a generated-file manifest. Repository filenames use catalogue UUIDs to avoid collisions. Each summary includes counts and the 20 most recent commits for its group. Dates use Asia/Bangkok, and weekly reports use ISO weeks. Counts include separate clones and retained rewritten history.
+The output includes `daily/`, `weekly/`, `monthly/`, and `repositories/`, plus a generated-file manifest. Repository filenames use catalogue UUIDs to avoid collisions. Each summary includes counts and the 20 most recent commits for its group. Recent examples are gathered in one window query per report type, avoiding a full catalogue scan per report. Dates use Asia/Bangkok, and weekly reports use ISO weeks. Counts include separate clones and retained rewritten history.
 
 Rerunning replaces recognised generated files and removes stale files listed in the previous manifest. Unrelated files remain; unrecognised content at a required report path causes a failure. Symlink destinations are rejected. Files are replaced atomically, but a whole report tree is not replaced as one transaction. Delete the output and rerun to recreate it. Reports can later be written to a dedicated Obsidian subfolder, but no vault is changed by this implementation.
 
