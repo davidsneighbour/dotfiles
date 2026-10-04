@@ -374,8 +374,10 @@ test("daily runner logs consecutive scans, reports failures, and rejects unavail
     const config = join(root, "config.json");
     writeFileSync(config, JSON.stringify({ roots: [repository], maxDepth: 0 }));
     const database = join(root, "catalogue.sqlite");
-    const first = await runDaily({ config, database }, root);
+    const output = join(root, "reports");
+    const first = await runDaily({ config, database, output }, root);
     assert.equal(first.code, 0);
+    assert.match(readFileSync(first.logPath, "utf8"), /Running reports/);
     assert.equal(
       first.logPath.startsWith(join(root, ".logs/git-collection/")),
       true,

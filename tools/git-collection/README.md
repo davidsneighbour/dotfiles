@@ -69,9 +69,9 @@ The daily runner uses the same collector, records summaries, and writes UTC-name
 node tools/git-collection/src/daily.ts --config tools/git-collection/config.local.json --database tools/git-collection/state/catalogue.sqlite --verbose
 ```
 
-For cron, use absolute paths to Node, the runner, the configuration, and the database. Get Node's current path with `node -p 'process.execPath'`; cron does not automatically load an interactive Node version manager. A daily entry and an `@reboot` entry can use the same runner. Overlapping scans are not recommended; SQLite serialises writes and a busy scan can fail visibly instead of making progress.
+For cron, use absolute paths to Node, the runner, the configuration, and the database. Get Node's current path with `node -p 'process.execPath'`; cron does not automatically load an interactive Node version manager. The installed jobs use `/usr/bin/flock -w 300` to serialise scheduled updates. A lock timeout exits unsuccessfully and is reported by cron. `--output` runs collection, resumable file enrichment, and report generation in order, stopping on the first failure and recording each stage in the same log. Without `--output`, the runner only collects metadata.
 
-Cron installation and writes to the real log directory are outside the current folder-only implementation scope. No schedule is installed, and existing reporting jobs remain active. First confirm the live roots and database location, run a successful backfill and consecutive scans, and then integrate the runner with the workstation's cron configuration.
+The locutus host profile in `configs/dotbot/config.host-locutus.yaml` defines two jobs: daily at 08:15 Asia/Bangkok and at startup. Both use the existing five-repository `config.local.json`, `state/catalogue.sqlite`, and local `reports/`. Stable Dotbot IDs allow repeat installation without duplicate jobs. Existing jobs are preserved. The command pins the verified Node 26.8.1 executable; if that version is removed, update its absolute path in the host profile and reapply Dotbot. Inspect installed jobs with `crontab -l`. Run the daily command above with `--output tools/git-collection/reports` to refresh the same review output manually. These jobs read local Git history; they do not fetch repositories or write into an Obsidian vault.
 
 ## Backup and recovery
 

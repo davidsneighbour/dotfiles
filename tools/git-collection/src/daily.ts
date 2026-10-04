@@ -12,13 +12,19 @@ const help = `Daily Git collection
 Usage: node tools/git-collection/src/daily.ts [flags]
   --config PATH     Discovery config (default: ~/.config/git-collection/config.json)
   --database PATH   Database (default: ~/.local/share/git-collection/catalogue.sqlite)
-  --verbose         Also print the collection summary
+  --output PATH     Also enrich files and refresh reports in this owned directory
+  --verbose         Also print update summaries
   --help            Show this help
 Logs: ~/.logs/git-collection/YYYYMMDD-HHMMSS.log (UTC)
 No network requests or Git fetches are made.`;
 
 export async function runDaily(
-  options: { config?: string; database?: string; verbose?: boolean },
+  options: {
+    config?: string;
+    database?: string;
+    output?: string;
+    verbose?: boolean;
+  },
   userDirectory = homedir(),
 ): Promise<{ code: number; logPath: string }> {
   const directory = join(userDirectory, ".logs/git-collection");
@@ -35,26 +41,43 @@ export async function runDaily(
   void logDone.catch(() => undefined);
   try {
     await once(log, "open");
-    const args = [
-      fileURLToPath(new URL("./cli.ts", import.meta.url)),
-      "scan",
-      "--all",
-    ];
-    if (options.config) args.push("--config", resolve(options.config));
-    if (options.database) args.push("--database", resolve(options.database));
-    const child = spawn(process.execPath, args, {
-      stdio: ["ignore", "pipe", "pipe"],
-    });
-    log.on("error", () => child.kill("SIGTERM"));
-    child.stdout.on("data", (chunk: Buffer) => {
-      log.write(chunk);
-      if (options.verbose) process.stdout.write(chunk);
-    });
-    child.stderr.on("data", (chunk: Buffer) => log.write(chunk));
-    const code = await new Promise<number>((resolveExit, reject) => {
-      child.once("error", reject);
-      child.once("close", (exitCode) => resolveExit(exitCode ?? 1));
-    });
+    const commands = [["scan", "--all"]];
+    if (options.output) {
+      commands.push(["enrich", "--files"]);
+      commands.push(["reports", "--output", resolve(options.output)]);
+    }
+    let code = 0;
+    for (const command of commands) {
+      const args = [
+        fileURLToPath(new URL("./cli.ts", import.meta.url)),
+        ...command,
+      ];
+      if (command[0] === "scan" && options.config)
+        args.push("--config", resolve(options.config));
+      if (options.database) args.push("--database", resolve(options.database));
+      log.write(`Running ${command[0]}\n`);
+      const child = spawn(process.execPath, args, {
+        stdio: ["ignore", "pipe", "pipe"],
+      });
+      const stopChild = () => {
+        child.kill("SIGTERM");
+      };
+      log.on("error", stopChild);
+      child.stdout.on("data", (chunk: Buffer) => {
+        log.write(chunk);
+        if (options.verbose) process.stdout.write(chunk);
+      });
+      child.stderr.on("data", (chunk: Buffer) => log.write(chunk));
+      try {
+        code = await new Promise<number>((resolveExit, reject) => {
+          child.once("error", reject);
+          child.once("close", (exitCode) => resolveExit(exitCode ?? 1));
+        });
+      } finally {
+        log.off("error", stopChild);
+      }
+      if (code !== 0) break;
+    }
     return { code, logPath };
   } finally {
     log.end();
@@ -71,6 +94,7 @@ if (
       options: {
         config: { type: "string" },
         database: { type: "string" },
+        output: { type: "string" },
         verbose: { type: "boolean" },
         help: { type: "boolean" },
       },

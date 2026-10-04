@@ -6,13 +6,13 @@
 
 ## Current state
 
-Updated: 4 October 2026. The folder-local implementation, initial live backfill, and live recovery checks are complete. Collection is ready for manual use; daily scheduling remains pending. All task changes are inside `tools/git-collection/`.
+Updated: 4 October 2026. The folder-local implementation, initial live backfill, and live recovery checks are complete. Collection is ready for manual use and scheduled on locutus at startup and daily at 08:15 Asia/Bangkok. The user authorised committing all changes and cron integration; the two jobs are defined in the existing host Dotbot profile.
 
 * [x] Milestone 1: Collection semantics, configuration rules, and versioned schema documented in [SCHEMA.md](SCHEMA.md).
 * [x] Milestone 2: SQLite initialisation, migrations through version 3, status, and integrity verification.
 * [x] Milestone 3: Streaming single-repository importer; 100,000-commit fixture, repeated imports, failed-write rollback, and real SIGKILL recovery pass.
 * [x] Milestone 4: The user-selected `dotfiles*` scope is configured, discovered, and backfilled. All five repositories were collected without failures. Repeat scans and full reconstruction match the live catalogue.
-* [ ] Milestone 5: Incremental ref checkpoints, detached HEAD, history rewriting, pruned checkpoints, shallow clones, failed scans, and disappearing repositories pass. The daily runner passes three consecutive fixture scans, logging, and failure checks. Two unchanged live repeat scans pass. Actual daily operation and cron installation are pending.
+* [ ] Milestone 5: Incremental ref checkpoints, detached HEAD, history rewriting, pruned checkpoints, shallow clones, failed scans, and disappearing repositories pass. The daily runner passes three consecutive fixture scans, logging, and failure checks. Two unchanged live repeat scans pass. Cron installation and a live run with an empty environment pass. Consecutive real daily executions remain an operational acceptance check.
 * [x] Milestone 6: FTS5 search, repository/author/date filters, insert/update/delete synchronisation, and reindex pass.
 * [x] Milestone 7: All seven SQL views are implemented. Bangkok date boundaries pass, and all 12 documented SQL queries execute successfully. See [QUERIES.md](QUERIES.md).
 * [x] Milestone 8: Datasette 0.65.5 table browsing, FTS search, and named queries pass six local HTTP checks. Reproducible interface instructions and an optional HTTP check are in [INTERFACES.md](INTERFACES.md). DBeaver is documented as optional and remains untested on the desktop.
@@ -20,11 +20,11 @@ Updated: 4 October 2026. The folder-local implementation, initial live backfill,
 * [x] Milestone 10: Resumable statistics and file enrichment pass for unusual paths, binary files, merges, empty commits, and failed batches. Partial clones do not fetch missing blobs. Tags, branch containment, conventional commit fields, and GitHub data remain optional future work.
 * [ ] Milestone 11: Daily, ISO-weekly, monthly, and repository summaries pass deterministic regeneration, stale-file removal, and ownership checks. Live Obsidian output is pending because a vault destination is outside the folder-only scope.
 
-Implemented commands and complete usage are in [README.md](README.md). Runtime databases, interface dependencies, and fixtures are ignored under `state/`; generated reports are ignored under `reports/`. A folder-local Markdown configuration excludes runtime dependencies and generated reports from source-documentation linting. The configured roots are explicit, there is no installed schedule, and existing reporting jobs remain unchanged.
+Implemented commands and complete usage are in [README.md](README.md). Runtime databases, interface dependencies, and fixtures are ignored under `state/`; generated reports are ignored under `reports/`. A folder-local Markdown configuration excludes runtime dependencies and generated reports from source-documentation linting. The configured roots remain the five explicit dotfiles repositories. The installed schedules refresh metadata, file enrichment, and local reports under one lock; existing jobs remain unchanged.
 
 ### Verification
 
-Verified on 4 October 2026 with Node 26.8.1 and Git 2.53.0: all 16 tests pass, strict TypeScript checking passes, scoped Biome checks pass, scoped secretlint passes, six Datasette HTTP checks pass, and all 12 documented SQL queries execute. Folder Markdown lint passes. The repository-wide `npm run check` passes its tests, config lint with existing warnings, and typechecks, then stops at 23 Markdown errors in 15 files outside this folder. The separate `npm run lint:shell` passes. Those unrelated files have not been changed by this task.
+Verified on 4 October 2026 with Node 26.8.1 and Git 2.53.0: all 16 tests pass, strict TypeScript checking passes, scoped Biome checks pass, scoped secretlint passes, six Datasette HTTP checks pass, and all 12 documented SQL queries execute. Folder Markdown lint passes. The repository-wide `npm run check` passes its tests, config lint with existing warnings, and typechecks, then stops at 19 existing Markdown errors in 14 files outside this folder after correcting the staged Chrome prototype list style. The separate `npm run lint:shell` passes. Those unrelated files have not been changed by this task.
 
 Measured in the latest synthetic 100,000-commit fixture: initial import 4,910 ms; unchanged scan 25 ms; phrase search 0.81 ms; database size 61,063,168 bytes. These are measurements of one local fixture run, not estimates for the live repository collection. Live scope measurements are recorded below.
 
@@ -49,10 +49,14 @@ File enrichment completed for all 2,003 commits without failures and stored 301,
 
 Current database: `state/catalogue.sqlite` (101,158,912 bytes after enrichment). Live results and the latest snapshot path are recorded in `state/live-validation.json`. The snapshot/restore/rebuild comparison files are under `state/recovery/2026-10-04T04-07-01-582Z/`; the enriched snapshot is under `state/backups/`. Configuration, databases, snapshots, reports, and validation state remain private local, gitignored files inside this folder.
 
+### Scheduled operation
+
+Verified on 4 October 2026: the locutus Dotbot profile defines stable IDs `git-collection-daily` and `git-collection-startup`. The active cron service runs updates at 08:15 Asia/Bangkok and at reboot. All 15 existing crontab rows were preserved. Reapplying the two entries produced an identical crontab without duplicates. The command uses the absolute Node 26.8.1 path and a 300-second flock wait, then scans, enriches files, and regenerates local reports. A live execution with an empty environment discovered exactly five repositories, collected the implementation commit, completed enrichment without failures, and generated 481 reports. Logs use UTC filenames under `~/.logs/git-collection/`. Real day-to-day and reboot execution have not yet been observed.
+
 ### Next actions
 
 1. Manual collection is ready: use the commands in [README.md](README.md) with `config.local.json` and `state/catalogue.sqlite`.
-2. To automate daily collection, the user must extend the folder-only scope for cron/log integration or perform the documented installation. No schedule is installed. Actual consecutive daily runs remain an operational acceptance check.
+2. Review the local reports and catalogue before widening discovery. The cron jobs are installed and verified; observe consecutive daily executions in `~/.logs/git-collection/`. Keep the five explicit roots until the user authorises wider collection.
 3. If Obsidian reports are wanted, the user supplies an owned vault subfolder and authorises that destination. The 480 current reports already exist inside this folder and can be regenerated safely.
 
 ### Milestone 1 — specification and data model
