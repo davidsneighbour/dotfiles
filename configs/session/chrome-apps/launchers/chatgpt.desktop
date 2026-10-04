@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=ChatGPT
+Comment=ChatGPT isolated Chrome app
+Exec=chrome-app --app=chatgpt
+Icon=chatgpt
+Terminal=false
+StartupNotify=true
+StartupWMClass=dnb-chatgpt
+Categories=Network;Development;

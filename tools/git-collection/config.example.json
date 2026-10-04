@@ -1,0 +1,5 @@
+{
+  "roots": ["/path/to/repositories"],
+  "exclude": ["/path/to/repositories/excluded-project"],
+  "maxDepth": 4
+}

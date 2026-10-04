@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Codex
+Comment=Codex isolated Chrome app
+Exec=chrome-app --app=codex
+Icon=codex
+Terminal=false
+StartupNotify=true
+StartupWMClass=dnb-codex
+Categories=Development;

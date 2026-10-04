@@ -1,0 +1,200 @@
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+readonly PROGRAM_NAME="chrome-app"
+readonly DEFAULT_CHROME_BINARY="/opt/google/chrome/google-chrome"
+readonly DEFAULT_CONFIG_DIR="${XDG_CONFIG_HOME:-${HOME}/.config}/chrome-apps/apps"
+readonly DEFAULT_DATA_DIR="${XDG_DATA_HOME:-${HOME}/.local/share}/chrome-apps"
+
+usage() {
+  cat <<'HELP'
+Usage:
+  chrome-app --app NAME [--verbose]
+  chrome-app --list
+  chrome-app --inspect NAME
+  chrome-app --help
+
+Launch a Chrome-hosted web application with its own Chrome user-data directory
+and X11 WM_CLASS.
+
+Options:
+  --app NAME       Launch the named app definition.
+  --list           List available app definitions.
+  --inspect NAME   Print the resolved launch configuration without starting Chrome.
+  --verbose        Print the resolved Chrome command before launching.
+  --help           Show this help text.
+
+Configuration:
+  App definitions are Bash data files named NAME.conf beneath:
+    ${XDG_CONFIG_HOME:-$HOME/.config}/chrome-apps/apps/
+
+  Required variables:
+    APP_NAME="Human-readable name"
+    APP_URL="https://example.com/"
+
+  Optional variables:
+    APP_CLASS="slug"          # defaults to NAME
+    APP_PROFILE="slug"        # defaults to NAME
+    CHROME_BINARY="/path"     # defaults to /opt/google/chrome/google-chrome
+
+Runtime data:
+  Each app receives an independent Chrome user-data directory beneath:
+    ${XDG_DATA_HOME:-$HOME/.local/share}/chrome-apps/NAME/
+HELP
+}
+
+fail() {
+  printf '%s: %s\n' "${PROGRAM_NAME}" "$*" >&2
+  exit 1
+}
+
+validate_slug() {
+  local value="${1}"
+
+  if [[ ! "${value}" =~ ^[a-z0-9][a-z0-9._-]*$ ]]; then
+    fail "invalid app identifier '${value}'; use lowercase letters, numbers, dots, underscores, or hyphens"
+  fi
+}
+
+load_app() {
+  local app_id="${1}"
+  local config_file="${DEFAULT_CONFIG_DIR}/${app_id}.conf"
+
+  validate_slug "${app_id}"
+
+  if [[ ! -r "${config_file}" ]]; then
+    fail "app definition not found: ${config_file}"
+  fi
+
+  APP_NAME=""
+  APP_URL=""
+  APP_CLASS="${app_id}"
+  APP_PROFILE="${app_id}"
+  CHROME_BINARY="${DEFAULT_CHROME_BINARY}"
+
+  # shellcheck source=/dev/null
+  source "${config_file}"
+
+  [[ -n "${APP_NAME}" ]] || fail "APP_NAME is missing in ${config_file}"
+  [[ -n "${APP_URL}" ]] || fail "APP_URL is missing in ${config_file}"
+  [[ "${APP_URL}" =~ ^https?:// ]] || fail "APP_URL must use http:// or https:// in ${config_file}"
+
+  validate_slug "${APP_CLASS}"
+  validate_slug "${APP_PROFILE}"
+
+  if [[ ! -x "${CHROME_BINARY}" ]]; then
+    fail "Chrome executable is not available: ${CHROME_BINARY}"
+  fi
+
+  APP_ID="${app_id}"
+  APP_DATA_DIR="${DEFAULT_DATA_DIR}/${APP_PROFILE}"
+}
+
+list_apps() {
+  local file=""
+  local found=0
+
+  if [[ ! -d "${DEFAULT_CONFIG_DIR}" ]]; then
+    return 0
+  fi
+
+  while IFS= read -r -d '' file; do
+    basename "${file}" .conf
+    found=1
+  done < <(find "${DEFAULT_CONFIG_DIR}" -maxdepth 1 -type f -name '*.conf' -print0 | sort -z)
+
+  return $((found == 1 ? 0 : 0))
+}
+
+print_configuration() {
+  printf 'App:            %s\n' "${APP_ID}"
+  printf 'Name:           %s\n' "${APP_NAME}"
+  printf 'URL:            %s\n' "${APP_URL}"
+  printf 'WM_CLASS:       %s\n' "${APP_CLASS}"
+  printf 'User data dir:  %s\n' "${APP_DATA_DIR}"
+  printf 'Chrome binary:  %s\n' "${CHROME_BINARY}"
+}
+
+launch_app() {
+  local verbose="${1}"
+
+  mkdir -p "${APP_DATA_DIR}" || fail "unable to create user-data directory: ${APP_DATA_DIR}"
+
+  local -a command=(
+    "${CHROME_BINARY}"
+    "--user-data-dir=${APP_DATA_DIR}"
+    "--class=${APP_CLASS}"
+    "--app=${APP_URL}"
+    "--no-first-run"
+    "--no-default-browser-check"
+  )
+
+  if [[ "${verbose}" == "1" ]]; then
+    printf 'Launching:' >&2
+    printf ' %q' "${command[@]}" >&2
+    printf '\n' >&2
+  fi
+
+  exec "${command[@]}"
+}
+
+main() {
+  local action=""
+  local app_id=""
+  local verbose=0
+
+  while (($# > 0)); do
+    case "${1}" in
+      --app)
+        (($# >= 2)) || fail "--app requires a value"
+        action="launch"
+        app_id="${2}"
+        shift 2
+        ;;
+      --inspect)
+        (($# >= 2)) || fail "--inspect requires a value"
+        action="inspect"
+        app_id="${2}"
+        shift 2
+        ;;
+      --list)
+        action="list"
+        shift
+        ;;
+      --verbose)
+        verbose=1
+        shift
+        ;;
+      --help|-h)
+        usage
+        return 0
+        ;;
+      *)
+        fail "unknown option: ${1}"
+        ;;
+    esac
+  done
+
+  case "${action}" in
+    launch)
+      load_app "${app_id}"
+      launch_app "${verbose}"
+      ;;
+    inspect)
+      load_app "${app_id}"
+      print_configuration
+      ;;
+    list)
+      list_apps
+      ;;
+    *)
+      usage
+      return 1
+      ;;
+  esac
+}
+
+main "$@"

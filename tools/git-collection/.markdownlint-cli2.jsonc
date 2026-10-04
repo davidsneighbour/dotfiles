@@ -1,0 +1,4 @@
+{
+  // Runtime dependencies and generated reports are not authored documentation.
+  "ignores": ["state/**", "reports/**"]
+}
