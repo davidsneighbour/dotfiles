@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.20.0](https://github.com/davidsneighbour/dotfiles/compare/v2.19.1...v2.20.0) (2026-10-04)
+
+### Feat
+
+* add Git catalogue and update workstation assets ([cf9e2ac](https://github.com/davidsneighbour/dotfiles/commit/cf9e2accef5d43883d8eab16c8a93ae20e011ff8))
+* schedule dotfiles Git catalogue updates ([bcf828f](https://github.com/davidsneighbour/dotfiles/commit/bcf828f76a12672f4881bb2f3b85786583a903a2))
+* **session:** add dark mode and Enpass overrides ([ac904dd](https://github.com/davidsneighbour/dotfiles/commit/ac904dde3fafc8a64b1926b65fa7ea27402c6bc5))
+
+### Perf
+
+* scale Git reports for the approved repository scope ([4ed1c54](https://github.com/davidsneighbour/dotfiles/commit/4ed1c54aa9ecf168407bfbee866418e3ebfba5ff))
+
 ## [2.19.1](https://github.com/davidsneighbour/dotfiles/compare/v2.19.0...v2.19.1) (2026-10-03)
 
 ### Fix
