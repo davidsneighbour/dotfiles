@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.21.0](https://github.com/davidsneighbour/dotfiles/compare/v2.20.0...v2.21.0) (2026-10-05)
+
+### Feat
+
+* **skillz:** add typed skill sources with nested tree support ([5f6bc46](https://github.com/davidsneighbour/dotfiles/commit/5f6bc46bad66392796d6c0134428764232e730fe))
+
+### Fix
+
+* weird spelling change in thunar config ([1e6ec36](https://github.com/davidsneighbour/dotfiles/commit/1e6ec3651f4931b27d448abea27c2635c014e71f))
+
 ## [2.20.0](https://github.com/davidsneighbour/dotfiles/compare/v2.19.1...v2.20.0) (2026-10-04)
 
 ### Feat
