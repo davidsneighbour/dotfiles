@@ -20,7 +20,7 @@ the configuration files to be named and composed.
 | `config.protected.yaml` | Protected/private configuration links. |
 | `includes.yaml` | Optional extra config chains loaded by the wrapper. |
 
-The `skillz` helper generates the AI skill symlink profile at `cache/dotbot/config.ai-skills.yaml` before it runs Dotbot. That cache file is derived from `SKILL_REPOSITORIES` in [bashrc/helpers/skillz](../../bashrc/helpers/skillz), is ignored by Git, and must not be edited by hand.
+The `skillz` helper generates the AI skill symlink profile at `cache/dotbot/config.ai-skills.yaml` before it runs Dotbot. That cache file is derived from `SKILL_SOURCES` in [bashrc/helpers/skillz](../../bashrc/helpers/skillz), is ignored by Git, and must not be edited by hand. Each source is a `<type>:<root>` entry: `collections` scans the skillwerk layout (`collections/<collection>/skills/<skill>`), and `tree` links every deepest directory with a `SKILL.md` up to three folder levels below the root (`<skill>`, `<collection>/<skill>`, or `<topic>/<collection>/<skill>`). Skill names must be unique across all sources; the same skill reached through two paths (for example a symlinked collection) is linked once.
 
 ## Running profiles
 

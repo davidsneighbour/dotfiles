@@ -6,13 +6,28 @@ set -Eeuo pipefail
 # Configuration
 # ---------------------------------------------------------------------------
 
-# All skills live in skillwerk, grouped into collections:
-# ${SKILLWERK_ROOT}/collections/<collection>/skills/<skill>
+# Skill sources as "<type>:<root>". Supported types:
+#
+#   collections  skillwerk layout: <root>/collections/<collection>/skills/<skill>
+#   tree         free-form tree: every deepest directory below <root> that
+#                contains a SKILL.md, up to three folder levels deep:
+#                  <root>/<skill>/SKILL.md
+#                  <root>/<collection>/<skill>/SKILL.md
+#                  <root>/<topic>/<collection>/<skill>/SKILL.md
+#
+# Skills are named after their directory and linked flat into every agent
+# skill root, so names must be unique across all sources. A skill found twice
+# under the same real path (for example through a symlinked collection) is
+# linked once.
 SKILLWERK_ROOT="${HOME}/github.com/davidsneighbour/skillwerk"
+SKILL_SOURCES=(
+  "collections:${SKILLWERK_ROOT}"
+  "tree:${HOME}/github.com/davidsneighbour/skills/skills"
+)
 
 # Symlinks resolving under one of these roots are managed by skillz. The
-# parent of skillwerk is included so links into the former per-repository
-# skill locations are cleaned up as well.
+# parent of skillwerk is included so links into the other skill repositories
+# (and the former per-repository skill locations) are cleaned up as well.
 TRUSTED_ROOTS=(
   "$(dirname "${SKILLWERK_ROOT}")"
 )
@@ -29,6 +44,8 @@ REPO_ROOT="$(cd "$(dirname "${SCRIPT_PATH}")/../.." && pwd)"
 DOTBOT_CACHE_DIR="${REPO_ROOT}/cache/dotbot"
 DOTBOT_CONFIG="${DOTBOT_CACHE_DIR}/config.ai-skills.yaml"
 
+VERBOSE=false
+
 declare -A SKILL_PATHS=()
 
 # ---------------------------------------------------------------------------
@@ -40,33 +57,127 @@ die() {
   exit 1
 }
 
-# Find every single skill directory (collections/*/skills/<name>) in
-# skillwerk and record it in SKILL_PATHS[name]=path. Collections without a
-# skills/ directory are skipped. Hidden directories (like a local .system) are
-# not skills and are skipped too.
-collect_skills() {
-  local skills_dir entry name path
+usage() {
+  cat <<EOF
+Usage: $(basename "${SCRIPT_PATH}") [--verbose] [--help]
 
-  [[ -d "${SKILLWERK_ROOT}/collections" ]] ||
-    die "Skill collections do not exist: ${SKILLWERK_ROOT}/collections"
+Collect skills from every source in SKILL_SOURCES, regenerate
+${DOTBOT_CONFIG}, and link all skills into:
+  ${AGENT_SKILL_ROOTS[*]}
 
-  for skills_dir in "${SKILLWERK_ROOT}"/collections/*/skills; do
+Options:
+  --verbose  Print every skill found and every directory skipped.
+  --help     Show this help.
+EOF
+}
+
+log_verbose() {
+  [[ "${VERBOSE}" == true ]] || return 0
+  printf '  %s\n' "$*"
+}
+
+# Record one skill directory in SKILL_PATHS[name]=path. A second hit with the
+# same real path is skipped; a different directory with the same name is fatal.
+add_skill() {
+  local path="$1"
+  local name existing
+
+  name="$(basename "${path}")"
+  existing="${SKILL_PATHS[${name}]:-}"
+
+  if [[ -n "${existing}" ]]; then
+    if [[ "$(readlink -f "${existing}")" == "$(readlink -f "${path}")" ]]; then
+      log_verbose "skip ${path} (same skill as ${existing})"
+      return 0
+    fi
+
+    die "Duplicate skill name '${name}' found in:
+  ${existing}
+  ${path}"
+  fi
+
+  log_verbose "${name} -> ${path}"
+  SKILL_PATHS["${name}"]="${path}"
+}
+
+# Type "collections": every collections/*/skills/<name> directory that contains
+# a SKILL.md. Collections without a skills/ directory are skipped. Hidden
+# directories (like a local .system) are not matched by the glob.
+collect_collections() {
+  local root="$1"
+  local skills_dir entry
+
+  [[ -d "${root}/collections" ]] ||
+    die "Skill collections do not exist: ${root}/collections"
+
+  for skills_dir in "${root}"/collections/*/skills; do
     [[ -d "${skills_dir}" ]] || continue
 
     for entry in "${skills_dir}"/*/; do
       [[ -d "${entry}" ]] || continue
 
-      path="${entry%/}"
-      name="$(basename "${path}")"
-
-      if [[ -n "${SKILL_PATHS[${name}]:-}" ]]; then
-        die "Duplicate skill name '${name}' found in:
-  ${SKILL_PATHS[${name}]}
-  ${path}"
+      if [[ ! -f "${entry}SKILL.md" ]]; then
+        log_verbose "skip ${entry%/} (no SKILL.md)"
+        continue
       fi
 
-      SKILL_PATHS["${name}"]="${path}"
+      add_skill "${entry%/}"
     done
+  done
+}
+
+# Type "tree": every directory up to three levels below the root that contains
+# a SKILL.md. Hidden directories are skipped. If a directory with a SKILL.md
+# has a descendant with a SKILL.md, only the deepest one is a skill.
+collect_tree() {
+  local root="$1"
+  local dir other is_deepest
+  local -a dirs=()
+
+  [[ -d "${root}" ]] || die "Skill tree does not exist: ${root}"
+
+  while IFS= read -r -d '' dir; do
+    dirs+=("${dir}")
+  done < <(
+    find "${root}" -mindepth 1 -maxdepth 4 \
+      \( -type d -name '.*' -prune \) -o \
+      \( -type f -name SKILL.md -printf '%h\0' \)
+  )
+
+  for dir in "${dirs[@]}"; do
+    [[ "${dir}" == "${root}" ]] && continue
+
+    is_deepest=true
+    for other in "${dirs[@]}"; do
+      if [[ "${other}" == "${dir}/"* ]]; then
+        is_deepest=false
+        break
+      fi
+    done
+
+    if [[ "${is_deepest}" == true ]]; then
+      add_skill "${dir}"
+    else
+      log_verbose "skip ${dir} (contains deeper skills)"
+    fi
+  done
+}
+
+# Run the matching collector for every configured skill source.
+collect_skills() {
+  local source type root
+
+  for source in "${SKILL_SOURCES[@]}"; do
+    type="${source%%:*}"
+    root="${source#*:}"
+
+    printf 'Collecting skills from %s (%s)...\n' "${root}" "${type}"
+
+    case "${type}" in
+      collections) collect_collections "${root}" ;;
+      tree) collect_tree "${root}" ;;
+      *) die "Unknown skill source type '${type}' in: ${source}" ;;
+    esac
   done
 }
 
@@ -96,9 +207,8 @@ write_dotbot_config() {
     printf '#\n'
     printf '# @see https://github.com/anishathalye/dotbot for more info\n'
     printf '################################################################################\n'
-    printf '# AI skill symlinks: every skill directory found under\n'
-    printf '# skillwerk/collections/*/skills (see bashrc/helpers/skillz), linked into\n'
-    printf '# every agent skill root.\n'
+    printf '# AI skill symlinks: every skill directory found in SKILL_SOURCES (see\n'
+    printf '# bashrc/helpers/skillz), linked into every agent skill root.\n'
     printf '#\n'
     printf '# This file is generated by `skillz`. Do not edit it by hand; edit\n'
     printf '# bashrc/helpers/skillz and re-run `skillz` instead.\n'
@@ -178,12 +288,26 @@ show_symlinks() {
 }
 
 main() {
+  while (($# > 0)); do
+    case "$1" in
+      --help)
+        usage
+        exit 0
+        ;;
+      --verbose) VERBOSE=true ;;
+      *)
+        usage >&2
+        die "Unknown option: $1"
+        ;;
+    esac
+    shift
+  done
+
   command -v dotfiles >/dev/null 2>&1 || die "dotfiles is not available in PATH."
 
-  printf 'Collecting skills from %s/collections...\n' "${SKILLWERK_ROOT}"
   collect_skills
 
-  ((${#SKILL_PATHS[@]} > 0)) || die "No skills found under ${SKILLWERK_ROOT}/collections/*/skills."
+  ((${#SKILL_PATHS[@]} > 0)) || die "No skills found in any configured skill source."
 
   printf 'Found %d skill(s).\n' "${#SKILL_PATHS[@]}"
   printf 'Regenerating %s...\n' "${DOTBOT_CONFIG}"

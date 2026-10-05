@@ -291,12 +291,31 @@ Requirements:
 
 ### `skillz`
 
-Generates the AI skill Dotbot profile from the configured skill repositories, writes it to `cache/dotbot/config.ai-skills.yaml`, runs that generated profile through `dotfiles`, and prints the installed skill symlinks. The cache profile is derived state and is ignored by Git.
+Generates the AI skill Dotbot profile from the configured skill sources, writes it to `cache/dotbot/config.ai-skills.yaml`, runs that generated profile through `dotfiles`, and prints the installed skill symlinks. The cache profile is derived state and is ignored by Git.
+
+Skill sources are configured in `SKILL_SOURCES` as `<type>:<root>` entries:
+
+* `collections` — skillwerk layout. Every `<root>/collections/<collection>/skills/<skill>` directory that contains a `SKILL.md` is a skill.
+* `tree` — free-form tree, for example the `skills` repository. Every deepest directory with a `SKILL.md` up to three folder levels below the root is a skill: `<skill>`, `<collection>/<skill>`, or `<topic>/<collection>/<skill>`. Hidden directories are skipped.
+
+Each skill is linked by its directory name into `~/.agents/skills`, `~/.codex/skills`, and `~/.claude/skills`. Two different skill directories with the same name stop the run before any symlink changes. The same directory reached through two paths is linked once.
+
+Usage:
+
+```bash
+skillz            # collect, regenerate the profile, and relink
+skillz --verbose  # also list every skill found and every directory skipped
+skillz --help
+```
 
 Functions/methods defined:
 
 * `die`
-* `compute_trusted_roots`
+* `usage`
+* `log_verbose`
+* `add_skill`
+* `collect_collections`
+* `collect_tree`
 * `collect_skills`
 * `portable_path`
 * `write_dotbot_config`
