@@ -86,7 +86,8 @@ LightDM
         │   `rofi -show drun`)
         ├── Polybar (i3-ONLY copy — configs/session/polybar/, launched by
         │   configs/session/polybar/launch.sh via i3 exec_always; includes
-        │   the Clockify status indicator from configs/session/clockify/)
+        │   the Clockify status indicator from configs/session/clockify/
+        │   and the system checkup alert from tools/system-checkup/)
         ├── fonts (desktop typography set — configs/session/fonts/,
         │   exposed at ~/.fonts/dotfiles through configs/fonts/dotfiles)
         ├── background (xsetroot solid colour, then feh sets a
@@ -137,6 +138,7 @@ For every automatically started i3-session component:
 | Root background colour | i3 | `xsetroot -solid '#0B0D0F'` | `exec_always` | Non-fatal; i3 unaffected. |
 | Wallpaper | i3 | `feh --bg-fill configs/session/i3/wallpaper.jpg` | `exec_always` (not wrapped in `\|\| true`) | Fixed repo-committed image. |
 | Polybar | i3 | `configs/session/polybar/launch.sh` | `exec_always` (`sh -c ... \|\| true`) | Non-fatal; i3 remains usable with no bar if Polybar/its config is missing. Its left side includes the Clockify status indicator, which calls `configs/session/clockify/polybar-clockify` and opens the local form on left click. |
+| System checkup | i3 (and cron every 6 hours) | `tools/system-checkup/system-checkup --quiet` after `sleep 120` | `exec` (once per session) | Non-fatal (`sh -c ... \|\| true`). Writes `~/.local/state/system-checkup/report.txt`; the Polybar `system-checkup` module (right of the power menu) shows an alert icon only when a check failed or the last run is older than 13 hours. Left click opens the report, right click runs the checks again. See `tools/system-checkup/README.md`. |
 | xss-lock | i3 | `xss-lock --transfer-sleep-lock -- configs/session/i3/lock.sh` | `exec` (once per session, see "Screen lock") | Non-fatal to i3; if `xss-lock` is missing, `Super+L`/suspend simply do not lock the screen. |
 | Rofi | user keypress (`Super_L` release, or `$mod+d`) | `rofi -show drun` | `bindsym ... exec` | Non-fatal; a launcher failure does not affect the rest of the session. |
 | Terminal | user keypress (`$mod+Return`) | `xfce4-terminal` | `bindsym ... exec` | Non-fatal. |

@@ -5,4 +5,5 @@ but do not justify separate repositories.
 
 * `clockify/` — Track Clockify time entries from the CLI, Polybar, and a local HTML form.
 * `msgvault/` — Sync, back up, and show Polybar status for a msgvault mailbox archive.
+* `system-checkup/` — Run small health checks every 6 hours and show failures in Polybar.
 * `unsplash-collections/` — Download images from configured Unsplash collections.

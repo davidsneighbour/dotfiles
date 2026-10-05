@@ -1,0 +1,310 @@
+#!/bin/bash
+#
+# Run the system checkup: every executable check in checks.d/, a report for
+# Polybar, and a log.
+#
+# Each check is a small Bash file in checks.d/ that prints one or more short
+# lines and exits 0 (pass) or non-zero (fail). Checks run in name order, each
+# with a time limit, so one hung check (for example a dead FUSE mount) cannot
+# block the others. See README.md for how to add a check.
+
+set -u -o pipefail
+
+SCRIPT_PATH="$(readlink -f "${BASH_SOURCE[0]}")"
+SCRIPT_NAME="$(basename "${SCRIPT_PATH}")"
+SYSTEM_CHECKUP_DIR="$(dirname "${SCRIPT_PATH}")"
+export SYSTEM_CHECKUP_DIR
+CHECKS_DIR="${SYSTEM_CHECKUP_DIR}/checks.d"
+STATE_DIR="${XDG_STATE_HOME:-${HOME}/.local/state}/system-checkup"
+REPORT_FILE="${STATE_DIR}/report.txt"
+STATUS_FILE="${STATE_DIR}/failures"
+LOCK_FILE="${STATE_DIR}/run.lock"
+LOG_DIR="${HOME}/.logs/system-checkup"
+CHECK_TIMEOUT=60
+# A report older than this means the checkup itself stopped running
+# (cron runs every 6 hours, so this allows one missed run).
+STALE_AFTER_SECONDS=$((13 * 60 * 60))
+VERBOSE="${DNB_VERBOSE:-0}"
+LOGFILE=""
+
+# Lucide "triangle-alert" (U+E193), rendered by the Lucide font slot in Polybar.
+ICON_ALERT=$''
+COLOUR_FAIL="#FF9580"
+COLOUR_STALE="#FFCA80"
+
+print_help() {
+  cat <<EOF
+Usage: ${SCRIPT_NAME} [--check <name>] [--list] [--status-line] [--show-report]
+       [--verbose] [--quiet] [--help]
+
+Run all checks in ${CHECKS_DIR}/ and write a report.
+Without options, all checks run and the report is updated.
+
+Options:
+  --check <name>   Run this check only and print the result. The report is not
+                   changed. <name> is the file name with or without ".sh".
+  --list           List the available checks and exit.
+  --status-line    Print the Polybar indicator: nothing when all checks
+                   passed, a red icon with the failure count when checks
+                   failed, an orange icon when the last run is older than
+                   $((STALE_AFTER_SECONDS / 3600)) hours.
+  --show-report    Open the last report in a window (zenity).
+  --verbose        Print each check result to the terminal.
+  --quiet          Print errors only (overrides --verbose and DNB_VERBOSE).
+  --help           Show this help and exit.
+
+Files:
+  Report:  ${REPORT_FILE}
+  Logs:    ${LOG_DIR}/YYYYMMDD-HHMMSS.log
+
+Exit status:
+  0 when all checks passed, 1 when a check failed, 2 on usage errors.
+
+Examples:
+  ${SCRIPT_NAME} --verbose
+  ${SCRIPT_NAME} --check 20-storage
+EOF
+}
+
+log() {
+  local level="${1}"
+  local message="${2}"
+  if [[ -n "${LOGFILE}" ]]; then
+    printf '%s [%s] %s\n' "$(date '+%Y-%m-%d %H:%M:%S')" "${level}" "${message}" >>"${LOGFILE}"
+  fi
+  if [[ "${level}" == "error" ]]; then
+    printf '%s: %s\n' "${SCRIPT_NAME}" "${message}" >&2
+  elif [[ "${VERBOSE}" == "1" ]]; then
+    printf '%s\n' "${message}"
+  fi
+}
+
+# Print the check files (executable *.sh in checks.d/), sorted by name.
+list_checks() {
+  local file
+  shopt -s nullglob
+  for file in "${CHECKS_DIR}"/*.sh; do
+    if [[ -x "${file}" ]]; then
+      printf '%s\n' "${file}"
+    fi
+  done
+  shopt -u nullglob
+}
+
+# Run one check file with a time limit. Prints its output, returns its status.
+run_check() {
+  local file="${1}"
+  local output
+  local rc
+
+  output="$(timeout "${CHECK_TIMEOUT}" "${file}" 2>&1)"
+  rc="${?}"
+  if [[ "${rc}" -eq 124 ]]; then
+    output="${output:+${output}$'\n'}Check did not finish within ${CHECK_TIMEOUT}s"
+  fi
+  printf '%s\n' "${output:-no output}"
+  return "${rc}"
+}
+
+run_all() {
+  local file
+  local name
+  local output
+  local failures=0
+  local total=0
+  local failed_section=""
+  local passed_section=""
+  local tmp_report
+
+  if ! mkdir -p "${STATE_DIR}" "${LOG_DIR}"; then
+    printf '%s: cannot create %s or %s\n' "${SCRIPT_NAME}" "${STATE_DIR}" "${LOG_DIR}" >&2
+    return 2
+  fi
+  LOGFILE="${LOG_DIR}/$(date +%Y%m%d-%H%M%S).log"
+
+  # One run at a time: cron and a manual run must not write the report together.
+  exec 9>"${LOCK_FILE}"
+  if ! flock -n 9; then
+    log "error" "another checkup is running (lock: ${LOCK_FILE})"
+    return 2
+  fi
+
+  while IFS= read -r file; do
+    name="$(basename "${file}" .sh)"
+    total=$((total + 1))
+    if output="$(run_check "${file}")"; then
+      log "info" "PASS ${name}: ${output//$'\n'/ | }"
+      passed_section+="[PASS] ${name}"$'\n'"       ${output//$'\n'/$'\n'       }"$'\n'
+    else
+      failures=$((failures + 1))
+      log "warn" "FAIL ${name}: ${output//$'\n'/ | }"
+      failed_section+="[FAIL] ${name}"$'\n'"       ${output//$'\n'/$'\n'       }"$'\n\n'
+    fi
+  done < <(list_checks)
+
+  if [[ "${total}" -eq 0 ]]; then
+    log "warn" "no executable checks found in ${CHECKS_DIR}"
+  fi
+
+  tmp_report="$(mktemp "${STATE_DIR}/report.XXXXXX")" || {
+    log "error" "cannot create a temporary report in ${STATE_DIR}"
+    return 2
+  }
+  {
+    printf 'System checkup on %s, %s\n' "$(hostname)" "$(date '+%Y-%m-%d %H:%M:%S')"
+    printf '%s of %s checks failed.\n\n' "${failures}" "${total}"
+    if [[ -n "${failed_section}" ]]; then
+      printf '%s' "${failed_section}"
+    fi
+    if [[ -n "${passed_section}" ]]; then
+      printf '%s\n' "${passed_section}"
+    fi
+    printf 'Run again: %s --verbose\n' "${SCRIPT_PATH}"
+    printf 'Log: %s\n' "${LOGFILE}"
+  } >"${tmp_report}"
+  mv -f -- "${tmp_report}" "${REPORT_FILE}"
+  printf '%s\n' "${failures}" >"${STATUS_FILE}"
+
+  log "info" "${failures} of ${total} checks failed. Report: ${REPORT_FILE}"
+  if [[ "${failures}" -gt 0 ]]; then
+    return 1
+  fi
+  return 0
+}
+
+status_line() {
+  local failures
+  local age
+
+  # Before the first run there is nothing to report; show nothing.
+  if [[ ! -f "${STATUS_FILE}" ]]; then
+    printf '\n'
+    return 0
+  fi
+
+  failures="$(<"${STATUS_FILE}")"
+  if [[ ! "${failures}" =~ ^[0-9]+$ ]]; then
+    printf '%%{F%s}%s ?%%{F-}\n' "${COLOUR_FAIL}" "${ICON_ALERT}"
+    return 0
+  fi
+  if [[ "${failures}" -gt 0 ]]; then
+    printf '%%{F%s}%s %s%%{F-}\n' "${COLOUR_FAIL}" "${ICON_ALERT}" "${failures}"
+    return 0
+  fi
+
+  age=$(($(date +%s) - $(stat -c %Y "${STATUS_FILE}")))
+  if [[ "${age}" -gt "${STALE_AFTER_SECONDS}" ]]; then
+    printf '%%{F%s}%s%%{F-}\n' "${COLOUR_STALE}" "${ICON_ALERT}"
+    return 0
+  fi
+  printf '\n'
+}
+
+show_report() {
+  local age=0
+  local text
+
+  if ! command -v zenity >/dev/null 2>&1; then
+    log "error" "zenity not found; read the report at ${REPORT_FILE}"
+    return 1
+  fi
+
+  if [[ -f "${STATUS_FILE}" ]]; then
+    age=$(($(date +%s) - $(stat -c %Y "${STATUS_FILE}")))
+  fi
+
+  # zenity reads the text from stdin, so the stale and missing notes need no
+  # temporary file.
+  text="$(
+    if [[ "${age}" -gt "${STALE_AFTER_SECONDS}" ]]; then
+      printf 'The last checkup ran more than %s hours ago. Is the cron job installed?\n' "$((STALE_AFTER_SECONDS / 3600))"
+      printf 'Check with: crontab -l | grep system-checkup\n\n'
+    fi
+    if [[ -f "${REPORT_FILE}" ]]; then
+      cat -- "${REPORT_FILE}"
+    else
+      printf 'No report yet. Run: %s --verbose\n' "${SCRIPT_PATH}"
+    fi
+  )"
+  printf '%s\n' "${text}" | zenity --text-info --title="System checkup" \
+    --font="monospace 10" --width=900 --height=500 >/dev/null 2>&1
+  return 0
+}
+
+MODE="run"
+SELECTED_CHECK=""
+QUIET=0
+
+while [[ "${#}" -gt 0 ]]; do
+  case "${1}" in
+  --help)
+    print_help
+    exit 0
+    ;;
+  --check)
+    if [[ -z "${2:-}" ]]; then
+      printf '%s: --check needs a value\n\n' "${SCRIPT_NAME}" >&2
+      print_help >&2
+      exit 2
+    fi
+    MODE="check"
+    SELECTED_CHECK="${2%.sh}"
+    shift
+    ;;
+  --list)
+    MODE="list"
+    ;;
+  --status-line)
+    MODE="status"
+    ;;
+  --show-report)
+    MODE="show"
+    ;;
+  --verbose)
+    VERBOSE=1
+    ;;
+  --quiet)
+    QUIET=1
+    ;;
+  *)
+    printf '%s: unknown argument: %s\n\n' "${SCRIPT_NAME}" "${1}" >&2
+    print_help >&2
+    exit 2
+    ;;
+  esac
+  shift
+done
+
+if [[ "${QUIET}" == "1" ]]; then
+  VERBOSE=0
+  unset DNB_VERBOSE
+elif [[ "${VERBOSE}" == "1" ]]; then
+  export DNB_VERBOSE=1
+fi
+
+case "${MODE}" in
+status)
+  status_line
+  ;;
+show)
+  show_report
+  ;;
+list)
+  list_checks | xargs -r -n1 basename | sed 's/\.sh$//'
+  ;;
+check)
+  if [[ ! -x "${CHECKS_DIR}/${SELECTED_CHECK}.sh" ]]; then
+    printf '%s: no executable check %s/%s.sh\n\n' "${SCRIPT_NAME}" "${CHECKS_DIR}" "${SELECTED_CHECK}" >&2
+    print_help >&2
+    exit 2
+  fi
+  run_check "${CHECKS_DIR}/${SELECTED_CHECK}.sh"
+  ;;
+run)
+  run_all
+  ;;
+*)
+  printf '%s: unknown mode: %s\n' "${SCRIPT_NAME}" "${MODE}" >&2
+  exit 2
+  ;;
+esac

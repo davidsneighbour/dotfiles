@@ -26,6 +26,7 @@ at the repo root.
 | `configs/07-module-pulseaudio.ini` | Copied unchanged (same sink as the XFCE bar). |
 | `configs/07-module-date.ini` | Copied from the XFCE bar, simplified: left click opens Google Calendar through the module-level `click-left` handler, avoiding the older inline `%{A...}` URL escaping issue. |
 | `configs/07-module-tray.ini` | Copied unchanged. Uses the current module-based tray mechanism (`type = internal/tray` in `modules-right`), matching what the XFCE bar already does — no bar-level `tray-position`, which is the deprecated approach. |
+| `configs/07-module-system-checkup.ini` | System checkup alert, right of the power menu. Shows nothing while all checks pass; a red icon with the failure count, or an orange icon when the last run is older than 13 hours. Left click opens the report, right click runs the checks again. See [`tools/system-checkup/`](../../../tools/system-checkup/README.md). |
 | `configs/07-module-clockify.ini` | Clockify status indicator. Left click opens the local form through `configs/session/clockify/polybar-clockify`. The visible indicator is a `custom/ipc` module so the form can refresh it immediately after submit; a hidden refresher preserves periodic fallback updates. Its wrapper uses the larger Clockify-only Lucide font slot so the icon is more legible without increasing bar height. |
 
 ## Deliberately not carried over from the XFCE bar
