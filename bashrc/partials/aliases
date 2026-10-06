@@ -78,7 +78,7 @@ alias jobterm='sendevent -E CHANGE_STATUS -s TERMINATED -J'
 alias countfiles='lsd -1a | wc -l'
 alias tail='grc tail'
 
-alias subl='subl -a'
+alias subl='subl -n'
 
 alias lasttag='git describe --tags $(git rev-list --tags --max-count=1)'
 
