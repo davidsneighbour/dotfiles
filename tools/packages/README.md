@@ -104,4 +104,4 @@ The tests set `PACKAGES_DATA_DIR` to `tests/fixtures/`. With this variable set, 
 * Only packages in the "installed" state count. Packages that are only unpacked, half-configured, or removed with their config files kept (`rc`) are not nodes.
 * `manual` is the current flag only. An install history (`/var/log/apt/history.log*`) would be a separate future command, for example `packages history`.
 
-Possible later additions: `--json` output, `--version`, `packages history`, and a Graphviz export of `tree`.
+Planned additions are tracked in [#585](https://github.com/davidsneighbour/dotfiles/issues/585) (`--depends-only`) and [#586](https://github.com/davidsneighbour/dotfiles/issues/586) (`--json`, `--version`, `packages history`, and Graphviz export).
