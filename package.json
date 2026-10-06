@@ -84,7 +84,7 @@
     "test:ai-usage": "node --experimental-strip-types bashrc/helpers/ai-usage/tests/ai-usage-test.ts",
     "test:backup-runner": "node --experimental-strip-types bashrc/helpers/docker/tests/backup-runner-config-test.ts",
     "test:dotbot-crontab": "python3 configs/dotbot/tests/crontab-test.py",
-    "test:shell": "bash bashrc/helpers/tests/dotfiles-includes-test.sh && bash bashrc/helpers/tests/desktop-helpers-health-check.sh",
+    "test:shell": "bash bashrc/helpers/tests/dotfiles-includes-test.sh && bash bashrc/helpers/tests/desktop-helpers-health-check.sh && bash tools/packages/tests/packages-test.sh",
     "typecheck": "npm run typecheck:config && npm run typecheck:scripts && npm run typecheck:bash-helpers",
     "typecheck:bash-helpers": "tsc --project tsconfig.bash-helpers.json --noEmit",
     "typecheck:config": "tsc --project tsconfig.config.json --noEmit",

@@ -80,6 +80,7 @@ discover_shell_files() {
       configs/installs \
       configs/session/polybar \
       configs/session/rofi \
+      tools/packages \
       scripts
   )
 

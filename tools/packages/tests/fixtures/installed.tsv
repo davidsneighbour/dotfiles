@@ -1,0 +1,17 @@
+ii 	appa	no	1.0		libfoo	removed-pkg		
+ii 	appb	no	1.0		libbar (>= 1.0)			
+ii 	bash-completion	no	2.0					
+ii 	curl	no	8.0		libcurl4 (= 8.0), libc6 (>= 2.34)	bash-completion		
+ii 	cyca	no	1.0		cycb			
+ii 	cycb	no	1.0		cyca, libc6			
+ii 	leftover	no	1.0		libc6			
+ii 	libbar	no	1.0		libfoo			
+ii 	libc6	yes	2.40					
+ii 	libcurl4	no	8.0		libnghttp2-14 | libnghttp3, libc6:any			
+ii 	libfoo	no	1.0	libc6 (>= 2.0)				
+ii 	libnghttp2-14	no	1.60		libc6			
+ii 	mail-app	no	1.0		mail-transport-agent			
+ii 	oldkernel	no	6.0					
+ii 	postfix	no	3.0		libc6		bash-completion	mail-transport-agent, default-mta (= 3.0)
+rc 	removed-pkg	no	1.0		libfoo			
+ii 	tool-c	no	1.0		cyca			

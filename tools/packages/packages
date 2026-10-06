@@ -1,0 +1,506 @@
+#!/bin/bash
+#
+# Inspect the APT/dpkg package state of this system. Read-only: this command
+# never installs, removes, or marks packages.
+#
+# The data comes from dpkg-query (installed packages and their dependency
+# fields), apt-mark (manual flag), apt-cache (available package names), and
+# APT's autoremove simulation (orphaned packages). graph.awk builds the
+# dependency graph for `tree` and `why`. See README.md.
+
+set -u -o pipefail
+
+SCRIPT_PATH="$(readlink -f "${BASH_SOURCE[0]}")"
+SCRIPT_NAME="packages"
+TOOL_DIR="$(dirname "${SCRIPT_PATH}")"
+DOTFILES_DIR="$(readlink -f "${TOOL_DIR}/../..")"
+GRAPH_AWK="${TOOL_DIR}/graph.awk"
+LOG_DIR="${HOME}/.logs/packages"
+DEFAULT_MAX_ROOTS=10
+
+# Tests set PACKAGES_DATA_DIR to a folder with fixture files (installed.tsv,
+# manual.txt, available.txt, orphans.txt) instead of the live APT data.
+DATA_DIR="${PACKAGES_DATA_DIR:-}"
+WORK_DIR=""
+
+EXIT_NO_MATCH=1
+EXIT_USAGE=2
+EXIT_TOOLING=3
+
+print_help() {
+  cat <<EOF
+Usage: ${SCRIPT_NAME} <command> [<package|glob>...] [options]
+
+Inspect the APT/dpkg package state. Read-only: it never changes packages.
+
+Commands:
+  list          List all installed packages with their mark (manual or
+                automatic) and version.
+  manual        List the installed packages that APT marks manual.
+  automatic     List the installed packages that APT marks automatic.
+  orphaned      List the automatic packages that APT would autoremove.
+  find <query>  Search all available package names. A plain query matches
+                any part of the name. A glob (*, ?, [...]) must match the
+                whole name. Shows if each match is installed.
+  why <name>    Show which manual or essential packages need an installed
+                package, as one shortest dependency path per package.
+  tree [name]   Show the dependency tree of the given installed packages,
+                or of all manual packages when no name is given.
+
+Package names for find, why, and tree can be given after the command or with
+--package. why and tree accept globs, matched against installed packages.
+Quote globs, so that the shell does not expand them: 'libcurl*'.
+
+Options:
+  --package <name>  A package name or glob. Can be repeated.
+  --all             why: show all paths (default: the first ${DEFAULT_MAX_ROOTS}).
+  --depth <n>       tree: stop after <n> levels (default: no limit).
+  --no-color        Do not colour the output. NO_COLOR has the same effect.
+  --verbose         Print what the command does to stderr and log it to
+                    ${LOG_DIR}/YYYYMMDD-HHMMSS.log.
+  --quiet           Disable --verbose and DNB_VERBOSE.
+  --help            Show this help and exit.
+
+Terms:
+  manual     APT's current manual flag. It does not prove that somebody ran
+             "apt install" for the package.
+  automatic  Installed as a dependency. APT can autoremove it when no package
+             needs it any more.
+  needs      Pre-Depends, Depends, Recommends, or Suggests. APT keeps a
+             package for all four, so all four count. Soft dependencies
+             show as "(recommends)" or "(suggests)".
+
+Exit status:
+  0  Success.
+  1  A name or query matched no package.
+  2  Usage error.
+  3  A required APT/dpkg tool is not available.
+
+Examples:
+  ${SCRIPT_NAME} manual
+  ${SCRIPT_NAME} why libnghttp2-14
+  ${SCRIPT_NAME} why 'libcurl*' --all
+  ${SCRIPT_NAME} tree --package curl --depth 2
+  ${SCRIPT_NAME} find curl
+  ${SCRIPT_NAME} find 'python3-*'
+EOF
+}
+
+usage_error() {
+  printf '%s: %s\n\n' "${SCRIPT_NAME}" "${1}" >&2
+  print_help >&2
+  exit "${EXIT_USAGE}"
+}
+
+error() {
+  printf '%s: %s\n' "${SCRIPT_NAME}" "${1}" >&2
+}
+
+verbose() {
+  if [[ "${DNB_VERBOSE:-}" == '1' ]]; then
+    dnb_log info "${1}" >&2
+  fi
+}
+
+cleanup() {
+  if [[ -n "${WORK_DIR}" && -d "${WORK_DIR}" ]]; then
+    rm -rf -- "${WORK_DIR}"
+  fi
+}
+
+init_logging() {
+  local log_lib="${DOTFILES_DIR}/bashrc/lib/00-core/dnb-core-log.bash"
+  local colors_lib="${DOTFILES_DIR}/bashrc/lib/00-core/dnb-core-colors.bash"
+
+  if [[ ! -f "${log_lib}" || ! -f "${colors_lib}" ]]; then
+    error "logging library not found below ${DOTFILES_DIR}, continuing without --verbose"
+    unset DNB_VERBOSE
+    return 0
+  fi
+  # shellcheck source=bashrc/lib/00-core/dnb-core-colors.bash
+  source "${colors_lib}"
+  # shellcheck source=bashrc/lib/00-core/dnb-core-log.bash
+  source "${log_lib}"
+  if ! mkdir -p "${LOG_DIR}"; then
+    error "cannot create ${LOG_DIR}, continuing without --verbose"
+    unset DNB_VERBOSE
+    return 0
+  fi
+  DNB_SETUP_LOG_FILE="${LOG_DIR}/$(date +%Y%m%d-%H%M%S).log"
+  export DNB_SETUP_LOG_FILE
+}
+
+require_tools() {
+  local tool
+
+  if [[ -n "${DATA_DIR}" ]]; then
+    return 0
+  fi
+  for tool in "${@}"; do
+    if ! command -v "${tool}" >/dev/null 2>&1; then
+      error "required command not found: ${tool}. This tool needs an APT/dpkg based system."
+      exit "${EXIT_TOOLING}"
+    fi
+  done
+}
+
+# Data layer. Each function prints one data set, from the live system or from
+# the fixture folder.
+
+# Installed and partly installed packages, sorted by name. Fields:
+# status, package, essential, version, pre-depends, depends, recommends,
+# suggests, provides. graph.awk uses only rows whose status is "installed".
+read_installed() {
+  if [[ -n "${DATA_DIR}" ]]; then
+    cat -- "${DATA_DIR}/installed.tsv"
+    return
+  fi
+  dpkg-query --show --showformat='${db:Status-Abbrev}\t${Package}\t${Essential}\t${Version}\t${Pre-Depends}\t${Depends}\t${Recommends}\t${Suggests}\t${Provides}\n' |
+    LC_ALL=C sort -t $'\t' -k 2,2
+}
+
+read_manual() {
+  if [[ -n "${DATA_DIR}" ]]; then
+    cat -- "${DATA_DIR}/manual.txt"
+    return
+  fi
+  apt-mark showmanual | LC_ALL=C sort
+}
+
+# All package names that APT knows, plus the installed ones (a package
+# installed from a local .deb file is not in any repository).
+read_available() {
+  if [[ -n "${DATA_DIR}" ]]; then
+    cat -- "${DATA_DIR}/available.txt"
+    return
+  fi
+  {
+    apt-cache pkgnames
+    installed_names
+  } | LC_ALL=C sort -u
+}
+
+# APT's own autoremove calculation, as a simulation (no root needed).
+read_orphans() {
+  if [[ -n "${DATA_DIR}" ]]; then
+    cat -- "${DATA_DIR}/orphans.txt"
+    return
+  fi
+  LC_ALL=C apt-get --simulate autoremove 2>/dev/null |
+    awk '$1 == "Remv" { print $2 }' |
+    LC_ALL=C sort
+}
+
+# Fetch the installed and manual data once into the work folder.
+load_state() {
+  WORK_DIR="$(mktemp -d)" || {
+    error "cannot create a temporary folder"
+    exit 1
+  }
+  trap cleanup EXIT
+  read_installed >"${WORK_DIR}/installed.tsv"
+  read_manual >"${WORK_DIR}/manual.txt"
+  verbose "Read $(wc -l <"${WORK_DIR}/installed.tsv") dpkg rows and $(wc -l <"${WORK_DIR}/manual.txt") manual packages"
+}
+
+installed_names() {
+  if [[ -n "${WORK_DIR}" && -f "${WORK_DIR}/installed.tsv" ]]; then
+    awk -F '\t' 'substr($1, 2, 1) == "i" { print $2 }' "${WORK_DIR}/installed.tsv"
+    return
+  fi
+  read_installed | awk -F '\t' 'substr($1, 2, 1) == "i" { print $2 }'
+}
+
+# Print the names from stdin that match a pattern. A glob (*, ?, [...]) must
+# match the whole name. Otherwise mode "exact" needs the same name and mode
+# "substring" a name that contains the pattern.
+match_names() {
+  local pattern="${1}"
+  local mode="${2}"
+
+  awk -v pattern="${pattern}" -v mode="${mode}" '
+    function glob_to_regex(glob,    out, i, c, n) {
+      out = "^"
+      n = length(glob)
+      for (i = 1; i <= n; i++) {
+        c = substr(glob, i, 1)
+        if (c == "*") {
+          out = out ".*"
+        } else if (c == "?") {
+          out = out "."
+        } else if (c == "[") {
+          out = out "["
+          if (substr(glob, i + 1, 1) == "!") {
+            out = out "^"
+            i++
+          }
+        } else if (c == "]") {
+          out = out "]"
+        } else if (index("\\.^$+(){}|", c) > 0) {
+          out = out "\\" c
+        } else {
+          out = out c
+        }
+      }
+      return out "$"
+    }
+    BEGIN {
+      is_glob = (pattern ~ /[*?[]/)
+      if (is_glob) {
+        regex = glob_to_regex(pattern)
+      }
+    }
+    is_glob && $0 ~ regex { print; next }
+    !is_glob && mode == "exact" && $0 == pattern { print; next }
+    !is_glob && mode == "substring" && index($0, pattern) > 0 { print }
+  '
+}
+
+# Resolve the patterns against the installed packages. Prints the unique
+# names. Returns 1 when a pattern matched nothing.
+resolve_installed() {
+  local pattern
+  local matches
+  local all_matches=""
+  local status=0
+  local names
+
+  names="$(installed_names)"
+  for pattern in "${@}"; do
+    matches="$(match_names "${pattern}" exact <<<"${names}")"
+    if [[ -z "${matches}" ]]; then
+      error "no installed package matches '${pattern}'"
+      status="${EXIT_NO_MATCH}"
+      continue
+    fi
+    all_matches+="${matches}"$'\n'
+  done
+  if [[ -n "${all_matches}" ]]; then
+    printf '%s' "${all_matches}" | awk '!seen[$0]++'
+  fi
+  return "${status}"
+}
+
+# Commands.
+
+cmd_list() {
+  load_state
+  awk -F '\t' -v color="${COLOR}" '
+    FNR == NR { manual[$1] = 1; next }
+    substr($1, 2, 1) == "i" {
+      mark = ($2 in manual) ? "manual" : "automatic"
+      if (color == 1) {
+        printf "%-48s %s%-9s\033[0m %s\n", $2, (mark == "manual" ? "\033[32m" : "\033[2m"), mark, $4
+      } else {
+        printf "%-48s %-9s %s\n", $2, mark, $4
+      }
+    }
+  ' <(sed 's/:.*//' "${WORK_DIR}/manual.txt") "${WORK_DIR}/installed.tsv"
+}
+
+cmd_manual() {
+  load_state
+  sed 's/:.*//' "${WORK_DIR}/manual.txt"
+}
+
+cmd_automatic() {
+  load_state
+  LC_ALL=C comm -23 <(installed_names | LC_ALL=C sort) <(sed 's/:.*//' "${WORK_DIR}/manual.txt" | LC_ALL=C sort)
+}
+
+cmd_orphaned() {
+  verbose "Running APT's autoremove simulation"
+  read_orphans
+}
+
+cmd_find() {
+  local pattern
+  local matches
+  local all_matches=""
+  local status=0
+  local available
+
+  load_state
+  available="$(read_available)"
+  verbose "Searching $(wc -l <<<"${available}") package names"
+  for pattern in "${PACKAGE_ARGS[@]}"; do
+    matches="$(match_names "${pattern}" substring <<<"${available}")"
+    if [[ -z "${matches}" ]]; then
+      error "no package matches '${pattern}'"
+      status="${EXIT_NO_MATCH}"
+      continue
+    fi
+    all_matches+="${matches}"$'\n'
+  done
+  if [[ -n "${all_matches}" ]]; then
+    printf '%s' "${all_matches}" | LC_ALL=C sort -u |
+      awk -v color="${COLOR}" '
+        FILENAME == ARGV[1] { manual[$1] = 1; next }
+        FILENAME == ARGV[2] { installed[$1] = 1; next }
+        {
+          if ($1 in manual) {
+            state = "manual"; colour = "\033[32m"
+          } else if ($1 in installed) {
+            state = "automatic"; colour = "\033[2m"
+          } else {
+            state = "-"; colour = ""
+          }
+          if (color == 1 && colour != "") {
+            printf "%-48s %s%s\033[0m\n", $1, colour, state
+          } else {
+            printf "%-48s %s\n", $1, state
+          }
+        }
+      ' <(sed 's/:.*//' "${WORK_DIR}/manual.txt") <(installed_names) -
+  fi
+  return "${status}"
+}
+
+run_graph() {
+  local command="${1}"
+  local names="${2}"
+  local orphans="${3:-}"
+
+  awk -v CMD="${command}" -v NAMES="${names}" -v ORPHANS="${orphans}" \
+    -v MAX_ROOTS="${MAX_ROOTS}" -v DEPTH="${DEPTH}" -v COLOR="${COLOR}" \
+    -f "${GRAPH_AWK}" "${WORK_DIR}/installed.tsv" "${WORK_DIR}/manual.txt"
+}
+
+cmd_why() {
+  local names
+  local status=0
+
+  load_state
+  names="$(resolve_installed "${PACKAGE_ARGS[@]}")" || status="${?}"
+  if [[ -z "${names}" ]]; then
+    return "${status}"
+  fi
+  verbose "Tracing $(wc -l <<<"${names}") package(s) to their manual or essential roots"
+  run_graph why "${names//$'\n'/ }" "$(read_orphans | tr '\n' ' ')" || status="${?}"
+  return "${status}"
+}
+
+cmd_tree() {
+  local names=""
+  local status=0
+
+  load_state
+  if [[ "${#PACKAGE_ARGS[@]}" -gt 0 ]]; then
+    names="$(resolve_installed "${PACKAGE_ARGS[@]}")" || status="${?}"
+    if [[ -z "${names}" ]]; then
+      return "${status}"
+    fi
+  fi
+  verbose "Printing the dependency tree"
+  run_graph tree "${names//$'\n'/ }" || status="${?}"
+  return "${status}"
+}
+
+# Argument parsing.
+
+COMMAND=""
+PACKAGE_ARGS=()
+MAX_ROOTS="${DEFAULT_MAX_ROOTS}"
+DEPTH=0
+COLOR=0
+no_color='false'
+quiet_mode='false'
+
+if [[ "$#" -eq 0 ]]; then
+  print_help
+  exit "${EXIT_USAGE}"
+fi
+
+while [[ "$#" -gt 0 ]]; do
+  case "${1}" in
+  --help | -h)
+    print_help
+    exit 0
+    ;;
+  --verbose)
+    export DNB_VERBOSE='1'
+    ;;
+  --quiet)
+    quiet_mode='true'
+    ;;
+  --no-color)
+    no_color='true'
+    ;;
+  --all)
+    MAX_ROOTS=0
+    ;;
+  --depth)
+    if [[ "$#" -lt 2 || ! "${2}" =~ ^[0-9]+$ ]]; then
+      usage_error "--depth needs a number"
+    fi
+    DEPTH="${2}"
+    shift
+    ;;
+  --package)
+    if [[ "$#" -lt 2 || -z "${2}" ]]; then
+      usage_error "--package needs a package name or glob"
+    fi
+    PACKAGE_ARGS+=("${2}")
+    shift
+    ;;
+  -*)
+    usage_error "unknown option: ${1}"
+    ;;
+  *)
+    if [[ -z "${COMMAND}" ]]; then
+      COMMAND="${1}"
+    else
+      PACKAGE_ARGS+=("${1}")
+    fi
+    ;;
+  esac
+  shift
+done
+
+if [[ "${quiet_mode}" == 'true' ]]; then
+  unset DNB_VERBOSE
+fi
+if [[ "${no_color}" == 'false' && -z "${NO_COLOR:-}" && -t 1 ]]; then
+  COLOR=1
+fi
+if [[ "${DNB_VERBOSE:-}" == '1' ]]; then
+  init_logging
+fi
+
+case "${COMMAND}" in
+list | manual | automatic | orphaned)
+  if [[ "${#PACKAGE_ARGS[@]}" -gt 0 ]]; then
+    usage_error "${COMMAND} does not take package names"
+  fi
+  ;;
+find | why)
+  if [[ "${#PACKAGE_ARGS[@]}" -eq 0 ]]; then
+    usage_error "${COMMAND} needs at least one package name or query"
+  fi
+  ;;
+tree) ;;
+"")
+  usage_error "no command given"
+  ;;
+*)
+  usage_error "unknown command: ${COMMAND}"
+  ;;
+esac
+
+case "${COMMAND}" in
+orphaned)
+  require_tools apt-get
+  ;;
+find)
+  require_tools dpkg-query apt-mark apt-cache
+  ;;
+why)
+  require_tools dpkg-query apt-mark apt-get
+  ;;
+*)
+  require_tools dpkg-query apt-mark
+  ;;
+esac
+
+verbose "Command: ${COMMAND}${PACKAGE_ARGS[*]:+ ${PACKAGE_ARGS[*]}}"
+"cmd_${COMMAND}"

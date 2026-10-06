@@ -1,0 +1,5 @@
+appa
+appb
+curl
+mail-app
+tool-c
