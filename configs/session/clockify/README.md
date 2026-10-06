@@ -10,9 +10,9 @@ Polybar starts from i3 through a non-interactive shell, so it may not inherit th
 
 | Indicator | State | Meaning |
 | --- | --- | --- |
-| Green Lucide `U+E080` | `healthy` | Clockify is reachable, and no timer is running. |
-| Red Lucide `U+E083` | `running` | A timer is running, including one started outside this workstation. |
-| Yellow Lucide `U+E082` | `nudge` | No timer is running, and active non-idle desktop usage exceeded the configured nudge threshold. |
+| Green Lucide `clock-plus` (`U+E667`) | `healthy` | Clockify is reachable, and no timer is running. |
+| Red Lucide `clock-arrow-down` (`U+E600`) | `running` | A timer is running, including one started outside this workstation. |
+| Yellow Lucide `clipboard-clock` (`U+E688`) | `nudge` | No timer is running, and active non-idle desktop usage exceeded the configured nudge threshold. |
 | Purple Lucide `U+E4B1` | `error` | Token, network, or API problem. |
 
 The CLI keeps a short status cache, defaulting to 30 seconds. Polybar's hidden fallback refresher polls the wrapper every 300 seconds, which keeps the bar gentle on the Clockify API while still refreshing without manual action.

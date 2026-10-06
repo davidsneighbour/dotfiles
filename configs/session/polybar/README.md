@@ -15,7 +15,7 @@ at the repo root.
 | `config.ini` | The bar definition (`bar/i3bar`): left = configured i3 workspaces, centre = focused window title, right = CPU/memory/root filesystem/network/volume/date/tray. |
 | `launch.sh` | Starts the bar. Kills any previous instance for this user first, logs to `~/.logs/polybar-i3/`, never fails in a way i3 would notice. Run `launch.sh --help` for details. |
 | `configs/01-colours.ini` | Copied unchanged from `configs/system/polybar/configs/` (Dracula Pro palette). |
-| `configs/01-fonts.ini` | Session font mapping, including the larger Clockify-only Lucide slot. |
+| `configs/01-fonts.ini` | Session font mapping. |
 | `configs/01-settings.ini` | Copied unchanged. |
 | `configs/07-module-i3.ini` | Generated official `internal/i3` workspace module. Static and dynamic workspaces render the icon stored after the numeric i3 workspace prefix. |
 | `configs/07-module-xwindow.ini` | Copied unchanged. `internal/xwindow` is generic EWMH, not XFCE-specific. |
@@ -27,7 +27,7 @@ at the repo root.
 | `configs/07-module-date.ini` | Copied from the XFCE bar, simplified: left click opens Google Calendar through the module-level `click-left` handler, avoiding the older inline `%{A...}` URL escaping issue. |
 | `configs/07-module-tray.ini` | Copied unchanged. Uses the current module-based tray mechanism (`type = internal/tray` in `modules-right`), matching what the XFCE bar already does — no bar-level `tray-position`, which is the deprecated approach. |
 | `configs/07-module-system-checkup.ini` | System checkup alert, right of the power menu. Shows nothing while all checks pass; a red icon with the failure count, or an orange icon when the last run is older than 13 hours. Left click opens the report, right click runs the checks again. See [`tools/system-checkup/`](../../../tools/system-checkup/README.md). |
-| `configs/07-module-clockify.ini` | Clockify status indicator. Left click opens the local form through `configs/session/clockify/polybar-clockify`. The visible indicator is a `custom/ipc` module so the form can refresh it immediately after submit; a hidden refresher preserves periodic fallback updates. Its wrapper uses the larger Clockify-only Lucide font slot so the icon is more legible without increasing bar height. |
+| `configs/07-module-clockify.ini` | Clockify status indicator. Left click opens the local form through `configs/session/clockify/polybar-clockify`. The visible indicator is a `custom/ipc` module so the form can refresh it immediately after submit; a hidden refresher preserves periodic fallback updates. Its wrapper uses the standard Lucide icon font slot, the same size as the other widgets. |
 
 ## Deliberately not carried over from the XFCE bar
 

@@ -6,9 +6,9 @@ REPO_ROOT="${REPO_ROOT:-${HOME}/.dotfiles}"
 CLOCKIFY_TOOL="${REPO_ROOT}/tools/clockify/src/cli.ts"
 NVM_DIR="${NVM_DIR:-${HOME}/.nvm}"
 ERROR_ICON=$'\uE4B1'
-NUDGE_ICON=$'\uE082'
-HEALTHY_ICON=$'\uE080'
-RUNNING_ICON=$'\uE083'
+NUDGE_ICON=$'\uE688'
+HEALTHY_ICON=$'\uE667'
+RUNNING_ICON=$'\uE600'
 
 # Dracula Pro palette, matching configs/session/polybar/configs/01-colours.ini.
 # Polybar's ${colours.slug} interpolation only works inside .ini files, so
@@ -61,7 +61,7 @@ print_indicator() {
   local colour="${1}"
   local icon="${2}"
 
-  printf '%%{T6}%%{F%s}%s%%{F-}%%{T-}\n' "${colour}" "${icon}"
+  printf '%%{T2}%%{F%s}%s%%{F-}%%{T-}\n' "${colour}" "${icon}"
 }
 
 command=''
