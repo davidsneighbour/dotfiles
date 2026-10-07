@@ -18,7 +18,7 @@ GitHub release of ${REPOSITORY}.
 The installed version is read from configs/fonts/System/lucide/VERSION.
 If a newer release exists, the script downloads lucide-font-<version>.zip,
 replaces the folder contents, writes the new VERSION file, refreshes the
-font cache, and commits only that folder with:
+font cache, and commits only that folder (without commit hooks) with:
 
   ${COMMIT_MESSAGE}
 
@@ -239,5 +239,8 @@ if git -C "${repo_root}" diff --cached --quiet -- "${relative_font_dir}"; then
 fi
 
 # Commit only the font folder. Other staged changes stay staged.
-git -C "${repo_root}" commit --message "${COMMIT_MESSAGE}" -- "${relative_font_dir}"
+# --no-verify skips the commit hooks: the files are upstream release files
+# that do not follow this repository's lint rules, and hooks such as
+# stylelint --fix would change them.
+git -C "${repo_root}" commit --no-verify --message "${COMMIT_MESSAGE}" -- "${relative_font_dir}"
 printf 'Committed: %s\n' "${COMMIT_MESSAGE}"

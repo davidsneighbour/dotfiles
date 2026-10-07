@@ -55,7 +55,7 @@ Keep icon fonts ordered from most intentional to most specialised fallback: Luci
 
 ### Updating Lucide
 
-The Lucide icon font lives in `configs/fonts/System/lucide`. The file `VERSION` in that folder holds the installed release. Run `scripts/update-lucide-font.sh --check` to compare it with the latest GitHub release, and run `scripts/update-lucide-font.sh` to download the new `lucide-font-<version>.zip`, replace the folder contents, refresh the font cache, and commit the folder as `chore(fonts): update Lucide icon font`. Use `--no-commit` to skip the commit. Do not add other files to that folder, because the script replaces all of its contents. The script warns when an icon was removed or changed its codepoint, because configuration files reference Lucide icons by codepoint.
+The Lucide icon font lives in `configs/fonts/System/lucide`. The file `VERSION` in that folder holds the installed release. Run `scripts/update-lucide-font.sh --check` to compare it with the latest GitHub release, and run `scripts/update-lucide-font.sh` to download the new `lucide-font-<version>.zip`, replace the folder contents, refresh the font cache, and commit the folder as `chore(fonts): update Lucide icon font`. The commit uses `--no-verify`, because the upstream files do not follow the lint rules of this repository. Use `--no-commit` to skip the commit. Do not add other files to that folder, because the script replaces all of its contents. The script warns when an icon was removed or changed its codepoint, because configuration files reference Lucide icons by codepoint.
 
 ## Font family names
 
