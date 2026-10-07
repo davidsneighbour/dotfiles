@@ -11,6 +11,8 @@ bindsym
 biomejs
 bordercolor
 bspwm
+codepoint
+codepoints
 color
 combi
 commitlint
@@ -78,6 +80,7 @@ lintstaged
 listview
 lockscreen
 locutus
+lucide
 LOGLEVEL
 mainbox
 mktemp

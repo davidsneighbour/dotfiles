@@ -74,3 +74,6 @@ window_icons:
     - class: Terminator
       slug: terminal
       icon: "\uE795"
+    - class: Enpass
+      slug: enpass
+      icon: "\uE6E9"
