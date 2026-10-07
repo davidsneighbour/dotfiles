@@ -14,5 +14,8 @@
 		<Language id="en_US" date="1771108913">
 			<Font font="Noto Sans 8" width="621" height="14" />
 		</Language>
+		<Language id="en_GB" date="1771108913">
+			<Font font="Ubuntu Sans 9" width="647" height="14" />
+		</Language>
 	</Layout>
 </FileZilla3>

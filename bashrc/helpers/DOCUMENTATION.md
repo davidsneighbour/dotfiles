@@ -167,14 +167,6 @@ Requirements:
 
 * bash and trusted environment/.env files containing the expected token variable.
 
-### `interface-restart`
-
-Minimal launcher that restarts configured Polybar and Conky startup scripts.
-
-Requirements:
-
-* Existing ~/.dotfiles/configs/system/polybar/start.sh and ~/.dotfiles/configs/system/conky/startup.sh.
-
 ### `lpack`
 
 Packages the current directory into a zip file, with excludes from CLI, .gitignore, and optional TOML config.

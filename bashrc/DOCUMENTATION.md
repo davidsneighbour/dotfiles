@@ -75,7 +75,7 @@ Important grouped docs:
 * [`helpers/logs/DOCUMENTATION.md`](./helpers/logs/DOCUMENTATION.md)
 * [`helpers/remarkable/DOCUMENTATION.md`](./helpers/remarkable/DOCUMENTATION.md)
 
-Top-level helper commands and support files are documented in [`helpers/DOCUMENTATION.md`](./helpers/DOCUMENTATION.md), including `dotbot`, `explore`, `github-token`, `interface-restart`, `lpack`, `node-run`, `screencaps.ts`, `set_max_listeners.cjs`, `synch-devspace.sh`, `thunar-standalone`, `update-npm.sh`, and `web-mirror.sh`.
+Top-level helper commands and support files are documented in [`helpers/DOCUMENTATION.md`](./helpers/DOCUMENTATION.md), including `dotbot`, `explore`, `github-token`, `lpack`, `node-run`, `screencaps.ts`, `set_max_listeners.cjs`, `synch-devspace.sh`, `thunar-standalone`, `update-npm.sh`, and `web-mirror.sh`.
 
 ## Cron jobs
 

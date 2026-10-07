@@ -309,7 +309,6 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`helpers/gh/label-migration.sh`](./helpers/gh/label-migration.sh#L1) | file | [./helpers/gh/DOCUMENTATION.md](./helpers/gh/DOCUMENTATION.md#L196) |
 | [`helpers/github-token`](./helpers/github-token#L1) | file | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L82) |
 | [`helpers/INDEX.md`](./helpers/INDEX.md#L1) | file | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L1) |
-| [`helpers/interface-restart`](./helpers/interface-restart#L1) | file | [./helpers/DOCUMENTATION.md](./helpers/DOCUMENTATION.md#L122) |
 | [`helpers/logs/cleanup.ts`](./helpers/logs/cleanup.ts#L1) | file | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L15) |
 | [`helpers/logs/config.toml`](./helpers/logs/config.toml#L1) | file | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L25) |
 | [`helpers/logs/DOCUMENTATION.md`](./helpers/logs/DOCUMENTATION.md#L1) | file | [./helpers/logs/DOCUMENTATION.md](./helpers/logs/DOCUMENTATION.md#L1) |

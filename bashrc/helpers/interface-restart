@@ -1,4 +1,0 @@
-#!/bin/bash
-
-~/.dotfiles/configs/system/polybar/start.sh
-~/.dotfiles/configs/system/conky/startup.sh

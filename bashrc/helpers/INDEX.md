@@ -179,7 +179,6 @@ Alphabetic index of every file and every function/method detected in `bashrc/hel
 * `hostname_lc` (function, `packages/create.sh`) — documented in [./packages/DOCUMENTATION.md](./packages/DOCUMENTATION.md)
 * `info` (function, `gh/label-migration.sh`) — documented in [./gh/DOCUMENTATION.md](./gh/DOCUMENTATION.md)
 * `init_verbose_logging` (function, `packages/create.sh`) — documented in [./packages/DOCUMENTATION.md](./packages/DOCUMENTATION.md)
-* `interface-restart` (file, `interface-restart`) — documented in [./DOCUMENTATION.md](./DOCUMENTATION.md)
 * `interpolate` (function, `docker/backup-runner.ts`) — documented in [./docker/DOCUMENTATION.md](./docker/DOCUMENTATION.md)
 * `inventoryLocalRepositories` (function, `gh/github-manager.ts`) — documented in [./gh/DOCUMENTATION.md](./gh/DOCUMENTATION.md)
 * `is_git_repository` (function, `gh/label-migration.sh`) — documented in [./gh/DOCUMENTATION.md](./gh/DOCUMENTATION.md)
