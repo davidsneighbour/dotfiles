@@ -649,12 +649,11 @@ rofi -version
 rofi -config configs/session/i3/rofi.rasi -dump-config   # validate the i3 Rofi override, no window opens
 tail -f ~/.logs/polybar-i3/bar-$(date +%Y%m%d).log           # i3 Polybar's own log
 cat ~/.xsession-errors | tail -100                            # general X session errors
-configs/session/i3/check.sh                                   # read-only: installed/running summary
+tools/system-checkup/system-checkup --verbose                 # read-only: all checks, incl. the 3x-session-* checks
 busctl --user status org.freedesktop.Notifications | grep -E '^(PID|Comm)='  # which notification daemon is active
 ```
 
-`configs/session/i3/check.sh` bundles the executable/config/process/log
-checks above into one read-only report — it never modifies the desktop.
+The `30-session-commands`, `31-session-config`, `32-session-links`, and `33-session-running` checks of the system checkup (`tools/system-checkup/README.md`) bundle the command, config, link, and process checks above. They are read-only and never modify the desktop. Cron and the i3 login run them; Polybar shows an alert icon when one fails. `npm run test:shell` runs `31-session-config` against the working tree.
 
 ## Known limitations / next improvements
 
@@ -726,7 +725,7 @@ The XFCE/Xubuntu session is untouched and remains the LightDM default
 i3 -C -c configs/session/i3/config
 rofi -config configs/session/i3/rofi.rasi -dump-config
 polybar -c configs/session/polybar/config.ini --list-monitors
-configs/session/i3/check.sh
+tools/system-checkup/system-checkup --check 31-session-config
 ```
 
 ## Agent maintenance requirement

@@ -199,7 +199,8 @@ Run these from the repo root (npm, Node ^22/^24/^26 per `package.json` engines):
 * `npm run check` — full local gate: backup-runner test, ai-usage test, log-filename lint, shell test,
   config lint, typecheck, markdown lint, shell lint. Run this before considering a change done.
 * `npm run test:shell` — `bashrc/helpers/tests/dotfiles-includes-test.sh` +
-  `bashrc/helpers/tests/desktop-helpers-health-check.sh`
+  `tools/system-checkup/system-checkup --check 31-session-config` +
+  `tools/packages/tests/packages-test.sh`
 * `npm run test:ai-usage` — `node --experimental-strip-types bashrc/helpers/ai-usage/tests/ai-usage-test.ts`
 * `npm run test:backup-runner` — `node --experimental-strip-types bashrc/helpers/docker/tests/backup-runner-config-test.ts`
 * `npm run lint:shell` / `lint:shell:all` — shellcheck via `scripts/shell-quality.sh` (`lint-all` covers

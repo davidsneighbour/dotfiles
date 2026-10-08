@@ -17,7 +17,6 @@ at the repo root. This file only documents what lives in this folder.
 | `configs/workspaces.conf` | Generated workspace variable include, derived from `workspaces/workspaces.yaml`. |
 | `configs/rules.conf` | `for_window`/`assign` window rules — see "Window rules" below. |
 | `rofi.rasi` | Small standalone Rofi override used by the launcher bindings — see "Rofi" below. |
-| `check.sh` | Read-only diagnostic: reports whether i3/Polybar/Rofi are installed and running. Run `check.sh --help` for details. Never modifies the desktop. |
 | `window-inspector.sh` | Click a window, see its WM_CLASS/role/title/PID/geometry in a floating terminal — see "Window rules" below. Bound to `Ctrl+Shift+Alt+I`. |
 
 ## Design
@@ -163,8 +162,7 @@ i3 -C -c configs/session/i3/config
 Reload a running i3 session with `Super+Shift+c`, or `i3-msg reload`.
 Restart it in place with `Super+Shift+r`, or `i3-msg restart`.
 
-For a broader "is everything installed and running" check, run
-[`check.sh`](./check.sh) (read-only, safe to run from any session).
+For a broader "is everything installed and running" check, run the session checks of the [system checkup](../../../tools/system-checkup/README.md) (read-only, safe to run from any session): `~/.dotfiles/tools/system-checkup/system-checkup --verbose`.
 
 ## Colour scheme
 

@@ -38,6 +38,12 @@ Left click opens the report in a zenity window. Right click runs the checks agai
 | `10-gdrive-pkollitsch` | `~/GoogleDrive/pkollitsch` is a `fuse.google-drive-ocamlfuse` mount and its root folder can be listed. |
 | `11-gdrive-davidsneighbour` | Same for `~/GoogleDrive/davidsneighbour`. |
 | `20-storage` | `/mnt/storage` (the external "Storage" drive) is an `ext4` mount and its root folder can be listed. |
+| `30-session-commands` | The commands that the i3 session starts or calls (i3, Polybar, Rofi, feh, xss-lock, i3lock, dunst, and the tools that the session scripts use) are installed, and Polybar has i3 support. |
+| `31-session-config` | `i3 -C` accepts the i3 config. The Bash and Python scripts in `configs/session/{i3,polybar,rofi}` parse and are executable. Polybar `include-directory` folders and Rofi `@import` targets exist. Every `~/.dotfiles/...` path in the i3 and Polybar configs exists, and scripts among them are executable. |
+| `32-session-links` | `~/.dotfiles`, the Dotbot links for i3, Rofi, dunst, and `~/.fonts/dotfiles`, and the `xss-lock.service` user unit point into this repository, and the unit is enabled. |
+| `33-session-running` | When i3 runs: i3 answers on its IPC socket, Polybar runs, and `xss-lock.service` is active. Without a running i3 (XFCE, or no login) the check passes and says that it skipped. |
+
+`31-session-config` reads the repository that contains `system-checkup`, not the `~/.dotfiles` link, and needs no desktop. `npm run test:shell` runs it as part of `npm run check`. The session checks replace the former `bashrc/helpers/tests/desktop-helpers-health-check.sh` and `configs/session/i3/check.sh`.
 
 google-drive-ocamlfuse has no separate health command. The mount check is the alive check: a broken FUSE mount fails `stat` on its root folder, and a hung one does not answer a listing within 20 seconds. Both count as failures.
 

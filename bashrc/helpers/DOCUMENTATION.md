@@ -498,7 +498,6 @@ See [`remarkable/DOCUMENTATION.md`](./remarkable/DOCUMENTATION.md).
 No dedicated documentation file; run via `npm run test:shell`.
 
 * `tests/dotfiles-includes-test.sh`: Sources the `dotfiles` helper and asserts its internal include/config-resolution functions behave correctly.
-* `tests/desktop-helpers-health-check.sh`: Smoke-checks desktop helper scripts and local config references without launching a desktop session.
 
 ### `session-colour-scheme`
 
