@@ -2,6 +2,8 @@
 
 A small, quiet health check for this workstation. It runs every check in [`checks.d/`](checks.d/), writes a short report, and shows an alert icon in the i3 Polybar when a check fails. When all checks pass, the Polybar module shows nothing.
 
+`bin/system-checkup` calls [`system-checkup`](system-checkup), so the command is on `PATH` as `system-checkup`. Run `system-checkup --help` for all options.
+
 ## When it runs
 
 * Every 6 hours, from cron. The job is in [`configs/dotbot/config.host-locutus.yaml`](../../configs/dotbot/config.host-locutus.yaml) (id `system-checkup`). Run `dotfiles host-locutus` to install or update it.
@@ -42,6 +44,7 @@ Left click opens the report in a zenity window. Right click runs the checks agai
 | `31-session-config` | `i3 -C` accepts the i3 config. The Bash and Python scripts in `configs/session/{i3,polybar,rofi}` parse and are executable. Polybar `include-directory` folders and Rofi `@import` targets exist. Every `~/.dotfiles/...` path in the i3 and Polybar configs exists, and scripts among them are executable. |
 | `32-session-links` | `~/.dotfiles`, the Dotbot links for i3, Rofi, dunst, and `~/.fonts/dotfiles`, and the `xss-lock.service` user unit point into this repository, and the unit is enabled. |
 | `33-session-running` | When i3 runs: i3 answers on its IPC socket, Polybar runs, and `xss-lock.service` is active. Without a running i3 (XFCE, or no login) the check passes and says that it skipped. |
+| `40-ai-config-links` | `~/.claude/settings.json` and `~/.codex/config.toml` are links into `protected/ai-configs`. Claude Code and Codex can replace a link with a regular file when they save settings. The check then exits 3, and the `dotfiles` helper refuses to run Dotbot until the file is merged by hand. A missing link exits 1 and does not block `dotfiles`. |
 
 `31-session-config` reads the repository that contains `system-checkup`, not the `~/.dotfiles` link, and needs no desktop. `npm run test:shell` runs it as part of `npm run check`. The session checks replace the former `bashrc/helpers/tests/desktop-helpers-health-check.sh` and `configs/session/i3/check.sh`.
 

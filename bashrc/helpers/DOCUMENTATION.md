@@ -32,6 +32,8 @@ Bash helpers are standalone helper commands unless noted otherwise. Several Type
 
 Dotbot wrapper that runs a selected `configs/dotbot/config*.yaml` profile via the brew-installed `dotbot` binary.
 
+Before Dotbot runs, it runs the system checkup `40-ai-config-links`. When a regular file replaced `~/.claude/settings.json` or `~/.codex/config.toml`, it stops, because Dotbot (`force: true`) would overwrite that file. Merge the file into the repository copy, delete it, and run `dotfiles ai` again.
+
 CLI option notes:
 
 * --config CONFIG_NAME — run a specific configs/dotbot profile.
@@ -44,6 +46,7 @@ Functions/methods defined:
 * `source_core_libs`
 * `print_help`
 * `ensure_dotbot_ready`
+* `ensure_ai_config_links_safe`
 * `normalize_config_to_filename`
 * `resolve_config_path`
 * `run_dotbot_with_config`

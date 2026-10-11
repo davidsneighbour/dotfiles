@@ -71,6 +71,22 @@ ensure_dotbot_ready() {
   fi
 }
 
+# Refuse to run when a regular file replaced one of the AI config links:
+# Dotbot links with force: true and would overwrite the unsaved changes.
+# A missing or wrong link is fine here, because Dotbot creates or fixes it.
+ensure_ai_config_links_safe() {
+  local checkup="${REPO_ROOT}/tools/system-checkup/system-checkup"
+  local output=''
+  local rc=0
+
+  output="$("${checkup}" --check 40-ai-config-links 2>&1)" || rc="${?}"
+  if [[ "${rc}" -eq 3 ]]; then
+    dnb_log error "Dotbot would overwrite AI config files that are no longer links:"
+    printf '%s\n' "${output}" >&2
+    exit 1
+  fi
+}
+
 normalize_config_to_filename() {
   local raw_config_name="${1}"
 
@@ -261,6 +277,7 @@ run_dotbot_with_config() {
   fi
 
   ensure_dotbot_ready
+  ensure_ai_config_links_safe
 
   export HOSTNAME
   HOSTNAME="$(hostname)"
