@@ -23,6 +23,8 @@ LABELS=("pkollitsch" "davidsneighbour")
 MOUNT_BASE="${HOME}/GoogleDrive"
 LOG_BASE="${HOME}/.logs/gdrive"
 MOUNT_TIMEOUT=20
+# google-drive-ocamlfuse receives the OAuth code on a local server at this port.
+AUTH_PORT=8080
 VERBOSE="${DNB_VERBOSE:-0}"
 LOGFILE=""
 
@@ -176,6 +178,14 @@ mount_google_drive() {
     sleep 1
   done
 
+  # A process that is still running here is not mounted. It usually waits in
+  # the browser OAuth flow and holds the local auth port, which makes every
+  # later --reauth fail. Stop it.
+  if kill -0 "${pid}" 2>/dev/null; then
+    log "warn" "${label}: stopping google-drive-ocamlfuse (PID ${pid}) that did not mount"
+    kill "${pid}" 2>/dev/null
+  fi
+
   if grep -qs "Invalid refresh token" "${LOGFILE}"; then
     log "error" "${label}: Google rejected the refresh token. Run: ${SCRIPT_NAME} --reauth --label ${label}"
     notify "critical" "Google Drive: ${label} needs sign-in" \
@@ -206,6 +216,12 @@ reauth_google_drive() {
 
   if pgrep -u "${UID}" -f -- "google-drive-ocamlfuse -label ${label}( |$)" >/dev/null 2>&1; then
     log "error" "${label}: a google-drive-ocamlfuse process for this label is still running. Stop it first."
+    return 1
+  fi
+
+  if ss -Hltn "sport = :${AUTH_PORT}" 2>/dev/null | grep -q .; then
+    log "error" "${label}: port ${AUTH_PORT} is in use, so Google cannot return the sign-in code. Find the process with: ss -ltnp 'sport = :${AUTH_PORT}'"
+    notify "critical" "Google Drive: ${label} sign-in blocked" "Port ${AUTH_PORT} is in use by another process."
     return 1
   fi
 
