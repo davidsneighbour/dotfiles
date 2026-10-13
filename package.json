@@ -47,7 +47,7 @@
     "stylelint": "17.16.0",
     "stylelint-config-standard": "40.0.0",
     "stylelint-config-tailwindcss": "1.0.1",
-    "toml": "5.0.0",
+    "toml": "5.0.1",
     "tsc-files": "1.1.4",
     "typescript": "7.0.2",
     "wireit": "0.14.13"
