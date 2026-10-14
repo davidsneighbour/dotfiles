@@ -1,3 +1,6 @@
+# Icons: ALWAYS write as a double-quoted escape, e.g. icon: "\uE0E8".
+# Never paste the raw glyph or an HTML entity (&#57576;). \u takes exactly 4 hex digits.
+
 workspaces:
   - key: 1
     name: dashboard
@@ -7,7 +10,7 @@ workspaces:
     icon: "\uE0E8"
   - key: 3
     name: code
-    icon: ""
+    icon: "\uE36A"
   - key: 4
     name: ops
     icon: "\uE154"
@@ -29,18 +32,18 @@ workspaces:
 
 dynamic:
   code:
-    icon: ""
+    icon: "\uE36A"
     workspace_prefix: code
     command:
       - code
       - --new-window
   chatgpt:
-    icon: ""
+    icon: "\uE1BB"
     workspace_prefix: chatgpt
     command:
       - /usr/bin/chatgpt
   claude:
-    icon: ""
+    icon: "\uE1BB"
     workspace_prefix: chatgpt
     command:
       - /usr/bin/claude-desktop
@@ -55,7 +58,7 @@ window_icons:
   rules:
     - class: Code
       slug: code
-      icon: ""
+      icon: "\uE093"
     - class: firefox
       slug: web
       icon: "\uE0E8"
@@ -77,3 +80,8 @@ window_icons:
     - class: Enpass
       slug: enpass
       icon: "\uE731"
+    - class: google-chrome
+      slug: Chrome
+      icon: "\uE0E8"
+
+
