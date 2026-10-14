@@ -80,8 +80,12 @@ window_icons:
     - class: Enpass
       slug: enpass
       icon: "\uE731"
+    # Chrome --app windows: class Google-chrome, instance from the app URL.
+    # Keep these before the generic google-chrome rule; the first match wins.
+    - class: google-chrome
+      instance: orteil.dashnet.org__cookieclicker
+      slug: cookieclicker
+      icon: "\uE26B"
     - class: google-chrome
       slug: Chrome
       icon: "\uE0E8"
-
-
