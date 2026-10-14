@@ -1,5 +1,45 @@
 # Changelog
 
+## [2.22.0](https://github.com/davidsneighbour/dotfiles/compare/v2.21.0...v2.22.0) (2026-10-14)
+
+### Feat
+
+* **i3:** add workspace layout save and restore ([9793608](https://github.com/davidsneighbour/dotfiles/commit/9793608ade9da91280eb36ccffcbb71f69b085de))
+* **i3:** move focused window to next workspace with Ctrl+Super+Right ([f179fc0](https://github.com/davidsneighbour/dotfiles/commit/f179fc0d09e9a8c5eb79f7272b9473898222b759))
+* lucide font downloader ([76de8a6](https://github.com/davidsneighbour/dotfiles/commit/76de8a608a3c32e6239cc77fdec9d1550275cfe4))
+* **packages:** add read-only APT package inspection tool ([7995ca4](https://github.com/davidsneighbour/dotfiles/commit/7995ca4595604f96abc68855ad6bd54324c74879))
+* **polybar:** update Clockify icons and use standard icon size ([11e8a54](https://github.com/davidsneighbour/dotfiles/commit/11e8a5411824df8a86f5b05ac164cfdb8cdd5877))
+* **session:** add system checkup with Polybar alert ([3c75342](https://github.com/davidsneighbour/dotfiles/commit/3c75342bfd3494ff5d7860c66a23b79ae2ae7afd))
+* **session:** move session health checks into system checkup ([aed95cd](https://github.com/davidsneighbour/dotfiles/commit/aed95cd9fb9dffee25a3ccca5ff31056a9ad3f84))
+
+### Fix
+
+* add ai file check to system checkup ([a41727d](https://github.com/davidsneighbour/dotfiles/commit/a41727d3cd55f14aca556ebe5b8b52c51651ff18))
+* commit without linting contents of lucide font package ([747ad54](https://github.com/davidsneighbour/dotfiles/commit/747ad54921a80114317f400ff1cb87f8feaa7ff9))
+* open new window on subl call ([8a9b1f7](https://github.com/davidsneighbour/dotfiles/commit/8a9b1f794360d883f29e243b4ccc3cc4db5173d0))
+* remove obsolete interface restart ([44f3a4e](https://github.com/davidsneighbour/dotfiles/commit/44f3a4e85e499954fd7822a8a6f0eaa2a46dc6d1))
+* **session:** start xss-lock only from the i3 session ([b3c3f83](https://github.com/davidsneighbour/dotfiles/commit/b3c3f83caefc0dbee0959b567ef1b6bbf50063df))
+* **session:** stop stale gdrive auth process blocking reauth ([725c158](https://github.com/davidsneighbour/dotfiles/commit/725c158a0c651aaf78d0c1da7ee93b2256baea1c))
+* **subl:** update sublime edit configuration ([9891430](https://github.com/davidsneighbour/dotfiles/commit/98914301ccb30a24beca579e976f2dc93da933d3))
+* **workspaces:** cookieclicker icon ([6e4d233](https://github.com/davidsneighbour/dotfiles/commit/6e4d2330be18c0a900ce0cf26a1bd238c86dff30))
+* **workspaces:** update enpass icon setup ([a9fd077](https://github.com/davidsneighbour/dotfiles/commit/a9fd077ada76b3a818f9ba0236b02402c0d2c4ff))
+* **workspaces:** write icons as escapes and add a Chrome icon ([9a525c3](https://github.com/davidsneighbour/dotfiles/commit/9a525c3199b23a48ea4c10f62304ede05743bdf4))
+
+### Docs
+
+* **packages:** link the planned additions to their issues ([d5e3667](https://github.com/davidsneighbour/dotfiles/commit/d5e36670080165db46a0d067e75ecd98b1e650e7))
+
+### Build
+
+* **deps:** update dependencies ([f30ce6c](https://github.com/davidsneighbour/dotfiles/commit/f30ce6cac4069bc45c52bb9e00e5ba5132433e3c))
+* **deps:** update dependencies ([38fe15d](https://github.com/davidsneighbour/dotfiles/commit/38fe15d4a5c523f712ba206a2132802f69f8c1df))
+* **deps:** update dependencies ([8d69545](https://github.com/davidsneighbour/dotfiles/commit/8d695454702a2f2699c221a8191d387c75959dd8))
+* **deps:** update dependencies ([56fac02](https://github.com/davidsneighbour/dotfiles/commit/56fac029657bf07e0a2fc99e924ac90356cdfdb3))
+
+### Chore
+
+* **fonts:** update Lucide icon font ([f7a31d8](https://github.com/davidsneighbour/dotfiles/commit/f7a31d8c88085e0758a8fc43bb6127a7ad645e85))
+
 ## [2.21.0](https://github.com/davidsneighbour/dotfiles/compare/v2.20.0...v2.21.0) (2026-10-05)
 
 ### Feat
