@@ -38,6 +38,7 @@ or toggling an individual application must use `Ctrl+Shift+Alt+<key>`
 | `Super+L` | Lock the screen (`loginctl lock-session`, caught by `xss-lock`) |
 | `Super+1`..`Super+9` | Switch to generated numbered icon workspace 1-9 |
 | `Super+Shift+1`..`Super+Shift+9` | Move focused window to generated numbered icon workspace 1-9 |
+| `Ctrl+Super+Right` | Move focused window to the next workspace (`move to workspace next`) |
 | `Super+Arrow` | Move focus |
 | `Super+Shift+Arrow` | Move focused window |
 | `Super+F` | Toggle fullscreen |
