@@ -19,5 +19,10 @@ ExecStart=/usr/bin/xss-lock -l -s "${XDG_SESSION_ID}" -- %h/.dotfiles/configs/se
 Restart=on-failure
 RestartSec=2
 
+# Not default.target: with Linger=yes the user manager starts at boot, before
+# any X login, so xss-lock cannot connect to a display, fails five times in
+# ten seconds, and systemd then refuses further starts. Nothing activates
+# graphical-session.target under i3, so this (like upstream's unit) only
+# keeps the unit "enabled"; session-starts.conf is what starts it.
 [Install]
-WantedBy=default.target
+WantedBy=graphical-session.target

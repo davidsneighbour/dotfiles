@@ -471,6 +471,7 @@ Alt+Tab/Super+Tab still go to xfwm4's own default
   Polybar was never restarted either. Starting it via `systemctl --user
   start` is a safe no-op when already running, so `exec_always` re-arms it
   without ever duplicating it.
+* The unit is `WantedBy=graphical-session.target`, not `default.target`. With `Linger=yes` the user manager starts at boot, before any X login, so a `default.target` unit cannot connect to a display, fails five times in ten seconds, and systemd then refuses further starts until `reset-failed`. Nothing activates `graphical-session.target` under i3, so only `session-starts.conf` starts the unit. That line also imports `DISPLAY` and `XAUTHORITY` and runs `systemctl --user reset-failed xss-lock.service` before the start.
 * This system has `Linger=yes` (`loginctl show-user patrick`), so
   `systemd --user` is a single persistent manager decoupled from any one
   login session (its own "manager"-class pseudo session), not the graphical
