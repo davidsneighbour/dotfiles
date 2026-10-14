@@ -17,6 +17,8 @@ at the repo root. This file only documents what lives in this folder.
 | `configs/workspaces.conf` | Generated workspace variable include, derived from `workspaces/workspaces.yaml`. |
 | `configs/rules.conf` | `for_window`/`assign` window rules — see "Window rules" below. |
 | `rofi.rasi` | Small standalone Rofi override used by the launcher bindings — see "Rofi" below. |
+| `layouts/` | Saved workspace layouts (JSON, tracked in git) — see "Workspace layouts" below. |
+| `workspaces/layouts.py` | Saves, applies, deletes, and edits workspace layouts — see "Workspace layouts" below. |
 | `window-inspector.sh` | Click a window, see its WM_CLASS/role/title/PID/geometry in a floating terminal — see "Window rules" below. Bound to `Ctrl+Shift+Alt+I`. |
 
 ## Design
@@ -93,6 +95,32 @@ Programs started on a new workspace (bare `Super`, `Super+Shift+D`, or `Ctrl+Shi
    ```
 
 You do not need to reload i3. `workspaces.py` reads `workspaces.yaml` each time it runs, so the rule applies from the next launch. The first rule that matches wins.
+
+## Workspace layouts
+
+`workspaces/layouts.py` saves the focused workspace as a layout and starts saved layouts again on a new dynamic workspace (10+). Layout files are in [`layouts/`](layouts/), one `<label-slug>.json` file for each layout. They are tracked in git, so commit a layout when you want to keep it.
+
+| Binding | Command | Action |
+| --- | --- | --- |
+| `Ctrl+Super+S` | `layouts.py save` | Ask for a label in Rofi, save the focused workspace, then open the file in `subl`. Asks before it replaces a layout with the same label. |
+| `Ctrl+Super+L` | `layouts.py apply` | Pick a layout in Rofi. Make a new dynamic workspace, put the placeholders there (`append_layout`), and start the `launch` commands. |
+| `Ctrl+Super+D` | `layouts.py delete` | Pick a layout in Rofi, confirm (`No` is the default), and delete its file. |
+| `Ctrl+Super+E` | `layouts.py edit` | Pick a layout in Rofi and open its file in `subl`. |
+
+Each command also works without Rofi: `--label` for `save`, `--layout <label>` for the others, and `--yes` to skip confirmation. Run `layouts.py --help` for all flags.
+
+File format:
+
+* `label` — the name shown in Rofi.
+* `icon` — the workspace icon. `save` takes it from `window_icons.rules` for the first window. An empty value gives `window_icons.fallback`. Icons are written as `\uXXXX` escapes.
+* `launch` — one entry for each window: `command` (an argv list, no shell) and an optional `cwd`. `save` reads the command from the window's process (`_NET_WM_PID`, then `/proc/<pid>/cmdline`). The `window` field is only a note. If `save` cannot find the process, `command` is empty and a `note` tells you to add it.
+* `layout` — i3 containers for `append_layout`. Windows are placeholders with `swallows` rules (exact `class` and `instance` regexes). i3 puts each new window into the first placeholder that it matches. To match more loosely, edit the regexes (for example remove `instance`).
+
+Limits:
+
+* The saved command is the command of the window's process. Check it after a save. For example, a terminal saves the terminal command, not the shell or program that ran in it.
+* A single-instance program that only raises an existing window does not fill its placeholder. Add a flag such as `--new-window` to its command if the program has one.
+* A placeholder that is never filled stays on the workspace. Focus it and close it with `Super+Shift+Q`.
 
 ## Rofi
 

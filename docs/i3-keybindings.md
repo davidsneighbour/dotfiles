@@ -25,6 +25,10 @@ or toggling an individual application must use `Ctrl+Shift+Alt+<key>`
 | `Ctrl+Shift+Alt+E` | Open the Enpass assistant (`session-colour-scheme --tool enpass -- showassistant`) with its app-specific dark-mode compatibility environment |
 | `Ctrl+Shift+Alt+T` | Toggle the persistent scratch terminal in/out of the scratchpad on the current workspace, right half of the focused output (`configs/session/terminal/scratch-terminal --toggle`) — see "Scratch terminal" in `SESSION.md` |
 | `Ctrl+Shift+Alt+F` | Show the canonical, singleton Files workspace — a two-pane Thunar environment (LEFT user-controlled, RIGHT the external-open target) invoked via `configs/session/filemanager/file-manager --show` — see "Canonical Files workspace" in `SESSION.md` |
+| `Ctrl+Super+S` | Save the focused workspace as a layout: ask for a label (Rofi), write `configs/session/i3/layouts/<label>.json`, open it in `subl` (`configs/session/i3/workspaces/layouts.py save`) |
+| `Ctrl+Super+L` | Pick a saved layout (Rofi) and start it on a new dynamic workspace (`layouts.py apply`) |
+| `Ctrl+Super+D` | Pick a saved layout (Rofi) and delete its file after confirmation (`layouts.py delete`) |
+| `Ctrl+Super+E` | Pick a saved layout (Rofi) and open its file in `subl` (`layouts.py edit`) |
 | `Alt+Tab` (`Mod1+Tab`) | Open YAML-aware Rofi window switcher, all workspaces (`configs/session/rofi/window-switcher.sh`) — see "Rofi" in `SESSION.md` |
 | `Super+Enter` | Open terminal (`$terminal`, currently `xfce4-terminal`) |
 | `Super+Shift+Q` | Close focused window |

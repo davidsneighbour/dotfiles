@@ -355,6 +355,7 @@ Alt+Tab/Super+Tab still go to xfwm4's own default
     indicator. Otherwise the configured Code icon is used. i3 removes that
     workspace from the live workspace list when the last window closes.
   * `workspaces.py promote-focused` — the focused-window promotion controller, bound to `Ctrl+Shift+Alt+N` in `configs/session/i3/configs/applications.conf`. It reads the focused i3-managed window from `i3-msg -t get_tree`, rejects scratchpad and session-infrastructure windows using the same switchable-window filter as Alt+Tab, selects an icon from `workspaces.yaml`'s `window_icons.rules` class/instance mappings, falls back to `window_icons.fallback`, then moves that exact container id to a fresh dynamic workspace and switches to it. The optional `slug` values are metadata for maintainers; the visible workspace name stays `number:icon`, so Polybar renders only the icon just like the existing dynamic Code and ChatGPT workspaces.
+  * `workspaces.py`'s sibling `layouts.py` — workspace layouts, bound to `Ctrl+Super+S`/`L`/`D`/`E` (save, load, delete, edit) in `configs/session/i3/configs/keybindings.conf`. `save` converts the focused workspace from `i3-msg -t get_tree` into `append_layout` placeholders (class/instance `swallows`) and records each window's command from `_NET_WM_PID` and `/proc/<pid>/cmdline`. `apply` makes the next dynamic workspace (10+), runs `append_layout` there, and starts the recorded commands. Files are in `configs/session/i3/layouts/`, tracked in git. Rofi `-dmenu` with `configs/session/i3/rofi.rasi` is used for the label prompt, the picker, and the confirmation; `subl` opens the files; results and errors go to `notify-send`. See "Workspace layouts" in `configs/session/i3/README.md`.
   * The same underlying mechanism (`configs/session/i3/workspaces/
     workspaces.py launch --application <name>`) is also called directly,
     with no Rofi picker, by fixed single-purpose launchers such as
@@ -618,9 +619,11 @@ pactl      apt: pulseaudio-utils  (used by Polybar's pulseaudio module)
 shellcheck (dev-only, used to lint launch.sh; via linuxbrew on this host)
 terminator apt: terminator (`$terminal`, $mod+Return; also window-inspector.sh's report terminal — see "Window rules")
 xdotool    apt: xdotool    (window-inspector.sh's click-to-select and window queries)
-xprop      apt: x11-utils  (window-inspector.sh's WM_CLASS/role queries)
+xprop      apt: x11-utils  (window-inspector.sh's WM_CLASS/role queries; layouts.py's _NET_WM_PID lookup)
 wmctrl     apt: wmctrl     (window-inspector.sh's desktop/PID listing)
 dunst      apt: dunst      (notification daemon, D-Bus-activated — see "Notifications")
+notify-send apt: libnotify-bin (layouts.py results and errors)
+subl       Sublime Text  (layouts.py save/edit opens layout files)
 ```
 
 Explicitly **not** used, despite being mentioned as possibilities in the
