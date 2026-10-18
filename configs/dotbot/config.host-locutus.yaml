@@ -51,13 +51,13 @@
       cron: "15 8 * * *"
       comment: "daily dotfiles Git catalogue and reports"
       command: >-
-        /usr/bin/flock -w 300 "/home/patrick/github.com/davidsneighbour/dotfiles/tools/git-collection/state/update.lock" "/home/patrick/.nvm/versions/node/v26.8.1/bin/node" "/home/patrick/github.com/davidsneighbour/dotfiles/tools/git-collection/src/daily.ts" --config "/home/patrick/github.com/davidsneighbour/dotfiles/tools/git-collection/config.local.json" --database "/home/patrick/github.com/davidsneighbour/dotfiles/tools/git-collection/state/catalogue.sqlite" --output "/home/patrick/github.com/davidsneighbour/dotfiles/tools/git-collection/reports"
+        /usr/bin/flock -w 300 "/home/patrick/github.com/davidsneighbour/dotfiles/tools/git-collection/state/update.lock" "/home/patrick/.nvm/versions/node/v26.10.0/bin/node" "/home/patrick/github.com/davidsneighbour/dotfiles/tools/git-collection/src/daily.ts" --config "/home/patrick/github.com/davidsneighbour/dotfiles/tools/git-collection/config.local.json" --database "/home/patrick/github.com/davidsneighbour/dotfiles/tools/git-collection/state/catalogue.sqlite" --output "/home/patrick/github.com/davidsneighbour/dotfiles/tools/git-collection/reports"
 
     - id: git-collection-startup
       cron: "@reboot"
       comment: "dotfiles Git catalogue and reports at startup"
       command: >-
-        /usr/bin/flock -w 300 "/home/patrick/github.com/davidsneighbour/dotfiles/tools/git-collection/state/update.lock" "/home/patrick/.nvm/versions/node/v26.8.1/bin/node" "/home/patrick/github.com/davidsneighbour/dotfiles/tools/git-collection/src/daily.ts" --config "/home/patrick/github.com/davidsneighbour/dotfiles/tools/git-collection/config.local.json" --database "/home/patrick/github.com/davidsneighbour/dotfiles/tools/git-collection/state/catalogue.sqlite" --output "/home/patrick/github.com/davidsneighbour/dotfiles/tools/git-collection/reports"
+        /usr/bin/flock -w 300 "/home/patrick/github.com/davidsneighbour/dotfiles/tools/git-collection/state/update.lock" "/home/patrick/.nvm/versions/node/v26.10.0/bin/node" "/home/patrick/github.com/davidsneighbour/dotfiles/tools/git-collection/src/daily.ts" --config "/home/patrick/github.com/davidsneighbour/dotfiles/tools/git-collection/config.local.json" --database "/home/patrick/github.com/davidsneighbour/dotfiles/tools/git-collection/state/catalogue.sqlite" --output "/home/patrick/github.com/davidsneighbour/dotfiles/tools/git-collection/reports"
 
     - id: system-checkup
       cron: "0 */6 * * *"
