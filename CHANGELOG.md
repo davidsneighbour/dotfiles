@@ -1,5 +1,24 @@
 # Changelog
 
+## [2.24.0](https://github.com/davidsneighbour/dotfiles/compare/v2.23.1...v2.24.0) (2026-10-18)
+
+### Feat
+
+* **git:** add git-repos-status helper for multi-repository overview ([f2f33f5](https://github.com/davidsneighbour/dotfiles/commit/f2f33f50724fc0da8fca7f17ad86c5f70b8c248d))
+
+### Build
+
+* **deps:** bump source-map-js ([#592](https://github.com/davidsneighbour/dotfiles/issues/592)) ([1ca5b61](https://github.com/davidsneighbour/dotfiles/commit/1ca5b61c1022c8197f21b1555147339cd9d7d256))
+* **deps:** update dependencies ([cb32579](https://github.com/davidsneighbour/dotfiles/commit/cb32579ca33f0b03f59d32c9028e0ce00f5725ae))
+* **deps:** update dependency @types/node to v26.6.5 ([#593](https://github.com/davidsneighbour/dotfiles/issues/593)) ([b121217](https://github.com/davidsneighbour/dotfiles/commit/b121217791b643bf39376235f3d65d4a10915bb4))
+* **deps:** update dependency @types/node to v26.6.5 ([#594](https://github.com/davidsneighbour/dotfiles/issues/594)) ([5c9b1ca](https://github.com/davidsneighbour/dotfiles/commit/5c9b1cabd399c8f1680ddab1dec0215f7334dcf0))
+* **deps:** update dependency @vitejs/plugin-react to v6.1.2 ([#588](https://github.com/davidsneighbour/dotfiles/issues/588)) ([421c647](https://github.com/davidsneighbour/dotfiles/commit/421c64795216bd86038a053d0d2729c7a85caee9))
+* **deps:** update dependency lucide-react to v1.57.0 ([#590](https://github.com/davidsneighbour/dotfiles/issues/590)) ([1cb8e68](https://github.com/davidsneighbour/dotfiles/commit/1cb8e686fd276269b5fefe851c18fe3d3df524cb))
+* **deps:** update dependency playwright to v1.64.1 ([#595](https://github.com/davidsneighbour/dotfiles/issues/595)) ([fc22329](https://github.com/davidsneighbour/dotfiles/commit/fc223290b3f8d746e4c1c76eb5dba2ab02cad560))
+* **deps:** update dependency playwright to v1.64.1 ([#596](https://github.com/davidsneighbour/dotfiles/issues/596)) ([2096533](https://github.com/davidsneighbour/dotfiles/commit/2096533e3998200dc74d284de90778aa5f9ec28f))
+* **deps:** update dependency vite to v8.3.4 ([#589](https://github.com/davidsneighbour/dotfiles/issues/589)) ([acf3482](https://github.com/davidsneighbour/dotfiles/commit/acf3482c315e4591aab4b5d445971e18d39ca6cd))
+* **deps:** update radix-ui-primitives monorepo ([#591](https://github.com/davidsneighbour/dotfiles/issues/591)) ([6da0ac7](https://github.com/davidsneighbour/dotfiles/commit/6da0ac7f5b3e8be010179f120c9a1956111fa781))
+
 ## [2.23.1](https://github.com/davidsneighbour/dotfiles/compare/v2.23.0...v2.23.1) (2026-10-18)
 
 ### Fix
