@@ -1,5 +1,31 @@
 # Changelog
 
+## [2.23.1](https://github.com/davidsneighbour/dotfiles/compare/v2.23.0...v2.23.1) (2026-10-18)
+
+### Fix
+
+* **dotbot:** update node version for cronjobs ([bfc87aa](https://github.com/davidsneighbour/dotfiles/commit/bfc87aae2d9d13a2c50d5f441a8efb351a4762d0))
+
+## [2.23.0](https://github.com/davidsneighbour/dotfiles/compare/v2.22.0...v2.23.0) (2026-10-15)
+
+### Feat
+
+* **i3:** toggle Myna dictation with Ctrl+Shift+Alt+Q ([d20ad54](https://github.com/davidsneighbour/dotfiles/commit/d20ad547b0e0dcea627b7f90160f39e8fccd3a23))
+
+### Fix
+
+* **containers:** remove readeck ([0c322de](https://github.com/davidsneighbour/dotfiles/commit/0c322de96a33a7e73a9420b025cf7517e960abf3))
+* **i3:** float Chrome dropdown and popup menus without borders ([d1b7fc3](https://github.com/davidsneighbour/dotfiles/commit/d1b7fc3a0c267d30c90c63b81434fcf626ccda68))
+* **session:** start a graphical authentication agent in i3 ([856cf9a](https://github.com/davidsneighbour/dotfiles/commit/856cf9a174adbbd39dbe189d1c34b7a5224a6f3b))
+
+### Style
+
+* **workspaces:** remove trailing blank line in cookie clicker launcher ([f28eaa1](https://github.com/davidsneighbour/dotfiles/commit/f28eaa1c05aeb032343a5f32d84b7d53cd82252a))
+
+### Chore
+
+* **i3:** add content review layout for Independence Yacht Charter ([b578771](https://github.com/davidsneighbour/dotfiles/commit/b57877195a4bf2fecaa7c857d9d71124086e35dd))
+
 ## [2.22.0](https://github.com/davidsneighbour/dotfiles/compare/v2.21.0...v2.22.0) (2026-10-14)
 
 ### Feat
