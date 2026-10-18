@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.23.1](https://github.com/davidsneighbour/dotfiles/compare/v2.23.0...v2.23.1) (2026-10-18)
+
+### Fix
+
+* **dotbot:** update node version for cronjobs ([bfc87aa](https://github.com/davidsneighbour/dotfiles/commit/bfc87aae2d9d13a2c50d5f441a8efb351a4762d0))
+
 ## [2.23.0](https://github.com/davidsneighbour/dotfiles/compare/v2.22.0...v2.23.0) (2026-10-15)
 
 ### Feat
