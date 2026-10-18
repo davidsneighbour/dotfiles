@@ -1,0 +1,76 @@
+{
+  "label": "Content Review Independence Yacht Charter",
+  "icon": "\ue11d",
+  "saved": "2026-10-14T11:50:27",
+  "launch": [
+    {
+      "window": "org.gnome.Nautilus/org.gnome.Nautilus: 3. Overnight Tour",
+      "command": ["/usr/bin/nautilus", "--gapplication-service"],
+      "cwd": "/home/patrick"
+    },
+    {
+      "window": "org.gnome.Nautilus/org.gnome.Nautilus: 3. Overnight Tour",
+      "command": ["/usr/bin/nautilus", "--gapplication-service"],
+      "cwd": "/home/patrick"
+    },
+    {
+      "window": "Google-chrome/google-chrome: i3: Layout saving in i3 - Google Chrome",
+      "command": ["/opt/google/chrome/chrome"],
+      "cwd": "/home/patrick"
+    }
+  ],
+  "layout": [
+    {
+      "type": "con",
+      "layout": "splith",
+      "nodes": [
+        {
+          "type": "con",
+          "layout": "splitv",
+          "nodes": [
+            {
+              "type": "con",
+              "name": "3. Overnight Tour",
+              "swallows": [
+                {
+                  "class": "^org\\.gnome\\.Nautilus$",
+                  "instance": "^org\\.gnome\\.Nautilus$"
+                }
+              ],
+              "percent": 0.5,
+              "border": "none",
+              "current_border_width": 0
+            },
+            {
+              "type": "con",
+              "name": "3. Overnight Tour",
+              "swallows": [
+                {
+                  "class": "^org\\.gnome\\.Nautilus$",
+                  "instance": "^org\\.gnome\\.Nautilus$"
+                }
+              ],
+              "percent": 0.5,
+              "border": "none",
+              "current_border_width": 0
+            }
+          ],
+          "percent": 0.5
+        },
+        {
+          "type": "con",
+          "name": "i3: Layout saving in i3 - Google Chrome",
+          "swallows": [
+            {
+              "class": "^Google\\-chrome$",
+              "instance": "^google\\-chrome$"
+            }
+          ],
+          "percent": 0.5,
+          "border": "none",
+          "current_border_width": 0
+        }
+      ]
+    }
+  ]
+}

@@ -20,6 +20,7 @@ or toggling an individual application must use `Ctrl+Shift+Alt+<key>`
 | `Ctrl+Shift+W` | Open Rofi VS Code workspace picker and launch the selection in a temporary dynamic Code workspace (`configs/session/rofi/workspaces.sh --newwindow --dynamic-workspace code`) |
 | `Ctrl+Shift+Alt+O` | Launch/focus Obsidian (`/opt/Obsidian/obsidian vault=notes`), assigned to its own workspace via `rules.conf`'s `assign [class="obsidian"] $ws5` |
 | `Ctrl+Shift+Alt+S` | Launch/focus Sublime Text (`/usr/bin/subl`) |
+| `Ctrl+Shift+Alt+Q` | Start/stop Myna dictation (D-Bus `com.canonical.Myna.Dictation.Toggle`) |
 | `Ctrl+Shift+Alt+I` | Click a window, then show its WM_CLASS/role/title/PID/geometry in a floating terminal (`configs/session/i3/window-inspector.sh`) — see "Window rules" in `SESSION.md` |
 | `Ctrl+Shift+Alt+N` | Move the focused managed window to a freshly created temporary icon workspace (`configs/session/i3/workspaces/workspaces.py promote-focused`) |
 | `Ctrl+Shift+Alt+E` | Open the Enpass assistant (`session-colour-scheme --tool enpass -- showassistant`) with its app-specific dark-mode compatibility environment |

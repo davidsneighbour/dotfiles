@@ -7,4 +7,3 @@ Name=Cookie Clicker
 Exec=/opt/google/chrome/google-chrome --profile-directory=Default --app=https://orteil.dashnet.org/cookieclicker/
 Icon=/home/patrick/.icons/DNB/container/cookie-clicker.png
 StartupWMClass=orteil.dashnet.org__cookieclicker
-
