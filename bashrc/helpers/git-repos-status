@@ -1,0 +1,233 @@
+#!/bin/bash
+#
+# git-repos-status
+#
+# Show local changes, remote changes (ahead/behind upstream), and stashes for
+# every direct child Git repository of a root folder, as one table.
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)"
+# load the library functions
+for FILE in "${SCRIPT_DIR}"/../lib/*/*.bash; do
+  # shellcheck disable=SC1090
+  [[ -f "${FILE}" && -r "${FILE}" ]] && source "${FILE}"
+done
+
+print_help() {
+  cat <<EOF
+Usage:
+  $(basename "$0") <root> [--fetch] [--jobs <n>] [--all] [--verbose] [--quiet]
+  $(basename "$0") --help
+
+Show local changes, remote changes, and stashes for every direct child Git
+repository of <root>. Only repositories that need attention are listed unless
+--all is given.
+
+Arguments:
+  <root>        Folder that contains the repositories (for example
+                ~/github.com/davidsneighbour).
+
+Options:
+  --fetch       Run 'git fetch --prune' in each repository first. Without it,
+                remote changes are relative to the last fetch.
+  --jobs <n>    Parallel jobs for status and fetch (default: 8).
+  --all         Also list clean repositories.
+  --verbose     Log fetch failures and progress (also: DNB_VERBOSE=1).
+  --quiet       Disable verbose output.
+  --help        Show this help.
+
+Columns:
+  STAGED/CHANGED/UNTRACKED/CONFLICT  file counts from 'git status'
+  AHEAD/BEHIND                       commits relative to upstream
+                                     ('-' = no upstream, 'gone' = upstream
+                                     branch deleted, '!' = fetch failed)
+  STASH                              number of stash entries
+
+Exit codes:
+  0  all listed repositories are clean
+  1  usage error
+  2  at least one repository needs attention
+EOF
+}
+
+# Print one tab-separated record for a repository:
+# path, branch, staged, changed, untracked, conflict, ahead, behind, stash, fetch_ok
+collect_repo() {
+  local repo="${1}"
+  local do_fetch="${2}"
+  local fetch_ok='1'
+  local branch='?' upstream='' ahead='-' behind='-'
+  local staged=0 changed=0 untracked=0 conflict=0 stash=0
+  local line xy
+
+  if [[ "${do_fetch}" == '1' ]]; then
+    if ! GIT_TERMINAL_PROMPT=0 timeout 60 git -C "${repo}" fetch --quiet --prune >/dev/null 2>&1; then
+      fetch_ok='0'
+    fi
+  fi
+
+  while IFS= read -r line; do
+    case "${line}" in
+    '# branch.head '*) branch="${line#'# branch.head '}" ;;
+    '# branch.upstream '*) upstream="${line#'# branch.upstream '}" ;;
+    '# branch.ab '*)
+      read -r ahead behind <<<"${line#'# branch.ab '}"
+      ahead="${ahead#+}"
+      behind="${behind#-}"
+      ;;
+    '1 '* | '2 '*)
+      xy="${line:2:2}"
+      [[ "${xy:0:1}" != '.' ]] && staged=$((staged + 1))
+      [[ "${xy:1:1}" != '.' ]] && changed=$((changed + 1))
+      ;;
+    'u '*) conflict=$((conflict + 1)) ;;
+    '? '*) untracked=$((untracked + 1)) ;;
+    *) ;; # ignored entries and other headers carry no state we report
+    esac
+  done < <(git -C "${repo}" status --porcelain=v2 --branch --untracked-files=all 2>/dev/null)
+
+  # An upstream that is configured but gone on the remote has no branch.ab line.
+  if [[ -n "${upstream}" && "${ahead}" == '-' ]]; then
+    ahead='gone'
+    behind='gone'
+  fi
+
+  stash="$(git -C "${repo}" stash list 2>/dev/null | wc -l)"
+
+  printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' \
+    "${repo}" "${branch}" "${staged}" "${changed}" "${untracked}" "${conflict}" \
+    "${ahead}" "${behind}" "${stash}" "${fetch_ok}"
+}
+export -f collect_repo
+
+main() {
+  local root='' do_fetch='0' jobs='8' show_all='false' quiet_mode='false'
+
+  if [[ "$#" -eq 0 ]]; then
+    print_help
+    exit 1
+  fi
+
+  while [[ "$#" -gt 0 ]]; do
+    case "${1}" in
+    --fetch) do_fetch='1' ;;
+    --jobs)
+      jobs="${2:-}"
+      shift
+      ;;
+    --all) show_all='true' ;;
+    --verbose) export DNB_VERBOSE='1' ;;
+    --quiet) quiet_mode='true' ;;
+    --help | -h)
+      print_help
+      exit 0
+      ;;
+    -*)
+      printf 'Error: unknown option: %s\n\n' "${1}" >&2
+      print_help >&2
+      exit 1
+      ;;
+    *) root="${1}" ;;
+    esac
+    shift
+  done
+
+  if [[ "${quiet_mode}" == 'true' ]]; then
+    unset DNB_VERBOSE
+  fi
+
+  if [[ -z "${root}" || ! -d "${root}" ]]; then
+    printf 'Error: root folder not found: %s\n\n' "${root}" >&2
+    print_help >&2
+    exit 1
+  fi
+
+  if ! [[ "${jobs}" =~ ^[1-9][0-9]*$ ]]; then
+    printf 'Error: --jobs needs a positive number, got: %s\n\n' "${jobs}" >&2
+    print_help >&2
+    exit 1
+  fi
+
+  if [[ "${DNB_VERBOSE:-}" == '1' ]]; then
+    dnb_log_init >/dev/null
+    dnb_log info "Scanning ${root} (fetch=${do_fetch}, jobs=${jobs})"
+  fi
+
+  local records
+  # shellcheck disable=SC2016 # $1/$2 expand in the child shell
+  records="$(
+    find "${root}" -mindepth 2 -maxdepth 2 -name .git \( -type d -o -type f \) -printf '%h\0' |
+      xargs -0 -r -P "${jobs}" -I{} bash -c 'collect_repo "$1" "$2"' _ {} "${do_fetch}" |
+      sort
+  )"
+
+  local bold='' dim='' red='' yellow='' green='' reset=''
+  if [[ -t 1 ]]; then
+    bold=$'\e[1m' dim=$'\e[2m' red=$'\e[31m' yellow=$'\e[33m' green=$'\e[32m' reset=$'\e[0m'
+  fi
+
+  # Pad first, colour second: escape codes must not count towards column width.
+  # Non-zero counts are coloured; zero and '-' stay dim so problems stand out.
+  cell() {
+    local value="${1}" width="${2}" colour="${3}" padded
+    printf -v padded '%-*s' "${width}" "${value}"
+    case "${value}" in
+    0 | '-') printf '%s%s%s' "${dim}" "${padded}" "${reset}" ;;
+    *) printf '%s%s%s' "${colour}" "${padded}" "${reset}" ;;
+    esac
+  }
+
+  local repo branch staged changed untracked conflict ahead behind stash fetch_ok name
+  local total=0 dirty=0 w_repo=4 w_branch=6
+  local -a rows=()
+
+  while IFS=$'\t' read -r repo branch staged changed untracked conflict ahead behind stash fetch_ok; do
+    [[ -z "${repo}" ]] && continue
+    total=$((total + 1))
+
+    if [[ "${fetch_ok}" == '0' ]]; then
+      behind='!'
+      [[ "${DNB_VERBOSE:-}" == '1' ]] && dnb_log warn "Fetch failed: ${repo}"
+    fi
+
+    if [[ "${staged}${changed}${untracked}${conflict}${stash}" != '00000' ]] ||
+      [[ "${ahead}" != '0' && "${ahead}" != '-' ]] ||
+      [[ "${behind}" != '0' && "${behind}" != '-' ]]; then
+      dirty=$((dirty + 1))
+    elif [[ "${show_all}" != 'true' ]]; then
+      continue
+    fi
+
+    name="$(basename "${repo}")"
+    ((${#name} > w_repo)) && w_repo="${#name}"
+    ((${#branch} > w_branch)) && w_branch="${#branch}"
+    rows+=("${name}"$'\t'"${branch}"$'\t'"${staged}"$'\t'"${changed}"$'\t'"${untracked}"$'\t'"${conflict}"$'\t'"${ahead}"$'\t'"${behind}"$'\t'"${stash}")
+  done <<<"${records}"
+
+  if [[ "${#rows[@]}" -gt 0 ]]; then
+    printf '%s%-*s  %-*s  %-6s  %-7s  %-9s  %-8s  %-5s  %-6s  %-5s%s\n' "${bold}" \
+      "${w_repo}" REPO "${w_branch}" BRANCH STAGED CHANGED UNTRACKED CONFLICT AHEAD BEHIND STASH "${reset}"
+    local row
+    for row in "${rows[@]}"; do
+      IFS=$'\t' read -r name branch staged changed untracked conflict ahead behind stash <<<"${row}"
+      printf '%-*s  %-*s  %s  %s  %s  %s  %s  %s  %s\n' \
+        "${w_repo}" "${name}" "${w_branch}" "${branch}" \
+        "$(cell "${staged}" 6 "${green}")" "$(cell "${changed}" 7 "${yellow}")" \
+        "$(cell "${untracked}" 9 "${yellow}")" "$(cell "${conflict}" 8 "${red}")" \
+        "$(cell "${ahead}" 5 "${green}")" "$(cell "${behind}" 6 "${red}")" \
+        "$(cell "${stash}" 5 "${yellow}")"
+    done
+    printf '\n'
+  fi
+
+  printf '%d of %d repositories need attention' "${dirty}" "${total}"
+  if [[ "${do_fetch}" == '0' ]]; then
+    printf ' %s(remote state from last fetch; use --fetch to refresh)%s' "${dim}" "${reset}"
+  fi
+  printf '\n'
+
+  [[ "${dirty}" -eq 0 ]] || exit 2
+}
+
+main "$@"

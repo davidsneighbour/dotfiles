@@ -130,6 +130,32 @@ Requirements:
 
 * bash, curl, sha256sum.
 
+### `git-repos-status`
+
+Shows local changes, remote changes (ahead/behind upstream), and stash counts for every direct child Git repository of a root folder in one table. Only repositories that need attention are listed by default. Exits `2` when at least one repository needs attention.
+
+Example: `git-repos-status ~/github.com/davidsneighbour --fetch`
+
+CLI option notes:
+
+* ROOT — folder that contains the repositories (required).
+* --fetch — run `git fetch --prune` in each repository first; without it, remote state is from the last fetch.
+* --jobs N — parallel jobs for status and fetch (default: 8).
+* --all — also list clean repositories.
+* --verbose / --quiet — toggle verbose logging (follows `DNB_VERBOSE`).
+* --help — show help.
+
+Functions/methods defined:
+
+* `print_help`
+* `collect_repo`
+* `cell`
+* `main`
+
+Requirements:
+
+* bash, git, GNU find, xargs, and timeout.
+
 ### `github-token`
 
 Selects a GitHub token from environment variables or .env files by role and visibility; can print, export, or run a command with the token.
