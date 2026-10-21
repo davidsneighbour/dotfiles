@@ -30,6 +30,8 @@ dnbhq
 dotbot
 dreamhost
 drun
+dunst
+dunstrc
 Enpass
 erasedups
 errexit
@@ -80,8 +82,8 @@ lintstaged
 listview
 lockscreen
 locutus
-lucide
 LOGLEVEL
+lucide
 mainbox
 mktemp
 Monaspace
@@ -134,6 +136,7 @@ shellcheck
 shellenv
 shfmt
 shmlog
+skillwerk
 skillz
 smol
 sortorder
@@ -148,6 +151,8 @@ thaiviaggi
 thunar
 Thunar
 timezone
+truecolor
+truecolour
 typechecks
 undici
 updatestartuptty
@@ -172,6 +177,3 @@ Xsettings
 xwininfo
 yarnpkg
 zseven
-skillwerk
-dunst
-dunstrc
