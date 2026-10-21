@@ -1,0 +1,43 @@
+#!/bin/bash
+#
+# Floating tasks app window for the i3 session.
+#
+# Opens the self-hosted tasks app in Chrome's app mode with a dedicated
+# user-data-dir and a stable WM_CLASS (dnb-tasks), the same way
+# tools/clockify opens its form. i3's for_window rule
+# (configs/session/i3/configs/rules.conf) floats, sizes, and centres the
+# window. If the window already exists, this script only focuses it.
+
+set -Eeuo pipefail
+
+# Port 3070 serves plain HTTP; an https:// URL fails the TLS handshake.
+TASKS_URL="${DNB_TASKS_URL:-http://192.168.1.201:3070}"
+WINDOW_CLASS="dnb-tasks"
+PROFILE_DIR="${XDG_CONFIG_HOME:-${HOME}/.config}/dnb-tasks/chrome-profile"
+
+if i3-msg -t get_tree | jq -e --arg class "${WINDOW_CLASS}" \
+  '[.. | objects | select(.window_properties?.class == $class)] | length > 0' >/dev/null; then
+  exec i3-msg -q "[class=\"${WINDOW_CLASS}\"] focus"
+fi
+
+chrome=""
+for candidate in google-chrome-stable google-chrome; do
+  if command -v "${candidate}" >/dev/null 2>&1; then
+    chrome="${candidate}"
+    break
+  fi
+done
+
+if [[ -z "${chrome}" ]]; then
+  exec xdg-open "${TASKS_URL}"
+fi
+
+mkdir -p "${PROFILE_DIR}"
+exec "${chrome}" \
+  "--user-data-dir=${PROFILE_DIR}" \
+  "--class=${WINDOW_CLASS}" \
+  "--name=${WINDOW_CLASS}" \
+  "--app=${TASKS_URL}" \
+  --no-first-run \
+  --no-default-browser-check \
+  >/dev/null 2>&1

@@ -25,6 +25,7 @@ or toggling an individual application must use `Ctrl+Shift+Alt+<key>`
 | `Ctrl+Shift+Alt+N` | Move the focused managed window to a freshly created temporary icon workspace (`configs/session/i3/workspaces/workspaces.py promote-focused`) |
 | `Ctrl+Shift+Alt+E` | Open the Enpass assistant (`session-colour-scheme --tool enpass -- showassistant`) with its app-specific dark-mode compatibility environment |
 | `Ctrl+Shift+Alt+T` | Toggle the persistent scratch terminal in/out of the scratchpad on the current workspace, right half of the focused output (`configs/session/terminal/scratch-terminal --toggle`) — see "Scratch terminal" in `SESSION.md` |
+| `Ctrl+Shift+Alt+P` | Open the self-hosted tasks app (`http://192.168.1.201:3070`) as a floating, centred Chrome app window at 50% × 80% of the workspace, or focus it when it is already open (`configs/session/tasks/tasks-window`) |
 | `Ctrl+Shift+Alt+F` | Show the canonical, singleton Files workspace — a two-pane Thunar environment (LEFT user-controlled, RIGHT the external-open target) invoked via `configs/session/filemanager/file-manager --show` — see "Canonical Files workspace" in `SESSION.md` |
 | `Ctrl+Super+S` | Save the focused workspace as a layout: ask for a label (Rofi), write `configs/session/i3/layouts/<label>.json`, open it in `subl` (`configs/session/i3/workspaces/layouts.py save`) |
 | `Ctrl+Super+L` | Pick a saved layout (Rofi) and start it on a new dynamic workspace (`layouts.py apply`) |
