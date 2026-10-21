@@ -39,7 +39,7 @@ free unless there is a clear operational reason.
 
 ## Locutus definitions
 
-### changedetection.io
+### Changedetection.io
 
 * Container: `changedetection`.
 * Source: `containers/locutus/changedetection/docker-compose.yaml`.
@@ -71,28 +71,28 @@ free unless there is a clear operational reason.
 
 * Container: `openpencil`.
 * Source: `containers/locutus/openpencil/docker-compose.yaml`.
-* Image: `ghcr.io/zseven-w/openpencil-web:v0.8.1`, pinned by digest.
+* Image: `ghcr.io/zseven-w/openpencil-web:v0.8.4`, pinned by digest.
 * Published ports: `3020:3100`.
 
 ### Open webUI
 
 * Container: `open-webui`.
 * Source: `containers/locutus/openwebui/docker-compose.yaml`.
-* Image: `ghcr.io/open-webui/open-webui:0.10.2`, pinned by digest.
+* Image: `ghcr.io/open-webui/open-webui:v0.12.3`, pinned by digest.
 * Published ports: `3200:8080`.
 
 ### Penpot
 
 * Container: `penpot-frontend`.
 * Source: `containers/locutus/penpot/docker-compose.yaml`.
-* Image: `penpotapp/frontend:2.17`, pinned by digest.
+* Image: `penpotapp/frontend:2.18`, pinned by digest.
 * Published ports: `3030:8080`.
 
 ### Stirling PDF
 
 * Container: `stirling-pdf`.
 * Source: `containers/locutus/stirling/docker-compose.yaml`.
-* Image: `stirlingtools/stirling-pdf:2.14.2-fat`, pinned by digest.
+* Image: `stirlingtools/stirling-pdf:3.2.0-fat`, pinned by digest.
 * Published ports: `3010:8080`.
 
 ## Notes
