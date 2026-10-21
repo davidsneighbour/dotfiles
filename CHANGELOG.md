@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.25.0](https://github.com/davidsneighbour/dotfiles/compare/v2.24.0...v2.25.0) (2026-10-21)
+
+### Feat
+
+* **session:** add floating tasks app window on Ctrl+Shift+Alt+P ([d631bff](https://github.com/davidsneighbour/dotfiles/commit/d631bffb5958defa703d1cac20f7b77d60529c4e))
+
+### Build
+
+* **containers:** update locutus images to latest versions ([9b2ae51](https://github.com/davidsneighbour/dotfiles/commit/9b2ae51e25144e434522fece6ac4a8b19473f601))
+
+### Chore
+
+* **containers:** stop tracking stirling data directory ([9baf693](https://github.com/davidsneighbour/dotfiles/commit/9baf693c8d04daff6d15e03cb864b2114358212a))
+* **mise:** pin node 26 for mise ([950e9f7](https://github.com/davidsneighbour/dotfiles/commit/950e9f73bde6ad714d5c53d28a20ce2f91a57980))
+* **vscode:** sort dictionary and add truecolor terms ([63e6955](https://github.com/davidsneighbour/dotfiles/commit/63e6955b790c9edc41b37b4af7afa6513b7cf203))
+
 ## [2.24.0](https://github.com/davidsneighbour/dotfiles/compare/v2.23.1...v2.24.0) (2026-10-18)
 
 ### Feat
