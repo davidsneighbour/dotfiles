@@ -1,0 +1,23 @@
+{
+  "name": "@davidsneighbour/storage",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Local file catalogue and search for external storage.",
+  "license": "MIT",
+  "engines": {
+    "node": "^24.0.0 || ^26.0.0"
+  },
+  "scripts": {
+    "start": "node src/cli.ts --serve",
+    "index": "node src/cli.ts --index",
+    "status": "node src/cli.ts --status",
+    "test": "node --test tests/storage.test.ts",
+    "typecheck": "tsc --project tsconfig.json",
+    "check": "npm run typecheck && npm test"
+  },
+  "devDependencies": {
+    "@types/node": "26.6.5",
+    "typescript": "7.0.2"
+  }
+}

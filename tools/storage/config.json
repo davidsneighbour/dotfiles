@@ -1,0 +1,13 @@
+{
+  "root": "/mnt/storage",
+  "mountUuid": "99ccc2ab-86f9-4256-bc3d-5eda772da968",
+  "database": "./state/storage.sqlite",
+  "port": 8765,
+  "exclude": ["lost+found"],
+  "hashBudgetMinutes": 180,
+  "openerEnvironment": {
+    "DISPLAY": ":0",
+    "XAUTHORITY": "/home/patrick/.Xauthority",
+    "DBUS_SESSION_BUS_ADDRESS": "unix:path=/run/user/1000/bus"
+  }
+}

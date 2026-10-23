@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en-GB">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="data:,"> <title>Storage search</title><link rel="stylesheet" href="/style.css"><script src="/app.js" defer></script></head>
+<body>
+<header><h1>Storage search</h1><span id="drive">Checking drive…</span></header>
+<main>
+<form id="search">
+  <div class="searchbar"><label for="q">Find a file or folder</label><div class="query"><input id="q" name="q" type="search" placeholder="Name, part of a name, or a pattern" maxlength="200" autofocus><button type="submit">Search</button></div></div>
+  <div class="filters">
+    <label>Match<select name="mode"><option value="fuzzy">Fuzzy</option><option value="contains">Contains</option><option value="exact">Exact name</option><option value="regex">Regular expression</option></select></label>
+    <label>Search in<select name="scope"><option value="name">Name</option><option value="path">Full path</option></select></label>
+    <label>Type<select name="kind"><option value="">Files and folders</option><option value="file">Files</option><option value="directory">Folders</option><option value="symlink">Symbolic links</option><option value="other">Other entries</option></select></label>
+    <label>File extensions<input name="extension" placeholder="jpg, png, pdf"></label>
+    <label class="check"><input type="checkbox" name="duplicates" value="true"> Only duplicate content</label>
+  </div>
+  <details><summary>Date filters and search help</summary>
+    <p>Fuzzy search matches partial names, letters in order, and small typing errors. Regular expressions are case-insensitive; for example <code>invoice.*2025\.pdf$</code>. All occurrences are listed separately. Date ranges include both days, using UTC.</p>
+    <div class="dates">
+      <fieldset><legend>Content modified</legend><label>From<input type="date" name="modifiedFrom"></label><label>Through<input type="date" name="modifiedTo"></label></fieldset>
+      <fieldset><legend>Created, where available</legend><label>From<input type="date" name="createdFrom"></label><label>Through<input type="date" name="createdTo"></label></fieldset>
+      <fieldset><legend>Metadata changed</legend><label>From<input type="date" name="changedFrom"></label><label>Through<input type="date" name="changedTo"></label></fieldset>
+    </div>
+    <p>Creation dates can be unavailable or reflect when a backup was copied. Metadata changed is the filesystem change time, not the creation date. Symbolic links are indexed without following them.</p>
+  </details>
+</form>
+<section aria-label="Index status" class="index-status"><p id="coverage">Reading index status…</p><p id="progress"></p></section>
+<div class="result-heading"><h2 id="result-title">All indexed entries</h2><button id="clear-hash" type="button" hidden>Clear content filter</button><span id="count" role="status" aria-live="polite"></span></div>
+<p id="error" role="alert" hidden></p>
+<div id="results"></div>
+<nav aria-label="Result pages"><button id="previous" type="button" disabled>Previous</button><span id="page"></span><button id="next" type="button" disabled>Next</button></nav>
+<p class="footnote">Search uses the local catalogue. Use “Open folder” to show a location in your file manager, or “Open file” to use its default application. The drive must be connected to open a result. The catalogue may contain old paths until the next complete update.</p>
+</main>
+</body></html>

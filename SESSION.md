@@ -297,6 +297,7 @@ confirmed against a concurrently open ordinary `$mod+Return` Terminator
 window which stayed untouched (no mark, tiled, unmoved) throughout.
 
 <!-- markdownlint-disable-next-line title-case-style -->
+<!-- markdownlint-disable-next-line dnb-title-case-style -->
 ## Canonical Files workspace
 
 A singleton, i3-only two-pane Thunar workspace (LEFT user-controlled,
@@ -537,6 +538,8 @@ Alt+Tab/Super+Tab still go to xfwm4's own default
 * No i3-specific environment file (`~/.xprofile`, `~/.xinitrc`) exists or
   was added; LightDM's standard `/etc/X11/Xsession` handling is used
   unmodified for both sessions.
+
+The independent storage search service in `tools/storage/` starts through its own cron profile, rather than i3 startup. Its `openerEnvironment` configuration supplies `DISPLAY`, `XAUTHORITY`, and `DBUS_SESSION_BUS_ADDRESS` only to the `xdg-open` child used by its Open folder and Open file actions. This allows a service started before login to open results in the current workstation desktop after login. It does not alter the i3 environment. See [tools/storage/README.md](tools/storage/README.md) for configuration and operation.
 
 ## Shared components (used by both XFCE and i3)
 
