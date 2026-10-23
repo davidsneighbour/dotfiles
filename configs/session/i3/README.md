@@ -21,6 +21,10 @@ at the repo root. This file only documents what lives in this folder.
 | `workspaces/layouts.py` | Saves, applies, deletes, and edits workspace layouts — see "Workspace layouts" below. |
 | `window-inspector.sh` | Click a window, see its WM_CLASS/role/title/PID/geometry in a floating terminal — see "Window rules" below. Bound to `Ctrl+Shift+Alt+I`. |
 
+## Startup
+
+`configs/session-starts.conf` starts Discord from `/usr/bin/discord` with `--start-minimized` once per session. The command is non-fatal and does not run again on an i3 restart.
+
 ## Design
 
 * `$mod` is `Mod4` (Super/Windows key).

@@ -140,6 +140,7 @@ For every automatically started i3-session component:
 | Polybar | i3 | `configs/session/polybar/launch.sh` | `exec_always` (`sh -c ... \|\| true`) | Non-fatal; i3 remains usable with no bar if Polybar/its config is missing. Its left side includes the Clockify status indicator, which calls `configs/session/clockify/polybar-clockify` and opens the local form on left click. |
 | System checkup | i3 (and cron every 6 hours) | `tools/system-checkup/system-checkup --quiet` after `sleep 120` | `exec` (once per session) | Non-fatal (`sh -c ... \|\| true`). Writes `~/.local/state/system-checkup/report.txt`; the Polybar `system-checkup` module (right of the power menu) shows an alert icon only when a check failed or the last run is older than 13 hours. Left click opens the report, right click runs the checks again. See `tools/system-checkup/README.md`. |
 | xss-lock | i3 | `xss-lock --transfer-sleep-lock -- configs/session/i3/lock.sh` | `exec` (once per session, see "Screen lock") | Non-fatal to i3; if `xss-lock` is missing, `Super+L`/suspend simply do not lock the screen. |
+| Discord | i3 | `/usr/bin/discord --start-minimized` | `exec` (once per session) | Non-fatal (`sh -c ... \|\| true`). Starts the Debian package in the tray; i3 restarts do not launch it again. |
 | Rofi | user keypress (`Super_L` release, or `$mod+d`) | `rofi -show drun` | `bindsym ... exec` | Non-fatal; a launcher failure does not affect the rest of the session. |
 | Terminal | user keypress (`$mod+Return`) | `xfce4-terminal` | `bindsym ... exec` | Non-fatal. |
 
@@ -678,7 +679,7 @@ a separate, explicit request — see the spec's scope-control section):
   "Startup sequence (i3 session)"). The gnome-keyring line was added
   because VS Code and other libsecret-using apps could not find a keyring
   under i3 otherwise. Auditing whether any of the removed autostart apps
-  (Barrier, Dropbox, Discord, etc.) need an i3 `exec` line of their own is
+  (Dropbox, Flameshot, etc.) need an i3 `exec` line of their own is
   a deliberate follow-up, not part of this change.
 * No compositor — windows have no shadows and no RGBA transparency.
 * No monitor-specific (`xrandr`) configuration — this host currently has a
