@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 
-import { mkdir, writeFile } from "node:fs/promises";
+import { chmod, mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
+import { createInterface } from "node:readline/promises";
 import { chromium } from "playwright";
 
 const DEFAULTS = {
@@ -40,8 +41,13 @@ Mailbox quota monitor
 
 Required environment variables:
   MAILBOX_MONITOR_START_URL
-  MAILBOX_MONITOR_USERNAME
-  MAILBOX_MONITOR_PASSWORD
+
+Options:
+  --login    Open a visible browser to sign in and complete 2FA manually.
+  --help     Show this help.
+
+Session configuration:
+  MAILBOX_MONITOR_SESSION_FILE (default: ~/.local/state/mailbox-monitor/session.json)
 
 Optional environment variables:
   DISCORD_WEBHOOK
@@ -51,9 +57,6 @@ Optional environment variables:
   MAILBOX_MONITOR_RED_THRESHOLD
   MAILBOX_MONITOR_HEADLESS
   MAILBOX_MONITOR_OUTPUT_DIR
-  MAILBOX_MONITOR_USERNAME_SELECTOR
-  MAILBOX_MONITOR_PASSWORD_SELECTOR
-  MAILBOX_MONITOR_LOGIN_SELECTOR
   MAILBOX_MONITOR_ROW_SELECTOR
   MAILBOX_MONITOR_MAILBOX_SELECTOR
   MAILBOX_MONITOR_USAGE_SELECTOR
@@ -118,8 +121,12 @@ function expandHome(inputPath) {
 function getConfig() {
   return {
     startUrl: requireEnv("MAILBOX_MONITOR_START_URL"),
-    username: requireEnv("MAILBOX_MONITOR_USERNAME"),
-    password: requireEnv("MAILBOX_MONITOR_PASSWORD"),
+    sessionFile: expandHome(
+      optionalEnv(
+        "MAILBOX_MONITOR_SESSION_FILE",
+        "~/.local/state/mailbox-monitor/session.json",
+      ),
+    ),
     projectName: optionalEnv("MAILBOX_MONITOR_PROJECT_NAME", "Mailbox Monitor"),
     discordWebhook: optionalEnv("DISCORD_WEBHOOK", ""),
     navPath: optionalEnv("MAILBOX_MONITOR_NAV_PATH", DEFAULTS.navPath),
@@ -135,9 +142,6 @@ function getConfig() {
     outputDir: expandHome(
       optionalEnv("MAILBOX_MONITOR_OUTPUT_DIR", "~/.logs/mailbox-monitor"),
     ),
-    usernameSelector: optionalEnv("MAILBOX_MONITOR_USERNAME_SELECTOR", ""),
-    passwordSelector: optionalEnv("MAILBOX_MONITOR_PASSWORD_SELECTOR", ""),
-    loginSelector: optionalEnv("MAILBOX_MONITOR_LOGIN_SELECTOR", ""),
     rowSelector: optionalEnv(
       "MAILBOX_MONITOR_ROW_SELECTOR",
       DEFAULTS.rowSelector,
@@ -176,21 +180,6 @@ async function firstVisibleLocator(locators, label) {
   throw new MonitorError(`Could not find visible element for: ${label}`);
 }
 
-async function fillFirstVisible(
-  page,
-  explicitSelector,
-  fallbackLocators,
-  value,
-  label,
-) {
-  const locators = explicitSelector
-    ? [page.locator(explicitSelector)]
-    : fallbackLocators;
-
-  const locator = await firstVisibleLocator(locators, label);
-  await locator.fill(value);
-}
-
 async function clickFirstVisible(
   page,
   explicitSelector,
@@ -212,55 +201,6 @@ async function waitAfterNavigationAction(page) {
   await runBestEffort("networkidle wait", () =>
     page.waitForLoadState("networkidle", { timeout: 10_000 }),
   );
-}
-
-async function login(page, config) {
-  await page.goto(config.startUrl, {
-    waitUntil: "domcontentloaded",
-    timeout: config.timeoutMs,
-  });
-
-  await fillFirstVisible(
-    page,
-    config.usernameSelector,
-    [
-      page.locator('input[name="username"]'),
-      page.locator('input[name="user"]'),
-      page.locator('input[name="login"]'),
-      page.locator('input[name="account"]'),
-      page.locator('input[type="email"]'),
-      page.locator('input[type="text"]'),
-      page.getByLabel(/user|username|account|login/i),
-    ],
-    config.username,
-    "username field",
-  );
-
-  await fillFirstVisible(
-    page,
-    config.passwordSelector,
-    [
-      page.locator('input[name="password"]'),
-      page.locator('input[type="password"]'),
-      page.getByLabel(/password/i),
-    ],
-    config.password,
-    "password field",
-  );
-
-  await clickFirstVisible(
-    page,
-    config.loginSelector,
-    [
-      page.getByRole("button", { name: /log in|login|sign in|submit/i }),
-      page.getByRole("link", { name: /log in|login|sign in|submit/i }),
-      page.locator('button[type="submit"]'),
-      page.locator('input[type="submit"]'),
-    ],
-    "login button",
-  );
-
-  await waitAfterNavigationAction(page);
 }
 
 function cssAttributeValue(value) {
@@ -577,34 +517,86 @@ async function run() {
     return;
   }
 
+  const loginMode = process.argv.includes("--login");
+  if (loginMode && !process.stdin.isTTY) {
+    throw new MonitorError("--login requires an interactive terminal.");
+  }
   const config = getConfig();
   delete process.env.MAILBOX_MONITOR_PASSWORD;
   delete process.env.MAILBOX_MONITOR_USERNAME;
 
   let browser;
   let page;
+  let stage = "browser launch";
 
   try {
     browser = await chromium.launch({
-      headless: config.headless,
+      headless: loginMode ? false : config.headless,
       env: {
         HOME: process.env.HOME || "",
         PATH: process.env.PATH || "",
         LANG: process.env.LANG || "C.UTF-8",
         XDG_RUNTIME_DIR: process.env.XDG_RUNTIME_DIR || "",
+        DISPLAY: process.env.DISPLAY || "",
+        XAUTHORITY: process.env.XAUTHORITY || "",
       },
     });
-    page = await browser.newPage();
+    stage = "session loading";
+    let storageState;
+    let savedSession;
+    if (!loginMode) {
+      try {
+        savedSession = JSON.parse(await readFile(config.sessionFile, "utf8"));
+        storageState = savedSession.storageState || savedSession;
+      } catch {
+        throw new MonitorError(
+          "Saved session is missing or unreadable. Run run-mailbox-monitor.sh --login with the same --env-file first.",
+        );
+      }
+    }
+    const context = await browser.newContext({ storageState });
+    if (savedSession?.sessionStorage) {
+      await context.addInitScript(({ origin, entries }) => {
+        if (window.location.origin === origin) {
+          for (const [key, value] of entries) {
+            window.sessionStorage.setItem(key, value);
+          }
+        }
+      }, savedSession.sessionStorage);
+    }
+    page = await context.newPage();
 
     page.setDefaultTimeout(config.timeoutMs);
 
-    await login(page, config);
-    config.password = "";
-
-    if (config.navPath) {
-      await clickNavigationPath(page, config.navPath);
+    stage = "opening the control panel";
+    await page.goto(savedSession?.mailboxUrl || config.startUrl, {
+      waitUntil: "domcontentloaded",
+      timeout: config.timeoutMs,
+    });
+    if (loginMode) {
+      const terminal = createInterface({
+        input: process.stdin,
+        output: process.stdout,
+      });
+      try {
+        await terminal.question(
+          "Complete login and 2FA in the browser, open the mailbox overview, then press Enter here: ",
+        );
+      } finally {
+        terminal.close();
+      }
+    } else if (!(await page.locator(config.rowSelector).first().isVisible())) {
+      if (await page.locator('input[type="password"]').first().isVisible()) {
+        throw new MonitorError(
+          "Pair requires login. Renew the saved session with run-mailbox-monitor.sh --login.",
+        );
+      }
+      if (config.navPath) {
+        await clickNavigationPath(page, config.navPath);
+      }
     }
 
+    stage = "reading mailbox data";
     const rawRows = await extractRawRows(page, config);
     const allRecords = rawRows
       .map((row) => parseMailboxUsage(row, config))
@@ -614,6 +606,32 @@ async function run() {
       (record) => record.percent >= config.yellowThreshold,
     );
 
+    stage = "saving the authenticated session";
+    const sessionDirectory = path.dirname(config.sessionFile);
+    await mkdir(sessionDirectory, { recursive: true, mode: 0o700 });
+    await chmod(sessionDirectory, 0o700);
+    const temporarySession = `${config.sessionFile}.${process.pid}.tmp`;
+    await writeFile(
+      temporarySession,
+      JSON.stringify({
+        storageState: await context.storageState({ indexedDB: true }),
+        mailboxUrl: page.url(),
+        sessionStorage: await page.evaluate(() => ({
+          origin: window.location.origin,
+          entries: Object.entries(window.sessionStorage),
+        })),
+      }),
+      { mode: 0o600 },
+    );
+    await rename(temporarySession, config.sessionFile);
+    if (loginMode) {
+      console.log(
+        "Authenticated session saved. Scheduled checks can now reuse it.",
+      );
+      return;
+    }
+
+    stage = "writing reports and sending alerts";
     await writeOutputs(config, allRecords, alertRecords, page);
 
     if (alertRecords.length > 0 && config.discordWebhook) {
@@ -635,9 +653,21 @@ async function run() {
       );
     }
   } catch (error) {
-    const message = error instanceof Error ? error.message : String(error);
+    let message;
+    if (error instanceof MonitorError) {
+      message = error.message;
+    } else if (stage === "browser launch") {
+      message =
+        "Cannot launch Chromium. Run npx playwright install chromium from the monitor directory. For --login, run from a desktop terminal with working DISPLAY and XAUTHORITY settings.";
+    } else if (stage === "reading mailbox data") {
+      message = loginMode
+        ? "Cannot read mailbox data. Complete login and 2FA, and open the mailbox overview before pressing Enter. Check the configured table selectors if the overview is already open."
+        : "Cannot read mailbox data. The saved session may have expired; run run-mailbox-monitor.sh --login with the same --env-file. If login is current, check the mailbox navigation and selectors.";
+    } else {
+      message = `Mailbox monitor failed during ${stage}. Check connectivity, configuration, and file permissions.`;
+    }
 
-    if (page) {
+    if (page && !loginMode) {
       await runBestEffort("error output directory creation", () =>
         mkdir(config.outputDir, { recursive: true }),
       );
@@ -658,7 +688,7 @@ async function run() {
       );
     }
 
-    throw error;
+    throw new MonitorError(message);
   } finally {
     if (browser) {
       await runBestEffort("browser close", () => browser.close());

@@ -750,3 +750,7 @@ file, plus any applicable `.agents/instructions/`, folder `README.md`, and
 ## Session colour scheme
 
 The i3 startup include runs `bashrc/helpers/session-colour-scheme --apply` with `exec_always` to maintain the existing `prefer-dark` preference. Failures are visible on stderr and non-fatal to i3. Session identity stays unchanged. Per-tool literal environment configs live in `configs/session/colour-scheme/tools/`; Enpass alone receives `XDG_CURRENT_DESKTOP=GNOME`. Its startup (`--minimize`), assistant binding (`Ctrl+Shift+Alt+E`, `showassistant`), and user desktop entry all use this helper. Existing Enpass window rules remain independent of colour-scheme handling. See [the design and extension guide](configs/session/colour-scheme/README.md).
+
+## Mailbox monitor manual login
+
+`bashrc/helpers/mailbox-monitor/run-mailbox-monitor.sh --login` opens Chromium from an interactive desktop terminal for Pair login and 2FA. The monitor forwards `DISPLAY` and `XAUTHORITY` to Chromium within its restricted child environment. Scheduled mailbox checks remain headless and reuse the saved session; they do not require an i3 login.

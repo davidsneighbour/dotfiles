@@ -7,9 +7,10 @@ show_help() {
 Run the mailbox quota monitor.
 
 Options:
-  --env-file FILE       Environment file to source. Default: ~/.env
+  --env-file FILE       Environment file to source. Default: .env beside this wrapper
   --script FILE         Monitor script path. Default: ./monitor-mailboxes.mjs
   --working-dir DIR     Working directory. Default: script directory
+  --login               Save a session after manual login and 2FA.
   --help                Show this help.
 
 Example:
@@ -53,6 +54,9 @@ EOF
     # shellcheck source=/dev/null
     source "${env_file}"
     set +a
+  else
+    echo "Configuration file not found: ${env_file}. Use --env-file FILE to select the monitor configuration." >&2
+    return 2
   fi
 }
 
@@ -98,21 +102,48 @@ EOF
     return 2
   fi
 
+  local node_bin="${MAILBOX_MONITOR_NODE_BIN:-}"
+  if [[ -z "${node_bin}" ]]; then
+    if ! node_bin="$(command -v node)"; then
+      node_bin=""
+    fi
+    if [[ -z "${node_bin}" && -r "${HOME}/.nvm/nvm.sh" ]]; then
+      node_bin="$(/bin/bash -c 'source "${1}" --no-use && nvm which default' mailbox-monitor "${HOME}/.nvm/nvm.sh")" || {
+        echo "Cannot resolve the installed nvm default. Set MAILBOX_MONITOR_NODE_BIN to an executable Node path." >&2
+        return 2
+      }
+    fi
+  fi
+  if [[ -z "${node_bin}" ]] || ! command -v "${node_bin}" >/dev/null 2>&1; then
+    echo "Node is unavailable. Correct MAILBOX_MONITOR_NODE_BIN, install an nvm default, or add Node to PATH." >&2
+    return 2
+  fi
+
   cd "${working_dir}"
-  "${MAILBOX_MONITOR_NODE_BIN:-node}" "${script}"
+  if [[ "${login_mode:-false}" == "true" ]]; then
+    "${node_bin}" "${script}" --login
+  else
+    "${node_bin}" "${script}"
+  fi
 }
 
 main() {
-  local env_file="${HOME}/.env"
+  local login_mode="false"
+  local env_file=""
   local script_dir=""
   local script_file="monitor-mailboxes.mjs"
   local working_dir=""
 
   script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
   working_dir="${script_dir}"
+  env_file="${script_dir}/.env"
 
   while (($#)); do
     case "$1" in
+      --login)
+        login_mode="true"
+        shift
+        ;;
       --env-file)
         env_file="${2:-}"
         shift 2
