@@ -1,5 +1,20 @@
 # Changelog
 
+## [2.26.0](https://github.com/davidsneighbour/dotfiles/compare/v2.25.0...v2.26.0) (2026-10-23)
+
+### Feat
+
+* **session:** start Discord minimised at login ([2c26901](https://github.com/davidsneighbour/dotfiles/commit/2c26901a2646d7d8c5d11bf5b828264df7bda342))
+* **tools:** add storage catalogue and search ([9f459ba](https://github.com/davidsneighbour/dotfiles/commit/9f459ba153281be817ac172a0988326d690a8b13))
+
+### Fix
+
+* **bashrc:** restore Pair mailbox monitoring with 2FA ([0698e7b](https://github.com/davidsneighbour/dotfiles/commit/0698e7bb5e6ea53713d94b19fb9eabbb985c7475))
+
+### Chore
+
+* **session:** update Recordly launcher to 1.4.0 ([64190ae](https://github.com/davidsneighbour/dotfiles/commit/64190ae9394af0509a89f80ddd2622fb434bbd02))
+
 ## [2.25.0](https://github.com/davidsneighbour/dotfiles/compare/v2.24.0...v2.25.0) (2026-10-21)
 
 ### Feat
