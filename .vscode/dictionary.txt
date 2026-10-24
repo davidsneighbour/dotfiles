@@ -76,6 +76,7 @@ keybinding
 keysym
 Kollitsch
 libpam
+libsecret
 lighthousing
 linted
 lintstaged
