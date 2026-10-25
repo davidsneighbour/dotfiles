@@ -30,6 +30,7 @@
     ~/.fonts/Panton: protected/fonts/Panton
     ~/.fonts/Tomkin: protected/fonts/Tomkin
     ~/.fonts/Verb: protected/fonts/Verb
+    ~/.fonts/Nagasaki: protected/fonts/Nagasaki
 
 - shell:
     -

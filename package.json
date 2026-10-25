@@ -1,14 +1,14 @@
 {
   "name": "@davidsneighbour/dotfiles",
   "description": "David's Neighbour's .dotfiles",
-  "version": "2.26.0",
+  "version": "2.27.0",
   "license": "MIT",
   "repository": "https://github.com/davidsneighbour/dotfiles",
   "author": "Patrick Kollitsch <davidsneighbourdev+gh@gmail.com>",
   "bugs": "https://github.com/davidsneighbour/dotfiles/issues",
   "homepage": "https://github.com/davidsneighbour/dotfiles#readme",
   "devDependencies": {
-    "@biomejs/biome": "2.5.15",
+    "@biomejs/biome": "2.6.3",
     "@clack/prompts": "1.8.1",
     "@commitlint/cli": "21.2.2",
     "@commitlint/config-conventional": "21.2.2",
@@ -29,7 +29,7 @@
     "cz-git": "1.14.0",
     "debug": "4.4.3",
     "deepmerge": "4.3.1",
-    "dotenv": "18.0.8",
+    "dotenv": "18.0.9",
     "fixpack": "4.0.0",
     "fs-extra": "11.4.1",
     "lint-staged": "17.3.0",
@@ -50,7 +50,7 @@
     "toml": "5.0.1",
     "tsc-files": "1.1.4",
     "typescript": "7.0.2",
-    "wireit": "0.14.13"
+    "wireit": "0.15.0"
   },
   "scripts": {
     "biome:postinstall": "npx @biomejs/biome migrate --write",

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Obsidian
+Exec=/opt/Obsidian/obsidian --password-store=gnome-libsecret %U
+Terminal=false
+Type=Application
+Icon=obsidian
+StartupWMClass=md.obsidian.Obsidian
+Comment=Obsidian
+MimeType=application/pdf;text/markdown;application/x-obsidian-canvas;application/x-obsidian-base;x-scheme-handler/obsidian;
+Categories=Office;

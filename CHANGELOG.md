@@ -1,5 +1,27 @@
 # Changelog
 
+## [2.27.0](https://github.com/davidsneighbour/dotfiles/compare/v2.26.0...v2.27.0) (2026-10-25)
+
+### Feat
+
+* **git-collection:** accept expected missing repositories ([eff1f95](https://github.com/davidsneighbour/dotfiles/commit/eff1f95116250ff8f7f68f7f1730c57e7a241c6a))
+* **session:** start Obsidian with gnome-libsecret password store ([2a68804](https://github.com/davidsneighbour/dotfiles/commit/2a68804c9e2a50094f50c4bf3796a4aaf7a819a6))
+
+### Fix
+
+* update lucide font preview list ([af0581d](https://github.com/davidsneighbour/dotfiles/commit/af0581d6a2317767e5db75c43abe26acd41cf017))
+
+### Build
+
+* **deps:** update dependencies ([4e76f2e](https://github.com/davidsneighbour/dotfiles/commit/4e76f2ee6d8d1f06bf8108b5f2654343b7f7fcd2))
+
+### Chore
+
+* **fonts:** link Nagasaki font from protected repository ([e5bfdbe](https://github.com/davidsneighbour/dotfiles/commit/e5bfdbe27569c8b68ccc1eeb94d22db887bba585))
+* **fonts:** update Lucide icon font ([cabd297](https://github.com/davidsneighbour/dotfiles/commit/cabd297755550af37afbe86a8333256220bf1e00))
+* **session:** add VoiceStudio 0.5.6 launcher ([6908397](https://github.com/davidsneighbour/dotfiles/commit/690839795134f8a44bea538b4895438b67454f0c))
+* **session:** register Claude launcher for MCP bundle and skill files ([69ad7e9](https://github.com/davidsneighbour/dotfiles/commit/69ad7e90036f8484f95581ee3c323ee922789c55))
+
 ## [2.26.0](https://github.com/davidsneighbour/dotfiles/compare/v2.25.0...v2.26.0) (2026-10-23)
 
 ### Feat

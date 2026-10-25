@@ -1,6 +1,12 @@
 [MIME Cache]
 application/enpasscard=enpass.desktop;
+application/pdf=md.obsidian.Obsidian.desktop;
+application/vnd.anthropic.mcpb=com.anthropic.Claude.desktop;
+application/vnd.anthropic.skill=com.anthropic.Claude.desktop;
+application/x-obsidian-base=md.obsidian.Obsidian.desktop;
+application/x-obsidian-canvas=md.obsidian.Obsidian.desktop;
 inode/directory=dnb-file-manager.desktop;
+text/markdown=md.obsidian.Obsidian.desktop;
 x-scheme-handler/claude=claude.desktop;com.anthropic.Claude.desktop;
 x-scheme-handler/claude-cli=claude-code-url-handler.desktop;
 x-scheme-handler/cloudkit-7adb8cc6tf.in.sinew.walletx=enpass.desktop;
@@ -9,3 +15,4 @@ x-scheme-handler/enpassauth=enpass.desktop;
 x-scheme-handler/enpasscard=enpass.desktop;
 x-scheme-handler/enpassshare=enpass.desktop;
 x-scheme-handler/enpassstart=enpass.desktop;
+x-scheme-handler/obsidian=md.obsidian.Obsidian.desktop;
