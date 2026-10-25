@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.28.2](https://github.com/davidsneighbour/dotfiles/compare/v2.28.1...v2.28.2) (2026-10-25)
+
+### Fix
+
+* update package.json for mailbox monitor ([59104f9](https://github.com/davidsneighbour/dotfiles/commit/59104f92e4619f7007ece57e4c2d458a871f77c7))
+
+### Refactor
+
+* **bashrc:** read mailbox quotas over SSH instead of the Pair panel ([7ba59b8](https://github.com/davidsneighbour/dotfiles/commit/7ba59b8c3ab85d28ba9bd73289ebf355bd66c4c4))
+
 ## [2.28.1](https://github.com/davidsneighbour/dotfiles/compare/v2.28.0...v2.28.1) (2026-10-25)
 
 ### Docs
