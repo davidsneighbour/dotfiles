@@ -12,7 +12,8 @@
       "!configs/theme/Dracula",
       "!containers",
       "!logs",
-      "!protected"
+      "!protected",
+      "!**/*.md"
     ]
   },
   "overrides": [
