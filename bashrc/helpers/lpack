@@ -27,7 +27,7 @@ Config behaviour:
   - --config uses only the given file.
   - Without --config, lpack uses repo-local .github/dnb.toml when present.
   - If repo-local lpack.exclude is missing, lpack falls back to
-    ~/.dotfiles/configs/system/config.toml (when available).
+    ~/.dotfiles/configs/session/config.toml (when available).
 EOH
 }
 
@@ -119,7 +119,7 @@ lpack_collect_config_excludes() {
     return 0
   fi
 
-  local default_config="${HOME}/.dotfiles/configs/system/config.toml"
+  local default_config="${HOME}/.dotfiles/configs/session/config.toml"
   getter_output="$(dnb_config_get --file "${default_config}" lpack.exclude 2>/dev/null)"
   rc="${?}"
 

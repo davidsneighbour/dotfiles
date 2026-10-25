@@ -17,7 +17,7 @@ Usage:
 Updates NVM's "node" release to the latest available Node.js version, migrates
 globally installed npm packages from the active version, and sets it as the
 default. If the resolved default version changes, install the default global npm
-packages from configs/system/npm/default-packages.
+packages from configs/session/npm/default-packages.
 
 Options:
   --dry-run   Print the commands that would run.

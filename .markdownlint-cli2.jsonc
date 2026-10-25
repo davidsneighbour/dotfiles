@@ -10,7 +10,7 @@
     "configs/fonts",
     "configs/session/fonts",
     "configs/theme/Dracula",
-    "configs/system/sublime-text/Packages/Dracula Color Scheme",
+    "configs/session/sublime-text/Packages/Dracula Color Scheme",
     "containers",
     "logs",
     "protected",

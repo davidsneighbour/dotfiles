@@ -1,7 +1,7 @@
 # Polybar (i3 session)
 
 A minimal single-bar Polybar setup for the i3 starter session. It is a
-trimmed, i3-specific copy of `configs/system/polybar/` (the bar that runs
+trimmed, i3-specific copy of `configs/session/polybar/` (the bar that runs
 under the XFCE session) — kept as a **separate copy**, not a shared config,
 so nothing here can ever affect the live XFCE bar.
 
@@ -11,14 +11,14 @@ at the repo root.
 ## Files
 
 | Path | Purpose |
-| --- | --- |
+| -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `config.ini` | The bar definition (`bar/i3bar`): left = configured i3 workspaces, centre = focused window title, right = CPU/memory/root filesystem/network/volume/date/tray. |
 | `launch.sh` | Starts the bar. Kills any previous instance for this user first, logs to `~/.logs/polybar-i3/`, never fails in a way i3 would notice. Run `launch.sh --help` for details. |
-| `configs/01-colours.ini` | Copied unchanged from `configs/system/polybar/configs/` (Dracula Pro palette). |
+| `configs/01-colours.ini` | Copied unchanged from `configs/session/polybar/configs/` (Dracula Pro palette). |
 | `configs/01-fonts.ini` | Session font mapping. |
 | `configs/01-settings.ini` | Copied unchanged. |
 | `configs/07-module-i3.ini` | Generated official `internal/i3` workspace module. Static and dynamic workspaces render the icon stored after the numeric i3 workspace prefix. |
-| `configs/07-module-xwindow.ini` | Copied unchanged. `internal/xwindow` is generic EWMH, not XFCE-specific. |
+| `configs/07-module-xwindow.ini` | Copied unchanged.`internal/xwindow` is generic EWMH, not XFCE-specific. |
 | `configs/07-module-cpu.ini` | New. `internal/cpu`. |
 | `configs/07-module-memory.ini` | New. `internal/memory`. |
 | `configs/07-module-filesystem.ini` | New. `internal/fs`, `/` only. |
@@ -31,7 +31,7 @@ at the repo root.
 
 ## Deliberately not carried over from the XFCE bar
 
-`configs/system/polybar/` also has `polywins` (xfwm-window-title script),
+`configs/session/polybar/` also has `polywins` (xfwm-window-title script),
 `msgvault`, `issues`, `github`, `powermenu`, Telegram/Signal tray modules,
 `xkeyboard`, `privacy`, `temperature`, and `polypomo`. None of these are
 required by the starter spec, several are XFCE/session-specific

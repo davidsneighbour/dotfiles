@@ -33,15 +33,15 @@
     ~/.bash_profile: bashrc/.bash_profile
     ~/.bashrc: bashrc/.bashrc
     ~/.profile: bashrc/.profile
-    ~/.config/starship.toml: configs/system/starship/starship.toml
+    ~/.config/starship.toml: configs/session/starship/starship.toml
 
     # workspaces setup
     ~/github.com/davidsneighbour/dotfiles-protected: protected
 
     # system setup
-    ~/.face.icon: configs/system/face.icon
-    ~/.face: configs/system/face.icon
-    ~/.config/user-dirs.dirs: configs/system/user-dirs.dirs
+    ~/.face.icon: configs/session/face.icon
+    ~/.face: configs/session/face.icon
+    ~/.config/user-dirs.dirs: configs/session/user-dirs.dirs
 
     # i3 session
     ~/.config/dunst: configs/session/dunst
@@ -56,37 +56,30 @@
     ~/.nvmrc: .nvmrc
     ~/.editorconfig: .editorconfig
     ~/.fixpackrc: .fixpackrc
-    ~/.hidden: configs/system/.hidden
-    ~/.pam_environment: configs/system/.pam_environment
-    ~/.czrc: configs/system/.czrc
-    ~/.config/sublime-merge: configs/system/sublime-merge
-    ~/.config/sublime-text: configs/system/sublime-text
-    ~/.config/filezilla: configs/system/filezilla
+    ~/.hidden: configs/session/.hidden
+    ~/.pam_environment: configs/session/.pam_environment
+    ~/.config/sublime-merge: configs/session/sublime-merge
+    ~/.config/sublime-text: configs/session/sublime-text
+    ~/.config/filezilla: configs/session/filezilla
 
     # git setup
-    ~/.gitignore: configs/system/git/global.gitignore
-    ~/.gitmessage: configs/system/git/.gitmessage
-    ~/.gitconfig: configs/system/git/.gitconfig
-    ~/.git-templates: configs/system/git/.git-templates
-    ~/.config/gh: configs/system/git/gh
+    ~/.gitignore: configs/session/git/global.gitignore
+    ~/.gitmessage: configs/session/git/.gitmessage
+    ~/.gitconfig: configs/session/git/.gitconfig
+    ~/.git-templates: configs/session/git/.git-templates
+    ~/.config/gh: configs/session/git/gh
 
     # theme configs
     ~/.icons/DNB-Bibata: configs/theme/DNB-Bibata
     ~/.icons/DNB: configs/theme/DNB
 
     # Tool configs
-    ~/.config/fastfetch: configs/system/fastfetch
-    ~/.config/github-label-manager: configs/system/git/github-label-manager
-    ~/.config/espanso: configs/system/espanso
+    ~/.config/github-label-manager: configs/session/git/github-label-manager
+    ~/.config/espanso: configs/session/espanso
 
     # node configs
-    ~/.ncurc.js: configs/system/npm/ncu.js
-    ~/.nvm/default-packages: configs/system/npm/default-packages
-
-    # qbittorrent
-    ~/.config/qBittorrent/watched_folders.json: configs/system/bittorrent/qbittorrent-watched_folders.json
-    ~/.config/qBittorrent/qBittorrent.con: configs/system/bittorrent/qbittorrent.conf
-    ~/.config/qBittorrent/categories.json: configs/system/bittorrent/qbittorrent-categories.json
+    ~/.ncurc.js: configs/session/npm/ncu.js
+    ~/.nvm/default-packages: configs/session/npm/default-packages
 
     # content quality
     ~/.remarkrc.js: configs/content/.remarkrc.js
@@ -96,7 +89,7 @@
     ~/.fonts: configs/fonts
 
     # fixing emojis in chrome tab names (I know, right?)
-    ~/.config/fontconfig/conf.d/01-emoji.conf: configs/system/fontconfig/01-emoji.conf
+    ~/.config/fontconfig/conf.d/01-emoji.conf: configs/session/fontconfig/01-emoji.conf
 
 - shell:
     - description: "\e[1;38;5;103mCreate logs directory if it doesn't exist:\e[0m\e[1;38;5;66m"
@@ -112,9 +105,9 @@
           echo "[ERROR] Exists and is not a symlink: ${HOME}/.logs"
         fi
       quiet: true
-      stdin: false   # Allow a command to read from standard input (default: false)
-      stdout: false  # Show a command's output from stdout (default: false)
-      stderr: false  # Show a command's output from stderr (default: false)
+      stdin: false # Allow a command to read from standard input (default: false)
+      stdout: false # Show a command's output from stdout (default: false)
+      stderr: false # Show a command's output from stderr (default: false)
 
     - description: "\e[1;38;5;103mSymlinking mounts:\e[0m\e[1;38;5;66m"
       command: |

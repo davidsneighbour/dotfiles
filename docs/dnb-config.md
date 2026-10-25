@@ -40,7 +40,7 @@ dnb_config_list_keys --file PATH
 ## Exit code contract
 
 | Code | Meaning |
-| ---: | ------- |
+| ---: | ------------------------------------------------- |
 | 0 | Value found or mutation completed |
 | 1 | Missing file, selector, value, or required option |
 | 2 | Parser, dependency, or backend error |
@@ -248,7 +248,7 @@ source_config_libs() {
 main() {
   source_config_libs
 
-  local config_file="${HOME}/.dotfiles/configs/system/config.toml"
+  local config_file="${HOME}/.dotfiles/configs/session/config.toml"
   local theme_name=''
 
   theme_name="$(dnb_config_get --file "${config_file}" "theme.name")" || {

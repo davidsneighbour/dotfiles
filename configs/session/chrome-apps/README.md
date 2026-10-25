@@ -23,7 +23,7 @@ configs/session/chrome-apps/
 └── bin/
     └── chrome-app
 
-configs/system/launchers/
+configs/session/launchers/
 ├── chatgpt.desktop
 ├── claude.desktop
 └── codex.desktop

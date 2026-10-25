@@ -21,9 +21,9 @@ const DEFAULT_NPM_COMMAND = "npm";
 function usage(): string {
   return `
 Usage:
-  node --experimental-strip-types configs/system/npm/install-default-packages.ts [options]
+  node --experimental-strip-types configs/session/npm/install-default-packages.ts [options]
 
-Installs every package listed in configs/system/npm/default-packages globally.
+Installs every package listed in configs/session/npm/default-packages globally.
 Blank lines and lines starting with "#" are ignored.
 
 Options:

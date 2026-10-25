@@ -49,7 +49,7 @@ configs/session/polybar/               -> (not symlinked; referenced by
 configs/session/fonts/                 -> ~/.fonts/dotfiles     (via
                                             configs/fonts/dotfiles compatibility
                                             symlink and Dotbot's ~/.fonts link)
-configs/system/polybar/                -> ~/.config/polybar     (Dotbot link, XFCE bar, unchanged)
+configs/session/polybar/                -> ~/.config/polybar     (Dotbot link, XFCE bar, unchanged)
 configs/session/rofi/                  -> ~/.config/rofi        (Dotbot link, i3-only)
 configs/session/dunst/                 -> ~/.config/dunst       (Dotbot link, notification daemon)
 ```
@@ -134,7 +134,7 @@ LightDM
 For every automatically started i3-session component:
 
 | Component | Started by | Command | `exec` vs `exec_always` | Failure mode |
-| --- | --- | --- | --- | --- |
+| ---------------------- | ---------------------------------------------- | --------------------------------------------------------------- | -------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Root background colour | i3 | `xsetroot -solid '#0B0D0F'` | `exec_always` | Non-fatal; i3 unaffected. |
 | Wallpaper | i3 | `feh --bg-fill configs/session/i3/wallpaper.jpg` | `exec_always` (not wrapped in `\|\| true`) | Fixed repo-committed image. |
 | Polybar | i3 | `configs/session/polybar/launch.sh` | `exec_always` (`sh -c ... \|\| true`) | Non-fatal; i3 remains usable with no bar if Polybar/its config is missing. Its left side includes the Clockify status indicator, which calls `configs/session/clockify/polybar-clockify` and opens the local form on left click. |
@@ -310,7 +310,7 @@ marks (`file-manager-left`/`file-manager-right`), derived from the live i3
 tree with no cache/state file. `configs/session/filemanager/file-manager`
 is the only place that knows how to create, repair, or retarget it; i3
 config only binds the keypress to it. A user-level XDG desktop entry
-(`configs/system/launchers/dnb-file-manager.desktop`, installed the same
+(`configs/session/launchers/dnb-file-manager.desktop`, installed the same
 way as this repo's other custom launchers — see "Components that must
 only run under i3" below) and `xdg-mime default` (set idempotently by
 `configs/dotbot/config.yaml`'s `shell:` section) route `inode/directory`
@@ -320,11 +320,11 @@ semantics: [`configs/session/filemanager/README.md`](configs/session/filemanager
 ## Rofi
 
 Rofi is **i3-only**. It used to be shared with XFCE (a Dotbot link at
-`~/.config/rofi` pointing at `configs/system/rofi/`); that folder has been
+`~/.config/rofi` pointing at `configs/session/rofi/`); that folder has been
 retired and its contents moved into `configs/session/rofi/`, and the XFCE
 keyboard shortcuts that used to invoke it (bare `Super_L` → `rofi -show
 drun`, `Ctrl+Shift+W` → the workspace picker script) were removed before
-`configs/system/xfce/` itself was later removed entirely (see "Components
+`configs/session/xfce/` itself was later removed entirely (see "Components
 that must only run under XFCE"). XFCE now has no Rofi bindings at all; its
 Alt+Tab/Super+Tab still go to xfwm4's own default
 `cycle_windows_key`/`switch_window_key`, unaffected by this.
@@ -361,7 +361,7 @@ Alt+Tab/Super+Tab still go to xfwm4's own default
   * The same underlying mechanism (`configs/session/i3/workspaces/
     workspaces.py launch --application <name>`) is also called directly,
     with no Rofi picker, by fixed single-purpose launchers such as
-    `configs/system/launchers/chatgpt-app.desktop` (dynamic app
+    `configs/session/launchers/chatgpt-app.desktop` (dynamic app
     `chatgpt`, robot icon U+E1BB) — one program, no project/target to
     pick, so `--target` is omitted and the app's own configured icon is
     used. See
@@ -404,7 +404,7 @@ Alt+Tab/Super+Tab still go to xfwm4's own default
 ## Polybar
 
 * Two independent Polybar setups exist side by side in the repository:
-  * `configs/system/polybar/` — the XFCE bar. Live, currently running
+  * `configs/session/polybar/` — the XFCE bar. Live, currently running
     under the XFCE session on this host. **Not touched by this work.**
   * `configs/session/polybar/` — new, i3-only. A single bar (`bar/i3bar`):
     left = icon-rendered i3 workspaces (`internal/i3`), centre = focused window title
@@ -574,19 +574,19 @@ Workspace names are defined directly in `configs/session/i3/config`. The old
 Nothing currently lives here — see the removal notes below for what used
 to.
 
-`configs/system/xfce/` (xfwm4 window-manager settings and the keyboard-
+`configs/session/xfce/` (xfwm4 window-manager settings and the keyboard-
 shortcuts file) has been **removed entirely** — dotfiles no longer manages
 XFCE's xfconf settings at all. XFCE still runs (see "Display manager and
 available sessions"), but with whatever xfwm4/keyboard-shortcuts state is
 already live in `~/.config/xfce4/xfconf/`, unmanaged by this repo; a fresh
 XFCE profile would start from xfwm4's stock defaults instead.
 
-Devilspie2 (`configs/system/devilspie2/`, its `~/.config/devilspie2`
+Devilspie2 (`configs/session/devilspie2/`, its `~/.config/devilspie2`
 Dotbot link, and its autostart entry) has been **removed entirely** — it
 was uninstalled from the host and is no longer part of this repo. i3 still
 has no equivalent window-placement rules (see "Known limitations").
 
-`configs/system/autostart/` (the host-scoped XDG autostart pool —
+`configs/session/autostart/` (the host-scoped XDG autostart pool —
 `available/`, and per-host folders for both this workstation, `locutus/`,
 and a second host, `dionysus/`) has been **removed entirely**, along with
 its `~/.config/autostart` Dotbot link and the `actions.sh autostart-enable`
@@ -637,7 +637,7 @@ and neither is required by anything in this configuration.
 ## Log locations
 
 ```text
-~/.logs/polybar/           XFCE Polybar (configs/system/polybar/start.sh) — unchanged
+~/.logs/polybar/           XFCE Polybar (configs/session/polybar/start.sh) — unchanged
 ~/.logs/polybar-i3/        i3 Polybar (configs/session/polybar/launch.sh) — new
 ~/.xsession-errors         General X session stderr, both sessions
 ```
@@ -668,7 +668,7 @@ The `30-session-commands`, `31-session-config`, `32-session-links`, and `33-sess
 Deliberately not implemented in this starter pass (do not implement without
 a separate, explicit request — see the spec's scope-control section):
 
-* **No XDG autostart pool at all any more** — `configs/system/autostart/`
+* **No XDG autostart pool at all any more** — `configs/session/autostart/`
   used to hold host-scoped `.desktop` entries (Barrier, Discord, Dropbox,
   Flameshot, onboard, a conky startup script, Polybar/Obsidian for XFCE,
   and more) but has been removed entirely, see "Components that must only

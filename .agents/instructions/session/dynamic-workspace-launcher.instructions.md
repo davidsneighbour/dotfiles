@@ -1,4 +1,5 @@
 ---
+
 name: Dynamic Workspace Launcher
 description: Procedure for making a program open into its own freshly created, icon-labelled i3 workspace, reusing the same mechanism as the Ctrl+Shift+W VS Code picker.
 applyTo: configs/session/i3/workspaces/**
@@ -13,7 +14,7 @@ Read this before adding or changing a `dynamic.*` entry in
 `configs/session/i3/workspaces/workspaces.yaml`, before touching
 `command_launch`/`load_dynamic_applications` in
 `configs/session/i3/workspaces/workspaces.py`, or before wiring a new
-`.desktop` launcher (`configs/system/launchers/*.desktop`) or i3 `bindsym`
+`.desktop` launcher (`configs/session/launchers/*.desktop`) or i3 `bindsym`
 to open a program into its own workspace. Read
 [`i3-keybindings.instructions.md`](i3-keybindings.instructions.md) too if
 the trigger is a `bindsym`/`exec` line rather than a `.desktop` file.

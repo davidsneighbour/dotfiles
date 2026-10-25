@@ -4,7 +4,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 DOTFILES_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-CRON_SCRIPT="${DOTFILES_ROOT}/configs/system/npm/cron-node-update.sh"
+CRON_SCRIPT="${DOTFILES_ROOT}/configs/session/npm/cron-node-update.sh"
 
 if [[ ! -x "${CRON_SCRIPT}" ]]; then
   printf '[error] Cron script is not executable: %s\n' "${CRON_SCRIPT}" >&2

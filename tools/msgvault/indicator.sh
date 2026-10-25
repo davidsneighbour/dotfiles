@@ -12,7 +12,7 @@ Usage:
 
 Options:
   --issues-file <path>        TOML issues file to read (default: ~/.config/polybar/issues.toml).
-  --settings-file <path>      Polybar settings INI file used for colours (default: ~/.dotfiles/configs/system/polybar/configs/01-colours.ini).
+  --settings-file <path>      Polybar settings INI file used for colours (default: ~/.dotfiles/configs/session/polybar/configs/01-colours.ini).
   --unread-file <path>        Optional plain-text file containing a numeric unread count.
   --log-dir <path>            Log directory used to determine last msgvault run freshness (default: ~/.logs/msgvault).
   --healthy-window-minutes <number>
@@ -99,7 +99,7 @@ seconds_since_last_run() {
 }
 
 ISSUES_FILE="${HOME}/.config/polybar/issues.toml"
-SETTINGS_FILE="${HOME}/.dotfiles/configs/system/polybar/configs/01-colours.ini"
+SETTINGS_FILE="${HOME}/.dotfiles/configs/session/polybar/configs/01-colours.ini"
 UNREAD_FILE="${MSGVAULT_UNREAD_FILE:-${HOME}/.cache/msgvault/unread_count}"
 LOG_DIR="${HOME}/.logs/msgvault"
 HEALTHY_WINDOW_MINUTES="5"

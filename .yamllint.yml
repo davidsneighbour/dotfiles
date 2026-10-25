@@ -1,26 +1,26 @@
 ---
 # https://yamllint.readthedocs.io/en/stable/configuration.html
 yaml-files:
-  - '*.yaml'
-  - '*.yml'
-  - '.yamllint'
+  - "*.yaml"
+  - "*.yml"
+  - ".yamllint"
 
 ignore:
   # Downloaded Font Awesome metadata is vendored data, not repository-authored config.
   - configs/fonts/System/fontawesome/metadata/
   # Downloaded Vale style packs are vendored; local DNB, AI, and config styles stay linted.
-  - configs/system/vale/styles/alex/
-  - configs/system/vale/styles/Google/
-  - configs/system/vale/styles/Joblint/
-  - configs/system/vale/styles/Microsoft/
-  - configs/system/vale/styles/proselint/
-  - configs/system/vale/styles/Readability/
-  - configs/system/vale/styles/write-good/
-  - configs/system/vale/styles/.vale-config/styles/alex/
-  - configs/system/vale/styles/.vale-config/styles/Google/
-  - configs/system/vale/styles/.vale-config/styles/proselint/
-  - configs/system/vale/styles/.vale-config/styles/Readability/
-  - configs/system/vale/styles/.vale-config/styles/write-good/
+  - configs/session/vale/styles/alex/
+  - configs/session/vale/styles/Google/
+  - configs/session/vale/styles/Joblint/
+  - configs/session/vale/styles/Microsoft/
+  - configs/session/vale/styles/proselint/
+  - configs/session/vale/styles/Readability/
+  - configs/session/vale/styles/write-good/
+  - configs/session/vale/styles/.vale-config/styles/alex/
+  - configs/session/vale/styles/.vale-config/styles/Google/
+  - configs/session/vale/styles/.vale-config/styles/proselint/
+  - configs/session/vale/styles/.vale-config/styles/Readability/
+  - configs/session/vale/styles/.vale-config/styles/write-good/
   - node_modules
   - modules
 

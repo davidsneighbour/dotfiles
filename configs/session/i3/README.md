@@ -12,7 +12,7 @@ at the repo root. This file only documents what lives in this folder.
 ## Files
 
 | File | Purpose |
-| --- | --- |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
 | `config` | The i3 configuration itself, linked to `~/.config/i3/config`. |
 | `configs/workspaces.conf` | Generated workspace variable include, derived from `workspaces/workspaces.yaml`. |
 | `configs/rules.conf` | `for_window`/`assign` window rules — see "Window rules" below. |
@@ -105,7 +105,7 @@ You do not need to reload i3. `workspaces.py` reads `workspaces.yaml` each time 
 `workspaces/layouts.py` saves the focused workspace as a layout and starts saved layouts again on a new dynamic workspace (10+). Layout files are in [`layouts/`](layouts/), one `<label-slug>.json` file for each layout. They are tracked in git, so commit a layout when you want to keep it.
 
 | Binding | Command | Action |
-| --- | --- | --- |
+| -------------- | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
 | `Ctrl+Super+S` | `layouts.py save` | Ask for a label in Rofi, save the focused workspace, then open the file in `subl`. Asks before it replaces a layout with the same label. |
 | `Ctrl+Super+L` | `layouts.py apply` | Pick a layout in Rofi. Make a new dynamic workspace, put the placeholders there (`append_layout`), and start the `launch` commands. |
 | `Ctrl+Super+D` | `layouts.py delete` | Pick a layout in Rofi, confirm (`No` is the default), and delete its file. |
@@ -162,7 +162,7 @@ otherwise changes the window it inspects.
 ## Polybar
 
 Polybar is *not* linked from `~/.config/polybar` for i3 — that XDG path is
-already taken by the live XFCE bar (`configs/system/polybar`, currently
+already taken by the live XFCE bar (`configs/session/polybar`, currently
 running under the XFCE session on this host). i3 instead calls
 `configs/session/polybar/launch.sh` directly by its repo path from
 `exec_always`. See [`../polybar/README.md`](../polybar/README.md).

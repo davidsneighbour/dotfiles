@@ -2,7 +2,7 @@
 #
 # Launch the i3 starter Polybar bar.
 #
-# This script is intentionally separate from configs/system/polybar/start.sh
+# This script is intentionally separate from configs/session/polybar/start.sh
 # (the XFCE bar's launcher): that one waits for xfwm4 and only makes sense
 # under XFCE. This one is i3-only.
 #

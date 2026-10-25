@@ -119,7 +119,7 @@ if ! shopt -oq posix; then
 fi
 
 # shellcheck disable=SC2154 # we know the variable is initialised
-FILE="${DOTFILES_PATH}/configs/system/paths"
+FILE="${DOTFILES_PATH}/configs/session/paths"
 if test -f "${FILE}"; then
   while IFS= read -r line; do
     [ -n "${line}" ] || continue

@@ -113,16 +113,16 @@ logic of its own.
   `MimeType=inode/directory;`, `NoDisplay=true` (it is a routing target, not
   something to show in an app grid).
 * The **installed copy** lives at
-  `configs/system/launchers/dnb-file-manager.desktop`, because
+  `configs/session/launchers/dnb-file-manager.desktop`, because
   `~/.local/share/applications` is already a whole-directory Dotbot link to
-  `configs/system/launchers/` (see `configs/dotbot/config.yaml`). Adding a
+  `configs/session/launchers/` (see `configs/dotbot/config.yaml`). Adding a
   second, one-off Dotbot link *inside* an already directory-linked path
   would fight that existing link rather than reuse it, so the installed
   file is a plain copy of the canonical source kept in sync by hand — this
   is the "least invasive reproducible" option that existing repo
   conventions actually support. If this repo ever gains per-file linking
   into an already-linked directory, revisit this.
-* `configs/system/launchers/mimeapps.list` (Dotbot-linked to
+* `configs/session/launchers/mimeapps.list` (Dotbot-linked to
   `~/.local/share/applications/mimeapps.list`) sets
   `inode/directory=dnb-file-manager.desktop` under `[Default Applications]`.
 * `~/.config/mimeapps.list` (higher XDG precedence, per the
@@ -150,7 +150,7 @@ through XDG/GIO (the desktop entry above) or explicitly call `explore`/the
 controller are managed. This is an accepted limitation, not a bug.
 
 <!-- markdownlint-disable-next-line title-case-style -->
-## i3 marks
+## I3 marks
 
 * `file-manager-left`, `file-manager-right` — the only source of truth for
   which container is which pane. i3 mark identifiers are unique: setting a
@@ -177,7 +177,7 @@ Files workspace (90:<icon>)
 ```
 
 | Situation | Result of the next invocation |
-| --- | --- |
+| -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | LEFT closed manually | Recreated at `${HOME}` (see "LEFT's default directory" below) the next time the controller runs — not recreated eagerly in the background. |
 | RIGHT closed manually | Recreated the next time the controller runs (at `${HOME}` for `--show`, or immediately populated with the requested directory for the next `--open`). |
 | Both closed | Workspace is naturally removed by i3 once you switch away from it; the next invocation recreates the full environment exactly once — no duplicates. |
@@ -224,7 +224,7 @@ exist for every user on this workstation.
   itself.
 
 <!-- markdownlint-disable-next-line title-case-style -->
-## Standalone Thunar
+## Standalone thunar
 
 `thunar-standalone` (`bashrc/helpers/thunar-standalone`) opens a plain,
 unmanaged Thunar window:
@@ -262,7 +262,7 @@ behaviour on the Thunar version installed on this workstation
 (confirmed: `thunar --version` → 4.20.7).
 
 <!-- markdownlint-disable-next-line title-case-style -->
-## Relationship to Code dynamic workspaces
+## Relationship to code dynamic workspaces
 
 `configs/session/i3/workspaces/workspaces.py`'s `launch` command (used by
 `Ctrl+Shift+W`, the VS Code workspace picker) supports zero-to-many

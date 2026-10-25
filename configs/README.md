@@ -10,7 +10,7 @@ enough. Most files are installed onto the workstation as symlinks by
 ## Top-level areas
 
 | Area | Purpose | Installed via |
-| --- | --- | --- |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `content/` | `.remarkrc.js` / `.remarkignore` — Markdown/remark linting config for content repos. | Dotbot (`~/.remarkrc.js`, `~/.remarkignore`). |
 | `dotbot/` | Dotbot profiles (`config.yaml`, `config.<name>.yaml`, `includes.yaml`) that `dotfiles` runs. See [`dotbot/README.md`](./dotbot/README.md). | N/A — this is the installer itself. |
 | `fonts/` | Font families (JetBrains Mono, system/symbol fonts, and compatibility links) installed to `~/.fonts`. See [`fonts/READ_ABOUT_LICENSES.md`](./fonts/READ_ABOUT_LICENSES.md) for per-family licensing. The dotfiles typography set lives under [`session/fonts/`](./session/fonts/) and is exposed here as `fonts/dotfiles` for the installed `~/.fonts/dotfiles` path. | Dotbot (`~/.fonts`). |
@@ -20,12 +20,12 @@ enough. Most files are installed onto the workstation as symlinks by
 | `savefiles/` | `devdocs.json` — a [DevDocs](https://devdocs.io) settings export for manual import; not consumed by any script. | Not symlinked; manual import into DevDocs. |
 | `session/` | `i3/` (i3 window manager starter config), `polybar/` (i3-only Polybar bar), `clockify/` (i3 Polybar wrapper for the local Clockify tool), `barrier/` (Barrier KVM client config plus a `fix-cert.sh` helper), and `fonts/` (the dotfiles desktop typography set). See [`session/i3/README.md`](./session/i3/README.md), [`session/polybar/README.md`](./session/polybar/README.md), [`session/clockify/README.md`](./session/clockify/README.md), [`session/fonts/DESIGN-typography.md`](./session/fonts/DESIGN-typography.md), and the repo-root [`SESSION.md`](../SESSION.md) for the full session architecture. | `i3/` via Dotbot (`~/.config/i3`); `polybar/` referenced by repo path directly from i3's config, not symlinked; `clockify/` referenced by the i3 Polybar config; `barrier/barrier.conf` via Dotbot (`~/.local/share/barrier/.barrier.conf`), `fix-cert.sh` unlinked/manual; `fonts/` exposed through `configs/fonts/dotfiles` and installed under `~/.fonts/dotfiles`. |
 | `system/` | Per-application config for desktop/workstation tools (polybar, rofi, xfce, git, etc. — **not** i3, see `session/` above). See the subdirectory table below. | Mostly Dotbot; a few (`monitor/`, `systemd/nfs-storage/`) are referenced directly by path or run manually instead. |
-| `theme/` | Icon/cursor themes. `DNB` and `DNB-Bibata` are repo-authored and Dotbot-linked to `~/.icons`. `Dracula` is a gitignored downloaded icon pack (~1.6G, includes `Archive.zip`/`__MACOSX` extraction remnants), not linked from Dotbot — see the `theme-dracula` entry in `bashrc/helpers/logs/config.toml`, which flags it as a cleanup candidate pending confirmation. | `DNB`/`DNB-Bibata` via Dotbot; `Dracula` unmanaged. |
+| `theme/` | Icon/cursor themes. `DNB` and `DNB-Bibata` are repo-authored and Dotbot-linked to `~/.icons`.`Dracula` is a gitignored downloaded icon pack (~1.6G, includes `Archive.zip`/`__MACOSX` extraction remnants), not linked from Dotbot — see the `theme-dracula` entry in `bashrc/helpers/logs/config.toml`, which flags it as a cleanup candidate pending confirmation. | `DNB`/`DNB-Bibata` via Dotbot; `Dracula` unmanaged. |
 
 ## `system/` subdirectories
 
 | Directory | Purpose | Dotbot-linked |
-| --- | --- | --- |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
 | `atuin` | Atuin shell-history sync config. | Yes — `~/.config/atuin` |
 | `bittorrent` | qBittorrent watched-folder/category/main config. | Yes — three separate `~/.config/qBittorrent/*` files |
 | `conky` | Conky system-monitor widget config. | Yes — `~/.config/conky` |
@@ -47,7 +47,7 @@ enough. Most files are installed onto the workstation as symlinks by
 | `vale` | Vale prose-linter styles/config. | Yes — `~/.config/vale` and `~/.local/share/vale` |
 | `xfce` | XFCE keyboard shortcuts and window-manager (`xfwm4`) settings. | Yes — two `xfconf` XML files |
 
-Root-level dotfiles under `configs/system/` (`.hidden`, `.pam_environment`, `.czrc`, `face.icon`, `user-dirs.dirs`, `repository_updates.toml`) are Dotbot-linked or cron-config individually; see `configs/dotbot/config.yaml` for the authoritative list.
+Root-level dotfiles under `configs/session/` (`.hidden`, `.pam_environment`, `.czrc`, `face.icon`, `user-dirs.dirs`, `repository_updates.toml`) are Dotbot-linked or cron-config individually; see `configs/dotbot/config.yaml` for the authoritative list.
 
 ## Session colour scheme
 
