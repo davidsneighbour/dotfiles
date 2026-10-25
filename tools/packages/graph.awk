@@ -16,6 +16,8 @@
 #   DEPTH      tree: maximum depth, 0 for no limit
 #   COLOR      1 to colour the labels
 #   HARD_ONLY  1 to follow only hard edges (Pre-Depends and Depends)
+#   JSON       why: 1 to print a JSON array instead of text
+#   FORMAT     tree: "text" (default) or "dot" for Graphviz
 #
 # An edge "a -> b" means that a needs b. Pre-Depends and Depends are hard
 # edges. Recommends and Suggests are soft edges. APT keeps a package for all
@@ -92,13 +94,23 @@ END {
       orphan[list[i]] = 1
     }
     m = split(NAMES, targets, " ")
-    for (i = 1; i <= m; i++) {
-      if (i > 1) {
-        print ""
-        print ""
+    if (JSON == 1) {
+      print "["
+      for (i = 1; i <= m; i++) {
+        why_json(targets[i], i == m)
       }
-      why(targets[i])
+      print "]"
+    } else {
+      for (i = 1; i <= m; i++) {
+        if (i > 1) {
+          print ""
+          print ""
+        }
+        why(targets[i])
+      }
     }
+  } else if (CMD == "tree" && FORMAT == "dot") {
+    tree_dot()
   } else if (CMD == "tree") {
     tree_all()
   } else {
@@ -274,6 +286,112 @@ function why(target,    next_hop, roots, nroots, soft_roots, soft_hops, node, i,
     print ""
     print "... and " (nroots - shown) " more (use --all to show all)."
   }
+}
+
+# A JSON string literal. Package names and versions are plain ASCII, but
+# escape the JSON specials anyway.
+function json_str(text) {
+  gsub(/\\/, "\\\\", text)
+  gsub(/"/, "\\\"", text)
+  gsub(/\t/, "\\t", text)
+  return "\"" text "\""
+}
+
+# One why result as a JSON object. status is one of: required, soft-only,
+# manual, essential, orphaned, kept. Each path goes from the root down to the
+# target. --all and the 10-path limit apply as in the text view.
+function why_json(target, last,    next_hop, roots, nroots, soft_roots, soft_hops, status, shown, i, node, path, out) {
+  nroots = find_roots(target, HARD_ONLY == 1, roots, next_hop)
+  if (nroots > 0) {
+    status = "required"
+  } else if (HARD_ONLY == 1 && find_roots(target, 0, soft_roots, soft_hops) > 0) {
+    status = "soft-only"
+  } else if (target in manual) {
+    status = "manual"
+  } else if (essential[target]) {
+    status = "essential"
+  } else if (target in orphan) {
+    status = "orphaned"
+  } else {
+    status = "kept"
+  }
+  shown = nroots
+  if (MAX_ROOTS > 0 && shown > MAX_ROOTS) {
+    shown = MAX_ROOTS
+  }
+  out = ""
+  for (i = 1; i <= shown; i++) {
+    node = roots[i]
+    path = json_str(node)
+    while (node != target) {
+      node = next_hop[node]
+      path = path "," json_str(node)
+    }
+    out = out (i > 1 ? "," : "") "[" path "]"
+  }
+  printf "{\"package\":%s,\"mark\":%s,\"essential\":%s,\"status\":%s,\"total_paths\":%d,\"paths\":[%s]}%s\n", \
+    json_str(target), json_str((target in manual) ? "manual" : "automatic"), \
+    (essential[target] ? "true" : "false"), json_str(status), nroots, out, (last ? "" : ",")
+}
+
+# Graphviz view of the same packages and edges as the text tree. Manual
+# packages are filled, essential packages have a double border, Recommends
+# edges are dashed, and Suggests edges are dotted.
+function tree_dot(    m, list, i, queue, head, tail, depth, seen, node, nc, kids, j, child, kind, style, attrs) {
+  if (NAMES == "") {
+    m = 0
+    for (i = 1; i <= count; i++) {
+      if (order[i] in manual) {
+        list[++m] = order[i]
+      }
+    }
+  } else {
+    m = split(NAMES, list, " ")
+  }
+  print "digraph packages {"
+  print "  rankdir=LR;"
+  print "  node [shape=box, fontname=\"sans-serif\"];"
+  tail = 0
+  for (i = 1; i <= m; i++) {
+    if (!(list[i] in seen)) {
+      seen[list[i]] = 1
+      depth[list[i]] = 0
+      queue[++tail] = list[i]
+    }
+  }
+  head = 1
+  while (head <= tail) {
+    node = queue[head++]
+    attrs = ""
+    if (node in manual) {
+      attrs = "style=filled, fillcolor=\"#c8e6c9\""
+    }
+    if (essential[node]) {
+      attrs = attrs (attrs == "" ? "" : ", ") "peripheries=2"
+    }
+    print "  " json_str(node) (attrs == "" ? "" : " [" attrs "]") ";"
+    if (DEPTH > 0 && depth[node] >= DEPTH) {
+      continue
+    }
+    nc = split(child_list(node), kids, " ")
+    for (j = 1; j <= nc; j++) {
+      child = kids[j]
+      kind = edge_kind[node, child]
+      style = ""
+      if (kind == 2) {
+        style = " [style=dashed, label=\"recommends\"]"
+      } else if (kind == 3) {
+        style = " [style=dotted, label=\"suggests\"]"
+      }
+      print "  " json_str(node) " -> " json_str(child) style ";"
+      if (!(child in seen)) {
+        seen[child] = 1
+        depth[child] = depth[node] + 1
+        queue[++tail] = child
+      }
+    }
+  }
+  print "}"
 }
 
 function tree_all(    m, list, i, all_manual) {

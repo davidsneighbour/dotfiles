@@ -15,11 +15,14 @@ SCRIPT_NAME="packages"
 TOOL_DIR="$(dirname "${SCRIPT_PATH}")"
 DOTFILES_DIR="$(readlink -f "${TOOL_DIR}/../..")"
 GRAPH_AWK="${TOOL_DIR}/graph.awk"
+HISTORY_AWK="${TOOL_DIR}/history.awk"
+APT_LOG_DIR="/var/log/apt"
 LOG_DIR="${HOME}/.logs/packages"
 DEFAULT_MAX_ROOTS=10
 
 # Tests set PACKAGES_DATA_DIR to a folder with fixture files (installed.tsv,
-# manual.txt, available.txt, orphans.txt) instead of the live APT data.
+# manual.txt, available.txt, orphans.txt, history.log) instead of the live
+# APT data.
 DATA_DIR="${PACKAGES_DATA_DIR:-}"
 WORK_DIR=""
 
@@ -46,9 +49,14 @@ Commands:
                 package, as one shortest dependency path per package.
   tree [name]   Show the dependency tree of the given installed packages,
                 or of all manual packages when no name is given.
+  history [name]
+                Show the explicit installs from APT's history log
+                (${APT_LOG_DIR}/history.log*), oldest first. Use
+                --all-actions for upgrades, removals, and dependencies.
 
-Package names for find, why, and tree can be given after the command or with
---package. why and tree accept globs, matched against installed packages.
+Package names for find, why, tree, and history can be given after the command
+or with --package. why and tree accept globs, matched against installed
+packages. history accepts globs, matched against the packages in the log.
 Quote globs, so that the shell does not expand them: 'libcurl*'.
 
 Options:
@@ -57,10 +65,17 @@ Options:
   --depth <n>       tree: stop after <n> levels (default: no limit).
   --depends-only    why, tree: follow only Pre-Depends and Depends. The
                     default follows all four types, as APT does.
+  --format <fmt>    tree: "text" (default) or "dot" (Graphviz).
+  --all-actions     history: also show install-auto, upgrade, downgrade,
+                    reinstall, remove, and purge entries.
+  --json            list, manual, automatic, orphaned, find, why, history:
+                    print JSON instead of text.
   --no-color        Do not colour the output. NO_COLOR has the same effect.
   --verbose         Print what the command does to stderr and log it to
                     ${LOG_DIR}/YYYYMMDD-HHMMSS.log.
   --quiet           Disable --verbose and DNB_VERBOSE.
+  --version         Print the version (the dotfiles repository version)
+                    and exit.
   --help            Show this help and exit.
 
 Terms:
@@ -76,7 +91,7 @@ Exit status:
   0  Success.
   1  A name or query matched no package.
   2  Usage error.
-  3  A required APT/dpkg tool is not available.
+  3  A required APT/dpkg tool or the APT history log is not available.
 
 Examples:
   ${SCRIPT_NAME} manual
@@ -84,6 +99,9 @@ Examples:
   ${SCRIPT_NAME} why 'libcurl*' --all
   ${SCRIPT_NAME} tree --package curl --depth 2
   ${SCRIPT_NAME} tree curl --depends-only
+  ${SCRIPT_NAME} tree curl --format dot | dot -Tsvg -o curl.svg
+  ${SCRIPT_NAME} why libnghttp2-14 --json
+  ${SCRIPT_NAME} history 'python3-*'
   ${SCRIPT_NAME} find curl
   ${SCRIPT_NAME} find 'python3-*'
 EOF
@@ -97,6 +115,19 @@ usage_error() {
 
 error() {
   printf '%s: %s\n' "${SCRIPT_NAME}" "${1}" >&2
+}
+
+# The tool has no own version. It uses the version of the dotfiles
+# repository, from its package.json.
+print_version() {
+  local version
+
+  version="$(sed -n 's/^  "version": "\(.*\)",$/\1/p' "${DOTFILES_DIR}/package.json" 2>/dev/null | head -n 1)"
+  if [[ -z "${version}" ]]; then
+    error "cannot read the version from ${DOTFILES_DIR}/package.json"
+    exit 1
+  fi
+  printf '%s %s\n' "${SCRIPT_NAME}" "${version}"
 }
 
 verbose() {
@@ -194,6 +225,46 @@ read_orphans() {
     LC_ALL=C sort
 }
 
+# APT's history log, oldest entry first: the rotated files from the highest
+# number down, then the current file. Returns 1 when no log is readable.
+read_history() {
+  local files=()
+  local file
+
+  if [[ -n "${DATA_DIR}" ]]; then
+    cat -- "${DATA_DIR}/history.log"
+    return
+  fi
+  while IFS= read -r file; do
+    files+=("${file}")
+  done < <(find "${APT_LOG_DIR}" -maxdepth 1 -name 'history.log.*.gz' -readable 2>/dev/null | sort -t . -k 3,3nr)
+  if [[ -r "${APT_LOG_DIR}/history.log" ]]; then
+    files+=("${APT_LOG_DIR}/history.log")
+  fi
+  if [[ "${#files[@]}" -eq 0 ]]; then
+    return 1
+  fi
+  for file in "${files[@]}"; do
+    if [[ "${file}" == *.gz ]]; then
+      zcat -- "${file}"
+    else
+      cat -- "${file}"
+    fi
+  done
+}
+
+# Print the names from stdin as a JSON array of strings.
+json_names() {
+  awk '
+    BEGIN { printf "[" }
+    {
+      gsub(/\\/, "\\\\"); gsub(/"/, "\\\"")
+      printf "%s\"%s\"", (NR > 1 ? "," : ""), $0
+    }
+    END { print "]" }
+  '
+}
+
 # Fetch the installed and manual data once into the work folder.
 load_state() {
   WORK_DIR="$(mktemp -d)" || {
@@ -288,32 +359,45 @@ resolve_installed() {
 
 cmd_list() {
   load_state
-  awk -F '\t' -v color="${COLOR}" '
+  awk -F '\t' -v color="${COLOR}" -v json="${JSON}" '
+    BEGIN { if (json == 1) { printf "[" } }
     FNR == NR { manual[$1] = 1; next }
     substr($1, 2, 1) == "i" {
       mark = ($2 in manual) ? "manual" : "automatic"
-      if (color == 1) {
+      if (json == 1) {
+        printf "%s{\"package\":\"%s\",\"mark\":\"%s\",\"version\":\"%s\"}", (rows++ ? "," : ""), $2, mark, $4
+      } else if (color == 1) {
         printf "%-48s %s%-9s\033[0m %s\n", $2, (mark == "manual" ? "\033[32m" : "\033[2m"), mark, $4
       } else {
         printf "%-48s %-9s %s\n", $2, mark, $4
       }
     }
+    END { if (json == 1) { print "]" } }
   ' <(sed 's/:.*//' "${WORK_DIR}/manual.txt") "${WORK_DIR}/installed.tsv"
+}
+
+# Print names from stdin as lines, or as a JSON array with --json.
+print_names() {
+  if [[ "${JSON}" -eq 1 ]]; then
+    json_names
+  else
+    cat
+  fi
 }
 
 cmd_manual() {
   load_state
-  sed 's/:.*//' "${WORK_DIR}/manual.txt"
+  sed 's/:.*//' "${WORK_DIR}/manual.txt" | print_names
 }
 
 cmd_automatic() {
   load_state
-  LC_ALL=C comm -23 <(installed_names | LC_ALL=C sort) <(sed 's/:.*//' "${WORK_DIR}/manual.txt" | LC_ALL=C sort)
+  LC_ALL=C comm -23 <(installed_names | LC_ALL=C sort) <(sed 's/:.*//' "${WORK_DIR}/manual.txt" | LC_ALL=C sort) | print_names
 }
 
 cmd_orphaned() {
   verbose "Running APT's autoremove simulation"
-  read_orphans
+  read_orphans | print_names
 }
 
 cmd_find() {
@@ -335,11 +419,19 @@ cmd_find() {
     fi
     all_matches+="${matches}"$'\n'
   done
-  if [[ -n "${all_matches}" ]]; then
+  if [[ -z "${all_matches}" && "${JSON}" -eq 1 ]]; then
+    printf '[]\n'
+  elif [[ -n "${all_matches}" ]]; then
     printf '%s' "${all_matches}" | LC_ALL=C sort -u |
-      awk -v color="${COLOR}" '
+      awk -v color="${COLOR}" -v json="${JSON}" '
+        BEGIN { if (json == 1) { printf "[" } }
         FILENAME == ARGV[1] { manual[$1] = 1; next }
         FILENAME == ARGV[2] { installed[$1] = 1; next }
+        json == 1 {
+          mark = ($1 in manual) ? "\"manual\"" : (($1 in installed) ? "\"automatic\"" : "null")
+          printf "%s{\"package\":\"%s\",\"installed\":%s,\"mark\":%s}", (rows++ ? "," : ""), $1, (($1 in installed) ? "true" : "false"), mark
+          next
+        }
         {
           if ($1 in manual) {
             state = "manual"; colour = "\033[32m"
@@ -354,6 +446,7 @@ cmd_find() {
             printf "%-48s %s\n", $1, state
           }
         }
+        END { if (json == 1) { print "]" } }
       ' <(sed 's/:.*//' "${WORK_DIR}/manual.txt") <(installed_names) -
   fi
   return "${status}"
@@ -366,7 +459,7 @@ run_graph() {
 
   awk -v CMD="${command}" -v NAMES="${names}" -v ORPHANS="${orphans}" \
     -v MAX_ROOTS="${MAX_ROOTS}" -v DEPTH="${DEPTH}" -v COLOR="${COLOR}" \
-    -v HARD_ONLY="${HARD_ONLY}" \
+    -v HARD_ONLY="${HARD_ONLY}" -v JSON="${JSON}" -v FORMAT="${FORMAT}" \
     -f "${GRAPH_AWK}" "${WORK_DIR}/installed.tsv" "${WORK_DIR}/manual.txt"
 }
 
@@ -377,6 +470,9 @@ cmd_why() {
   load_state
   names="$(resolve_installed "${PACKAGE_ARGS[@]}")" || status="${?}"
   if [[ -z "${names}" ]]; then
+    if [[ "${JSON}" -eq 1 ]]; then
+      printf '[]\n'
+    fi
     return "${status}"
   fi
   verbose "Tracing $(wc -l <<<"${names}") package(s) to their manual or essential roots"
@@ -400,6 +496,49 @@ cmd_tree() {
   return "${status}"
 }
 
+cmd_history() {
+  local rows
+  local names
+  local pattern
+  local matches
+  local selected=""
+  local status=0
+
+  if ! rows="$(read_history | awk -v ALL_ACTIONS="${ALL_ACTIONS}" -f "${HISTORY_AWK}")"; then
+    error "cannot read the APT history log in ${APT_LOG_DIR}"
+    exit "${EXIT_TOOLING}"
+  fi
+  verbose "Read $(grep -c . <<<"${rows}") history rows"
+  if [[ "${#PACKAGE_ARGS[@]}" -gt 0 ]]; then
+    names="$(cut -f 3 <<<"${rows}" | LC_ALL=C sort -u)"
+    for pattern in "${PACKAGE_ARGS[@]}"; do
+      matches="$(match_names "${pattern}" exact <<<"${names}")"
+      if [[ -z "${matches}" ]]; then
+        error "no history entry matches '${pattern}'"
+        status="${EXIT_NO_MATCH}"
+        continue
+      fi
+      selected+="${matches}"$'\n'
+    done
+    rows="$(awk -F '\t' 'FNR == NR { if ($0 != "") keep[$0] = 1; next } $3 in keep' <(printf '%s' "${selected}") - <<<"${rows}")"
+  fi
+  awk -F '\t' -v json="${JSON}" '
+    function js(text) {
+      gsub(/\\/, "\\\\", text); gsub(/"/, "\\\"", text)
+      return "\"" text "\""
+    }
+    BEGIN { if (json == 1) { printf "[" } }
+    $0 == "" { next }
+    json == 1 {
+      printf "%s{\"date\":%s,\"action\":%s,\"package\":%s,\"version\":%s,\"commandline\":%s}", (rows++ ? "," : ""), js($1), js($2), js($3), js($4), js($5)
+      next
+    }
+    { printf "%-16s  %-12s %-40s %-24s %s\n", $1, $2, $3, $4, $5 }
+    END { if (json == 1) { print "]" } }
+  ' <<<"${rows}"
+  return "${status}"
+}
+
 # Argument parsing.
 
 COMMAND=""
@@ -407,6 +546,9 @@ PACKAGE_ARGS=()
 MAX_ROOTS="${DEFAULT_MAX_ROOTS}"
 DEPTH=0
 HARD_ONLY=0
+ALL_ACTIONS=0
+JSON=0
+FORMAT="text"
 COLOR=0
 no_color='false'
 quiet_mode='false'
@@ -436,6 +578,23 @@ while [[ "$#" -gt 0 ]]; do
     ;;
   --depends-only)
     HARD_ONLY=1
+    ;;
+  --all-actions)
+    ALL_ACTIONS=1
+    ;;
+  --json)
+    JSON=1
+    ;;
+  --format)
+    if [[ "$#" -lt 2 || ! "${2}" =~ ^(text|dot)$ ]]; then
+      usage_error "--format needs \"text\" or \"dot\""
+    fi
+    FORMAT="${2}"
+    shift
+    ;;
+  --version)
+    print_version
+    exit 0
     ;;
   --depth)
     if [[ "$#" -lt 2 || ! "${2}" =~ ^[0-9]+$ ]]; then
@@ -486,7 +645,7 @@ find | why)
     usage_error "${COMMAND} needs at least one package name or query"
   fi
   ;;
-tree) ;;
+tree | history) ;;
 "")
   usage_error "no command given"
   ;;
@@ -495,7 +654,18 @@ tree) ;;
   ;;
 esac
 
+if [[ "${JSON}" -eq 1 && "${COMMAND}" == 'tree' ]]; then
+  usage_error "tree does not support --json (use --format dot for a graph)"
+fi
+if [[ "${FORMAT}" != 'text' && "${COMMAND}" != 'tree' ]]; then
+  usage_error "--format works only with tree"
+fi
+if [[ "${ALL_ACTIONS}" -eq 1 && "${COMMAND}" != 'history' ]]; then
+  usage_error "--all-actions works only with history"
+fi
+
 case "${COMMAND}" in
+history) ;;
 orphaned)
   require_tools apt-get
   ;;

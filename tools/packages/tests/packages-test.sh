@@ -12,6 +12,9 @@
 #   tool-c -> cyca -> cycb -> cyca (cycle)
 #   leftover, oldkernel: nobody needs them; only leftover is in orphans.txt
 #   removed-pkg: status "rc" (config files only), so not installed
+#
+# history.log: install curl (+ libcurl4 automatic), upgrade both,
+# install appa, purge oldtool.
 
 set -euo pipefail
 
@@ -237,6 +240,59 @@ assert_output "why: glob against installed packages" 0 "$(
   "${PACKAGES}" why libbar libfoo
 )" why 'libba[r]' 'libf*'
 
+assert_output "tree --format dot" 0 "$(
+  cat <<'EOF'
+digraph packages {
+  rankdir=LR;
+  node [shape=box, fontname="sans-serif"];
+  "curl" [style=filled, fillcolor="#c8e6c9"];
+  "curl" -> "libcurl4";
+  "curl" -> "libc6";
+  "curl" -> "bash-completion" [style=dashed, label="recommends"];
+  "libcurl4";
+  "libc6" [peripheries=2];
+  "bash-completion";
+}
+EOF
+)" tree curl --format dot --depth 1
+
+assert_output "why --json" 0 \
+  '[
+{"package":"libfoo","mark":"automatic","essential":false,"status":"required","total_paths":2,"paths":[["appa","libfoo"],["appb","libbar","libfoo"]]},
+{"package":"leftover","mark":"automatic","essential":false,"status":"orphaned","total_paths":0,"paths":[]}
+]' why libfoo leftover --json
+assert_output "why --json --depends-only: soft-only status" 0 \
+  '[
+{"package":"bash-completion","mark":"automatic","essential":false,"status":"soft-only","total_paths":0,"paths":[]}
+]' why bash-completion --json --depends-only
+assert_output "manual --json" 0 '["appa","appb","curl","mail-app","tool-c"]' manual --json
+assert_output "orphaned --json" 0 '["leftover"]' orphaned --json
+assert_output "find --json" 0 \
+  '[{"package":"libcurl4","installed":true,"mark":"automatic"},{"package":"libcurl4-dev","installed":false,"mark":null}]' find libcurl --json
+if command -v jq >/dev/null 2>&1; then
+  if [[ "$("${PACKAGES}" list --json | jq 'length')" -ne 16 ]]; then
+    fail "list --json: expected 16 entries"
+  fi
+fi
+
+assert_output "history: explicit installs only" 0 "$(
+  printf '%-16s  %-12s %-40s %-24s %s\n' \
+    '2026-01-10 09:00' install curl 8.0-1 'apt install curl' \
+    '2026-03-05 12:00' install appa 1.0 'apt install appa'
+)" history
+assert_output "history --all-actions with a glob" 0 "$(
+  printf '%-16s  %-12s %-40s %-24s %s\n' \
+    '2026-01-10 09:00' install-auto libcurl4 8.0-1 'apt install curl' \
+    '2026-02-01 10:30' upgrade libcurl4 8.1-1 'apt upgrade'
+)" history 'libcurl*' --all-actions
+assert_output "history --json" 0 \
+  '[{"date":"2026-04-01 08:15","action":"purge","package":"oldtool","version":"0.9","commandline":"apt purge oldtool"}]' \
+  history oldtool --all-actions --json
+
+if ! "${PACKAGES}" --version | grep -qE '^packages [0-9]+\.[0-9]+\.[0-9]+'; then
+  fail "--version: expected 'packages X.Y.Z'"
+fi
+
 assert_status "no arguments print help" 2
 assert_status "--help" 0 --help
 assert_status "unknown command" 2 bogus
@@ -247,6 +303,11 @@ assert_status "--depth needs a number" 2 tree --depth x
 assert_status "why: no installed match" 1 why removed-pkg
 assert_status "why: one of two patterns has no match" 1 why libfoo nosuch
 assert_status "find: no match" 1 find zzz
+assert_status "history: no match" 1 history nosuch
+assert_status "--format needs text or dot" 2 tree --format svg
+assert_status "--format only with tree" 2 why curl --format dot
+assert_status "tree does not support --json" 2 tree --json
+assert_status "--all-actions only with history" 2 list --all-actions
 
 if [[ "${failures}" -gt 0 ]]; then
   printf '%s test(s) failed.\n' "${failures}" >&2

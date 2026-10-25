@@ -1,0 +1,24 @@
+
+Start-Date: 2026-01-10  09:00:00
+Commandline: apt install curl
+Requested-By: patrick (1000)
+Install: curl:amd64 (8.0-1), libcurl4:amd64 (8.0-1, automatic)
+End-Date: 2026-01-10  09:00:05
+
+Start-Date: 2026-02-01  10:30:00
+Commandline: apt upgrade
+Requested-By: patrick (1000)
+Upgrade: curl:amd64 (8.0-1, 8.1-1), libcurl4:amd64 (8.0-1, 8.1-1)
+End-Date: 2026-02-01  10:30:10
+
+Start-Date: 2026-03-05  12:00:00
+Commandline: apt install appa
+Requested-By: patrick (1000)
+Install: appa:amd64 (1.0)
+End-Date: 2026-03-05  12:00:01
+
+Start-Date: 2026-04-01  08:15:00
+Commandline: apt purge oldtool
+Requested-By: patrick (1000)
+Purge: oldtool:amd64 (0.9)
+End-Date: 2026-04-01  08:15:02
