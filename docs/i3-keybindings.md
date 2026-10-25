@@ -32,7 +32,7 @@ or toggling an individual application must use `Ctrl+Shift+Alt+<key>`
 | `Ctrl+Super+D` | Pick a saved layout (Rofi) and delete its file after confirmation (`layouts.py delete`) |
 | `Ctrl+Super+E` | Pick a saved layout (Rofi) and open its file in `subl` (`layouts.py edit`) |
 | `Alt+Tab` (`Mod1+Tab`) | Open YAML-aware Rofi window switcher, all workspaces (`configs/session/rofi/window-switcher.sh`) — see "Rofi" in `SESSION.md` |
-| `Super+Enter` | Open terminal (`$terminal`, currently `xfce4-terminal`) |
+| `Super+Enter` | Open terminal (`$terminal`, currently `terminator`) |
 | `Super+Shift+Q` | Close focused window |
 | `Super+Shift+C` | Reload i3 config |
 | `Super+Shift+R` | Restart i3 in place |

@@ -1,10 +1,6 @@
 #!/bin/bash
 #
-# Launch the i3 starter Polybar bar.
-#
-# This script is intentionally separate from configs/session/polybar/start.sh
-# (the XFCE bar's launcher): that one waits for xfwm4 and only makes sense
-# under XFCE. This one is i3-only.
+# Launch the i3 session Polybar bar.
 #
 # Safe to run from i3's `exec_always`: it never exits non-zero in a way that
 # would matter to i3 (i3 does not act on exec_always exit status), and it
@@ -12,11 +8,10 @@
 # own previous bar instance first.
 #
 # NOTE: this script matches Polybar processes by binary name only (`-x
-# polybar`), not by config file. That is safe here because i3 and XFCE are
-# alternate, mutually exclusive LightDM sessions on this workstation (see
-# SESSION.md) — the two are never running at the same time on the same
-# display. Do not reuse this pattern in a setup where multiple bars might
-# legitimately run concurrently for the same user.
+# polybar`), not by config file, so it stops every Polybar process of the
+# user on every display (see SESSION.md). Do not reuse this pattern in a
+# setup where multiple bars might legitimately run concurrently for the
+# same user.
 
 set -Eeuo pipefail
 
@@ -37,7 +32,7 @@ print_help() {
   cat <<EOF
 Usage: $(basename "${0}") [--help]
 
-Start the i3 starter Polybar bar (configs/session/polybar/config.ini).
+Start the i3 session Polybar bar (configs/session/polybar/config.ini).
 
 Behaviour:
   1. Terminates any existing Polybar instances owned by the current user.

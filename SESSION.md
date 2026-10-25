@@ -1,649 +1,260 @@
 <!-- markdownlint-disable-next-line title-case-style -->
 # SESSION.md
 
-Authoritative technical reference for how the graphical desktop session on
-this workstation is assembled and started. This is operational
-documentation for agents and future maintainers, not a user-facing guide —
-see `README.md` for that.
+Authoritative technical reference for how the graphical desktop session on this workstation is assembled and started. This is operational documentation for agents and maintainers, not a user-facing guide — see `README.md` for that.
 
-Read this file (and `AGENTS.md`) before changing anything that affects i3,
-Polybar, Rofi, X11/Xorg, LightDM/session selection, startup scripts,
-environment setup, wallpaper/background, notifications, compositor,
-monitors, input sharing, workspace behaviour, window assignment, screen
-locking, suspend/logout controls, or related session services. **Any such
-change must update this file in the same change.**
+Read this file (and `AGENTS.md`) before changing anything that affects i3, Polybar, Rofi, X11/Xorg, LightDM/session selection, startup scripts, environment setup, wallpaper/background, notifications, compositor, monitors, input sharing, workspace behaviour, window assignment, screen locking, suspend/logout controls, or related session services. **Any such change must update this file in the same change.**
 
-XFCE is obsolete in this repository and remains only as the legacy session
-manager/fallback context documented below. New graphical desktop features and
-improvements must target i3. When feature work touches an XFCE configuration
-or XFCE-specific feature, remove obsolete XFCE references where possible and
-replace the behaviour with the i3 equivalent where applicable, as part of that
-feature change.
+The desktop session is i3. XFCE is installed on the host but is not configured by this repository; all graphical desktop features target i3.
 
 ## Display manager and available sessions
 
-* Display manager: **LightDM** (`/etc/lightdm/`), Debian/Ubuntu defaults
-  (`session-wrapper=/etc/X11/Xsession`, GTK greeter).
-* Available X sessions (`/usr/share/xsessions/`), confirmed present on this
-  host: `xfce.desktop`, `xubuntu.desktop`, `i3.desktop`,
-  `i3-with-shmlog.desktop`, `lightdm-xsession.desktop`. Neither
-  `i3.desktop` nor the XFCE session files were created or modified by this
-  work — i3 was already an installed, selectable LightDM session; only its
-  configuration was missing.
-* Current default/last-selected session (`~/.dmrc`): **`xfce`**. This was
-  not changed. XFCE remains the session a fresh login lands on unless the
-  user explicitly picks "i3" at the LightDM greeter.
-* `i3.desktop`'s `Exec=i3` starts i3 with no special environment; i3 looks
-  for its config at `~/.config/i3/config` by convention, which is why the
-  Dotbot link below exists.
+* Display manager: **LightDM** (`/etc/lightdm/`), Debian/Ubuntu defaults (`session-wrapper=/etc/X11/Xsession`, GTK greeter).
+* Installed X sessions (`/usr/share/xsessions/`): `i3.desktop`, `i3-with-shmlog.desktop`, `xfce.desktop`, `xubuntu.desktop`, and `lightdm-xsession.desktop`. None of them are managed by this repository.
+* Default session (`~/.dmrc`): **`i3`**.
+* `i3.desktop`'s `Exec=i3` starts i3 with no special environment. i3 reads `~/.config/i3/config`, which Dotbot links into this repository.
 
 ## Repository paths to runtime paths
 
 ```text
-Repository                                Runtime
-----------                                -------
-configs/session/i3/config              -> ~/.config/i3/config   (Dotbot link)
-configs/session/polybar/               -> (not symlinked; referenced by
-                                            repo path directly from i3's
-                                            exec_always — see "Polybar" below)
-configs/session/fonts/                 -> ~/.fonts/dotfiles     (via
-                                            configs/fonts/dotfiles compatibility
-                                            symlink and Dotbot's ~/.fonts link)
-configs/session/polybar/                -> ~/.config/polybar     (Dotbot link, XFCE bar, unchanged)
-configs/session/rofi/                  -> ~/.config/rofi        (Dotbot link, i3-only)
-configs/session/dunst/                 -> ~/.config/dunst       (Dotbot link, notification daemon)
+Repository                     Runtime
+----------                     -------
+configs/session/i3/         -> ~/.config/i3          (Dotbot link)
+configs/session/rofi/       -> ~/.config/rofi        (Dotbot link)
+configs/session/dunst/      -> ~/.config/dunst       (Dotbot link)
+configs/session/terminator/ -> ~/.config/terminator  (Dotbot link)
+configs/session/thunar/     -> ~/.config/Thunar      (Dotbot link)
+configs/session/launchers/  -> ~/.local/share/applications (Dotbot link)
+configs/session/polybar/    -> (not linked; launch.sh is called by repo path from i3)
+configs/fonts/              -> ~/.fonts              (Dotbot link; the desktop set is
+                                                      configs/session/fonts/, exposed as
+                                                      ~/.fonts/dotfiles)
 ```
 
-Dotbot config: `configs/dotbot/config.yaml`, run via the `dotfiles` wrapper
-(`bashrc/helpers/dotfiles`; see `configs/dotbot/README.md`).
+Dotbot config: `configs/dotbot/config.yaml`, run via the `dotfiles` wrapper (`bashrc/helpers/dotfiles`; see `configs/dotbot/README.md`). `~/.config/polybar/` is a plain local folder that holds runtime data such as `issues.toml` for the msgvault module; it is not a link into this repository.
 
 ## Session architecture
 
 ```text
 LightDM
-│
-├── Xubuntu / XFCE  (default session, ~/.dmrc)
-│   ├── xfwm4 (window manager)
-│   ├── xfce4-panel
-│   (No Rofi bindings of its own — Rofi is i3-only, see "Rofi" below.
-│   Alt+Tab/Super+Tab under XFCE go to xfwm4's own native window cycling.
-│   Devilspie2 and the XDG autostart pool that used to launch Polybar,
-│   Obsidian, and other apps under XFCE were both removed — see
-│   "Components that must only run under XFCE".)
-│
-└── i3  (this work; selectable at the LightDM greeter, not the default)
-    │
-    └── Xorg (same X server mechanism as XFCE; no separate X11 setup needed)
-        │
+└── i3  (default session, ~/.dmrc)
+    └── Xorg
         ├── i3 (configs/session/i3/config)
         │   ├── keybindings (see "Keybinding architecture")
         │   ├── numbered icon workspaces 1-9, generated from
         │   │   configs/session/i3/workspaces/workspaces.yaml
-        │   └── window rules — one so far (floats window-inspector.sh's
-        │       report terminal), see "Window rules"
-        │
-        ├── Rofi (i3-only — configs/session/rofi/, invoked as
-        │   `rofi -show drun`)
-        ├── Polybar (i3-ONLY copy — configs/session/polybar/, launched by
-        │   configs/session/polybar/launch.sh via i3 exec_always; includes
-        │   the Clockify status indicator from configs/session/clockify/
-        │   and the system checkup alert from tools/system-checkup/)
-        ├── fonts (desktop typography set — configs/session/fonts/,
-        │   exposed at ~/.fonts/dotfiles through configs/fonts/dotfiles)
-        ├── background (xsetroot solid colour, then feh sets a
-        │   fixed repo-committed wallpaper)
-        ├── notifications (dunst, D-Bus-activated on the first
-        │   notification — not started by i3, see "Notifications")
-        └── (no monitor rules — intentionally out of scope, see
-            "Known limitations")
+        │   └── window rules (configs/session/i3/configs/rules.conf)
+        ├── Rofi (configs/session/rofi/, configs/session/i3/rofi.rasi)
+        ├── Polybar (configs/session/polybar/, started by launch.sh)
+        ├── fonts (configs/session/fonts/, exposed at ~/.fonts/dotfiles)
+        ├── background (xsetroot solid colour, then feh wallpaper)
+        ├── notifications (dunst, D-Bus-activated — see "Notifications")
+        └── screen lock (xss-lock systemd user unit → lock.sh)
 ```
 
-## Startup sequence (i3 session)
+## Startup sequence
 
-1. LightDM starts `i3` (`Exec=i3` from `/usr/share/xsessions/i3.desktop`)
-   after the user selects it at the greeter.
-2. Xorg initialises the graphical session (shared mechanism with XFCE, no
-   i3-specific Xorg configuration exists or is needed).
-3. i3 reads `~/.config/i3/config`, which Dotbot has symlinked to
-   `configs/session/i3/config`.
-4. i3 runs its `exec_always` lines in the order they appear in the config:
-   1. `xsetroot -solid '#0B0D0F'` — sets a guaranteed root-window
-      background colour. **Non-fatal**: `xsetroot` is a tiny, essentially
-      infallible tool; if it were somehow missing, i3 continues normally
-      (exec_always failures are not fatal to i3 itself).
-   2. `feh --bg-fill configs/session/i3/wallpaper.jpg` — overrides the
-      solid colour with a fixed, repo-committed wallpaper image. Unlike
-      the other `exec_always` lines here, this one is not wrapped in
-      `|| true`.
-   3. `configs/session/polybar/launch.sh` (wrapped in
-      `sh -c '... || true'`) — kills any existing user Polybar instance,
-      waits up to ~5s, starts `bar/i3bar` from
-      `configs/session/polybar/config.ini`, logs to
-      `~/.logs/polybar-i3/bar-YYYYMMDD.log`. **Non-fatal**: the script
-      itself never exits in a way i3 acts on, and internally logs+returns
-      rather than throwing if `polybar` or the config file is missing.
-5. Nothing else is started automatically beyond the other
-   `session-starts.conf` entries below. No monitor/xrandr commands, no
-   wallpaper-manager daemon. The notification daemon (dunst) is not
-   started here: D-Bus starts it on the first notification (see
-   "Notifications"). i3 has
-   no session manager, so it never reads XDG autostart (`~/.config/
-   autostart`) either way — dotfiles no longer manages an autostart pool
-   for any session, see "Components that must only run under XFCE".
+1. LightDM starts `i3` (`Exec=i3` from `/usr/share/xsessions/i3.desktop`).
+2. Xorg initialises the graphical session. No i3-specific Xorg configuration exists.
+3. i3 reads `~/.config/i3/config` (linked to `configs/session/i3/config`), which includes `configs/session/i3/configs/session-starts.conf`.
+4. i3 runs the `exec`/`exec_always` lines of `session-starts.conf` in the order shown in the table below.
 
-For every automatically started i3-session component:
+i3 has no session manager, so it does not read XDG autostart (`~/.config/autostart`). Everything that must start with the session is in `session-starts.conf`.
 
-| Component | Started by | Command | `exec` vs `exec_always` | Failure mode |
-| ---------------------- | ---------------------------------------------- | --------------------------------------------------------------- | -------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Root background colour | i3 | `xsetroot -solid '#0B0D0F'` | `exec_always` | Non-fatal; i3 unaffected. |
-| Wallpaper | i3 | `feh --bg-fill configs/session/i3/wallpaper.jpg` | `exec_always` (not wrapped in `\|\| true`) | Fixed repo-committed image. |
-| Polybar | i3 | `configs/session/polybar/launch.sh` | `exec_always` (`sh -c ... \|\| true`) | Non-fatal; i3 remains usable with no bar if Polybar/its config is missing. Its left side includes the Clockify status indicator, which calls `configs/session/clockify/polybar-clockify` and opens the local form on left click. |
-| System checkup | i3 (and cron every 6 hours) | `tools/system-checkup/system-checkup --quiet` after `sleep 120` | `exec` (once per session) | Non-fatal (`sh -c ... \|\| true`). Writes `~/.local/state/system-checkup/report.txt`; the Polybar `system-checkup` module (right of the power menu) shows an alert icon only when a check failed or the last run is older than 13 hours. Left click opens the report, right click runs the checks again. See `tools/system-checkup/README.md`. |
-| xss-lock | i3 | `xss-lock --transfer-sleep-lock -- configs/session/i3/lock.sh` | `exec` (once per session, see "Screen lock") | Non-fatal to i3; if `xss-lock` is missing, `Super+L`/suspend simply do not lock the screen. |
-| Discord | i3 | `/usr/bin/discord --start-minimized` | `exec` (once per session) | Non-fatal (`sh -c ... \|\| true`). Starts the Debian package in the tray; i3 restarts do not launch it again. |
-| Rofi | user keypress (`Super_L` release, or `$mod+d`) | `rofi -show drun` | `bindsym ... exec` | Non-fatal; a launcher failure does not affect the rest of the session. |
-| Terminal | user keypress (`$mod+Return`) | `xfce4-terminal` | `bindsym ... exec` | Non-fatal. |
+| Component | Command | `exec` vs `exec_always` | Failure mode |
+| --- | --- | --- | --- |
+| Colour scheme | `bashrc/helpers/session-colour-scheme --apply` | `exec_always` | Non-fatal (`\|\| true`). See "Session colour scheme". |
+| GNOME Keyring D-Bus components | `gnome-keyring-daemon --start --components=pkcs11,secrets` | `exec_always` | Non-fatal. Registers the Secret Service on the session bus so libsecret apps (for example VS Code) find a keyring. PAM already starts and unlocks the daemon at login. |
+| Polkit agent | `/usr/libexec/polkit-mate-authentication-agent-1` | `exec` | Non-fatal. Without it, `pkexec` has no graphical agent. |
+| Root background colour | `xsetroot -solid '#0B0D0F'` | `exec_always` | Non-fatal. |
+| Polybar | `configs/session/polybar/launch.sh` | `exec_always` | Non-fatal; i3 stays usable without a bar. |
+| Enpass | `session-colour-scheme --tool enpass -- --minimize` | `exec` | Non-fatal. Starts once per session so it does not prompt again on every i3 restart. |
+| Barrier | `/usr/bin/barrier` | `exec` | Non-fatal. Keyboard and mouse sharing; config at `configs/session/barrier/barrier.conf`. |
+| Discord | `/usr/bin/discord --start-minimized` | `exec` | Non-fatal. Starts in the tray. |
+| xss-lock | `systemctl --user start xss-lock.service` (after `import-environment` and `reset-failed`) | `exec_always` | Non-fatal. See "Screen lock". |
+| Wallpaper | `feh --bg-fill configs/session/i3/wallpaper.jpg` | `exec_always` | Non-fatal. |
+| Google Drive mounts | `configs/session/storage/gdrive-mounts.sh` | `exec` | Non-fatal. See `configs/session/storage/README.md`. |
+| System checkup | `sleep 120; tools/system-checkup/system-checkup --quiet` | `exec` | Non-fatal. Also runs from cron every 6 hours. Writes `~/.local/state/system-checkup/report.txt`; the Polybar `system-checkup` module shows an alert icon only when a check failed or the last run is older than 13 hours. See `tools/system-checkup/README.md`. |
 
-`exec_always` (not `exec`) is used for background/Polybar/wallpaper so that
-`i3-msg restart` (`$mod+Shift+r`) re-runs them — this is what keeps the
-Polybar launcher's own kill-old-instance-first logic doing its job on every
-restart rather than leaving `Super+Shift+r` with no bar at all.
+`exec_always` is used for the background, wallpaper, Polybar, and xss-lock so that `i3-msg restart` (`$mod+Shift+r`) runs them again. `launch.sh` kills the old bar before it starts a new one, and `systemctl --user start` is a no-op for a running unit, so neither duplicates. `exec` is used for applications that must start only once per session.
+
+User-triggered programs:
+
+| Component | Trigger | Command |
+| --- | --- | --- |
+| Rofi launcher | bare `Super_L` release, `$mod+Shift+d`, `$mod+d` | `rofi -show drun -config configs/session/i3/rofi.rasi` (see "Rofi") |
+| Terminal | `$mod+Return` | `$terminal` (`terminator`) |
 
 ## Keybinding architecture
 
-Defined entirely in `configs/session/i3/config`. `$mod` is `Mod4`
-(Super/Windows key). Before adding or changing any binding here — especially
-one that invokes `exec` with a script and arguments, or that drives i3
-workspaces/marks/containers — read
-[`.agents/instructions/session/i3-keybindings.instructions.md`](.agents/instructions/session/i3-keybindings.instructions.md)
-first: `i3 -C -c` does not catch every way a binding can be broken, and that
-file documents the specific error shapes, the mandatory rule that
-program-launch bindings use `Ctrl+Shift+Alt+<key>`, and how to actually
-verify a binding works. Full table, which **MUST** be kept in sync with any
-binding change:
-[`docs/i3-keybindings.md`](docs/i3-keybindings.md).
+Defined in `configs/session/i3/config` and its includes in `configs/session/i3/configs/` (`keybindings.conf`, `applications.conf`). `$mod` is `Mod4` (Super/Windows key). Before you add or change a binding — especially one that runs `exec` with a script and arguments, or that drives i3 workspaces, marks, or containers — read [`.agents/instructions/session/i3-keybindings.instructions.md`](.agents/instructions/session/i3-keybindings.instructions.md). `i3 -C -c` does not catch every way a binding can be broken. That file documents the error shapes, the rule that program-launch bindings use `Ctrl+Shift+Alt+<key>`, and how to verify a binding. The full table, which **MUST** be kept in sync with any binding change, is [`docs/i3-keybindings.md`](docs/i3-keybindings.md).
 
 ### Bare `Super` key limitation
 
-i3's `bindsym` grammar binds a modifier combined with a keysym, not a bare
-modifier alone. This is implemented as:
+i3's `bindsym` grammar binds a modifier combined with a keysym, not a bare modifier alone. This is implemented as:
 
 ```text
-bindsym --release Super_L exec --no-startup-id rofi -show drun
+bindsym --release Super_L exec --no-startup-id $rofi_new_workspace
 ```
 
-`--release` scopes it to "`Super_L` pressed and released with nothing else
-pressed in between," so it does not fight with `$mod+<key>` bindings. If
-this is ever unreliable on a given keyboard/X11 combination, `Super+D` is
-the documented fallback bound to the exact same command.
+`--release` scopes it to "`Super_L` pressed and released with nothing else pressed in between", so it does not conflict with `$mod+<key>` bindings. If this is unreliable on a given keyboard or X11 setup, `$mod+Shift+d` runs the same command.
 
 ## Window rules
 
-`configs/session/i3/configs/rules.conf` holds this config's
-`for_window`/`assign` rules, included from `configs/session/i3/config`
-separately from `keybindings.conf`/`applications.conf` so it stays easy to
-scan as it grows. One entry so far:
+`configs/session/i3/configs/rules.conf` holds the `for_window`/`assign` rules. It is included from `configs/session/i3/config` separately from `keybindings.conf` and `applications.conf`.
 
-```text
-for_window [window_role="window-inspector"] floating enable, resize set 720 480, move position center
-```
+| Match | Effect | Purpose |
+| --- | --- | --- |
+| `window_role="window-inspector"` | float, `700x540`, centred | Report terminal of `window-inspector.sh` |
+| `window_role="msgvault-sync"` | float | Manual-sync terminal of the msgvault Polybar module; `tools/msgvault/sync-terminal` sets the size |
+| `window_role="scratch-terminal"` | mark `scratch-terminal`, float, move to scratchpad | Scratch terminal (see "Scratch terminal") |
+| `class="dnb-clockify-form"` | float, `700x760`, centred, focus | Clockify form (see "Clockify form window") |
+| `class="dnb-tasks"` | float, `50ppt x 80ppt`, centred, focus | Tasks app (`Ctrl+Shift+Alt+P`, `configs/session/tasks/tasks-window`) |
+| `class="obsidian"` | `assign` to `$ws5` | Obsidian always opens on workspace 5 |
+| `class="Enpass" instance="Enpass"` | width `33ppt` | Enpass main window |
+| `class="Google-chrome"` with `window_type` `dropdown_menu` or `popup_menu` | float, no border | Chrome dropdown and popup menus |
 
-This floats the report terminal opened by `configs/session/i3/window-
-inspector.sh` (`Ctrl+Shift+Alt+I` — see "Keybinding architecture"), an
-admin tool for finding a window's `WM_CLASS`/role/title/PID/geometry so it
-can be targeted by a future `for_window`/`assign` rule. It:
+### Window inspector
 
-1. Runs `xdotool selectwindow` — a crosshair cursor, click any window to
-   pick it (no typing/searching; this is a direct X11 pointer grab, not a
-   Rofi list).
-2. Prints that window's details — `xdotool getwindowname`/`getwindowpid`/
-   `getwindowgeometry`, `xprop WM_CLASS`/`WM_WINDOW_ROLE`/`WM_NAME`/
-   `_NET_WM_PID`, and its matching `wmctrl -lxp` line — plus a ready-to-
-   paste `[class="..." instance="..."]` match snippet, into a `terminator`
-   window it launches for the purpose.
-3. That terminator instance is started with `--role=window-inspector`
-   (a custom `WM_WINDOW_ROLE`, not its title or class), which is what the
-   `rules.conf` entry above matches on — so it floats and gets a
-   fixed size/position without ever matching, or being confused with, an
-   ordinary `terminator` window (`$terminal`, bound to `$mod+Return`).
-   "Floats on top" here means i3's normal floating-window stacking (above
-   the tiled windows on its workspace) — i3 has no cross-workspace
-   always-on-top concept.
-4. It never moves, closes, resizes, or otherwise changes the window it
-   inspects — read-only, by design, since its only job is finding match
-   criteria for rules you write yourself.
+`configs/session/i3/window-inspector.sh` (`Ctrl+Shift+Alt+I`) is an admin tool for finding a window's `WM_CLASS`, role, title, PID, and geometry, so it can be targeted by a `for_window`/`assign` rule. It:
 
-Validated non-interactively (parses without opening a window): `bash -n
-configs/session/i3/window-inspector.sh`, `shellcheck configs/session/i3/
-window-inspector.sh`, and `i3 -C -c configs/session/i3/config` (also
-covers `rules.conf`, via the `config` file's `include`).
+1. Runs `xdotool selectwindow` — a crosshair cursor; click any window to pick it.
+2. Prints that window's details (`xdotool getwindowname`/`getwindowpid`/`getwindowgeometry`, `xprop WM_CLASS`/`WM_WINDOW_ROLE`/`WM_NAME`/`_NET_WM_PID`, and its `wmctrl -lxp` line), plus a ready-to-paste `[class="..." instance="..."]` match snippet, into a `terminator` window.
+3. Starts that terminator with `--role=window-inspector`, which the rule above matches on, so it floats without matching an ordinary terminator window.
+4. Never moves, closes, resizes, or otherwise changes the window it inspects.
+
+Validate without opening a window: `bash -n configs/session/i3/window-inspector.sh`, `shellcheck configs/session/i3/window-inspector.sh`, and `i3 -C -c configs/session/i3/config`.
 
 ### Clockify form window
 
-The Clockify Polybar indicator opens `tools/clockify`'s local form through Chrome app mode, using the dedicated user profile at `~/.config/dnb-clockify/chrome-profile` and the stable window class `dnb-clockify-form`. `configs/session/i3/configs/rules.conf` floats that class, resizes it to `700x760`, and centres it on the current workspace. No workspace assignment is used, so the form stays with the workspace where it was opened.
+The Clockify Polybar indicator opens `tools/clockify`'s local form through Chrome app mode, using the dedicated user profile at `~/.config/dnb-clockify/chrome-profile` and the stable window class `dnb-clockify-form`. The rule floats that class, resizes it to `700x760`, and centres it on the current workspace. No workspace assignment is used, so the form stays on the workspace where it was opened.
 
 ### Scratchpad mark convention
 
-Every `for_window` rule that sends a window straight to i3's scratchpad
-(`move scratchpad`) **must** mark it with a `scratch-` prefixed name (for
-example `scratch-enpass`, `scratch-terminal`). This is not just a naming
-habit: `configs/session/i3/workspaces/workspaces.py`'s
-`is_switchable_window()` filters out any window carrying a `scratch-`
-prefixed mark from the Rofi Alt+Tab window switcher (see "Rofi" below), so
-that scratchpad windows never clutter that list even while shown on a
-normal workspace — `scratchpad_state` alone cannot be used for this, since
-i3 resets it to `none` once a scratchpad window is shown. A new
-scratchpad-bound `for_window` rule that skips this prefix will silently
-leak into the Alt+Tab list; keep the mark and the filter in sync.
+Every `for_window` rule that sends a window straight to i3's scratchpad (`move scratchpad`) **must** mark it with a `scratch-` prefixed name (for example `scratch-terminal`). `configs/session/i3/workspaces/workspaces.py`'s `is_switchable_window()` hides any window with a `scratch-` prefixed mark from the Rofi Alt+Tab window switcher, so scratchpad windows never clutter that list even while shown on a normal workspace. `scratchpad_state` cannot be used for this, because i3 resets it to `none` once a scratchpad window is shown. A scratchpad rule without this prefix leaks into the Alt+Tab list.
 
 ### Scratch terminal
 
-A second, singleton scratchpad window — a persistent, Guake-style dropdown
-terminal built entirely from native i3 scratchpad behaviour, not a
-dedicated dropdown-terminal application. Full architecture, geometry
-rationale, and command reference:
-[`configs/session/terminal/README.md`](configs/session/terminal/README.md).
+A singleton, Guake-style dropdown terminal built from native i3 scratchpad behaviour. Full architecture, geometry rationale, and command reference: [`configs/session/terminal/README.md`](configs/session/terminal/README.md).
 
-* **Match criterion**: `window_role="scratch-terminal"`, set by
-  `terminator --role=scratch-terminal` when
-  `configs/session/terminal/scratch-terminal` launches it — the same
-  custom-role mechanism `window-inspector.sh` uses (see "Window rules"
-  above). Ordinary Terminator windows opened via `$mod+Return` carry no
-  role and never match.
-* **Rule** (`rules.conf`): `for_window [window_role="scratch-terminal"]
-  mark scratch-terminal, floating enable, move scratchpad` — marks, floats,
-  and scratchpads it the instant it maps, before the controller does
-  anything else.
-* **Mark**: `scratch-terminal`. Every controller operation (show, hide,
-  resize, focus, kill on `--restart`) targets this mark, never
-  class/title, so it can never touch an ordinary Terminator window.
-* **Keybinding**: `Ctrl+Shift+Alt+T` (see "Keybinding architecture"),
-  bound to `scratch-terminal --toggle`. Unlike the Enpass binding, this is
-  not a bare `[con_mark=...] scratchpad show` inline in the i3 config: the
-  controller also has to create the window on first use and recompute
-  right-half-of-output geometry on every show, so that logic lives in the
-  dedicated script rather than the i3 config itself.
-* **Appearance**: launched with `--profile scratch`, a Terminator profile
-  defined only in `configs/session/terminator/config`'s `[profiles]
-  [[scratch]]` block. It has an opaque background with the same colours
-  and font as `[[default]]`; the session starts no compositor, so a
-  transparent background would have no effect. Ordinary Terminator
-  windows never pass `--profile`, so they use `[[default]]`.
-* **Geometry**: recalculated on every show from the *currently focused*
-  workspace's `rect` (`i3-msg -t get_workspaces`), which i3 already reports
-  with Polybar's reserved dock-bar strut excluded — no separate
-  `xrandr`/EWMH lookup needed. No dimensions are hardcoded, so this stays
-  correct across resolution changes, output switches, and non-zero-origin
-  multi-monitor layouts.
-* **Lifecycle**: created lazily on first `--toggle`/`--show`, not
-  autostarted from `session-starts.conf` — see the README's "Lifecycle"
-  section for the tradeoff. Once created, the same Terminator process
-  persists (shell state, scrollback, running commands, SSH sessions
-  included) until `i3-msg restart`/logout or an explicit `--restart`.
-* **Does not follow workspace changes automatically** — switching
-  workspaces leaves it wherever it was; `Ctrl+Shift+Alt+T` again summons it
-  onto the newly focused workspace.
-* No Polybar workspace is created or exposed for it, for the same reason as
-  Enpass: it never occupies a normal workspace.
+* **Match criterion**: `window_role="scratch-terminal"`, set by `terminator --role=scratch-terminal` when `configs/session/terminal/scratch-terminal` starts it. Ordinary Terminator windows from `$mod+Return` have no role and never match.
+* **Mark**: `scratch-terminal`. Every controller operation (show, hide, resize, focus, kill on `--restart`) targets this mark, never class or title.
+* **Keybinding**: `Ctrl+Shift+Alt+T`, bound to `scratch-terminal --toggle`. The controller creates the window on first use and recomputes the right-half-of-output geometry on every show.
+* **Appearance**: started with `--profile scratch`, a Terminator profile in `configs/session/terminator/config` (`[profiles] [[scratch]]`). It has an opaque background with the same colours and font as `[[default]]`; the session runs no compositor, so transparency would have no effect.
+* **Geometry**: recalculated on every show from the focused workspace's `rect` (`i3-msg -t get_workspaces`), which already excludes Polybar's reserved strut. No dimensions are hardcoded.
+* **Lifecycle**: created on the first `--toggle`/`--show`, not at session start. The same Terminator process (shell state, scrollback, running commands, SSH sessions) persists until `i3-msg restart`, logout, or an explicit `--restart`.
+* It does not follow workspace changes; press `Ctrl+Shift+Alt+T` again to bring it to the focused workspace.
 
-Validated non-interactively: `bash -n
-configs/session/terminal/scratch-terminal`, `shellcheck
-configs/session/terminal/scratch-terminal`, `i3 -C -c
-configs/session/i3/config`. Validated live against a running i3 session:
-first toggle creates and shows exactly one instance with correct right-half
-geometry; toggle again hides it (shell state preserved); toggle from a
-different workspace summons the same window there; rapid repeated toggles
-never duplicate the window; `--restart` replaces only the marked terminal,
-confirmed against a concurrently open ordinary `$mod+Return` Terminator
-window which stayed untouched (no mark, tiled, unmoved) throughout.
+Validate: `bash -n configs/session/terminal/scratch-terminal`, `shellcheck configs/session/terminal/scratch-terminal`, and `i3 -C -c configs/session/i3/config`.
 
 <!-- markdownlint-disable-next-line title-case-style -->
 <!-- markdownlint-disable-next-line dnb-title-case-style -->
 ## Canonical Files workspace
 
-A singleton, i3-only two-pane Thunar workspace (LEFT user-controlled,
-RIGHT always the target of external directory-open requests —
-`explore`, `xdg-open`, `gio open`, "open in file manager" from any XDG-aware
-application). `Ctrl+Shift+Alt+F` shows it (creating it on first use).
-Reserved at i3 workspace number 90, identified purely by i3 container
-marks (`file-manager-left`/`file-manager-right`), derived from the live i3
-tree with no cache/state file. `configs/session/filemanager/file-manager`
-is the only place that knows how to create, repair, or retarget it; i3
-config only binds the keypress to it. A user-level XDG desktop entry
-(`configs/session/launchers/dnb-file-manager.desktop`, installed the same
-way as this repo's other custom launchers — see "Components that must
-only run under i3" below) and `xdg-mime default` (set idempotently by
-`configs/dotbot/config.yaml`'s `shell:` section) route `inode/directory`
-into the controller. Full architecture, invariants, and recovery
-semantics: [`configs/session/filemanager/README.md`](configs/session/filemanager/README.md).
+A singleton, two-pane Thunar workspace (LEFT user-controlled, RIGHT always the target of external directory-open requests — `explore`, `xdg-open`, `gio open`, "open in file manager" from any XDG-aware application). `Ctrl+Shift+Alt+F` shows it and creates it on first use. It is reserved at i3 workspace number 90 and identified only by the i3 container marks `file-manager-left` and `file-manager-right`, read from the live i3 tree with no cache or state file. `configs/session/filemanager/file-manager` is the only place that creates, repairs, or retargets it; the i3 config only binds the key. A user-level desktop entry (`configs/session/launchers/dnb-file-manager.desktop`) and `xdg-mime default` (set by `configs/dotbot/config.yaml`'s `shell:` section) route `inode/directory` to the controller. Full architecture, invariants, and recovery: [`configs/session/filemanager/README.md`](configs/session/filemanager/README.md).
 
 ## Rofi
 
-Rofi is **i3-only**. It used to be shared with XFCE (a Dotbot link at
-`~/.config/rofi` pointing at `configs/session/rofi/`); that folder has been
-retired and its contents moved into `configs/session/rofi/`, and the XFCE
-keyboard shortcuts that used to invoke it (bare `Super_L` → `rofi -show
-drun`, `Ctrl+Shift+W` → the workspace picker script) were removed before
-`configs/session/xfce/` itself was later removed entirely (see "Components
-that must only run under XFCE"). XFCE now has no Rofi bindings at all; its
-Alt+Tab/Super+Tab still go to xfwm4's own default
-`cycle_windows_key`/`switch_window_key`, unaffected by this.
-
-* `configs/session/rofi/` — Dotbot-linked to `~/.config/rofi`. Holds the
-  base `config.rasi`, `theme.rasi`, `config.alt-tab-switcher.rasi`, plus
-  two scripts:
-  * `window-switcher.sh` — a Rofi-based Alt+Tab replacement, bound to
-    `Mod1+Tab` in `configs/session/i3/configs/applications.conf` (i3 has no
-    native Alt+Tab window cycling, unlike xfwm4). Always shows windows
-    across all workspaces. It asks
-    `configs/session/i3/workspaces/workspaces.py` to read
-    i3's tree, map raw workspace names through
-    `configs/session/i3/workspaces/workspaces.yaml`, and show workspace
-    icons instead of labels such as `2:Web`, legacy dynamic names such as
-    `10:code:dotfiles`, or current dynamic indicator names such as `10:`.
-    Panel/dock windows such as the i3 Polybar instance are hidden from this
-    switcher, because they are session infrastructure rather than useful
-    focus targets. Windows carrying a `scratch-` prefixed mark (Enpass,
-    the scratch terminal) are hidden too, even while shown on a normal
-    workspace — see "Scratchpad mark convention" under "Window rules".
-    VS Code windows with either the `Code` or `com.microsoft.VSCode` class show the project name extracted from their title in the first column, with `Code` as the fallback.
-  * `workspaces.sh` — the VS Code workspace picker, bound to
-    `Ctrl+Shift+W` in `configs/session/i3/configs/applications.conf`.
-    With `--dynamic-workspace code`, it creates a temporary i3 workspace,
-    switches to it, and starts the selected Code target there. If the target
-    path, one of the folders in a `.code-workspace` file, or one of their
-    parent directories has a `.github/config.toml` with
-    `[workspace] icon = "..."`, that icon becomes the dynamic workspace
-    indicator. Otherwise the configured Code icon is used. i3 removes that
-    workspace from the live workspace list when the last window closes.
-  * `workspaces.py promote-focused` — the focused-window promotion controller, bound to `Ctrl+Shift+Alt+N` in `configs/session/i3/configs/applications.conf`. It reads the focused i3-managed window from `i3-msg -t get_tree`, rejects scratchpad and session-infrastructure windows using the same switchable-window filter as Alt+Tab, selects an icon from `workspaces.yaml`'s `window_icons.rules` class/instance mappings, falls back to `window_icons.fallback`, then moves that exact container id to a fresh dynamic workspace and switches to it. The optional `slug` values are metadata for maintainers; the visible workspace name stays `number:icon`, so Polybar renders only the icon just like the existing dynamic Code and ChatGPT workspaces.
-  * `workspaces.py`'s sibling `layouts.py` — workspace layouts, bound to `Ctrl+Super+S`/`L`/`D`/`E` (save, load, delete, edit) in `configs/session/i3/configs/keybindings.conf`. `save` converts the focused workspace from `i3-msg -t get_tree` into `append_layout` placeholders (class/instance `swallows`) and records each window's command from `_NET_WM_PID` and `/proc/<pid>/cmdline`. `apply` makes the next dynamic workspace (10+), runs `append_layout` there, and starts the recorded commands. Files are in `configs/session/i3/layouts/`, tracked in git. Rofi `-dmenu` with `configs/session/i3/rofi.rasi` is used for the label prompt, the picker, and the confirmation; `subl` opens the files; results and errors go to `notify-send`. See "Workspace layouts" in `configs/session/i3/README.md`.
-  * The same underlying mechanism (`configs/session/i3/workspaces/
-    workspaces.py launch --application <name>`) is also called directly,
-    with no Rofi picker, by fixed single-purpose launchers such as
-    `configs/session/launchers/chatgpt-app.desktop` (dynamic app
-    `chatgpt`, robot icon U+E1BB) — one program, no project/target to
-    pick, so `--target` is omitted and the app's own configured icon is
-    used. See
-    [`.agents/instructions/session/dynamic-workspace-launcher.instructions.md`](.agents/instructions/session/dynamic-workspace-launcher.instructions.md)
-    for the procedure to add another one.
-* i3's app launcher (drun) does not use `configs/session/rofi/config.rasi`
-  directly. It calls `configs/session/i3/rofi.rasi` — a small, standalone
-  override (per the starter spec's own requirement for one) that sets
-  `matching: "fuzzy"`, `case-sensitive: false`, `show-icons: true`, and an
-  explicit `width`/`location`, none of which the base config turns on
-  (rofi's default matching is substring, not fuzzy). The override reuses
-  the base config's *visuals* via `@theme "theme"` (rofi's own theme
-  search path resolves this to `configs/session/rofi/theme.rasi`,
-  confirmed with `rofi -config configs/session/i3/rofi.rasi -dump-theme`),
-  so there is no second theme to keep in sync — only the functional
-  settings are i3-specific.
-* Invoked as `rofi -show drun -config <repo>/configs/session/i3/rofi.rasi`
-  plus a per-binding prompt set with `-display-drun` (it overrides
-  `display-drun` from `theme.rasi` for this menu only):
-  * Bare `Super` and `Super+Shift+D` (`$rofi_new_workspace`), prompt
-    "start program in new workspace": `-run-command` and
-    `-run-shell-command` pass the selected command to
-    `workspaces.py launch-command`. That creates the next dynamic workspace
-    (10+), switches to it, and starts the program there. Icon: the icon of
-    a `dynamic:` entry that runs the same executable, else
-    `window_icons.fallback`, which `workspaces.py set-workspace-icon`
-    replaces with the matching `window_icons.rules` icon once the first
-    window appears on that workspace (it polls for up to 15 seconds).
-    Programs start without startup notification, so a slow program opens
-    on whichever workspace is focused when its window appears. A
-    single-instance program that only raises an existing window leaves the
-    new workspace empty, and i3 removes it when you leave it.
-  * `Super+D` (`$rofi_current_workspace`), prompt "start program in current
-    workspace": starts the program on the current workspace.
-  * i3 does not expand a `$variable` inside another `set` value, so both
-    variables contain the full rofi command.
-* Validated non-interactively (parses without opening a window):
-  `rofi -config configs/session/i3/rofi.rasi -dump-config` and `-dump-theme`.
+* `configs/session/rofi/` — Dotbot-linked to `~/.config/rofi`. Holds the base `config.rasi`, `theme.rasi`, `config.alt-tab-switcher.rasi`, the power menu (`power/powermenu.sh`, `$mod+Shift+e`), and these scripts:
+  * `window-switcher.sh` — Alt+Tab window switcher, bound to `Mod1+Tab` in `configs/session/i3/configs/applications.conf` (i3 has no native Alt+Tab). It shows windows across all workspaces. It calls `configs/session/i3/workspaces/workspaces.py` to read the i3 tree, map workspace names through `configs/session/i3/workspaces/workspaces.yaml`, and show workspace icons instead of raw names such as `2:` or `10:`. Panel and dock windows (such as Polybar) and windows with a `scratch-` prefixed mark are hidden (see "Scratchpad mark convention"). VS Code windows with the `Code` or `com.microsoft.VSCode` class show the project name from their title in the first column, with `Code` as the fallback.
+  * `workspaces.sh` — VS Code workspace picker, bound to `Ctrl+Shift+W`. With `--dynamic-workspace code`, it creates a temporary i3 workspace, switches to it, and starts the selected Code target there. If the target path, one of the folders in a `.code-workspace` file, or one of their parent directories has a `.github/config.toml` with `[workspace] icon = "..."`, that icon becomes the workspace indicator; otherwise the configured Code icon is used. i3 removes the workspace when its last window closes.
+* `configs/session/i3/workspaces/workspaces.py promote-focused` — bound to `Ctrl+Shift+Alt+N`. It reads the focused window from `i3-msg -t get_tree`, rejects scratchpad and session-infrastructure windows with the same filter as Alt+Tab, selects an icon from `workspaces.yaml`'s `window_icons.rules` (falling back to `window_icons.fallback`), moves that container to a fresh dynamic workspace, and switches to it. The optional `slug` values are maintainer metadata; the visible workspace name stays `number:icon`.
+* `configs/session/i3/workspaces/layouts.py` — workspace layouts, bound to `Ctrl+Super+S`/`L`/`D`/`E` (save, load, delete, edit) in `keybindings.conf`. `save` converts the focused workspace into `append_layout` placeholders (class/instance `swallows`) and records each window's command from `_NET_WM_PID` and `/proc/<pid>/cmdline`. `apply` creates the next dynamic workspace (10+), runs `append_layout` there, and starts the recorded commands. Files are in `configs/session/i3/layouts/`, tracked in git. Rofi `-dmenu` with `configs/session/i3/rofi.rasi` provides the prompts; `subl` opens the files; results and errors go to `notify-send`. See "Workspace layouts" in `configs/session/i3/README.md`.
+* `workspaces.py launch --application <name>` is also called directly, with no Rofi picker, by single-purpose launchers such as `configs/session/launchers/chatgpt.desktop`. See [`.agents/instructions/session/dynamic-workspace-launcher.instructions.md`](.agents/instructions/session/dynamic-workspace-launcher.instructions.md) for how to add another one.
+* The application launcher (drun) uses `configs/session/i3/rofi.rasi`, a small override that sets `matching: "fuzzy"`, `case-sensitive: false`, `show-icons: true`, and an explicit `width`/`location`. It reuses the base visuals through `@theme "theme"`, which resolves to `configs/session/rofi/theme.rasi`, so there is only one theme.
+* Invoked as `rofi -show drun -config <repo>/configs/session/i3/rofi.rasi` plus a per-binding prompt set with `-display-drun`:
+  * Bare `Super` and `Super+Shift+D` (`$rofi_new_workspace`), prompt "start program in new workspace": `-run-command` and `-run-shell-command` pass the selected command to `workspaces.py launch-command`. That creates the next dynamic workspace (10+), switches to it, and starts the program there. The icon is the icon of a `dynamic:` entry that runs the same executable, else `window_icons.fallback`, which `workspaces.py set-workspace-icon` replaces with the matching `window_icons.rules` icon once the first window appears (it polls for up to 15 seconds). Programs start without startup notification, so a slow program opens on whichever workspace is focused when its window appears. A single-instance program that only raises an existing window leaves the new workspace empty, and i3 removes it when you leave it.
+  * `Super+D` (`$rofi_current_workspace`), prompt "start program in current workspace": starts the program on the current workspace.
+  * i3 does not expand a `$variable` inside another `set` value, so both variables contain the full rofi command.
+* Validate without opening a window: `rofi -config configs/session/i3/rofi.rasi -dump-config` and `-dump-theme`.
 
 ## Polybar
 
-* Two independent Polybar setups exist side by side in the repository:
-  * `configs/session/polybar/` — the XFCE bar. Live, currently running
-    under the XFCE session on this host. **Not touched by this work.**
-  * `configs/session/polybar/` — new, i3-only. A single bar (`bar/i3bar`):
-    left = icon-rendered i3 workspaces (`internal/i3`), centre = focused window title
-    (`internal/xwindow`), right = CPU, memory, root filesystem, network
-    (interface `eno1` — host-specific), volume (`internal/pulseaudio`),
-    date, tray (`internal/tray`).
-* Launched by `configs/session/polybar/launch.sh` (see that folder's
-  README for the file-by-file breakdown and what was deliberately *not*
-  carried over from the XFCE bar).
-* **Both bars share the OS process name `polybar`.** `launch.sh` uses
-  `pkill -u "$UID" -x polybar` to avoid leaving duplicate bars behind on
-  `i3-msg restart`. This is safe **only** because i3 and XFCE are
-  alternate, mutually exclusive LightDM sessions on one X display — they
-  are never running at the same time. If that assumption ever changes
-  (e.g. nested X servers, Xephyr testing, a second concurrent seat), this
-  script would kill the other session's bar too — treat that as a hard
-  constraint on how this script may be reused.
-* Safe non-rendering checks:
-  `polybar -c configs/session/polybar/config.ini --list-monitors`,
-  `polybar -c configs/session/polybar/config.ini -d modules-left i3bar`,
-  and `polybar -c configs/session/polybar/config.ini -d modules-right i3bar`.
-  The `-d` commands only dump configured values and exit; they do not start,
-  reload, or visually validate the bar. Use `configs/session/polybar/launch.sh`
-  inside the i3 session to start or restart the real bar.
+* `configs/session/polybar/config.ini` defines a single bar, `bar/i3bar`:
+  * left: `powermenu`, `system-checkup`, `clockify` (with the hidden `clockify-refresh` helper), `msgvault`, `i3` (icon-rendered workspaces)
+  * centre: `title` (focused window title)
+  * right: `tray`, `pulseaudio`, `date`
+* Started by `configs/session/polybar/launch.sh`, which logs to `~/.logs/polybar-i3/bar-YYYYMMDD.log`. See [`configs/session/polybar/README.md`](configs/session/polybar/README.md) for the file-by-file breakdown.
+* `launch.sh` runs `pkill -u "$UID" -x polybar` before it starts the bar, so `i3-msg restart` never leaves duplicate bars. This kills every Polybar process of the user on every display; do not run a second Polybar instance (for example in Xephyr) at the same time.
+* Safe non-rendering checks: `polybar -c configs/session/polybar/config.ini --list-monitors`, `polybar -c configs/session/polybar/config.ini -d modules-left i3bar`, and `polybar -c configs/session/polybar/config.ini -d modules-right i3bar`. The `-d` commands only dump configured values and exit. Use `configs/session/polybar/launch.sh` inside the i3 session to start or restart the real bar.
 
 ## Background
 
-* `xsetroot -solid '#0B0D0F'` runs unconditionally on every i3 start/restart
-  — guarantees the desktop is visibly "on," independent of any wallpaper
-  file existing. Colour matches Polybar's Dracula Pro `dnb-background`.
-* `feh --bg-fill configs/session/i3/wallpaper.jpg` then overrides the solid
-  colour with a fixed, repo-committed wallpaper image. i3-only — feh is
-  invoked directly from `session-starts.conf`, with no backend detection.
+* `xsetroot -solid '#0B0D0F'` runs on every i3 start and restart, so the desktop is never blank even without a wallpaper file. The colour matches Polybar's Dracula Pro `dnb-background`.
+* `feh --bg-fill configs/session/i3/wallpaper.jpg` then sets the repo-committed wallpaper image.
 
 ## Notifications
 
-* dunst (`apt: dunst`) is the notification daemon. i3 does not start it:
-  the first `notify-send` call makes D-Bus activate the systemd user unit
-  `dunst.service` (`/usr/lib/systemd/user/dunst.service`, `Type=dbus`,
-  `BusName=org.freedesktop.Notifications`), which then keeps running.
-* xfce4-notifyd also installs a D-Bus service file for the same name
-  (`/usr/share/dbus-1/services/org.xfce.xfce4-notifyd.Notifications.service`).
-  The dotfiles do not pin which of the two D-Bus activates. On this host
-  dunst is the owner; check with
-  `busctl --user status org.freedesktop.Notifications` (look at `Comm=`).
-* dunst reads `configs/session/dunst/dunstrc` (Dotbot-linked to
-  `~/.config/dunst`; Dracula colours). Its mouse bindings are the dunst
-  defaults: left-click closes a notification, middle-click runs its action
-  and closes it, right-click closes all notifications. Apply changes with
-  `dunstctl reload`; dunst logs config warnings to
-  `journalctl --user -u dunst`.
-* `configs/session/storage/gdrive-mounts.sh` depends on the middle-click
-  action: its "Re-authorise" notification starts the Google Drive sign-in
-  (see `configs/session/storage/README.md`).
+* dunst (`apt: dunst`) is the notification daemon. i3 does not start it: the first `notify-send` call makes D-Bus activate the systemd user unit `dunst.service` (`/usr/lib/systemd/user/dunst.service`, `Type=dbus`, `BusName=org.freedesktop.Notifications`), which then keeps running.
+* The installed `xfce4-notifyd` package also provides a D-Bus service file for the same name (`/usr/share/dbus-1/services/org.xfce.xfce4-notifyd.Notifications.service`). The dotfiles do not pin which of the two D-Bus activates. On this host dunst is the owner; check with `busctl --user status org.freedesktop.Notifications` (look at `Comm=`).
+* dunst reads `configs/session/dunst/dunstrc` (Dotbot-linked to `~/.config/dunst`; Dracula colours). Mouse bindings are the dunst defaults: left-click closes a notification, middle-click runs its action and closes it, right-click closes all notifications. Apply changes with `dunstctl reload`; dunst logs config warnings to `journalctl --user -u dunst`.
+* `configs/session/storage/gdrive-mounts.sh` depends on the middle-click action: its "Re-authorise" notification starts the Google Drive sign-in (see `configs/session/storage/README.md`).
 
 ## Screen lock
 
-* `xss-lock` runs as the systemd --user unit
-  `configs/session/systemd/xss-lock.service` (`Restart=on-failure`), started
-  (and re-armed if it died) from
-  `configs/session/i3/configs/session-starts.conf` on every i3 restart via
-  `exec_always ... systemctl --user start xss-lock.service`. It previously
-  ran as a plain backgrounded `exec` shell job with no supervision: if it
-  ever died mid-session, nothing restarted it, and every subsequent
-  lock/suspend fell through to whatever locks the session without it
-  (LightDM/logind's own re-auth) — a path that never runs `lock.sh`, so
-  Polybar was never restarted either. Starting it via `systemctl --user
-  start` is a safe no-op when already running, so `exec_always` re-arms it
-  without ever duplicating it.
-* The unit is `WantedBy=graphical-session.target`, not `default.target`. With `Linger=yes` the user manager starts at boot, before any X login, so a `default.target` unit cannot connect to a display, fails five times in ten seconds, and systemd then refuses further starts until `reset-failed`. Nothing activates `graphical-session.target` under i3, so only `session-starts.conf` starts the unit. That line also imports `DISPLAY` and `XAUTHORITY` and runs `systemctl --user reset-failed xss-lock.service` before the start.
-* This system has `Linger=yes` (`loginctl show-user patrick`), so
-  `systemd --user` is a single persistent manager decoupled from any one
-  login session (its own "manager"-class pseudo session), not the graphical
-  seat0 session i3 runs in. That breaks `xss-lock`'s default cgroup-based
-  session lookup for units started this way (`Error getting session:
-  ... NoSessionForPID`), which would silently degrade
-  `--transfer-sleep-lock`'s suspend handling even though the unit looks
-  healthy. The fix (documented in the unit file, and matching upstream's own
-  example at `/usr/share/doc/xss-lock/xss-lock.service`) is to pass `xss-lock
-  -s "${XDG_SESSION_ID}"` explicitly, which requires `XDG_SESSION_ID` to
-  already be in the user manager's environment — `session-starts.conf` runs
-  `systemctl --user import-environment XDG_SESSION_ID` immediately before
-  starting the unit, in the same shell so ordering is guaranteed. Verified
-  live: after this, `loginctl session-status 5` shows the `xss-lock` sleep
-  inhibitor (`delay`, "Lock screen first") correctly held against session 5.
-* `lock.sh` resolves its own directory and runs `i3lock --nofork -i
-  configs/session/i3/lockscreen.png` with a full path, so it works
-  regardless of i3's `exec` environment (same rationale as the
-  `Super+Shift+e` powermenu binding). If the installed `i3lock` binary
-  supports the i3lock-colour option set, `lock.sh` also applies the
-  Dracula-style colours, clock, indicator, and media-key pass-through flags
-  adapted from `configs/session/i3/lock2.sh`; vanilla i3lock falls back
-  to the image-only lock command. `--nofork` is required: xss-lock tracks
-  lock/unlock by waiting for the locker process to exit, and i3lock
-  daemonises (forks, parent exits immediately) unless told not to — see
-  `man i3lock`, "RECOMMENDED USAGE".
-* `lock.sh` does **not** `exec` into `i3lock`: it runs it as a child process
-  and, once `i3lock` exits (i.e. once the user has unlocked), runs
-  `configs/session/polybar/launch.sh` before exiting itself with `i3lock`'s
-  own exit status. This works around Polybar occasionally failing to
-  reappear after an unlock (bar missing until a manual `i3-msg restart` /
-  `Super+Shift+R`) — `launch.sh` already kills any existing Polybar
-  instance and relaunches it, so running it unconditionally on every unlock
-  fixes a stuck bar with no visible effect when Polybar was already fine.
-  `xss-lock` only cares that the locker process eventually exits, so
-  deferring that exit until after `launch.sh` runs does not change how
-  `xss-lock`/`--transfer-sleep-lock` behave.
-* `xss-lock` is the single thing that decides how the screen gets locked.
-  It reacts to two triggers: `loginctl lock-session` (what `Super+L` calls
-  — see "Keybinding architecture") and systemd-logind's sleep signal, which
-  `--transfer-sleep-lock` uses to hold suspend (lid close, power button,
-  `systemctl suspend`) until the screen is actually locked, not just until
-  a suspend keybinding is pressed (there is none — see "Known
-  limitations").
-* The Rofi power menu's `lock` entry
-  (`configs/session/rofi/power/powermenu.sh`) does not go through
-  `xss-lock`/`loginctl`: it prefers `betterlockscreen` if installed, then
-  falls back to calling `configs/session/i3/lock.sh` directly (same
-  lockscreen image as `Super+L`), then to a plain `i3lock` with no image if
-  neither is present. This keeps the power menu working under XFCE too,
-  where `xss-lock` is never started (see "Components that must only run
-  under i3").
-* Validated non-interactively (parses, does not open a window):
-  `bash -n configs/session/i3/lock.sh`, `shellcheck
-  configs/session/i3/lock.sh`, and `i3 -C -c configs/session/i3/config`.
+* `xss-lock` runs as the systemd user unit `configs/session/systemd/xss-lock.service` (`Restart=on-failure`). `session-starts.conf` starts it with `exec_always`, so every i3 restart starts it again if it died; `systemctl --user start` is a no-op when it is already running.
+* The unit is `WantedBy=graphical-session.target`, not `default.target`. With `Linger=yes` the user manager starts at boot, before any X login, so a `default.target` unit cannot connect to a display, fails five times in ten seconds, and systemd then refuses further starts until `reset-failed`. Nothing activates `graphical-session.target` under i3, so only `session-starts.conf` starts the unit. That line imports `DISPLAY`, `XAUTHORITY`, and `XDG_SESSION_ID` and runs `systemctl --user reset-failed xss-lock.service` before the start.
+* Because of `Linger=yes` (`loginctl show-user patrick`), `systemd --user` is a persistent manager outside the graphical seat0 session. `xss-lock`'s default cgroup-based session lookup therefore fails for this unit (`NoSessionForPID`), which would break `--transfer-sleep-lock`. The unit passes `xss-lock -s "${XDG_SESSION_ID}"` explicitly (matching upstream's example at `/usr/share/doc/xss-lock/xss-lock.service`); `XDG_SESSION_ID` is imported in the same shell immediately before the start. Check with `loginctl session-status <id>`: it shows the `xss-lock` sleep inhibitor (`delay`, "Lock screen first").
+* `lock.sh` resolves its own directory and runs `i3lock --nofork -i configs/session/i3/lockscreen.png` with a full path, so it works regardless of i3's `exec` environment. If the installed `i3lock` supports the i3lock-color options, `lock.sh` also applies the Dracula-style colours, clock, indicator, and media-key pass-through flags; plain i3lock gets the image-only command. `--nofork` is required: xss-lock tracks lock and unlock by waiting for the locker process to exit (see `man i3lock`, "RECOMMENDED USAGE").
+* `lock.sh` does **not** `exec` into `i3lock`: it runs it as a child process and, after the user unlocks, runs `configs/session/polybar/launch.sh` before it exits with `i3lock`'s exit status. This restores the bar when Polybar fails to reappear after an unlock; when the bar was fine, the restart has no visible effect. xss-lock only needs the locker process to exit eventually, so this does not change its behaviour.
+* `xss-lock` reacts to two triggers: `loginctl lock-session` (bound to `Super+L`) and systemd-logind's sleep signal, which `--transfer-sleep-lock` uses to hold suspend (lid close, power button, `systemctl suspend`) until the screen is locked.
+* The Rofi power menu's `lock` entry (`configs/session/rofi/power/powermenu.sh`) does not go through `xss-lock`/`loginctl`: it uses `betterlockscreen` if installed, then `configs/session/i3/lock.sh`, then a plain `i3lock` with no image.
+* Validate without opening a window: `bash -n configs/session/i3/lock.sh`, `shellcheck configs/session/i3/lock.sh`, and `i3 -C -c configs/session/i3/config`.
 
 ## Environment variables relevant to the session
 
-* `$mod` / `$terminal` / `$ws1`..`$ws9` — i3-config-local variables, not
-  shell/session environment variables (set via `set $var value` inside
-  `configs/session/i3/config`).
-* No i3-specific environment file (`~/.xprofile`, `~/.xinitrc`) exists or
-  was added; LightDM's standard `/etc/X11/Xsession` handling is used
-  unmodified for both sessions.
+* `$mod`, `$terminal`, and `$ws1`..`$ws9` are i3-config variables (`set $var value` in `configs/session/i3/config` and its includes), not shell or session environment variables.
+* No session environment file (`~/.xprofile`, `~/.xinitrc`) exists; LightDM's standard `/etc/X11/Xsession` handling is used unmodified.
 
-The independent storage search service in `tools/storage/` starts through its own cron profile, rather than i3 startup. Its `openerEnvironment` configuration supplies `DISPLAY`, `XAUTHORITY`, and `DBUS_SESSION_BUS_ADDRESS` only to the `xdg-open` child used by its Open folder and Open file actions. This allows a service started before login to open results in the current workstation desktop after login. It does not alter the i3 environment. See [tools/storage/README.md](tools/storage/README.md) for configuration and operation.
+The storage search service in `tools/storage/` starts through its own cron profile, not through i3. Its `openerEnvironment` configuration supplies `DISPLAY`, `XAUTHORITY`, and `DBUS_SESSION_BUS_ADDRESS` only to the `xdg-open` child used by its Open folder and Open file actions, so a service started before login can open results in the desktop after login. It does not change the i3 environment. See [tools/storage/README.md](tools/storage/README.md).
 
-## Shared components (used by both XFCE and i3)
+## Components that need i3
 
-* Xorg itself, fonts, icon themes, `~/.gitconfig` and other non-desktop
-  Dotbot links — unaffected by this work.
+These components depend on i3 and do nothing useful in another session:
 
-## Components that must only run under i3
-
-* `configs/session/rofi/` — see "Rofi" above.
+* `configs/session/i3/` — the i3 config and everything it starts.
+* `configs/session/rofi/` and `configs/session/i3/rofi.rasi`.
 * `configs/session/polybar/` and its `launch.sh`.
-* `configs/session/i3/lock.sh` and the `xss-lock` daemon that runs it
-  (started via `session-starts.conf`, triggered by `Super+L` and by
-  suspend).
-* The i3 config itself (`configs/session/i3/config`) and everything it
-  `exec`/`exec_always`s.
-* `configs/session/terminal/scratch-terminal` — the scratch terminal
-  controller (see "Scratch terminal" above). Targets i3's IPC directly and
-  fails fast if i3 is not running; it has no XFCE fallback.
-* `configs/session/filemanager/file-manager` — the canonical Files
-  workspace controller (see "Canonical Files workspace" above). Falls back
-  to a plain, unmanaged Thunar window when i3 is not the running window
-  manager, so `explore`/XDG opens still work under XFCE — see that
-  subsystem's own README for the fallback's exact scope.
-
-Workspace names are defined directly in `configs/session/i3/config`. The old
-`bashrc/workspaces` command folder and the XFCE-oriented
-`bashrc/helpers/workspace` setup helpers have been removed.
-
-## Components that must only run under XFCE
-
-Nothing currently lives here — see the removal notes below for what used
-to.
-
-`configs/session/xfce/` (xfwm4 window-manager settings and the keyboard-
-shortcuts file) has been **removed entirely** — dotfiles no longer manages
-XFCE's xfconf settings at all. XFCE still runs (see "Display manager and
-available sessions"), but with whatever xfwm4/keyboard-shortcuts state is
-already live in `~/.config/xfce4/xfconf/`, unmanaged by this repo; a fresh
-XFCE profile would start from xfwm4's stock defaults instead.
-
-Devilspie2 (`configs/session/devilspie2/`, its `~/.config/devilspie2`
-Dotbot link, and its autostart entry) has been **removed entirely** — it
-was uninstalled from the host and is no longer part of this repo. i3 still
-has no equivalent window-placement rules (see "Known limitations").
-
-`configs/session/autostart/` (the host-scoped XDG autostart pool —
-`available/`, and per-host folders for both this workstation, `locutus/`,
-and a second host, `dionysus/`) has been **removed entirely**, along with
-its `~/.config/autostart` Dotbot link and the `actions.sh autostart-enable`
-/ `autostart-disable` commands that managed it (the `actions` helper itself
-has since been removed too). i3 never read this directory (it has no
-session manager — see "Known limitations"), but XFCE's `xfce4-session`
-did, so this also **stops these from autostarting under XFCE**: Polybar
-and Obsidian (both were `OnlyShowIn=XFCE;`, i.e. previously i3-safe to
-leave unscoped), plus Barrier, Discord, Dropbox, Flameshot, onboard, a
-conky startup script, and the `gnome-keyring-pkcs11`/`gnome-keyring-
-secrets` XFCE overrides (unrelated to i3's own `gnome-keyring-daemon`
-line — see "Startup sequence (i3 session)"), none of which had any scope
-restriction. Re-launch any of these manually under XFCE, or wire them up
-some other way, if still needed.
+* `configs/session/i3/lock.sh` and the `xss-lock` unit.
+* `configs/session/terminal/scratch-terminal` — uses i3 IPC directly and fails fast if i3 is not running.
+* `configs/session/filemanager/file-manager` — when i3 is not the running window manager, it falls back to a plain, unmanaged Thunar window, so `explore` and XDG directory opens still work. See that subsystem's README.
 
 ## Dependencies
 
-Required, all confirmed already installed on this host:
+Required:
 
 ```text
-i3       (4.25.1)     apt: i3-wm
-polybar  (3.7.2, +i3 feature) apt: polybar
-rofi     (2.0.0)      apt: rofi
-i3lock                 apt: i3lock (part of the base i3 install on this host)
-xss-lock (0.4.0)       apt: xss-lock
+i3        (4.25.1)            apt: i3-wm
+polybar   (3.7.2, +i3 feature) apt: polybar
+rofi      (2.0.0)             apt: rofi
+i3lock                        apt: i3lock
+xss-lock  (0.4.0)             apt: xss-lock
 ```
 
-Helpers used by the startup chain, all confirmed present:
+Helpers used by the session:
 
 ```text
-xsetroot   apt: x11-xserver-utils
-feh        apt: feh   (sets configs/session/i3/wallpaper.jpg on every start/restart)
-pactl      apt: pulseaudio-utils  (used by Polybar's pulseaudio module)
-shellcheck (dev-only, used to lint launch.sh; via linuxbrew on this host)
-terminator apt: terminator (`$terminal`, $mod+Return; also window-inspector.sh's report terminal — see "Window rules")
-xdotool    apt: xdotool    (window-inspector.sh's click-to-select and window queries)
-xprop      apt: x11-utils  (window-inspector.sh's WM_CLASS/role queries; layouts.py's _NET_WM_PID lookup)
-wmctrl     apt: wmctrl     (window-inspector.sh's desktop/PID listing)
-dunst      apt: dunst      (notification daemon, D-Bus-activated — see "Notifications")
-notify-send apt: libnotify-bin (layouts.py results and errors)
-subl       Sublime Text  (layouts.py save/edit opens layout files)
+xsetroot    apt: x11-xserver-utils
+feh         apt: feh             (wallpaper on every start/restart)
+pactl       apt: pulseaudio-utils (Polybar pulseaudio module)
+terminator  apt: terminator      ($terminal; window-inspector and scratch terminal)
+xdotool     apt: xdotool         (window-inspector click-to-select and window queries)
+xprop       apt: x11-utils       (window-inspector WM_CLASS/role; layouts.py _NET_WM_PID lookup)
+wmctrl      apt: wmctrl          (window-inspector desktop/PID listing)
+dunst       apt: dunst           (notification daemon, D-Bus-activated)
+notify-send apt: libnotify-bin   (layouts.py results and errors)
+subl        Sublime Text         (layouts.py save/edit opens layout files)
+shellcheck  dev-only             (lints the session scripts)
 ```
-
-Explicitly **not** used, despite being mentioned as possibilities in the
-starter spec: `nitrogen`, `playerctl` — neither is installed on this host
-and neither is required by anything in this configuration.
 
 ## Log locations
 
 ```text
-~/.logs/polybar/           XFCE Polybar (configs/session/polybar/start.sh) — unchanged
-~/.logs/polybar-i3/        i3 Polybar (configs/session/polybar/launch.sh) — new
-~/.xsession-errors         General X session stderr, both sessions
+~/.logs/polybar-i3/   Polybar (configs/session/polybar/launch.sh)
+~/.xsession-errors    General X session stderr
 ```
 
-i3 itself does not write a dedicated log file by default; runtime config
-errors surface via `i3-nagbar` popups and/or `~/.xsession-errors`.
+i3 itself does not write a dedicated log file by default; config errors show as `i3-nagbar` popups and in `~/.xsession-errors`.
 
 ## Diagnostic commands
 
@@ -651,83 +262,37 @@ errors surface via `i3-nagbar` popups and/or `~/.xsession-errors`.
 i3 -C -c configs/session/i3/config      # validate the i3 config (safe, no live session needed)
 i3-msg reload                           # reload config in a running i3
 i3-msg restart                          # restart i3 in place (same as Super+Shift+R)
-pgrep -a polybar                        # see which bar(s) are running and with which config
+pgrep -a polybar                        # see which bar is running and with which config
 polybar --version                       # confirm feature flags (+i3 is required)
 rofi -version
-rofi -config configs/session/i3/rofi.rasi -dump-config   # validate the i3 Rofi override, no window opens
-tail -f ~/.logs/polybar-i3/bar-$(date +%Y%m%d).log           # i3 Polybar's own log
-cat ~/.xsession-errors | tail -100                            # general X session errors
+rofi -config configs/session/i3/rofi.rasi -dump-config   # validate the Rofi override, no window opens
+tail -f ~/.logs/polybar-i3/bar-$(date +%Y%m%d).log           # Polybar log
+tail -100 ~/.xsession-errors                                  # general X session errors
 tools/system-checkup/system-checkup --verbose                 # read-only: all checks, incl. the 3x-session-* checks
 busctl --user status org.freedesktop.Notifications | grep -E '^(PID|Comm)='  # which notification daemon is active
 ```
 
 The `30-session-commands`, `31-session-config`, `32-session-links`, and `33-session-running` checks of the system checkup (`tools/system-checkup/README.md`) bundle the command, config, link, and process checks above. They are read-only and never modify the desktop. Cron and the i3 login run them; Polybar shows an alert icon when one fails. `npm run test:shell` runs `31-session-config` against the working tree.
 
-## Known limitations / next improvements
+## Known limitations
 
-Deliberately not implemented in this starter pass (do not implement without
-a separate, explicit request — see the spec's scope-control section):
+Do not implement these without a separate, explicit request:
 
-* **No XDG autostart pool at all any more** — `configs/session/autostart/`
-  used to hold host-scoped `.desktop` entries (Barrier, Discord, Dropbox,
-  Flameshot, onboard, a conky startup script, Polybar/Obsidian for XFCE,
-  and more) but has been removed entirely, see "Components that must only
-  run under XFCE". i3 never read it in the first place (no session
-  manager); apps that need to run under i3 specifically go in
-  `configs/session/i3/configs/session-starts.conf` instead —
-  `gnome-keyring-daemon` and Enpass are the two done that way so far (see
-  "Startup sequence (i3 session)"). The gnome-keyring line was added
-  because VS Code and other libsecret-using apps could not find a keyring
-  under i3 otherwise. Auditing whether any of the removed autostart apps
-  (Dropbox, Flameshot, etc.) need an i3 `exec` line of their own is
-  a deliberate follow-up, not part of this change.
 * No compositor — windows have no shadows and no RGBA transparency.
-* No monitor-specific (`xrandr`) configuration — this host currently has a
-  single monitor (`DP-1`, 1920x1080, confirmed via
-  `polybar --list-monitors`); multi-monitor behaviour is untested.
-* No static application-to-workspace assignment rules. Dynamic Code
-  workspaces are launched on demand by the Rofi workspace picker.
-* No static application-to-workspace/placement rules beyond the two
-  `for_window` entries in `configs/session/i3/configs/rules.conf`: one
-  floats `window-inspector.sh`'s own report terminal, the other sends
-  Enpass to the scratchpad (see "Window rules" for both). Devilspie2
-  (previously XFCE-only) has been removed entirely — see "Components that
-  must only run under XFCE". The old Bash workspace move/tile helpers and
-  Devilspie2 one-shot placement bridge were already removed before that;
-  future i3 placement should keep using i3's own `for_window`/`assign`
-  directives instead of reintroducing shell-managed placement.
-  `window-inspector.sh` exists to make writing those future rules easier
-  (it finds the match criteria; it does not add any itself).
-* No keybinding that triggers suspend itself (e.g. `systemctl suspend`) —
-  only screen lock is bound (`Super+L`, see "Keybinding architecture"). The
-  screen locks automatically before *any* suspend trigger (lid close, power
-  button, a manual `systemctl suspend`), via `xss-lock` — see "Screen
-  lock".
-* No media/volume key bindings beyond the Polybar volume module display
-  (no `pactl set-sink-volume` bindings, no `playerctl` — not installed).
-* No custom Polybar modules beyond the ones listed above (no
-  `msgvault`/`issues`/`github`/tray-app modules like the XFCE bar has).
-* No host-specific i3 config split (this file and the i3 config are
-  currently locutus-specific in exactly one place: the Polybar network
-  module's `interface = eno1`).
+* No monitor-specific (`xrandr`) configuration. The host has a single monitor (`DP-1`, 1920x1080); multi-monitor behaviour is untested.
+* Static application placement is limited to the rules in "Window rules". Use i3's own `for_window`/`assign` for new placement rules, not shell-managed placement; `window-inspector.sh` finds the match criteria.
+* No keybinding that triggers suspend itself. Only screen lock is bound (`Super+L`); the screen locks automatically before any suspend (see "Screen lock").
+* No media or volume key bindings (no `pactl set-sink-volume` bindings, no `playerctl`).
+* No host-specific i3 config split.
 
-## Recovery procedure (XFCE fallback)
+## Recovery procedure
 
-The XFCE/Xubuntu session is untouched and remains the LightDM default
-(`~/.dmrc: Session=xfce`). If the i3 session fails to start or misbehaves:
+If the i3 session fails to start or misbehaves:
 
-1. Log out of i3 (`Super+Shift+E`, confirm in the `i3-nagbar` prompt), or
-   use LightDM's session-switch mechanism if i3 is unresponsive.
-2. At the LightDM greeter, select **Xubuntu** or **XFCE**.
-3. Log in normally — this session and its Polybar setup are completely
-   independent of the i3 files above (Devilspie2 has been removed — see
-   "Components that must only run under XFCE"). XFCE no longer has any
-   Rofi bindings of its own (Rofi is i3-only — see "Rofi" above); its
-   keyboard-shortcuts file was edited only to remove those two now-unused
-   bindings, nothing else in it changed.
-4. Inspect/repair `configs/session/i3/config` and
-   `configs/session/polybar/` from within the working XFCE session.
-5. Validate before logging back into i3:
+1. Log out (`Super+Shift+E` opens the power menu), or use LightDM's session switch if i3 is unresponsive.
+2. At the LightDM greeter, select **Xubuntu** or **XFCE**. These sessions use XFCE's own unmanaged defaults and do not depend on any file in this repository.
+3. Inspect and repair `configs/session/i3/` and `configs/session/polybar/`.
+4. Validate before logging back into i3:
 
 ```bash
 i3 -C -c configs/session/i3/config
@@ -736,21 +301,14 @@ polybar -c configs/session/polybar/config.ini --list-monitors
 tools/system-checkup/system-checkup --check 31-session-config
 ```
 
-## Agent maintenance requirement
-
-Any future change to i3, Polybar, Rofi, X11/Xorg, LightDM/session
-selection, startup scripts, environment setup, wallpaper/background,
-notifications, compositor, monitors, input sharing, workspace behaviour,
-window assignment, screen locking, suspend/logout controls, or related
-session services must update this file in the same change. Agents starting
-work on the desktop/session configuration should read `AGENTS.md` and this
-file, plus any applicable `.agents/instructions/`, folder `README.md`, and
-`INDEX.md` files, before making changes.
-
 ## Session colour scheme
 
-The i3 startup include runs `bashrc/helpers/session-colour-scheme --apply` with `exec_always` to maintain the existing `prefer-dark` preference. Failures are visible on stderr and non-fatal to i3. Session identity stays unchanged. Per-tool literal environment configs live in `configs/session/colour-scheme/tools/`; Enpass alone receives `XDG_CURRENT_DESKTOP=GNOME`. Its startup (`--minimize`), assistant binding (`Ctrl+Shift+Alt+E`, `showassistant`), and user desktop entry all use this helper. Existing Enpass window rules remain independent of colour-scheme handling. See [the design and extension guide](configs/session/colour-scheme/README.md).
+The i3 startup include runs `bashrc/helpers/session-colour-scheme --apply` with `exec_always` to maintain the `prefer-dark` preference. Failures are visible on stderr and non-fatal to i3. Session identity stays unchanged. Per-tool literal environment configs live in `configs/session/colour-scheme/tools/`; Enpass alone receives `XDG_CURRENT_DESKTOP=GNOME`. Its startup (`--minimize`), assistant binding (`Ctrl+Shift+Alt+E`, `showassistant`), and user desktop entry all use this helper. The Enpass window rule is independent of colour-scheme handling. See [the design and extension guide](configs/session/colour-scheme/README.md).
 
 ## Mailbox monitor manual login
 
 `bashrc/helpers/mailbox-monitor/run-mailbox-monitor.sh --login` opens Chromium from an interactive desktop terminal for Pair login and 2FA. The monitor forwards `DISPLAY` and `XAUTHORITY` to Chromium within its restricted child environment. Scheduled mailbox checks remain headless and reuse the saved session; they do not require an i3 login.
+
+## Agent maintenance requirement
+
+Any change to i3, Polybar, Rofi, X11/Xorg, LightDM/session selection, startup scripts, environment setup, wallpaper/background, notifications, compositor, monitors, input sharing, workspace behaviour, window assignment, screen locking, suspend/logout controls, or related session services must update this file in the same change. Agents starting work on the desktop session should read `AGENTS.md` and this file, plus any applicable `.agents/instructions/`, folder `README.md`, and `INDEX.md` files, before making changes.

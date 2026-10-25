@@ -2,8 +2,7 @@
 # Canonical file-manager workspace
 
 Session-scoped subsystem that owns one canonical, singleton Thunar
-"Files" workspace for the i3 session. i3-only — XFCE is legacy and does
-not receive this functionality (see the repo-root `AGENTS.md` and
+"Files" workspace for the i3 session. i3-only (see the repo-root `AGENTS.md` and
 `SESSION.md`).
 
 This file is the canonical operational documentation for this subsystem.
@@ -127,12 +126,11 @@ logic of its own.
   `inode/directory=dnb-file-manager.desktop` under `[Default Applications]`.
 * `~/.config/mimeapps.list` (higher XDG precedence, per the
   `xdg-desktop-specification`) is live, host-local desktop state — not
-  Dotbot-managed by this or any other part of the repo — and today still
-  points `inode/directory` at XFCE's own file manager. `configs/dotbot/config.yaml`'s
+  Dotbot-managed by this or any other part of the repo. `configs/dotbot/config.yaml`'s
   `shell:` section runs `xdg-mime default dnb-file-manager.desktop
   inode/directory`, which writes into that same file; the command is
   idempotent (safe to run on every `dotfiles` run) and is how this
-  association actually takes effect on this host, not just in the
+  association takes effect on this host, not just in the
   lower-priority `~/.local/share/applications/mimeapps.list`.
 * `xdg-open`/`gio open`/"open in file manager" from any XDG-aware
   application resolve through this association into the controller exactly
@@ -310,13 +308,11 @@ configs/session/i3/window-inspector.sh
 
 ## Scope
 
-i3-only. XFCE is legacy (see `AGENTS.md`/`SESSION.md`) and does not receive
-this functionality. `file-manager` detects whether i3 is the running
+i3-only (see `AGENTS.md`/`SESSION.md`). `file-manager` detects whether i3 is the running
 window manager (`i3-msg -t get_version`); when it is not, `--show` and
 `--open` both fall back to the same plain, unmanaged window behaviour as
 `thunar-standalone` — no workspace/mark logic runs — so `explore` keeps
-working under XFCE (or any other session) exactly as it always has,
-instead of failing outright.
+working in any other session instead of failing outright.
 
 ## Known limitation: overlapping invocations
 

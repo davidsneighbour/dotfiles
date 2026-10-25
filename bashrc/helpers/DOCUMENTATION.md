@@ -114,7 +114,7 @@ Requirements:
 
 Downloads a remote installer to a temp file, optionally verifies a sha256
 checksum, and executes it explicitly instead of piping curl directly into a
-shell. Used by install scripts and aliases that previously ran
+shell. Used by install scripts and aliases instead of
 `curl ... | sh`/`bash`.
 
 CLI option notes:

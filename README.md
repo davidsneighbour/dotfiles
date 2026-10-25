@@ -38,8 +38,7 @@ a submodule.
 ## Desktop session
 
 See [SESSION.md](SESSION.md) for the authoritative reference on how the
-i3/Polybar/Rofi desktop session (and the XFCE fallback) is assembled and
-started.
+i3/Polybar/Rofi desktop session is assembled and started.
 
 ## LICENSE
 

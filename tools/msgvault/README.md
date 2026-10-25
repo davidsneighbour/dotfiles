@@ -4,7 +4,7 @@ This folder contains standalone msgvault helper commands used by cron, Polybar, 
 
 ## Concurrency
 
-Since msgvault's [daemon migration](https://www.msgvault.io/docs/guides/daemon-migration/), a background daemon is the single writer to the archive; CLI commands talk to it over HTTP instead of opening the SQLite database directly. Concurrent mutating operations (sync, import, embeddings) queue inside the daemon and print a `Waiting: ...` message rather than racing on the database, so `sync.sh` and `manual-sync.sh` no longer need — and no longer implement — their own PID-based lock file. Read-only commands still run immediately, even while a write is queued. `msgvault daemon status` shows whether the daemon is running.
+A msgvault background daemon ([daemon migration guide](https://www.msgvault.io/docs/guides/daemon-migration/)) is the single writer to the archive; CLI commands talk to it over HTTP instead of opening the SQLite database directly. Concurrent mutating operations (sync, import, embeddings) queue inside the daemon and print a `Waiting: ...` message rather than racing on the database, so `sync.sh` and `manual-sync.sh` do not use a lock file of their own. Read-only commands still run immediately, even while a write is queued. `msgvault daemon status` shows whether the daemon is running.
 
 ## Re-authorise an account
 

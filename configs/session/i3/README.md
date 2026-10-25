@@ -2,11 +2,11 @@
 <!-- markdownlint-disable-next-line dnb-title-case-style -->
 # i3 session configuration
 
-A minimal, deliberately small i3 starter configuration. It is linked to
+The i3 configuration of the desktop session. It is linked to
 `~/.config/i3` by Dotbot (see `configs/dotbot/config.yaml`).
 
-For the full session architecture (display manager, startup sequence, what
-runs under i3 vs XFCE, diagnostics, recovery), see [`SESSION.md`](../../../SESSION.md)
+For the full session architecture (display manager, startup sequence,
+diagnostics, recovery), see [`SESSION.md`](../../../SESSION.md)
 at the repo root. This file only documents what lives in this folder.
 
 ## Files
@@ -23,14 +23,12 @@ at the repo root. This file only documents what lives in this folder.
 
 ## Startup
 
-`configs/session-starts.conf` starts Discord from `/usr/bin/discord` with `--start-minimized` once per session. The command is non-fatal and does not run again on an i3 restart.
+`configs/session-starts.conf` holds every command that starts with the session (colour scheme, GNOME Keyring, polkit agent, background, Polybar, Enpass, Barrier, Discord, xss-lock, wallpaper, Google Drive mounts, and the system checkup). Every line is non-fatal. See "Startup sequence" in [`SESSION.md`](../../../SESSION.md) for the full table.
 
 ## Design
 
 * `$mod` is `Mod4` (Super/Windows key).
-* `$terminal` is set once (`xfce4-terminal`, the same terminal
-  `update-alternatives --display x-terminal-emulator` already resolves to on
-  this workstation) and referenced everywhere else — never hardcode a
+* `$terminal` is set once (`terminator`) and referenced everywhere else — never hardcode a
   terminal binary elsewhere in this file.
 * Static workspaces are configured in `workspaces/workspaces.yaml`. Their `name`
   values are for maintenance only (they appear as a trailing comment in the
@@ -64,9 +62,7 @@ at the repo root. This file only documents what lives in this folder.
   [`../filemanager/README.md`](../filemanager/README.md) for the full
   architecture; this file only documents the one keybinding
   (`configs/applications.conf`) that invokes the controller.
-* `focus_follows_mouse no` mirrors xfwm4's own default (click-to-focus);
-  dotfiles no longer manages XFCE's xfconf settings at all (see SESSION.md),
-  but this stayed the intended i3 behaviour regardless.
+* `focus_follows_mouse no` — focus changes on click only.
 * Every `exec_always` in the startup section is written so a failure there
   cannot break the rest of i3 (backgrounded, `sh -c '... || true'` where the
   underlying command could reasonably fail). i3 itself, the terminal, and
@@ -130,25 +126,21 @@ Limits:
 
 This configuration ships a small, standalone Rofi override,
 [`rofi.rasi`](./rofi.rasi), rather than a full forked config. It sets the
-functional properties the starter spec calls for that rofi does not enable
-by default — `matching: "fuzzy"`, explicit `case-sensitive: false`,
+functional properties that rofi does not enable by default — `matching: "fuzzy"`, explicit `case-sensitive: false`,
 `show-icons: true`, an explicit `width`/`location` — while reusing the
 existing `configs/session/rofi/theme.rasi` visuals via `@theme "theme"`
 (confirmed with `rofi -config rofi.rasi -dump-theme`), so nothing is
 visually duplicated and there is no second theme to keep in sync.
 `configs/session/rofi/` is i3-only: it is Dotbot-linked to `~/.config/rofi`
-and holds the base config, theme, and the Alt+Tab window-switcher and
-VS Code workspace-picker scripts. XFCE no longer has any Rofi bindings of
-its own — its bare `Super_L` and `Ctrl+Shift+W` shortcuts were removed when
-Rofi moved here, and dotfiles no longer manages XFCE's keyboard-shortcuts
-xfconf file at all (see SESSION.md).
+and holds the base config, theme, power menu, and the Alt+Tab
+window-switcher and VS Code workspace-picker scripts.
 
 ## Window rules
 
 `configs/rules.conf` holds this config's `for_window`/`assign` rules,
-included separately from `keybindings.conf`/`applications.conf` so it stays
-easy to scan as it grows. The only entry so far floats
-[`window-inspector.sh`](./window-inspector.sh)'s own report terminal,
+included separately from `keybindings.conf`/`applications.conf`. See
+"Window rules" in [`SESSION.md`](../../../SESSION.md) for the full list.
+The report terminal of [`window-inspector.sh`](./window-inspector.sh) is
 matched on `WM_WINDOW_ROLE` (set via `terminator --role=window-inspector`,
 not title or class, so it never matches a normal terminator window).
 
@@ -161,16 +153,14 @@ otherwise changes the window it inspects.
 
 ## Polybar
 
-Polybar is *not* linked from `~/.config/polybar` for i3 — that XDG path is
-already taken by the live XFCE bar (`configs/session/polybar`, currently
-running under the XFCE session on this host). i3 instead calls
+Polybar is not linked from `~/.config/polybar`. i3 calls
 `configs/session/polybar/launch.sh` directly by its repo path from
 `exec_always`. See [`../polybar/README.md`](../polybar/README.md).
 
 ## Bare `Super` key limitation
 
 i3's `bindsym` grammar matches a modifier *combined with* a keysym, not a
-bare modifier on its own. The bare-`Super`-opens-launcher requirement is
+bare modifier on its own. The bare-`Super`-opens-launcher binding is
 implemented as:
 
 ```text

@@ -1,61 +1,37 @@
 # Polybar (i3 session)
 
-A minimal single-bar Polybar setup for the i3 starter session. It is a
-trimmed, i3-specific copy of `configs/session/polybar/` (the bar that runs
-under the XFCE session) — kept as a **separate copy**, not a shared config,
-so nothing here can ever affect the live XFCE bar.
+The single Polybar bar of the i3 session. i3 starts it through `launch.sh` from `configs/session/i3/configs/session-starts.conf`; this folder is not linked to `~/.config/polybar`.
 
-For the full session architecture, see [`SESSION.md`](../../../SESSION.md)
-at the repo root.
+For the full session architecture, see [`SESSION.md`](../../../SESSION.md) at the repo root.
 
 ## Files
 
 | Path | Purpose |
-| -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `config.ini` | The bar definition (`bar/i3bar`): left = configured i3 workspaces, centre = focused window title, right = CPU/memory/root filesystem/network/volume/date/tray. |
-| `launch.sh` | Starts the bar. Kills any previous instance for this user first, logs to `~/.logs/polybar-i3/`, never fails in a way i3 would notice. Run `launch.sh --help` for details. |
-| `configs/01-colours.ini` | Copied unchanged from `configs/session/polybar/configs/` (Dracula Pro palette). |
+| --- | --- |
+| `config.ini` | The bar definition (`bar/i3bar`): left = power menu, system checkup, Clockify, msgvault, i3 workspaces; centre = focused window title; right = tray, volume, date. |
+| `launch.sh` | Starts the bar. Kills any previous Polybar instance of this user first, logs to `~/.logs/polybar-i3/`, never fails in a way i3 would notice. Run `launch.sh --help` for details. |
+| `configs/01-colours.ini` | Dracula Pro palette. Also read by `tools/msgvault/indicator.sh`. |
 | `configs/01-fonts.ini` | Session font mapping. |
-| `configs/01-settings.ini` | Copied unchanged. |
-| `configs/07-module-i3.ini` | Generated official `internal/i3` workspace module. Static and dynamic workspaces render the icon stored after the numeric i3 workspace prefix. |
-| `configs/07-module-xwindow.ini` | Copied unchanged.`internal/xwindow` is generic EWMH, not XFCE-specific. |
-| `configs/07-module-cpu.ini` | New. `internal/cpu`. |
-| `configs/07-module-memory.ini` | New. `internal/memory`. |
-| `configs/07-module-filesystem.ini` | New. `internal/fs`, `/` only. |
-| `configs/07-module-network.ini` | New. `internal/network`, interface `eno1` — **host-specific**, see the comment in that file. |
-| `configs/07-module-pulseaudio.ini` | Copied unchanged (same sink as the XFCE bar). |
-| `configs/07-module-date.ini` | Copied from the XFCE bar, simplified: left click opens Google Calendar through the module-level `click-left` handler, avoiding the older inline `%{A...}` URL escaping issue. |
-| `configs/07-module-tray.ini` | Copied unchanged. Uses the current module-based tray mechanism (`type = internal/tray` in `modules-right`), matching what the XFCE bar already does — no bar-level `tray-position`, which is the deprecated approach. |
+| `configs/01-settings.ini` | Shared bar settings. |
+| `configs/07-module-i3.ini` | Generated `internal/i3` workspace module. Static and dynamic workspaces render the icon stored after the numeric i3 workspace prefix. |
+| `configs/07-module-xwindow.ini` | `module/title`, `internal/xwindow`: focused window title. |
+| `configs/07-module-pulseaudio.ini` | Volume (`internal/pulseaudio`). |
+| `configs/07-module-date.ini` | Date and time. Left click opens Google Calendar through the module-level `click-left` handler. |
+| `configs/07-module-tray.ini` | System tray (`type = internal/tray` in `modules-right`). |
 | `configs/07-module-system-checkup.ini` | System checkup alert, right of the power menu. Shows nothing while all checks pass; a red icon with the failure count, or an orange icon when the last run is older than 13 hours. Left click opens the report, right click runs the checks again. See [`tools/system-checkup/`](../../../tools/system-checkup/README.md). |
-| `configs/07-module-clockify.ini` | Clockify status indicator. Left click opens the local form through `configs/session/clockify/polybar-clockify`. The visible indicator is a `custom/ipc` module so the form can refresh it immediately after submit; a hidden refresher preserves periodic fallback updates. Its wrapper uses the standard Lucide icon font slot, the same size as the other widgets. |
+| `configs/07-module-clockify.ini` | Clockify status indicator. Left click opens the local form through `configs/session/clockify/polybar-clockify`. The visible indicator is a `custom/ipc` module so the form can refresh it immediately after submit; the hidden `clockify-refresh` module provides periodic updates. |
+| `configs/07-module-msgvault.ini` | msgvault status (`tools/msgvault/indicator.sh`, every 60 seconds). Reads `~/.config/polybar/issues.toml`. Left click opens the manual-sync terminal (`tools/msgvault/sync-terminal`). |
+| `configs/08-menu-powermenu.ini` | Power menu button. Left click opens `configs/session/rofi/power/powermenu.sh`. |
+| `scripts/info-camera-mic.sh` | Camera and microphone status script. Not used by `config.ini`. |
+| `scratch/` | Unused module drafts and samples. Not loaded by `config.ini`. |
 
-## Deliberately not carried over from the XFCE bar
+## Workspaces
 
-`configs/session/polybar/` also has `polywins` (xfwm-window-title script),
-`msgvault`, `issues`, `github`, `powermenu`, Telegram/Signal tray modules,
-`xkeyboard`, `privacy`, `temperature`, and `polypomo`. None of these are
-required by the starter spec, several are XFCE/session-specific
-(`polywins` shells out to xfwm tooling), and pulling all of them in would
-turn a "minimal starter bar" into a second copy of the full XFCE bar. They
-can be added deliberately later — see SESSION.md "Known limitations /
-next improvements".
+Static workspace definitions live in `configs/session/i3/workspaces/workspaces.yaml`. i3 reads a generated include derived from that file, and Polybar reads the generated `internal/i3` module derived from the same YAML. Dynamic workspaces are named with their display icon after the numeric prefix, so project-specific icons from `.github/config.toml` show without regenerating the Polybar configuration.
 
-## Why a separate copy instead of one shared config
+## Process matching
 
-The old XFCE workspace setup helpers are not used here. Static workspace
-definitions live in `configs/session/i3/workspaces/workspaces.yaml`. i3 reads
-a generated include derived from that file. Polybar also reads a generated
-official `internal/i3` module derived from that YAML. Dynamic workspaces are
-named with their display icon after the numeric prefix, so project-specific
-icons from `.github/config.toml` can show without regenerating Polybar
-configuration at launch time.
-
-## Both bars share the `polybar` process name
-
-`launch.sh` matches processes with `pgrep -x polybar` / `pkill -x polybar`,
-the same as the XFCE launcher does. This is only safe because i3 and XFCE
-are alternate, mutually exclusive LightDM sessions on this workstation —
-never running at the same time on the same display. See SESSION.md.
+`launch.sh` matches processes with `pgrep -x polybar` / `pkill -u "$UID" -x polybar`. This stops every Polybar process of the user on every display, so do not run a second Polybar instance (for example in Xephyr) at the same time as the session bar.
 
 ## Validating changes
 
@@ -67,10 +43,10 @@ polybar -c configs/session/polybar/config.ini -d modules-left i3bar
 polybar -c configs/session/polybar/config.ini -d modules-right i3bar
 ```
 
-To start or restart the i3 bar for real, run the launcher from inside the i3 session:
+To start or restart the bar for real, run the launcher from inside the i3 session:
 
 ```bash
 configs/session/polybar/launch.sh
 ```
 
-`launch.sh` is `shellcheck`-clean. Only start the bar for real inside an actual i3 session — starting it from an XFCE session, or any session sharing this X display, would draw a second bar over the live one.
+`launch.sh` is `shellcheck`-clean.

@@ -4,7 +4,7 @@ The monitor reads Pair's mailbox overview with Playwright, calculates quota usag
 
 ## Authentication and 2FA
 
-Scheduled checks reuse a saved browser session, including the authenticated mailbox page URL, cookies, local storage, IndexedDB, and session storage. The saved page opens directly; navigation is skipped when the mailbox table is already visible. The monitor no longer submits an admin password. You enter the current password and complete 2FA yourself in a visible browser.
+Scheduled checks reuse a saved browser session, including the authenticated mailbox page URL, cookies, local storage, IndexedDB, and session storage. The saved page opens directly; navigation is skipped when the mailbox table is already visible. The monitor does not submit an admin password. You enter the current password and complete 2FA yourself in a visible browser.
 
 From this directory, create or renew the session:
 
