@@ -1,5 +1,28 @@
 # Changelog
 
+## [2.28.0](https://github.com/davidsneighbour/dotfiles/compare/v2.27.0...v2.28.0) (2026-10-25)
+
+### Feat
+
+* **packages:** add --depends-only option to tree and why ([a6078c0](https://github.com/davidsneighbour/dotfiles/commit/a6078c097733c3944daef6efb641491e7b92e9bb)), closes [#585](https://github.com/davidsneighbour/dotfiles/issues/585)
+* **packages:** add --json, --version, history, and Graphviz export ([45726cf](https://github.com/davidsneighbour/dotfiles/commit/45726cfa3779691b139648a4817b4a70c9e5b009)), closes [#586](https://github.com/davidsneighbour/dotfiles/issues/586)
+
+### Refactor
+
+* **configs:** move remaining configs/system into configs/session ([bc9ffd9](https://github.com/davidsneighbour/dotfiles/commit/bc9ffd975fabe4c76fb2268289f33e38894b20f5))
+
+### Build
+
+* **biome:** exclude markdown files ([079f3f1](https://github.com/davidsneighbour/dotfiles/commit/079f3f1fca14b9dde1d3a4c16bef595984bd4f9b))
+* **deps:** bump the npm_and_yarn group across 1 directory with 2 updates ([#601](https://github.com/davidsneighbour/dotfiles/issues/601)) ([43ed310](https://github.com/davidsneighbour/dotfiles/commit/43ed3106e29745a40934ecee80dda2e023224a63))
+* **deps:** update dependencies ([6bcfe94](https://github.com/davidsneighbour/dotfiles/commit/6bcfe9497024665e614a2fd9b5e6dbf67e7f06db))
+
+### Chore
+
+* **deps:** update dependency lucide-react to v1.61.0 ([#599](https://github.com/davidsneighbour/dotfiles/issues/599)) ([85f78f7](https://github.com/davidsneighbour/dotfiles/commit/85f78f7ac0caf6201b78703c03c60f99495eb5ba))
+* **deps:** update dependency vite to v8.3.5 ([#600](https://github.com/davidsneighbour/dotfiles/issues/600)) ([899cac2](https://github.com/davidsneighbour/dotfiles/commit/899cac25a14d6593886803b65e1e370793726c50))
+* **deps:** update react monorepo to v19.3.1 ([#598](https://github.com/davidsneighbour/dotfiles/issues/598)) ([28dab00](https://github.com/davidsneighbour/dotfiles/commit/28dab00c72f812ac8a18885e5a46d4e463ff44d2))
+
 ## [2.27.0](https://github.com/davidsneighbour/dotfiles/compare/v2.26.0...v2.27.0) (2026-10-25)
 
 ### Feat
