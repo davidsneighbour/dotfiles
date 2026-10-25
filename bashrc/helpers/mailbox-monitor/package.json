@@ -1,11 +1,11 @@
 {
   "name": "mailbox-monitor",
-  "version": "0.0.1",
-  "description": "",
+  "version": "2.0.0",
+  "description": "Checking APS mailbox usage via ssh and doveadm.",
   "license": "MIT",
   "author": "Patrick Kollitsch <davidsneighbourdev+gh@gmail.com>",
   "type": "module",
-  "main": "index.js",
+  "main": "monito-mailboxes.mjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   }
