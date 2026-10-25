@@ -28,6 +28,7 @@ dialogs
 dmenu
 dnbhq
 dotbot
+doveadm
 dreamhost
 drun
 dunst

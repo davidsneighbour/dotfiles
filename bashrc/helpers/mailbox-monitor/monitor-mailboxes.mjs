@@ -1,22 +1,55 @@
 #!/usr/bin/env node
 
-import { chmod, mkdir, readFile, rename, writeFile } from "node:fs/promises";
+import { execFile } from "node:child_process";
+import { mkdir, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { createInterface } from "node:readline/promises";
-import { chromium } from "playwright";
+import { promisify } from "node:util";
+
+const execFileAsync = promisify(execFile);
 
 const DEFAULTS = {
   yellowThreshold: 80,
   redThreshold: 95,
-  headless: true,
-  navPath: "Email|Manage Mailboxes",
-  rowSelector: ".newui-table-row",
-  mailboxSelector: "td:nth-child(2)",
-  usageSelector: "td:nth-child(3)",
-  dataSortUnit: "KB",
-  timeoutMs: 30_000,
+  sshKey: "~/.ssh/id_ed25519",
+  timeoutMs: 120_000,
 };
+
+// Runs on the mail server with /bin/sh. Arguments: boxes directory, then
+// optional domain names. Without domains, every domain directory is checked.
+// Each mailbox is a regular file in a domain directory (mbox INBOX); Dovecot
+// reports its quota in KB including the folders in the matching "name^"
+// directory.
+const REMOTE_SCRIPT = String.raw`
+boxes="$1"
+shift
+cd "$boxes" || exit 3
+if [ "$#" -eq 0 ]; then
+  for candidate in *.*; do
+    [ -d "$candidate" ] && set -- "$@" "$candidate"
+  done
+fi
+for domain in "$@"; do
+  if [ ! -d "$domain" ]; then
+    printf 'ERROR\t%s\t%s\n' "$domain" "domain directory not found"
+    continue
+  fi
+  for file in "$domain"/*; do
+    [ -f "$file" ] || continue
+    user="$(basename "$file")@$domain"
+    output="$(doveadm -f tab quota get -u "$user" 2>&1)"
+    quota="$(printf '%s\n' "$output" | awk -F '\t' '$2 == "STORAGE" { print $3 "\t" $4; exit }')"
+    if [ -n "$quota" ]; then
+      printf 'OK\t%s\t%s\n' "$user" "$quota"
+    elif printf '%s\n' "$output" | grep -q "User doesn't exist"; then
+      # Leftover mailbox file of a deleted account.
+      printf 'SKIP\t%s\t%s\n' "$user" "no mail account for this file"
+    else
+      printf 'ERROR\t%s\t%s\n' "$user" "no storage quota reported"
+    fi
+  done
+done
+`;
 
 class MonitorError extends Error {
   constructor(message, cause = undefined) {
@@ -39,30 +72,24 @@ function showHelp() {
   console.log(`
 Mailbox quota monitor
 
+Reads mailbox quotas over SSH with doveadm on the mail server.
+
 Required environment variables:
-  MAILBOX_MONITOR_START_URL
-
-Options:
-  --login    Open a visible browser to sign in and complete 2FA manually.
-  --help     Show this help.
-
-Session configuration:
-  MAILBOX_MONITOR_SESSION_FILE (default: ~/.local/state/mailbox-monitor/session.json)
+  MAILBOX_MONITOR_SSH_TARGET   (example: user@host.pair.com)
+  MAILBOX_MONITOR_BOXES_DIR    (example: /usr/boxes/user)
 
 Optional environment variables:
-  DISCORD_WEBHOOK
+  MAILBOX_MONITOR_SSH_KEY      (default: ~/.ssh/id_ed25519)
+  MAILBOX_MONITOR_DOMAINS      (comma-separated; default: all domain directories)
   MAILBOX_MONITOR_PROJECT_NAME
-  MAILBOX_MONITOR_NAV_PATH
   MAILBOX_MONITOR_YELLOW_THRESHOLD
   MAILBOX_MONITOR_RED_THRESHOLD
-  MAILBOX_MONITOR_HEADLESS
   MAILBOX_MONITOR_OUTPUT_DIR
-  MAILBOX_MONITOR_ROW_SELECTOR
-  MAILBOX_MONITOR_MAILBOX_SELECTOR
-  MAILBOX_MONITOR_USAGE_SELECTOR
+  MAILBOX_MONITOR_TIMEOUT_MS
+  DISCORD_WEBHOOK
 
-Example:
-  MAILBOX_MONITOR_HEADLESS=false node monitor-mailboxes.mjs
+Options:
+  --help     Show this help.
 `);
 }
 
@@ -94,22 +121,6 @@ function numberEnv(name, fallback) {
   return value;
 }
 
-function booleanEnv(name, fallback) {
-  const raw = optionalEnv(name, String(fallback)).toLowerCase();
-
-  if (["1", "true", "yes", "on"].includes(raw)) {
-    return true;
-  }
-
-  if (["0", "false", "no", "off"].includes(raw)) {
-    return false;
-  }
-
-  throw new MonitorError(
-    `Invalid boolean environment variable ${name}: ${raw}`,
-  );
-}
-
 function expandHome(inputPath) {
   if (!inputPath.startsWith("~")) {
     return inputPath;
@@ -118,18 +129,31 @@ function expandHome(inputPath) {
   return path.join(os.homedir(), inputPath.slice(1));
 }
 
+function safeRemoteArgument(name, value) {
+  if (!/^[A-Za-z0-9._/@-]+$/.test(value)) {
+    throw new MonitorError(`${name} contains unsupported characters: ${value}`);
+  }
+
+  return value;
+}
+
 function getConfig() {
+  const domains = optionalEnv("MAILBOX_MONITOR_DOMAINS", "")
+    .split(",")
+    .map((domain) => domain.trim())
+    .filter(Boolean)
+    .map((domain) => safeRemoteArgument("MAILBOX_MONITOR_DOMAINS", domain));
+
   return {
-    startUrl: requireEnv("MAILBOX_MONITOR_START_URL"),
-    sessionFile: expandHome(
-      optionalEnv(
-        "MAILBOX_MONITOR_SESSION_FILE",
-        "~/.local/state/mailbox-monitor/session.json",
-      ),
+    sshTarget: requireEnv("MAILBOX_MONITOR_SSH_TARGET"),
+    sshKey: expandHome(optionalEnv("MAILBOX_MONITOR_SSH_KEY", DEFAULTS.sshKey)),
+    boxesDir: safeRemoteArgument(
+      "MAILBOX_MONITOR_BOXES_DIR",
+      requireEnv("MAILBOX_MONITOR_BOXES_DIR"),
     ),
+    domains,
     projectName: optionalEnv("MAILBOX_MONITOR_PROJECT_NAME", "Mailbox Monitor"),
     discordWebhook: optionalEnv("DISCORD_WEBHOOK", ""),
-    navPath: optionalEnv("MAILBOX_MONITOR_NAV_PATH", DEFAULTS.navPath),
     yellowThreshold: numberEnv(
       "MAILBOX_MONITOR_YELLOW_THRESHOLD",
       DEFAULTS.yellowThreshold,
@@ -138,267 +162,105 @@ function getConfig() {
       "MAILBOX_MONITOR_RED_THRESHOLD",
       DEFAULTS.redThreshold,
     ),
-    headless: booleanEnv("MAILBOX_MONITOR_HEADLESS", DEFAULTS.headless),
     outputDir: expandHome(
       optionalEnv("MAILBOX_MONITOR_OUTPUT_DIR", "~/.logs/mailbox-monitor"),
-    ),
-    rowSelector: optionalEnv(
-      "MAILBOX_MONITOR_ROW_SELECTOR",
-      DEFAULTS.rowSelector,
-    ),
-    mailboxSelector: optionalEnv(
-      "MAILBOX_MONITOR_MAILBOX_SELECTOR",
-      DEFAULTS.mailboxSelector,
-    ),
-    usageSelector: optionalEnv(
-      "MAILBOX_MONITOR_USAGE_SELECTOR",
-      DEFAULTS.usageSelector,
-    ),
-    dataSortUnit: optionalEnv(
-      "MAILBOX_MONITOR_DATA_SORT_UNIT",
-      DEFAULTS.dataSortUnit,
     ),
     timeoutMs: numberEnv("MAILBOX_MONITOR_TIMEOUT_MS", DEFAULTS.timeoutMs),
   };
 }
 
-function escapeRegExp(value) {
-  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+async function readRemoteQuotas(config) {
+  // The remote login shell can be csh, so the script is passed on stdin to
+  // sh, and the remote command contains only validated plain arguments.
+  const remoteCommand = ["sh", "-s", "--", config.boxesDir, ...config.domains]
+    .map((argument) => `'${argument}'`)
+    .join(" ");
+
+  const child = execFileAsync(
+    "ssh",
+    [
+      "-i",
+      config.sshKey,
+      "-o",
+      "BatchMode=yes",
+      "-o",
+      "IdentitiesOnly=yes",
+      "-o",
+      "ConnectTimeout=20",
+      config.sshTarget,
+      remoteCommand,
+    ],
+    { timeout: config.timeoutMs, maxBuffer: 10 * 1024 * 1024 },
+  );
+  child.child.stdin.end(REMOTE_SCRIPT);
+
+  try {
+    const { stdout } = await child;
+    return stdout;
+  } catch (error) {
+    const stderr = String(error.stderr || "").trim();
+    throw new MonitorError(
+      `SSH quota query to ${config.sshTarget} failed${stderr ? `: ${stderr}` : "."} Check the SSH key, host, and MAILBOX_MONITOR_BOXES_DIR.`,
+      error,
+    );
+  }
 }
 
-async function firstVisibleLocator(locators, label) {
-  for (const locator of locators) {
-    try {
-      const first = locator.first();
-      await first.waitFor({ state: "visible", timeout: 1_500 });
-      return first;
-    } catch {
-      // Try next candidate.
+function formatSize(kb) {
+  return kb >= 1024 * 1024
+    ? `${(kb / 1024 / 1024).toFixed(2)} GB`
+    : `${(kb / 1024).toFixed(2)} MB`;
+}
+
+function parseRemoteOutput(stdout, config) {
+  const records = [];
+  const errors = [];
+
+  for (const line of stdout.split("\n")) {
+    if (line.trim() === "") {
+      continue;
     }
+
+    const [kind, mailbox, ...rest] = line.split("\t");
+
+    if (kind === "ERROR") {
+      errors.push(`${mailbox}: ${rest.join(" ")}`);
+      continue;
+    }
+
+    if (kind === "SKIP") {
+      console.warn(`Skipped ${mailbox}: ${rest.join(" ")}`);
+      continue;
+    }
+
+    const usedKb = Number(rest[0]);
+    const limitKb = Number(rest[1]);
+
+    if (kind !== "OK" || !Number.isFinite(usedKb)) {
+      errors.push(`Unexpected output: ${line}`);
+      continue;
+    }
+
+    // doveadm prints "-" as the limit for mailboxes without a quota.
+    const hasLimit = Number.isFinite(limitKb) && limitKb > 0;
+    const percent = hasLimit ? (usedKb / limitKb) * 100 : 0;
+
+    records.push({
+      mailbox,
+      usageText: `${formatSize(usedKb)} / ${hasLimit ? formatSize(limitKb) : "unlimited"}`,
+      usedMb: usedKb / 1024,
+      limitMb: hasLimit ? limitKb / 1024 : null,
+      percent: Number(percent.toFixed(2)),
+      status:
+        percent >= config.redThreshold
+          ? "red"
+          : percent >= config.yellowThreshold
+            ? "yellow"
+            : "green",
+    });
   }
 
-  throw new MonitorError(`Could not find visible element for: ${label}`);
-}
-
-async function clickFirstVisible(
-  page,
-  explicitSelector,
-  fallbackLocators,
-  label,
-) {
-  const locators = explicitSelector
-    ? [page.locator(explicitSelector)]
-    : fallbackLocators;
-
-  const locator = await firstVisibleLocator(locators, label);
-  await locator.click();
-}
-
-async function waitAfterNavigationAction(page) {
-  await runBestEffort("domcontentloaded wait", () =>
-    page.waitForLoadState("domcontentloaded", { timeout: 15_000 }),
-  );
-  await runBestEffort("networkidle wait", () =>
-    page.waitForLoadState("networkidle", { timeout: 10_000 }),
-  );
-}
-
-function cssAttributeValue(value) {
-  return JSON.stringify(value);
-}
-
-async function clickNavigationPath(page, navPath) {
-  const labels = navPath
-    .split("|")
-    .map((label) => label.trim())
-    .filter(Boolean);
-
-  for (const label of labels) {
-    const exactLabel = new RegExp(`^\\s*${escapeRegExp(label)}\\s*$`, "i");
-    const cssLabel = cssAttributeValue(label);
-
-    await clickFirstVisible(
-      page,
-      "",
-      [
-        page.getByRole("link", { name: exactLabel }),
-        page.getByRole("button", { name: exactLabel }),
-
-        page.locator(`a[data-bs-title=${cssLabel}]`),
-        page.locator(`button[data-bs-title=${cssLabel}]`),
-        page.locator(`[data-bs-title=${cssLabel}]`),
-
-        page.locator(`a[title=${cssLabel}]`),
-        page.locator(`button[title=${cssLabel}]`),
-        page.locator(`[title=${cssLabel}]`),
-
-        page.locator(`a[aria-label=${cssLabel}]`),
-        page.locator(`button[aria-label=${cssLabel}]`),
-        page.locator(`[aria-label=${cssLabel}]`),
-
-        page.locator("a", { hasText: label }),
-        page.locator("button", { hasText: label }),
-      ],
-      `navigation item "${label}"`,
-    );
-
-    await waitAfterNavigationAction(page);
-  }
-}
-
-function unitToMb(value, unitRaw) {
-  const unit = String(unitRaw || "M")
-    .trim()
-    .toUpperCase()
-    .replace(/B$/, "");
-
-  switch (unit) {
-    case "K":
-      return value / 1024;
-    case "M":
-    case "":
-      return value;
-    case "G":
-      return value * 1024;
-    case "T":
-      return value * 1024 * 1024;
-    default:
-      throw new MonitorError(`Unsupported size unit: ${unitRaw}`);
-  }
-}
-
-function parseDataSortToMb(dataSort, unitRaw) {
-  if (!dataSort) {
-    return undefined;
-  }
-
-  const value = Number(dataSort);
-
-  if (!Number.isFinite(value)) {
-    return undefined;
-  }
-
-  return unitToMb(value, unitRaw);
-}
-
-function parseMailboxUsage(rawRow, config) {
-  const usageText = rawRow.usageText.replace(/\s+/g, " ").trim();
-
-  const usedTextMatch = usageText.match(/^([\d.]+)\s*(KB|MB|GB|TB|K|M|G|T)\b/i);
-  const limitMatch = usageText.match(/\/\s*([\d.]+)\s*([KMGT]?B?|[KMGT])?/i);
-
-  if (!limitMatch) {
-    throw new MonitorError(
-      `Could not parse quota limit for ${rawRow.mailbox}: "${usageText}"`,
-    );
-  }
-
-  const usedMbFromDataSort = parseDataSortToMb(
-    rawRow.dataSort,
-    config.dataSortUnit,
-  );
-
-  if (usedMbFromDataSort === undefined && !usedTextMatch) {
-    throw new MonitorError(
-      `Could not parse used quota for ${rawRow.mailbox}: "${usageText}"`,
-    );
-  }
-
-  const usedMb =
-    usedMbFromDataSort === undefined
-      ? unitToMb(Number(usedTextMatch[1]), usedTextMatch[2])
-      : usedMbFromDataSort;
-
-  const limitMb = unitToMb(Number(limitMatch[1]), limitMatch[2] || "M");
-  const percent = limitMb > 0 ? (usedMb / limitMb) * 100 : 0;
-
-  const status =
-    percent >= config.redThreshold
-      ? "red"
-      : percent >= config.yellowThreshold
-        ? "yellow"
-        : "green";
-
-  return {
-    mailbox: rawRow.mailbox,
-    usageText,
-    usedMb,
-    limitMb,
-    percent: Number(percent.toFixed(2)),
-    status,
-  };
-}
-
-async function extractRawRows(page, config) {
-  await page.locator(config.rowSelector).first().waitFor({
-    state: "visible",
-    timeout: config.timeoutMs,
-  });
-
-  const result = await page.locator(config.rowSelector).evaluateAll(
-    (rows, selectors) => {
-      const normalize = (value) =>
-        String(value || "")
-          .replace(/\u00a0/g, " ")
-          .replace(/\s+/g, " ")
-          .trim();
-
-      const pickCell = (row, explicitSelector, fallbackIndex) => {
-        const explicitCell = explicitSelector
-          ? row.querySelector(explicitSelector)
-          : null;
-
-        if (explicitCell) {
-          return explicitCell;
-        }
-
-        const directCells = Array.from(row.children).filter((child) => {
-          const tag = child.tagName.toLowerCase();
-          return tag === "td" || tag === "div";
-        });
-
-        return directCells[fallbackIndex] || null;
-      };
-
-      const parsedRows = rows.map((row) => {
-        const mailboxCell = pickCell(row, selectors.mailboxSelector, 0);
-        const usageCell = pickCell(row, selectors.usageSelector, 1);
-
-        return {
-          mailbox: normalize(mailboxCell?.textContent),
-          usageText: normalize(usageCell?.textContent),
-          dataSort: normalize(usageCell?.getAttribute("data-sort")),
-        };
-      });
-
-      return {
-        rowCount: rows.length,
-        parsedRows,
-      };
-    },
-    {
-      mailboxSelector: config.mailboxSelector,
-      usageSelector: config.usageSelector,
-    },
-  );
-
-  const rawRows = result.parsedRows.filter(
-    (row) => row.mailbox && row.usageText,
-  );
-
-  if (result.rowCount > 0 && rawRows.length === 0) {
-    throw new MonitorError(
-      `Found ${result.rowCount} mailbox table rows, but parsed 0 usable rows. The table markup probably changed.`,
-    );
-  }
-
-  if (rawRows.length === 0) {
-    throw new MonitorError(
-      "No mailbox rows were parsed from the mailbox table.",
-    );
-  }
-
-  return rawRows;
+  return { records, errors };
 }
 
 function createDiscordContent(config, allRecords, alertRecords) {
@@ -480,17 +342,8 @@ function createMarkdownSummary(config, allRecords, alertRecords) {
   return `${lines.join("\n")}\n`;
 }
 
-async function writeOutputs(config, allRecords, alertRecords, page) {
+async function writeOutputs(config, allRecords, alertRecords) {
   await mkdir(config.outputDir, { recursive: true });
-
-  const html = await page.content();
-  const summary = createMarkdownSummary(config, allRecords, alertRecords);
-
-  await writeFile(
-    path.join(config.outputDir, "latest-mailboxes.html"),
-    html,
-    "utf8",
-  );
 
   await writeFile(
     path.join(config.outputDir, "latest-mailboxes.json"),
@@ -506,7 +359,7 @@ async function writeOutputs(config, allRecords, alertRecords, page) {
 
   await writeFile(
     path.join(config.outputDir, "latest-summary.md"),
-    summary,
+    createMarkdownSummary(config, allRecords, alertRecords),
     "utf8",
   );
 }
@@ -517,122 +370,30 @@ async function run() {
     return;
   }
 
-  const loginMode = process.argv.includes("--login");
-  if (loginMode && !process.stdin.isTTY) {
-    throw new MonitorError("--login requires an interactive terminal.");
-  }
   const config = getConfig();
-  delete process.env.MAILBOX_MONITOR_PASSWORD;
-  delete process.env.MAILBOX_MONITOR_USERNAME;
-
-  let browser;
-  let page;
-  let stage = "browser launch";
 
   try {
-    browser = await chromium.launch({
-      headless: loginMode ? false : config.headless,
-      env: {
-        HOME: process.env.HOME || "",
-        PATH: process.env.PATH || "",
-        LANG: process.env.LANG || "C.UTF-8",
-        XDG_RUNTIME_DIR: process.env.XDG_RUNTIME_DIR || "",
-        DISPLAY: process.env.DISPLAY || "",
-        XAUTHORITY: process.env.XAUTHORITY || "",
-      },
-    });
-    stage = "session loading";
-    let storageState;
-    let savedSession;
-    if (!loginMode) {
-      try {
-        savedSession = JSON.parse(await readFile(config.sessionFile, "utf8"));
-        storageState = savedSession.storageState || savedSession;
-      } catch {
-        throw new MonitorError(
-          "Saved session is missing or unreadable. Run run-mailbox-monitor.sh --login with the same --env-file first.",
-        );
-      }
-    }
-    const context = await browser.newContext({ storageState });
-    if (savedSession?.sessionStorage) {
-      await context.addInitScript(({ origin, entries }) => {
-        if (window.location.origin === origin) {
-          for (const [key, value] of entries) {
-            window.sessionStorage.setItem(key, value);
-          }
-        }
-      }, savedSession.sessionStorage);
-    }
-    page = await context.newPage();
+    const stdout = await readRemoteQuotas(config);
+    const { records, errors } = parseRemoteOutput(stdout, config);
 
-    page.setDefaultTimeout(config.timeoutMs);
-
-    stage = "opening the control panel";
-    await page.goto(savedSession?.mailboxUrl || config.startUrl, {
-      waitUntil: "domcontentloaded",
-      timeout: config.timeoutMs,
-    });
-    if (loginMode) {
-      const terminal = createInterface({
-        input: process.stdin,
-        output: process.stdout,
-      });
-      try {
-        await terminal.question(
-          "Complete login and 2FA in the browser, open the mailbox overview, then press Enter here: ",
-        );
-      } finally {
-        terminal.close();
-      }
-    } else if (!(await page.locator(config.rowSelector).first().isVisible())) {
-      if (await page.locator('input[type="password"]').first().isVisible()) {
-        throw new MonitorError(
-          "Pair requires login. Renew the saved session with run-mailbox-monitor.sh --login.",
-        );
-      }
-      if (config.navPath) {
-        await clickNavigationPath(page, config.navPath);
-      }
+    if (errors.length > 0) {
+      throw new MonitorError(
+        `Quota query returned errors:\n${errors.join("\n")}`,
+      );
     }
 
-    stage = "reading mailbox data";
-    const rawRows = await extractRawRows(page, config);
-    const allRecords = rawRows
-      .map((row) => parseMailboxUsage(row, config))
-      .sort((a, b) => b.percent - a.percent);
+    if (records.length === 0) {
+      throw new MonitorError(
+        `No mailboxes found under ${config.boxesDir}. Check MAILBOX_MONITOR_BOXES_DIR and MAILBOX_MONITOR_DOMAINS.`,
+      );
+    }
 
+    const allRecords = records.sort((a, b) => b.percent - a.percent);
     const alertRecords = allRecords.filter(
       (record) => record.percent >= config.yellowThreshold,
     );
 
-    stage = "saving the authenticated session";
-    const sessionDirectory = path.dirname(config.sessionFile);
-    await mkdir(sessionDirectory, { recursive: true, mode: 0o700 });
-    await chmod(sessionDirectory, 0o700);
-    const temporarySession = `${config.sessionFile}.${process.pid}.tmp`;
-    await writeFile(
-      temporarySession,
-      JSON.stringify({
-        storageState: await context.storageState({ indexedDB: true }),
-        mailboxUrl: page.url(),
-        sessionStorage: await page.evaluate(() => ({
-          origin: window.location.origin,
-          entries: Object.entries(window.sessionStorage),
-        })),
-      }),
-      { mode: 0o600 },
-    );
-    await rename(temporarySession, config.sessionFile);
-    if (loginMode) {
-      console.log(
-        "Authenticated session saved. Scheduled checks can now reuse it.",
-      );
-      return;
-    }
-
-    stage = "writing reports and sending alerts";
-    await writeOutputs(config, allRecords, alertRecords, page);
+    await writeOutputs(config, allRecords, alertRecords);
 
     if (alertRecords.length > 0 && config.discordWebhook) {
       await sendDiscordMessage(
@@ -653,46 +414,21 @@ async function run() {
       );
     }
   } catch (error) {
-    let message;
-    if (error instanceof MonitorError) {
-      message = error.message;
-    } else if (stage === "browser launch") {
-      message =
-        "Cannot launch Chromium. Run npx playwright install chromium from the monitor directory. For --login, run from a desktop terminal with working DISPLAY and XAUTHORITY settings.";
-    } else if (stage === "reading mailbox data") {
-      message = loginMode
-        ? "Cannot read mailbox data. Complete login and 2FA, and open the mailbox overview before pressing Enter. Check the configured table selectors if the overview is already open."
-        : "Cannot read mailbox data. The saved session may have expired; run run-mailbox-monitor.sh --login with the same --env-file. If login is current, check the mailbox navigation and selectors.";
-    } else {
-      message = `Mailbox monitor failed during ${stage}. Check connectivity, configuration, and file permissions.`;
-    }
-
-    if (page && !loginMode) {
-      await runBestEffort("error output directory creation", () =>
-        mkdir(config.outputDir, { recursive: true }),
-      );
-      await runBestEffort("error screenshot capture", () =>
-        page.screenshot({
-          path: path.join(config.outputDir, "latest-error.png"),
-          fullPage: true,
-        }),
-      );
-    }
+    const message =
+      error instanceof MonitorError
+        ? error.message
+        : `Mailbox monitor failed: ${error instanceof Error ? error.message : String(error)}`;
 
     if (config.discordWebhook) {
       await runBestEffort("Discord failure notification", () =>
         sendDiscordMessage(
           config.discordWebhook,
-          `:warning: **${config.projectName}: mailbox monitor failed**\n${message}`,
+          `:warning: **${config.projectName}: mailbox monitor failed**\n${message.slice(0, 1800)}`,
         ),
       );
     }
 
-    throw new MonitorError(message);
-  } finally {
-    if (browser) {
-      await runBestEffort("browser close", () => browser.close());
-    }
+    throw new MonitorError(message, error);
   }
 }
 
@@ -701,10 +437,6 @@ run().catch((error) => {
 
   if (error instanceof Error) {
     console.error(error.message);
-
-    if (error.cause) {
-      console.error(error.cause);
-    }
   } else {
     console.error(error);
   }

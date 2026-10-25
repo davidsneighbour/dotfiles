@@ -10,7 +10,6 @@ Options:
   --env-file FILE       Environment file to source. Default: .env beside this wrapper
   --script FILE         Monitor script path. Default: ./monitor-mailboxes.mjs
   --working-dir DIR     Working directory. Default: script directory
-  --login               Save a session after manual login and 2FA.
   --help                Show this help.
 
 Example:
@@ -120,15 +119,10 @@ EOF
   fi
 
   cd "${working_dir}"
-  if [[ "${login_mode:-false}" == "true" ]]; then
-    "${node_bin}" "${script}" --login
-  else
-    "${node_bin}" "${script}"
-  fi
+  "${node_bin}" "${script}"
 }
 
 main() {
-  local login_mode="false"
   local env_file=""
   local script_dir=""
   local script_file="monitor-mailboxes.mjs"
@@ -140,10 +134,6 @@ main() {
 
   while (($#)); do
     case "$1" in
-      --login)
-        login_mode="true"
-        shift
-        ;;
       --env-file)
         env_file="${2:-}"
         shift 2
