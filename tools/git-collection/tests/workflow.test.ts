@@ -151,6 +151,17 @@ test("incremental checkpoints, rewritten history, disappearing clone, shallow cl
     rmSync(shallow, { recursive: true });
     const missing = await scanAll(db, database, config);
     assert.equal(missing.failures, 1);
+    const allowed = await scanAll(db, database, {
+      ...config,
+      expectedMissing: [shallow],
+    });
+    assert.equal(allowed.failures, 0);
+    assert.deepEqual(allowed.missing, [shallow]);
+    const other = await scanAll(db, database, {
+      ...config,
+      expectedMissing: [join(root, "other")],
+    });
+    assert.equal(other.failures, 1);
     assert.equal(
       db
         .prepare(

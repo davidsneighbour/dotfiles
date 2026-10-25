@@ -13,6 +13,7 @@ export interface ScanSummary {
   databaseBytes: number;
   repositories: ({ path: string } & CollectionResult)[];
   errors: { path: string; error: string }[];
+  missing: string[];
 }
 
 export async function scanAll(
@@ -35,6 +36,7 @@ export async function scanAll(
     databaseBytes: 0,
     repositories: [],
     errors: [],
+    missing: [],
   };
   try {
     const discovery = discover(config);
@@ -72,6 +74,10 @@ export async function scanAll(
       } catch (error) {
         db.exec("ROLLBACK");
         throw error;
+      }
+      if (config.expectedMissing?.includes(repository.path)) {
+        summary.missing.push(repository.path);
+        continue;
       }
       summary.errors.push({
         path: repository.path,

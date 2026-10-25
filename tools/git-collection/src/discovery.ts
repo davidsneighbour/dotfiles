@@ -6,6 +6,7 @@ export interface DiscoveryConfig {
   roots: string[];
   exclude: string[];
   maxDepth: number;
+  expectedMissing?: string[];
 }
 
 export interface DiscoveryResult {
@@ -20,7 +21,8 @@ export function loadConfig(file: string): DiscoveryConfig {
   const record = value as Record<string, unknown>;
   if (
     Object.keys(record).some(
-      (key) => !["roots", "exclude", "maxDepth"].includes(key),
+      (key) =>
+        !["roots", "exclude", "maxDepth", "expectedMissing"].includes(key),
     )
   )
     throw new Error("Unknown discovery config key.");
@@ -35,12 +37,17 @@ export function loadConfig(file: string): DiscoveryConfig {
   ) {
     throw new Error("maxDepth must be an integer from 0 to 100.");
   }
+  const expectedMissing = paths(
+    record.expectedMissing ?? [],
+    "expectedMissing",
+  );
   if (!roots.length) throw new Error("Configure at least one discovery root.");
   const base = dirname(resolve(file));
   return {
     roots: roots.map((path) => resolve(base, path)),
     exclude: exclude.map((path) => resolve(base, path)),
     maxDepth,
+    expectedMissing: expectedMissing.map((path) => resolve(base, path)),
   };
 }
 
