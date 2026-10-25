@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.28.1](https://github.com/davidsneighbour/dotfiles/compare/v2.28.0...v2.28.1) (2026-10-25)
+
+### Docs
+
+* **session:** document the current desktop setup only ([70861bc](https://github.com/davidsneighbour/dotfiles/commit/70861bc575baaea40ac909fbe416553b6d1e52ae))
+
 ## [2.28.0](https://github.com/davidsneighbour/dotfiles/compare/v2.27.0...v2.28.0) (2026-10-25)
 
 ### Feat
