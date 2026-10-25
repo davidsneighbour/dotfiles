@@ -17,7 +17,8 @@ GitHub release of ${REPOSITORY}.
 
 The installed version is read from configs/fonts/System/lucide/VERSION.
 If a newer release exists, the script downloads lucide-font-<version>.zip,
-replaces the folder contents, writes the new VERSION file, refreshes the
+replaces the folder contents, writes the new VERSION file, creates
+unicode-escape.html (codepoints as \\uXXXX escapes), refreshes the
 font cache, and commits only that folder (without commit hooks) with:
 
   ${COMMIT_MESSAGE}
@@ -100,6 +101,30 @@ report_codepoint_changes() {
   fi
 }
 
+# Create unicode-escape.html from the upstream unicode.html. The copy shows
+# each codepoint as a "\uXXXX" escape (the format in workspaces.yaml)
+# instead of an HTML entity, and shows the real release version.
+generate_escape_preview() {
+  local source_file="${1}/unicode.html"
+  local target_file="${1}/unicode-escape.html"
+  local version="${2}"
+
+  if [[ ! -f "${source_file}" ]]; then
+    printf 'Warning: unicode.html is missing, skipping unicode-escape.html.\n' >&2
+    return 0
+  fi
+
+  log_verbose 'Creating unicode-escape.html'
+  LUCIDE_VERSION="${version}" perl -pe '
+    s{<span class="unicode">&amp;#(\d+);</span>}{sprintf(q{<span class="unicode">\\u%04X</span>}, $1)}ge;
+    s{<sup>[^<]*}{<sup>$ENV{LUCIDE_VERSION}};
+  ' "${source_file}" >"${target_file}"
+
+  if grep -q '<span class="unicode">&amp;#' "${target_file}"; then
+    printf 'Warning: unicode-escape.html still contains HTML entities. The unicode.html layout possibly changed.\n' >&2
+  fi
+}
+
 check_only='false'
 force_update='false'
 create_commit='true'
@@ -131,7 +156,7 @@ while [[ "$#" -gt 0 ]]; do
   shift
 done
 
-for command_name in curl git jq unzip sort; do
+for command_name in curl git jq perl unzip sort; do
   require_command "${command_name}"
 done
 
@@ -219,6 +244,7 @@ mkdir -p "${font_dir}"
 find "${font_dir}" -mindepth 1 -delete
 cp -a "${extracted_dir}/." "${font_dir}/"
 printf '%s\n' "${latest_version}" >"${version_file}"
+generate_escape_preview "${font_dir}" "${latest_version}"
 
 if command -v fc-cache >/dev/null 2>&1; then
   log_verbose 'Refreshing the font cache'
