@@ -15,6 +15,7 @@
 #   MAX_ROOTS  why: number of root paths to show, 0 for all
 #   DEPTH      tree: maximum depth, 0 for no limit
 #   COLOR      1 to colour the labels
+#   HARD_ONLY  1 to follow only hard edges (Pre-Depends and Depends)
 #
 # An edge "a -> b" means that a needs b. Pre-Depends and Depends are hard
 # edges. Recommends and Suggests are soft edges. APT keeps a package for all
@@ -180,10 +181,9 @@ function kind_note(from, to,    kind) {
 
 # Search upwards from the target, breadth first, and stop at each root
 # (manual or essential package). Each root found gives one shortest path.
-function why(target,    queue, head, tail, next_hop, seen, roots, nroots, node, m, list, i, parent, shown, indent) {
-  print label(target)
-  print ""
-
+# Fills roots[] and next_hop[] and returns the number of roots. With
+# hard_only, only hard edges are followed.
+function find_roots(target, hard_only, roots, next_hop,    queue, head, tail, seen, nroots, node, m, list, i, parent) {
   queue[1] = target
   seen[target] = 1
   head = 1
@@ -195,7 +195,11 @@ function why(target,    queue, head, tail, next_hop, seen, roots, nroots, node, 
       roots[++nroots] = node
       continue
     }
-    m = split(parents_hard[node] parents_soft[node], list, " ")
+    if (hard_only) {
+      m = split(parents_hard[node], list, " ")
+    } else {
+      m = split(parents_hard[node] parents_soft[node], list, " ")
+    }
     for (i = 1; i <= m; i++) {
       parent = list[i]
       if (!(parent in seen)) {
@@ -204,6 +208,29 @@ function why(target,    queue, head, tail, next_hop, seen, roots, nroots, node, 
         queue[++tail] = parent
       }
     }
+  }
+  return nroots
+}
+
+function why(target,    next_hop, roots, nroots, soft_roots, soft_hops, node, i, shown, indent) {
+  print label(target)
+  print ""
+
+  nroots = find_roots(target, HARD_ONLY == 1, roots, next_hop)
+
+  # With --depends-only, a package that only soft edges keep is still kept
+  # by APT, so do not say that nothing needs it.
+  if (nroots == 0 && HARD_ONLY == 1 && find_roots(target, 0, soft_roots, soft_hops) > 0) {
+    if (target in manual) {
+      print "Marked manual. Other manual or essential packages need it only through Recommends or Suggests."
+    } else if (essential[target]) {
+      print "Essential. dpkg does not allow removing it."
+    } else {
+      print "No manual or essential package needs it through Pre-Depends or Depends."
+      print "It is needed only through Recommends or Suggests, so APT keeps it."
+      print "Run without --depends-only to see these paths."
+    }
+    return
   }
 
   if (nroots == 0) {
@@ -275,11 +302,27 @@ function tree_all(    m, list, i, all_manual) {
   }
 }
 
+# The children of a node as a space-separated list. With HARD_ONLY, soft
+# edges are left out.
+function child_list(node,    m, list, i, out) {
+  if (HARD_ONLY != 1) {
+    return children[node]
+  }
+  m = split(children[node], list, " ")
+  out = ""
+  for (i = 1; i <= m; i++) {
+    if (edge_kind[node, list[i]] == 1) {
+      out = out " " list[i]
+    }
+  }
+  return out
+}
+
 # Each package is expanded once. Later occurrences print "(see above)", which
 # also stops cycles. In the all-manual view, manual children are not expanded
 # because they have their own entry.
 function tree_children(node, prefix, depth, all_manual,    m, list, i, child, connector, extension, line) {
-  m = split(children[node], list, " ")
+  m = split(child_list(node), list, " ")
   for (i = 1; i <= m; i++) {
     child = list[i]
     if (i == m) {
@@ -299,7 +342,7 @@ function tree_children(node, prefix, depth, all_manual,    m, list, i, child, co
       continue
     }
     if (DEPTH > 0 && depth >= DEPTH) {
-      if (children[child] != "") {
+      if (child_list(child) != "") {
         line = line " ..."
       }
       print line

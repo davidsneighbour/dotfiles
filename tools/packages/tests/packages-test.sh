@@ -188,6 +188,31 @@ curl [manual]
 EOF
 )" tree curl --depth 1
 
+assert_output "tree --depends-only: soft edges left out" 0 "$(
+  cat <<'EOF'
+curl [manual]
+├── libcurl4 [automatic]
+│   ├── libnghttp2-14 [automatic]
+│   │   └── libc6 [automatic, essential]
+│   └── libc6 [automatic, essential] (see above)
+└── libc6 [automatic, essential] (see above)
+EOF
+)" tree curl --depends-only
+
+assert_output "why --depends-only: hard paths only" 0 "$(
+  "${PACKAGES}" why libfoo
+)" why libfoo --depends-only
+
+assert_output "why --depends-only: needed only through soft edges" 0 "$(
+  cat <<'EOF'
+bash-completion [automatic]
+
+No manual or essential package needs it through Pre-Depends or Depends.
+It is needed only through Recommends or Suggests, so APT keeps it.
+Run without --depends-only to see these paths.
+EOF
+)" why bash-completion --depends-only
+
 assert_output "manual" 0 "$(printf '%s\n' appa appb curl mail-app tool-c)" manual
 assert_output "automatic: installed minus manual, removed-pkg not listed" 0 "$(
   printf '%s\n' bash-completion cyca cycb leftover libbar libc6 libcurl4 libfoo libnghttp2-14 oldkernel postfix

@@ -55,6 +55,8 @@ Options:
   --package <name>  A package name or glob. Can be repeated.
   --all             why: show all paths (default: the first ${DEFAULT_MAX_ROOTS}).
   --depth <n>       tree: stop after <n> levels (default: no limit).
+  --depends-only    why, tree: follow only Pre-Depends and Depends. The
+                    default follows all four types, as APT does.
   --no-color        Do not colour the output. NO_COLOR has the same effect.
   --verbose         Print what the command does to stderr and log it to
                     ${LOG_DIR}/YYYYMMDD-HHMMSS.log.
@@ -81,6 +83,7 @@ Examples:
   ${SCRIPT_NAME} why libnghttp2-14
   ${SCRIPT_NAME} why 'libcurl*' --all
   ${SCRIPT_NAME} tree --package curl --depth 2
+  ${SCRIPT_NAME} tree curl --depends-only
   ${SCRIPT_NAME} find curl
   ${SCRIPT_NAME} find 'python3-*'
 EOF
@@ -363,6 +366,7 @@ run_graph() {
 
   awk -v CMD="${command}" -v NAMES="${names}" -v ORPHANS="${orphans}" \
     -v MAX_ROOTS="${MAX_ROOTS}" -v DEPTH="${DEPTH}" -v COLOR="${COLOR}" \
+    -v HARD_ONLY="${HARD_ONLY}" \
     -f "${GRAPH_AWK}" "${WORK_DIR}/installed.tsv" "${WORK_DIR}/manual.txt"
 }
 
@@ -402,6 +406,7 @@ COMMAND=""
 PACKAGE_ARGS=()
 MAX_ROOTS="${DEFAULT_MAX_ROOTS}"
 DEPTH=0
+HARD_ONLY=0
 COLOR=0
 no_color='false'
 quiet_mode='false'
@@ -428,6 +433,9 @@ while [[ "$#" -gt 0 ]]; do
     ;;
   --all)
     MAX_ROOTS=0
+    ;;
+  --depends-only)
+    HARD_ONLY=1
     ;;
   --depth)
     if [[ "$#" -lt 2 || ! "${2}" =~ ^[0-9]+$ ]]; then
