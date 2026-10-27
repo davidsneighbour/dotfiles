@@ -10,6 +10,7 @@ This is the canonical entry point. Read matching `.agents/instructions/` files b
 * For layout, environment, or related package locations, read [.agents/references/repository-layout.md](.agents/references/repository-layout.md).
 * For Bash or interactive-shell work, including extensionless commands outside automatic scopes, read [.agents/instructions/bashrc/bashrc.instructions.md](.agents/instructions/bashrc/bashrc.instructions.md).
 * For CLI work outside automatic scopes, read [.agents/instructions/cli.instructions.md](.agents/instructions/cli.instructions.md).
+* For a PATH wrapper that exposes a Bash or Node script as a command from `bin/`, read [.agents/references/path-wrappers.md](.agents/references/path-wrappers.md).
 * For logging in any language, read [.agents/instructions/bashrc/logging-and-verbosity.instructions.md](.agents/instructions/bashrc/logging-and-verbosity.instructions.md).
 * For cronjobs, `.github/dnb.toml`, or log pruning, read the corresponding [automation](.agents/references/automation.md), [configuration](.agents/references/repository-config.md), or [pruning](.agents/references/logfile-pruning.md) reference.
 * For any Tailscale-related work, including Tailnet connectivity, remote access, and service exposure, read [.agents/references/tailscale.md](.agents/references/tailscale.md).
@@ -36,5 +37,6 @@ Commit directly to `main` only when authorised; branch only when explicitly aske
 
 ## Request shorthand
 
+* **Create a PATH wrapper for `<script>` as `<command>`:** add an executable Bash wrapper in `bin/<command>` so Bash can find it through `PATH`; follow [the PATH wrapper procedure](.agents/references/path-wrappers.md). If the command name is omitted, use the script basename without its extension unless that would conflict with an existing command.
 * **Update your references:** fetch the repository in use, update to the latest main-branch HEAD, adapt code for upstream changes, and resolve conflicts.
 * **Document:** update the relevant folder README, or link new documentation from it; explain behaviour and usage with concise, accurate prose.

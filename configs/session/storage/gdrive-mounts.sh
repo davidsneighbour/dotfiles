@@ -28,14 +28,34 @@ AUTH_PORT=8080
 VERBOSE="${DNB_VERBOSE:-0}"
 LOGFILE=""
 
+list_profiles() {
+  local base dir profile
+  local -A profiles=()
+
+  for base in "${XDG_CONFIG_HOME:-${HOME}/.config}/gdfuse" "${HOME}/.gdfuse"; do
+    for dir in "${base}"/*; do
+      [[ -d "${dir}" && -f "${dir}/config" ]] || continue
+      profile="${dir##*/}"
+      profiles["${profile}"]=1
+    done
+  done
+
+  if [[ ${#profiles[@]} -eq 0 ]]; then
+    printf 'No configured profiles found.\n'
+  else
+    printf '%s\n' "${!profiles[@]}" | LC_ALL=C sort
+  fi
+}
+
 print_help() {
   cat <<EOF
-Usage: ${SCRIPT_NAME} [--reauth] [--label <label>] [--no-notify] [--verbose] [--quiet] [--help]
+Usage: ${SCRIPT_NAME} [--reauth] [--label <label>] [--list-profiles] [--no-notify] [--verbose] [--quiet] [--help]
 
 Mount Google Drive accounts with google-drive-ocamlfuse at ${MOUNT_BASE}/<label>.
 Without options, all configured labels are mounted (${LABELS[*]}).
 
 Options:
+  --list-profiles  List profiles found in configuration directories and exit.
   --label <label>  Work on this label only (default: all configured labels).
   --reauth         Discard the stored refresh token of the label(s), start the
                    browser-based Google authorisation, then mount again.
@@ -51,6 +71,8 @@ Examples:
   ${SCRIPT_NAME}
   ${SCRIPT_NAME} --reauth --label pkollitsch
 EOF
+  printf '\nAvailable profiles (use with --label):\n'
+  list_profiles
 }
 
 log() {
@@ -260,6 +282,7 @@ REAUTH=0
 NOTIFY=1
 SELECTED_LABEL=""
 QUIET=0
+LIST_PROFILES=0
 
 while [[ "${#}" -gt 0 ]]; do
   case "${1}" in
@@ -269,6 +292,9 @@ while [[ "${#}" -gt 0 ]]; do
     ;;
   --reauth)
     REAUTH=1
+    ;;
+  --list-profiles)
+    LIST_PROFILES=1
     ;;
   --label)
     if [[ -z "${2:-}" ]]; then
@@ -296,6 +322,11 @@ while [[ "${#}" -gt 0 ]]; do
   esac
   shift
 done
+
+if [[ "${LIST_PROFILES}" == "1" ]]; then
+  list_profiles
+  exit 0
+fi
 
 if [[ "${QUIET}" == "1" ]]; then
   VERBOSE=0
