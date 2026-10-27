@@ -12,6 +12,7 @@ This is the canonical entry point. Read matching `.agents/instructions/` files b
 * For CLI work outside automatic scopes, read [.agents/instructions/cli.instructions.md](.agents/instructions/cli.instructions.md).
 * For logging in any language, read [.agents/instructions/bashrc/logging-and-verbosity.instructions.md](.agents/instructions/bashrc/logging-and-verbosity.instructions.md).
 * For cronjobs, `.github/dnb.toml`, or log pruning, read the corresponding [automation](.agents/references/automation.md), [configuration](.agents/references/repository-config.md), or [pruning](.agents/references/logfile-pruning.md) reference.
+* For any Tailscale-related work, including Tailnet connectivity, remote access, and service exposure, read [.agents/references/tailscale.md](.agents/references/tailscale.md).
 * Before any graphical desktop work, read [SESSION.md](SESSION.md); update it when documented behaviour changes. Target i3. Replace obsolete XFCE behaviour with i3 equivalents only within requested feature work.
 
 ## Shared rules
