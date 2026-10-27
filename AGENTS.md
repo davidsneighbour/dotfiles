@@ -1,342 +1,39 @@
-<!-- markdownlint-disable-next-line title-case-style -->
+<!-- markdownlint-disable-next-line dnb-title-case-style -->
 # AGENTS.md
 
-This repository contains the personal dotfiles, automation scripts, and infrastructure tooling of **Patrick Kollitsch (David's Neighbour)**.
+Production Linux workstation dotfiles: prioritise reproducibility, safety, maintainability, explicit state, and observable failures. Preserve behaviour during refactors. Avoid unnecessary frameworks, meta build systems, plugin-heavy solutions, and cross-platform promises. Keep the workstation usable without cloud dependencies or proprietary tooling.
 
-It is a *production system*, not a playground. All changes must prioritise reproducibility, safety, and long-term maintainability.
+## Discovery
 
-This document defines **scope**, **architecture**, **features**, and **mandatory rules** for working with this repository.
+This is the canonical entry point. Read matching `.agents/instructions/` files before editing; their non-global `applyTo` scopes define applicability. Load `.agents/references/` only for the relevant task. Read folder `README.md` and `INDEX.md` files before working there.
 
-## Purpose and philosophy
+* For layout, environment, or related package locations, read [.agents/references/repository-layout.md](.agents/references/repository-layout.md).
+* For Bash or interactive-shell work, including extensionless commands outside automatic scopes, read [.agents/instructions/bashrc/bashrc.instructions.md](.agents/instructions/bashrc/bashrc.instructions.md).
+* For CLI work outside automatic scopes, read [.agents/instructions/cli.instructions.md](.agents/instructions/cli.instructions.md).
+* For logging in any language, read [.agents/instructions/bashrc/logging-and-verbosity.instructions.md](.agents/instructions/bashrc/logging-and-verbosity.instructions.md).
+* For cronjobs, `.github/dnb.toml`, or log pruning, read the corresponding [automation](.agents/references/automation.md), [configuration](.agents/references/repository-config.md), or [pruning](.agents/references/logfile-pruning.md) reference.
+* Before any graphical desktop work, read [SESSION.md](SESSION.md); update it when documented behaviour changes. Target i3. Replace obsolete XFCE behaviour with i3 equivalents only within requested feature work.
 
-This dotfiles repository exists to:
+## Shared rules
 
-* Provide a **reproducible Linux workstation setup**
-* Centralise **CLI tools, Bash functions, and automation**
-* Manage **Docker-based services** in a consistent structure
-* Encode **operational knowledge** as scripts instead of documentation
-* Remain usable without cloud dependencies or proprietary tooling
+* Inspect conventions and reuse existing helpers. Do not silently assume unclear intent or missing facts; ask. Never remove safeguards without justification. Breaking changes require explicit acknowledgement.
+* Use npm and static dependency versions; `npm install` must work.
+* Scripts are authoritative. Document code changes accurately, update related README/index files, and avoid duplication. Update source inputs rather than generated Bash documentation; see the [Bash instructions](.agents/instructions/bashrc/bashrc.instructions.md).
+* Run `npm run check` before considering a change done; see [validation commands](.agents/references/validation.md).
 
-Core principles:
+## Secrets
 
-* Explicit over implicit
-* Safe defaults over clever shortcuts
-* Scripts must be composable and inspectable
-* Failure must be observable and explainable
-* No hidden state
+* Credentials belong only in real, Git-ignored `.env` files or `protected/`, never templates or examples. Anonymise token-shaped examples, such as `gpd_######`.
+* Load secrets from documented configuration. Missing secrets must produce a short, non-fatal skip without disrupting unrelated work. Never log secret values, including in debug output.
+* Do not bypass `secretlint`, which checks tracked files through lint-staged, or narrow `.secretlintignore` to conceal a finding.
 
-## High-level structure
+## Delivery
 
-The repository is organised by *function*, not by technology.
+Commit directly to `main` only when authorised; branch only when explicitly asked. Use Conventional Commits and scopes from `.release-it.ts`. Do not push without authorisation.
 
-Top-level areas:
+`protected/` is a separate, Git-ignored repository; do not modify its contents unless explicitly asked. For tracked submodules, stage only the recorded HEAD from the parent; do not commit, amend, clean, reset, or modify submodule work without explicit authorisation.
 
-* `bin/`
-  User-facing CLI commands
+## Request shorthand
 
-* `bashrc/`
-  Interactive shell layer: `bashrc/helpers/` (feature-organised helpers such as `docker/`, `ai-usage/`,
-  `gh/`, `dotfiles/`, `skillz/`, each with its own `tests/` subdirectory when tested) and
-  `bashrc/partials/` (composable aliases/completions/exports/functions/prompt/topical pieces assembled
-  by `bashrc/bashrc`). `bashrc/INDEX.md` and the `DOCUMENTATION*.md` files under `bashrc/` and
-  `bashrc/partials/` are generated references — update the source, not these files directly, unless
-  told otherwise.
-
-* `configs/`
-  Static, non-secret configuration (dotbot, fonts, hosts, installs, packages, session, system, theme,
-  vscode) applied to the workstation
-
-* `protected/`
-  Private submodule holding the secret counterpart to `configs/` (secrets, credentials, local secure
-  assets)
-
-* `containers/`
-  Docker Compose service stacks, one directory per stack
-
-* `scripts/`
-  This repository's own Node/TS tooling (linting, release, Node-engine sync)
-
-* `tools/`
-  Standalone utilities (for example `unsplash-collections`), distinct from `bin/` and `scripts/`
-
-* `docs/`
-  Human documentation (never required to operate the system)
-
-* `.github/`
-  Repository-specific configuration (including optional `dnb.toml` files)
-
-* `.agents/instructions/`
-  Scoped, topic-grouped agent-instruction files (`bashrc/`, `logs/`, `session/`, …) — see
-  [Documentation rules](#documentation-rules)
-
-### Related packages
-
-Packages referred to as `@davidsneighbour/PACKAGENAME` live at `https://github.com/davidsneighbour/PACKAGENAME`. If a referenced package is not found there, ask for a clear location for the latest version before depending on it.
-
-## Environment assumptions
-
-All scripts and tooling assume:
-
-* Linux (primary target: Linux Mint / Ubuntu-based)
-* Bash (not POSIX sh)
-* No cross-shell compatibility required
-* Node.js (modern LTS or newer)
-* Docker and Docker Compose available
-* Git available and configured
-
-Nothing in this repository is intended to run on macOS or Windows unless explicitly stated.
-
-## Bash standards (mandatory)
-
-All Bash code **MUST** comply with the following rules.
-
-### Instructions
-
-For all Bash and shell-related code, including every file within bashrc/ and any file outside that directory that influences the Bash or interactive shell experience, `.agents/instructions/bashrc/bashrc.instructions.md` MUST be read and strictly adhered to.
-
-### Shell and safety
-
-* Use `#!/bin/bash`
-* Do **NOT** rely on `/usr/bin/env`
-* Interactive shell functions **MUST NOT** use:
-
-  * `set -e`
-  * `set -u`
-  * `set -o pipefail`
-* Non-interactive scripts **MUST** fail safely and explicitly
-
-### Linting and correctness
-
-* All scripts **MUST** pass `shellcheck`
-* SC2250-style pipe safety **MUST** be respected
-* No empty `catch`-equivalent blocks
-* Errors must be logged or printed meaningfully
-
-### Variables and quoting
-
-* Always use `${var}` syntax
-* Never rely on implicit globbing
-* Quote paths unless intentional splitting is required
-
-### Logging
-
-* All logs go to `~/.logs/` into a subdirectory that reflects the functionality being logged (e.g. `~/.logs/cron/` for cronjob logs)
-* If you are able to use `dnb_log_init` the folder will be created for you, otherwise you must ensure the folder exists before writing logs
-* Log files **MUST** be named: `YYYYMMDD-HHMMSS.log`
-
-No per-error or per-script log naming.
-
-## CLI behaviour standards
-
-All user-facing CLI scripts **MUST**:
-
-* Support `--help`
-* Print help if required parameters are missing
-* Use named flags, never positional-only arguments
-* Support `--verbose` (default: minimal output)
-* Fail gracefully with actionable messages
-
-### Help output
-
-* Help text must be accurate
-* Function-level help should use `${FUNCNAME[0]}` where applicable
-* Usage examples are encouraged
-
-### Bash completion for `_functions/`
-
-Every function added to or changed in `bashrc/partials/_functions/` **MUST** have a matching bash
-completion file in `bashrc/partials/_completions/` (same base name, no extension) that offers the
-function's flags via `complete -F`. `_completions/` is auto-sourced, so a new file is picked up
-without further wiring. When a function gains, loses, or renames a flag, update its completion file
-in the same change. See `bashrc/partials/_completions/searchfor` for a minimal example.
-
-## Repository-local configuration (`.github/dnb.toml`)
-
-Repositories may optionally define a configuration file at `.github/dnb.toml`.
-
-Properties:
-
-* File may exist or not
-* Absence is **not an error**
-* Consumers must treat missing values as `false`
-* Empty strings are valid values
-* Only zero-length strings are considered empty
-
-### Access pattern
-
-* Configuration keys use dot notation: `section.key`
-* Consumers must rely on **exit codes**, not sentinel strings
-* Literal `"false"` is a valid value and must not collide with "not found"
-
-This design intentionally avoids JSON and complex schemas.
-
-<!-- markdownlint-disable-next-line title-case-style -->
-## Node.js and TypeScript rules
-
-When Node.js is used:
-
-* ESM only
-* No `require`
-* No `any` typing
-* Strict typing preferred
-* Scripts must be runnable directly via `node script.ts`
-
-### Error handling
-
-* No empty `catch` blocks
-* Errors must be logged
-* Failures must be explicit
-
-### Package manager
-
-* Use static versions in `package.json`
-* Use npm as the package manager; `npm install` must work without issues
-
-## Common commands
-
-Run these from the repo root (npm, Node ^22/^24/^26 per `package.json` engines):
-
-* `npm run check` — full local gate: backup-runner test, ai-usage test, log-filename lint, shell test,
-  config lint, typecheck, markdown lint, shell lint. Run this before considering a change done.
-* `npm run test:shell` — `bashrc/helpers/tests/dotfiles-includes-test.sh` +
-  `tools/system-checkup/system-checkup --check 31-session-config` +
-  `tools/packages/tests/packages-test.sh`
-* `npm run test:ai-usage` — `node --experimental-strip-types bashrc/helpers/ai-usage/tests/ai-usage-test.ts`
-* `npm run test:backup-runner` — `node --experimental-strip-types bashrc/helpers/docker/tests/backup-runner-config-test.ts`
-* `npm run lint:shell` / `lint:shell:all` — shellcheck via `scripts/shell-quality.sh` (`lint-all` covers
-  the full tree, not just changed files)
-* `npm run lint:config` — `yamllint -c .yamllint.yml configs bashrc`
-* `npm run lint:markdown` / `lint:markdown:fix` — markdownlint-cli2
-* `npm run typecheck` — runs `typecheck:config`, `typecheck:scripts`, `typecheck:bash-helpers` (three
-  separate `tsconfig*.json` projects)
-* `npm run check:biome` / `check:biome:fix` — Biome check/format/lint combined
-* `npm run format:shell` — `scripts/shell-quality.sh format-write`
-
-There is no single-test runner; the `.ts` test files under `bashrc/helpers/**/tests/` are run directly
-with `node --experimental-strip-types <file>` for a targeted run.
-
-## Docker and containers
-
-Containers are managed via **Docker Compose**.
-
-Rules:
-
-* Volumes should be local to the compose file where possible
-* Paths must be explicit
-* No hidden bind mounts
-* No reliance on Docker Desktop features
-* Compose files must be readable without external context
-
-The repository prefers *few well-structured containers* over many small ones.
-
-## Cronjobs and automation
-
-Cronjobs:
-
-* Prefer `@reboot` where daily uptime is uncertain
-* Scripts must be idempotent
-* Scripts must log execution
-* Scripts must not assume network availability
-
-Cron scripts live alongside the functionality they support, not in a central cron folder.
-
-## Secrets and tokens
-
-* Real tokens, API keys, and other credentials belong only in real, gitignored `.env` files (or in the `protected/` submodule) — never in `.env.template`, `.env.example`, or any other file whose name or purpose marks it as a template
-* When a token-shaped value must appear in a template, example, or documentation, anonymise it (e.g. `gpd_######`) instead of using a real-looking value
-* Every secret-consuming script must load its value from a documented `.env`/config source, never a hardcoded literal
-* Missing secrets must fail safely and quietly (log a short skip message and continue or exit non-fatally), not spam errors or crash unrelated functionality
-* Never log secret values, even at verbose/debug log levels
-* `secretlint` (wired into `lint-staged` on every tracked file) is the enforcement backstop for this policy — do not bypass it or narrow `.secretlintignore` to work around a real finding
-
-## Documentation rules
-
-Documentation is **secondary**, not authoritative.
-
-Rules:
-
-* Scripts are the source of truth
-* Documentation must not describe behaviour that scripts do not enforce
-* Avoid duplication
-* Prefer short explanations over exhaustive prose
-* If a folder contains a `README.md`, read and follow it before working in that folder
-* If a folder contains an `INDEX.md`, read it and follow the structure it lays out
-* Update `README.md` and `INDEX.md` files as you work on their counterparts
-* Add documentation for any change you make in the codebase
-* Read and apply any instructions under `.agents/instructions/`, grouped by topic subfolder
-  (`bashrc/`, `logs/`, `session/`, …); files with an `applyTo` field are scoped by that glob, others
-  state their own scope inline (for example `.agents/instructions/session/i3-keybindings.instructions.md`,
-  also linked from `SESSION.md`)
-
-### Quick instructions
-
-These shorthand instructions carry a fixed meaning when a user gives them:
-
-* **"Update your references"** — fetch the currently used repository and update to the latest HEAD of the main branch; update code to reflect any upstream changes; resolve merge conflicts if any arise.
-* **"Document"** — add documentation to the `README.md` in the folder you worked on, or create a new documentation file and link it from `README.md`; explain what the code does, how to use it, and anything else useful to someone new to the codebase.
-
-## AI agent rules (mandatory)
-
-Any AI agent operating on this repository **MUST**:
-
-* Read this file before proposing changes
-* Follow all Bash, CLI, and safety rules
-* Ask explicitly if required information is missing
-* Never assume user intent
-* Never optimise for cleverness over clarity
-* Never remove safeguards without justification
-* Treat XFCE as obsolete and as the legacy session manager. New graphical
-  desktop features, improvements, bindings, startup behaviour, workspace
-  behaviour, and session services must target i3 only.
-* When feature work touches an XFCE configuration or an XFCE-specific feature,
-  remove the XFCE reference where it is no longer needed and replace the
-  behaviour with the i3 equivalent where possible and applicable. Do this as
-  part of the feature change, not as unrelated cleanup.
-* Before touching i3, Polybar, Rofi, X11/Xorg, LightDM/session selection,
-  or any other part of the graphical desktop session, read the repo-root
-  `SESSION.md` first — it is the authoritative session architecture
-  reference — and update it in the same change if the change affects what
-  it documents
-
-AI-generated code is treated as production code.
-
-## Change management
-
-### Commits and branching
-
-* Commit directly to `main`; create a branch only when explicitly asked to do so
-* Use Conventional Commits messages
-* Use `.release-it.ts` for the list of available commit scopes
-
-### Submodules
-
-When committing submodule updates, commit only the changed submodule HEAD recorded by this parent repository.
-Stage the submodule path from the parent repository, for example `git add protected`.
-Do not commit, amend, clean, reset, or otherwise modify work inside the submodule unless the user explicitly asks for submodule-internal changes.
-
-Before making changes:
-
-* Understand existing patterns
-* Do not introduce new conventions lightly
-* Prefer extending existing helpers over adding new ones
-* Refactors must preserve behaviour unless explicitly requested
-
-Breaking changes require explicit acknowledgement.
-
-## Non-goals
-
-This repository intentionally avoids:
-
-* Framework abstractions
-* Meta build systems
-* Plugin-heavy solutions
-* Over-generalisation
-* Cross-platform promises
-
-If a tool does not justify its existence, it does not belong here.
-
-## Final note
-
-This dotfiles repository is not a showcase. It is a **working system**.
-Consistency, restraint, and clarity are more valuable than novelty.
-When in doubt: **Make the safe thing obvious and the dangerous thing hard.**
+* **Update your references:** fetch the repository in use, update to the latest main-branch HEAD, adapt code for upstream changes, and resolve conflicts.
+* **Document:** update the relevant folder README, or link new documentation from it; explain behaviour and usage with concise, accurate prose.

@@ -1,13 +1,7 @@
 ---
-applyTo: 'bashrc/helpers/**/*.*, bashrc/helpers/**/*'
+applyTo: "bashrc/helpers/**"
 ---
 
-# Bashrc helpers instructions
+# Bashrc helper documentation
 
-## Documentation
-
-* every function must be listed in bashrc/helpers/DOCUMENTATION.md or a dedicated DOCUMENTATION.md in the same folder as the function/file.
-
-### Index
-
-* all functions/methods must be listed in bashrc/helpers/INDEX.md with a reference of the file they are located and documented in.
+Document every function in the source used to generate `bashrc/helpers/DOCUMENTATION.md`, or in a dedicated `DOCUMENTATION.md` beside its implementation when that file is maintained manually. Ensure generated helper documentation and `bashrc/helpers/INDEX.md` include every function or method and its source location. Update source inputs rather than editing generated references directly.

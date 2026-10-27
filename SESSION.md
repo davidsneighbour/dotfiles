@@ -88,7 +88,7 @@ User-triggered programs:
 
 ## Keybinding architecture
 
-Defined in `configs/session/i3/config` and its includes in `configs/session/i3/configs/` (`keybindings.conf`, `applications.conf`). `$mod` is `Mod4` (Super/Windows key). Before you add or change a binding — especially one that runs `exec` with a script and arguments, or that drives i3 workspaces, marks, or containers — read [`.agents/instructions/session/i3-keybindings.instructions.md`](.agents/instructions/session/i3-keybindings.instructions.md). `i3 -C -c` does not catch every way a binding can be broken. That file documents the error shapes, the rule that program-launch bindings use `Ctrl+Shift+Alt+<key>`, and how to verify a binding. The full table, which **MUST** be kept in sync with any binding change, is [`docs/i3-keybindings.md`](docs/i3-keybindings.md).
+Defined in `configs/session/i3/config` and its includes in `configs/session/i3/configs/` (`keybindings.conf`, `applications.conf`). `$mod` is `Mod4` (Super/Windows key). Before you add or change a binding — especially one that runs `exec` with a script and arguments, or that drives i3 workspaces, marks, or containers — read [`.agents/instructions/session/i3-keybindings.instructions.md`](.agents/instructions/session/i3-keybindings.instructions.md). `i3 -C -c` does not catch every way a binding can be broken. That file defines the rule that program-launch bindings use `Ctrl+Shift+Alt+<key>` and links to [the troubleshooting and runtime verification procedure](.agents/references/i3-keybindings.md). The full table, which **MUST** be kept in sync with any binding change, is [`docs/i3-keybindings.md`](docs/i3-keybindings.md).
 
 ### Bare `Super` key limitation
 

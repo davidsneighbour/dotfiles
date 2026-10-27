@@ -1,0 +1,62 @@
+# Repository layout
+
+The repository is organised by *function*, not by technology.
+
+Top-level areas:
+
+* `bin/`
+  User-facing CLI commands
+
+* `bashrc/`
+  Interactive shell layer: `bashrc/helpers/` (feature-organised helpers such as `docker/`, `ai-usage/`,
+  `gh/`, `dotfiles/`, `skillz/`, each with its own `tests/` subdirectory when tested) and
+  `bashrc/partials/` (composable aliases/completions/exports/functions/prompt/topical pieces assembled
+  by `bashrc/bashrc`). `bashrc/INDEX.md` and the `DOCUMENTATION*.md` files under `bashrc/` and
+  `bashrc/partials/` are generated references — update the source, not these files directly, unless
+  told otherwise.
+
+* `configs/`
+  Static, non-secret configuration (dotbot, fonts, hosts, installs, packages, session, system, theme,
+  vscode) applied to the workstation
+
+* `protected/`
+  Private, Git-ignored repository holding the secret counterpart to `configs/` (secrets, credentials, local secure
+  assets)
+
+* `containers/`
+  Docker Compose service stacks, one directory per stack
+
+* `scripts/`
+  This repository's own Node/TS tooling (linting, release, Node-engine sync)
+
+* `tools/`
+  Standalone utilities (for example `unsplash-collections`), distinct from `bin/` and `scripts/`
+
+* `docs/`
+  Human documentation (never required to operate the system)
+
+* `.github/`
+  Repository-specific configuration (including optional `dnb.toml` files)
+
+* `.agents/instructions/`
+  File-scoped behavioural rules, each with a non-global `applyTo`.
+
+* `.agents/references/`
+  Specialised context loaded by task triggers in `AGENTS.md` or scoped instructions.
+
+## Related packages
+
+Packages referred to as `@davidsneighbour/PACKAGENAME` live at `https://github.com/davidsneighbour/PACKAGENAME`. If a referenced package is not found there, ask for a clear location for the latest version before depending on it.
+
+## Environment
+
+All scripts and tooling assume:
+
+* Linux (primary target: Linux Mint / Ubuntu-based)
+* Bash (not POSIX sh)
+* No cross-shell compatibility required
+* Node.js (modern LTS or newer)
+* Docker and Docker Compose available
+* Git available and configured
+
+Nothing in this repository is intended to run on macOS or Windows unless explicitly stated.
