@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.29.0](https://github.com/davidsneighbour/dotfiles/compare/v2.28.2...v2.29.0) (2026-10-27)
+
+### Feat
+
+* **session:** add dedicated WhatsApp browser app ([0f852a8](https://github.com/davidsneighbour/dotfiles/commit/0f852a8ade82068c2f1204e484a871e300eab911))
+
+### Style
+
+* **polybar:** pad status indicators ([86dc037](https://github.com/davidsneighbour/dotfiles/commit/86dc03762ceec86e05a5efbd58dad4f3d9226853))
+
 ## [2.28.2](https://github.com/davidsneighbour/dotfiles/compare/v2.28.1...v2.28.2) (2026-10-25)
 
 ### Fix
