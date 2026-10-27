@@ -38,6 +38,7 @@ Configuration:
   Optional variables:
     APP_CLASS="slug"          # defaults to NAME
     APP_PROFILE="slug"        # defaults to NAME
+    APP_SINGLE_INSTANCE="false" # set true to focus an existing app window
     CHROME_BINARY="/path"     # defaults to /opt/google/chrome/google-chrome
 
 Runtime data:
@@ -48,6 +49,7 @@ HELP
 
 fail() {
   printf '%s: %s\n' "${PROGRAM_NAME}" "$*" >&2
+  usage >&2
   exit 1
 }
 
@@ -73,6 +75,7 @@ load_app() {
   APP_URL=""
   APP_CLASS="${app_id}"
   APP_PROFILE="${app_id}"
+  APP_SINGLE_INSTANCE="false"
   CHROME_BINARY="${DEFAULT_CHROME_BINARY}"
 
   # shellcheck source=/dev/null
@@ -81,6 +84,8 @@ load_app() {
   [[ -n "${APP_NAME}" ]] || fail "APP_NAME is missing in ${config_file}"
   [[ -n "${APP_URL}" ]] || fail "APP_URL is missing in ${config_file}"
   [[ "${APP_URL}" =~ ^https?:// ]] || fail "APP_URL must use http:// or https:// in ${config_file}"
+
+  [[ "${APP_SINGLE_INSTANCE}" == "true" || "${APP_SINGLE_INSTANCE}" == "false" ]] || fail "APP_SINGLE_INSTANCE must be true or false in ${config_file}"
 
   validate_slug "${APP_CLASS}"
   validate_slug "${APP_PROFILE}"
@@ -95,7 +100,6 @@ load_app() {
 
 list_apps() {
   local file=""
-  local found=0
 
   if [[ ! -d "${DEFAULT_CONFIG_DIR}" ]]; then
     return 0
@@ -103,10 +107,9 @@ list_apps() {
 
   while IFS= read -r -d '' file; do
     basename "${file}" .conf
-    found=1
   done < <(find "${DEFAULT_CONFIG_DIR}" -maxdepth 1 -type f -name '*.conf' -print0 | sort -z)
 
-  return $((found == 1 ? 0 : 0))
+  return 0
 }
 
 print_configuration() {
@@ -120,6 +123,23 @@ print_configuration() {
 
 launch_app() {
   local verbose="${1}"
+
+  if [[ "${APP_SINGLE_INSTANCE}" == "true" ]]; then
+    command -v wmctrl >/dev/null 2>&1 || fail "single-instance apps require wmctrl; install it before launching ${APP_ID}"
+    local windows=""
+    local window_id=""
+    windows="$(wmctrl -lx)" || fail "unable to list existing app windows"
+    window_id="$(awk -v app_class="${APP_CLASS}" '
+      substr(tolower($3), length($3) - length(app_class)) == "." tolower(app_class) {
+        print $1
+        exit
+      }
+    ' <<<"${windows}")"
+    if [[ -n "${window_id}" ]]; then
+      wmctrl -ia "${window_id}" || fail "unable to focus existing ${APP_ID} window"
+      return 0
+    fi
+  fi
 
   mkdir -p "${APP_DATA_DIR}" || fail "unable to create user-data directory: ${APP_DATA_DIR}"
 

@@ -3,7 +3,7 @@ Version=1.0
 Type=Application
 Name=Claude
 Comment=Claude isolated Chrome app
-Exec=chrome-app --app=claude
+Exec=chrome-app --app claude
 Icon=claude
 Terminal=false
 StartupNotify=true

@@ -52,6 +52,10 @@
     ~/.local/share/barrier/.barrier.conf: configs/session/barrier/barrier.conf
     ~/.local/share/applications: configs/session/launchers
 
+    # Dedicated Chrome web apps
+    ~/.local/bin/chrome-app: bashrc/helpers/chrome-app
+    ~/.config/chrome-apps/apps: configs/session/chrome-apps/apps
+
     # configs
     ~/.nvmrc: .nvmrc
     ~/.editorconfig: .editorconfig
@@ -72,6 +76,7 @@
     # theme configs
     ~/.icons/DNB-Bibata: configs/theme/DNB-Bibata
     ~/.icons/DNB: configs/theme/DNB
+    ~/.local/share/icons/hicolor/scalable/apps/whatsapp.svg: configs/theme/DNB/scalable/apps/whatsapp.svg
 
     # Tool configs
     ~/.config/github-label-manager: configs/session/git/github-label-manager

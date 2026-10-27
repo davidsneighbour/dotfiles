@@ -71,6 +71,7 @@ i3 has no session manager, so it does not read XDG autostart (`~/.config/autosta
 | Enpass | `session-colour-scheme --tool enpass -- --minimize` | `exec` | Non-fatal. Starts once per session so it does not prompt again on every i3 restart. |
 | Barrier | `/usr/bin/barrier` | `exec` | Non-fatal. Keyboard and mouse sharing; config at `configs/session/barrier/barrier.conf`. |
 | Discord | `/usr/bin/discord --start-minimized` | `exec` | Non-fatal. Starts in the tray. |
+| WhatsApp | `~/.local/bin/chrome-app --app whatsapp` | `exec` | Non-fatal. Starts once per login and reuses an existing app window. |
 | xss-lock | `systemctl --user start xss-lock.service` (after `import-environment` and `reset-failed`) | `exec_always` | Non-fatal. See "Screen lock". |
 | Wallpaper | `feh --bg-fill configs/session/i3/wallpaper.jpg` | `exec_always` | Non-fatal. |
 | Google Drive mounts | `configs/session/storage/gdrive-mounts.sh` | `exec` | Non-fatal. See `configs/session/storage/README.md`. |
@@ -312,3 +313,11 @@ The i3 startup include runs `bashrc/helpers/session-colour-scheme --apply` with 
 ## Agent maintenance requirement
 
 Any change to i3, Polybar, Rofi, X11/Xorg, LightDM/session selection, startup scripts, environment setup, wallpaper/background, notifications, compositor, monitors, input sharing, workspace behaviour, window assignment, screen locking, suspend/logout controls, or related session services must update this file in the same change. Agents starting work on the desktop session should read `AGENTS.md` and this file, plus any applicable `.agents/instructions/`, folder `README.md`, and `INDEX.md` files, before making changes.
+
+## Dedicated web apps
+
+Dotbot links `bashrc/helpers/chrome-app` to `~/.local/bin/chrome-app` and the app definitions to `~/.config/chrome-apps/apps/`. The WhatsApp desktop launcher uses `chrome-app --app whatsapp`, with class `dnb-whatsapp` and its canonical profile at `~/.local/share/chrome-apps/whatsapp/` in the standard XDG environment. It starts once per i3 login, can also be opened on demand, and has no i3 workspace assignment. See [Chrome apps](configs/session/chrome-apps/README.md) for installation and inspection.
+
+The WhatsApp launcher icon is supplied by the DNB theme and linked into the local hicolor fallback theme by Dotbot. `window_icons.rules` in `configs/session/i3/workspaces/workspaces.yaml` maps `dnb-whatsapp` to the Lucide messages-square glyph (`U+E40D`) for dynamic workspaces.
+
+WhatsApp enables `APP_SINGLE_INSTANCE="true"` in its Chrome app definition. Repeated launches activate the first existing `dnb-whatsapp` window through `wmctrl -ia`, switching to its workspace. The Rofi workspace launcher may briefly create an empty workspace, which i3 removes when focus returns to WhatsApp. Existing duplicate windows are not closed automatically.

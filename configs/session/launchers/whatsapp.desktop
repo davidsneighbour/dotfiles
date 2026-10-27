@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=WhatsApp
+Comment=WhatsApp Web in its dedicated Chrome profile
+Exec=chrome-app --app whatsapp
+Icon=whatsapp
+Terminal=false
+StartupNotify=true
+StartupWMClass=dnb-whatsapp
+Categories=Network;InstantMessaging;

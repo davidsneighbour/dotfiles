@@ -23,7 +23,7 @@ at the repo root. This file only documents what lives in this folder.
 
 ## Startup
 
-`configs/session-starts.conf` holds every command that starts with the session (colour scheme, GNOME Keyring, polkit agent, background, Polybar, Enpass, Barrier, Discord, xss-lock, wallpaper, Google Drive mounts, and the system checkup). Every line is non-fatal. See "Startup sequence" in [`SESSION.md`](../../../SESSION.md) for the full table.
+`configs/session-starts.conf` holds every command that starts with the session (colour scheme, GNOME Keyring, polkit agent, background, Polybar, Enpass, Barrier, Discord, WhatsApp, xss-lock, wallpaper, Google Drive mounts, and the system checkup). Every line is non-fatal. See "Startup sequence" in [`SESSION.md`](../../../SESSION.md) for the full table.
 
 ## Design
 
@@ -93,6 +93,8 @@ Programs started on a new workspace (bare `Super`, `Super+Shift+D`, or `Ctrl+Shi
    print([(r['class'], hex(ord(r['icon']))) for r in d['window_icons']['rules'] if 'class' in r])
    "
    ```
+
+WhatsApp uses class `dnb-whatsapp`, slug `whatsapp`, and the Lucide messages-square icon (`U+E40D`).
 
 You do not need to reload i3. `workspaces.py` reads `workspaces.yaml` each time it runs, so the rule applies from the next launch. The first rule that matches wins.
 
