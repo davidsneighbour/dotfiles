@@ -44,22 +44,25 @@ style = "bold fg:bright-red"
 when = "sudo -vn &>/dev/null"
 
 [custom.git_status]
+# Dots use 24-bit escapes for the Nosferatu red, yellow, and green from
+# [palettes.nosferatu]; Starship does not apply palette names to $output.
 command = '''
 git_status=$(git status --porcelain)
 # Untracked or Deleted (unstaged) files - Red
-if echo ${git_status} | grep -qe '^?? ' -e '^[MARCDU ]D ' -e '^D[ UM]'; then
-    echo -n $'\e[31m●'
+if echo "${git_status}" | grep -qe '^?? ' -e '^[MARCDU ]D ' -e '^D[ UM]'; then
+    printf '\033[38;2;255;125;108m●'
 fi
 
 # Modified (unstaged) and Renamed files - Yellow
-if echo ${git_status} | grep -qe '^[ MARC]M ' -e '^R[ MD] '; then
-    echo -n $'\e[33m●'
+if echo "${git_status}" | grep -qe '^[ MARC]M ' -e '^R[ MD] '; then
+    printf '\033[38;2;242;200;97m●'
 fi
 
 # Staged files (including Deleted) - Green
-if echo ${git_status} | grep -qe '^A[ MDAU] ' -e '^M[ MD] ' -e '^UA' -e '^D '; then
-    echo -n $'\e[32m●'
+if echo "${git_status}" | grep -qe '^A[ MDAU] ' -e '^M[ MD] ' -e '^UA' -e '^D '; then
+    printf '\033[38;2;208;219;196m●'
 fi
+printf '\033[0m'
 '''
 when = 'git rev-parse --is-inside-work-tree >/dev/null 2>&1'
 format = '( $output)'
