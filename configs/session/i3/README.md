@@ -25,6 +25,12 @@ at the repo root. This file only documents what lives in this folder.
 
 `configs/session-starts.conf` holds every command that starts with the session (colour scheme, GNOME Keyring, polkit agent, background, Polybar, Enpass, Barrier, Discord, WhatsApp, xss-lock, wallpaper, Google Drive mounts, and the system checkup). Every line is non-fatal. See "Startup sequence" in [`SESSION.md`](../../../SESSION.md) for the full table.
 
+### Application autostart workspaces
+
+For an autostart application that needs its own dynamic workspace and icon, use the same `workspaces.py launch-command -- <command> <arguments>` wrapper as the Rofi new-workspace launcher. Do not call the application directly and assume its workspace icon will be set. Use plain `exec --no-startup-id` to start it once per login, and follow the shell quoting in `configs/session-starts.conf`'s WhatsApp entry.
+
+Add or verify the application's class or instance rule in `workspaces/workspaces.yaml` under `window_icons.rules`. The wrapper creates the workspace, then sets its icon when the first window appears (up to 15 seconds). Verify the login command through i3 IPC and inspect both window placement and the workspace icon; syntax validation alone does not prove either. For a fixed numbered workspace, use the existing i3 assignment mechanism and its configured icon instead.
+
 ## Design
 
 * `$mod` is `Mod4` (Super/Windows key).

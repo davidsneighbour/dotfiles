@@ -16,7 +16,7 @@ chrome-app --app whatsapp
 
 Use the space form `--app NAME`. On first launch, link WhatsApp Web using your phone. Authentication stays in the dedicated profile; do not copy it into an automation-specific profile.
 
-WhatsApp starts automatically once per i3 login through `configs/session/i3/configs/session-starts.conf`. Reloading or restarting i3 does not start it again.
+WhatsApp starts automatically once per i3 login through `configs/session/i3/configs/session-starts.conf`, using `workspaces.py launch-command -- ~/.local/bin/chrome-app --app whatsapp` to create its dynamic workspace and set the WhatsApp workspace icon. Reloading or restarting i3 does not start it again.
 
 ## Single instance
 
