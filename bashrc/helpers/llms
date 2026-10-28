@@ -1,0 +1,1024 @@
+#!/usr/bin/env node
+/**
+ * newllm — what is new, changed, and gone among free & stealth LLMs on OpenRouter.
+ *
+ * WHAT IT DOES
+ *   Monitors OpenRouter's free model catalog and its Stealth Program codenames.
+ *   On each run it fetches the current catalog, compares it against the state
+ *   written by the previous run, and reports what appeared, what disappeared,
+ *   what stopped being free, and which stealth codenames came or went. It also
+ *   offers a ranked comparison of free models, full detail blocks, and a
+ *   machine-readable summary.
+ *
+ * DATA SOURCES (all public; no API key required)
+ *   catalog   https://openrouter.ai/api/v1/models
+ *             Every public model with pricing, architecture, supported params,
+ *             benchmarks, description and expiry metadata.
+ *   stealth   https://openrouter.ai/stealth
+ *             Stealth Program codenames. These are NOT in the catalog, so each
+ *             codename's name/context/description is scraped from its own page
+ *             at https://openrouter.ai/stealth/<codename> (og:title and
+ *             og:description meta tags).
+ *   providers https://openrouter.ai/api/frontend/v1/all-providers
+ *             Provider list with dataPolicy.training, used for the "prompt
+ *             training" column in --rank. Provider names and display names are
+ *             normalized (lowercased, non-alphanumerics stripped) to match the
+ *             org prefix of a model id.
+ *
+ * STATE AND CACHE — ${XDG_STATE_HOME:-$HOME/.local/state}/newllm/
+ *   catalog.json    last successfully fetched catalog response
+ *   providers.json  last successfully fetched providers response
+ *   state.json      { updated, free: { id: {prompt, name, first_seen} },
+ *                     stealth: { id: {name, ctx, desc, first_seen} } }
+ *   The first run with no state.json is a BASELINE run: it records what exists
+ *   now and prints it, and only later runs report differences.
+ *
+ * FREE DEFINITION
+ *   A model is free when BOTH pricing.prompt == "0" AND pricing.completion == "0".
+ *   Two kinds are distinguished when rendering detail:
+ *     ":free" id suffix  -> promotional variant, can be withdrawn
+ *     base model at $0   -> free by policy
+ *   A $0-per-token model can still charge per artifact (e.g. per image); that
+ *   only ever appears in the description, so the description is scanned for
+ *   "$N" price tags and surfaced as a note.
+ *
+ * DIFFING (previous run -> now)
+ *   NEW     free model present now, absent from previous state
+ *   GONE    free model from previous state, absent now AND absent from the full
+ *           catalog (i.e. delisted entirely)
+ *   UNFREE  free model from previous state, absent from the free set now, but
+ *           still present in the full catalog (i.e. it now costs money)
+ *   Stealth codenames are diffed as plain sets: NEW-STEALTH and GONE-STEALTH.
+ *
+ * OUTPUT MODES (first matching branch wins, in this order)
+ *   --json            machine-readable summary: counts plus the changed lists
+ *   -q/--quiet/--check  one TSV line per change, "BASELINE" line on first run;
+ *                     exit status 1 when there were no changes (for cron)
+ *   --rank            two lists (see below); also the default when no mode is given
+ *   --all             every free model detail block, then every stealth block
+ *   --changes         only what changed since the previous run, else "nothing changed";
+ *                     with no prior state this prints the baseline listing instead
+ *
+ * --rank DETAIL
+ *   List 1 — SCORED: free models carrying an Artificial Analysis intelligence
+ *     index, sorted descending by that index. Columns: rank, model, three bars
+ *     (intelligence / coding / agentic), context window, and whether the model's
+ *     provider trains on prompts (yes/no/unknown; "router" for openrouter/*).
+ *     Each bar is scaled relative to the best score in its own column, so a
+ *     short coding bar means "weak in coding", not "weak overall".
+ *   List 2 — UNSCORED: free models with no intelligence index. They cannot be
+ *     ranked, so they are listed with context window, any Design Arena Elo
+ *     (with its category), an expiry date if near, and a per-artifact charge
+ *     note. A model here is unmeasured, not necessarily bad.
+ *
+ * RENDERING
+ *   hum()    compact numbers: 2500000 -> "2.5M", 131072 -> "131k", 4096 -> "4096".
+ *   perm()   per-token price -> dollars per million tokens, decimals trimmed
+ *   bar()    fixed 10-glyph cell: blue fill over a dim track, then the raw
+ *            number in a 5-column right-aligned field. An unknown value renders
+ *            as a dim run of 10 dashes with a "·" placeholder, so every cell
+ *            keeps the same width and columns stay aligned. Corners are square
+ *            because Unicode has no rounded block glyphs.
+ *   snippet() truncate on a word boundary with an ellipsis
+ *
+ * ENVIRONMENT
+ *   OPENROUTER_API_KEY  optional; sent as Authorization: Bearer on the catalog
+ *   NO_COLOR            set to disable colour
+ *   --offline           use cached catalog and providers, do not touch the network
+ *
+ * EXIT STATUS
+ *   0 normal; 1 --check with no changes, or a fetch/cache failure; 2 bad option
+ *
+ * CAVEATS
+ *   Free windows are time-limited (expiration_date is surfaced when near or past).
+ *   Stealth providers may retain your prompts and completions — read what you send.
+ */
+
+import fs, { promises, existsSync } from "node:fs";
+
+const { mkdirSync } = fs;
+
+const PROG = "newllm";
+
+// ----------------------------------------------------------------- config
+
+const HOME = process.env.HOME ?? "";
+const STATE_DIR = `${process.env.XDG_STATE_HOME ?? `${HOME}/.local/state`}/newllm`;
+const STATE_FILE = `${STATE_DIR}/state.json`;
+const CACHE_FILE = `${STATE_DIR}/catalog.json`;
+const PROV_FILE = `${STATE_DIR}/providers.json`;
+const CATALOG_URL = "https://openrouter.ai/api/v1/models";
+const STEALTH_URL = "https://openrouter.ai/stealth";
+const PROVIDERS_URL = "https://openrouter.ai/api/frontend/v1/all-providers";
+
+const USAGE = `newllm — what is new, changed, and gone among free & stealth LLMs on OpenRouter.
+
+  newllm                free models scored and ranked, with bars (the default)
+  newllm --rank         same as the default (--offline uses the cached provider list)
+  newllm --changes      new, gone and now-paid since the previous run
+  newllm --all          every currently free model, with details
+  newllm --json         machine readable
+  newllm -q             one line per change, exit 1 when nothing changed (cron)
+  newllm --reset        forget state and re-baseline
+  newllm --offline      use cached catalog and providers, skip the network
+  newllm --no-color     disable colour
+  newllm -h, --help     this text
+`;
+
+// ------------------------------------------------------------------ colour
+
+const COLOR = !!process.stdout.isTTY && !process.env.NO_COLOR;
+// Codes already carry their SGR terminator: "\x1b[1m", "\x1b[38;5;39m", ...
+const c = (code) => (COLOR ? `\x1b[${code}` : "");
+const B = c("1m"),
+  DIM = c("2m"),
+  GRN = c("32m"),
+  RED = c("31m");
+const YEL = c("33m"),
+  CYA = c("36m"),
+  BLU = c("38;5;39m"),
+  RST = c("0m");
+
+// ------------------------------------------------------------------- helpers
+
+const NOW = Math.floor(Date.now() / 1000);
+
+const pad2 = (n) => String(n).padStart(2, "0");
+const localDate = (d = new Date()) =>
+  `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
+const localDateTime = (d = new Date()) =>
+  `${localDate(d)} ${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
+const isoUTC = (d = new Date()) => d.toISOString().replace(/\.\d+Z$/, "Z");
+const TODAY = localDate();
+
+/** Right-pad to n columns (printf %-Ns). */
+const padEndS = (s, n) => (s.length >= n ? s : s + " ".repeat(n - s.length));
+/**
+ * Left-pad to n display columns (printf %Ns). Every glyph this renderer emits —
+ * ASCII, the block fills █ ░ ─ and the · placeholder — is exactly one column, so
+ * character count is display width. (bash's printf padded · by bytes, which made
+ * placeholder cells one column narrow and broke the alignment.)
+ */
+const padStartS = (s, n) => (s.length >= n ? s : " ".repeat(n - s.length) + s);
+/** Repeat a glyph n times. */
+const rep = (glyph, n) => (n > 0 ? glyph.repeat(n) : "");
+
+/**
+ * Compact number: 2500000 -> "2.5M", 131072 -> "131k", 4096 -> "4096".
+ * Empty or zero prints "-", matching the "unknown" convention.
+ */
+function hum(n) {
+  if (n === "" || n === null || n === undefined) return "-";
+  const x = Number(n);
+  if (!isFinite(x) || x === 0) return "-";
+  if (x >= 1_000_000) {
+    const w = Math.trunc(x / 1_000_000);
+    const r = Math.trunc((x % 1_000_000) / 100_000);
+    return r === 0 ? `${w}M` : `${w}.${r}M`;
+  }
+  if (x >= 1000) return `${Math.trunc(x / 1000)}k`;
+  return `${x}`;
+}
+
+/** Per-token price string -> dollars per million tokens, decimals trimmed. */
+function perm(p) {
+  if (!p) return "-";
+  const v = Number(p) * 1_000_000;
+  if (!isFinite(v)) return "-";
+  if (v === 0) return "0";
+  if (v >= 1) return String(Math.round(v * 100) / 100);
+  return String(Math.round(v * 100_000) / 100_000);
+}
+
+/** "41.1" -> 411, "25" -> 250: fixed-point x10 so bars avoid floats. */
+function scale10(v) {
+  const s = String(v);
+  return s.includes(".") ? Number(s.replace(".", "")) : Number(`${s}0`);
+}
+
+/** Models whose OpenRouter pricing is reported on every run. */
+const WATCHED = [
+  "deepseek/deepseek-v4-flash",
+  "deepseek/deepseek-v4-pro",
+  "deepseek/deepseek-v4.1-flash-1017",
+  "z-ai/glm-5.3",
+  "z-ai/glm-5.3-prime",
+  "moonshotai/kimi-k3.1-pro",
+  "minimax/minimax-m3.1-flash",
+];
+
+const DAY_NAMES = [
+  "sunday",
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+  "saturday",
+];
+
+/** Current UTC day name, lowercase, matching OpenRouter override utc_days values. */
+function nowUtcDay() {
+  return DAY_NAMES[new Date().getUTCDay()];
+}
+
+/** Current UTC time as an HHMM integer (e.g. 135 for 01:35, 1000 for 10:00). */
+function nowUtcHhmm() {
+  const d = new Date();
+  return d.getUTCHours() * 100 + d.getUTCMinutes();
+}
+
+/** The override entry matching the current UTC day and time, or null. */
+function matchingOverride(pricing) {
+  const ovs = pricing && pricing.overrides;
+  if (!ovs || !ovs.length) return null;
+  const day = nowUtcDay();
+  const hhmm = nowUtcHhmm();
+  for (const ov of ovs) {
+    const days = ov.utc_days;
+    if (!days || !days.includes(day)) continue;
+    const start = Number(ov.utc_start ?? 0);
+    const end = Number(ov.utc_end ?? 2400);
+    if (hhmm >= start && hhmm < end) return ov;
+  }
+  return null;
+}
+
+/** "peak" | "off-peak" | "flat" for the tier in effect right now. */
+function activeTierKind(pricing, active) {
+  const allPrices = [Number((pricing && pricing.prompt) ?? 0)];
+  for (const ov of (pricing && pricing.overrides) ?? []) {
+    allPrices.push(Number(ov.prompt ?? 0));
+  }
+  const max = Math.max(...allPrices);
+  const min = Math.min(...allPrices);
+  if (max === min) return "flat";
+  const activePin = active
+    ? Number(active.prompt ?? 0)
+    : Number((pricing && pricing.prompt) ?? 0);
+  if (activePin === max) return "peak";
+  if (activePin === min) return "off-peak";
+  return "off-peak";
+}
+
+/** Short modality tag from a catalog modality field, e.g. "(text)", "(image+video)". */
+function modalityTag(modality) {
+  const out = (modality || "").replace(/->text$/, "");
+  const ins = out.split("+").filter((x) => x !== "text");
+  if (ins.length === 0) return "(text)";
+  return `(${ins.join("+")})`;
+}
+
+/** Print current OpenRouter pricing for the watched models, per 1M tokens. */
+function reportPricing(models) {
+  const byId = new Map(models.map((m) => [m.id, m]));
+  const rows = [];
+  for (const id of WATCHED) {
+    const m = byId.get(id);
+    if (!m) {
+      rows.push([id, "not listed"]);
+      continue;
+    }
+    const pricing = m.pricing || {};
+    const active = matchingOverride(pricing);
+    const kind = activeTierKind(pricing, active);
+    const pin = active
+      ? String(active.prompt ?? pricing.prompt ?? "")
+      : String(pricing.prompt ?? "");
+    const pout = active
+      ? String(active.completion ?? pricing.completion ?? "")
+      : String(pricing.completion ?? "");
+    const pcache = perm(pricing.input_cache_read ?? "");
+    let line;
+    if (kind === "flat") {
+      line = `$${perm(pin)}/M in  $${perm(pout)}/M out`;
+    } else {
+      const now = kind === "peak" ? "peak now" : "off-peak now";
+      line = `${now} $${perm(pin)}/M in $${perm(pout)}/M out`;
+    }
+    if (pcache !== "" && pcache !== "0") line += `  (cache $${pcache}/M read)`;
+    line += `  ${modalityTag((m.architecture && m.architecture.modality) || "")}`;
+    rows.push([id, line]);
+  }
+  const wId = Math.max(...rows.map((r) => r[0].length));
+  console.log(`${B}current pricing (per 1M tokens, OpenRouter)${RST}`);
+  for (const [id, line] of rows) {
+    console.log(`  ${padEndS(id, wId)}  ${line}`);
+  }
+  console.log();
+}
+
+const FILL = "█",
+  TRACK = "░",
+  DASH = "─";
+
+/**
+ * bar <value> <maxTimes10> -> fixed 16-column cell.
+ * Blue fill over a dim track, then the raw value right-aligned in 5 columns.
+ * An unknown value is a dim dash run of the same width, so every cell keeps
+ * the same display width and columns stay aligned. Corners stay square:
+ * Unicode has no rounded block glyphs.
+ */
+function bar(value, maxTimes10) {
+  if (value === "" || value === null || value === undefined) {
+    return `${DIM}${rep(DASH, 10)}${RST} ${padStartS("·", 5)}`;
+  }
+  let m = maxTimes10 ?? 0;
+  if (m <= 0) m = 1;
+  const s = scale10(value);
+  let n = Math.trunc((s * 10 + Math.trunc(m / 2)) / m);
+  if (n < 1) n = 1;
+  if (n > 10) n = 10;
+  return `${BLU}${rep(FILL, n)}${RST}${DIM}${rep(TRACK, 10 - n)}${RST} ${padStartS(value, 5)}`;
+}
+
+/** Truncate on a word boundary, with an ellipsis. */
+function snippet(s, n = 200) {
+  if (s.length <= n) return s;
+  let t = s.slice(0, n);
+  const i = t.lastIndexOf(" ");
+  if (i >= 0) t = t.slice(0, i);
+  return `${t}…`;
+}
+
+/** Join with " · ", dropping empty parts. */
+const joinDot = (parts) => parts.filter((x) => x !== "").join(" · ");
+
+// ------------------------------------------------------------------ fetch
+
+async function get(url, accept, auth = false) {
+  try {
+    const headers = { Accept: accept };
+    if (auth && process.env.OPENROUTER_API_KEY) {
+      headers.Authorization = `Bearer ${process.env.OPENROUTER_API_KEY}`;
+    }
+    const res = await fetch(url, {
+      headers,
+      signal: AbortSignal.timeout(30_000),
+    });
+    if (!res.ok) return null;
+    return await res.text();
+  } catch {
+    return null;
+  }
+}
+
+async function readJsonFile(path) {
+  try {
+    return JSON.parse(await promises.readFile(path, "utf8"));
+  } catch {
+    return null;
+  }
+}
+
+// ------------------------------------------------------------- current state
+
+/** Free = prompt price 0 AND completion price 0. Catalog order: newest first. */
+function isFree(m) {
+  const pr = (m.pricing && m.pricing.prompt) ?? "1";
+
+  const pc = (m.pricing && m.pricing.completion) ?? "1";
+
+  return pr === "0" && pc === "0";
+}
+
+/** Flatten one API model into a row shape plus all derived display fields. */
+function toRow(m) {
+  const desc = (m.description || "").replace(/[\t\n\r]+/g, " ").slice(0, 400);
+  const sps = m.supported_parameters || [];
+  const prl =
+    m.per_request_limits == null ? "" : JSON.stringify(m.per_request_limits);
+  const pin = (m.pricing && m.pricing.prompt) || "";
+  const pout = (m.pricing && m.pricing.completion) || "";
+  const pcache = (m.pricing && m.pricing.input_cache_read) || "";
+  const pweb = (m.pricing && m.pricing.web_search) || "";
+  const arenaArr = (m.benchmarks && m.benchmarks.design_arena) || [];
+  const arena =
+    arenaArr.length > 0
+      ? (() => {
+          const last = [...arenaArr].sort((a, b) => a.elo - b.elo).at(-1);
+          return `${last.elo}|${last.category}`;
+        })()
+      : "";
+
+  const created = m.created || 0;
+  const age = Math.trunc((NOW - created) / 86400);
+  const listed = localDate(new Date(created * 1000));
+  const slugDate = /[0-9]{8}$/.test(m.canonical_slug || "")
+    ? (m.canonical_slug || "").slice(-8)
+    : "";
+
+  // Capability flags, from supported_parameters plus pricing features.
+  const caps = [];
+  if (sps.includes("tools") || sps.includes("tool_choice")) caps.push("tools");
+  if (sps.includes("reasoning") || sps.includes("include_reasoning"))
+    caps.push("reasoning");
+  if (sps.includes("response_format")) caps.push("structured");
+  if (pcache !== "") caps.push("caching");
+  if (pweb !== "") caps.push("websearch");
+
+  const params =
+    (desc.match(/[0-9]+(\.[0-9]+)? ?B( |-)((total|active) )?parameters?/) &&
+      desc.match(
+        /[0-9]+(\.[0-9]+)? ?B( |-)((total|active) )?parameters?/,
+      )[0]) ||
+    (desc.match(/[0-9]+(\.[0-9]+)? ?B (total|active)/) &&
+      desc.match(/[0-9]+(\.[0-9]+)? ?B (total|active)/)[0]) ||
+    "";
+
+  // A $0-per-token model can still charge per artifact; the description says so.
+  const pricetag = (desc.match(/\$[0-9][0-9.]*( per [a-z]+)?/g) || [])
+    .slice(0, 3)
+    .join(", ");
+
+  // ":free" is a promotional variant; a base model priced at zero is free by policy.
+  const freeKind = m.id.endsWith(":free")
+    ? "free variant (promotional, can be withdrawn)"
+    : "priced at zero (free by policy)";
+
+  const exp = m.expiration_date || "";
+  let expDays = null;
+  if (exp !== "") {
+    // macOS `date -j -f "%Y-%m-%d"` keeps the current time of day, so a
+    // date-only expiry is a whole-day difference regardless of run time.
+    const clock = new Date();
+    const e = new Date(
+      `${exp}T${pad2(clock.getHours())}:${pad2(clock.getMinutes())}:${pad2(clock.getSeconds())}`,
+    ).getTime();
+    if (!isNaN(e)) expDays = Math.trunc((Math.floor(e / 1000) - NOW) / 86400);
+  }
+
+  const aa = (m.benchmarks && m.benchmarks.artificial_analysis) || {};
+  const str = (v) => (v === undefined || v === null ? "" : String(v));
+
+  return {
+    id: m.id,
+    created,
+    name: m.name || m.id,
+    ctx: m.context_length || 0,
+    maxout: (m.top_provider && m.top_provider.max_completion_tokens) || 0,
+    modality: (m.architecture && m.architecture.modality) || "?",
+    hf: m.hugging_face_id || "",
+    sps,
+    mod: (m.top_provider && m.top_provider.is_moderated) || false,
+    slug: m.canonical_slug || "",
+    prl,
+    pin,
+    pout,
+    pcache,
+    pweb,
+    desc,
+    aaIntel: str(aa.intelligence_index),
+    aaCode: str(aa.coding_index),
+    aaAgent: str(aa.agentic_index),
+    arena,
+    exp,
+    cutoff: m.knowledge_cutoff || "",
+    age,
+    listed,
+    slugDate,
+    caps,
+    params,
+    pricetag,
+    freeKind,
+    expDays,
+  };
+}
+
+// ------------------------------------------------------------- block output
+
+/** One compact line: id, context, listing date/age, weights, modality, notes. */
+function freeLine(r) {
+  const w = r.hf ? "open" : "closed";
+  let extra = "";
+  if (r.aaIntel) extra += ` · intel ${r.aaIntel}`;
+  if (r.expDays !== null) {
+    if (r.expDays < 0) extra += ` · ${RED}expired ${r.exp}${RST}`;
+    else if (r.expDays <= 60) extra += ` · ${YEL}expires ${r.exp}${RST}`;
+  }
+  console.log(
+    `  ${B}${r.id}${RST}  ${hum(r.ctx)} ctx · ${r.listed} · ${r.age}d old · ${w} · ${r.modality}${extra}`,
+  );
+}
+
+/** Full detail block for one free model. */
+function freeBlock(r) {
+  const sig = [];
+  if (r.hf === "") {
+    sig.push(
+      /open[- ]weight/i.test(r.desc)
+        ? "weights not linked (description claims open-weight)"
+        : "no weights linked",
+    );
+  } else {
+    sig.push(`open weights: ${r.hf}`);
+  }
+  if (r.params) sig.push(r.params);
+  if (r.ctx >= 1_000_000) sig.push("million-token ctx");
+  if (/image|video|audio/.test(r.modality)) sig.push("multimodal");
+  if (r.mod) sig.push("input moderated");
+
+  console.log(`  ${B}${r.id}${RST}`);
+  console.log(
+    `    ${r.name}${r.slugDate ? `  ·  slug date ${r.slugDate}` : ""}`,
+  );
+  console.log(
+    `    ${hum(r.ctx)} ctx · ${hum(r.maxout)} max out · ${r.modality}`,
+  );
+  console.log(
+    r.caps.length
+      ? `    ${joinDot(r.caps)}`
+      : "    no tools or reasoning reported",
+  );
+  console.log(`    ${joinDot(sig)}`);
+
+  const meas = [];
+  if (r.aaIntel) meas.push(`intel ${r.aaIntel}`);
+  if (r.aaCode) meas.push(`coding ${r.aaCode}`);
+  if (r.aaAgent) meas.push(`agentic ${r.aaAgent}`);
+  if (r.arena)
+    meas.push(`arena ${r.arena.split("|")[0]} (${r.arena.split("|")[1]})`);
+  console.log(
+    meas.length
+      ? `    measured: ${joinDot(meas)}`
+      : `    ${DIM}measured: none — no benchmark score carried${RST}`,
+  );
+
+  if (r.exp === "") {
+    console.log(`    free window: ${r.freeKind}`);
+  } else if (r.expDays !== null && r.expDays < 0) {
+    console.log(
+      `    free window: ${r.freeKind} · ${RED}expired ${r.exp}${RST}`,
+    );
+  } else if (r.expDays !== null && r.expDays <= 60) {
+    console.log(
+      `    free window: ${r.freeKind} · ${YEL}expires ${r.exp} (${r.expDays}d)${RST}`,
+    );
+  } else {
+    console.log(`    free window: ${r.freeKind} · expires ${r.exp}`);
+  }
+
+  if (r.pricetag)
+    console.log(
+      `    ${YEL}note: description quotes ${r.pricetag} — the catalog lists no token price${RST}`,
+    );
+  if (r.prl) console.log(`    per-request limits: ${r.prl}`);
+  if (r.desc) console.log(`    ${DIM}${snippet(r.desc, 220)}${RST}`);
+  console.log(
+    `    listed ${r.listed} (${r.age}d ago) · https://openrouter.ai/${r.id}`,
+  );
+}
+
+/** Detail block for a stealth codename (name/ctx scraped, no pricing). */
+function stealthBlock(id, all) {
+  const j = all[id] || { name: "", ctx: "", desc: "" };
+  console.log(`  ${B}${id}${RST}`);
+  console.log(
+    `    ${j.name || "anonymous"}${j.ctx ? ` · ${hum(j.ctx)} ctx` : ""}`,
+  );
+  if (j.desc) console.log(`    ${DIM}${snippet(j.desc, 240)}${RST}`);
+  console.log(
+    `    ${DIM}anonymous provider · data may be retained · https://openrouter.ai/${id}${RST}`,
+  );
+}
+
+// -------------------------------------------------------------------- diff
+
+function diffFree(cur, prev, all) {
+  const cs = new Set(cur);
+  const ps = new Set(prev);
+  const stripped = (id) =>
+    all[id] != null || all[id.replace(/:free$/, "")] != null;
+  return {
+    new: cur.filter((id) => !ps.has(id)),
+    gone: prev.filter((id) => !cs.has(id) && !stripped(id)),
+    unfree: prev.filter((id) => !cs.has(id) && stripped(id)),
+  };
+}
+
+const diffSet = (cur, prev) => {
+  const cs = new Set(cur);
+  const ps = new Set(prev);
+  return {
+    new: cur.filter((id) => !ps.has(id)),
+    gone: prev.filter((id) => !cs.has(id)),
+  };
+};
+
+// -------------------------------------------------------------------- main
+
+/** Parse a stealth index page: unique codenames off https://openrouter.ai/stealth. */
+function stealthIds(md) {
+  return [...new Set(md.match(/stealth\/[A-Za-z0-9._-]+/g) || [])].sort();
+}
+
+/** Pull one meta content value out of a page's HTML. */
+function meta(html, prop) {
+  const m = html.match(new RegExp(`${prop}"\\s+content="([^"]*)"`));
+  return m ? m[1].replace(/&amp;/g, "&") : "";
+}
+
+async function main() {
+  const args = process.argv.slice(2);
+  let ALL = false,
+    JSONOUT = false,
+    QUIET = false,
+    OFFLINE = false,
+    RESET = false,
+    RANK = false,
+    CHANGES = false;
+
+  for (const a of args) {
+    switch (a) {
+      case "-a":
+      case "--all":
+        ALL = true;
+        break;
+      case "--rank":
+        RANK = true;
+        break;
+      case "--changes":
+        CHANGES = true;
+        break;
+      case "--json":
+        JSONOUT = true;
+        break;
+      case "-q":
+      case "--quiet":
+      case "--check":
+        QUIET = true;
+        break;
+      case "--offline":
+        OFFLINE = true;
+        break;
+      case "--reset":
+        RESET = true;
+        break;
+      case "--no-color":
+        process.env.NO_COLOR = "1";
+        break;
+      case "-h":
+      case "--help":
+        process.stdout.write(USAGE);
+        process.exit(0);
+      default:
+        process.stderr.write(`${PROG}: unknown option ${a} (try --help)\n`);
+        process.exit(2);
+    }
+  }
+
+  // Bare `newllm` prints the rank; the change report moved to --changes.
+  if (!JSONOUT && !QUIET && !RANK && !ALL && !CHANGES) RANK = true;
+
+  // ---------------------------------------------------------- fetch catalog
+
+  try {
+    mkdirSync(STATE_DIR, { recursive: true });
+  } catch {
+    process.exit(1);
+  }
+  if (RESET) await promises.rm(STATE_FILE).catch(() => {});
+
+  if (OFFLINE) {
+    if (!existsSync(CACHE_FILE)) {
+      process.stderr.write(
+        `${PROG}: no cached catalog, run once without --offline\n`,
+      );
+      process.exit(1);
+    }
+  } else {
+    const body = await get(CATALOG_URL, "application/json", true);
+    if (body) await promises.writeFile(CACHE_FILE, body);
+    else if (!existsSync(CACHE_FILE)) {
+      process.stderr.write(
+        `${PROG}: catalog fetch failed and no cache exists\n`,
+      );
+      process.exit(1);
+    } else {
+      process.stderr.write(
+        `${PROG}: catalog fetch failed, using cached copy\n`,
+      );
+    }
+  }
+
+  const catalog = await readJsonFile(CACHE_FILE);
+  if (!catalog || !catalog.data || !catalog.data.length) {
+    process.stderr.write(`${PROG}: cached catalog is not usable\n`);
+    process.exit(1);
+  }
+
+  const models = catalog.data;
+  const freeModels = models
+    .filter(isFree)
+    .sort((a, b) => (b.created || 0) - (a.created || 0));
+  const rows = new Map(freeModels.map((m) => [m.id, toRow(m)]));
+  const curFreeIds = [...rows.keys()];
+  const curFree = {};
+  for (const m of freeModels)
+    curFree[m.id] = {
+      prompt: (m.pricing && m.pricing.prompt) || "",
+      name: m.name || m.id,
+    };
+  const allMap = {};
+  for (const m of models) {
+    allMap[m.id] = {
+      prompt: (m.pricing && m.pricing.prompt) || "",
+      completion: (m.pricing && m.pricing.completion) || "",
+      name: m.name || m.id,
+    };
+  }
+
+  // ---------------------------------------------------------- stealth set
+
+  // State from the previous run: needed both for the diff and so that an
+  // --offline run can carry the known stealth set forward instead of wiping it.
+  const state = (await readJsonFile(STATE_FILE)) || {};
+  const prevFree = state.free || {};
+  const prevStealth = state.stealth || {};
+  const baseline = !existsSync(STATE_FILE);
+
+  let curStealth = {};
+  if (OFFLINE) {
+    // No network: reuse the cached stealth set so nothing is falsely reported
+    // as retired and state.json keeps a correct stealth snapshot.
+    curStealth = { ...prevStealth };
+  } else {
+    const md = await get(STEALTH_URL, "text/markdown");
+    if (md) {
+      for (const sid of stealthIds(md)) {
+        const html =
+          (await get(`https://openrouter.ai/${sid}`, "text/html")) || "";
+        const name = meta(html, "og:title").replace(/ - API Pricing.*/, "");
+        const desc = meta(html, "og:description");
+        const ctx = (desc.match(/[0-9][0-9,]* token context window/) || [
+          "",
+        ])[0].replace(/[^0-9]/g, "");
+        curStealth[sid] = { name, ctx, desc };
+      }
+    }
+  }
+
+  // -------------------------------------------------------------- diffing
+
+  const d = diffFree(curFreeIds, Object.keys(prevFree), allMap);
+  const sd = diffSet(Object.keys(curStealth), Object.keys(prevStealth));
+
+  let count = 0;
+  const note = () => count++;
+
+  // ---------------------------------------------------------- pricing snapshot
+  if (!JSONOUT && !QUIET) reportPricing(models);
+
+  // ------------------------------------------------------------- rendering
+
+  if (JSONOUT) {
+    process.stdout.write(
+      `${JSON.stringify(
+        {
+          updated: isoUTC(),
+          baseline,
+          counts: {
+            free: curFreeIds.length,
+            stealth: Object.keys(curStealth).length,
+            new_free: d.new.length,
+            gone_free: d.gone.length,
+            unfree: d.unfree.length,
+            new_stealth: sd.new.length,
+            gone_stealth: sd.gone.length,
+          },
+          new_free: d.new,
+          gone_free: d.gone,
+          unfree: d.unfree,
+          new_stealth: sd.new,
+          gone_stealth: sd.gone,
+        },
+        null,
+        2,
+      )}\n`,
+    );
+  } else if (QUIET) {
+    if (baseline) {
+      console.log(
+        `BASELINE\t${curFreeIds.length} free\t${Object.keys(curStealth).length} stealth`,
+      );
+    } else {
+      for (const m of d.new) {
+        console.log(`NEW\t${m}`);
+        note();
+      }
+      for (const m of d.unfree) {
+        console.log(`UNFREE\t${m}`);
+        note();
+      }
+      for (const m of d.gone) {
+        console.log(`GONE\t${m}`);
+        note();
+      }
+      for (const m of sd.new) {
+        console.log(`NEW-STEALTH\t${m}`);
+        note();
+      }
+      for (const m of sd.gone) {
+        console.log(`GONE-STEALTH\t${m}`);
+        note();
+      }
+    }
+  } else if (RANK) {
+    await renderRank(rows, curFreeIds, OFFLINE);
+  } else if (ALL) {
+    console.log(
+      `${B}FREE MODELS (${curFreeIds.length})${RST} · as of ${localDateTime()}\n`,
+    );
+    for (const id of [...curFreeIds].sort()) freeBlock(rows.get(id));
+    console.log(
+      `\n${B}STEALTH CODENAMES (${Object.keys(curStealth).length})${RST}\n`,
+    );
+    for (const id of Object.keys(curStealth).sort())
+      stealthBlock(id, curStealth);
+  } else if (baseline) {
+    console.log(
+      `${B}baseline${RST} — no prior state; recording what is free and live now (${TODAY}).`,
+    );
+    console.log(`\n${B}FREE MODELS (${curFreeIds.length})${RST}`);
+    for (const id of [...curFreeIds].sort()) freeLine(rows.get(id));
+    console.log(
+      `\n${B}STEALTH CODENAMES (${Object.keys(curStealth).length})${RST}`,
+    );
+    for (const id of Object.keys(curStealth).sort())
+      stealthBlock(id, curStealth);
+    console.log(
+      `\n${DIM}next run reports only what changed. --all shows everything, --json for machines.${RST}`,
+    );
+  } else {
+    let hdr = false;
+    if (d.new.length) {
+      console.log(`${B}${GRN}new free model(s)${RST}`);
+      hdr = true;
+      for (const m of d.new) {
+        note();
+        console.log();
+        freeBlock(rows.get(m));
+      }
+    }
+    if (sd.new.length) {
+      if (hdr) console.log();
+      console.log(`${B}${CYA}new stealth codename(s)${RST}`);
+      hdr = true;
+      for (const m of sd.new) {
+        note();
+        console.log();
+        stealthBlock(m, curStealth);
+      }
+    }
+    if (d.unfree.length) {
+      if (hdr) console.log();
+      console.log(`${B}${YEL}no longer free${RST}`);
+      hdr = true;
+      for (const m of d.unfree) {
+        note();
+        const e = allMap ||
+          allMap[m.replace(/:free$/, "")] || { prompt: "", completion: "" };
+        console.log(
+          `  ${B}${m}${RST}  $${perm(e.prompt)}/M in · $${perm(e.completion)}/M out  (free preview over)`,
+        );
+      }
+    }
+    if (d.gone.length) {
+      if (hdr) console.log();
+      console.log(`${B}${RED}delisted${RST}`);
+      hdr = true;
+      for (const m of d.gone) {
+        note();
+        const was = (prevFree && prevFree[m].name) || "";
+        console.log(`  ${m}${was ? `  (${was})` : ""}`);
+      }
+    }
+    if (sd.gone.length) {
+      if (hdr) console.log();
+      console.log(`${B}${RED}stealth codename(s) retired${RST}`);
+      hdr = true;
+      for (const m of sd.gone) {
+        note();
+        console.log(`  ${m}`);
+      }
+    }
+    if (!hdr) {
+      console.log(
+        `${DIM}nothing changed · ${curFreeIds.length} free · ${Object.keys(curStealth).length} stealth · checked ${localDateTime()}${RST}`,
+      );
+    }
+  }
+
+  // ---------------------------------------------------------- write state
+
+  const merge = (cur, prev) => {
+    const out = {};
+    for (const [k, v] of Object.entries(cur)) {
+      out[k] = {
+        ...v,
+        first_seen: (prev && prev && prev[k].first_seen) || TODAY,
+      };
+    }
+    return out;
+  };
+
+  const next = {
+    updated: isoUTC(),
+    free: merge(curFree, prevFree),
+    stealth: merge(curStealth, prevStealth),
+  };
+  await promises
+    .writeFile(STATE_FILE, `${JSON.stringify(next, null, 2)}\n`)
+    .catch(() => {});
+
+  // Let the process end naturally: process.exit() can discard buffered stdout.
+  if (QUIET && count === 0) process.exitCode = 1;
+}
+
+// ------------------------------------------------------------------- --rank
+
+/** Ranked + unscored free-model report. */
+async function renderRank(rows, ids, offline) {
+  // Provider training policy, keyed by normalized org name.
+  if (!offline) {
+    const body = await get(PROVIDERS_URL, "application/json");
+    if (body) await promises.writeFile(PROV_FILE, body);
+  }
+  const prov = await readJsonFile(PROV_FILE);
+  const provMap = new Map();
+  for (const p of (prov && prov.data) || []) {
+    const flag = p && p.dataPolicy && p.dataPolicy.training ? "yes" : "no";
+    for (const x of [p && p.name, p && p.displayName]) {
+      if (!x) continue;
+      const key = String(x)
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, "");
+      if (key && !provMap.has(key)) provMap.set(key, flag); // first match wins
+    }
+  }
+  const trainsFor = (id) => {
+    const org = id.split("/")[0];
+    if (org === "openrouter") return "router";
+    const key = org.toLowerCase().replace(/[^a-z0-9]/g, "");
+    return provMap.get(key) || "unknown";
+  };
+
+  const all = ids.map((id) => rows.get(id));
+  const scored = all
+    .filter((r) => r && r.aaIntel !== "")
+    .sort((a, b) => Number(b.aaIntel) - Number(a.aaIntel));
+  const maxOf = (pick) =>
+    all
+      .map(pick)
+      .filter((v) => v !== "")
+      .reduce((m, v) => Math.max(m, Number(v)), 0);
+  const MI = maxOf((r) => r && r.aaIntel);
+  const MC = maxOf((r) => r && r.aaCode);
+  const MA = maxOf((r) => r && r.aaAgent);
+
+  if (scored.length === 0) {
+    console.log(
+      `${DIM}no free model carries a benchmark score right now${RST}`,
+    );
+    return;
+  }
+
+  console.log(
+    `${B}free models on OpenRouter, ranked by intelligence — ${localDateTime()}${RST}`,
+  );
+  console.log(
+    `${DIM}bars are relative to the best score in each column: intelligence ${MI || "none"} · coding ${MC || "none"} · agentic ${MA || "none"}${RST}\n`,
+  );
+  console.log(
+    `  ${padEndS("#", 3)} ${padEndS("model", 50)} ${padEndS("intelligence", 16)} ${padEndS("coding", 16)} ${padEndS("agentic", 16)}`,
+  );
+  let i = 0;
+  for (const r of scored) {
+    i++;
+    console.log(
+      `  ${padEndS(String(i), 3)} ${padEndS(r.id, 50)} ${bar(r.aaIntel, scale10(String(MI)))} ${bar(r.aaCode, scale10(String(MC)))} ${bar(r.aaAgent, scale10(String(MA)))} ${padStartS(hum(r.ctx), 6)} ctx`,
+    );
+  }
+
+  console.log(
+    `\n${DIM}the intelligence leader is not the coding leader — read the row, not the rank.${RST}`,
+  );
+  console.log(
+    `${DIM}unscored: no benchmark carried, so nothing to rank them by${RST}`,
+  );
+  for (const r of all.filter((x) => x && x.aaIntel === "")) {
+    const xnote = [];
+    if (r.arena)
+      xnote.push(`arena ${r.arena.split("|")[0]} (${r.arena.split("|")[1]})`);
+    if (r.exp) xnote.push(`expires ${r.exp}`);
+    if (r.pricetag) xnote.push("charges per artifact");
+    console.log(
+      `  ${padEndS(r.id, 52)}  ${padStartS(hum(r.ctx), 6)} ctx · ${modalityTag(r.modality)}  ${xnote.join(" · ")}`,
+    );
+  }
+}
+
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
