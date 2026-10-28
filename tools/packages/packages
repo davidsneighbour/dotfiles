@@ -132,13 +132,35 @@ print_version() {
 
 verbose() {
   if [[ "${DNB_VERBOSE:-}" == '1' ]]; then
-    dnb_log info "${1}" >&2
+    dnb_log info "${1}"
   fi
 }
 
 cleanup() {
   if [[ -n "${WORK_DIR}" && -d "${WORK_DIR}" ]]; then
     rm -rf -- "${WORK_DIR}"
+  fi
+}
+
+# Load theme colour codes for stdout. They stay empty (and COLOR=0) when
+# stdout is not a colour terminal, NO_COLOR is set, or the libraries are
+# missing.
+init_colours() {
+  local lib_dir="${DOTFILES_DIR}/bashrc/lib/00-core"
+  local lib
+
+  for lib in dnb-core-colors dnb-core-log dnb-core-ui-theme dnb-core-ui; do
+    [[ -r "${lib_dir}/${lib}.bash" ]] || return 0
+  done
+  for lib in dnb-core-colors dnb-core-log dnb-core-ui-theme dnb-core-ui; do
+    # shellcheck source=/dev/null
+    source "${lib_dir}/${lib}.bash"
+  done
+  dnb_ui_style_code C_MANUAL success
+  dnb_ui_style_code C_AUTO muted
+  dnb_ui_style_code C_RESET reset
+  if [[ -n "${C_RESET}" ]]; then
+    COLOR=1
   fi
 }
 
@@ -359,7 +381,8 @@ resolve_installed() {
 
 cmd_list() {
   load_state
-  awk -F '\t' -v color="${COLOR}" -v json="${JSON}" '
+  awk -F '\t' -v color="${COLOR}" -v json="${JSON}" \
+    -v c_manual="${C_MANUAL}" -v c_auto="${C_AUTO}" -v c_reset="${C_RESET}" '
     BEGIN { if (json == 1) { printf "[" } }
     FNR == NR { manual[$1] = 1; next }
     substr($1, 2, 1) == "i" {
@@ -367,7 +390,7 @@ cmd_list() {
       if (json == 1) {
         printf "%s{\"package\":\"%s\",\"mark\":\"%s\",\"version\":\"%s\"}", (rows++ ? "," : ""), $2, mark, $4
       } else if (color == 1) {
-        printf "%-48s %s%-9s\033[0m %s\n", $2, (mark == "manual" ? "\033[32m" : "\033[2m"), mark, $4
+        printf "%-48s %s%-9s%s %s\n", $2, (mark == "manual" ? c_manual : c_auto), mark, c_reset, $4
       } else {
         printf "%-48s %-9s %s\n", $2, mark, $4
       }
@@ -423,7 +446,8 @@ cmd_find() {
     printf '[]\n'
   elif [[ -n "${all_matches}" ]]; then
     printf '%s' "${all_matches}" | LC_ALL=C sort -u |
-      awk -v color="${COLOR}" -v json="${JSON}" '
+      awk -v color="${COLOR}" -v json="${JSON}" \
+        -v c_manual="${C_MANUAL}" -v c_auto="${C_AUTO}" -v c_reset="${C_RESET}" '
         BEGIN { if (json == 1) { printf "[" } }
         FILENAME == ARGV[1] { manual[$1] = 1; next }
         FILENAME == ARGV[2] { installed[$1] = 1; next }
@@ -434,14 +458,14 @@ cmd_find() {
         }
         {
           if ($1 in manual) {
-            state = "manual"; colour = "\033[32m"
+            state = "manual"; colour = c_manual
           } else if ($1 in installed) {
-            state = "automatic"; colour = "\033[2m"
+            state = "automatic"; colour = c_auto
           } else {
             state = "-"; colour = ""
           }
           if (color == 1 && colour != "") {
-            printf "%-48s %s%s\033[0m\n", $1, colour, state
+            printf "%-48s %s%s%s\n", $1, colour, state, c_reset
           } else {
             printf "%-48s %s\n", $1, state
           }
@@ -459,6 +483,7 @@ run_graph() {
 
   awk -v CMD="${command}" -v NAMES="${names}" -v ORPHANS="${orphans}" \
     -v MAX_ROOTS="${MAX_ROOTS}" -v DEPTH="${DEPTH}" -v COLOR="${COLOR}" \
+    -v C_MANUAL="${C_MANUAL}" -v C_AUTO="${C_AUTO}" -v C_NOTE="${C_AUTO}" -v C_RESET="${C_RESET}" \
     -v HARD_ONLY="${HARD_ONLY}" -v JSON="${JSON}" -v FORMAT="${FORMAT}" \
     -f "${GRAPH_AWK}" "${WORK_DIR}/installed.tsv" "${WORK_DIR}/manual.txt"
 }
@@ -550,6 +575,9 @@ ALL_ACTIONS=0
 JSON=0
 FORMAT="text"
 COLOR=0
+C_MANUAL=''
+C_AUTO=''
+C_RESET=''
 no_color='false'
 quiet_mode='false'
 
@@ -627,8 +655,8 @@ done
 if [[ "${quiet_mode}" == 'true' ]]; then
   unset DNB_VERBOSE
 fi
-if [[ "${no_color}" == 'false' && -z "${NO_COLOR:-}" && -t 1 ]]; then
-  COLOR=1
+if [[ "${no_color}" == 'false' ]]; then
+  init_colours
 fi
 if [[ "${DNB_VERBOSE:-}" == '1' ]]; then
   init_logging

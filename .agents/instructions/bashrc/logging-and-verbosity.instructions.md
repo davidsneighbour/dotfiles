@@ -10,4 +10,4 @@ All new or changed log-producing code must write to `~/.logs/<area>/YYYYMMDD-HHM
 
 Never clean up lock files as logs. Only prune files with obvious filename dates; report undated or ambiguous names instead of deleting by modification time. Keep new lock-file locations outside log-only trees.
 
-When implementing Bash verbosity or verbose/quiet flag propagation, read [the Bash verbosity reference](../../references/bash-verbosity.md). For requested log cleanup, read [the pruning procedure](../../references/logfile-pruning.md).
+When implementing Bash verbosity or verbose/quiet flag propagation, read [the Bash verbosity reference](../../references/bash-verbosity.md). For console presentation of messages, use the `dnb_ui_*` wrappers in [the terminal UI rules](terminal-ui.instructions.md); they keep `dnb_log` logfile behaviour. For requested log cleanup, read [the pruning procedure](../../references/logfile-pruning.md).

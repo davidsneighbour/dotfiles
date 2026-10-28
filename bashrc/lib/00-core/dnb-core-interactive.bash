@@ -30,7 +30,7 @@ dnb_log_header() {
   # - DOTFILES_PATH must point to the dotfiles repository root.
   # - package.json must exist at "${DOTFILES_PATH}/package.json".
   # - node must be available.
-  # - gum must be available.
+  # - dnb-core-ui.bash must be loaded (Gum is optional).
 
   local package_json
   local version
@@ -66,13 +66,5 @@ dnb_log_header() {
     ' "${package_json}"
   )" || return 1
 
-  gum style \
-    --foreground 216 \
-    --border-foreground 66 \
-    --border double \
-    --align center \
-    --width 80 \
-    --padding "0 1" \
-    "@davidsneighbour's DotFiles" \
-    "v${version}"
+  dnb_ui_heading "@davidsneighbour's DotFiles" "v${version}"
 }

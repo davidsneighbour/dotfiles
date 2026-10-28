@@ -11,6 +11,7 @@ This is the canonical entry point. Read matching `.agents/instructions/` files b
 * For Bash or interactive-shell work, including extensionless commands outside automatic scopes, read [.agents/instructions/bashrc/bashrc.instructions.md](.agents/instructions/bashrc/bashrc.instructions.md).
 * For CLI work outside automatic scopes, read [.agents/instructions/cli.instructions.md](.agents/instructions/cli.instructions.md).
 * For a PATH wrapper that exposes a Bash or Node script as a command from `bin/`, read [.agents/references/path-wrappers.md](.agents/references/path-wrappers.md).
+* For terminal output or input (messages, prompts, selections, progress, tables, Markdown/code/diff rendering, colours, or symbols), read [.agents/instructions/bashrc/terminal-ui.instructions.md](.agents/instructions/bashrc/terminal-ui.instructions.md) and [.agents/references/terminal-ui.md](.agents/references/terminal-ui.md).
 * For logging in any language, read [.agents/instructions/bashrc/logging-and-verbosity.instructions.md](.agents/instructions/bashrc/logging-and-verbosity.instructions.md).
 * For cronjobs, `.github/dnb.toml`, or log pruning, read the corresponding [automation](.agents/references/automation.md), [configuration](.agents/references/repository-config.md), or [pruning](.agents/references/logfile-pruning.md) reference.
 * For any Tailscale-related work, including Tailnet connectivity, remote access, and service exposure, read [.agents/references/tailscale.md](.agents/references/tailscale.md).

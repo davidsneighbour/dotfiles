@@ -78,7 +78,7 @@ if [[ "${DNB_VERBOSE:-}" == '1' ]]; then
   DNB_SETUP_LOG_FILE="${HOME}/.logs/colour-scheme/$(date +%Y%m%d-%H%M%S).log"
   __LOGFILE="${DNB_SETUP_LOG_FILE}"
   dnb_log_init >/dev/null
-  dnb_log info "Colour-scheme mode: ${mode}" >&2
+  dnb_log info "Colour-scheme mode: ${mode}"
 fi
 
 if [[ "${mode}" == 'apply' ]]; then

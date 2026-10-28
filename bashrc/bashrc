@@ -173,17 +173,6 @@ export LESS_TERMCAP_so=$'\E[01;44;33m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;32m'
 
-# define some colours
-export GREY=$'\033[1;30m'
-export RED=$'\033[1;31m'
-export GREEN=$'\033[1;32m'
-export YELLOW=$'\033[1;33m'
-export BLUE=$'\033[1;34m'
-export MAGENTA=$'\033[1;35m'
-export CYAN=$'\033[1;36m'
-export WHITE=$'\033[1;37m'
-export NONE=$'\033[m'
-
 # grep colors
 export GREP_COLORS="mt=1;38;2;255;85;85:fn=38;2;255;121;198:ln=38;2;80;250;123:bn=38;2;80;250;123:se=38;2;139;233;253"
 

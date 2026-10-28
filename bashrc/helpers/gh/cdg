@@ -27,6 +27,10 @@ cdg_source_libs() {
   source "${bashrc_path}/lib/00-core/dnb-core-log.bash"
   # shellcheck source=/dev/null
   source "${bashrc_path}/lib/00-core/dnb-core-requirements.bash"
+  # shellcheck source=/dev/null
+  source "${bashrc_path}/lib/00-core/dnb-core-ui-theme.bash"
+  # shellcheck source=/dev/null
+  source "${bashrc_path}/lib/00-core/dnb-core-ui.bash"
 }
 
 cdg_init_logging() {
@@ -43,12 +47,12 @@ cdg_init_logging() {
 
 cdg_log_verbose() {
   if [[ "${DNB_VERBOSE:-0}" != '0' && -n "${DNB_VERBOSE:-}" ]]; then
-    dnb_log info "${CDG_CONTEXT}: ${*}" >&2
+    dnb_log info "${CDG_CONTEXT}: ${*}"
   fi
 }
 
 cdg_error() {
-  dnb_log error "${CDG_CONTEXT}: ${*}" >&2
+  dnb_log error "${CDG_CONTEXT}: ${*}"
 }
 
 cdg_usage() {
@@ -56,7 +60,7 @@ cdg_usage() {
   cmd="$(cdg_script_name)"
 
   cat <<EOF_USAGE
-${cmd} - select a GitHub repository with gum and print its local path
+${cmd} - select a GitHub repository with fzf and print its local path
 
 Usage:
   ${cmd} [options]
@@ -89,7 +93,8 @@ Environment:
 Behaviour:
   * Repositories are loaded through GitHub's REST API via the gh CLI.
   * Repository data is cached as JSON below --cache-path.
-  * gum filter provides the interactive fuzzy, type-ahead selector.
+  * fzf (through dnb_ui_search) provides the interactive fuzzy selector.
+    Only listed repositories can be selected.
   * If the selected repository directory exists, this helper prints that path.
   * If the directory is missing, this helper runs: glone owner/repo
 
@@ -236,13 +241,19 @@ cdg_repository_count() {
 
 cdg_select_repository() {
   local cache_file="${1}"
+  local items_file=''
   local selected=''
+  local status=0
 
-  if ! selected="$(jq -r '.[].full_name' "${cache_file}" | gum filter --no-strict --placeholder 'Type to fuzzy-search repositories...' --height 20 --prompt 'Repository > ')"; then
+  items_file="$(mktemp)" || return 1
+  if ! jq -r '.[].full_name' "${cache_file}" >"${items_file}"; then
+    rm -f "${items_file}"
     return 1
   fi
 
-  if [[ -z "${selected}" ]]; then
+  selected="$(dnb_ui_search --prompt 'Repository' --items-file "${items_file}")" || status=$?
+  rm -f "${items_file}"
+  if [[ "${status}" -ne 0 || -z "${selected}" ]]; then
     return 1
   fi
 
@@ -406,7 +417,7 @@ cdg_main() {
   mkdir -p "${cache_path}" || cdg_die "Unable to create cache directory: ${cache_path}" 1
   cache_file="$(cdg_cache_file "${cache_path}" "${github_user}")"
 
-  if ! dnb_check_requirements gh jq gum stat date tr basename >/dev/null; then
+  if ! dnb_check_requirements gh jq fzf mktemp stat date tr basename >/dev/null; then
     cdg_die 'Missing one or more required commands.' 1
   fi
 

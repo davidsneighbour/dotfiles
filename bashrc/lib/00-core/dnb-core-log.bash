@@ -14,6 +14,37 @@ __dnb_log_level_to_priority() {
   esac
 }
 
+# __dnb_json_escape
+#
+# Print TEXT as JSON string content (without the surrounding quotes).
+# Escapes backslash, quote, and all control characters.
+__dnb_json_escape() {
+  local text="${1-}"
+  local out='' char='' code=0
+  local i=0
+
+  text="${text//\\/\\\\}"
+  text="${text//\"/\\\"}"
+  text="${text//$'\n'/\\n}"
+  text="${text//$'\t'/\\t}"
+  text="${text//$'\r'/\\r}"
+
+  if [[ "${text}" != *[[:cntrl:]]* ]]; then
+    printf '%s' "${text}"
+    return 0
+  fi
+
+  for ((i = 0; i < ${#text}; i++)); do
+    char="${text:i:1}"
+    if [[ "${char}" == [[:cntrl:]] ]]; then
+      printf -v code '%d' "'${char}"
+      printf -v char '\\u%04x' "${code}"
+    fi
+    out+="${char}"
+  done
+  printf '%s' "${out}"
+}
+
 # dnb_log_init
 #
 # Initialise and print the shared setup logfile path.
@@ -56,8 +87,13 @@ dnb_log_init() {
 #   --help    Show help output.
 #
 # Behaviour:
-#   - Writes to console and to the shared logfile.
+#   - Writes console lines to stderr, so stdout stays free for results,
+#     and writes every line to the shared logfile.
+#   - --json prints the JSON line to stdout (unchanged).
 #   - Uses LOG_LEVEL filtering when set.
+#   - Colours console output only for a terminal stderr (DNB_COLOR_MODE=auto)
+#     and never emits a reset escape without colour.
+#   - JSON mode escapes quotes, backslashes, and control characters.
 #   - Defaults to `~/.logs/default-YYYYMMDD-HHMMSS.log`.
 #
 # Examples:
@@ -130,22 +166,30 @@ EOF2
   timestamp="$(date '+%b%d %H:%M:%S')"
 
   if [[ "${json_mode}" == 'true' ]]; then
-    printf '{"timestamp":"%s","level":"%s","message":"%s"}\n' "${timestamp}" "${level}" "${msg}"
-    printf '{"timestamp":"%s","level":"%s","message":"%s"}\n' "${timestamp}" "${level}" "${msg}" >>"${logfile}"
+    local json_line=''
+    printf -v json_line '{"timestamp":"%s","level":"%s","message":"%s"}' \
+      "$(__dnb_json_escape "${timestamp}")" "$(__dnb_json_escape "${level}")" "$(__dnb_json_escape "${msg}")"
+    printf '%s\n' "${json_line}"
+    printf '%s\n' "${json_line}" >>"${logfile}"
     return 0
   fi
 
   local color=''
-  color="$(__dnb_log_color "${level}")"
-
   local color2=''
-  color2="$(__dnb_log_color "debug")"
+  local reset=''
 
-  local reset='\033[0m'
+  # In auto mode, only colour the console when stderr is a terminal.
+  if [[ "${DNB_COLOR_MODE:-auto}" != 'auto' || -t 2 ]]; then
+    color="$(__dnb_log_color "${level}")"
+    color2="$(__dnb_log_color "debug")"
+  fi
+  if [[ -n "${color}" || -n "${color2}" ]]; then
+    reset='\033[0m'
+  fi
 
   local padded_level=''
   printf -v padded_level '%-7s' "${level}"
 
-  printf '%b%s %b%s%b %s\n' "${color2}" "${timestamp}" "${color}" "${padded_level}" "${reset}" "${msg}"
+  printf '%b%s %b%s%b %s\n' "${color2}" "${timestamp}" "${color}" "${padded_level}" "${reset}" "${msg}" >&2
   printf '%s %s %s\n' "${timestamp}" "${padded_level}" "${msg}" >>"${logfile}"
 }

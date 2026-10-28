@@ -10,6 +10,10 @@ BREW_PACKAGES=(
   biome
   lychee
   llmfit
+  fzf
+  glow
+  bat
+  git-delta
   osv-scanner
   snitch
   typos-cli

@@ -37,7 +37,7 @@ Before Dotbot runs, it runs the system checkup `40-ai-config-links`. When a regu
 CLI option notes:
 
 * --config CONFIG_NAME — run a specific configs/dotbot profile.
-* --list — choose a config interactively with gum.
+* --list — choose a config interactively through `dnb_ui_select` (Gum menu, or a numbered menu without Gum); exits non-zero when nothing is selected.
 * -h, --help — show help.
 * Positional CONFIG_NAME — preferred shorthand for selecting a config.
 
@@ -50,13 +50,13 @@ Functions/methods defined:
 * `normalize_config_to_filename`
 * `resolve_config_path`
 * `run_dotbot_with_config`
-* `pick_config_with_gum`
+* `pick_config`
 * `main`
 
 Requirements:
 
 * bash, `dotbot` installed via `brew install dotbot`.
-* gum only for --list.
+* gum is optional for --list; see [the terminal UI documentation](../../docs/terminal-ui.md).
 
 ### `explore`
 
@@ -133,6 +133,8 @@ Requirements:
 ### `git-repos-status`
 
 Shows local changes, remote changes (ahead/behind upstream), and stash counts for every direct child Git repository of a root folder in one table. Only repositories that need attention are listed by default. Exits `2` when at least one repository needs attention.
+
+The table goes to stdout. Counts are coloured with the terminal UI theme (`dnb_ui_style_code`) only when stdout is a colour terminal; verbose messages go to stderr.
 
 Example: `git-repos-status ~/github.com/davidsneighbour --fetch`
 
@@ -526,6 +528,7 @@ See [`remarkable/DOCUMENTATION.md`](./remarkable/DOCUMENTATION.md).
 
 No dedicated documentation file; run via `npm run test:shell`.
 
+* `tests/dnb-ui-test.sh`: Contract tests for the terminal UI facade (`dnb_ui_*`), including pseudo-terminal checks; run with `npm run test:ui`.
 * `tests/dotfiles-includes-test.sh`: Sources the `dotfiles` helper and asserts its internal include/config-resolution functions behave correctly.
 
 ### `session-colour-scheme`

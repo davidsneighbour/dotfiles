@@ -51,7 +51,8 @@ Options:
                            host-locutus
                            config.host-locutus.yaml
                            /absolute/path.yaml
-  --list                 Select and run a config from configs/dotbot via gum.
+  --list                 Select and run a config from configs/dotbot (Gum menu,
+                         or a numbered menu without Gum).
   -h, --help             Show this help.
 
 Behavior:
@@ -304,12 +305,8 @@ run_dotbot_with_config() {
     --exit-on-failure
 }
 
-pick_config_with_gum() {
-  if ! command -v gum >/dev/null 2>&1; then
-    dnb_log error "--list requires 'gum' (https://github.com/charmbracelet/gum)."
-    exit 1
-  fi
-
+pick_config() {
+  # Prints the selected config name on stdout; menus and errors use stderr.
   local config_files=()
   local file
 
@@ -333,7 +330,13 @@ pick_config_with_gum() {
     config_names[${#config_names[@]} - 1]="${config_names[${#config_names[@]} - 1]%.yaml}"
   done
 
-  gum choose --header "Select dotbot config to run" "${config_names[@]}"
+  local options=()
+  for config_file in "${config_names[@]}"; do
+    options+=(--option "${config_file}")
+  done
+
+  # Gum when available, otherwise a numbered menu on stderr.
+  dnb_ui_select --prompt "Select dotbot config to run" "${options[@]}"
 }
 
 main() {
@@ -389,7 +392,10 @@ main() {
     fi
 
     local selected_config=''
-    selected_config="$(pick_config_with_gum)"
+    if ! selected_config="$(pick_config)" || [[ -z "${selected_config}" ]]; then
+      dnb_log error "No config selected."
+      exit 1
+    fi
     target_config_path="$(resolve_config_path "${selected_config}")"
     run_dotbot_with_config "${target_config_path}"
     exit 0

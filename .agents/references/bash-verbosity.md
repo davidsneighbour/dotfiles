@@ -15,7 +15,7 @@ Use the active core logging functions from:
 Use these functions:
 
 * `dnb_log_init`
-* `dnb_log`
+* `dnb_log` (console lines go to stderr; the logfile gets every line)
 
 ### Library loading
 

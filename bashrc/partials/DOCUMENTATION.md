@@ -56,7 +56,7 @@ Documented in more detail: [`DOCUMENTATION_functions.md`](./DOCUMENTATION_functi
 
 Exports interactive environment defaults:
 
-* Colour-related variables: `GCC_COLORS`, `TERM`, `GREP_OPTIONS`, `GREP_COLOR`, `CLICOLOR`, `LSCOLORS`, and `COLOR_*` escape sequences.
+* Colour-related variables: `GCC_COLORS`, `TERM`, `GREP_OPTIONS`, `GREP_COLOR`, `CLICOLOR`, and `LSCOLORS`. The terminal UI theme tokens `DNB_UI_*` (hex values, through `dnb_ui_export_tokens`) replace the former `COLOR_*` escape sequences; see [the terminal UI documentation](../../docs/terminal-ui.md).
 * Editor defaults: `VISUAL=/usr/bin/vim.basic` and `EDITOR=/usr/bin/vim.basic`; require that Vim binary to exist for editor integrations.
 * Homebrew behaviour: `HOMEBREW_NO_ENV_HINTS=1` and `HOMEBREW_NO_ANALYTICS=1`.
 * Dotfiles setup state: `DOTFILES_SETUPDIR=${DOTFILES_PATH}/setup` and `DOTFILES_GUM=true|false` depending on whether `gum` is installed.

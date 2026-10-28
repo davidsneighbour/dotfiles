@@ -12,7 +12,7 @@ Parent index: [`../INDEX.md`](../INDEX.md).
 
 ### `gh/cdg`
 
-Changes to a local GitHub repository directory by fuzzy-selecting a subdirectory under a base path; meant to be sourced/evaluated when used to affect the current shell.
+Selects a GitHub repository of an account with fzf (through `dnb_ui_search`) and prints its local path, cloning it first when missing; use `eval "$(cdg --print-cd-command)"` to change the current shell directory. Requires `gh`, `jq`, and `fzf`.
 
 CLI option notes:
 

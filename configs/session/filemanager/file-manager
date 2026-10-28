@@ -152,13 +152,12 @@ if [[ "${ACTION}" == "open" && -z "${OPEN_PATH}" ]]; then
   exit 1
 fi
 
-# dnb_log writes its console line to stdout by design; every caller below
-# captures a function's stdout via command substitution (container ids), so
-# these wrappers must not leak onto stdout or they corrupt that capture.
-log() { dnb_log info "$*" >&2; }
-vlog() { [[ "${VERBOSE}" == "true" ]] && dnb_log debug "$*" >&2; }
+# Callers capture function stdout via command substitution (container ids);
+# dnb_log writes to stderr, so these wrappers cannot corrupt that capture.
+log() { dnb_log info "$*"; }
+vlog() { [[ "${VERBOSE}" == "true" ]] && dnb_log debug "$*"; }
 fail() {
-  dnb_log error "$*" >&2
+  dnb_log error "$*"
   printf 'Error: %s\n' "$*" >&2
   exit 1
 }
@@ -181,11 +180,11 @@ i3_cmd() {
   vlog "i3-msg: ${1}"
   local result
   result="$(i3-msg "${1}" 2>&1)" || {
-    dnb_log warn "i3-msg command failed: ${1} (${result})" >&2
+    dnb_log warn "i3-msg command failed: ${1} (${result})"
     return 1
   }
   if ! printf '%s' "${result}" | jq -e '.[0].success' >/dev/null 2>&1; then
-    dnb_log warn "i3-msg command reported failure: ${1} (${result})" >&2
+    dnb_log warn "i3-msg command reported failure: ${1} (${result})"
     return 1
   fi
   return 0

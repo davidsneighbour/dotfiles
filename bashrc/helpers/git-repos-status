@@ -151,7 +151,7 @@ main() {
 
   if [[ "${DNB_VERBOSE:-}" == '1' ]]; then
     dnb_log_init >/dev/null
-    dnb_log info "Scanning ${root} (fetch=${do_fetch}, jobs=${jobs})"
+    dnb_ui_info "Scanning ${root} (fetch=${do_fetch}, jobs=${jobs})"
   fi
 
   local records
@@ -162,10 +162,14 @@ main() {
       sort
   )"
 
+  # Theme codes for stdout; all empty when stdout is not a colour terminal.
   local bold='' dim='' red='' yellow='' green='' reset=''
-  if [[ -t 1 ]]; then
-    bold=$'\e[1m' dim=$'\e[2m' red=$'\e[31m' yellow=$'\e[33m' green=$'\e[32m' reset=$'\e[0m'
-  fi
+  dnb_ui_style_code bold bold
+  dnb_ui_style_code dim muted
+  dnb_ui_style_code red error
+  dnb_ui_style_code yellow warning
+  dnb_ui_style_code green success
+  dnb_ui_style_code reset reset
 
   # Pad first, colour second: escape codes must not count towards column width.
   # Non-zero counts are coloured; zero and '-' stay dim so problems stand out.
@@ -188,7 +192,7 @@ main() {
 
     if [[ "${fetch_ok}" == '0' ]]; then
       behind='!'
-      [[ "${DNB_VERBOSE:-}" == '1' ]] && dnb_log warn "Fetch failed: ${repo}"
+      [[ "${DNB_VERBOSE:-}" == '1' ]] && dnb_ui_warning "Fetch failed: ${repo}"
     fi
 
     if [[ "${staged}${changed}${untracked}${conflict}${stash}" != '00000' ]] ||

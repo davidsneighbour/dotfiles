@@ -15,6 +15,8 @@
 #   MAX_ROOTS  why: number of root paths to show, 0 for all
 #   DEPTH      tree: maximum depth, 0 for no limit
 #   COLOR      1 to colour the labels
+#   C_MANUAL, C_AUTO, C_NOTE, C_RESET
+#              colour codes from the DNB terminal theme (empty for none)
 #   HARD_ONLY  1 to follow only hard edges (Pre-Depends and Depends)
 #   JSON       why: 1 to print a JSON array instead of text
 #   FORMAT     tree: "text" (default) or "dot" for Graphviz
@@ -31,11 +33,8 @@ BEGIN {
   KIND_NAME[1] = "depends"
   KIND_NAME[2] = "recommends"
   KIND_NAME[3] = "suggests"
-  if (COLOR == 1) {
-    C_MANUAL = "\033[32m"
-    C_AUTO = "\033[2m"
-    C_NOTE = "\033[2m"
-    C_RESET = "\033[0m"
+  if (COLOR != 1) {
+    C_MANUAL = C_AUTO = C_NOTE = C_RESET = ""
   }
 }
 

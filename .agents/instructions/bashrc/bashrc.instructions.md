@@ -27,4 +27,4 @@ Apply these rules to Bash code, including extensionless commands reached through
 * Shell helpers for the interactive environment belong under `bashrc/helpers/` and must be executable. Keep repository scripts, standalone utilities, and public commands in their established `scripts/`, `tools/`, and `bin/` locations.
 * Simple extensionless helpers use their filename as their command name. Group complex helpers by topic; `.sh` scripts may live in subfolders and be called by explicit path or linked into the helper command namespace.
 * Update source inputs, not generated `bashrc/INDEX.md` or `DOCUMENTATION*.md` references under `bashrc/`, unless explicitly instructed otherwise.
-* For user-facing commands, read [CLI behaviour](../cli.instructions.md). For logging, read [the logging rules](logging-and-verbosity.instructions.md).
+* For user-facing commands, read [CLI behaviour](../cli.instructions.md). For logging, read [the logging rules](logging-and-verbosity.instructions.md). For terminal output and input, read [the terminal UI rules](terminal-ui.instructions.md).

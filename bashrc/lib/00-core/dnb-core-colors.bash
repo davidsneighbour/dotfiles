@@ -88,7 +88,8 @@ __dnb_basic_color() {
 # Behaviour:
 #   - Uses DNB_COLOR_MODE when set: auto, truecolor, 256, basic, none.
 #   - Honours NO_COLOR by disabling colour.
-#   - Uses the configured palette:
+#   - Uses the semantic roles from dnb-core-ui-theme.bash when loaded, so
+#     DNB_UI_THEME applies. Falls back to these literals otherwise:
 #     error   -> Red
 #     warn    -> Orange
 #     info    -> Cyan
@@ -102,6 +103,28 @@ __dnb_log_color() {
   local mode=''
 
   mode="$(__dnb_color_mode)"
+
+  # Prefer the canonical theme tokens when the theme file is loaded. Resolve
+  # them here, at call time, because the theme file loads after this file.
+  if [[ "${mode}" == 'truecolor' || "${mode}" == '256' ]] && declare -F __dnb_ui_role_field >/dev/null; then
+    local role='' value=''
+    case "${level}" in
+    error) role='error' ;;
+    warn) role='warning' ;;
+    info) role='info' ;;
+    debug) role='muted' ;;
+    trace) role='trace' ;;
+    success) role='success' ;;
+    dry) role='dry' ;;
+    skip) role='skip' ;;
+    *) role='fg' ;;
+    esac
+    if [[ "${mode}" == 'truecolor' ]]; then
+      value="$(__dnb_ui_role_field "${role}" rgb)" && __dnb_rgb "${value}" && return 0
+    else
+      value="$(__dnb_ui_role_field "${role}" 256)" && __dnb_256 "${value}" && return 0
+    fi
+  fi
 
   case "${mode}" in
   none)
