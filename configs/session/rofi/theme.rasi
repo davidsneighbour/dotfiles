@@ -54,18 +54,18 @@ configuration {
 
 * {
 
-    dnb-background: #0B0D0F;
-    dnb-background2: #0B0D0Fcc;
-    dnb-current: #414D58;
-    dnb-foreground: #F8F8F2;
-    dnb-comment: #708CA9;
-    dnb-cyan: #80FFEA;
-    dnb-green: #8AFF80;
-    dnb-orange: #FFCA80;
-    dnb-pink: #FF80BF;
-    dnb-purple: #9580FF;
-    dnb-red: #FF9580;
-    dnb-yellow: #FFFF80;
+    dnb-background: #17191B;
+    dnb-background2: #17191Bcc;
+    dnb-current: #2E3236;
+    dnb-foreground: #D2D0CB;
+    dnb-comment: #9EA4AC;
+    dnb-cyan: #8FA9B4;
+    dnb-green: #D0DBC4;
+    dnb-orange: #C9A273;
+    dnb-pink: #EE9440;
+    dnb-purple: #B3A6BC;
+    dnb-red: #FF7D6C;
+    dnb-yellow: #F2C861;
 
     /* Recursive Sans Linear Light via variable-font axes: `fc-list | grep 'Recursive'` */
     font: "Recursive 11 wght=300,CASL=0,MONO=0,CRSV=0.5";

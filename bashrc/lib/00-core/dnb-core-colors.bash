@@ -89,7 +89,7 @@ __dnb_basic_color() {
 #   - Uses DNB_COLOR_MODE when set: auto, truecolor, 256, basic, none.
 #   - Honours NO_COLOR by disabling colour.
 #   - Uses the semantic roles from dnb-core-ui-theme.bash when loaded, so
-#     DNB_UI_THEME applies. Falls back to these literals otherwise:
+#     DNB_UI_THEME applies. Falls back to these Nosferatu literals otherwise:
 #     error   -> Red
 #     warn    -> Orange
 #     info    -> Cyan
@@ -132,28 +132,28 @@ __dnb_log_color() {
     ;;
   truecolor)
     case "${level}" in
-    error) __dnb_rgb '255;149;128' ;;   # Red
-    warn) __dnb_rgb '255;202;128' ;;    # Orange
-    info) __dnb_rgb '128;255;234' ;;    # Cyan
-    debug) __dnb_rgb '121;112;169' ;;   # Comment
-    trace) __dnb_rgb '198;198;194' ;;   # DimWhite
-    success) __dnb_rgb '138;255;128' ;; # Green
-    dry) __dnb_rgb '255;255;128' ;;     # Yellow
-    skip) __dnb_rgb '255;128;191' ;;    # Magenta
-    *) __dnb_rgb '248;248;242' ;;       # Foreground
+    error) __dnb_rgb '255;125;108' ;;   # Red
+    warn) __dnb_rgb '201;162;115' ;;    # Orange
+    info) __dnb_rgb '166;186;192' ;;    # Cyan
+    debug) __dnb_rgb '158;164;172' ;;   # Comment
+    trace) __dnb_rgb '168;166;162' ;;   # DimWhite
+    success) __dnb_rgb '155;175;132' ;; # Green
+    dry) __dnb_rgb '242;200;97' ;;      # Yellow
+    skip) __dnb_rgb '194;143;163' ;;    # Magenta
+    *) __dnb_rgb '210;208;203' ;;       # Foreground
     esac
     ;;
   256)
     case "${level}" in
-    error) __dnb_256 '217' ;;   # Red
-    warn) __dnb_256 '222' ;;    # Orange
-    info) __dnb_256 '159' ;;    # Cyan
-    debug) __dnb_256 '103' ;;   # Comment
-    trace) __dnb_256 '251' ;;   # DimWhite
-    success) __dnb_256 '157' ;; # Green
-    dry) __dnb_256 '229' ;;     # Yellow
-    skip) __dnb_256 '218' ;;    # Magenta
-    *) __dnb_256 '231' ;;       # Foreground
+    error) __dnb_256 '209' ;;   # Red
+    warn) __dnb_256 '179' ;;    # Orange
+    info) __dnb_256 '249' ;;    # Cyan
+    debug) __dnb_256 '248' ;;   # Comment
+    trace) __dnb_256 '248' ;;   # DimWhite
+    success) __dnb_256 '108' ;; # Green
+    dry) __dnb_256 '221' ;;     # Yellow
+    skip) __dnb_256 '139' ;;    # Magenta
+    *) __dnb_256 '252' ;;       # Foreground
     esac
     ;;
   basic)

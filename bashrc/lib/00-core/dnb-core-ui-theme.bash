@@ -6,14 +6,16 @@
 # prompt, start tools, or change shell options on source.
 #
 # Palette rows use the format 'HEX|R,G,B|HSL|256' and preserve the supplied
-# Dracula Pro values verbatim. `scripts/build-terminal-theme.ts` parses the
-# `[Name]='…'` rows below; keep one row per line.
+# Dracula Pro "Terminal Standard" values verbatim.
+# `scripts/build-terminal-theme.ts` parses the `[Name]='…'` rows below; keep
+# one row per line. See docs/colours.md for the full overview.
 #
 # Selectors:
-#   DNB_UI_THEME=dracula-pro|dracula-pro-dark   (default: dracula-pro)
+#   DNB_UI_THEME=nosferatu|dracula-pro         (default: nosferatu)
+#                The retired `dracula-pro-dark` maps to nosferatu.
 #   DNB_UI_SYMBOLS=auto|unicode|ascii           (default: auto)
 
-# Main palette (default).
+# Dracula Pro base palette.
 declare -gA __DNB_UI_PALETTE_MAIN=(
   [Black]='#22212C|34,33,44|250° 15% 15%|59'
   [Red]='#FF9580|255,149,128|10° 100% 75%|217'
@@ -47,14 +49,38 @@ declare -gA __DNB_UI_PALETTE_MAIN=(
   [Orange]='#FFCA80|255,202,128|35° 100% 75%|222'
 )
 
-# Darker variant: overrides only these rows. Black stays unchanged.
-declare -gA __DNB_UI_PALETTE_DARK=(
-  [Background]='#0B0D0F|11,13,15|210° 15% 5%|16'
-  [Comment]='#708CA9|112,140,169|210° 25% 55%|109'
-  [Selection]='#414D58|65,77,88|210° 15% 30%|66'
-  [Cursor]='#708CA9|112,140,169|210° 25% 55%|109'
-  [BrightBlack]='#364049|54,64,73|208° 15% 25%|66'
-  [DimBlack]='#090A0C|9,10,12|220° 15% 4%|232'
+# Nosferatu variant (default). A complete palette, not overrides.
+declare -gA __DNB_UI_PALETTE_NOSFERATU=(
+  [Black]='#1F2326|31,35,38|206° 10% 14%|235'
+  [Red]='#FF7D6C|255,125,108|7° 100% 71%|209'
+  [Green]='#9BAF84|155,175,132|88° 21% 60%|108'
+  [Yellow]='#F2C861|242,200,97|43° 85% 66%|221'
+  [Blue]='#8CA3B5|140,163,181|206° 22% 63%|109'
+  [Magenta]='#C28FA3|194,143,163|336° 29% 66%|139'
+  [Cyan]='#A6BAC0|166,186,192|194° 17% 70%|249'
+  [White]='#D2D0CB|210,208,203|43° 7% 81%|252'
+  [BrightBlack]='#9EA4AC|158,164,172|214° 8% 65%|248'
+  [BrightRed]='#FF9582|255,149,130|9° 100% 75%|210'
+  [BrightGreen]='#B3C49C|179,196,156|86° 25% 69%|151'
+  [BrightYellow]='#F7D98A|247,217,138|43° 87% 75%|222'
+  [BrightBlue]='#A6BACB|166,186,203|208° 26% 72%|146'
+  [BrightMagenta]='#D4A6B6|212,166,182|339° 35% 74%|181'
+  [BrightCyan]='#BFD0D4|191,208,212|191° 20% 79%|252'
+  [BrightWhite]='#F7F4ED|247,244,237|42° 38% 95%|255'
+  [DimBlack]='#191C1E|25,28,30|204° 9% 11%|234'
+  [DimRed]='#CC6456|204,100,86|7° 54% 57%|167'
+  [DimGreen]='#7C8C6A|124,140,106|88° 14% 48%|101'
+  [DimYellow]='#C2A04E|194,160,78|42° 49% 53%|143'
+  [DimBlue]='#708291|112,130,145|207° 13% 50%|66'
+  [DimMagenta]='#9B7282|155,114,130|337° 17% 53%|96'
+  [DimCyan]='#85959A|133,149,154|194° 9% 56%|246'
+  [DimWhite]='#A8A6A2|168,166,162|40° 3% 65%|248'
+  [Background]='#17191B|23,25,27|210° 8% 10%|234'
+  [Foreground]='#D2D0CB|210,208,203|43° 7% 81%|252'
+  [Comment]='#9EA4AC|158,164,172|214° 8% 65%|248'
+  [Selection]='#2E3236|46,50,54|210° 8% 20%|236'
+  [Cursor]='#9EA4AC|158,164,172|214° 8% 65%|248'
+  [Orange]='#C9A273|201,162,115|33° 44% 62%|179'
 )
 
 # Semantic role -> palette name.
@@ -111,12 +137,30 @@ declare -gA __DNB_UI_SYMBOLS=(
 
 # __dnb_ui_theme_name
 #
-# Print the active theme name. Unknown values fall back to dracula-pro.
+# Print the active theme name. Unknown values fall back to nosferatu.
 __dnb_ui_theme_name() {
-  case "${DNB_UI_THEME:-dracula-pro}" in
-  dracula-pro-dark) printf 'dracula-pro-dark\n' ;;
-  *) printf 'dracula-pro\n' ;;
+  case "${DNB_UI_THEME:-nosferatu}" in
+  dracula-pro) printf 'dracula-pro\n' ;;
+  *) printf 'nosferatu\n' ;;
   esac
+}
+
+# __dnb_ui_palette_row NAME [THEME]
+#
+# Print the raw palette row for NAME in THEME (default: the active theme).
+__dnb_ui_palette_row() {
+  local name="${1:?palette name required}"
+  local theme="${2:-}"
+  local row=''
+
+  [[ -n "${theme}" ]] || theme="$(__dnb_ui_theme_name)"
+  if [[ "${theme}" == 'dracula-pro' ]]; then
+    row="${__DNB_UI_PALETTE_MAIN[${name}]:-}"
+  else
+    row="${__DNB_UI_PALETTE_NOSFERATU[${name}]:-}"
+  fi
+  [[ -n "${row}" ]] || return 1
+  printf '%s\n' "${row}"
 }
 
 # __dnb_ui_palette_field NAME FIELD
@@ -129,12 +173,7 @@ __dnb_ui_palette_field() {
   local row=''
   local hex='' rgb='' hsl='' idx=''
 
-  if [[ "$(__dnb_ui_theme_name)" == 'dracula-pro-dark' && -n "${__DNB_UI_PALETTE_DARK[${name}]:-}" ]]; then
-    row="${__DNB_UI_PALETTE_DARK[${name}]}"
-  else
-    row="${__DNB_UI_PALETTE_MAIN[${name}]:-}"
-  fi
-  [[ -n "${row}" ]] || return 1
+  row="$(__dnb_ui_palette_row "${name}")" || return 1
 
   IFS='|' read -r hex rgb hsl idx <<<"${row}"
   case "${field}" in
@@ -176,13 +215,13 @@ __dnb_ui_role_field() {
 # subprocesses, so shell startup may call it.
 dnb_ui_export_tokens() {
   local role='' name='' row='' var=''
+  local array='__DNB_UI_PALETTE_NOSFERATU'
 
+  [[ "${DNB_UI_THEME:-}" == 'dracula-pro' ]] && array='__DNB_UI_PALETTE_MAIN'
+  local -n palette="${array}"
   for role in "${!__DNB_UI_ROLES[@]}"; do
     name="${__DNB_UI_ROLES[${role}]}"
-    row="${__DNB_UI_PALETTE_MAIN[${name}]}"
-    if [[ "${DNB_UI_THEME:-}" == 'dracula-pro-dark' && -n "${__DNB_UI_PALETTE_DARK[${name}]:-}" ]]; then
-      row="${__DNB_UI_PALETTE_DARK[${name}]}"
-    fi
+    row="${palette[${name}]}"
     var="DNB_UI_${role^^}"
     printf -v "${var}" '%s' "${row%%|*}"
     export "${var?}"

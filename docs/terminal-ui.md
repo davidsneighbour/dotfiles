@@ -85,7 +85,7 @@ Command substitution only captures stdout, so prompts stay visible and only the 
 | --- | --- | --- |
 | `DNB_UI_FORMAT` | `auto`, `plain`, `json` | Helpers map `--plain` and `--json` to this. Priority: json over plain over auto. `TERM=dumb` behaves as plain. |
 | `DNB_UI_QUIET` | `1` | Suppresses headings, info, success, and spinner titles. Errors, warnings, results, and confirmations remain. |
-| `DNB_UI_THEME` | `dracula-pro`, `dracula-pro-dark` | Selects the main or darker palette. |
+| `DNB_UI_THEME` | `nosferatu` (default), `dracula-pro` | Selects the palette. The retired `dracula-pro-dark` maps to `nosferatu`. See [colours](colours.md). |
 | `DNB_UI_SYMBOLS` | `auto`, `unicode`, `ascii` | `auto` uses Unicode only in `auto` mode with a UTF-8 locale. |
 | `DNB_COLOR_MODE` | `auto`, `truecolor`, `256`, `basic`, `none` | Existing colour depth switch. A forced value never adds escapes to redirected, plain, or JSON output. |
 | `NO_COLOR` | non-empty | No colour or reset escapes anywhere. |
@@ -105,7 +105,7 @@ Nothing pages automatically. No tool is installed or downloaded at runtime.
 
 ## Theme
 
-The palette in `dnb-core-ui-theme.bash` is the single source. It keeps the supplied Dracula Pro hex, RGB, HSL, and 256-colour values for all 30 main rows and the six darker override rows. The darker variant overrides only Background, Comment, Selection, Cursor, BrightBlack, and DimBlack.
+The palette in `dnb-core-ui-theme.bash` is the single source. It keeps the supplied Dracula Pro hex, RGB, HSL, and 256-colour values for 30 rows each of the Nosferatu (default) and Dracula Pro base palettes. [Colours](colours.md) lists every value and how to use it.
 
 Semantic roles: `bg` Background, `fg` Foreground, `muted` Comment, `accent`/`info` Cyan, `accent_alt` Magenta, `success` Green, `warning` Orange, `error` Red, `dry` Yellow, `skip` Magenta, `trace` DimWhite, `border` BrightBlack, `selected` Selection, `cursor` Cursor. `dnb_log` level colours use the same roles.
 

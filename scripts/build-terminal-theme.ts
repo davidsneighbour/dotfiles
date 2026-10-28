@@ -4,8 +4,8 @@
 // bashrc/lib/00-core/dnb-core-ui-theme.bash.
 //
 // Outputs (configs/theme/dnb-terminal/):
-//   glow/dracula-pro.json, glow/dracula-pro-dark.json   Glow (glamour) styles
-//   bat/DNB Dracula Pro.tmTheme, bat/DNB Dracula Pro Dark.tmTheme
+//   glow/dracula-pro.json, glow/nosferatu.json   Glow (glamour) styles
+//   bat/DNB Dracula Pro.tmTheme, bat/DNB Dracula Pro Nosferatu.tmTheme
 //
 // Usage:
 //   node --experimental-strip-types scripts/build-terminal-theme.ts [--check]
@@ -22,7 +22,7 @@ const OUTPUT_DIR = resolve(ROOT, "configs/theme/dnb-terminal");
 type Palette = Record<string, string>;
 
 type Variant = {
-  id: "dracula-pro" | "dracula-pro-dark";
+  id: "dracula-pro" | "nosferatu";
   batName: string;
   palette: Palette;
 };
@@ -243,19 +243,25 @@ async function main(): Promise<void> {
 
   const source = await readFile(THEME_SOURCE, "utf8");
   const mainPalette = parseBlock(source, "__DNB_UI_PALETTE_MAIN");
-  const dark = {
-    ...mainPalette,
-    ...parseBlock(source, "__DNB_UI_PALETTE_DARK"),
-  };
-  if (Object.keys(mainPalette).length !== 30) {
-    throw new Error(
-      `Expected 30 main palette rows, found ${Object.keys(mainPalette).length}`,
-    );
+  const nosferatu = parseBlock(source, "__DNB_UI_PALETTE_NOSFERATU");
+  for (const [label, palette] of [
+    ["main", mainPalette],
+    ["Nosferatu", nosferatu],
+  ] as const) {
+    if (Object.keys(palette).length !== 30) {
+      throw new Error(
+        `Expected 30 ${label} palette rows, found ${Object.keys(palette).length}`,
+      );
+    }
   }
 
   const variants: Variant[] = [
     { id: "dracula-pro", batName: "DNB Dracula Pro", palette: mainPalette },
-    { id: "dracula-pro-dark", batName: "DNB Dracula Pro Dark", palette: dark },
+    {
+      id: "nosferatu",
+      batName: "DNB Dracula Pro Nosferatu",
+      palette: nosferatu,
+    },
   ];
 
   const outputs = new Map<string, string>();

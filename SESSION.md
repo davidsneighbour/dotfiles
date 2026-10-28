@@ -66,7 +66,7 @@ i3 has no session manager, so it does not read XDG autostart (`~/.config/autosta
 | Colour scheme | `bashrc/helpers/session-colour-scheme --apply` | `exec_always` | Non-fatal (`\|\| true`). See "Session colour scheme". |
 | GNOME Keyring D-Bus components | `gnome-keyring-daemon --start --components=pkcs11,secrets` | `exec_always` | Non-fatal. Registers the Secret Service on the session bus so libsecret apps (for example VS Code) find a keyring. PAM already starts and unlocks the daemon at login. |
 | Polkit agent | `/usr/libexec/polkit-mate-authentication-agent-1` | `exec` | Non-fatal. Without it, `pkexec` has no graphical agent. |
-| Root background colour | `xsetroot -solid '#0B0D0F'` | `exec_always` | Non-fatal. |
+| Root background colour | `xsetroot -solid '#17191B'` | `exec_always` | Non-fatal. |
 | Polybar | `configs/session/polybar/launch.sh` | `exec_always` | Non-fatal; i3 stays usable without a bar. |
 | Enpass | `session-colour-scheme --tool enpass -- --minimize` | `exec` | Non-fatal. Starts once per session so it does not prompt again on every i3 restart. |
 | Barrier | `/usr/bin/barrier` | `exec` | Non-fatal. Keyboard and mouse sharing; config at `configs/session/barrier/barrier.conf`. |
@@ -181,7 +181,7 @@ A singleton, two-pane Thunar workspace (LEFT user-controlled, RIGHT always the t
 
 ## Background
 
-* `xsetroot -solid '#0B0D0F'` runs on every i3 start and restart, so the desktop is never blank even without a wallpaper file. The colour matches Polybar's Dracula Pro `dnb-background`.
+* `xsetroot -solid '#17191B'` runs on every i3 start and restart, so the desktop is never blank even without a wallpaper file. The colour matches the Dracula Pro Nosferatu background used by Polybar and Rofi (see [colours](docs/colours.md)).
 * `feh --bg-fill configs/session/i3/wallpaper.jpg` then sets the repo-committed wallpaper image.
 
 ## Notifications

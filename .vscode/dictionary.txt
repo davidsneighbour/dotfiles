@@ -98,6 +98,7 @@ newwindow
 nofork
 nohup
 nonexistent
+nosferatu
 nostr
 ntfy
 ocamlfuse

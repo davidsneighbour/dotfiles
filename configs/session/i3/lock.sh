@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Lock the i3 session with i3lock, using this directory's lockscreen image
-# and the Dracula-style i3lock-colour theme when the local binary supports it.
+# and the Dracula Pro Nosferatu i3lock-colour theme when the local binary supports it.
 #
 # This is the locker xss-lock runs (started via
 # configs/session/i3/configs/session-starts.conf), which xss-lock invokes
@@ -83,13 +83,14 @@ args=(
 
 if theme_supported; then
   alpha='dd'
-  background='#282a36'
-  selection='#44475a'
-  red='#ff5555'
-  magenta='#ff79c6'
-  blue='#6272a4'
-  green='#50fa7b'
-  orange='#ffb86c'
+  # Dracula Pro Nosferatu named colours (see docs/colours.md).
+  background='#17191B'
+  selection='#2E3236'
+  red='#FF7D6C'
+  pink='#EE9440'
+  comment='#9EA4AC'
+  green='#D0DBC4'
+  orange='#C9A273'
 
   args+=(
     --insidever-color="${selection}${alpha}"
@@ -97,17 +98,17 @@ if theme_supported; then
     --inside-color="${selection}${alpha}"
     --ringver-color="${green}${alpha}"
     --ringwrong-color="${red}${alpha}"
-    --ring-color="${blue}${alpha}"
+    --ring-color="${comment}${alpha}"
     --line-uses-ring
-    --keyhl-color="${magenta}${alpha}"
+    --keyhl-color="${pink}${alpha}"
     --bshl-color="${orange}${alpha}"
     --separator-color="${selection}${alpha}"
     --verif-color="${green}"
     --wrong-color="${red}"
     --modif-color="${red}"
-    --layout-color="${blue}"
-    --date-color="${blue}"
-    --time-color="${blue}"
+    --layout-color="${comment}"
+    --date-color="${comment}"
+    --time-color="${comment}"
     --screen=1
     --blur=1
     --clock

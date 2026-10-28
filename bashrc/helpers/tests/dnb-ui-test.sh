@@ -54,24 +54,26 @@ test_source_is_side_effect_free() {
 
 test_palette() {
   assert_equal '30' "${#__DNB_UI_PALETTE_MAIN[@]}" 'main palette rows'
-  assert_equal '6' "${#__DNB_UI_PALETTE_DARK[@]}" 'dark palette rows'
+  assert_equal '30' "${#__DNB_UI_PALETTE_NOSFERATU[@]}" 'nosferatu palette rows'
   assert_equal '#22212C|34,33,44|250° 15% 15%|59' "${__DNB_UI_PALETTE_MAIN[Black]}" 'Black row verbatim'
   assert_equal '#FFCA80|255,202,128|35° 100% 75%|222' "${__DNB_UI_PALETTE_MAIN[Orange]}" 'Orange row verbatim'
-  assert_equal '#22212C' "$(__dnb_ui_palette_field Background hex)" 'main background'
-  assert_equal '#0B0D0F' "$(DNB_UI_THEME=dracula-pro-dark __dnb_ui_palette_field Background hex)" 'dark background'
-  assert_equal '#22212C' "$(DNB_UI_THEME=dracula-pro-dark __dnb_ui_palette_field Black hex)" 'dark keeps Black'
-  assert_equal '255;202;128' "$(__dnb_ui_role_field warning rgb)" 'warning role rgb'
-  assert_equal '109' "$(DNB_UI_THEME=dracula-pro-dark __dnb_ui_role_field muted 256)" 'dark muted 256'
-  assert_equal '#FF80BF' "$(DNB_COLOR_MODE=truecolor __dnb_ui_backend_color skip)" 'backend hex'
+  assert_equal '#C9A273|201,162,115|33° 44% 62%|179' "${__DNB_UI_PALETTE_NOSFERATU[Orange]}" 'Nosferatu Orange row verbatim'
+  assert_equal '#17191B' "$(__dnb_ui_palette_field Background hex)" 'default background is Nosferatu'
+  assert_equal '#22212C' "$(DNB_UI_THEME=dracula-pro __dnb_ui_palette_field Background hex)" 'dracula-pro background'
+  assert_equal '#17191B' "$(DNB_UI_THEME=dracula-pro-dark __dnb_ui_palette_field Background hex)" 'retired dark name maps to Nosferatu'
+  assert_equal '201;162;115' "$(__dnb_ui_role_field warning rgb)" 'warning role rgb'
+  assert_equal '255;202;128' "$(DNB_UI_THEME=dracula-pro __dnb_ui_role_field warning rgb)" 'dracula-pro warning role rgb'
+  assert_equal '248' "$(__dnb_ui_role_field muted 256)" 'Nosferatu muted 256'
+  assert_equal '#C28FA3' "$(DNB_COLOR_MODE=truecolor __dnb_ui_backend_color skip)" 'backend hex'
   assert_equal '1' "$(DNB_COLOR_MODE=basic __dnb_ui_backend_color error)" 'backend basic slot'
 }
 
 test_exported_tokens() {
   local output=''
   output="$(dnb_ui_export_tokens && printf '%s %s' "${DNB_UI_ACCENT}" "${DNB_UI_WARNING}")"
-  assert_equal '#80FFEA #FFCA80' "${output}" 'exported tokens'
-  output="$(DNB_UI_THEME=dracula-pro-dark && dnb_ui_export_tokens && printf '%s' "${DNB_UI_BG}")"
-  assert_equal '#0B0D0F' "${output}" 'exported dark tokens'
+  assert_equal '#A6BAC0 #C9A273' "${output}" 'exported tokens'
+  output="$(DNB_UI_THEME=dracula-pro && dnb_ui_export_tokens && printf '%s' "${DNB_UI_BG}")"
+  assert_equal '#22212C' "${output}" 'exported dracula-pro tokens'
 }
 
 test_modes_and_symbols() {

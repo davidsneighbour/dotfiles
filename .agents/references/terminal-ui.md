@@ -1,6 +1,6 @@
 # Terminal UI facade
 
-Read this when a Bash helper prints messages, asks questions, shows progress, prints tables, or renders Markdown, source, or diffs. The full user documentation is [docs/terminal-ui.md](../../docs/terminal-ui.md); this reference lists what agents must apply.
+Read this when a Bash helper prints messages, asks questions, shows progress, prints tables, or renders Markdown, source, or diffs. The full user documentation is [docs/terminal-ui.md](../../docs/terminal-ui.md); this reference lists what agents must apply. All palette values and access methods are in [docs/colours.md](../../docs/colours.md).
 
 ## Loading
 

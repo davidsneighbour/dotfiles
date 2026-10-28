@@ -1,6 +1,6 @@
 # Get editor completions based on the config schema
 "$schema" = 'https://starship.rs/config-schema.json'
-palette = "dracula"
+palette = "nosferatu"
 format = "$all$character"
 
 # Inserts a blank line between shell prompts
@@ -65,15 +65,16 @@ when = 'git rev-parse --is-inside-work-tree >/dev/null 2>&1'
 format = '( $output)'
 
 # Palette definitions
-[palettes.dracula]
-background = "#282a36"
-current_line = "#44475a"
-foreground = "#f8f8f2"
-comment = "#6272a4"
-cyan = "#8be9fd"
-green = "#50fa7b"
-orange = "#ffb86c"
-pink = "#ff79c6"
-purple = "#bd93f9"
-red = "#ff5555"
-yellow = "#f1fa8c"
+# Dracula Pro Nosferatu named colours (see docs/colours.md)
+[palettes.nosferatu]
+background = "#17191B"
+current_line = "#2E3236"
+foreground = "#D2D0CB"
+comment = "#9EA4AC"
+cyan = "#8FA9B4"
+green = "#D0DBC4"
+orange = "#C9A273"
+pink = "#EE9440"
+purple = "#B3A6BC"
+red = "#FF7D6C"
+yellow = "#F2C861"

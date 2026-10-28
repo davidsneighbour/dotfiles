@@ -28,7 +28,7 @@ done
 * `dnb_auto_source`
 * `dnb_is_interactive`
 * `dnb_log_header`
-* `dnb_ui_*` terminal UI facade and `dnb_ui_export_tokens` (see [`../../docs/terminal-ui.md`](../../docs/terminal-ui.md))
+* `dnb_ui_*` terminal UI facade and `dnb_ui_export_tokens` (see [`../../docs/terminal-ui.md`](../../docs/terminal-ui.md) and the colour overview in [`../../docs/colours.md`](../../docs/colours.md))
 * `dnb_check_requirements`
 * `dnb_log_init`
 * `dnb_log`

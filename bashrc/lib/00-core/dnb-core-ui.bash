@@ -800,9 +800,9 @@ dnb_ui_markdown() {
 # theme is not in bat's cache. delta reads the same cache.
 __dnb_ui_bat_theme() {
   local bat_cmd="${1:-bat}"
-  local name='DNB Dracula Pro'
+  local name='DNB Dracula Pro Nosferatu'
 
-  [[ "$(__dnb_ui_theme_name)" == 'dracula-pro-dark' ]] && name='DNB Dracula Pro Dark'
+  [[ "$(__dnb_ui_theme_name)" == 'dracula-pro' ]] && name='DNB Dracula Pro'
   if "${bat_cmd}" --list-themes --color=never 2>/dev/null | grep -qxF -- "${name}"; then
     printf '%s\n' "${name}"
   else
