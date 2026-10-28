@@ -39,6 +39,9 @@ if [[ "${#arguments[@]}" -eq 0 ]]; then
   printf '%s\n' 'Choose --index or --serve and supply --node. Use --help.'
   exit 0
 fi
+if [[ "${node_binary}" == "${HOME}/.local/bin/node-cron" ]]; then
+  /bin/bash "${repo_root}/scripts/node-cron.sh" --refresh
+fi
 if [[ "${node_binary}" != /* || ! -x "${node_binary}" ]]; then
   printf '%s\n' 'Supply an executable absolute Node path with --node. Use --help.' >&2
   exit 1

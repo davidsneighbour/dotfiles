@@ -29,6 +29,10 @@
     - cron: "15 4 * * 0"
       comment: "weekly Node.js Current update"
       command: mkdir -p "${HOME}/.logs/cron" && ${HOME}/.dotfiles/bashrc/cronjobs/node-update.sh >> "${HOME}/.logs/cron/node-update-$(date +\%Y\%m\%d-\%H\%M\%S).log" 2>&1
+    - id: node-cron-lts-weekly
+      cron: "45 4 * * 0"
+      comment: "weekly Node.js LTS runtime update"
+      command: /bin/bash "${HOME}/.dotfiles/scripts/node-cron.sh" --update
     - cron: 30 */4 * * *
       command: ${HOME}/github.com/davidsneighbour/dotfiles/bashrc/cronjobs/filespace-discord.sh >> "$HOME/.logs/cron/job-$(date +\%Y\%m\%d-\%H\%M\%S).log" 2>&1
     - cron: 0 6,12,18 * * *
@@ -51,13 +55,13 @@
       cron: "15 8 * * *"
       comment: "daily dotfiles Git catalogue and reports"
       command: >-
-        /usr/bin/flock -w 300 "/home/patrick/github.com/davidsneighbour/dotfiles/tools/git-collection/state/update.lock" "/home/patrick/.nvm/versions/node/v26.10.0/bin/node" "/home/patrick/github.com/davidsneighbour/dotfiles/tools/git-collection/src/daily.ts" --config "/home/patrick/github.com/davidsneighbour/dotfiles/tools/git-collection/config.local.json" --database "/home/patrick/github.com/davidsneighbour/dotfiles/tools/git-collection/state/catalogue.sqlite" --output "/home/patrick/github.com/davidsneighbour/dotfiles/tools/git-collection/reports"
+        /usr/bin/flock -w 300 "/home/patrick/github.com/davidsneighbour/dotfiles/tools/git-collection/state/update.lock" /bin/bash "${HOME}/.dotfiles/scripts/node-cron.sh" --refresh --exec -- "/home/patrick/github.com/davidsneighbour/dotfiles/tools/git-collection/src/daily.ts" --config "/home/patrick/github.com/davidsneighbour/dotfiles/tools/git-collection/config.local.json" --database "/home/patrick/github.com/davidsneighbour/dotfiles/tools/git-collection/state/catalogue.sqlite" --output "/home/patrick/github.com/davidsneighbour/dotfiles/tools/git-collection/reports"
 
     - id: git-collection-startup
       cron: "@reboot"
       comment: "dotfiles Git catalogue and reports at startup"
       command: >-
-        /usr/bin/flock -w 300 "/home/patrick/github.com/davidsneighbour/dotfiles/tools/git-collection/state/update.lock" "/home/patrick/.nvm/versions/node/v26.10.0/bin/node" "/home/patrick/github.com/davidsneighbour/dotfiles/tools/git-collection/src/daily.ts" --config "/home/patrick/github.com/davidsneighbour/dotfiles/tools/git-collection/config.local.json" --database "/home/patrick/github.com/davidsneighbour/dotfiles/tools/git-collection/state/catalogue.sqlite" --output "/home/patrick/github.com/davidsneighbour/dotfiles/tools/git-collection/reports"
+        /usr/bin/flock -w 300 "/home/patrick/github.com/davidsneighbour/dotfiles/tools/git-collection/state/update.lock" /bin/bash "${HOME}/.dotfiles/scripts/node-cron.sh" --refresh --exec -- "/home/patrick/github.com/davidsneighbour/dotfiles/tools/git-collection/src/daily.ts" --config "/home/patrick/github.com/davidsneighbour/dotfiles/tools/git-collection/config.local.json" --database "/home/patrick/github.com/davidsneighbour/dotfiles/tools/git-collection/state/catalogue.sqlite" --output "/home/patrick/github.com/davidsneighbour/dotfiles/tools/git-collection/reports"
 
     - id: system-checkup
       cron: "0 */6 * * *"

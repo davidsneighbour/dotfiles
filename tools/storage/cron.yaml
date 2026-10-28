@@ -1,6 +1,6 @@
 ---
 # Apply only this profile with Dotbot; other crontab entries are preserved.
-# Keep the explicit Node path in step with workstation Node upgrades.
+# The runner refreshes the installed LTS runtime before each job starts.
 - plugins:
     - configs/dotbot/plugins/crontab.py
 
@@ -9,14 +9,14 @@
       cron: "0 */6 * * *"
       comment: "update storage catalogue every six hours"
       command: >-
-        /bin/bash "${HOME}/github.com/davidsneighbour/dotfiles/tools/storage/run.sh" --node "/home/patrick/.nvm/versions/node/v26.10.0/bin/node" --index
+        /bin/bash "${HOME}/github.com/davidsneighbour/dotfiles/tools/storage/run.sh" --node "${HOME}/.local/bin/node-cron" --index
     - id: storage-index-startup
       cron: "@reboot"
       comment: "resume storage catalogue at startup"
       command: >-
-        /bin/bash "${HOME}/github.com/davidsneighbour/dotfiles/tools/storage/run.sh" --node "/home/patrick/.nvm/versions/node/v26.10.0/bin/node" --index
+        /bin/bash "${HOME}/github.com/davidsneighbour/dotfiles/tools/storage/run.sh" --node "${HOME}/.local/bin/node-cron" --index
     - id: storage-search-startup
       cron: "@reboot"
       comment: "local storage search interface"
       command: >-
-        /bin/bash "${HOME}/github.com/davidsneighbour/dotfiles/tools/storage/run.sh" --node "/home/patrick/.nvm/versions/node/v26.10.0/bin/node" --serve
+        /bin/bash "${HOME}/github.com/davidsneighbour/dotfiles/tools/storage/run.sh" --node "${HOME}/.local/bin/node-cron" --serve

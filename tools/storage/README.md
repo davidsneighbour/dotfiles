@@ -46,7 +46,7 @@ An incomplete or failed scan can leave stale paths alongside newer rows. The sta
 dotbot --base-directory "$PWD" --config-file tools/storage/cron.yaml
 ```
 
-Reapplying this profile replaces only its three managed entries and preserves other cron jobs. The profile pins the current Node executable, as other workstation cron jobs do; update its `--node` paths after removing or replacing that Node installation. The profile is deliberately separate from the main dotfiles installation and package files.
+Reapplying this profile replaces only its three managed entries and preserves other cron jobs. The profile uses `~/.local/bin/node-cron`. The runner refreshes this link from installed NVM LTS releases before starting each job, including at boot, without network access or installation. See [Node runtime maintenance](../../docs/node-runtime.md) for explicit LTS updates and manual inspection. The profile is deliberately separate from the main dotfiles installation and package files.
 
 [run.sh](run.sh) creates logs at `~/.logs/storage/YYYYMMDD-HHMMSS.log`, applies low CPU and disk I/O priority, and uses the repository logging library. Use the same runner for logged manual execution:
 

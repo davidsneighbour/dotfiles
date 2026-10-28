@@ -8,11 +8,12 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DEFAULT_PACKAGE_INSTALLER="${SCRIPT_DIR}/install-default-packages.ts"
 DRY_RUN="false"
 VERBOSE="false"
+UPDATE_LTS="false"
 
 print_help() {
   cat <<EOF
 Usage:
-  ${SCRIPT_NAME} [--dry-run] [--verbose] [--help]
+  ${SCRIPT_NAME} [--dry-run] [--lts] [--verbose] [--help]
 
 Updates NVM's "node" release to the latest available Node.js version, migrates
 globally installed npm packages from the active version, and sets it as the
@@ -20,6 +21,7 @@ default. If the resolved default version changes, install the default global npm
 packages from configs/session/npm/default-packages.
 
 Options:
+  --lts       Install the latest LTS and refresh node-cron; keep the Current default.
   --dry-run   Print the commands that would run.
   --verbose   Print detailed progress.
   --help      Show this help.
@@ -48,6 +50,10 @@ die() {
 parse_args() {
   while (($# > 0)); do
     case "${1}" in
+      --lts)
+        UPDATE_LTS="true"
+        shift
+        ;;
       --dry-run)
         DRY_RUN="true"
         shift
@@ -150,6 +156,11 @@ main() {
 
   require_file "${DEFAULT_PACKAGE_INSTALLER}"
   load_nvm
+
+  if [[ "${UPDATE_LTS}" == "true" ]]; then
+    run_command /bin/bash "${SCRIPT_DIR}/../../../scripts/node-cron.sh" --update
+    return 0
+  fi
 
   local previous_active_version
   local previous_default_version

@@ -163,3 +163,7 @@ npm run check
 npm run lint:config
 npm run lint:shell
 ```
+
+## Scheduled runtime
+
+The `host-locutus` Git catalogue jobs refresh the installed LTS runtime through `scripts/node-cron.sh --refresh --exec` before running Node. This prevents startup races and removes version-specific runtime paths. The `node-cron-lts-weekly` job runs `scripts/node-cron.sh --update` on Sundays at 04:45 in the cron daemon’s local timezone. Reapply this profile to replace the two managed jobs and install the weekly LTS update. See [Node runtime maintenance](../../docs/node-runtime.md) for the stable symlink, offline refresh, and explicit `--lts` update operation.
