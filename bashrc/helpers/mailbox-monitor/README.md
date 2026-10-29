@@ -21,6 +21,7 @@ MAILBOX_MONITOR_SSH_KEY="${HOME}/.ssh/id_ed25519"
 MAILBOX_MONITOR_DOMAINS=""
 MAILBOX_MONITOR_PROJECT_NAME="Customer mailboxes"
 MAILBOX_MONITOR_OUTPUT_DIR="${HOME}/.logs/mailbox-monitor"
+MAILBOX_MONITOR_HISTORY_FILE=""
 MAILBOX_MONITOR_YELLOW_THRESHOLD="80"
 MAILBOX_MONITOR_RED_THRESHOLD="95"
 DISCORD_WEBHOOK=""
@@ -59,6 +60,21 @@ If cron runs without your SSH agent, the key file given in `MAILBOX_MONITOR_SSH_
 Successful checks write `latest-mailboxes.json`, `latest-alerts.json`, and `latest-summary.md` under the output directory. Yellow starts at 80%, and red starts at 95%, unless configured otherwise. Discord quota alerts are sent only when at least one mailbox meets the yellow threshold.
 
 Failed checks exit non-zero and send a Discord failure notification when a webhook is configured. Existing reports can therefore be stale after a failure.
+
+## Usage history
+
+Each successful check appends one JSON line per mailbox to `history.jsonl` in the output directory (set `MAILBOX_MONITOR_HISTORY_FILE` to use another path). A line holds `checkedAt`, `mailbox`, `usedKb`, and `limitKb` (`null` when the mailbox has no limit). The monitor only appends to this file. It never reads, rewrites, or prunes it. Failed checks add no lines.
+
+The separate `analyse-history.mjs` script reads the history and shows, for each mailbox, the current usage, the change and growth rate over the selected period, and the estimated days until the mailbox is full. It does not connect to the server.
+
+```bash
+node analyse-history.mjs                       # summary of all mailboxes
+node analyse-history.mjs --days 30             # last 30 days only
+node analyse-history.mjs --mailbox example.com --series   # every check of matching mailboxes
+node analyse-history.mjs --json                # machine-readable output
+```
+
+Without `--file`, it uses `MAILBOX_MONITOR_HISTORY_FILE`, then `MAILBOX_MONITOR_OUTPUT_DIR/history.jsonl`, then `~/.logs/mailbox-monitor/history.jsonl`. The growth rate is the difference between the first and last check of the period, so a deletion of mail inside the period lowers it.
 
 ## Implementation reference
 

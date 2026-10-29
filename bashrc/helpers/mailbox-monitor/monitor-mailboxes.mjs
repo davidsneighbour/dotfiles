@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { execFile } from "node:child_process";
-import { mkdir, writeFile } from "node:fs/promises";
+import { appendFile, mkdir, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { promisify } from "node:util";
@@ -85,6 +85,7 @@ Optional environment variables:
   MAILBOX_MONITOR_YELLOW_THRESHOLD
   MAILBOX_MONITOR_RED_THRESHOLD
   MAILBOX_MONITOR_OUTPUT_DIR
+  MAILBOX_MONITOR_HISTORY_FILE (default: <output dir>/history.jsonl)
   MAILBOX_MONITOR_TIMEOUT_MS
   DISCORD_WEBHOOK
 
@@ -138,6 +139,10 @@ function safeRemoteArgument(name, value) {
 }
 
 function getConfig() {
+  const outputDir = expandHome(
+    optionalEnv("MAILBOX_MONITOR_OUTPUT_DIR", "~/.logs/mailbox-monitor"),
+  );
+
   const domains = optionalEnv("MAILBOX_MONITOR_DOMAINS", "")
     .split(",")
     .map((domain) => domain.trim())
@@ -162,8 +167,12 @@ function getConfig() {
       "MAILBOX_MONITOR_RED_THRESHOLD",
       DEFAULTS.redThreshold,
     ),
-    outputDir: expandHome(
-      optionalEnv("MAILBOX_MONITOR_OUTPUT_DIR", "~/.logs/mailbox-monitor"),
+    outputDir,
+    historyFile: expandHome(
+      optionalEnv(
+        "MAILBOX_MONITOR_HISTORY_FILE",
+        path.join(outputDir, "history.jsonl"),
+      ),
     ),
     timeoutMs: numberEnv("MAILBOX_MONITOR_TIMEOUT_MS", DEFAULTS.timeoutMs),
   };
@@ -248,6 +257,8 @@ function parseRemoteOutput(stdout, config) {
     records.push({
       mailbox,
       usageText: `${formatSize(usedKb)} / ${hasLimit ? formatSize(limitKb) : "unlimited"}`,
+      usedKb,
+      limitKb: hasLimit ? limitKb : null,
       usedMb: usedKb / 1024,
       limitMb: hasLimit ? limitKb / 1024 : null,
       percent: Number(percent.toFixed(2)),
@@ -364,6 +375,23 @@ async function writeOutputs(config, allRecords, alertRecords) {
   );
 }
 
+// Appends one JSON line per mailbox. The file is only ever appended to;
+// analyse-history.mjs reads it to show usage over time.
+async function appendHistory(config, checkedAt, allRecords) {
+  await mkdir(path.dirname(config.historyFile), { recursive: true });
+
+  const lines = allRecords.map((record) =>
+    JSON.stringify({
+      checkedAt,
+      mailbox: record.mailbox,
+      usedKb: record.usedKb,
+      limitKb: record.limitKb,
+    }),
+  );
+
+  await appendFile(config.historyFile, `${lines.join("\n")}\n`, "utf8");
+}
+
 async function run() {
   if (process.argv.includes("--help") || process.argv.includes("-h")) {
     showHelp();
@@ -374,6 +402,7 @@ async function run() {
 
   try {
     const stdout = await readRemoteQuotas(config);
+    const checkedAt = new Date().toISOString();
     const { records, errors } = parseRemoteOutput(stdout, config);
 
     if (errors.length > 0) {
@@ -393,6 +422,7 @@ async function run() {
       (record) => record.percent >= config.yellowThreshold,
     );
 
+    await appendHistory(config, checkedAt, allRecords);
     await writeOutputs(config, allRecords, alertRecords);
 
     if (alertRecords.length > 0 && config.discordWebhook) {
@@ -407,6 +437,7 @@ async function run() {
       `Flagged ${alertRecords.length} mailboxes at ${config.yellowThreshold}% or more.`,
     );
     console.log(`Output directory: ${config.outputDir}`);
+    console.log(`History file: ${config.historyFile}`);
 
     for (const record of alertRecords) {
       console.log(

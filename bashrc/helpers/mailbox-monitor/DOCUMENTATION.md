@@ -19,6 +19,7 @@ Operational instructions are in [README.md](README.md).
 * `createDiscordContent` — defined in [monitor-mailboxes.mjs](monitor-mailboxes.mjs).
 * `sendDiscordMessage` — defined in [monitor-mailboxes.mjs](monitor-mailboxes.mjs).
 * `createMarkdownSummary` — defined in [monitor-mailboxes.mjs](monitor-mailboxes.mjs).
+* `appendHistory` — appends one JSON line per mailbox to the history file.
 * `writeOutputs` — defined in [monitor-mailboxes.mjs](monitor-mailboxes.mjs).
 * `run` — defined in [monitor-mailboxes.mjs](monitor-mailboxes.mjs).
 
@@ -30,3 +31,11 @@ Operational instructions are in [README.md](README.md).
 * `main` — parses wrapper arguments and starts the monitor.
 
 Wrapper functions are defined in [run-mailbox-monitor.sh](run-mailbox-monitor.sh).
+
+## History analyser
+
+* `defaultHistoryFile` — resolves the history file from the environment, defined in [analyse-history.mjs](analyse-history.mjs).
+* `readHistory` — reads the JSON lines and skips invalid lines with a warning.
+* `analyse` — groups checks by mailbox and calculates change, rate, and days until full.
+* `printTable` — prints the summary table, optionally with each check.
+* `run` — parses the options and prints the result.

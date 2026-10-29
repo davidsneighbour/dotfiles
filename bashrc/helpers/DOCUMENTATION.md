@@ -507,8 +507,9 @@ See [`logs/DOCUMENTATION.md`](./logs/DOCUMENTATION.md).
 
 See [`mailbox-monitor/README.md`](./mailbox-monitor/README.md).
 
-* `mailbox-monitor/monitor-mailboxes.mjs`: Logs in to a hosting control panel with Playwright, reads mailbox usage, and sends a Discord alert above a configured threshold. Configured via a gitignored `.env` file (see `.env.template` conventions in AGENTS.md); intended to run from cron on a personal machine.
+* `mailbox-monitor/monitor-mailboxes.mjs`: Reads mailbox quotas over SSH with `doveadm`, appends them to a local usage history, and sends a Discord alert above a configured threshold. Configured via a gitignored `.env` file (see `.env.template` conventions in AGENTS.md); intended to run from cron on a personal machine.
 * `mailbox-monitor/run-mailbox-monitor.sh`: Cron entrypoint wrapper for the monitor script.
+* `mailbox-monitor/analyse-history.mjs`: Shows mailbox space usage over time from the monitor's history file.
 
 ### `packages/`
 
