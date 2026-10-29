@@ -62,6 +62,10 @@ window_icons:
     - class: Code
       slug: code
       icon: "\uE093"
+    # Newer VS Code builds report this class instead of Code.
+    - class: com.microsoft.VSCode
+      slug: code
+      icon: "\uE093"
     - class: firefox
       slug: web
       icon: "\uE0E8"
@@ -80,6 +84,10 @@ window_icons:
     - class: Terminator
       slug: terminal
       icon: "\uE795"
+    # ChatGPT/Codex desktop app (Lucide bot-message-square).
+    - class: Chatgpt
+      slug: chatgpt
+      icon: ""
     - class: Enpass
       slug: enpass
       icon: "\uE731"
