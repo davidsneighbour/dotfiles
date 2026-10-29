@@ -1,5 +1,37 @@
 # Changelog
 
+## [2.30.0](https://github.com/davidsneighbour/dotfiles/compare/v2.29.0...v2.30.0) (2026-10-29)
+
+### Feat
+
+* add gdrive PATH wrapper and profile listing ([471dd09](https://github.com/davidsneighbour/dotfiles/commit/471dd098a960439dfdb13184cc4e09a4f9004618))
+* **bashrc:** add DNB terminal UI facade with Dracula Pro theme ([2f7d11f](https://github.com/davidsneighbour/dotfiles/commit/2f7d11faffa61356103d73398005aaff1c47d3f2)), references [#602](https://github.com/davidsneighbour/dotfiles/issues/602)
+* **bashrc:** add OpenRouter model catalogue helper ([d0ea4e0](https://github.com/davidsneighbour/dotfiles/commit/d0ea4e0bc685ae141c981916c1f024c3e7a966f8))
+* **bashrc:** keep mailbox history in a gitignored data directory ([fa7380f](https://github.com/davidsneighbour/dotfiles/commit/fa7380f8995b90495a4486b0d954760df356f5ad))
+* **bashrc:** log mailbox quota history and add history analyser ([2e4b26f](https://github.com/davidsneighbour/dotfiles/commit/2e4b26f0e79cd19d906452433ea0a0ca7d06494e))
+* **bashrc:** switch to the Dracula Pro Nosferatu palette ([57f8d98](https://github.com/davidsneighbour/dotfiles/commit/57f8d987c0bf557ad1dcbad9d8877e83be4ca279))
+* **configs:** maintain a stable LTS runtime for cron ([f4a25f8](https://github.com/davidsneighbour/dotfiles/commit/f4a25f81f9ccd96492fe584a38e367505b309372))
+
+### Fix
+
+* **starship:** use Nosferatu colours for git status dots ([0d06471](https://github.com/davidsneighbour/dotfiles/commit/0d06471f5095ae2e608e1dea5ff08e79546a0572))
+* **workspace:** launch WhatsApp on a dynamic workspace ([2c284a9](https://github.com/davidsneighbour/dotfiles/commit/2c284a96026025369f695a6c702313a01734ea95))
+
+### Docs
+
+* add Tailscale network reference ([02b5cb4](https://github.com/davidsneighbour/dotfiles/commit/02b5cb42a99e22c6a0c83d201d760c859dd0d552))
+* align and optimise agent instructions ([2c24f3e](https://github.com/davidsneighbour/dotfiles/commit/2c24f3e01c43fd1baef7c9ee92f4d2a7ad136320))
+
+### Build
+
+* **deps:** update dependencies ([77f0cc0](https://github.com/davidsneighbour/dotfiles/commit/77f0cc0164f38b9bdec4ca2a092a5cca79a34259))
+* **deps:** update secretlint to 13.1.0 and @types/node to 26.6.6 ([5668f92](https://github.com/davidsneighbour/dotfiles/commit/5668f923396cf38c1158974b531c30aa354ec1bb))
+
+### Chore
+
+* **bashrc:** remove mailbox monitor export.html ([9ef6ca7](https://github.com/davidsneighbour/dotfiles/commit/9ef6ca75217f95f5fc64248e4bf1037ba39a0823))
+* **fonts:** update Lucide icon font ([b4af093](https://github.com/davidsneighbour/dotfiles/commit/b4af093e392357c21319220109f97c1cd6884c1a))
+
 ## [2.29.0](https://github.com/davidsneighbour/dotfiles/compare/v2.28.2...v2.29.0) (2026-10-27)
 
 ### Feat
