@@ -4,9 +4,17 @@ import { execFile } from "node:child_process";
 import { appendFile, mkdir, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
 
 const execFileAsync = promisify(execFile);
+
+// The history is kept beside the script, not in the log directory, because
+// log directories can be cleaned up and the history cannot be recreated.
+const DATA_DIR = path.join(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "data",
+);
 
 const DEFAULTS = {
   yellowThreshold: 80,
@@ -85,7 +93,7 @@ Optional environment variables:
   MAILBOX_MONITOR_YELLOW_THRESHOLD
   MAILBOX_MONITOR_RED_THRESHOLD
   MAILBOX_MONITOR_OUTPUT_DIR
-  MAILBOX_MONITOR_HISTORY_FILE (default: <output dir>/history.jsonl)
+  MAILBOX_MONITOR_HISTORY_FILE (default: data/history.jsonl beside this script)
   MAILBOX_MONITOR_TIMEOUT_MS
   DISCORD_WEBHOOK
 
@@ -171,7 +179,7 @@ function getConfig() {
     historyFile: expandHome(
       optionalEnv(
         "MAILBOX_MONITOR_HISTORY_FILE",
-        path.join(outputDir, "history.jsonl"),
+        path.join(DATA_DIR, "history.jsonl"),
       ),
     ),
     timeoutMs: numberEnv("MAILBOX_MONITOR_TIMEOUT_MS", DEFAULTS.timeoutMs),

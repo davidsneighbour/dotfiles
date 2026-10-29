@@ -63,7 +63,7 @@ Failed checks exit non-zero and send a Discord failure notification when a webho
 
 ## Usage history
 
-Each successful check appends one JSON line per mailbox to `history.jsonl` in the output directory (set `MAILBOX_MONITOR_HISTORY_FILE` to use another path). A line holds `checkedAt`, `mailbox`, `usedKb`, and `limitKb` (`null` when the mailbox has no limit). The monitor only appends to this file. It never reads, rewrites, or prunes it. Failed checks add no lines.
+Each successful check appends one JSON line per mailbox to `data/history.jsonl` beside the scripts (set `MAILBOX_MONITOR_HISTORY_FILE` to use another path). The history is kept here, not in the log directory, because log directories can be cleaned up and the history cannot be recreated. The `data/` directory is gitignored. A line holds `checkedAt`, `mailbox`, `usedKb`, and `limitKb` (`null` when the mailbox has no limit). The monitor only appends to this file. It never reads, rewrites, or prunes it. Failed checks add no lines.
 
 The separate `analyse-history.mjs` script reads the history and shows, for each mailbox, the current usage, the change and growth rate over the selected period, and the estimated days until the mailbox is full. It does not connect to the server.
 
@@ -74,7 +74,7 @@ node analyse-history.mjs --mailbox example.com --series   # every check of match
 node analyse-history.mjs --json                # machine-readable output
 ```
 
-Without `--file`, it uses `MAILBOX_MONITOR_HISTORY_FILE`, then `MAILBOX_MONITOR_OUTPUT_DIR/history.jsonl`, then `~/.logs/mailbox-monitor/history.jsonl`. The growth rate is the difference between the first and last check of the period, so a deletion of mail inside the period lowers it.
+Without `--file`, it uses `MAILBOX_MONITOR_HISTORY_FILE`, then `data/history.jsonl` beside the script. The growth rate is the difference between the first and last check of the period, so a deletion of mail inside the period lowers it.
 
 ## Implementation reference
 

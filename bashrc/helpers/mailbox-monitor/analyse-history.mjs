@@ -3,6 +3,7 @@
 import { readFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { parseArgs } from "node:util";
 
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -17,8 +18,7 @@ mail server.
 
 Options:
   --file FILE        History file. Default: MAILBOX_MONITOR_HISTORY_FILE, or
-                     <MAILBOX_MONITOR_OUTPUT_DIR>/history.jsonl, or
-                     ~/.logs/mailbox-monitor/history.jsonl
+                     data/history.jsonl beside this script
   --mailbox TEXT     Show only mailboxes that contain TEXT.
   --days N           Use only checks of the last N days.
   --series           Show every check of each mailbox, not only the summary.
@@ -40,9 +40,11 @@ function defaultHistoryFile() {
     return expandHome(fromEnv);
   }
 
-  const outputDir =
-    process.env.MAILBOX_MONITOR_OUTPUT_DIR?.trim() || "~/.logs/mailbox-monitor";
-  return path.join(expandHome(outputDir), "history.jsonl");
+  return path.join(
+    path.dirname(fileURLToPath(import.meta.url)),
+    "data",
+    "history.jsonl",
+  );
 }
 
 function formatSize(kb) {
