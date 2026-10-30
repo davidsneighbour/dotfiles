@@ -71,14 +71,14 @@ free unless there is a clear operational reason.
 
 * Container: `openpencil`.
 * Source: `containers/locutus/openpencil/docker-compose.yaml`.
-* Image: `ghcr.io/zseven-w/openpencil-web:v0.8.4`, pinned by digest.
+* Image: `ghcr.io/zseven-w/openpencil-web:v0.8.5`, pinned by digest.
 * Published ports: `3020:3100`.
 
 ### Open webUI
 
 * Container: `open-webui`.
 * Source: `containers/locutus/openwebui/docker-compose.yaml`.
-* Image: `ghcr.io/open-webui/open-webui:v0.12.3`, pinned by digest.
+* Image: `ghcr.io/open-webui/open-webui:v0.12.5`, pinned by digest.
 * Published ports: `3200:8080`.
 
 ### Penpot
@@ -92,7 +92,7 @@ free unless there is a clear operational reason.
 
 * Container: `stirling-pdf`.
 * Source: `containers/locutus/stirling/docker-compose.yaml`.
-* Image: `stirlingtools/stirling-pdf:3.2.0-fat`, pinned by digest.
+* Image: `stirlingtools/stirling-pdf:3.2.2-fat`, pinned by digest.
 * Published ports: `3010:8080`.
 
 ## Notes

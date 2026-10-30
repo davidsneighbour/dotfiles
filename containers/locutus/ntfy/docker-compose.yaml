@@ -2,7 +2,7 @@
 services:
   ntfy:
     # secretlint-disable-next-line @secretlint/secretlint-rule-secp256k1-privatekey
-    image: binwiederhier/ntfy:latest@sha256:59250e1d8be2ee2186c4560322f625faef22ace380331f05b63f8842dbd62602
+    image: binwiederhier/ntfy:latest@sha256:901e14503d3f605f445be0e68f2ac71f0aa73391897ce6ceb599f8c48d8b3792
     container_name: ntfy
     command:
       - serve

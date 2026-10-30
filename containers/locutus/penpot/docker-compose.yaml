@@ -24,7 +24,7 @@ networks:
 services:
   penpot-frontend:
     # secretlint-disable-next-line @secretlint/secretlint-rule-secp256k1-privatekey
-    image: penpotapp/frontend:2.18@sha256:bb8abe27d53de84c95597f2c02c0e702b2779971fb0703e543f9ecf183e999f6
+    image: penpotapp/frontend:2.18@sha256:9bc0c288985d2d18a2c3e7b849d8edda317e1bfd99ec6dd494e5bfdcfe411f06
     container_name: penpot-frontend
     restart: unless-stopped
     ports:
@@ -42,7 +42,7 @@ services:
 
   penpot-backend:
     # secretlint-disable-next-line @secretlint/secretlint-rule-secp256k1-privatekey
-    image: penpotapp/backend:2.18@sha256:2df1b3440d2a82cc3571db211b4ffdfa2b89ccc910759e8d5e9387fb62971b5c
+    image: penpotapp/backend:2.18@sha256:20d2325ec8e00f4be5f65e543d5618b585598facff404cf06446e91b5ead9036
     container_name: penpot-backend
     restart: unless-stopped
     volumes:
@@ -72,7 +72,7 @@ services:
 
   penpot-mcp:
     # secretlint-disable-next-line @secretlint/secretlint-rule-secp256k1-privatekey
-    image: penpotapp/mcp:2.18@sha256:5e811e6eeb179d80d8781fb0ffd2991560785d150b3676f1ac5e28d63ba9f7c2
+    image: penpotapp/mcp:2.18@sha256:61fc7b2b727593670159966998fb197b2d282330ec7dbffc09a3e6374e0ce39d
     container_name: penpot-mcp
     restart: unless-stopped
     networks:
@@ -80,7 +80,7 @@ services:
 
   penpot-exporter:
     # secretlint-disable-next-line @secretlint/secretlint-rule-secp256k1-privatekey
-    image: penpotapp/exporter:2.18@sha256:418232d6ca3120b1c2bfde298a56a05a1f41f567cd8494deac3fe7fbc186cfbd
+    image: penpotapp/exporter:2.18@sha256:8c341d6d40f234d33e4272f87c6f53fdde839546e4c758872cebf175bddb8c71
     container_name: penpot-exporter
     restart: unless-stopped
     depends_on:
@@ -95,7 +95,7 @@ services:
 
   penpot-postgres:
     # secretlint-disable-next-line @secretlint/secretlint-rule-secp256k1-privatekey
-    image: postgres:15@sha256:c99dd5066e988cd61a72ffe962da08e277eecaba000bbdda0bdaf9f63b56c174
+    image: postgres:15@sha256:64b99032e218b66b1d1a6334995056e1aa57f50a0c522cc856e72dff0e4b0d63
     container_name: penpot-postgres
     restart: unless-stopped
     stop_signal: SIGINT
@@ -117,7 +117,7 @@ services:
 
   penpot-valkey:
     # secretlint-disable-next-line @secretlint/secretlint-rule-secp256k1-privatekey
-    image: valkey/valkey:9.1@sha256:418652cfb58ef879d4978c33553735d7147016032d5aefaa14c828e611eb9dfd
+    image: valkey/valkey:9.1@sha256:3add1a336a920ea54770a001ab6feb3da5fceea96a40373a3a2cd469b815f0b7
     container_name: penpot-valkey
     restart: unless-stopped
     healthcheck:

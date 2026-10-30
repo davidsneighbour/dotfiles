@@ -2,7 +2,7 @@
 services:
   freshrss:
     # secretlint-disable-next-line @secretlint/secretlint-rule-secp256k1-privatekey
-    image: lscr.io/linuxserver/freshrss:latest@sha256:f6418c990d37533223fa3fa3ce048edae021a8fd3aac6c46296a03c4c3249bf4
+    image: lscr.io/linuxserver/freshrss:latest@sha256:ad3ebe2553250edcecf74995c051b6426fc85b7ca18e744991cb1ca99c8d943d
     container_name: freshrss
     volumes:
       - ./config:/config
