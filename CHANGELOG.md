@@ -1,5 +1,23 @@
 # Changelog
 
+## [2.30.1](https://github.com/davidsneighbour/dotfiles/compare/v2.30.0...v2.30.1) (2026-10-30)
+
+### Fix
+
+* **workspaces:** add icon rules for new VS Code class and ChatGPT app ([662aa8a](https://github.com/davidsneighbour/dotfiles/commit/662aa8a8abae2f355f6994fbcedcf091ff537166))
+
+### Docs
+
+* **fix:** update tools README.md ([7ed138f](https://github.com/davidsneighbour/dotfiles/commit/7ed138f2d836ff564dc0c44167895b6ed34f33f9))
+
+### Build
+
+* **deps:** update lockfile dependencies ([#604](https://github.com/davidsneighbour/dotfiles/issues/604)) ([6db509a](https://github.com/davidsneighbour/dotfiles/commit/6db509ac6397d5d4280d646d02de4b75598b8401))
+
+### Chore
+
+* **git:** align delta syntax theme with the DNB terminal theme ([dc08306](https://github.com/davidsneighbour/dotfiles/commit/dc08306904324a8ebce12848010e82e9d5513773)), closes [#602](https://github.com/davidsneighbour/dotfiles/issues/602)
+
 ## [2.30.0](https://github.com/davidsneighbour/dotfiles/compare/v2.29.0...v2.30.0) (2026-10-29)
 
 ### Feat
