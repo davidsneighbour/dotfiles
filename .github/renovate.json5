@@ -1,5 +1,6 @@
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
-  extends: ["github>dnbhq/renovate-config"],
-  ignorePaths: ["containers/**", "scratch/**"],
+  // The preset ignores **/scratch/**. Do not set ignorePaths here: it is not
+  // mergeable, so a local value replaces the preset's list.
+  extends: ["github>davidsneighbour/renovate-config"],
 }

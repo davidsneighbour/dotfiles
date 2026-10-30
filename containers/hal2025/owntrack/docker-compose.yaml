@@ -1,7 +1,8 @@
 ---
 services:
   owntracks-recorder:
-    image: owntracks/recorder:latest
+    # secretlint-disable-next-line @secretlint/secretlint-rule-secp256k1-privatekey
+    image: owntracks/recorder:latest@sha256:bb292a481c94ef40bde26f52c8d3868d1395bd2da15bc9405be889e13f686a1b
     container_name: owntracks-recorder
     restart: unless-stopped
     ports:

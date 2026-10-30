@@ -16,11 +16,11 @@ Preferred next free port: `3040`.
 | `3010` | Paperless-ngx | `paperless/docker-compose.yaml` | `8000` |
 | `3020` | Uptime Kuma | `uptimekuma/compose.yaml` | `3001` |
 | `3037` | MeTube | `metube/docker-compose.yaml` | `8081` |
-| `3050` | Readeck | `readeck/docker-compose.yaml` | `8000` |
 
 Preferred free slots in the `3000-3999` row, based on repository definitions:
 
 * `3040`
+* `3050`
 * `3060-3990` in `10` steps
 
 Avoid assigning arbitrary in-between ports such as `3038` or `3051`; keep those
@@ -40,38 +40,32 @@ Paths in this section are relative to `containers/hal2025`.
 
 * Source: `metube/docker-compose.yaml`
 * Container: `metube`
-* Image: `ghcr.io/alexta69/metube`
+* Image: `ghcr.io/alexta69/metube:latest`, pinned by digest.
 * Published ports: `3037:8081`
 
 ### OwnTracks recorder
 
 * Source: `owntrack/docker-compose.yaml`
 * Container: `owntracks-recorder`
-* Image: `owntracks/recorder:latest`
+* Image: `owntracks/recorder:latest`, pinned by digest.
 * Published ports: `8083:8083`
 
 ### Paperless-ngx
 
 * Source: `paperless/docker-compose.yaml`
 * Webserver container: none declared
-* Webserver image: `ghcr.io/paperless-ngx/paperless-ngx:latest`
+* Webserver image: `ghcr.io/paperless-ngx/paperless-ngx:latest`, pinned by digest.
 * Published ports: `3010:8000`
-* Broker image: `docker.io/library/redis:8`
-* Gotenberg image: `docker.io/gotenberg/gotenberg:8.20`
-* Tika image: `docker.io/apache/tika:latest`
+* Broker image: `docker.io/library/redis:8`, pinned by digest.
+* Gotenberg image: `docker.io/gotenberg/gotenberg:8.35`, pinned by digest.
+* Tika image: `docker.io/apache/tika:latest`, pinned by digest.
 
-### Readeck
-
-* Source: `readeck/docker-compose.yaml`
-* Container: `readeck`
-* Image: `codeberg.org/readeck/readeck:latest`
-* Published ports: `3050:8000`
-
+<!-- markdownlint-disable-next-line dnb-title-case-style -- product name -->
 ### Uptime Kuma
 
 * Source: `uptimekuma/compose.yaml`
 * Container: none declared
-* Image: `louislam/uptime-kuma:2`
+* Image: `louislam/uptime-kuma:2`, pinned by digest.
 * Published ports: `3020:3001`
 
 ## Notes
@@ -89,8 +83,6 @@ Paths in this section are relative to `containers/hal2025`.
   host-specific Dotbot config runs it every two hours.
 * The host-specific Dotbot config also schedules daily and weekly Docker
   backups for `containers/hal2025` into `/mnt/storage/Backup/Docker/HAL2025`.
-* Readeck stores data under `containers/hal2025/readeck/data`, which is ignored
-  by Git.
 * OwnTracks Recorder stores local config and recorder data under
   `containers/hal2025/owntrack/config` and `containers/hal2025/owntrack/store`,
   both ignored by Git.
@@ -98,6 +90,4 @@ Paths in this section are relative to `containers/hal2025`.
 * Uptime Kuma stores data under `containers/hal2025/uptimekuma/data`.
 * Homepage already links these HAL2025 services through the protected homepage
   configuration.
-* HAL2025 compose images are currently tag-based rather than digest-pinned.
-* Dependabot has explicit Docker Compose entries for MeTube, OwnTracks Recorder,
-  Paperless-ngx, and Readeck.
+* HAL2025 compose images are pinned by digest. Renovate opens pull requests for new digests and tags; `docker compose pull` fetches only the pinned digest, so merge and pull the repository before you run `paperless/update.sh`.

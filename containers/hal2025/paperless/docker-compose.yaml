@@ -9,13 +9,15 @@
 services:
 
   broker:
-    image: docker.io/library/redis:8
+    # secretlint-disable-next-line @secretlint/secretlint-rule-secp256k1-privatekey
+    image: docker.io/library/redis:8@sha256:4764ce37931aac77c0d033680b339b19b4a4a81772204d268947cb851212d0ac
     restart: unless-stopped
     volumes:
       - redisdata:/data
 
   webserver:
-    image: ghcr.io/paperless-ngx/paperless-ngx:latest
+    # secretlint-disable-next-line @secretlint/secretlint-rule-secp256k1-privatekey
+    image: ghcr.io/paperless-ngx/paperless-ngx:latest@sha256:7c1d98afd200def9e2bad3a377d30829e8d486554b3c818995af5860114ea17f
     restart: unless-stopped
     depends_on:
       - broker
@@ -36,7 +38,8 @@ services:
       PAPERLESS_TIKA_ENDPOINT: http://tika:9998
 
   gotenberg:
-    image: docker.io/gotenberg/gotenberg:8.35
+    # secretlint-disable-next-line @secretlint/secretlint-rule-secp256k1-privatekey
+    image: docker.io/gotenberg/gotenberg:8.35@sha256:a16a14e1f18a71405624bc028e90d4ef50ea774c352b303639c10bf7b141f760
     restart: unless-stopped
     # The gotenberg chromium route is used to convert .eml files. We do not
     # want to allow external content like tracking pixels or even javascript.
@@ -46,7 +49,8 @@ services:
       - "--chromium-allow-list=file:///tmp/.*"
 
   tika:
-    image: docker.io/apache/tika:latest
+    # secretlint-disable-next-line @secretlint/secretlint-rule-secp256k1-privatekey
+    image: docker.io/apache/tika:latest@sha256:b99f19c4fd76237dafe7d22f719b9bddfa9a449da687c597a41e2f6d9a595418
     restart: unless-stopped
 
 volumes:

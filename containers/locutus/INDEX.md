@@ -107,8 +107,7 @@ free unless there is a clear operational reason.
   and the Mailcatcher helper is kept internal to the compose network.
 * ntfy stores its cache database below `containers/locutus/ntfy/cache` and
   reads `containers/locutus/ntfy/config/server.yml` read-only.
-* Locutus compose images are pinned by digest; update those digests
-  intentionally when refreshing images.
+* Locutus compose images are pinned by digest. Renovate opens pull requests for new digests and tags.
 * Stirling PDF keeps local, untracked `logs`, `pipeline`, and `tessdata`
   folders beside the compose file.
 * Open WebUI's `WEBUI_SECRET_KEY` is supplied via a gitignored `.env` in
