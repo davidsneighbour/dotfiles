@@ -4,6 +4,7 @@ Small, self-contained utilities that are part of the workstation environment
 but do not justify separate repositories.
 
 * `clockify/` — Track Clockify time entries from the CLI, Polybar, and a local HTML form.
+* `git-collection/` — Collect Git commit information in a database.
 * `msgvault/` — Sync, back up, and show Polybar status for a msgvault mailbox archive.
 * `packages/` — Inspect the APT/dpkg package state: manual and automatic packages, and why a package is installed.
 * `storage/` — Index external storage with SHA-256 hashes and search every file or folder occurrence locally.
