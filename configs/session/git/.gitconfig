@@ -223,7 +223,7 @@ diffFilter = delta --color-only --features=interactive
 ################################################################################
 [delta]
 features = side-by-side line-numbers decorations
-syntax-theme = Dracula
+syntax-theme = DNB Dracula Pro Nosferatu
 plus-style = syntax "#003800"
 minus-style = normal "#3f0001"
 
@@ -237,14 +237,14 @@ file-style = bold yellow ul
 file-decoration-style = none
 hunk-header-decoration-style = cyan box ul
 hunk-header-file-style = red
-hunk-header-line-number-style = "#067a00"
+hunk-header-line-number-style = "#9BAF84"
 hunk-header-style = file line-number syntax
 
 [delta "line-numbers"]
 line-numbers-left-style = cyan
 line-numbers-right-style = cyan
-line-numbers-minus-style = 124
-line-numbers-plus-style = 28
+line-numbers-minus-style = "#FF7D6C"
+line-numbers-plus-style = "#9BAF84"
 [gpg]
 program = gpg
 # format = ssh
