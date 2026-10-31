@@ -18,7 +18,7 @@ done
 print_help() {
   cat <<EOF
 Usage:
-  $(basename "$0") <root> [--fetch] [--jobs <n>] [--all] [--verbose] [--quiet]
+  $(basename "$0") [<root>] [--fetch] [--jobs <n>] [--all] [--verbose] [--quiet]
   $(basename "$0") --help
 
 Show local changes, remote changes, and stashes for every direct child Git
@@ -29,6 +29,7 @@ given.
 Arguments:
   <root>        Folder that contains the repositories (for example
                 ~/github.com/davidsneighbour), or the root of one repository.
+                Default: the current directory.
 
 Options:
   --fetch       Run 'git fetch --prune' in each repository first. Without it,
@@ -121,11 +122,6 @@ list_repos() {
 main() {
   local root='' do_fetch='0' jobs='8' show_all='false' quiet_mode='false'
 
-  if [[ "$#" -eq 0 ]]; then
-    print_help
-    exit 1
-  fi
-
   while [[ "$#" -gt 0 ]]; do
     case "${1}" in
     --fetch) do_fetch='1' ;;
@@ -152,6 +148,12 @@ main() {
 
   if [[ "${quiet_mode}" == 'true' ]]; then
     unset DNB_VERBOSE
+  fi
+
+  # Without <root>, use the current directory. Use its full path, not '.', so
+  # a repository root keeps its name in the table.
+  if [[ -z "${root}" ]]; then
+    root="${PWD}"
   fi
 
   # Drop trailing slashes so a repository root keeps its name in the table.
