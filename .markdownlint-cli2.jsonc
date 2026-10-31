@@ -9,7 +9,6 @@
     "CHANGELOG.md",
     "configs/fonts",
     "configs/session/fonts",
-    "configs/theme/Dracula",
     "configs/session/sublime-text/Packages/Dracula Color Scheme",
     "containers",
     "logs",
