@@ -1,5 +1,24 @@
 # Changelog
 
+## [2.31.0](https://github.com/davidsneighbour/dotfiles/compare/v2.30.1...v2.31.0) (2026-10-31)
+
+### Feat
+
+* **bashrc:** add a row counter to git-repos-status ([bab23f8](https://github.com/davidsneighbour/dotfiles/commit/bab23f83b8d07983879aaa74124f58417ea9cfa8))
+* **bashrc:** default git-repos-status to the current directory ([f8c1953](https://github.com/davidsneighbour/dotfiles/commit/f8c19539f9c66300c40d80505240df4651df4ae2))
+* **bashrc:** let git-repos-status check a single repository root ([cab73d7](https://github.com/davidsneighbour/dotfiles/commit/cab73d7266d02f78b995be251bd85958c5c72094))
+
+### Build
+
+* **containers:** pin hal2025 images by digest and let Renovate update them ([eeb0fae](https://github.com/davidsneighbour/dotfiles/commit/eeb0fae1b8460fbf28de51c40f4fc84d37f52a7f))
+* **containers:** update locutus images to latest versions ([5313562](https://github.com/davidsneighbour/dotfiles/commit/5313562f450db97e771d91913e10802dfdaf3675))
+
+### Chore
+
+* **configs:** archive hal2026 Argon ONE V2 setup scripts ([7e09acd](https://github.com/davidsneighbour/dotfiles/commit/7e09acd2e9dc0c425bba0ba4439ff4942bba200a))
+* **deps:** update dependency lucide-react to v1.62.0 ([#605](https://github.com/davidsneighbour/dotfiles/issues/605)) ([b538038](https://github.com/davidsneighbour/dotfiles/commit/b538038b22f73a886a4fba7bd7408d43b4547bc9))
+* **linting:** remove markdownlint ignore for deleted theme folder ([c4accf2](https://github.com/davidsneighbour/dotfiles/commit/c4accf2d13c4bea6460f27b4f46fbbb3b5ee3a62))
+
 ## [2.30.1](https://github.com/davidsneighbour/dotfiles/compare/v2.30.0...v2.30.1) (2026-10-30)
 
 ### Fix
