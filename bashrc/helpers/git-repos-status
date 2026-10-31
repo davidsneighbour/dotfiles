@@ -38,6 +38,7 @@ Options:
   --help        Show this help.
 
 Columns:
+  #                                  row number of the listed repository
   STAGED/CHANGED/UNTRACKED/CONFLICT  file counts from 'git status'
   AHEAD/BEHIND                       commits relative to upstream
                                      ('-' = no upstream, 'gone' = upstream
@@ -210,12 +211,16 @@ main() {
   done <<<"${records}"
 
   if [[ "${#rows[@]}" -gt 0 ]]; then
-    printf '%s%-*s  %-*s  %-6s  %-7s  %-9s  %-8s  %-5s  %-6s  %-5s%s\n' "${bold}" \
-      "${w_repo}" REPO "${w_branch}" BRANCH STAGED CHANGED UNTRACKED CONFLICT AHEAD BEHIND STASH "${reset}"
-    local row
+    local w_index="${#rows[@]}"
+    w_index="${#w_index}"
+    printf '%s%*s  %-*s  %-*s  %-6s  %-7s  %-9s  %-8s  %-5s  %-6s  %-5s%s\n' "${bold}" \
+      "${w_index}" '#' "${w_repo}" REPO "${w_branch}" BRANCH STAGED CHANGED UNTRACKED CONFLICT AHEAD BEHIND STASH "${reset}"
+    local row index=0
     for row in "${rows[@]}"; do
+      index=$((index + 1))
       IFS=$'\t' read -r name branch staged changed untracked conflict ahead behind stash <<<"${row}"
-      printf '%-*s  %-*s  %s  %s  %s  %s  %s  %s  %s\n' \
+      printf '%s%*d%s  %-*s  %-*s  %s  %s  %s  %s  %s  %s  %s\n' \
+        "${dim}" "${w_index}" "${index}" "${reset}" \
         "${w_repo}" "${name}" "${w_branch}" "${branch}" \
         "$(cell "${staged}" 6 "${green}")" "$(cell "${changed}" 7 "${yellow}")" \
         "$(cell "${untracked}" 9 "${yellow}")" "$(cell "${conflict}" 8 "${red}")" \
