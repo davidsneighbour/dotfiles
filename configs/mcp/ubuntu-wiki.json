@@ -1,0 +1,13 @@
+{
+  "defaultWiki": "wiki.ubuntu.com",
+  "allowWikiManagement": false,
+  "wikis": {
+    "wiki.ubuntu.com": {
+      "sitename": "Ubuntu Wiki",
+      "server": "https://wiki.ubuntu.com",
+      "articlepath": "/$1",
+      "scriptpath": "/w",
+      "readOnly": true
+    }
+  }
+}

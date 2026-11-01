@@ -13,3 +13,11 @@ args = [
     "-y",
     "@netlify/mcp",
 ]
+
+[mcp_servers.ubuntu-wiki]
+command = "bash"
+args = [
+    "-c",
+    'CONFIG="${HOME}/.dotfiles/configs/mcp/ubuntu-wiki.json" exec npx -y @professional-wiki/mediawiki-mcp-server@0.20.1',
+]
+env = { MCP_LOG_LEVEL = "error" }

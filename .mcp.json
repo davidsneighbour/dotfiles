@@ -10,10 +10,15 @@
     },
     "netlify": {
       "command": "npx",
-      "args": [
-        "-y",
-        "@netlify/mcp"
-      ]
+      "args": ["-y", "@netlify/mcp"]
+    },
+    "ubuntu-wiki": {
+      "command": "npx",
+      "args": ["-y", "@professional-wiki/mediawiki-mcp-server@0.20.1"],
+      "env": {
+        "CONFIG": "${HOME}/.dotfiles/configs/mcp/ubuntu-wiki.json",
+        "MCP_LOG_LEVEL": "error"
+      }
     }
   }
 }
