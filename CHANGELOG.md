@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.31.1](https://github.com/davidsneighbour/dotfiles/compare/v2.31.0...v2.31.1) (2026-11-01)
+
+### Docs
+
+* **ai:** add ubuntu wiki mcp setup ([e41fa4c](https://github.com/davidsneighbour/dotfiles/commit/e41fa4cdc227c570db5cbf6f14d34f4eac0192bc))
+
+### Build
+
+* **deps:** update dependencies ([17c43d5](https://github.com/davidsneighbour/dotfiles/commit/17c43d5007653abd4ac10e94465b9dd96594b5da))
+
 ## [2.31.0](https://github.com/davidsneighbour/dotfiles/compare/v2.30.1...v2.31.0) (2026-10-31)
 
 ### Feat
