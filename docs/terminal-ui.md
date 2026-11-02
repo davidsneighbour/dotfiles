@@ -143,7 +143,7 @@ Gum, fzf, Glow, bat, and delta (`git-delta`) are optional and installed by [`con
 npm run test:ui   # bashrc/helpers/tests/dnb-ui-test.sh
 ```
 
-The test covers stream separation, JSON escaping, palette rows, both theme variants, modes, symbols, non-interactive failures, control-character rejection, spinner status and streams, plain tables, renderer fallbacks, and plain interactive paths in a pseudo-terminal (`script` from util-linux).
+The test covers stream separation, JSON escaping, palette rows, both theme variants, modes, symbols, non-interactive failures, control-character rejection, spinner status and streams, plain tables, renderer fallbacks, and plain interactive paths in a pseudo-terminal (`script` from util-linux). Redirected-output checks explicitly redirect their streams, so the suite can also be launched from a real terminal.
 
 ## Migrated callers
 

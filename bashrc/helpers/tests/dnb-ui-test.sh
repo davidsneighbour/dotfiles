@@ -89,8 +89,8 @@ test_modes_and_symbols() {
 }
 
 test_colour_capability() {
-  # stdout of command substitution is not a terminal.
-  if DNB_COLOR_MODE=truecolor dnb_ui_supports_color --fd 1; then
+  # Redirect explicitly so this check also works when launched in a terminal.
+  if DNB_COLOR_MODE=truecolor dnb_ui_supports_color --fd 1 >/dev/null; then
     fail 'forced colour mode must not colour redirected output'
   fi
   dnb_ui_supports_color --fd x 2>/dev/null && fail 'invalid fd accepted'
@@ -99,7 +99,7 @@ test_colour_capability() {
 
 test_style_code() {
   local code='x' status=0
-  dnb_ui_style_code code error
+  dnb_ui_style_code code error >/dev/null
   assert_equal '' "${code}" 'style code empty for a non-terminal stdout'
   dnb_ui_style_code code nonsense 2>/dev/null || status=$?
   assert_equal '2' "${status}" 'style code rejects unknown role'
