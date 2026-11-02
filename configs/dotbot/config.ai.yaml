@@ -31,6 +31,6 @@
       path: ${HOME}/github.com/davidsneighbour/dotfiles-protected/ai-configs/ollama
     # assistant setup
     ~/.claude/CLAUDE.md:
-      path: ${HOME}/github.com/davidsneighbour/ai/assistants/instructions.md
+      path: configs/agents/AGENTS.md
     ~/.codex/AGENTS.md:
-      path: ${HOME}/github.com/davidsneighbour/ai/assistants/instructions.md
+      path: configs/agents/AGENTS.md

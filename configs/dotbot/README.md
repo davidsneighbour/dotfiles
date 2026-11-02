@@ -24,6 +24,8 @@ The `skillz` helper generates the AI skill symlink profile at `cache/dotbot/conf
 
 ## Running profiles
 
+The AI profile links both `~/.claude/CLAUDE.md` and `~/.codex/AGENTS.md` to the shared personal instructions in [`configs/agents/AGENTS.md`](../agents/AGENTS.md).
+
 Run the default profile:
 
 ```bash
