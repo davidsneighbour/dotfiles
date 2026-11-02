@@ -393,7 +393,6 @@ Alphabetical index of every file under `bashrc` plus detected Bash functions, al
 | [`installs/10-system.sh`](./installs/10-system.sh#L1) | file | [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md#L5) |
 | [`installs/20-brew.sh`](./installs/20-brew.sh#L1) | file | [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md#L11) |
 | [`installs/20-cargo.sh`](./installs/20-cargo.sh#L1) | file | [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md#L17) |
-| [`installs/50-atuin.sh`](./installs/50-atuin.sh#L1) | file | [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md#L23) |
 | [`installs/50-chrome.sh`](./installs/50-chrome.sh#L1) | file | [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md#L29) |
 | [`installs/50-github.sh`](./installs/50-github.sh#L1) | file | [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md#L35) |
 | [`installs/50-obsidian.sh`](./installs/50-obsidian.sh#L1) | file | [./installs/DOCUMENTATION.md](./installs/DOCUMENTATION.md#L41) |

@@ -29,17 +29,6 @@ Options: forwards all arguments to `fetch-and-run.sh` (`--verbose`, `--dry-run`,
 
 Requirements: Bash, network access, and the Rust installer prerequisites.
 
-## `50-atuin.sh`
-
-Installs Atuin by downloading `https://setup.atuin.sh` to a temp file and
-running it explicitly via `bashrc/helpers/fetch-and-run.sh`, instead of
-piping curl directly into a shell. Atuin does not publish a checksum for
-this installer, so no `--sha256` is passed.
-
-Options: forwards all arguments to `fetch-and-run.sh` (`--verbose`, `--dry-run`, `--help`, `--sha256`, `--interpreter`).
-
-Requirements: `curl`, `sh`, TLS/network access.
-
 ## `50-chrome.sh`
 
 Downloads the latest Google Chrome stable `.deb` to a temp file and installs it with `dpkg`.

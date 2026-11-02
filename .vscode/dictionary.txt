@@ -1,6 +1,5 @@
 APIKEY
 aptget
-atuin
 automount
 autostarted
 autostarting
