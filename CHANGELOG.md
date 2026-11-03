@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.31.2](https://github.com/davidsneighbour/dotfiles/compare/v2.31.1...v2.31.2) (2026-11-03)
+
+### Fix
+
+* **polybar:** greener green ([28e24f4](https://github.com/davidsneighbour/dotfiles/commit/28e24f42697477cc81d9ca188dfac1655a33dbf5))
+* purge atuin docs ([50b86ee](https://github.com/davidsneighbour/dotfiles/commit/50b86eee26b7c22192d31c8f8f87cab3c5c89435))
+* **session:** detach browser during gdrive reauth ([c665c83](https://github.com/davidsneighbour/dotfiles/commit/c665c8350a6c5a63a45f92e0fbff0229f7526033))
+
+### Refactor
+
+* keep shared agent instructions in dotfiles ([ba3ca0c](https://github.com/davidsneighbour/dotfiles/commit/ba3ca0c86baa8c2f4b646c43d53514478c7e9543))
+
+### Test
+
+* redirect colour checks explicitly ([96ac92f](https://github.com/davidsneighbour/dotfiles/commit/96ac92f875d68e5fb69abb4ac4820aa634410c48))
+
 ## [2.31.1](https://github.com/davidsneighbour/dotfiles/compare/v2.31.0...v2.31.1) (2026-11-01)
 
 ### Docs
