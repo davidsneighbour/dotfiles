@@ -21,6 +21,8 @@ gdrive-mount --reauth --label pkollitsch
 
 `--reauth` moves the label's `state` file (it holds the refresh token) to `state.bak-YYYYMMDD-HHMMSS`, runs `google-drive-ocamlfuse -label <label>` without a mountpoint so that it only does the browser sign-in, and then mounts the drive. If the sign-in fails, the old state file is restored.
 
+google-drive-ocamlfuse waits for its browser command to exit before it reads the sign-in code from its local server on `127.0.0.1:8080`. When Chrome is not already running, `xdg-open` stays in the foreground until the last Chrome window closes, so the sign-in seemed to stop after the browser part. `--reauth` therefore passes `-browser` with a command that starts `xdg-open` detached through `setsid -f`. After the browser shows "Success!", the terminal continues within about 5 seconds. If `setsid` or `xdg-open` is missing, the script uses the default browser command and logs a warning; in that case, close the browser after the sign-in.
+
 The `state` file is in `~/.local/share/gdfuse/<label>/` when `~/.config/gdfuse/<label>/config` exists, else in `~/.gdfuse/<label>/`.
 
 Both labels use a custom OAuth client (`client_id` in the label's `config`). If that Google Cloud project's OAuth consent screen has the publishing status "Testing", Google expires its refresh tokens after 7 days, and the sign-in fails again each week. Set the publishing status to "In production" to stop this.

@@ -14,6 +14,12 @@
 # mountpoint. `--reauth` therefore moves the state file aside, runs
 # `google-drive-ocamlfuse -label <label>` without a mountpoint (this opens the
 # browser), and then mounts the drive again.
+#
+# google-drive-ocamlfuse waits for its browser command to exit before it reads
+# the sign-in code from its local server. When Chrome is not already running,
+# `xdg-open` stays in the foreground until the last Chrome window closes, so
+# the sign-in looked stuck after the browser part. `--reauth` therefore starts
+# the browser detached (see AUTH_BROWSER).
 
 set -u -o pipefail
 
@@ -25,6 +31,10 @@ LOG_BASE="${HOME}/.logs/gdrive"
 MOUNT_TIMEOUT=20
 # google-drive-ocamlfuse receives the OAuth code on a local server at this port.
 AUTH_PORT=8080
+# Browser command for the sign-in. google-drive-ocamlfuse runs it as
+# `<command> "<url>"` and waits for it to exit; `setsid -f` returns at once.
+# shellcheck disable=SC2016 # $1 must expand in the inner shell, not here.
+AUTH_BROWSER='sh -c '\''setsid -f xdg-open "$1" >/dev/null 2>&1'\'' gdrive-browser'
 VERBOSE="${DNB_VERBOSE:-0}"
 LOGFILE=""
 
@@ -226,6 +236,7 @@ reauth_google_drive() {
   local dir
   local state
   local backup
+  local -a browser_args
 
   init_log "${label}"
   dir="$(state_dir "${label}")"
@@ -257,10 +268,18 @@ reauth_google_drive() {
     log "info" "${label}: old state moved to ${backup}"
   fi
 
+  browser_args=()
+  if command -v setsid >/dev/null 2>&1 && command -v xdg-open >/dev/null 2>&1; then
+    browser_args=(-browser "${AUTH_BROWSER}")
+  else
+    log "warn" "${label}: setsid or xdg-open not found; close the browser after the sign-in so that the code arrives"
+  fi
+
   log "info" "${label}: starting Google authorisation in the browser"
+  log "info" "${label}: after the browser shows \"Success!\", the sign-in continues here within 5 seconds"
   notify "normal" "Google Drive: ${label}" "Complete the Google sign-in in the browser window."
 
-  if ! google-drive-ocamlfuse -label "${label}" >>"${LOGFILE}" 2>&1 || [[ ! -f "${state}" ]] ||
+  if ! google-drive-ocamlfuse -label "${label}" "${browser_args[@]}" >>"${LOGFILE}" 2>&1 || [[ ! -f "${state}" ]] ||
     ! grep -qs '^refresh_token=.' "${state}"; then
     log "error" "${label}: authorisation failed, see ${LOGFILE}"
     if [[ -n "${backup:-}" && -f "${backup}" ]]; then
