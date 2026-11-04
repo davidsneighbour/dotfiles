@@ -47,3 +47,7 @@ As far as components of this project are licensable this is done so under the MI
 ## Session colour scheme
 
 The i3 session maintains the dark preference, with isolated compatibility settings for Enpass. See [the colour-scheme guide](configs/session/colour-scheme/README.md) for usage and future app overrides.
+
+## Central configuration
+
+See [the configuration foundation](schema/README.md) for the canonical file, schema, CLI, and ownership rules.

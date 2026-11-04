@@ -41,3 +41,7 @@ Commit directly to `main` only when authorised; branch only when explicitly aske
 * **Create a PATH wrapper for `<script>` as `<command>`:** add an executable Bash wrapper in `bin/<command>` so Bash can find it through `PATH`; follow [the PATH wrapper procedure](.agents/references/path-wrappers.md). If the command name is omitted, use the script basename without its extension unless that would conflict with an existing command.
 * **Update your references:** fetch the repository in use, update to the latest main-branch HEAD, adapt code for upstream changes, and resolve conflicts.
 * **Document:** update the relevant folder README, or link new documentation from it; explain behaviour and usage with concise, accurate prose.
+
+## Central configuration
+
+Before adding central settings or changing `dotfiles.json`, `schema/**`, or `scripts/dotfiles-config*`, read [the configuration ownership decision and extension procedure](schema/README.md).

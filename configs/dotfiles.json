@@ -1,0 +1,5 @@
+{
+  "$schema": "../schema/dotfiles.schema.json",
+  "schemaVersion": 1,
+  "dotfiles": {}
+}

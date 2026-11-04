@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://davidsneighbour.github.io/dotfiles/schema/dotfiles.schema.json",
+  "title": "Dotfiles configuration",
+  "description": "Non-secret settings owned by dotfiles. Tool-native settings remain in their tool configuration files.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "dotfiles"],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Editor schema location. The CLI uses its own local schema unless --schema is supplied."
+    },
+    "schemaVersion": {
+      "const": 1,
+      "description": "Configuration format version. Change only with an explicit migration."
+    },
+    "dotfiles": {
+      "type": "object",
+      "description": "Repository-owned orchestration settings. Add named functional domains here as consumers are introduced.",
+      "default": {},
+      "additionalProperties": false,
+      "properties": {}
+    }
+  },
+  "examples": [{ "schemaVersion": 1, "dotfiles": {} }]
+}
