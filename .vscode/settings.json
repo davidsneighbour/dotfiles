@@ -1,4 +1,11 @@
 {
+  "json.schemas": [
+    {
+      "fileMatch": ["/configs/dotfiles.json"],
+      "url": "./schema/dotfiles.schema.json"
+    }
+  ],
+  "json.validate.enable": true,
   "[jsonnet]": {
     "editor.defaultFormatter": "Grafana.vscode-jsonnet"
   },
@@ -49,7 +56,7 @@
     ]
   },
   "evenBetterToml.formatter.trailingNewline": true,
-  //"peacock.color": "#6272a4",
+  "peacock.color": "#6272a4",
   "explorer.fileNesting.patterns": {
     ".agents": ".claude, .codex"
   },
@@ -91,6 +98,5 @@
     "statusBar.debuggingForeground": "#e7e7e7"
   },
   "yaml.validate": true,
-  "markdownlint.configFile": "node_modules/@dnbhq/markdownlint-config/.markdownlint-cli2.jsonc",
-  "peacock.color": "#730039"
+  "markdownlint.configFile": "node_modules/@dnbhq/markdownlint-config/.markdownlint-cli2.jsonc"
 }
