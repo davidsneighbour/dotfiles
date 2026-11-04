@@ -3,6 +3,11 @@
 # Lock the i3 session with i3lock, using this directory's lockscreen image
 # and the Dracula Pro Nosferatu i3lock-colour theme when the local binary supports it.
 #
+# Prefers `i3lock-color` (installed under that name in /usr/local/bin, see
+# SESSION.md, "Screen lock") and falls back to the apt `i3lock`. The theme
+# options exist only in i3lock-color; plain i3lock gets the image-only
+# command and a warning on stderr (the xss-lock unit's journal).
+#
 # This is the locker xss-lock runs (started via
 # configs/session/i3/configs/session-starts.conf), which xss-lock invokes
 # both for $mod+L (via `loginctl lock-session`, see
@@ -33,16 +38,39 @@ set -Eeuo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 LOCKSCREEN_IMAGE="${SCRIPT_DIR}/lockscreen.png"
 
+select_locker() {
+  local candidate
+  for candidate in i3lock-color i3lock; do
+    if command -v "${candidate}" >/dev/null 2>&1; then
+      printf '%s\n' "${candidate}"
+      return 0
+    fi
+  done
+  return 1
+}
+
+# Neither i3lock nor i3lock-color lists its long options in `--help`, so
+# detect i3lock-color by the copyright line of `--version`, which only the
+# fork prints. The output is captured before matching: a `| grep -q` pipe
+# under pipefail can report a false negative when grep exits early (SIGPIPE).
 theme_supported() {
-  i3lock --help 2>&1 | grep -q -- '--inside-color'
+  local version_output
+  # `|| :` because the exit status of `--version` is irrelevant; only the
+  # text is checked.
+  version_output="$("${locker}" --version 2>&1)" || :
+  [[ "${version_output}" == *'Raymond Li'* || "${version_output}" == *'Cassandra Fox'* ]]
 }
 
 print_help() {
   cat <<EOF
 Usage: $(basename "${0}") [--help]
 
-Lock the screen via 'i3lock --nofork', using:
+Lock the screen via 'i3lock-color --nofork' (or 'i3lock --nofork' when
+i3lock-color is not installed), using:
   ${LOCKSCREEN_IMAGE}
+
+The Dracula theme, clock, and indicator need i3lock-color; plain i3lock
+shows only the image.
 
 Restarts Polybar (via ../polybar/launch.sh) once the screen is unlocked.
 
@@ -66,8 +94,8 @@ if [[ "${#}" -gt 0 ]]; then
   exit 2
 fi
 
-if ! command -v i3lock >/dev/null 2>&1; then
-  printf 'lock.sh: i3lock executable not found on PATH\n' >&2
+if ! locker="$(select_locker)"; then
+  printf 'lock.sh: neither i3lock-color nor i3lock found on PATH\n' >&2
   exit 1
 fi
 
@@ -117,20 +145,22 @@ if theme_supported; then
     --date-str='%A %e %B %Y'
     --verif-text='Checking...'
     --wrong-text='Wrong password'
-    --noinput='No input'
+    --noinput-text='No input'
     --lock-text='Locking...'
-    --lockfailed='Lock failed'
-    --radius=120
-    --ring-width=10
+    --lockfailed-text='Lock failed'
+    --radius=200
+    --ring-width=20
     --pass-media-keys
     --pass-screen-keys
     --pass-volume-keys
     --color="${background#'#'}"
   )
+else
+  printf 'lock.sh: %s is not i3lock-color; locking without the theme (see SESSION.md, "Screen lock")\n' "${locker}" >&2
 fi
 
 status=0
-i3lock "${args[@]}" || status="${?}"
+"${locker}" "${args[@]}" || status="${?}"
 
 "${SCRIPT_DIR}/../polybar/launch.sh" || true
 

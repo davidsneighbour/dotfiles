@@ -196,7 +196,26 @@ A singleton, two-pane Thunar workspace (LEFT user-controlled, RIGHT always the t
 * `xss-lock` runs as the systemd user unit `configs/session/systemd/xss-lock.service` (`Restart=on-failure`). `session-starts.conf` starts it with `exec_always`, so every i3 restart starts it again if it died; `systemctl --user start` is a no-op when it is already running.
 * The unit is `WantedBy=graphical-session.target`, not `default.target`. With `Linger=yes` the user manager starts at boot, before any X login, so a `default.target` unit cannot connect to a display, fails five times in ten seconds, and systemd then refuses further starts until `reset-failed`. Nothing activates `graphical-session.target` under i3, so only `session-starts.conf` starts the unit. That line imports `DISPLAY`, `XAUTHORITY`, and `XDG_SESSION_ID` and runs `systemctl --user reset-failed xss-lock.service` before the start.
 * Because of `Linger=yes` (`loginctl show-user patrick`), `systemd --user` is a persistent manager outside the graphical seat0 session. `xss-lock`'s default cgroup-based session lookup therefore fails for this unit (`NoSessionForPID`), which would break `--transfer-sleep-lock`. The unit passes `xss-lock -s "${XDG_SESSION_ID}"` explicitly (matching upstream's example at `/usr/share/doc/xss-lock/xss-lock.service`); `XDG_SESSION_ID` is imported in the same shell immediately before the start. Check with `loginctl session-status <id>`: it shows the `xss-lock` sleep inhibitor (`delay`, "Lock screen first").
-* `lock.sh` resolves its own directory and runs `i3lock --nofork -i configs/session/i3/lockscreen.png` with a full path, so it works regardless of i3's `exec` environment. If the installed `i3lock` supports the i3lock-color options, `lock.sh` also applies the Dracula-style colours, clock, indicator, and media-key pass-through flags; plain i3lock gets the image-only command. `--nofork` is required: xss-lock tracks lock and unlock by waiting for the locker process to exit (see `man i3lock`, "RECOMMENDED USAGE").
+* `lock.sh` resolves its own directory and runs the locker with `--nofork -i configs/session/i3/lockscreen.png` and a full path, so it works regardless of i3's `exec` environment. `--nofork` is required: xss-lock tracks lock and unlock by waiting for the locker process to exit (see `man i3lock`, "RECOMMENDED USAGE").
+* The locker is `i3lock-color` when that command is on `PATH`, else the apt `i3lock`. Only i3lock-color has the Dracula-style colours, clock, indicator, and media-key pass-through options. `lock.sh` detects it from the copyright line of `--version`, because neither variant lists its long options in `--help`. With plain i3lock, `lock.sh` locks with the image only and writes a warning to stderr (`journalctl --user -u xss-lock`).
+* i3lock-color is not in the Ubuntu archive. Install it under its own name, `/usr/local/bin/i3lock-color`, so it does not overwrite the dpkg-owned `/usr/bin/i3lock`. The systemd user manager's `PATH` contains `/usr/local/bin`, so the `xss-lock` unit finds it. Keep the apt `i3lock` package installed: it is the fallback, and it provides `/etc/pam.d/i3lock`, which i3lock-color also uses. Build from source (recommended). This builds the default branch, `master`, which has fixes that are newer than release 2.13.c.5, and installs the build dependencies that upstream lists for Ubuntu:
+
+  ```bash
+  git clone git@github.com:Raymo111/i3lock-color.git
+  cd i3lock-color
+  sudo apt install autoconf gcc make pkg-config libpam0g-dev libcairo2-dev libfontconfig1-dev libxcb-composite0-dev libev-dev libx11-xcb-dev libxcb-xkb-dev libxcb-xinerama0-dev libxcb-randr0-dev libxcb-image0-dev libxcb-util-dev libxcb-xrm-dev libxkbcommon-dev libxkbcommon-x11-dev libjpeg-dev libgif-dev
+  ./build.sh
+  sudo install -m 0755 build/i3lock /usr/local/bin/i3lock-color
+  ```
+
+  Or use the prebuilt release binary. Upstream publishes no checksum for it; the SHA-256 below is the file as downloaded on 2026-11-04, so it shows only that the file did not change since then:
+
+  ```bash
+  curl -fLo i3lock https://github.com/Raymo111/i3lock-color/releases/download/2.13.c.5/i3lock
+  echo '58032ad55b1bae47ddd363f27e907b2e8e217af5553c06e656defbea65418c86  i3lock' | sha256sum -c -
+  sudo install -m 0755 i3lock /usr/local/bin/i3lock-color
+  ```
+
 * `lock.sh` does **not** `exec` into `i3lock`: it runs it as a child process and, after the user unlocks, runs `configs/session/polybar/launch.sh` before it exits with `i3lock`'s exit status. This restores the bar when Polybar fails to reappear after an unlock; when the bar was fine, the restart has no visible effect. xss-lock only needs the locker process to exit eventually, so this does not change its behaviour.
 * `xss-lock` reacts to two triggers: `loginctl lock-session` (bound to `Super+L`) and systemd-logind's sleep signal, which `--transfer-sleep-lock` uses to hold suspend (lid close, power button, `systemctl suspend`) until the screen is locked.
 * The Rofi power menu's `lock` entry (`configs/session/rofi/power/powermenu.sh`) does not go through `xss-lock`/`loginctl`: it uses `betterlockscreen` if installed, then `configs/session/i3/lock.sh`, then a plain `i3lock` with no image.
@@ -228,7 +247,8 @@ Required:
 i3        (4.25.1)            apt: i3-wm
 polybar   (3.7.2, +i3 feature) apt: polybar
 rofi      (2.0.0)             apt: rofi
-i3lock                        apt: i3lock
+i3lock                        apt: i3lock (fallback locker; provides /etc/pam.d/i3lock)
+i3lock-color (2.13.c.5-7)     /usr/local/bin/i3lock-color (not in apt; lock screen theme)
 xss-lock  (0.4.0)             apt: xss-lock
 ```
 

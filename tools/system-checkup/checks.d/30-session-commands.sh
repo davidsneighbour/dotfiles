@@ -51,7 +51,22 @@ if command -v polybar >/dev/null 2>&1; then
   fi
 fi
 
+# lock.sh needs i3lock-color for its theme. It is not an apt package, so it
+# has its own fix hint. The apt i3lock stays required above: it is the
+# fallback locker and provides /etc/pam.d/i3lock, which i3lock-color uses.
+lock_failed=0
+if command -v i3lock-color >/dev/null 2>&1; then
+  printf 'i3lock-color is installed (lock screen theme)\n'
+else
+  printf 'Not installed: i3lock-color (lock screen theme in configs/session/i3/lock.sh)\n'
+  lock_failed=1
+fi
+
 if [[ "${failed}" -ne 0 ]]; then
   printf 'Fix: install the missing packages with apt (Polybar must be a build with i3 support)\n'
+fi
+if [[ "${lock_failed}" -ne 0 ]]; then
+  printf 'Fix: install i3lock-color as /usr/local/bin/i3lock-color (see SESSION.md, "Screen lock")\n'
+  failed=1
 fi
 exit "${failed}"
