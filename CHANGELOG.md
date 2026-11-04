@@ -1,5 +1,31 @@
 # Changelog
 
+## [2.32.0](https://github.com/davidsneighbour/dotfiles/compare/v2.31.2...v2.32.0) (2026-11-04)
+
+### Feat
+
+* **config:** add central configuration tools ([af2ceea](https://github.com/davidsneighbour/dotfiles/commit/af2ceea3262c34727d06de2f98a262f613ba3d10))
+
+### Fix
+
+* **session:** use i3lock-color for the themed lock screen ([6757b1f](https://github.com/davidsneighbour/dotfiles/commit/6757b1f47aa44058fd9988e397c34dd5c5b22b43))
+
+### Refactor
+
+* **agents:** rename global instruction source ([25f183d](https://github.com/davidsneighbour/dotfiles/commit/25f183de76087932e8625c0cc6ef3537ad75667c))
+
+### Docs
+
+* **agents:** update global working instructions ([2d6cd7a](https://github.com/davidsneighbour/dotfiles/commit/2d6cd7a8c22061244cda0d8ada4d078a65b33ccc))
+
+### Build
+
+* **deps:** update development dependencies ([859d204](https://github.com/davidsneighbour/dotfiles/commit/859d2040dcd118e2ab80d7e029ccf219dd0b9c01))
+
+### Chore
+
+* **editor:** configure schema and workspace colour ([aab8fc6](https://github.com/davidsneighbour/dotfiles/commit/aab8fc667cfd69f7ffd2654c7e4303b3736d3ca1))
+
 ## [2.31.2](https://github.com/davidsneighbour/dotfiles/compare/v2.31.1...v2.31.2) (2026-11-03)
 
 ### Fix
