@@ -10,9 +10,10 @@
 ## Development
 
 * Prefer npm.
+* Use Bash and Node.js for scripting and automation.
 * Use ESM.
 * Use strict TypeScript.
-* Do not use Snap packages when suggesting Linux installations.
+* Do not use Snap packages when suggesting Linux installations if there are other formats available.
 
 ## Working style
 
@@ -120,76 +121,6 @@ Avoid anthropomorphic justification such as "I feel", "I like", or "I want" when
 
 The goal is not agreement with the user. The goal is to make the basis for accepting, rejecting, or qualifying a proposed change explicit.
 
-## Cross-repository scratch notes
+## Other instructions
 
-When I explicitly ask to "scratch", "track", "note", or "write a scratchfile"
-about an issue for another repository, treat this as a request to persist the
-finding in that repository for later work.
-
-Examples:
-
-* "scratch this for markdownlint-config"
-* "write a scratchfile about this in the markdownlint-config repo"
-* "track this upstream in @dnbhq/markdownlint-config"
-
-### Behaviour
-
-1. Identify the target repository.
-2. Locate the repository locally when its location is known or can be determined
-   safely from the local development environment.
-3. Write the finding to:
-
-   `.scratch/<YYYY-MM-DD>-<short-slug>.md`
-
-   in the target repository.
-
-4. Create `.scratch/` if necessary.
-5. Do not modify implementation code in the target repository unless explicitly
-   requested.
-6. Do not turn the scratch note into an issue, TODO, plan, or commit unless
-   explicitly requested.
-7. Report the exact file path after creating the note.
-
-### Scratch note contents
-
-Each scratch note should contain enough context that a future agent working
-inside the target repository can understand the problem without access to the
-original conversation.
-
-Include:
-
-* Title
-* Date
-* Source repository or task where the issue was discovered
-* Package/repository affected
-* Problem observed
-* Expected behaviour
-* Evidence or reproduction details
-* Relevant files/configuration/commands
-* Whether this appears to be:
-  * a bug
-  * missing feature
-  * documentation issue
-  * compatibility issue
-  * upstream dependency issue
-  * investigation needed
-* Suggested next investigation step, if known
-
-Do not speculate beyond the available evidence. Clearly mark uncertain
-conclusions.
-
-### Existing notes
-
-Before creating a new scratch note, check `.scratch/` for an obviously matching
-existing note.
-
-If one exists, append materially new information rather than creating a
-duplicate.
-
-### Repository hygiene
-
-Scratch notes are personal development artifacts.
-
-If `.scratch/` is ignored by Git in the target repository, preserve that state.
-If it is not ignored, do not automatically modify `.gitignore`; mention this
-when reporting the created note.
+* For cross-repository scratch notes, use the `scratchpad` skill.
