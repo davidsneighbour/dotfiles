@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.33.0](https://github.com/davidsneighbour/dotfiles/compare/v2.32.0...v2.33.0) (2026-11-05)
+
+### Feat
+
+* **tools:** add Clockify tag classes ([d6b3ea6](https://github.com/davidsneighbour/dotfiles/commit/d6b3ea61d1cdadcd6fdffc69f56f3e3694a8017e))
+
+### Fix
+
+* **tools:** isolate i3 validation runtime ([01ef31c](https://github.com/davidsneighbour/dotfiles/commit/01ef31c957dcd02090e598b5a9a91e01beef84d5))
+
 ## [2.32.0](https://github.com/davidsneighbour/dotfiles/compare/v2.31.2...v2.32.0) (2026-11-04)
 
 ### Feat
