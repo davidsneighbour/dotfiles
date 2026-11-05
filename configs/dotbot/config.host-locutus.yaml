@@ -9,6 +9,17 @@
 - plugins:
     - configs/dotbot/plugins/crontab.py
 
+- defaults:
+    link:
+      create: true
+      relink: true
+      force: true
+
+- link:
+    # nvm installs every package in this file globally after each
+    # `nvm install`. Only locutus gets the global toolset.
+    ~/.nvm/default-packages: configs/session/npm/default-packages
+
 - crontab:
     - cron: "*/2 * * * *"
       comment: load emails every 2 minutes

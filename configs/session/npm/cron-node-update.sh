@@ -20,6 +20,10 @@ globally installed npm packages from the active version, and sets it as the
 default. If the resolved default version changes, install the default global npm
 packages from configs/session/npm/default-packages.
 
+Default global packages are installed only on hosts that opt in through the
+\${NVM_DIR}/default-packages link (set up by the host-locutus Dotbot profile).
+On other hosts the step is skipped.
+
 Options:
   --lts       Install the latest LTS and refresh node-cron; keep the Current default.
   --dry-run   Print the commands that would run.
@@ -146,6 +150,13 @@ install_latest_node() {
 }
 
 install_default_packages() {
+  local opt_in_file="${NVM_DIR}/default-packages"
+
+  if [[ ! -e "${opt_in_file}" ]]; then
+    log_info "No ${opt_in_file} on this host; skipping default global npm packages."
+    return 0
+  fi
+
   run_command node --experimental-strip-types "${DEFAULT_PACKAGE_INSTALLER}" --quiet
 }
 

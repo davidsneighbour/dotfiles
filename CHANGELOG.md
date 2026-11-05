@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.33.1](https://github.com/davidsneighbour/dotfiles/compare/v2.33.0...v2.33.1) (2026-11-05)
+
+### Chore
+
+* **deps:** pin dependencies ([#606](https://github.com/davidsneighbour/dotfiles/issues/606)) ([29219bb](https://github.com/davidsneighbour/dotfiles/commit/29219bb198b09d0b7ed66bd58bcb27f4c1281cd3))
+* **deps:** update binwiederhier/ntfy:latest docker digest to 1875ddc ([#607](https://github.com/davidsneighbour/dotfiles/issues/607)) ([c4c885d](https://github.com/davidsneighbour/dotfiles/commit/c4c885dacee22cb02df5c5168cf33fb0aaa68ca9))
+* **deps:** update docker.io/library/redis:8 docker digest to f245f4c ([#608](https://github.com/davidsneighbour/dotfiles/issues/608)) ([8236876](https://github.com/davidsneighbour/dotfiles/commit/82368767c8746f4abec32e6558bbe8cef931ad2e))
+* **deps:** update ghcr.io/alexta69/metube:latest docker digest to a97f455 ([#609](https://github.com/davidsneighbour/dotfiles/issues/609)) ([687f8b3](https://github.com/davidsneighbour/dotfiles/commit/687f8b3419f814e0f77649357fc05bd658c72bea))
+
 ## [2.33.0](https://github.com/davidsneighbour/dotfiles/compare/v2.32.0...v2.33.0) (2026-11-05)
 
 ### Feat

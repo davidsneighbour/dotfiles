@@ -16,7 +16,8 @@ the configuration files to be named and composed.
 | `config.dracula.yaml` | Dracula theme setup. |
 | `config.host-dionysus.yaml` | Host-specific setup for `dionysus`. |
 | `config.host-hal2025.yaml` | Host-specific setup for `hal2025`. |
-| `config.host-locutus.yaml` | Host-specific setup for `locutus`. |
+| `config.host-hal2026.yaml` | Host-specific setup for `hal2026`. |
+| `config.host-locutus.yaml` | Host-specific setup for `locutus`, including the `~/.nvm/default-packages` link that makes nvm install the global npm toolset. |
 | `config.protected.yaml` | Protected/private configuration links. |
 | `includes.yaml` | Optional extra config chains loaded by the wrapper. |
 

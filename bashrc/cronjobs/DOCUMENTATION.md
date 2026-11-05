@@ -60,7 +60,7 @@ Requirements: Bash, `git`, `curl` for Discord notifications, and parser tools us
 ## `node-update.sh`
 
 Loads [`../../configs/session/npm/cron-node-update.sh`](../../configs/session/npm/cron-node-update.sh).
-That npm-owned cron script installs the latest Current Node.js release through NVM, migrates globally installed npm packages from the active version, sets the NVM default alias to that release, and installs the default global npm package list when the resolved default Node.js version changes.
+That npm-owned cron script installs the latest Current Node.js release through NVM, migrates globally installed npm packages from the active version, sets the NVM default alias to that release, and installs the default global npm package list when the resolved default Node.js version changes. The package step runs only on hosts that have `~/.nvm/default-packages` (linked by the `host-locutus` Dotbot profile); other hosts skip it.
 
 Options:
 
@@ -73,7 +73,7 @@ Package source:
 via
 [`../../configs/session/npm/install-default-packages.ts`](../../configs/session/npm/install-default-packages.ts).
 
-Locutus runs it weekly on Sunday at `04:15`, with timestamped logs under `~/.logs/cron/node-update-YYYYMMDD-HHMMSS.log`.
+The `locutus`, `hal2025`, and `hal2026` host profiles run it weekly on Sunday at `04:15`, with timestamped logs under `~/.logs/cron/node-update-YYYYMMDD-HHMMSS.log`.
 
 Requirements: Bash, NVM installed under `~/.nvm`, Node.js, npm, and network access to the Node.js and npm registries.
 

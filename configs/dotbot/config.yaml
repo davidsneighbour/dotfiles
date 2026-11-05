@@ -87,7 +87,7 @@
 
     # node configs
     ~/.ncurc.js: configs/session/npm/ncu.js
-    ~/.nvm/default-packages: configs/session/npm/default-packages
+    # ~/.nvm/default-packages is host-specific, see config.host-locutus.yaml
 
     # content quality
     ~/.remarkrc.js: configs/content/.remarkrc.js

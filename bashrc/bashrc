@@ -223,7 +223,10 @@ fi
 
 ## This is the "add this snippet to your .bashrc" part of the workspace
 ## @todo move stuff where it belongs
-. "${HOME}/.cargo/env"
+if [[ -r "${HOME}/.cargo/env" ]]; then
+  # shellcheck source=/dev/null
+  . "${HOME}/.cargo/env"
+fi
 export DO_NOT_TRACK=1
 ## end of workspace snippets
 

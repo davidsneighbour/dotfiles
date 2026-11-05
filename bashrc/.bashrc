@@ -3,8 +3,12 @@
 
 # executed by the command interpreter for interactive non-login shells
 
-# Trust Obsidian Local REST API's self-signed cert for Node/Claude Code MCP
-export NODE_EXTRA_CA_CERTS="${HOME}/.config/obsidian-local-rest-api/cert.pem"
+# Trust Obsidian Local REST API's self-signed cert for Node/Claude Code MCP.
+# Only hosts with the Obsidian plugin certificate get this, because Node warns
+# on every run when NODE_EXTRA_CA_CERTS points to a missing file.
+if [[ -r "${HOME}/.config/obsidian-local-rest-api/cert.pem" ]]; then
+  export NODE_EXTRA_CA_CERTS="${HOME}/.config/obsidian-local-rest-api/cert.pem"
+fi
 
 # shell environment variables
 DNB_IS_INTERACTIVE=1

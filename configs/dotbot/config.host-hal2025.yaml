@@ -18,6 +18,17 @@
 - link:
     ~/github.com/davidsneighbour/dotfiles/containers/hal2025/paperless/consume: /mnt/storage/Paperless/consume
 
+- shell:
+    - description: "\e[1;38;5;103mRemoving nvm default packages link (locutus only):\e[0m\e[1;38;5;66m"
+      command: |
+        target="${HOME}/.nvm/default-packages"
+        source_file="${HOME}/.dotfiles/configs/session/npm/default-packages"
+        if [[ -L "${target}" && "$(readlink -f "${target}")" == "$(readlink -f "${source_file}")" ]]; then
+          rm -- "${target}"
+          echo "[INFO] Removed ${target}"
+        fi
+      quiet: true
+
 - crontab:
     - cron: "15 4 * * 0"
       comment: "weekly Node.js Current update"
