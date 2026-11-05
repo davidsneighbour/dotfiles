@@ -149,3 +149,12 @@
           echo "[SKIP] bat not installed; terminal UI code view stays plain"
         fi
       quiet: true
+
+    - description: "\e[1;38;5;103mConfiguring Git filter for Thunar accelerator map:\e[0m\e[1;38;5;66m"
+      command: |
+        # Thunar rewrites the accels.scm header as "Thunar" or "thunar",
+        # depending on how it was started. This clean filter (see
+        # .gitattributes) normalises it, so the flip does not show in Git.
+        git config --local filter.thunar-accels.clean \
+          "sed '1s/^; thunar GtkAccelMap/; Thunar GtkAccelMap/'"
+      quiet: true

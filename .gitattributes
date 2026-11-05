@@ -1,0 +1,4 @@
+# Thunar rewrites the first line of its accelerator map with varying casing.
+# The clean filter normalises it; Dotbot (configs/dotbot/config.yaml) sets up
+# filter.thunar-accels in the local Git config.
+configs/session/thunar/accels.scm filter=thunar-accels
