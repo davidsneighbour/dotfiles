@@ -7,7 +7,7 @@
 #
 # This check reads the repository that contains system-checkup, not the live
 # ~/.dotfiles link, so `npm run test:shell` can run it against a working tree.
-# It changes nothing and needs no running desktop.
+# It leaves no persistent changes and needs no running desktop.
 
 # Checks run through system-checkup, which exports SYSTEM_CHECKUP_DIR.
 : "${SYSTEM_CHECKUP_DIR:?run this check with: system-checkup --check <name>}"
@@ -32,6 +32,7 @@ check_i3_config() {
   local output
   local detail
   local file
+  local runtime_dir
 
   if [[ ! -f "${I3_CONFIG}" ]]; then
     problem "i3 config is missing: $(relative "${I3_CONFIG}")"
@@ -44,7 +45,15 @@ check_i3_config() {
   # i3 -C exits 0 on some errors, so its output counts as well. It does not
   # check the commands inside bindings (see
   # .agents/instructions/session/i3-keybindings.instructions.md).
-  if ! output="$(i3 -C -c "${I3_CONFIG}" 2>&1)" || [[ -n "${output}" ]]; then
+  # Even validation writes an i3 error log. Isolate it from the live session's
+  # runtime directory, which may be read-only in a sandbox. The subshell owns
+  # cleanup and keeps the caller's environment and traps unchanged.
+  if ! output="$(
+    exec 2>&1
+    runtime_dir="$(mktemp -d "${TMPDIR:-/tmp}/system-checkup-i3.XXXXXX")" || exit 1
+    trap 'rm -rf -- "${runtime_dir}"' EXIT
+    XDG_RUNTIME_DIR="${runtime_dir}" i3 -C -c "${I3_CONFIG}"
+  )" || [[ -n "${output}" ]]; then
     # i3 prints the failing line just above the "^^^" marker.
     detail="$(grep -B1 -m1 '\^\^\^' <<<"${output}" | head -n1)"
     detail="${detail#*CONFIG: }"

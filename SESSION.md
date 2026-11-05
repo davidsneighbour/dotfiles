@@ -295,6 +295,8 @@ busctl --user status org.freedesktop.Notifications | grep -E '^(PID|Comm)='  # w
 
 The `30-session-commands`, `31-session-config`, `32-session-links`, and `33-session-running` checks of the system checkup (`tools/system-checkup/README.md`) bundle the command, config, link, and process checks above. They are read-only and never modify the desktop. Cron and the i3 login run them; Polybar shows an alert icon when one fails. `npm run test:shell` runs `31-session-config` against the working tree.
 
+`31-session-config` gives `i3 -C` a private temporary runtime directory for its error log, then removes it. It can validate the configuration when the desktop runtime directory is read-only without changing the session environment.
+
 ## Known limitations
 
 Do not implement these without a separate, explicit request:

@@ -48,6 +48,8 @@ Left click opens the report in a zenity window. Right click runs the checks agai
 
 `31-session-config` reads the repository that contains `system-checkup`, not the `~/.dotfiles` link, and needs no desktop. `npm run test:shell` runs it as part of `npm run check`. The session checks replace the former `bashrc/helpers/tests/desktop-helpers-health-check.sh` and `configs/session/i3/check.sh`.
 
+The i3 syntax check uses a private temporary runtime directory under `${TMPDIR:-/tmp}` for i3's error log and removes it when validation ends. This allows validation when the session runtime directory is read-only and keeps the caller's `XDG_RUNTIME_DIR` unchanged. Both a non-zero exit status and diagnostic output still count as validation failures.
+
 google-drive-ocamlfuse has no separate health command. The mount check is the alive check: a broken FUSE mount fails `stat` on its root folder, and a hung one does not answer a listing within 20 seconds. Both count as failures.
 
 ## Add a check
