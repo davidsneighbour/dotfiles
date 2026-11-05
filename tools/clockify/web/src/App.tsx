@@ -6,6 +6,7 @@ import { Combobox } from "@/components/ui/combobox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
+import { suggestedTags, tagClass, tagClasses } from "../../src/tag-classes.ts";
 
 type ClientItem = { id: string; name: string };
 
@@ -71,6 +72,15 @@ export function App() {
   const [tagIds, setTagIds] = useState<string[]>(context.selectedTagIds);
   const [newTagOpen, setNewTagOpen] = useState(false);
   const [newTagName, setNewTagName] = useState("");
+  const [newTagClass, setNewTagClass] = useState<string>("for");
+  const [editingTagId, setEditingTagId] = useState<string | undefined>();
+  const [expandedClasses, setExpandedClasses] = useState<string[]>([]);
+  const availableTags = [
+    ...tags,
+    ...suggestedTags
+      .filter((name) => !tags.some((tag) => tag.name.toLowerCase() === name))
+      .map((name) => ({ id: `suggested:${name}`, name })),
+  ];
   const [tagBusy, setTagBusy] = useState(false);
   const [tagError, setTagError] = useState<string | undefined>(undefined);
   const [submitting, setSubmitting] = useState(false);
@@ -133,43 +143,70 @@ export function App() {
     return [...own, ...other];
   }, [title, projectId]);
 
-  const handleAddTag = async () => {
-    const name = newTagName.trim();
-    if (name === "") {
-      return;
-    }
-    setTagBusy(true);
-    setTagError(undefined);
-    const response = await fetch("/api/tags/create", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ name }),
-    });
-    const result = (await response.json()) as TagCreateResponse;
-    setTagBusy(false);
-    if (!result.ok) {
-      setTagError(result.error);
-      return;
-    }
-    setTags(result.tags);
-    setNewTagName("");
-    setNewTagOpen(false);
-    const created = result.tags.find(
-      (tag) => tag.name.toLowerCase() === name.toLowerCase(),
-    );
-    if (created !== undefined) {
-      setTagIds((current) =>
-        current.includes(created.id) ? current : [...current, created.id],
-      );
-    }
-  };
-
   const toggleTag = (tagId: string) => {
+    const prefix = tagClass(
+      availableTags.find((tag) => tag.id === tagId)?.name ?? "",
+    );
     setTagIds((current) =>
       current.includes(tagId)
         ? current.filter((id) => id !== tagId)
-        : [...current, tagId],
+        : [
+            ...current.filter(
+              (id) =>
+                !["for", "type", "activity"].includes(prefix) ||
+                tagClass(
+                  availableTags.find((tag) => tag.id === id)?.name ?? "",
+                ) !== prefix,
+            ),
+            tagId,
+          ],
     );
+  };
+
+  const handleAddTag = async () => {
+    const name = `${newTagClass}:${newTagName.trim()}`;
+    setTagBusy(true);
+    setTagError(undefined);
+    try {
+      const response = await fetch(
+        editingTagId ? "/api/tags/edit" : "/api/tags/create",
+        {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ name, id: editingTagId }),
+        },
+      );
+      const result = (await response.json()) as TagCreateResponse;
+      if (!result.ok) {
+        setTagError(result.error);
+        return;
+      }
+      setTags(result.tags);
+      const created = result.tags.find(
+        (tag) => tag.name.toLowerCase() === name.toLowerCase(),
+      );
+      if (created && !editingTagId) {
+        setTagIds((current) => [
+          ...current.filter(
+            (id) =>
+              id !== `suggested:${name}` &&
+              (!["for", "type", "activity"].includes(newTagClass) ||
+                tagClass(
+                  availableTags.find((tag) => tag.id === id)?.name ?? "",
+                ) !== newTagClass),
+          ),
+          created.id,
+        ]);
+      }
+      setNewTagName("");
+      setNewTagOpen(false);
+      setEditingTagId(undefined);
+    } catch (error) {
+      console.error("Saving tag failed", error);
+      setTagError("Saving the tag failed. Try again.");
+    } finally {
+      setTagBusy(false);
+    }
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -369,6 +406,8 @@ export function App() {
                 className="text-primary underline-offset-4 hover:underline"
                 aria-expanded={newTagOpen}
                 onClick={() => {
+                  setEditingTagId(undefined);
+                  setNewTagName("");
                   setNewTagOpen((open) => !open);
                   setTagError(undefined);
                 }}
@@ -377,35 +416,149 @@ export function App() {
               </button>
             </div>
           </div>
-          <div className="flex flex-wrap gap-1.5">
-            {tags.map((tag) => {
-              const active = tagIds.includes(tag.id);
-              return (
-                <button
-                  key={tag.id}
-                  type="button"
-                  onClick={() => toggleTag(tag.id)}
-                  className={cn(
-                    "rounded-full border px-2.5 py-0.5 text-xs transition-colors",
-                    active
-                      ? "border-primary bg-primary text-primary-foreground"
-                      : "border-input bg-card text-muted-foreground hover:bg-secondary/50",
-                  )}
-                >
-                  {tag.name}
-                </button>
+          <p className="text-xs text-muted-foreground">
+            Choose one for: and type: tag. An activity: tag is recommended.
+          </p>
+          {[...tagClasses, { prefix: "other", color: "#f8f8f2" }].map(
+            (group) => {
+              const items = availableTags.filter(
+                (tag) =>
+                  (tagClasses.some((item) => item.prefix === tagClass(tag.name))
+                    ? tagClass(tag.name)
+                    : "other") === group.prefix,
               );
-            })}
-            {tags.length === 0 && (
-              <span className="text-xs text-muted-foreground">
-                No tags yet.
-              </span>
-            )}
-          </div>
+              const expanded = expandedClasses.includes(group.prefix);
+              if (items.length === 0) return null;
+              const shown = expanded
+                ? items
+                : items.filter(
+                    (tag, index) => index < 3 || tagIds.includes(tag.id),
+                  );
+              return (
+                <div key={group.prefix} className="flex items-start gap-2 py-1">
+                  <span
+                    className="w-16 shrink-0 pt-1 text-xs"
+                    style={{ color: group.color }}
+                  >
+                    {group.prefix}:
+                  </span>
+                  <div
+                    id={`tags-${group.prefix}`}
+                    className="flex min-w-0 flex-1 flex-wrap gap-1.5"
+                  >
+                    {shown.map((tag) => {
+                      const active = tagIds.includes(tag.id);
+                      return (
+                        <span
+                          key={tag.id}
+                          className="inline-flex rounded-full border"
+                          style={{ borderColor: group.color }}
+                        >
+                          <button
+                            type="button"
+                            aria-pressed={active}
+                            onClick={() => toggleTag(tag.id)}
+                            className="rounded-full px-2.5 py-0.5 text-xs focus-visible:outline-2 focus-visible:outline-offset-2"
+                            style={{
+                              backgroundColor: active ? group.color : undefined,
+                              color: active ? "#282a36" : group.color,
+                            }}
+                          >
+                            {tag.name.slice(
+                              group.prefix === "other"
+                                ? 0
+                                : group.prefix.length + 1,
+                            )}
+                          </button>
+                          {!tag.id.startsWith("suggested:") && (
+                            <button
+                              type="button"
+                              aria-label={`Edit ${tag.name}`}
+                              className="px-1.5 text-xs"
+                              onClick={() => {
+                                setEditingTagId(tag.id);
+                                const prefix = tagClass(tag.name);
+                                setNewTagClass(
+                                  tagClasses.some(
+                                    (group) => group.prefix === prefix,
+                                  )
+                                    ? prefix
+                                    : "for",
+                                );
+                                setNewTagName(
+                                  !tagClasses.some(
+                                    (group) => group.prefix === prefix,
+                                  )
+                                    ? tag.name
+                                    : tag.name.slice(prefix.length + 1),
+                                );
+                                setNewTagOpen(true);
+                                setTagError(undefined);
+                              }}
+                            >
+                              ✎
+                            </button>
+                          )}
+                        </span>
+                      );
+                    })}
+                  </div>
+                  {(items.length > 3 || expanded) && (
+                    <button
+                      type="button"
+                      className="shrink-0 text-xs text-primary hover:underline"
+                      aria-expanded={expanded}
+                      aria-controls={`tags-${group.prefix}`}
+                      onClick={() =>
+                        setExpandedClasses((current) =>
+                          expanded
+                            ? current.filter(
+                                (prefix) => prefix !== group.prefix,
+                              )
+                            : [...current, group.prefix],
+                        )
+                      }
+                    >
+                      {expanded ? "Less" : "More"}
+                    </button>
+                  )}
+                </div>
+              );
+            },
+          )}
           {newTagOpen && (
-            <div className="flex gap-2">
+            <div className="space-y-2 rounded border border-input p-3">
+              <fieldset className="flex flex-wrap gap-3">
+                <legend className="mb-2 text-sm">
+                  {editingTagId ? "Edit tag class" : "New tag class"}
+                </legend>
+                {tagClasses.map((group) => (
+                  <label
+                    key={group.prefix}
+                    className="flex items-center gap-1 text-xs"
+                    style={{ color: group.color }}
+                  >
+                    <input
+                      type="radio"
+                      name="tag-class"
+                      value={group.prefix}
+                      checked={newTagClass === group.prefix}
+                      onChange={() => setNewTagClass(group.prefix)}
+                    />
+                    {group.prefix}:
+                  </label>
+                ))}
+              </fieldset>
+              {editingTagId && (
+                <p className="text-xs text-muted-foreground">
+                  Renaming changes this workspace tag on all entries that use
+                  it.
+                </p>
+              )}
+              <Label htmlFor="tag-value">Tag value</Label>
               <Input
-                placeholder="New tag"
+                id="tag-value"
+                placeholder="Tag value"
                 value={newTagName}
                 autoFocus
                 onChange={(event) => setNewTagName(event.target.value)}
@@ -426,7 +579,7 @@ export function App() {
                 disabled={tagBusy || newTagName.trim() === ""}
                 onClick={() => void handleAddTag()}
               >
-                Add
+                {editingTagId ? "Save tag" : "Add"}
               </Button>
             </div>
           )}

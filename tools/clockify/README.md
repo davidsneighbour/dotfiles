@@ -117,6 +117,14 @@ in the time-tracking form above.
 
 Entries created or stopped through the form get a `via:form` tag. Starting a timer or creating a completed entry (an "open") tags it; stopping a running timer (a "close") adds the tag to whatever tags the entry already had. Editing a running entry without stopping it does not change its tags. The `via:form` tag is created in the Clockify workspace the first time it's needed.
 
+### Tag classes
+
+The form offers the initial `for:`, `type:`, `domain:`, `activity:`, `channel:`, `purpose:`, `context:`, and `via:` vocabulary. Each class has a Dracula colour and its own row. Rows show the first three options and any selected tags; **More** shows every option in that class, and **Less** collapses it again. Existing tags with other prefixes remain available in their own uncoloured row.
+
+Exactly one `for:` and one `type:` tag are required when submitting the form. Selecting another value replaces the current selection in either class, and in `activity:`. An activity is recommended; the remaining classes are optional and allow several values. Existing selections are retained when opening a running entry, including older tags.
+
+Suggested tags are created in Clockify only when submitted. **New tag** accepts a class through radio buttons and a value without the prefix. The edit button beside a workspace tag opens the same controls; saving renames that shared tag across all entries that use it. Custom values are allowed, so the initial vocabulary is extensible. These controls apply to the local form; CLI entry commands retain their existing behaviour. The automatic, reserved `via:form` marker remains unchanged.
+
 ## Nudge and status
 
 `status` queries Clockify and uses a short cache, defaulting to 30 seconds, so Polybar can call it often without hammering the API. It also tracks active desktop time while no timer is running. Idle time is ignored when `xprintidle` is available.
@@ -149,4 +157,4 @@ Status states:
 
 ## V1 limits
 
-This first version intentionally skips tags, billing controls, reports, project inference, and a database. Clockify remains the source of truth.
+This first version intentionally skips billing controls, reports, project inference, and a database. Clockify remains the source of truth.

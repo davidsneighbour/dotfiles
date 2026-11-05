@@ -10,6 +10,8 @@ import {
 import { homedir } from "node:os";
 import { dirname, extname, join, resolve as resolvePath, sep } from "node:path";
 
+import { suggestedTags, tagClass, tagClasses } from "./tag-classes.ts";
+
 const apiBase = "https://api.clockify.me/api/v1";
 const configPath = join(homedir(), ".config", "dnb-clockify", "config.json");
 const cacheDir = join(homedir(), ".cache", "dnb-clockify");
@@ -1631,10 +1633,17 @@ async function handleTagCreate(
 ): Promise<void> {
   const body = JSON.parse(await readRequestBody(request)) as {
     name?: string;
+    id?: string;
   };
   const name = (body.name ?? "").trim();
-  if (name === "") {
-    throw new UserError("Tag name is required.");
+  if (
+    !tagClasses.some((group) => name.startsWith(`${group.prefix}:`)) ||
+    !/^[^:]+:[^:]+$/.test(name) ||
+    name.length > 100
+  ) {
+    throw new UserError(
+      "Choose a tag class and enter a value (maximum 100 characters including the prefix).",
+    );
   }
   if (name === viaFormTagName) {
     throw new UserError(`Tag name "${viaFormTagName}" is reserved.`);
@@ -1642,7 +1651,26 @@ async function handleTagCreate(
   const existing = formContext.tags.find(
     (tag) => normaliseName(tag.name) === normaliseName(name),
   );
-  if (existing === undefined) {
+  if (body.id !== undefined) {
+    const original = formContext.tags.find((tag) => tag.id === body.id);
+    if (original === undefined || original.name === viaFormTagName) {
+      throw new UserError("This tag cannot be edited.");
+    }
+    if (existing !== undefined && existing.id !== body.id) {
+      throw new UserError("A tag with this name already exists.");
+    }
+    const updated = await apiRequest<ClockifyTag>(
+      formContext.token,
+      `/workspaces/${formContext.workspaceId}/tags/${encodeURIComponent(body.id)}`,
+      {
+        method: "PUT",
+        body: JSON.stringify({ name, archived: false }),
+      },
+    );
+    formContext.tags = formContext.tags.map((tag) =>
+      tag.id === updated.id ? updated : tag,
+    );
+  } else if (existing === undefined) {
     const created = await createTag(
       formContext.token,
       formContext.workspaceId,
@@ -1765,7 +1793,11 @@ async function commandForm(args: string[], options: CliOptions): Promise<void> {
         });
         return;
       }
-      if (request.method === "POST" && url.pathname === "/api/tags/create") {
+      if (
+        request.method === "POST" &&
+        (url.pathname === "/api/tags/create" ||
+          url.pathname === "/api/tags/edit")
+      ) {
         const formContext = await getFormContext();
         await handleTagCreate(request, formContext);
         sendJson(response, { ok: true, tags: visibleTags(formContext) });
@@ -1868,7 +1900,41 @@ async function submitFormEntry(
   const title = payload.title ?? "";
   const start = parseTimeInput(payload.start ?? "");
   const endValue = payload.end ?? "";
-  const chosenTagIds = payload.tagIds ?? [];
+  if (
+    !Array.isArray(payload.tagIds) ||
+    !payload.tagIds.every((id) => typeof id === "string")
+  ) {
+    throw new UserError("Select valid tags.");
+  }
+  const chosenTags = [...new Set(payload.tagIds)].map((id) => {
+    const existing = formContext.tags.find((tag) => tag.id === id);
+    if (existing !== undefined) return existing;
+    const name = id.startsWith("suggested:") ? id.slice(10) : "";
+    if (!suggestedTags.includes(name))
+      throw new UserError("Unknown tag. Reload the form.");
+    return { id, name };
+  });
+  for (const prefix of ["for", "type"]) {
+    if (
+      chosenTags.filter((tag) => tagClass(tag.name) === prefix).length !== 1
+    ) {
+      throw new UserError(`Select exactly one ${prefix}: tag.`);
+    }
+  }
+  const chosenTagIds: string[] = [];
+  for (const tag of chosenTags) {
+    if (tag.id.startsWith("suggested:")) {
+      const existing = formContext.tags.find(
+        (item) => normaliseName(item.name) === normaliseName(tag.name),
+      );
+      const created =
+        existing ?? (await createTag(token, workspaceId, tag.name));
+      if (existing === undefined) formContext.tags.push(created);
+      chosenTagIds.push(created.id);
+    } else {
+      chosenTagIds.push(tag.id);
+    }
+  }
   if (running === undefined) {
     const end = endValue.trim() === "" ? undefined : parseTimeInput(endValue);
     const tagId = await resolveViaFormTagId(token, workspaceId);
