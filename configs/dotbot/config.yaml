@@ -84,6 +84,7 @@
     # Tool configs
     ~/.config/github-label-manager: configs/session/git/github-label-manager
     ~/.config/espanso: configs/session/espanso
+    ~/.config/eza: configs/session/eza
 
     # node configs
     ~/.ncurc.js: configs/session/npm/ncu.js
