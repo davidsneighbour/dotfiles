@@ -1,0 +1,161 @@
+---
+# OpenProject 17 with Docker Compose.
+# @see https://www.openproject.org/docs/installation-and-operations/installation/docker-compose/
+# @see https://github.com/opf/openproject-docker-compose/tree/stable/17
+#
+# Adapted from upstream stable/17 docker-compose.yml for hal2026:
+#
+# - The Caddy proxy uses the stock caddy image with ./Caddyfile mounted,
+#   instead of a local image build.
+# - The proxy is published on all interfaces at port 3020.
+# - Plain HTTP on hal2026.local:3020 (OPENPROJECT_HTTPS and HSTS off).
+# - Secrets and the database password come from .env and have no defaults.
+# - Database and assets are bind mounts next to this file.
+#
+# - Run 'cp .env.template .env' and set the secrets.
+# - Run 'docker compose pull'.
+# - Run 'docker compose up -d'.
+# - Open http://hal2026.local:3020 and sign in as admin/admin. Change the
+#   password at once.
+name: openproject
+
+networks:
+  frontend:
+  backend:
+
+x-op-restart-policy: &restart_policy
+  restart: unless-stopped
+
+x-op-image: &image
+  # Keep the tag in step with the hocuspocus image below.
+  # secretlint-disable-next-line @secretlint/secretlint-rule-secp256k1-privatekey
+  image: openproject/openproject:17.9.6-slim@sha256:817640f6637157903846ac79808fe0333b279ae6cddf3c57fe4bea6ff98b56d1
+
+x-op-app: &app
+  <<: [*image, *restart_policy]
+  environment:
+    OPENPROJECT_HTTPS: "false"
+    OPENPROJECT_HOST__NAME: "hal2026.local:3020"
+    # Allows access from hocuspocus directly.
+    OPENPROJECT_ADDITIONAL__HOST__NAMES: "web"
+    OPENPROJECT_HSTS: "false"
+    OPENPROJECT_RAILS__CACHE__STORE: "memcache"
+    OPENPROJECT_CACHE__MEMCACHE__SERVER: "cache:11211"
+    OPENPROJECT_RAILS__RELATIVE__URL__ROOT: ""
+    OPENPROJECT_COLLABORATIVE__EDITING__HOCUSPOCUS__URL: "ws://hal2026.local:3020/hocuspocus"
+    OPENPROJECT_COLLABORATIVE__EDITING__HOCUSPOCUS__SECRET: "${COLLABORATIVE_SERVER_SECRET:?Set COLLABORATIVE_SERVER_SECRET in .env}"
+    DATABASE_URL: "postgres://postgres:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}@db/openproject?pool=20&encoding=unicode&reconnect=true"
+    RAILS_MIN_THREADS: ${RAILS_MIN_THREADS:-4}
+    RAILS_MAX_THREADS: ${RAILS_MAX_THREADS:-16}
+    # Set to true to enable receiving email.
+    IMAP_ENABLED: "${IMAP_ENABLED:-false}"
+    SECRET_KEY_BASE: "${SECRET_KEY_BASE:?Set SECRET_KEY_BASE in .env}"
+  volumes:
+    - ./assets:/var/openproject/assets
+
+services:
+  db:
+    # secretlint-disable-next-line @secretlint/secretlint-rule-secp256k1-privatekey
+    image: postgres:17@sha256:748a18a54d3842d43bc156f0840d78029b8d349e0feca98c12b9c4ce3404a6b3
+    <<: *restart_policy
+    stop_grace_period: "3s"
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: openproject
+    networks:
+      - backend
+
+  cache:
+    # secretlint-disable-next-line @secretlint/secretlint-rule-secp256k1-privatekey
+    image: memcached:1.6@sha256:a395a1bcf5e0e2b0fa4a0142e12b4e24a2320ba4b7c6ffa8655a1a86e8f29dee
+    <<: *restart_policy
+    networks:
+      - backend
+
+  proxy:
+    # secretlint-disable-next-line @secretlint/secretlint-rule-secp256k1-privatekey
+    image: caddy:2@sha256:b060aafbec4f8f5404c80273c8d8758248f157920d0a0cdd5cb5656a527f6ec5
+    <<: *restart_policy
+    ports:
+      # <Host Port>:<Container Port>
+      - "3020:80"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+    depends_on:
+      - web
+    networks:
+      - frontend
+
+  web:
+    <<: *app
+    command: "./docker/prod/web"
+    hostname: "hal2026.local:3020"
+    networks:
+      - frontend
+      - backend
+    depends_on:
+      - db
+      - cache
+      - seeder
+    labels:
+      - autoheal=true
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health_checks/default"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 30s
+
+  # Restarts containers labelled autoheal=true when their healthcheck fails.
+  autoheal:
+    # secretlint-disable-next-line @secretlint/secretlint-rule-secp256k1-privatekey
+    image: willfarrell/autoheal:1.2.0@sha256:31f580ef0279eaced5b38d631b08c474d70d8403c1c2fdd6ddcf2e879d5f3f7c
+    <<: *restart_policy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      AUTOHEAL_CONTAINER_LABEL: autoheal
+      AUTOHEAL_START_PERIOD: 600
+      AUTOHEAL_INTERVAL: 30
+
+  worker:
+    <<: *app
+    command: "./docker/prod/worker"
+    networks:
+      - backend
+    depends_on:
+      - db
+      - cache
+      - seeder
+
+  cron:
+    <<: *app
+    command: "./docker/prod/cron"
+    networks:
+      - backend
+    depends_on:
+      - db
+      - cache
+      - seeder
+
+  # Runs migrations and seeds the database, then exits.
+  seeder:
+    <<: *app
+    command: "./docker/prod/seeder"
+    restart: on-failure
+    networks:
+      - backend
+
+  hocuspocus:
+    # secretlint-disable-next-line @secretlint/secretlint-rule-secp256k1-privatekey
+    image: openproject/hocuspocus:17.9.6@sha256:28c71d8ed88c6b9560909382aab2f50ec550aa4dd4a91f153ba8561ca35ee0db
+    <<: *restart_policy
+    environment:
+      SECRET: ${COLLABORATIVE_SERVER_SECRET:?Set COLLABORATIVE_SERVER_SECRET in .env}
+      OPENPROJECT_URL: "http://web:8080"
+      OPENPROJECT_HTTPS: "false"
+    networks:
+      - backend
+      - frontend

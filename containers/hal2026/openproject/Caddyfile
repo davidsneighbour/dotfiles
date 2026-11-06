@@ -1,0 +1,16 @@
+# Rendered from upstream proxy/Caddyfile.template with APP_HOST=web.
+# @see https://github.com/opf/openproject-docker-compose/blob/stable/17/proxy/Caddyfile.template
+:80 {
+	reverse_proxy /hocuspocus* hocuspocus:1234
+
+	reverse_proxy * http://web:8080 {
+		# Forward the X-Forwarded-* headers explicitly. Caddy resets them
+		# otherwise, which breaks a reverse proxy in front of this stack.
+		header_up X-Forwarded-Proto {header.X-Forwarded-Proto}
+		header_up X-Forwarded-For {header.X-Forwarded-For}
+	}
+
+	file_server
+
+	log
+}
