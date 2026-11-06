@@ -21,17 +21,26 @@ alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 
-############### various ls shortcuts
-# alias ls='eza'
-alias l='eza -l'
-alias la='eza -a'
-alias lla='eza -la'
-alias lt='eza --tree'
-alias ll='eza -ltr'   # sort by name
-alias lu='eza -ltur'  # sort by file/dir > name
-alias lal='eza -altr' # sort by last mod asc
-alias dir='eza -al'   # yeah, well...
-alias ldir='ll -d */' # list directories only
+############### various ls shortcuts (eza)
+# Shared options: colours and icons only on a terminal, directories first.
+# Long listings add a header, hard-link counts, and Git status. Symlink
+# targets show in every long listing.
+_dnb_eza='eza --color=auto --icons=auto --group-directories-first'
+_dnb_eza_long="${_dnb_eza} --long --header --links --git"
+# shellcheck disable=SC2139 # expand the shared options at definition time
+{
+  alias ls="${_dnb_eza}"                                      # grid
+  alias la="${_dnb_eza} --all"                                # grid, hidden files
+  alias lt="${_dnb_eza} --tree"                               # tree
+  alias l="${_dnb_eza_long}"                                  # long
+  alias lla="${_dnb_eza_long} --all"                          # long, hidden files
+  alias dir="${_dnb_eza_long} --all"                          # long, hidden files
+  alias ll="${_dnb_eza_long} --sort=modified"                 # long, newest last
+  alias lal="${_dnb_eza_long} --all --sort=modified"          # long, hidden files, newest last
+  alias lu="${_dnb_eza_long} --sort=accessed --time=accessed" # long, last accessed last
+  alias ldir="${_dnb_eza_long} --sort=modified --only-dirs"   # long, directories only, newest last
+}
+unset _dnb_eza _dnb_eza_long
 
 # Add an alert for long running commands.
 # Usage: `sleep 10; alert`
@@ -75,7 +84,7 @@ alias jobhist='jobrunhist -j'
 alias jobdepends='job_depends -c -J'
 alias jobsu='sendevent -E CHANGE_STATUS -s SUCCESS -J'
 alias jobterm='sendevent -E CHANGE_STATUS -s TERMINATED -J'
-alias countfiles='lsd -1a | wc -l'
+alias countfiles='eza --oneline --all | wc -l'
 alias tail='grc tail'
 
 alias subl='subl -n'

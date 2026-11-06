@@ -18,11 +18,10 @@ if [ -n "${force_color_prompt}" ]; then
   fi
 fi
 
-# enable color support of ls and also add handy aliases
+# enable color support and also add handy aliases
+# `ls` and `dir` are eza aliases in partials/aliases; do not override them here.
 if [ -x /usr/bin/dircolors ]; then
   test -r ~/.dircolors && (eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)")
-  alias ls='ls --color=always'
-  alias dir='dir --color=always'
   alias vdir='vdir --color=always'
   alias grep='grep --color=always'
   alias fgrep='fgrep --color=always'

@@ -76,6 +76,7 @@ Kando
 keybinding
 keysym
 Kollitsch
+ldir
 libpam
 libsecret
 lighthousing
