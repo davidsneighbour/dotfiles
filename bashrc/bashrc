@@ -61,10 +61,6 @@ elif [[ -n "${DNB_VERBOSE}" ]]; then
   dnb_log info "zoxide is not installed. Skipping zoxide initialization."
 fi
 
-# bun
-export BUN_INSTALL="${HOME}/.bun"
-dnb_path_add_if_missing --dir "${BUN_INSTALL}/bin"
-
 # Ensure GPG can talk to the current terminal
 GPG_TTY=$(tty)
 export GPG_TTY
@@ -129,25 +125,6 @@ if test -f "${FILE}"; then
     fi
   done <"${FILE}"
 fi
-
-# Android and npm require special treatment
-# @todo recheck if this is still needed
-if [ -d "${HOME}"/.bin/android-sdk ]; then
-  dnb_path_add_if_missing --dir "${HOME}/.bin/android-sdk/platform-tools"
-  dnb_path_add_if_missing --dir "${HOME}/.bin/android-sdk/tools"
-  export ANDROID_HOME="${HOME}"/.bin/android/sdk
-fi
-if [ -d "${HOME}"/.npm ]; then
-  dnb_path_add_if_missing --dir "${HOME}/.npm/bin"
-  dnb_path_add_if_missing --dir "${HOME}/.npm/packages/bin"
-  if [ -n "${NODE_PATH}" ]; then
-    export NODE_PATH="${NODE_PATH}:${HOME}/.npm/lib/node_modules"
-  else
-    export NODE_PATH="${HOME}/.npm/lib/node_modules"
-  fi
-fi
-
-dnb_path_add_if_missing --dir "/opt/firefox/firefox"
 
 # adding helper commands to PATH
 dnb_path_add_if_missing --dir "${BASHRC_PATH}/helpers" --prepend
