@@ -44,6 +44,11 @@ REPO_ROOT="$(cd "$(dirname "${SCRIPT_PATH}")/../.." && pwd)"
 DOTBOT_CACHE_DIR="${REPO_ROOT}/cache/dotbot"
 DOTBOT_CONFIG="${DOTBOT_CACHE_DIR}/config.ai-skills.yaml"
 
+# Third-party skills restored from configs/agents/skills-lock.json by
+# configs/agents/install-skills.sh. Its links are inside a trusted root, but
+# they belong to install-skills.sh: skillz never removes or replaces them.
+MANAGED_SKILLS_DIR="${REPO_ROOT}/configs/agents/.agents/skills"
+
 VERBOSE=false
 
 declare -A SKILL_PATHS=()
@@ -94,6 +99,13 @@ add_skill() {
     die "Duplicate skill name '${name}' found in:
   ${existing}
   ${path}"
+  fi
+
+  if [[ -e "${MANAGED_SKILLS_DIR}/${name}" ]]; then
+    die "Skill name '${name}' is also a third-party skill tracked in configs/agents/skills-lock.json:
+  ${MANAGED_SKILLS_DIR}/${name}
+  ${path}
+Rename one of them, or remove it from its source."
   fi
 
   log_verbose "${name} -> ${path}"
@@ -228,6 +240,7 @@ write_dotbot_config() {
     printf '\n'
     printf '        is_trusted() {\n'
     printf '          case "$1" in\n'
+    printf '            "%s"/*) return 1 ;;\n' "$(portable_path "${MANAGED_SKILLS_DIR}")"
     printf '            %s) return 0 ;;\n' "${trusted_pattern}"
     printf '            *) return 1 ;;\n'
     printf '          esac\n'

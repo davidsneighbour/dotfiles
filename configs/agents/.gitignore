@@ -1,0 +1,8 @@
+# Skills restored by the skills CLI from skills-lock.json (see README.md).
+/.agents/
+
+# Per-agent directories that `npx skills add` and `npx skills update` can
+# create in a project (Claude Code, Eve). install-skills.sh links the global
+# agent directories itself, so these are never needed here.
+/.claude/
+/agent/

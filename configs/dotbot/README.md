@@ -12,7 +12,7 @@ the configuration files to be named and composed.
 | File | Purpose |
 | --- | --- |
 | `config.yaml` | Default workstation setup, run by `dotfiles` with no arguments. |
-| `config.ai.yaml` | AI tool configuration links. |
+| `config.ai.yaml` | AI tool configuration links, and the restore and links of the tracked third-party agent skills (see [configs/agents](../agents/README.md#third-party-skills)). |
 | `config.dracula.yaml` | Dracula theme setup. |
 | `config.host-dionysus.yaml` | Host-specific setup for `dionysus`. |
 | `config.host-hal2025.yaml` | Host-specific setup for `hal2025`. |
@@ -22,6 +22,8 @@ the configuration files to be named and composed.
 | `includes.yaml` | Optional extra config chains loaded by the wrapper. |
 
 The `skillz` helper generates the AI skill symlink profile at `cache/dotbot/config.ai-skills.yaml` before it runs Dotbot. That cache file is derived from `SKILL_SOURCES` in [bashrc/helpers/skillz](../../bashrc/helpers/skillz), is ignored by Git, and must not be edited by hand. Each source is a `<type>:<root>` entry: `collections` scans the skillwerk layout (`collections/<collection>/skills/<skill>`), and `tree` links every deepest directory with a `SKILL.md` up to three folder levels below the root (`<skill>`, `<collection>/<skill>`, or `<topic>/<collection>/<skill>`). Skill names must be unique across all sources; the same skill reached through two paths (for example a symlinked collection) is linked once.
+
+`skillz` leaves the links of the third-party skill manager alone. These are links into `configs/agents/.agents/skills/`, created by [`configs/agents/install-skills.sh`](../agents/install-skills.sh). `skillz` stops with an error if one of its skills has the same name as a restored third-party skill.
 
 ## Running profiles
 

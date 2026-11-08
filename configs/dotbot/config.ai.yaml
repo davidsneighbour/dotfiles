@@ -34,3 +34,15 @@
       path: configs/agents/global-agents-instructions.md
     ~/.codex/AGENTS.md:
       path: configs/agents/global-agents-instructions.md
+
+# Third-party agent skills: restore the skills recorded in
+# configs/agents/skills-lock.json (never updates them) and link them into
+# ~/.claude/skills and ~/.codex/skills. Unmanaged skills stay untouched. A
+# missing Node.js/npx, a failed restore, or a name conflict fails this step.
+# See configs/agents/README.md.
+- shell:
+    - description: Restore tracked third-party agent skills and link them for Claude Code and Codex
+      command: /bin/bash configs/agents/install-skills.sh --install --yes
+      stdin: false
+      stdout: true
+      stderr: true

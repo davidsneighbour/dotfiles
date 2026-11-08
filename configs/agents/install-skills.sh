@@ -1,0 +1,928 @@
+#!/bin/bash
+#
+# install-skills.sh - manage third-party agent skills tracked in skills-lock.json.
+#
+# The skills CLI (https://github.com/vercel-labs/skills) restores the skills
+# recorded in skills-lock.json into .agents/skills/ next to this script. This
+# script then links every verified skill into the global agent skill
+# directories. A global entry is "managed" only when it is a symbolic link into
+# .agents/skills/ of this folder. Everything else is unmanaged and never
+# changed. See README.md in this folder.
+
+set -Eeuo pipefail
+
+SCRIPT_PATH="$(readlink -f "${BASH_SOURCE[0]}")"
+SCRIPT_NAME="${SCRIPT_PATH##*/}"
+PROJECT_DIR="$(dirname "${SCRIPT_PATH}")"
+DOTFILES_DIR="$(cd "${PROJECT_DIR}/../.." && pwd)"
+LOCKFILE="${PROJECT_DIR}/skills-lock.json"
+CANONICAL_DIR="${PROJECT_DIR}/.agents/skills"
+STATE_HELPER="${PROJECT_DIR}/skills-state.ts"
+
+# Pinned skills CLI. Restoration is experimental upstream: re-test
+# experimental_install, update -p, and the hash in skills-state.ts before you
+# change this version.
+SKILLS_CLI_VERSION='1.7.6'
+SKILLS_CLI_PACKAGE="skills@${SKILLS_CLI_VERSION}"
+
+# Every tracked skill gets one symbolic link in each of these directories.
+AGENT_TARGETS=(
+  "${HOME}/.claude/skills"
+  "${HOME}/.codex/skills"
+)
+
+# Directories where an agent can also find a skill. A tracked skill that is
+# also installed here, outside this manager, is reported by --check.
+SHADOW_ROOTS=(
+  "${HOME}/.agents/skills"
+)
+
+# Directories that belong in this folder. --check reports any other
+# directory, for example one that the skills CLI created for another agent.
+PROJECT_SUBDIRS=(
+  .agents
+  tests
+)
+
+LOG_DIR="${HOME}/.logs/agent-skills"
+LOCK_FILE="${XDG_STATE_HOME:-${HOME}/.local/state}/dotfiles/agent-skills.lock"
+
+EXIT_FAILURE=1
+EXIT_USAGE=2
+EXIT_DEPENDENCY=3
+
+ACTION=''
+DRY_RUN='false'
+ASSUME_YES='false'
+STRICT='false'
+FORCE='false'
+QUIET='false'
+ERRORS=0
+WARNINGS=0
+NPX_BIN=''
+NODE_BIN=''
+CANONICAL_REAL=''
+WORK_DIR=''
+
+declare -a LOCKED_NAMES=()
+declare -a UNLOCKED_NAMES=()
+declare -A LOCKED_STATE=()
+declare -A LOCKED_SOURCE=()
+
+print_help() {
+  cat <<EOF
+Usage: ${SCRIPT_NAME} <operation> [options]
+
+Restore the third-party agent skills recorded in skills-lock.json and link
+them into the global agent skill directories:
+$(printf '  %s\n' "${AGENT_TARGETS[@]}")
+Skills are restored with the pinned skills CLI (${SKILLS_CLI_PACKAGE}) into
+  ${CANONICAL_DIR}
+
+Operations (choose one):
+  --install    Restore missing skills from the lockfile (never updates them),
+               verify their content hashes, and create or repair the managed
+               links. Network access is needed only for missing skills.
+  --check      Verify the lockfile, the installed skills, and the links.
+               Read-only and offline.
+  --update     Update the tracked skills in a temporary copy, show the
+               lockfile diff, and apply it after confirmation.
+  --list       Print a table of managed, missing, modified, and unmanaged
+               skills with their link state per agent.
+  --prune      Remove managed links and restored skill directories that are
+               no longer in the lockfile. Needs confirmation or --yes.
+
+Options:
+  --dry-run    Show what --install, --update, or --prune would change,
+               without changing anything. --update --dry-run reports
+               available updates.
+  --yes        Do not ask for confirmation (--update, --prune).
+  --strict     Exit with status 1 on warnings too, for example orphaned
+               links, untracked skill directories, or an uncommitted lockfile.
+  --force      --install: also reinstall skills whose content differs from
+               the lockfile. The local copy is restored if this fails.
+  --verbose    Show every operation and the skills CLI output.
+  --quiet      Show only warnings and errors. Disables --verbose.
+  --help       Show this help.
+
+Ownership:
+  A global entry is managed only when it is a symbolic link into
+  ${CANONICAL_DIR}.
+  Unmanaged directories, files, and links (for example from skillz) are never
+  changed. A name conflict is an error and nothing is overwritten.
+
+Exit status:
+  0  Success.
+  1  A problem was found or an operation failed (see the messages).
+  2  Usage error.
+  3  A required tool (Node.js, npx) is missing, or confirmation was needed
+     but no terminal was available (use --yes).
+
+Log:
+  ${LOG_DIR}/YYYYMMDD-HHMMSS.log
+
+Examples:
+  ${SCRIPT_NAME} --install --yes
+  ${SCRIPT_NAME} --install --dry-run
+  ${SCRIPT_NAME} --check --strict
+  ${SCRIPT_NAME} --list
+  ${SCRIPT_NAME} --update --dry-run
+  ${SCRIPT_NAME} --update
+  ${SCRIPT_NAME} --prune --dry-run
+EOF
+}
+
+usage_error() {
+  printf '%s: %s\n\n' "${SCRIPT_NAME}" "${1}" >&2
+  print_help >&2
+  exit "${EXIT_USAGE}"
+}
+
+load_libraries() {
+  local lib_dir="${DOTFILES_DIR}/bashrc/lib/00-core"
+  local lib=''
+
+  for lib in dnb-core-colors dnb-core-log dnb-core-ui-theme dnb-core-ui; do
+    if [[ ! -r "${lib_dir}/${lib}.bash" ]]; then
+      printf '%s: missing library %s/%s.bash\n' "${SCRIPT_NAME}" "${lib_dir}" "${lib}" >&2
+      exit "${EXIT_DEPENDENCY}"
+    fi
+    # shellcheck source=/dev/null
+    source "${lib_dir}/${lib}.bash"
+  done
+
+  mkdir -p "${LOG_DIR}"
+  DNB_SETUP_LOG_FILE="${LOG_DIR}/$(date +%Y%m%d-%H%M%S).log"
+  export DNB_SETUP_LOG_FILE
+}
+
+verbose() {
+  if [[ "${DNB_VERBOSE:-}" == '1' ]]; then
+    dnb_log info "${1}"
+  fi
+}
+
+report_error() {
+  ERRORS=$((ERRORS + 1))
+  dnb_ui_error "${1}"
+}
+
+report_warning() {
+  WARNINGS=$((WARNINGS + 1))
+  dnb_ui_warning "${1}"
+}
+
+cleanup() {
+  if [[ -n "${WORK_DIR}" && -d "${WORK_DIR}" ]]; then
+    rm -rf -- "${WORK_DIR}"
+  fi
+}
+
+# Find node and npx. PATH comes first (mise, nvm, or system Node). The stable
+# ~/.local/bin/node-cron runtime from scripts/node-cron.sh is the fallback for
+# shells without Node in PATH.
+require_runtime() {
+  local cron_node="${HOME}/.local/bin/node-cron"
+  local node_dir=''
+
+  NODE_BIN="$(command -v node 2>/dev/null || printf '')"
+  NPX_BIN="$(command -v npx 2>/dev/null || printf '')"
+
+  if [[ -z "${NODE_BIN}" || -z "${NPX_BIN}" ]] && [[ -x "${cron_node}" ]]; then
+    node_dir="$(dirname "$(readlink -f "${cron_node}")")"
+    if [[ -x "${node_dir}/node" && -x "${node_dir}/npx" ]]; then
+      NODE_BIN="${node_dir}/node"
+      NPX_BIN="${node_dir}/npx"
+      PATH="${node_dir}:${PATH}"
+      export PATH
+      verbose "Using the node-cron runtime in ${node_dir}"
+    fi
+  fi
+
+  if [[ -z "${NODE_BIN}" || -z "${NPX_BIN}" ]]; then
+    dnb_ui_error "Node.js and npx are required, but were not found in PATH or through ${cron_node}."
+    dnb_ui_error "Install Node.js (mise or NVM), or run: /bin/bash ${DOTFILES_DIR}/scripts/node-cron.sh --refresh"
+    exit "${EXIT_DEPENDENCY}"
+  fi
+  verbose "node: ${NODE_BIN} ($("${NODE_BIN}" --version))"
+  verbose "npx: ${NPX_BIN}"
+}
+
+# Serialise the operations that change files.
+acquire_lock() {
+  if ! command -v flock >/dev/null 2>&1; then
+    report_warning 'flock is not available; concurrent runs are not prevented.'
+    return 0
+  fi
+  mkdir -p "$(dirname "${LOCK_FILE}")"
+  exec 9>"${LOCK_FILE}"
+  if ! flock --nonblock 9; then
+    dnb_ui_error "Another ${SCRIPT_NAME} run holds ${LOCK_FILE}. Wait for it to finish."
+    exit "${EXIT_FAILURE}"
+  fi
+}
+
+# Run the pinned skills CLI in DIRECTORY. Output goes to the log file (and to
+# stderr with --verbose). Telemetry is disabled; stdin is closed, so the CLI
+# cannot prompt.
+run_skills_cli() {
+  local directory="${1}"
+  local status=0 output='' line=''
+  shift
+
+  output="$(mktemp)"
+  verbose "Running in ${directory}: npx ${SKILLS_CLI_PACKAGE} $*"
+  printf '\n$ (cd %s && npx --yes %s %s)\n' "${directory}" "${SKILLS_CLI_PACKAGE}" "$*" >>"${DNB_SETUP_LOG_FILE}"
+  (cd "${directory}" && DISABLE_TELEMETRY=1 DO_NOT_TRACK=1 "${NPX_BIN}" --yes "${SKILLS_CLI_PACKAGE}" "$@" </dev/null 2>&1) |
+    sed -u 's/\x1b\[[0-9;?]*[A-Za-z]//g' >"${output}" || status=$?
+  cat -- "${output}" >>"${DNB_SETUP_LOG_FILE}"
+  if [[ "${DNB_VERBOSE:-}" == '1' ]]; then
+    cat -- "${output}" >&2
+  elif ((status != 0)); then
+    # Show the CLI's own error lines, so the cause is visible without the log.
+    while IFS= read -r line; do
+      dnb_ui_error "skills CLI: ${line}"
+    done < <(grep -E -i 'failed|cannot|error|not up to date|changed since' -- "${output}" | sed -E 's/^[^[:alnum:]]+//' | head -n 5)
+  fi
+  rm -f -- "${output}"
+  return "${status}"
+}
+
+# Fill LOCKED_* and UNLOCKED_NAMES from the lockfile and the skill directory
+# in SKILLS_DIR (default: the canonical directory).
+read_state() {
+  local lockfile="${1:-${LOCKFILE}}"
+  local skills_dir="${2:-${CANONICAL_DIR}}"
+  local output='' kind='' name='' source='' state=''
+
+  LOCKED_NAMES=()
+  UNLOCKED_NAMES=()
+  LOCKED_STATE=()
+  LOCKED_SOURCE=()
+
+  if [[ ! -f "${lockfile}" ]]; then
+    dnb_ui_error "Lockfile not found: ${lockfile}"
+    dnb_ui_error "Add a skill first: cd ${PROJECT_DIR} && npx ${SKILLS_CLI_PACKAGE} add <source> --skill <name> --agent codex"
+    exit "${EXIT_FAILURE}"
+  fi
+  if [[ ! -f "${STATE_HELPER}" ]]; then
+    dnb_ui_error "Helper not found: ${STATE_HELPER}"
+    exit "${EXIT_FAILURE}"
+  fi
+
+  if ! output="$("${NODE_BIN}" "${STATE_HELPER}" --lockfile "${lockfile}" --skills-dir "${skills_dir}")"; then
+    dnb_ui_error "Cannot read ${lockfile}. See the message above."
+    exit "${EXIT_FAILURE}"
+  fi
+
+  while IFS=$'\t' read -r kind name source state; do
+    [[ -n "${kind}" ]] || continue
+    case "${kind}" in
+      locked)
+        LOCKED_NAMES+=("${name}")
+        LOCKED_STATE["${name}"]="${state}"
+        LOCKED_SOURCE["${name}"]="${source}"
+        ;;
+      unlocked) UNLOCKED_NAMES+=("${name}") ;;
+      *)
+        dnb_ui_error "Unexpected helper output: ${kind}"
+        exit "${EXIT_FAILURE}"
+        ;;
+    esac
+  done <<<"${output}"
+  verbose "Lockfile: ${#LOCKED_NAMES[@]} skill(s); ${#UNLOCKED_NAMES[@]} untracked directory(ies) in ${skills_dir}"
+}
+
+is_locked() {
+  [[ -n "${LOCKED_STATE[${1}]+set}" ]]
+}
+
+# Print the state of ROOT/NAME:
+#   absent        nothing there
+#   ok            managed link to the canonical skill
+#   broken        managed link whose target does not exist
+#   wrong         managed link to another canonical skill
+#   foreign-link  link that points somewhere else (unmanaged)
+#   foreign-dir   real directory (unmanaged)
+#   foreign-file  other file (unmanaged)
+link_state() {
+  local path="${1}/${2}"
+  local target='' parent=''
+
+  if [[ -L "${path}" ]]; then
+    target="$(readlink -- "${path}")"
+    [[ "${target}" == /* ]] || target="${1}/${target}"
+    while [[ "${target}" == */ ]]; do
+      target="${target%/}"
+    done
+    # Every managed target ends in .agents/skills/<name>. Skip the realpath
+    # call for all other links (for example the skillz links).
+    if [[ "${target}" != *.agents/skills/* ]]; then
+      printf 'foreign-link'
+      return 0
+    fi
+    parent="$(realpath -m -- "${target%/*}")"
+    if [[ "${parent}" != "${CANONICAL_REAL}" ]]; then
+      printf 'foreign-link'
+    elif [[ "${target##*/}" != "${2}" ]]; then
+      printf 'wrong'
+    elif [[ -d "${path}" ]]; then
+      printf 'ok'
+    else
+      printf 'broken'
+    fi
+  elif [[ -d "${path}" ]]; then
+    printf 'foreign-dir'
+  elif [[ -e "${path}" ]]; then
+    printf 'foreign-file'
+  else
+    printf 'absent'
+  fi
+}
+
+is_managed_link() {
+  case "$(link_state "${1}" "${2}")" in
+    ok | broken | wrong) return 0 ;;
+    *) return 1 ;;
+  esac
+}
+
+# Print the names of the managed links in ROOT that are not in the lockfile,
+# one per line. One find call reads all link targets; only links whose target
+# can be managed get the full check.
+orphaned_links() {
+  local root="${1}"
+  local name='' target=''
+
+  [[ -d "${root}" ]] || return 0
+  while IFS= read -r -d '' name && IFS= read -r -d '' target; do
+    is_locked "${name}" && continue
+    [[ "${target}" == *.agents/skills/* ]] || continue
+    if is_managed_link "${root}" "${name}"; then
+      printf '%s\n' "${name}"
+    fi
+  done < <(find "${root}" -mindepth 1 -maxdepth 1 -type l -printf '%f\0%l\0')
+}
+
+report_orphans() {
+  local root="${1}"
+  local name=''
+
+  while IFS= read -r name; do
+    report_warning "Orphaned managed link ${root}/${name}: '${name}' is not in the lockfile. Run --prune to remove it."
+  done < <(orphaned_links "${root}")
+}
+
+# Create or replace a link without a window where the name is missing.
+place_link() {
+  local path="${1}"
+  local target="${2}"
+  local temporary="${path}.install-skills.$$"
+
+  ln -s -- "${target}" "${temporary}"
+  mv -T -f -- "${temporary}" "${path}"
+}
+
+conflict_message() {
+  local path="${1}"
+  local state="${2}"
+
+  case "${state}" in
+    foreign-link) printf '%s is an unmanaged link to %s' "${path}" "$(readlink -- "${path}")" ;;
+    foreign-dir) printf '%s is an unmanaged directory' "${path}" ;;
+    *) printf '%s is an unmanaged file' "${path}" ;;
+  esac
+}
+
+# Make every verified skill available in every agent target. Never changes
+# unmanaged entries. Reports orphaned managed links.
+sync_links() {
+  local root='' name='' state='' path=''
+  local created=0 repaired=0 unchanged=0
+
+  for root in "${AGENT_TARGETS[@]}"; do
+    if [[ -e "${root}" && ! -d "${root}" ]]; then
+      report_error "Agent skill directory ${root} exists but is not a directory. Skipped."
+      continue
+    fi
+    if [[ ! -d "${root}" ]]; then
+      if [[ "${DRY_RUN}" == 'true' ]]; then
+        dnb_ui_info "Would create ${root}"
+      else
+        mkdir -p -- "${root}"
+        verbose "Created ${root}"
+      fi
+    fi
+
+    for name in "${LOCKED_NAMES[@]}"; do
+      path="${root}/${name}"
+      if [[ "${LOCKED_STATE[${name}]}" != 'ok' ]]; then
+        verbose "Not linking ${name}: content is ${LOCKED_STATE[${name}]}"
+        continue
+      fi
+      state="$(link_state "${root}" "${name}")"
+      case "${state}" in
+        ok)
+          unchanged=$((unchanged + 1))
+          ;;
+        absent | broken | wrong)
+          if [[ "${DRY_RUN}" == 'true' ]]; then
+            dnb_ui_info "Would link ${path} -> ${CANONICAL_DIR}/${name}"
+          else
+            place_link "${path}" "${CANONICAL_DIR}/${name}"
+            verbose "Linked ${path} -> ${CANONICAL_DIR}/${name}"
+          fi
+          if [[ "${state}" == 'absent' ]]; then
+            created=$((created + 1))
+          else
+            repaired=$((repaired + 1))
+          fi
+          ;;
+        *)
+          report_error "Conflict: $(conflict_message "${path}" "${state}"). Not overwritten. Remove or rename it, or remove '${name}' from the lockfile."
+          ;;
+      esac
+    done
+
+    report_orphans "${root}"
+  done
+
+  if [[ "${DRY_RUN}" == 'true' ]]; then
+    dnb_ui_info "Links: ${created} to create, ${repaired} to repair, ${unchanged} unchanged."
+  else
+    dnb_ui_success "Links: ${created} created, ${repaired} repaired, ${unchanged} unchanged."
+  fi
+}
+
+report_unlocked() {
+  local name=''
+
+  for name in "${UNLOCKED_NAMES[@]}"; do
+    report_warning "Untracked directory ${CANONICAL_DIR}/${name}: not in the lockfile. Run --prune to remove it."
+  done
+}
+
+# Problems that block a skill from being linked.
+report_content_problems() {
+  local name=''
+
+  for name in "${LOCKED_NAMES[@]}"; do
+    case "${LOCKED_STATE[${name}]}" in
+      ok) ;;
+      missing) report_error "Skill '${name}' is missing from ${CANONICAL_DIR}. Run --install." ;;
+      modified) report_error "Skill '${name}' differs from its lockfile hash. Run --install --force to restore the recorded content." ;;
+      *) report_error "${CANONICAL_DIR}/${name} is not a directory. Remove it, then run --install." ;;
+    esac
+  done
+}
+
+action_install() {
+  local name='' backup_dir='' lock_copy='' restore_status=0
+  local -a to_restore=() to_force=()
+
+  require_runtime
+  [[ "${DRY_RUN}" == 'true' ]] || acquire_lock
+  read_state
+
+  for name in "${LOCKED_NAMES[@]}"; do
+    case "${LOCKED_STATE[${name}]}" in
+      missing) to_restore+=("${name}") ;;
+      modified)
+        if [[ "${FORCE}" == 'true' ]]; then
+          to_force+=("${name}")
+        fi
+        ;;
+      *) ;;
+    esac
+  done
+
+  if ((${#LOCKED_NAMES[@]} == 0)); then
+    dnb_ui_info 'The lockfile tracks no skills.'
+  elif ((${#to_restore[@]} + ${#to_force[@]} == 0)); then
+    dnb_ui_info "All ${#LOCKED_NAMES[@]} tracked skill(s) are present; nothing to restore."
+  elif [[ "${DRY_RUN}" == 'true' ]]; then
+    for name in "${to_restore[@]}"; do
+      dnb_ui_info "Would restore '${name}' from ${LOCKED_SOURCE[${name}]}"
+    done
+    for name in "${to_force[@]}"; do
+      dnb_ui_info "Would reinstall modified '${name}' from ${LOCKED_SOURCE[${name}]}"
+    done
+  else
+    mkdir -p -- "${CANONICAL_DIR}"
+    if ((${#to_force[@]} > 0)); then
+      backup_dir="$(mktemp -d "${PROJECT_DIR}/.agents/.restore-backup.XXXXXX")"
+      for name in "${to_force[@]}"; do
+        mv -T -- "${CANONICAL_DIR}/${name}" "${backup_dir}/${name}"
+      done
+    fi
+
+    dnb_ui_info "Restoring $((${#to_restore[@]} + ${#to_force[@]})) skill(s) with ${SKILLS_CLI_PACKAGE}..."
+    WORK_DIR="$(mktemp -d)"
+    lock_copy="${WORK_DIR}/skills-lock.json"
+    cp -- "${LOCKFILE}" "${lock_copy}"
+    run_skills_cli "${PROJECT_DIR}" experimental_install --frozen-lockfile || restore_status=$?
+
+    # --frozen-lockfile must never change the lockfile. Guard against CLI
+    # regressions: put the original bytes back.
+    if ! cmp -s -- "${lock_copy}" "${LOCKFILE}"; then
+      cp -- "${lock_copy}" "${LOCKFILE}"
+      report_error 'The skills CLI changed the lockfile during a frozen restore. The original lockfile was put back.'
+      restore_status=1
+    fi
+
+    if [[ -n "${backup_dir}" ]]; then
+      for name in "${to_force[@]}"; do
+        if ((restore_status != 0)) || [[ ! -f "${CANONICAL_DIR}/${name}/SKILL.md" ]]; then
+          rm -rf -- "${CANONICAL_DIR:?}/${name}"
+          mv -T -- "${backup_dir}/${name}" "${CANONICAL_DIR}/${name}"
+          dnb_ui_warning "Kept the local copy of '${name}' because the reinstall failed."
+        fi
+      done
+      rm -rf -- "${backup_dir}"
+    fi
+
+    if ((restore_status != 0)); then
+      report_error "The restore failed (exit ${restore_status}). Skills that were already installed and the lockfile were not changed. Check network access and the sources. A hash mismatch means that the source changed: run --update. Log: ${DNB_SETUP_LOG_FILE}"
+    fi
+    read_state
+  fi
+
+  if [[ "${DRY_RUN}" != 'true' ]]; then
+    report_content_problems
+  fi
+  report_unlocked
+  sync_links
+}
+
+# Report project directories that the skills CLI created for other agents.
+check_project_dirs() {
+  local entry='' expected='' known=''
+
+  for entry in "${PROJECT_DIR}"/* "${PROJECT_DIR}"/.[!.]*; do
+    [[ -d "${entry}" ]] || continue
+    known='false'
+    for expected in "${PROJECT_SUBDIRS[@]}"; do
+      [[ "${entry}" == "${PROJECT_DIR}/${expected}" ]] && known='true'
+    done
+    [[ "${known}" == 'true' ]] && continue
+    report_warning "Unexpected directory ${entry}: the skills CLI installs only into .agents/skills here. Review and remove it."
+  done
+}
+
+check_lockfile_git() {
+  local relative="${LOCKFILE#"${DOTFILES_DIR}/"}"
+
+  command -v git >/dev/null 2>&1 || return 0
+  git -C "${DOTFILES_DIR}" rev-parse --is-inside-work-tree >/dev/null 2>&1 || return 0
+
+  if ! git -C "${DOTFILES_DIR}" ls-files --error-unmatch -- "${relative}" >/dev/null 2>&1; then
+    report_warning "${relative} is not tracked by Git yet. Commit it."
+  elif ! git -C "${DOTFILES_DIR}" diff --quiet HEAD -- "${relative}"; then
+    report_warning "${relative} has uncommitted changes. Review them with: git -C ${DOTFILES_DIR} diff -- ${relative}"
+  fi
+}
+
+action_check() {
+  local root='' name='' state=''
+
+  require_runtime
+  read_state
+  verbose "Pinned skills CLI: ${SKILLS_CLI_PACKAGE}"
+
+  report_content_problems
+  report_unlocked
+
+  for root in "${AGENT_TARGETS[@]}"; do
+    if [[ ! -d "${root}" ]]; then
+      if ((${#LOCKED_NAMES[@]} > 0)); then
+        report_error "Agent skill directory ${root} does not exist. Run --install."
+      fi
+      continue
+    fi
+    for name in "${LOCKED_NAMES[@]}"; do
+      state="$(link_state "${root}" "${name}")"
+      case "${state}" in
+        ok) verbose "ok ${root}/${name}" ;;
+        absent) report_error "Missing link ${root}/${name}. Run --install." ;;
+        broken) report_error "Broken managed link ${root}/${name}. Run --install to repair it." ;;
+        wrong) report_error "Managed link ${root}/${name} points to $(readlink -- "${root}/${name}"). Run --install to repair it." ;;
+        *) report_error "Conflict: $(conflict_message "${root}/${name}" "${state}")." ;;
+      esac
+    done
+    report_orphans "${root}"
+  done
+
+  for root in "${SHADOW_ROOTS[@]}"; do
+    for name in "${LOCKED_NAMES[@]}"; do
+      if [[ -e "${root}/${name}" || -L "${root}/${name}" ]] && ! is_managed_link "${root}" "${name}"; then
+        report_warning "'${name}' is also installed outside this manager at ${root}/${name}. Agents can load it twice. Review and remove it (for a skills CLI install: npx ${SKILLS_CLI_PACKAGE} remove -g ${name})."
+      fi
+    done
+  done
+
+  check_project_dirs
+  check_lockfile_git
+
+  if ((ERRORS == 0 && WARNINGS == 0)); then
+    dnb_ui_success "All ${#LOCKED_NAMES[@]} tracked skill(s) are installed, verified, and linked."
+  fi
+}
+
+target_label() {
+  local label="${1%/skills}"
+
+  label="${label##*/}"
+  printf '%s' "${label#.}"
+}
+
+# Print one table row: NAME STATUS SOURCE, then the link state per target.
+list_row() {
+  local name="${1}"
+  local root=''
+  local -a cells=("${name}" "${2}" "${3}")
+
+  for root in "${AGENT_TARGETS[@]}"; do
+    cells+=("$(link_state "${root}" "${name}")")
+  done
+  (
+    IFS=$'\t'
+    printf '%s\n' "${cells[*]}"
+  )
+}
+
+action_list() {
+  local root='' name='' entry='' state='' table=''
+  local -a header=(NAME STATUS SOURCE)
+  local -A seen=() orphaned=()
+
+  require_runtime
+  read_state
+  WORK_DIR="$(mktemp -d)"
+  table="${WORK_DIR}/skills.tsv"
+
+  for root in "${AGENT_TARGETS[@]}"; do
+    header+=("$(target_label "${root}")")
+  done
+  (
+    IFS=$'\t'
+    printf '%s\n' "${header[*]}"
+  ) >"${table}"
+
+  for name in "${LOCKED_NAMES[@]}"; do
+    seen["${name}"]=1
+    case "${LOCKED_STATE[${name}]}" in
+      ok) state='managed' ;;
+      *) state="${LOCKED_STATE[${name}]}" ;;
+    esac
+    list_row "${name}" "${state}" "${LOCKED_SOURCE[${name}]}" >>"${table}"
+  done
+
+  for name in "${UNLOCKED_NAMES[@]}"; do
+    seen["${name}"]=1
+    list_row "${name}" 'untracked' '-' >>"${table}"
+  done
+
+  for root in "${AGENT_TARGETS[@]}"; do
+    while IFS= read -r name; do
+      orphaned["${name}"]=1
+    done < <(orphaned_links "${root}")
+  done
+
+  for root in "${AGENT_TARGETS[@]}"; do
+    [[ -d "${root}" ]] || continue
+    for entry in "${root}"/* "${root}"/.[!.]*; do
+      [[ -e "${entry}" || -L "${entry}" ]] || continue
+      name="${entry##*/}"
+      [[ -z "${seen[${name}]+set}" ]] || continue
+      seen["${name}"]=1
+      if [[ -n "${orphaned[${name}]+set}" ]]; then
+        state='orphaned'
+      else
+        state='unmanaged'
+      fi
+      list_row "${name}" "${state}" '-' >>"${table}"
+    done
+  done
+
+  dnb_ui_table --input "${table}"
+}
+
+confirm_or_exit() {
+  local prompt="${1}"
+  local status=0
+
+  [[ "${ASSUME_YES}" == 'true' ]] && return 0
+  dnb_ui_confirm --prompt "${prompt}" || status=$?
+  case "${status}" in
+    0) return 0 ;;
+    3)
+      dnb_ui_error 'Confirmation needed, but no terminal is available. Run again with --yes.'
+      exit "${EXIT_DEPENDENCY}"
+      ;;
+    *)
+      dnb_ui_info 'Cancelled. Nothing was changed.'
+      exit 0
+      ;;
+  esac
+}
+
+action_update() {
+  local stage='' name='' status=0 relative="${LOCKFILE#"${DOTFILES_DIR}/"}"
+  local -a changed=() removed=()
+
+  require_runtime
+  [[ "${DRY_RUN}" == 'true' ]] || acquire_lock
+  read_state
+
+  if ((${#LOCKED_NAMES[@]} == 0)); then
+    dnb_ui_info 'The lockfile tracks no skills; nothing to update.'
+    return 0
+  fi
+  if [[ "${DRY_RUN}" != 'true' ]] && git -C "${DOTFILES_DIR}" rev-parse --is-inside-work-tree >/dev/null 2>&1 &&
+    ! git -C "${DOTFILES_DIR}" diff --quiet HEAD -- "${relative}" 2>/dev/null; then
+    dnb_ui_error "${relative} has uncommitted changes. Commit or discard them first, so that the update diff stays reviewable."
+    exit "${EXIT_FAILURE}"
+  fi
+
+  # Update a copy: the skills CLI can also write directories for other agents
+  # (for example .claude/ or agent/) into the project during an update.
+  WORK_DIR="$(mktemp -d)"
+  stage="${WORK_DIR}/project"
+  mkdir -p "${stage}/.agents"
+  cp -- "${LOCKFILE}" "${stage}/skills-lock.json"
+  if [[ -d "${CANONICAL_DIR}" ]]; then
+    cp -a -- "${CANONICAL_DIR}" "${stage}/.agents/skills"
+  fi
+
+  dnb_ui_info "Checking ${#LOCKED_NAMES[@]} tracked skill(s) for updates with ${SKILLS_CLI_PACKAGE}..."
+  run_skills_cli "${stage}" update --project --yes || status=$?
+  if ((status != 0)); then
+    report_error "The skills CLI update failed (exit ${status}). Nothing was changed. See ${DNB_SETUP_LOG_FILE}"
+    return 0
+  fi
+
+  if cmp -s -- "${LOCKFILE}" "${stage}/skills-lock.json"; then
+    dnb_ui_success 'All tracked skills are up to date.'
+    return 0
+  fi
+
+  # diff exits 1 when the files differ, which cmp has already established.
+  status=0
+  diff -u --label "a/${relative}" --label "b/${relative}" -- "${LOCKFILE}" "${stage}/skills-lock.json" >"${WORK_DIR}/lockfile.diff" || status=$?
+  if ((status > 1)); then
+    report_error "Cannot compare the lockfiles (diff exit ${status}). Nothing was changed."
+    return 0
+  fi
+  dnb_ui_info 'Updates are available. Lockfile changes:'
+  dnb_ui_diff --file "${WORK_DIR}/lockfile.diff"
+
+  # Verify the staged content against the new lockfile before using it.
+  read_state "${stage}/skills-lock.json" "${stage}/.agents/skills"
+  for name in "${LOCKED_NAMES[@]}"; do
+    if [[ "${LOCKED_STATE[${name}]}" != 'ok' ]]; then
+      report_error "The updated copy of '${name}' does not match the new lockfile (${LOCKED_STATE[${name}]}). Nothing was changed."
+    fi
+  done
+  ((ERRORS == 0)) || return 0
+
+  # Compare the new lockfile with the current content: these skills change.
+  read_state "${stage}/skills-lock.json" "${CANONICAL_DIR}"
+  for name in "${LOCKED_NAMES[@]}"; do
+    [[ "${LOCKED_STATE[${name}]}" == 'ok' ]] || changed+=("${name}")
+  done
+  for name in "${UNLOCKED_NAMES[@]}"; do
+    removed+=("${name}")
+  done
+
+  if [[ "${DRY_RUN}" == 'true' ]]; then
+    for name in "${changed[@]}"; do
+      dnb_ui_info "Would update '${name}' from ${LOCKED_SOURCE[${name}]}"
+    done
+    for name in "${removed[@]}"; do
+      dnb_ui_info "Would stop tracking '${name}' (its files stay until --prune)"
+    done
+    return 0
+  fi
+
+  confirm_or_exit "Apply these updates to ${relative}?"
+
+  for name in "${changed[@]}"; do
+    rm -rf -- "${CANONICAL_DIR}/.update-${name}.$$"
+    cp -a -- "${stage}/.agents/skills/${name}" "${CANONICAL_DIR}/.update-${name}.$$"
+    rm -rf -- "${CANONICAL_DIR:?}/${name}"
+    mv -T -- "${CANONICAL_DIR}/.update-${name}.$$" "${CANONICAL_DIR}/${name}"
+    verbose "Updated ${CANONICAL_DIR}/${name}"
+  done
+  cp -- "${stage}/skills-lock.json" "${LOCKFILE}.update.$$"
+  mv -f -- "${LOCKFILE}.update.$$" "${LOCKFILE}"
+
+  read_state
+  report_content_problems
+  sync_links
+  for name in "${removed[@]}"; do
+    report_warning "'${name}' is no longer in the lockfile. Run --prune to remove its files and links."
+  done
+  dnb_ui_success "Updated ${#changed[@]} skill(s). Review and commit ${relative}: git -C ${DOTFILES_DIR} diff -- ${relative}"
+}
+
+action_prune() {
+  local root='' name='' entry=''
+  local -a links=() dirs=()
+
+  require_runtime
+  [[ "${DRY_RUN}" == 'true' ]] || acquire_lock
+  read_state
+
+  for root in "${AGENT_TARGETS[@]}"; do
+    while IFS= read -r name; do
+      links+=("${root}/${name}")
+    done < <(orphaned_links "${root}")
+  done
+  for name in "${UNLOCKED_NAMES[@]}"; do
+    dirs+=("${CANONICAL_DIR}/${name}")
+  done
+
+  if ((${#links[@]} + ${#dirs[@]} == 0)); then
+    dnb_ui_success 'Nothing to prune.'
+    return 0
+  fi
+  for entry in "${links[@]}"; do
+    dnb_ui_info "$([[ "${DRY_RUN}" == 'true' ]] && printf 'Would remove' || printf 'Remove') managed link ${entry}"
+  done
+  for entry in "${dirs[@]}"; do
+    dnb_ui_info "$([[ "${DRY_RUN}" == 'true' ]] && printf 'Would remove' || printf 'Remove') untracked skill ${entry}"
+  done
+  [[ "${DRY_RUN}" != 'true' ]] || return 0
+
+  confirm_or_exit "Remove ${#links[@]} link(s) and ${#dirs[@]} skill directory(ies)?"
+  for entry in "${links[@]}"; do
+    rm -f -- "${entry}"
+  done
+  for entry in "${dirs[@]}"; do
+    rm -rf -- "${entry}"
+  done
+  dnb_ui_success "Removed ${#links[@]} link(s) and ${#dirs[@]} skill directory(ies)."
+}
+
+set_action() {
+  if [[ -n "${ACTION}" && "${ACTION}" != "${1}" ]]; then
+    usage_error "choose only one operation (--${ACTION} and --${1} given)."
+  fi
+  ACTION="${1}"
+}
+
+main() {
+  if (($# == 0)); then
+    print_help
+    exit 0
+  fi
+
+  while (($# > 0)); do
+    case "${1}" in
+      --help | -h)
+        print_help
+        exit 0
+        ;;
+      --install) set_action install ;;
+      --check) set_action check ;;
+      --update) set_action update ;;
+      --list) set_action list ;;
+      --prune) set_action prune ;;
+      --dry-run) DRY_RUN='true' ;;
+      --yes) ASSUME_YES='true' ;;
+      --strict) STRICT='true' ;;
+      --force) FORCE='true' ;;
+      --verbose) export DNB_VERBOSE='1' ;;
+      --quiet) QUIET='true' ;;
+      *) usage_error "unknown option: ${1}" ;;
+    esac
+    shift
+  done
+
+  [[ -n "${ACTION}" ]] || usage_error 'choose an operation: --install, --check, --update, --list, or --prune.'
+  if [[ "${FORCE}" == 'true' && "${ACTION}" != 'install' ]]; then
+    usage_error '--force is only valid with --install.'
+  fi
+  if [[ "${QUIET}" == 'true' ]]; then
+    unset DNB_VERBOSE
+    export DNB_UI_QUIET='1'
+  fi
+
+  load_libraries
+  trap cleanup EXIT
+  CANONICAL_REAL="$(realpath -m -- "${CANONICAL_DIR}")"
+  verbose "${SCRIPT_NAME} --${ACTION} (dry run: ${DRY_RUN}); log: ${DNB_SETUP_LOG_FILE}"
+
+  "action_${ACTION}"
+
+  if ((ERRORS > 0)); then
+    dnb_ui_error "${ERRORS} error(s), ${WARNINGS} warning(s). Log: ${DNB_SETUP_LOG_FILE}"
+    exit "${EXIT_FAILURE}"
+  fi
+  if [[ "${STRICT}" == 'true' ]] && ((WARNINGS > 0)); then
+    dnb_ui_error "${WARNINGS} warning(s) with --strict. Log: ${DNB_SETUP_LOG_FILE}"
+    exit "${EXIT_FAILURE}"
+  fi
+}
+
+main "$@"
