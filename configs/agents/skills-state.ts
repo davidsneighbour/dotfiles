@@ -13,6 +13,16 @@
  *   locked<TAB>NAME<TAB>SOURCE<TAB>STATE   STATE: ok | missing | modified | not-a-directory
  *   unlocked<TAB>NAME<TAB>-<TAB>-          a directory below --skills-dir without a lockfile entry
  *
+ * With --compare BASE: one record per lockfile entry that differs from BASE.
+ *   added<TAB>NAME | changed<TAB>NAME | removed<TAB>NAME
+ *
+ * With --global-lockfile PATH: the global skills CLI lockfile
+ * (~/.agents/.skill-lock.json, schema version 3, written by `skills add -g`).
+ *   global<TAB>NAME<TAB>SOURCE<TAB>ADD_SOURCE
+ * ADD_SOURCE is the argument for `skills add` that restores the skill on
+ * another workstation, or `-` if there is none (for example a local path).
+ * A missing global lockfile prints nothing.
+ *
  * Exit codes: 0 records printed, 1 invalid lockfile or read error, 2 usage error.
  */
 
@@ -38,6 +48,8 @@ const HASH_PATTERN = /^[0-9a-f]{64}$/;
 
 function usage(): string {
   return `Usage: ${SCRIPT_NAME} --lockfile PATH --skills-dir PATH [--verbose]
+       ${SCRIPT_NAME} --lockfile PATH --compare BASE
+       ${SCRIPT_NAME} --global-lockfile PATH
        ${SCRIPT_NAME} --hash DIRECTORY
        ${SCRIPT_NAME} --help
 
@@ -45,11 +57,15 @@ Validate a skills CLI project lockfile and compare every entry with the
 installed skill directory. Prints tab-separated records on stdout.
 
 Options:
-  --lockfile PATH    The project skills-lock.json.
-  --skills-dir PATH  The canonical skill directory (for example .agents/skills).
-  --hash DIRECTORY   Print the computedHash of one skill directory and exit.
-  --verbose          Print every hashed skill on stderr.
-  --help             Show this help.
+  --lockfile PATH         The project skills-lock.json.
+  --skills-dir PATH       The canonical skill directory (for example .agents/skills).
+  --compare BASE          Print the entries of --lockfile that were added,
+                          changed, or removed compared with the lockfile BASE.
+  --global-lockfile PATH  Print the skills recorded in the global skills CLI
+                          lockfile (~/.agents/.skill-lock.json).
+  --hash DIRECTORY        Print the computedHash of one skill directory and exit.
+  --verbose               Print every hashed skill on stderr.
+  --help                  Show this help.
 `;
 }
 
@@ -165,10 +181,122 @@ function parseLockfile(raw: string, lockfile: string): Map<string, LockEntry> {
   return entries;
 }
 
+async function readText(file: string): Promise<string> {
+  try {
+    return await readFile(file, "utf8");
+  } catch (error) {
+    fail(
+      `cannot read ${file}: ${error instanceof Error ? error.message : String(error)}`,
+    );
+  }
+}
+
+async function compareLockfiles(base: string, lockfile: string): Promise<void> {
+  const before = parseLockfile(await readText(base), base);
+  const after = parseLockfile(await readText(lockfile), lockfile);
+  const lines: string[] = [];
+
+  for (const [name, entry] of [...after].sort(([a], [b]) =>
+    a.localeCompare(b),
+  )) {
+    const old = before.get(name);
+    if (old === undefined) {
+      lines.push(`added\t${name}`);
+    } else if (
+      old.computedHash !== entry.computedHash ||
+      old.source !== entry.source
+    ) {
+      lines.push(`changed\t${name}`);
+    }
+  }
+  for (const name of [...before.keys()].sort((a, b) => a.localeCompare(b))) {
+    if (!after.has(name)) {
+      lines.push(`removed\t${name}`);
+    }
+  }
+  if (lines.length > 0) {
+    process.stdout.write(`${lines.join("\n")}\n`);
+  }
+}
+
+/**
+ * The argument for `skills add` that installs the skill again: the short
+ * source for GitHub, otherwise a remote URL. Local paths cannot be restored
+ * on another workstation.
+ */
+function addSource(entry: Record<string, unknown>): string {
+  const source = entry["source"];
+  const sourceType = entry["sourceType"];
+  const sourceUrl = entry["sourceUrl"];
+  if (sourceType === "github" && typeof source === "string") {
+    return source;
+  }
+  if (typeof sourceUrl === "string" && /^(https?:\/\/|git@)/.test(sourceUrl)) {
+    return sourceUrl;
+  }
+  return "-";
+}
+
+async function listGlobalLockfile(lockfile: string): Promise<void> {
+  let raw: string;
+  try {
+    raw = await readFile(lockfile, "utf8");
+  } catch (error) {
+    if (isMissing(error)) {
+      return;
+    }
+    fail(
+      `cannot read ${lockfile}: ${error instanceof Error ? error.message : String(error)}`,
+    );
+  }
+
+  let data: unknown;
+  try {
+    data = JSON.parse(raw);
+  } catch (error) {
+    fail(
+      `${lockfile} is not valid JSON: ${error instanceof Error ? error.message : String(error)}`,
+    );
+  }
+  if (!isRecord(data) || !isRecord(data["skills"])) {
+    fail(`${lockfile} has no "skills" object.`);
+  }
+  if (data["version"] !== 3) {
+    fail(
+      `${lockfile} has global lockfile version ${String(data["version"])}; only version 3 is supported. Check the pinned skills CLI version.`,
+    );
+  }
+
+  const lines: string[] = [];
+  for (const [name, value] of Object.entries(data["skills"]).sort(([a], [b]) =>
+    a.localeCompare(b),
+  )) {
+    const source = isRecord(value) ? value["source"] : undefined;
+    if (
+      !NAME_PATTERN.test(name) ||
+      !isRecord(value) ||
+      typeof source !== "string"
+    ) {
+      process.stderr.write(
+        `${SCRIPT_NAME}: skipped global entry "${clean(name)}": unsafe name or no source.\n`,
+      );
+      continue;
+    }
+    lines.push(
+      ["global", name, clean(source), clean(addSource(value))].join("\t"),
+    );
+  }
+  if (lines.length > 0) {
+    process.stdout.write(`${lines.join("\n")}\n`);
+  }
+}
+
 async function main(): Promise<void> {
   let lockfile = "";
   let skillsDir = "";
   let hashDir = "";
+  let compareBase = "";
+  let globalLockfile = "";
   let verbose = false;
   const args = process.argv.slice(2);
 
@@ -190,6 +318,18 @@ async function main(): Promise<void> {
       case "--skills-dir":
         skillsDir = args.shift() ?? "";
         break;
+      case "--compare":
+        compareBase = args.shift() ?? "";
+        if (compareBase === "") {
+          fail("--compare needs a lockfile.", 2);
+        }
+        break;
+      case "--global-lockfile":
+        globalLockfile = args.shift() ?? "";
+        if (globalLockfile === "") {
+          fail("--global-lockfile needs a path.", 2);
+        }
+        break;
       case "--verbose":
         verbose = true;
         break;
@@ -208,20 +348,24 @@ async function main(): Promise<void> {
     }
     return;
   }
+  if (globalLockfile !== "") {
+    await listGlobalLockfile(globalLockfile);
+    return;
+  }
+  if (compareBase !== "") {
+    if (lockfile === "") {
+      process.stderr.write(usage());
+      fail("--compare needs --lockfile.", 2);
+    }
+    await compareLockfiles(compareBase, lockfile);
+    return;
+  }
   if (lockfile === "" || skillsDir === "") {
     process.stderr.write(usage());
     fail("--lockfile and --skills-dir are required.", 2);
   }
 
-  let raw: string;
-  try {
-    raw = await readFile(lockfile, "utf8");
-  } catch (error) {
-    fail(
-      `cannot read ${lockfile}: ${error instanceof Error ? error.message : String(error)}`,
-    );
-  }
-  const entries = parseLockfile(raw, lockfile);
+  const entries = parseLockfile(await readText(lockfile), lockfile);
   const lines: string[] = [];
 
   for (const [name, entry] of [...entries].sort(([a], [b]) =>

@@ -7,12 +7,16 @@
 # script then links every verified skill into the global agent skill
 # directories. A global entry is "managed" only when it is a symbolic link into
 # .agents/skills/ of this folder. Everything else is unmanaged and never
-# changed. See README.md in this folder.
+# changed. --add and --adopt also move skills that were installed globally
+# with `skills add -g` into the tracked project. See README.md in this folder.
+# bin/agent-skills exposes this script on PATH.
 
 set -Eeuo pipefail
 
 SCRIPT_PATH="$(readlink -f "${BASH_SOURCE[0]}")"
 SCRIPT_NAME="${SCRIPT_PATH##*/}"
+# The command name on PATH (bin/agent-skills). Used in help and hints.
+COMMAND_NAME='agent-skills'
 PROJECT_DIR="$(dirname "${SCRIPT_PATH}")"
 DOTFILES_DIR="$(cd "${PROJECT_DIR}/../.." && pwd)"
 LOCKFILE="${PROJECT_DIR}/skills-lock.json"
@@ -37,6 +41,11 @@ SHADOW_ROOTS=(
   "${HOME}/.agents/skills"
 )
 
+# Global scope of the skills CLI (`skills add -g`): its skill directory and
+# its lockfile (schema version 3). Verified with the pinned CLI version.
+GLOBAL_SKILLS_DIR="${HOME}/.agents/skills"
+GLOBAL_LOCKFILE="${HOME}/.agents/.skill-lock.json"
+
 # Directories that belong in this folder. --check reports any other
 # directory, for example one that the skills CLI created for another agent.
 PROJECT_SUBDIRS=(
@@ -47,11 +56,15 @@ PROJECT_SUBDIRS=(
 LOG_DIR="${HOME}/.logs/agent-skills"
 LOCK_FILE="${XDG_STATE_HOME:-${HOME}/.local/state}/dotfiles/agent-skills.lock"
 
+# A safe skill directory name (the same rule as skills-state.ts).
+SKILL_NAME_PATTERN='^[A-Za-z0-9][A-Za-z0-9._-]*$'
+
 EXIT_FAILURE=1
 EXIT_USAGE=2
 EXIT_DEPENDENCY=3
 
 ACTION=''
+SOURCE_ARG=''
 DRY_RUN='false'
 ASSUME_YES='false'
 STRICT='false'
@@ -68,10 +81,20 @@ declare -a LOCKED_NAMES=()
 declare -a UNLOCKED_NAMES=()
 declare -A LOCKED_STATE=()
 declare -A LOCKED_SOURCE=()
+declare -a SKILL_ARGS=()
+declare -a GLOBAL_NAMES=()
+declare -A GLOBAL_SOURCE=()
+declare -A GLOBAL_ADD_SOURCE=()
+# Planned by --add and --adopt: the sources to add, the skills per source
+# (space-separated, '*' for all), and the skill names asked for explicitly.
+declare -a ADD_SOURCES=()
+declare -A ADD_SKILLS=()
+declare -a REQUESTED_NAMES=()
 
 print_help() {
   cat <<EOF
-Usage: ${SCRIPT_NAME} <operation> [options]
+Usage: ${COMMAND_NAME} <operation> [options]
+       (the same as ${PROJECT_DIR}/${SCRIPT_NAME})
 
 Restore the third-party agent skills recorded in skills-lock.json and link
 them into the global agent skill directories:
@@ -80,10 +103,20 @@ Skills are restored with the pinned skills CLI (${SKILLS_CLI_PACKAGE}) into
   ${CANONICAL_DIR}
 
 Operations (choose one):
+  --add        Add skills from --source to the lockfile, restore them, and
+               link them. Without --skill, all skills of the source are added.
+               A skill that is also installed globally with the skills CLI
+               (npx skills add -g) is removed from the global scope first.
+               Needs confirmation or --yes.
+  --adopt      Move skills that were installed globally with the skills CLI
+               into the lockfile: remove each global install, add it here, and
+               link it. Without --skill, all global installs are adopted.
+               Needs confirmation or --yes.
   --install    Restore missing skills from the lockfile (never updates them),
                verify their content hashes, and create or repair the managed
                links. Network access is needed only for missing skills.
   --check      Verify the lockfile, the installed skills, and the links.
+               Also reports global skills CLI installs that are not tracked.
                Read-only and offline.
   --update     Update the tracked skills in a temporary copy, show the
                lockfile diff, and apply it after confirmation.
@@ -93,10 +126,15 @@ Operations (choose one):
                no longer in the lockfile. Needs confirmation or --yes.
 
 Options:
-  --dry-run    Show what --install, --update, or --prune would change,
-               without changing anything. --update --dry-run reports
-               available updates.
-  --yes        Do not ask for confirmation (--update, --prune).
+  --source SOURCE
+               --add: the skill source, as for npx skills add, for example
+               owner/repository or https://github.com/owner/repository.
+  --skill NAME --add, --adopt: the skill to add or adopt. Repeat it for more
+               skills. '*' means all skills.
+  --dry-run    Show what --add, --adopt, --install, --update, or --prune
+               would change, without changing anything. --update --dry-run
+               reports available updates.
+  --yes        Do not ask for confirmation (--add, --adopt, --update, --prune).
   --strict     Exit with status 1 on warnings too, for example orphaned
                links, untracked skill directories, or an uncommitted lockfile.
   --force      --install: also reinstall skills whose content differs from
@@ -110,6 +148,9 @@ Ownership:
   ${CANONICAL_DIR}.
   Unmanaged directories, files, and links (for example from skillz) are never
   changed. A name conflict is an error and nothing is overwritten.
+  The only exception: --add and --adopt remove the global skills CLI install
+  (${GLOBAL_SKILLS_DIR}/<name> and its links) of the skills
+  that they add, after confirmation.
 
 Exit status:
   0  Success.
@@ -122,13 +163,17 @@ Log:
   ${LOG_DIR}/YYYYMMDD-HHMMSS.log
 
 Examples:
-  ${SCRIPT_NAME} --install --yes
-  ${SCRIPT_NAME} --install --dry-run
-  ${SCRIPT_NAME} --check --strict
-  ${SCRIPT_NAME} --list
-  ${SCRIPT_NAME} --update --dry-run
-  ${SCRIPT_NAME} --update
-  ${SCRIPT_NAME} --prune --dry-run
+  ${COMMAND_NAME} --add --source greensock/gsap-skills --dry-run
+  ${COMMAND_NAME} --add --source blader/humanizer --skill humanizer
+  ${COMMAND_NAME} --adopt --dry-run
+  ${COMMAND_NAME} --adopt --skill gsap-core --skill gsap-react
+  ${COMMAND_NAME} --install --yes
+  ${COMMAND_NAME} --install --dry-run
+  ${COMMAND_NAME} --check --strict
+  ${COMMAND_NAME} --list
+  ${COMMAND_NAME} --update --dry-run
+  ${COMMAND_NAME} --update
+  ${COMMAND_NAME} --prune --dry-run
 EOF
 }
 
@@ -262,7 +307,7 @@ read_state() {
 
   if [[ ! -f "${lockfile}" ]]; then
     dnb_ui_error "Lockfile not found: ${lockfile}"
-    dnb_ui_error "Add a skill first: cd ${PROJECT_DIR} && npx ${SKILLS_CLI_PACKAGE} add <source> --skill <name> --agent codex"
+    dnb_ui_error "Restore it from Git: git -C ${DOTFILES_DIR} checkout -- ${lockfile#"${DOTFILES_DIR}/"}"
     exit "${EXIT_FAILURE}"
   fi
   if [[ ! -f "${STATE_HELPER}" ]]; then
@@ -295,6 +340,51 @@ read_state() {
 
 is_locked() {
   [[ -n "${LOCKED_STATE[${1}]+set}" ]]
+}
+
+# Fill GLOBAL_* from the global skills CLI lockfile (`skills add -g`). A
+# missing lockfile means no global installs. With MODE 'strict' an unreadable
+# lockfile is fatal (--add, --adopt); otherwise it is a warning.
+read_global_state() {
+  local mode="${1:-warn}"
+  local output='' kind='' name='' source='' add_source=''
+
+  GLOBAL_NAMES=()
+  GLOBAL_SOURCE=()
+  GLOBAL_ADD_SOURCE=()
+
+  if ! output="$("${NODE_BIN}" "${STATE_HELPER}" --global-lockfile "${GLOBAL_LOCKFILE}")"; then
+    if [[ "${mode}" == 'strict' ]]; then
+      dnb_ui_error "Cannot read the global skills CLI lockfile ${GLOBAL_LOCKFILE}. See the message above. Nothing was changed."
+      exit "${EXIT_FAILURE}"
+    fi
+    report_warning "Cannot read the global skills CLI lockfile ${GLOBAL_LOCKFILE}. Global installs are not checked."
+    return 0
+  fi
+
+  while IFS=$'\t' read -r kind name source add_source; do
+    [[ "${kind}" == 'global' ]] || continue
+    GLOBAL_NAMES+=("${name}")
+    GLOBAL_SOURCE["${name}"]="${source}"
+    GLOBAL_ADD_SOURCE["${name}"]="${add_source}"
+  done <<<"${output}"
+  verbose "Global skills CLI lockfile: ${#GLOBAL_NAMES[@]} skill(s) in ${GLOBAL_LOCKFILE}"
+}
+
+is_global() {
+  [[ -n "${GLOBAL_SOURCE[${1}]+set}" ]]
+}
+
+# True if ROOT/NAME is a link that the skills CLI created for a global
+# install: it points to GLOBAL_SKILLS_DIR/NAME.
+is_global_cli_link() {
+  local path="${1}/${2}"
+  local target=''
+
+  [[ -L "${path}" ]] || return 1
+  target="$(readlink -- "${path}")"
+  [[ "${target}" == /* ]] || target="${1}/${target}"
+  [[ "$(realpath -m -- "${target}")" == "$(realpath -m -- "${GLOBAL_SKILLS_DIR}/${2}")" ]]
 }
 
 # Print the state of ROOT/NAME:
@@ -612,12 +702,23 @@ action_check() {
     report_orphans "${root}"
   done
 
+  read_global_state
+
   for root in "${SHADOW_ROOTS[@]}"; do
     for name in "${LOCKED_NAMES[@]}"; do
       if [[ -e "${root}/${name}" || -L "${root}/${name}" ]] && ! is_managed_link "${root}" "${name}"; then
-        report_warning "'${name}' is also installed outside this manager at ${root}/${name}. Agents can load it twice. Review and remove it (for a skills CLI install: npx ${SKILLS_CLI_PACKAGE} remove -g ${name})."
+        if is_global "${name}"; then
+          report_warning "'${name}' is also installed globally with the skills CLI at ${root}/${name}. Agents can load it twice. Remove the global install: ${COMMAND_NAME} --adopt --skill ${name}"
+        else
+          report_warning "'${name}' is also installed outside this manager at ${root}/${name}. Agents can load it twice. Review and remove it."
+        fi
       fi
     done
+  done
+
+  for name in "${GLOBAL_NAMES[@]}"; do
+    is_locked "${name}" && continue
+    report_warning "'${name}' is installed globally with the skills CLI (from ${GLOBAL_SOURCE[${name}]}) and is not tracked in the lockfile. Track it: ${COMMAND_NAME} --adopt --skill ${name}"
   done
 
   check_project_dirs
@@ -657,6 +758,7 @@ action_list() {
 
   require_runtime
   read_state
+  read_global_state
   WORK_DIR="$(mktemp -d)"
   table="${WORK_DIR}/skills.tsv"
 
@@ -696,12 +798,21 @@ action_list() {
       [[ -z "${seen[${name}]+set}" ]] || continue
       seen["${name}"]=1
       if [[ -n "${orphaned[${name}]+set}" ]]; then
-        state='orphaned'
+        list_row "${name}" 'orphaned' '-' >>"${table}"
+      elif is_global "${name}"; then
+        list_row "${name}" 'global' "${GLOBAL_SOURCE[${name}]}" >>"${table}"
       else
-        state='unmanaged'
+        list_row "${name}" 'unmanaged' '-' >>"${table}"
       fi
-      list_row "${name}" "${state}" '-' >>"${table}"
     done
+  done
+
+  # Global installs that no agent target shows (for example Codex reads
+  # ~/.agents/skills directly).
+  for name in "${GLOBAL_NAMES[@]}"; do
+    [[ -z "${seen[${name}]+set}" ]] || continue
+    seen["${name}"]=1
+    list_row "${name}" 'global' "${GLOBAL_SOURCE[${name}]}" >>"${table}"
   done
 
   dnb_ui_table --input "${table}"
@@ -726,6 +837,19 @@ confirm_or_exit() {
   esac
 }
 
+# Copy the lockfile and the restored skills to STAGE. The skills CLI runs
+# there and not in the project, because `add` and `update` can also write
+# directories for other agents (for example .claude/ or agent/).
+make_stage() {
+  local stage="${1}"
+
+  mkdir -p -- "${stage}/.agents"
+  cp -- "${LOCKFILE}" "${stage}/skills-lock.json"
+  if [[ -d "${CANONICAL_DIR}" ]]; then
+    cp -a -- "${CANONICAL_DIR}" "${stage}/.agents/skills"
+  fi
+}
+
 action_update() {
   local stage='' name='' status=0 relative="${LOCKFILE#"${DOTFILES_DIR}/"}"
   local -a changed=() removed=()
@@ -744,15 +868,9 @@ action_update() {
     exit "${EXIT_FAILURE}"
   fi
 
-  # Update a copy: the skills CLI can also write directories for other agents
-  # (for example .claude/ or agent/) into the project during an update.
   WORK_DIR="$(mktemp -d)"
   stage="${WORK_DIR}/project"
-  mkdir -p "${stage}/.agents"
-  cp -- "${LOCKFILE}" "${stage}/skills-lock.json"
-  if [[ -d "${CANONICAL_DIR}" ]]; then
-    cp -a -- "${CANONICAL_DIR}" "${stage}/.agents/skills"
-  fi
+  make_stage "${stage}"
 
   dnb_ui_info "Checking ${#LOCKED_NAMES[@]} tracked skill(s) for updates with ${SKILLS_CLI_PACKAGE}..."
   run_skills_cli "${stage}" update --project --yes || status=$?
@@ -825,6 +943,273 @@ action_update() {
   dnb_ui_success "Updated ${#changed[@]} skill(s). Review and commit ${relative}: git -C ${DOTFILES_DIR} diff -- ${relative}"
 }
 
+# Check that NAME can be linked into every agent target. REMOVES_GLOBAL is
+# 'true' when the global skills CLI install of NAME is removed first.
+#
+# `skills remove -g NAME` deletes ~/.agents/skills/NAME and also
+# ~/.claude/skills/NAME, even when that is a link to somewhere else (verified
+# with the pinned CLI). For this reason only the links that the CLI created
+# itself, and managed links (they are linked again afterwards), are accepted.
+preflight_name() {
+  local name="${1}"
+  local removes_global="${2}"
+  local root='' state='' path=''
+
+  for root in "${AGENT_TARGETS[@]}"; do
+    state="$(link_state "${root}" "${name}")"
+    case "${state}" in
+      absent | ok | broken | wrong) ;;
+      foreign-link)
+        if [[ "${removes_global}" == 'true' ]] && is_global_cli_link "${root}" "${name}"; then
+          continue
+        fi
+        report_error "Conflict: $(conflict_message "${root}/${name}" "${state}")."
+        ;;
+      *) report_error "Conflict: $(conflict_message "${root}/${name}" "${state}")." ;;
+    esac
+  done
+
+  for root in "${SHADOW_ROOTS[@]}"; do
+    path="${root}/${name}"
+    [[ -e "${path}" || -L "${path}" ]] || continue
+    is_managed_link "${root}" "${name}" && continue
+    if [[ "${removes_global}" == 'true' && "${root}" == "${GLOBAL_SKILLS_DIR}" && -d "${path}" && ! -L "${path}" ]]; then
+      continue
+    fi
+    report_error "Conflict: $(conflict_message "${path}" "$(link_state "${root}" "${name}")"), and it is not a global skills CLI install (for example a skillz link to one of your own skills)."
+  done
+}
+
+# Carry out the plan in ADD_SOURCES, ADD_SKILLS, and REQUESTED_NAMES (see
+# action_add and action_adopt):
+#   1. Run `skills add` for every source in a staged copy of the project.
+#   2. Verify the staged lockfile and content. Tracked skills must not change.
+#   3. Check every new skill for conflicts in the agent directories.
+#   4. After confirmation: remove the matching global skills CLI installs,
+#      install the new skills, replace the lockfile, and link.
+# Nothing changes before step 4. Errors are counted in ERRORS.
+apply_add() {
+  local stage='' source='' name='' kind='' status=0 output='' verb='Add' remove_verb='Remove'
+  local relative="${LOCKFILE#"${DOTFILES_DIR}/"}"
+  local -a skills=() added=() remove_global=()
+  local -A added_source=() planned=() requested=()
+
+  WORK_DIR="$(mktemp -d)"
+  stage="${WORK_DIR}/project"
+  make_stage "${stage}"
+
+  for source in "${ADD_SOURCES[@]}"; do
+    skills=()
+    if [[ "${ADD_SKILLS[${source}]}" != '*' ]]; then
+      read -r -a skills <<<"${ADD_SKILLS[${source}]}"
+      skills=(--skill "${skills[@]}")
+    fi
+    dnb_ui_info "Fetching ${source} with ${SKILLS_CLI_PACKAGE}..."
+    status=0
+    run_skills_cli "${stage}" add "${source}" "${skills[@]}" --agent codex --yes || status=$?
+    if ((status != 0)); then
+      report_error "The skills CLI could not add ${source} (exit ${status}). Check the source and the skill names (list them: npx ${SKILLS_CLI_PACKAGE} add ${source} --list). Nothing was changed."
+      return 0
+    fi
+  done
+
+  if ! output="$("${NODE_BIN}" "${STATE_HELPER}" --lockfile "${stage}/skills-lock.json" --compare "${LOCKFILE}")"; then
+    report_error 'Cannot compare the staged lockfile with the current one. See the message above. Nothing was changed.'
+    return 0
+  fi
+  while IFS=$'\t' read -r kind name; do
+    case "${kind}" in
+      '') ;;
+      added) added+=("${name}") ;;
+      changed) report_error "'${name}' is already tracked, and adding it again changes its lockfile entry (content or source). --add does not change tracked skills: run --update. Nothing was changed." ;;
+      removed) report_error "The skills CLI removed '${name}' from the staged lockfile. Nothing was changed." ;;
+      *) report_error "Unexpected helper output: ${kind}" ;;
+    esac
+  done <<<"${output}"
+  ((ERRORS == 0)) || return 0
+
+  # Verify the staged content against the staged lockfile.
+  read_state "${stage}/skills-lock.json" "${stage}/.agents/skills"
+  for name in "${added[@]}"; do
+    added_source["${name}"]="${LOCKED_SOURCE[${name}]}"
+    if [[ "${LOCKED_STATE[${name}]}" != 'ok' ]]; then
+      report_error "The staged copy of '${name}' does not match its new lockfile entry (${LOCKED_STATE[${name}]}). Nothing was changed."
+    fi
+  done
+  # A skill of a staged source that is also installed globally from the same
+  # source: its global install is removed, even when it is tracked already.
+  for name in "${LOCKED_NAMES[@]}"; do
+    is_global "${name}" || continue
+    for source in "${ADD_SOURCES[@]}"; do
+      [[ "${GLOBAL_ADD_SOURCE[${name}]}" == "${source}" ]] && requested["${name}"]=1
+    done
+  done
+  ((ERRORS == 0)) || return 0
+
+  read_state
+  for name in "${REQUESTED_NAMES[@]}"; do
+    requested["${name}"]=1
+    if ! is_locked "${name}" && [[ -z "${added_source[${name}]+set}" ]]; then
+      report_error "'${name}' was not found in the requested source(s). List the skills of a source: npx ${SKILLS_CLI_PACKAGE} add <source> --list. Nothing was changed."
+    fi
+  done
+  ((ERRORS == 0)) || return 0
+
+  for name in "${added[@]}" "${!requested[@]}"; do
+    [[ -z "${planned[${name}]+set}" ]] || continue
+    planned["${name}"]=1
+    if is_global "${name}"; then
+      remove_global+=("${name}")
+      preflight_name "${name}" 'true'
+    elif [[ -n "${added_source[${name}]+set}" ]]; then
+      preflight_name "${name}" 'false'
+    fi
+  done
+  if ((ERRORS > 0)); then
+    dnb_ui_error 'Resolve the conflicts above, then run the command again. Nothing was changed.'
+    dnb_ui_error "For a skillz link to one of your own skills: remove that skill from its source repository and run skillz, or keep your own skill and remove only the global install (npx ${SKILLS_CLI_PACKAGE} remove -g <name>, then run skillz)."
+    return 0
+  fi
+
+  if ((${#added[@]} + ${#remove_global[@]} == 0)); then
+    dnb_ui_success 'Nothing to do: the requested skills are already tracked and not installed globally.'
+    return 0
+  fi
+  if [[ "${DRY_RUN}" == 'true' ]]; then
+    verb='Would add'
+    remove_verb='Would remove'
+  fi
+  for name in "${added[@]}"; do
+    dnb_ui_info "${verb} '${name}' from ${added_source[${name}]}"
+  done
+  for name in "${remove_global[@]}"; do
+    dnb_ui_info "${remove_verb} the global skills CLI install of '${name}' (${GLOBAL_SOURCE[${name}]}) at ${GLOBAL_SKILLS_DIR}/${name}"
+  done
+  [[ "${DRY_RUN}" != 'true' ]] || return 0
+
+  confirm_or_exit "Add ${#added[@]} skill(s) to ${relative} and remove ${#remove_global[@]} global install(s)?"
+
+  if ((${#remove_global[@]} > 0)); then
+    status=0
+    run_skills_cli "${WORK_DIR}" remove --global "${remove_global[@]}" --yes || status=$?
+    if ((status != 0)); then
+      report_error "The skills CLI could not remove the global install(s) (exit ${status}). The lockfile was not changed. Check the global state: npx ${SKILLS_CLI_PACKAGE} ls -g"
+      return 0
+    fi
+    read_global_state strict
+    for name in "${remove_global[@]}"; do
+      if is_global "${name}"; then
+        report_error "'${name}' is still in ${GLOBAL_LOCKFILE} after the removal. The lockfile was not changed."
+      fi
+    done
+    ((ERRORS == 0)) || return 0
+  fi
+
+  if ((${#added[@]} > 0)); then
+    mkdir -p -- "${CANONICAL_DIR}"
+    for name in "${added[@]}"; do
+      rm -rf -- "${CANONICAL_DIR}/.add-${name}.$$"
+      cp -a -- "${stage}/.agents/skills/${name}" "${CANONICAL_DIR}/.add-${name}.$$"
+      rm -rf -- "${CANONICAL_DIR:?}/${name}"
+      mv -T -- "${CANONICAL_DIR}/.add-${name}.$$" "${CANONICAL_DIR}/${name}"
+      verbose "Installed ${CANONICAL_DIR}/${name}"
+    done
+    cp -- "${stage}/skills-lock.json" "${LOCKFILE}.add.$$"
+    mv -f -- "${LOCKFILE}.add.$$" "${LOCKFILE}"
+  fi
+
+  read_state
+  report_content_problems
+  sync_links
+  if ((${#remove_global[@]} > 0)); then
+    dnb_ui_success "Removed ${#remove_global[@]} global skills CLI install(s)."
+  fi
+  if ((${#added[@]} > 0)); then
+    dnb_ui_success "Added ${#added[@]} skill(s). Read them before use: skills run with full agent permissions. Then commit ${relative}: git -C ${DOTFILES_DIR} diff -- ${relative}"
+  fi
+}
+
+action_add() {
+  local skill=''
+
+  require_runtime
+  [[ "${DRY_RUN}" == 'true' ]] || acquire_lock
+  read_state
+  read_global_state strict
+
+  ADD_SOURCES=("${SOURCE_ARG}")
+  ADD_SKILLS["${SOURCE_ARG}"]="${SKILL_ARGS[*]}"
+  for skill in "${SKILL_ARGS[@]}"; do
+    if [[ "${skill}" == '*' ]]; then
+      ADD_SKILLS["${SOURCE_ARG}"]='*'
+      REQUESTED_NAMES=()
+      break
+    fi
+    REQUESTED_NAMES+=("${skill}")
+  done
+  if ((${#SKILL_ARGS[@]} == 0)); then
+    ADD_SKILLS["${SOURCE_ARG}"]='*'
+  fi
+
+  apply_add
+}
+
+action_adopt() {
+  local name='' source=''
+  local -a selected=()
+
+  require_runtime
+  [[ "${DRY_RUN}" == 'true' ]] || acquire_lock
+  read_state
+  read_global_state strict
+
+  if ((${#GLOBAL_NAMES[@]} == 0)); then
+    dnb_ui_success "No skills are installed globally with the skills CLI (${GLOBAL_LOCKFILE}). Nothing to adopt."
+    return 0
+  fi
+
+  # No --skill (or '*') selects every global install.
+  ((${#SKILL_ARGS[@]} > 0)) || selected=("${GLOBAL_NAMES[@]}")
+  for name in "${SKILL_ARGS[@]}"; do
+    if [[ "${name}" == '*' ]]; then
+      selected=("${GLOBAL_NAMES[@]}")
+      break
+    fi
+    if ! is_global "${name}"; then
+      report_error "'${name}' is not installed globally with the skills CLI (it is not in ${GLOBAL_LOCKFILE})."
+      continue
+    fi
+    selected+=("${name}")
+  done
+  ((ERRORS == 0)) || return 0
+
+  for name in "${selected[@]}"; do
+    if is_locked "${name}"; then
+      # Already tracked: only the global install is removed.
+      REQUESTED_NAMES+=("${name}")
+      continue
+    fi
+    source="${GLOBAL_ADD_SOURCE[${name}]}"
+    if [[ "${source}" == '-' ]]; then
+      report_warning "Skipped '${name}': its source (${GLOBAL_SOURCE[${name}]}) is not a remote repository, so other workstations cannot restore it."
+      continue
+    fi
+    REQUESTED_NAMES+=("${name}")
+    if [[ -z "${ADD_SKILLS[${source}]+set}" ]]; then
+      ADD_SOURCES+=("${source}")
+      ADD_SKILLS["${source}"]="${name}"
+    else
+      ADD_SKILLS["${source}"]+=" ${name}"
+    fi
+  done
+
+  if ((${#REQUESTED_NAMES[@]} == 0)); then
+    dnb_ui_info 'Nothing to adopt.'
+    return 0
+  fi
+  apply_add
+}
+
 action_prune() {
   local root='' name='' entry=''
   local -a links=() dirs=()
@@ -883,6 +1268,20 @@ main() {
         print_help
         exit 0
         ;;
+      --add) set_action add ;;
+      --adopt) set_action adopt ;;
+      --source)
+        (($# > 1)) || usage_error '--source needs a value.'
+        [[ "${2}" != -* ]] || usage_error "--source needs a value, not the option ${2}."
+        SOURCE_ARG="${2}"
+        shift
+        ;;
+      --skill)
+        (($# > 1)) || usage_error '--skill needs a value.'
+        [[ "${2}" == '*' || "${2}" =~ ${SKILL_NAME_PATTERN} ]] || usage_error "--skill: '${2}' is not a valid skill name."
+        SKILL_ARGS+=("${2}")
+        shift
+        ;;
       --install) set_action install ;;
       --check) set_action check ;;
       --update) set_action update ;;
@@ -899,7 +1298,16 @@ main() {
     shift
   done
 
-  [[ -n "${ACTION}" ]] || usage_error 'choose an operation: --install, --check, --update, --list, or --prune.'
+  [[ -n "${ACTION}" ]] || usage_error 'choose an operation: --add, --adopt, --install, --check, --update, --list, or --prune.'
+  if [[ "${ACTION}" == 'add' && -z "${SOURCE_ARG}" ]]; then
+    usage_error '--add needs --source <source>, for example --source owner/repository.'
+  fi
+  if [[ -n "${SOURCE_ARG}" && "${ACTION}" != 'add' ]]; then
+    usage_error '--source is only valid with --add.'
+  fi
+  if ((${#SKILL_ARGS[@]} > 0)) && [[ "${ACTION}" != 'add' && "${ACTION}" != 'adopt' ]]; then
+    usage_error '--skill is only valid with --add and --adopt.'
+  fi
   if [[ "${FORCE}" == 'true' && "${ACTION}" != 'install' ]]; then
     usage_error '--force is only valid with --install.'
   fi
