@@ -90,6 +90,7 @@ locutus
 LOGLEVEL
 lucide
 mainbox
+mkcert
 mktemp
 Monaspace
 mountpoint

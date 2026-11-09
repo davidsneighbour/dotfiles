@@ -1,4 +1,4 @@
-#!/usr/bin/env -S node
+#!/usr/bin/env -S node --use-system-ca
 
 /**
  * FreshRSS stream to RSS export
@@ -11,6 +11,8 @@
  * - Node.js 24+
  * - FreshRSS mobile/API access enabled
  * - User API password configured in FreshRSS
+ * - The CA that signed the FreshRSS HTTPS certificate in the system CA store
+ *   (the shebang passes --use-system-ca; add it when you call node directly)
  *
  * Environment variables:
  * - FRESHRSS_BASE_URL
@@ -23,10 +25,10 @@
  * - node freshrss-export.ts --label=dnb-entertainment --output=/tmp/entertainment.xml
  */
 
-import { randomUUID } from 'node:crypto';
-import { mkdir, writeFile } from 'node:fs/promises';
-import { dirname, resolve } from 'node:path';
-import process from 'node:process';
+import { randomUUID } from "node:crypto";
+import { mkdir, writeFile } from "node:fs/promises";
+import { dirname, resolve } from "node:path";
+import process from "node:process";
 
 type CliOptions = {
   help: boolean;
@@ -100,7 +102,7 @@ type RssItem = {
 const DEFAULTS = {
   maxItems: 250,
   timeoutMs: 20_000,
-  baseUrl: 'http://192.168.1.201:3050',
+  baseUrl: "https://192.168.1.201:3050",
 } as const;
 
 /**
@@ -111,11 +113,11 @@ const DEFAULTS = {
  */
 function escapeXml(value: string): string {
   return value
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&apos;');
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&apos;");
 }
 
 /**
@@ -125,7 +127,7 @@ function escapeXml(value: string): string {
  * @returns CDATA-safe wrapper.
  */
 function toCdata(value: string): string {
-  return `<![CDATA[${value.replaceAll(']]>', ']]]]><![CDATA[>')}]]>`;
+  return `<![CDATA[${value.replaceAll("]]>", "]]]]><![CDATA[>")}]]>`;
 }
 
 /**
@@ -135,14 +137,14 @@ function toCdata(value: string): string {
  * @returns Whether the value is usable.
  */
 function hasText(value: string | null | undefined): value is string {
-  return typeof value === 'string' && value.trim().length > 0;
+  return typeof value === "string" && value.trim().length > 0;
 }
 
 /**
  * Prints command help.
  */
 function printHelp(): void {
-  const scriptName = process.argv[1]?.split('/').pop() ?? 'freshrss-export.ts';
+  const scriptName = process.argv[1]?.split("/").pop() ?? "freshrss-export.ts";
 
   console.log(
     `
@@ -192,36 +194,36 @@ function parseArgs(argv: string[]): CliOptions {
   };
 
   for (const arg of argv) {
-    if (arg === '--help') {
+    if (arg === "--help") {
       options.help = true;
       continue;
     }
 
-    if (arg === '--starred') {
+    if (arg === "--starred") {
       options.starred = true;
       continue;
     }
 
-    if (arg.startsWith('--label=')) {
-      const value = arg.slice('--label='.length).trim();
+    if (arg.startsWith("--label=")) {
+      const value = arg.slice("--label=".length).trim();
       if (!hasText(value)) {
-        throw new Error('--label requires a non-empty value');
+        throw new Error("--label requires a non-empty value");
       }
       options.label = value;
       continue;
     }
 
-    if (arg.startsWith('--output=')) {
-      const value = arg.slice('--output='.length).trim();
+    if (arg.startsWith("--output=")) {
+      const value = arg.slice("--output=".length).trim();
       if (!hasText(value)) {
-        throw new Error('--output requires a non-empty value');
+        throw new Error("--output requires a non-empty value");
       }
       options.output = value;
       continue;
     }
 
-    if (arg.startsWith('--max-items=')) {
-      const value = Number.parseInt(arg.slice('--max-items='.length), 10);
+    if (arg.startsWith("--max-items=")) {
+      const value = Number.parseInt(arg.slice("--max-items=".length), 10);
       if (!Number.isFinite(value) || value <= 0) {
         throw new Error(`Invalid --max-items value: ${arg}`);
       }
@@ -229,8 +231,8 @@ function parseArgs(argv: string[]): CliOptions {
       continue;
     }
 
-    if (arg.startsWith('--timeout-ms=')) {
-      const value = Number.parseInt(arg.slice('--timeout-ms='.length), 10);
+    if (arg.startsWith("--timeout-ms=")) {
+      const value = Number.parseInt(arg.slice("--timeout-ms=".length), 10);
       if (!Number.isFinite(value) || value <= 0) {
         throw new Error(`Invalid --timeout-ms value: ${arg}`);
       }
@@ -246,7 +248,7 @@ function parseArgs(argv: string[]): CliOptions {
 
   if (!options.help && selectedModes !== 1) {
     throw new Error(
-      'Choose exactly one mode: either --starred or --label=NAME',
+      "Choose exactly one mode: either --starred or --label=NAME",
     );
   }
 
@@ -260,22 +262,22 @@ function parseArgs(argv: string[]): CliOptions {
  * @returns Validated config.
  */
 function getConfig(options: CliOptions): Config {
-  const baseUrl = process.env['FRESHRSS_BASE_URL']?.trim() ?? DEFAULTS.baseUrl;
-  const username = process.env['FRESHRSS_USERNAME']?.trim() ?? '';
-  const apiPassword = process.env['FRESHRSS_API_PASSWORD']?.trim() ?? '';
+  const baseUrl = process.env["FRESHRSS_BASE_URL"]?.trim() ?? DEFAULTS.baseUrl;
+  const username = process.env["FRESHRSS_USERNAME"]?.trim() ?? "";
+  const apiPassword = process.env["FRESHRSS_API_PASSWORD"]?.trim() ?? "";
 
   if (!hasText(username)) {
-    throw new Error('Missing required environment variable: FRESHRSS_USERNAME');
+    throw new Error("Missing required environment variable: FRESHRSS_USERNAME");
   }
 
   if (!hasText(apiPassword)) {
     throw new Error(
-      'Missing required environment variable: FRESHRSS_API_PASSWORD',
+      "Missing required environment variable: FRESHRSS_API_PASSWORD",
     );
   }
 
   return {
-    baseUrl: baseUrl.replace(/\/+$/, ''),
+    baseUrl: baseUrl.replace(/\/+$/, ""),
     username,
     apiPassword,
     maxItems: options.maxItems,
@@ -291,14 +293,14 @@ function getConfig(options: CliOptions): Config {
  */
 function buildStreamId(options: CliOptions): string {
   if (options.starred) {
-    return 'user/-/state/com.google/starred';
+    return "user/-/state/com.google/starred";
   }
 
   if (hasText(options.label)) {
     return `user/-/label/${options.label}`;
   }
 
-  throw new Error('Unable to determine stream ID from CLI options');
+  throw new Error("Unable to determine stream ID from CLI options");
 }
 
 /**
@@ -309,14 +311,14 @@ function buildStreamId(options: CliOptions): string {
  */
 function buildChannelTitle(options: CliOptions): string {
   if (options.starred) {
-    return 'FreshRSS Starred Items';
+    return "FreshRSS Starred Items";
   }
 
   if (hasText(options.label)) {
     return `FreshRSS Label: ${options.label}`;
   }
 
-  throw new Error('Unable to determine channel title from CLI options');
+  throw new Error("Unable to determine channel title from CLI options");
 }
 
 /**
@@ -344,7 +346,7 @@ async function fetchWithTimeout(
     if (error instanceof Error) {
       throw new Error(`Request failed: ${error.message}`);
     }
-    throw new Error('Request failed with an unknown error');
+    throw new Error("Request failed with an unknown error");
   } finally {
     clearTimeout(timer);
   }
@@ -358,12 +360,12 @@ async function fetchWithTimeout(
  */
 async function login(config: Config): Promise<ClientLoginResult> {
   const url = new URL(`${config.baseUrl}/api/greader.php/accounts/ClientLogin`);
-  url.searchParams.set('Email', config.username);
-  url.searchParams.set('Passwd', config.apiPassword);
+  url.searchParams.set("Email", config.username);
+  url.searchParams.set("Passwd", config.apiPassword);
 
   const response = await fetchWithTimeout(
     url,
-    { method: 'GET' },
+    { method: "GET" },
     config.timeoutMs,
   );
 
@@ -374,20 +376,20 @@ async function login(config: Config): Promise<ClientLoginResult> {
 
   const text = await response.text();
   const lines = text
-    .split('\n')
+    .split("\n")
     .map((line) => line.trim())
     .filter((line) => line.length > 0);
 
-  let sid = '';
-  let auth = '';
+  let sid = "";
+  let auth = "";
 
   for (const line of lines) {
-    if (line.startsWith('SID=')) {
+    if (line.startsWith("SID=")) {
       sid = line.slice(4);
       continue;
     }
 
-    if (line.startsWith('Auth=')) {
+    if (line.startsWith("Auth=")) {
       auth = line.slice(5);
     }
   }
@@ -417,27 +419,27 @@ async function fetchStreamPage(
   continuation?: string,
 ): Promise<GoogleReaderStreamResponse> {
   const encodedStreamId = streamId
-    .split('/')
+    .split("/")
     .map((segment) => encodeURIComponent(segment))
-    .join('/');
+    .join("/");
 
   const url = new URL(
     `${config.baseUrl}/api/greader.php/reader/api/0/stream/contents/${encodedStreamId}`,
   );
-  url.searchParams.set('output', 'json');
-  url.searchParams.set('n', String(maxItems));
+  url.searchParams.set("output", "json");
+  url.searchParams.set("n", String(maxItems));
 
   if (hasText(continuation)) {
-    url.searchParams.set('c', continuation);
+    url.searchParams.set("c", continuation);
   }
 
   const response = await fetchWithTimeout(
     url,
     {
-      method: 'GET',
+      method: "GET",
       headers: {
         Authorization: `GoogleLogin auth=${auth}`,
-        Accept: 'application/json',
+        Accept: "application/json",
       },
     },
     config.timeoutMs,
@@ -520,7 +522,7 @@ function getItemLink(item: GoogleReaderItem): string {
     return originLink;
   }
 
-  return '';
+  return "";
 }
 
 /**
@@ -535,11 +537,11 @@ function toRssItem(item: GoogleReaderItem): RssItem {
     ? item.title.trim()
     : hasText(link)
       ? link
-      : 'Untitled';
+      : "Untitled";
   const publishedEpoch =
     item.published ?? item.updated ?? Math.floor(Date.now() / 1000);
   const pubDate = new Date(publishedEpoch * 1000).toUTCString();
-  const html = item.content?.content ?? item.summary?.content ?? '';
+  const html = item.content?.content ?? item.summary?.content ?? "";
   const guid = hasText(item.id)
     ? item.id.trim()
     : hasText(link)
@@ -588,19 +590,19 @@ function buildRssXml(
     .map((item) => {
       const linkXml = hasText(item.link)
         ? `<link>${escapeXml(item.link)}</link>`
-        : '';
+        : "";
 
       const authorXml = hasText(item.author)
         ? `<author>${escapeXml(item.author)}</author>`
-        : '';
+        : "";
 
       const sourceXml =
         hasText(item.sourceTitle) && hasText(item.link)
           ? `<source url="${escapeXml(item.link)}">${escapeXml(item.sourceTitle)}</source>`
-          : '';
+          : "";
 
       return [
-        '<item>',
+        "<item>",
         `<title>${escapeXml(item.title)}</title>`,
         linkXml,
         `<guid isPermaLink="false">${escapeXml(item.guid)}</guid>`,
@@ -609,26 +611,26 @@ function buildRssXml(
         `<content:encoded>${toCdata(item.contentEncoded)}</content:encoded>`,
         authorXml,
         sourceXml,
-        '</item>',
+        "</item>",
       ]
         .filter((part) => part.length > 0)
-        .join('');
+        .join("");
     })
-    .join('');
+    .join("");
 
   return [
     '<?xml version="1.0" encoding="UTF-8"?>',
     '<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">',
-    '<channel>',
+    "<channel>",
     `<title>${escapeXml(channelTitle)}</title>`,
     `<link>${escapeXml(channelLink)}</link>`,
     `<description>${escapeXml(channelDescription)}</description>`,
     `<lastBuildDate>${escapeXml(lastBuildDate)}</lastBuildDate>`,
-    '<generator>FreshRSS export CLI</generator>',
+    "<generator>FreshRSS export CLI</generator>",
     itemXml,
-    '</channel>',
-    '</rss>',
-  ].join('');
+    "</channel>",
+    "</rss>",
+  ].join("");
 }
 
 /**
@@ -643,7 +645,7 @@ async function writeOutputFile(
 ): Promise<void> {
   const absolutePath = resolve(outputPath);
   await mkdir(dirname(absolutePath), { recursive: true });
-  await writeFile(absolutePath, content, 'utf8');
+  await writeFile(absolutePath, content, "utf8");
 }
 
 /**
@@ -678,7 +680,7 @@ main().catch((error: unknown) => {
   if (error instanceof Error) {
     console.error(`ERROR: ${error.message}`);
   } else {
-    console.error('ERROR: Unknown error');
+    console.error("ERROR: Unknown error");
   }
 
   process.exitCode = 1;

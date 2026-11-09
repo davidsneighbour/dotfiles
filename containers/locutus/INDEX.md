@@ -21,7 +21,7 @@ Preferred next free port: `3080`.
   Source: `containers/locutus/penpot/docker-compose.yaml`.
 * `3040`: ntfy, container port `80`.
   Source: `containers/locutus/ntfy/docker-compose.yaml`.
-* `3050`: FreshRSS, container port `80`.
+* `3050`: FreshRSS, HTTPS on `192.168.1.201` only, container port `443`.
   Source: `containers/locutus/freshrss/docker-compose.yaml`.
 * `3060`: changedetection.io, container port `5000`.
   Source: `containers/locutus/changedetection/docker-compose.yaml`.
@@ -51,7 +51,8 @@ free unless there is a clear operational reason.
 * Container: `freshrss`.
 * Source: `containers/locutus/freshrss/docker-compose.yaml`.
 * Image: `lscr.io/linuxserver/freshrss:latest`, pinned by digest.
-* Published ports: `3050:80`.
+* Published ports: `192.168.1.201:3050:443`.
+* URL: `https://192.168.1.201:3050`, with an mkcert certificate. See `containers/locutus/freshrss/README.md`.
 
 ### Homepage
 

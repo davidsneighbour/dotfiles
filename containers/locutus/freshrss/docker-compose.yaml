@@ -9,7 +9,9 @@ services:
       # secretlint-disable-next-line @secretlint/secretlint-rule-no-homedir
       - /home/patrick/github.com/davidsneighbour/freshrss-theme:/app/www/p/themes/freshrss-theme/
     ports:
-      - 3050:80
+      # HTTPS only, on the LAN address only. The container's nginx serves
+      # TLS on 443 with the mkcert certificate in ./config/keys (see README).
+      - 192.168.1.201:3050:443
     restart: unless-stopped
 
     environment:
