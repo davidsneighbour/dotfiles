@@ -32,7 +32,7 @@ This is the canonical entry point. Read matching `.agents/instructions/` files b
 
 ## Delivery
 
-Commit directly to `main` only when authorised; branch only when explicitly asked. Use Conventional Commits and scopes from `.release-it.ts`. Do not push without authorisation.
+Always commit your changes directly to `main` when a task is done; do not ask first. Run `npm run check` before you commit. Fix the failures that your change causes, and report other failures. Commit only the files of the task, and put unrelated changes into separate commits. Do not commit other uncommitted work unless the user asks. Fix commit hook failures; never bypass hooks with `--no-verify`. Branch only when explicitly asked. Use Conventional Commits and scopes from `.release-it.ts`. Do not push without authorisation.
 
 `protected/` is a separate, Git-ignored repository; do not modify its contents unless explicitly asked. For tracked submodules, stage only the recorded HEAD from the parent; do not commit, amend, clean, reset, or modify submodule work without explicit authorisation.
 
