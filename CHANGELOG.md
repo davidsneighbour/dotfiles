@@ -1,5 +1,41 @@
 # Changelog
 
+## [2.34.0](https://github.com/davidsneighbour/dotfiles/compare/v2.33.1...v2.34.0) (2026-11-09)
+
+### Feat
+
+* add Paper Mono font ([3e95034](https://github.com/davidsneighbour/dotfiles/commit/3e9503463cf12f8648b64b7340df2c95b737eb6f))
+* **agents:** add and adopt skills with the agent-skills command ([9747e95](https://github.com/davidsneighbour/dotfiles/commit/9747e9513eeb4e7648c7f9aa8085ccc03334e76c))
+* **agents:** manage third-party skills through a tracked lockfile ([c762db3](https://github.com/davidsneighbour/dotfiles/commit/c762db30f919b4a2c555c624824bf12032b4ddb7))
+* **bashrc:** use eza with icons and long listings for ls shortcuts ([ac64d54](https://github.com/davidsneighbour/dotfiles/commit/ac64d54a9ec330fb05ea22f5053544bbaf8c96d3))
+* **containers:** add OpenSEO and OpenProject stacks for hal2026 ([13ae372](https://github.com/davidsneighbour/dotfiles/commit/13ae372ae9e2795beed553f49a0b42376bd417bc))
+* **containers:** serve FreshRSS over HTTPS on the LAN address ([a706aee](https://github.com/davidsneighbour/dotfiles/commit/a706aeecc2ac2505b010c3ac86536905f9df4724))
+* **session:** manage eza theme through dotbot ([65973c3](https://github.com/davidsneighbour/dotfiles/commit/65973c3e20160016256b6c542eb5e11ae35ff755))
+
+### Fix
+
+* **bashrc:** clearout unused particles in bashrc ([28233f2](https://github.com/davidsneighbour/dotfiles/commit/28233f29df20fb40e0edd064f1d3d77501fab14a))
+* **bashrc:** keep the skillz cleanup step from failing on managed links ([a53201c](https://github.com/davidsneighbour/dotfiles/commit/a53201c2a22222e3f701fddaf94b55e856ebbbdc))
+* **bashrc:** report all skillz name conflicts in one run ([26bc369](https://github.com/davidsneighbour/dotfiles/commit/26bc36969fe698b47cc5240ea83ddf375015a900))
+* **dotbot:** use cron Node runtime for log cleanup ([3808558](https://github.com/davidsneighbour/dotfiles/commit/3808558e75cc0067baaeb04a387dfc773e384e4f))
+* **session:** normalise Thunar accelerator map header in Git ([ab52318](https://github.com/davidsneighbour/dotfiles/commit/ab52318e272e4fabd94bdfaf8231e736aaffd137))
+
+### Docs
+
+* **agents:** commit completed changes without asking ([94c7a81](https://github.com/davidsneighbour/dotfiles/commit/94c7a81022ccfe3e9298d6c82b2980018c0ff076))
+
+### Build
+
+* **deps:** update dependencies ([354d7e5](https://github.com/davidsneighbour/dotfiles/commit/354d7e5ba5350f9f8d2dd4fa8729074124a12ff5))
+* **vscode:** use Monaspace Argon NF for terminal icons ([551f2e3](https://github.com/davidsneighbour/dotfiles/commit/551f2e31b8404b494d8871f6141680324a06ef2e))
+
+### Chore
+
+* **agents:** track 229 more third-party skills ([a5139c8](https://github.com/davidsneighbour/dotfiles/commit/a5139c8d0ea2b60d6ad9037307543386b7d449f6))
+* **agents:** track the GSAP skills in the skills lockfile ([5539ca9](https://github.com/davidsneighbour/dotfiles/commit/5539ca9a9c97dcac8bc6a27821496da85e62f0df))
+* **bashrc:** link the skills repository through skillz again ([f4e6469](https://github.com/davidsneighbour/dotfiles/commit/f4e6469f32220bfc5501b81d58b8d41e94271a67))
+* **containers:** remove OpenSEO stack from hal2026 ([88f6fca](https://github.com/davidsneighbour/dotfiles/commit/88f6fca01b954f45d22ce6dd349dbd61b8702a34))
+
 ## [2.33.1](https://github.com/davidsneighbour/dotfiles/compare/v2.33.0...v2.33.1) (2026-11-05)
 
 ### Chore
