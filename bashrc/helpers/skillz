@@ -280,7 +280,13 @@ write_dotbot_config() {
     printf '          for entry in "${expanded}"/*; do\n'
     printf '            [ -L "${entry}" ] || continue\n'
     printf '            resolved="$(readlink -f "${entry}" 2>/dev/null || true)"\n'
-    printf '            is_trusted "${resolved}" && rm "${entry}"\n'
+    # An if statement, not "is_trusted && rm": the && list returns 1 for an
+    # untrusted entry, and as the last command of the step it made the whole
+    # Dotbot shell step fail (for example when the last entry in a skill root
+    # is a link of the third-party skill manager).
+    printf '            if is_trusted "${resolved}"; then\n'
+    printf '              rm "${entry}"\n'
+    printf '            fi\n'
     printf '          done\n'
     printf '        done\n'
     printf '\n'
