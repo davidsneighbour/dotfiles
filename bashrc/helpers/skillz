@@ -22,7 +22,7 @@ set -Eeuo pipefail
 SKILLWERK_ROOT="${HOME}/github.com/davidsneighbour/skillwerk"
 SKILL_SOURCES=(
   "collections:${SKILLWERK_ROOT}"
-  # "tree:${HOME}/github.com/davidsneighbour/skills/skills"
+  "tree:${HOME}/github.com/davidsneighbour/skills/skills"
 )
 
 # Symlinks resolving under one of these roots are managed by skillz. The
