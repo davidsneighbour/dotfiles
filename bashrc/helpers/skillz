@@ -53,6 +53,10 @@ VERBOSE=false
 
 declare -A SKILL_PATHS=()
 
+# Name conflicts found while collecting. collect_skills reports all of them
+# at once and then stops, so one run shows every conflict.
+declare -a CONFLICTS=()
+
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
@@ -82,7 +86,8 @@ log_verbose() {
 }
 
 # Record one skill directory in SKILL_PATHS[name]=path. A second hit with the
-# same real path is skipped; a different directory with the same name is fatal.
+# same real path is skipped. A different directory with the same name, or a
+# name that is also a tracked third-party skill, is recorded in CONFLICTS.
 add_skill() {
   local path="$1"
   local name existing
@@ -96,16 +101,19 @@ add_skill() {
       return 0
     fi
 
-    die "Duplicate skill name '${name}' found in:
+    CONFLICTS+=("Duplicate skill name '${name}' found in:
   ${existing}
-  ${path}"
+  ${path}
+Rename one of them, or remove one from its source.")
+    return 0
   fi
 
   if [[ -e "${MANAGED_SKILLS_DIR}/${name}" ]]; then
-    die "Skill name '${name}' is also a third-party skill tracked in configs/agents/skills-lock.json:
+    CONFLICTS+=("Skill name '${name}' is also a third-party skill tracked in configs/agents/skills-lock.json:
   ${MANAGED_SKILLS_DIR}/${name}
   ${path}
-Rename one of them, or remove it from its source."
+Rename your skill, or remove it from its source. Do not delete the tracked copy: it comes back with the next 'agent-skills --install'. To stop tracking it, see configs/agents/README.md.")
+    return 0
   fi
 
   log_verbose "${name} -> ${path}"
@@ -191,6 +199,14 @@ collect_skills() {
     *) die "Unknown skill source type '${type}' in: ${source}" ;;
     esac
   done
+
+  if ((${#CONFLICTS[@]} > 0)); then
+    local conflict
+    for conflict in "${CONFLICTS[@]}"; do
+      printf 'ERROR: %s\n\n' "${conflict}" >&2
+    done
+    die "${#CONFLICTS[@]} skill name conflict(s) found. Nothing was linked. Resolve all of them, then run skillz again."
+  fi
 }
 
 # Print a skill's absolute path with $HOME collapsed to ${HOME}, so the

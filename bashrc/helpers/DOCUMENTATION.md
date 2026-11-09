@@ -321,7 +321,7 @@ Skill sources are configured in `SKILL_SOURCES` as `<type>:<root>` entries:
 * `collections` — skillwerk layout. Every `<root>/collections/<collection>/skills/<skill>` directory that contains a `SKILL.md` is a skill.
 * `tree` — free-form tree, for example the `skills` repository. Every deepest directory with a `SKILL.md` up to three folder levels below the root is a skill: `<skill>`, `<collection>/<skill>`, or `<topic>/<collection>/<skill>`. Hidden directories are skipped.
 
-Each skill is linked by its directory name into `~/.agents/skills`, `~/.codex/skills`, and `~/.claude/skills`. Two different skill directories with the same name stop the run before any symlink changes. The same directory reached through two paths is linked once.
+Each skill is linked by its directory name into `~/.agents/skills`, `~/.codex/skills`, and `~/.claude/skills`. Two different skill directories with the same name, or a skill with the same name as a tracked third-party skill in `configs/agents/skills-lock.json`, are conflicts. `skillz` collects all conflicts, reports them together, and stops before any symlink changes. The same directory reached through two paths is linked once.
 
 Usage:
 

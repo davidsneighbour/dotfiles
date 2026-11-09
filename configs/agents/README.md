@@ -42,7 +42,7 @@ A global entry is *managed* only when it is a symbolic link into `configs/agents
 * A managed link whose skill is no longer in the lockfile is an orphan. The manager reports it. Only `--prune` removes it, after confirmation or with `--yes`.
 * A failed or interrupted restore keeps the skills that are already installed. The next `--install` restores the missing skills. A skill folder without a `SKILL.md` counts as missing.
 * Operations that change files take a lock (`~/.local/state/dotfiles/agent-skills.lock`), so two runs cannot interfere.
-* `skillz` does not remove or replace managed links. It also stops with an error if one of your own skills has the same name as a tracked third-party skill.
+* `skillz` does not remove or replace managed links. It also stops with an error if one of your own skills has the same name as a tracked third-party skill, and it reports all such conflicts in one run. Remove or rename your own skill; do not delete the tracked copy, because `--install` restores it.
 * `--add` and `--adopt` are the only operations that remove something outside this folder: the global skills CLI installs of the skills that they add (see [Global installs](#global-installs)).
 
 ### Commands
