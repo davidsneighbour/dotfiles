@@ -22,7 +22,7 @@ set -Eeuo pipefail
 SKILLWERK_ROOT="${HOME}/github.com/davidsneighbour/skillwerk"
 SKILL_SOURCES=(
   "collections:${SKILLWERK_ROOT}"
-  "tree:${HOME}/github.com/davidsneighbour/skills/skills"
+  # "tree:${HOME}/github.com/davidsneighbour/skills/skills"
 )
 
 # Symlinks resolving under one of these roots are managed by skillz. The
@@ -186,9 +186,9 @@ collect_skills() {
     printf 'Collecting skills from %s (%s)...\n' "${root}" "${type}"
 
     case "${type}" in
-      collections) collect_collections "${root}" ;;
-      tree) collect_tree "${root}" ;;
-      *) die "Unknown skill source type '${type}' in: ${source}" ;;
+    collections) collect_collections "${root}" ;;
+    tree) collect_tree "${root}" ;;
+    *) die "Unknown skill source type '${type}' in: ${source}" ;;
     esac
   done
 }
@@ -303,15 +303,15 @@ show_symlinks() {
 main() {
   while (($# > 0)); do
     case "$1" in
-      --help)
-        usage
-        exit 0
-        ;;
-      --verbose) VERBOSE=true ;;
-      *)
-        usage >&2
-        die "Unknown option: $1"
-        ;;
+    --help)
+      usage
+      exit 0
+      ;;
+    --verbose) VERBOSE=true ;;
+    *)
+      usage >&2
+      die "Unknown option: $1"
+      ;;
     esac
     shift
   done
