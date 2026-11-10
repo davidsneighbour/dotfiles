@@ -120,9 +120,12 @@ export async function serve(
     } catch (error) {
       res.statusCode = 400;
       res.setHeader("Content-Type", "application/json");
+      // Send only an Error's message; a non-Error value stays in the log.
+      if (!(error instanceof Error))
+        console.error("Storage request failed with a non-Error value:", error);
       res.end(
         JSON.stringify({
-          error: error instanceof Error ? error.message : String(error),
+          error: error instanceof Error ? error.message : "Request failed.",
         }),
       );
     }
