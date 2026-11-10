@@ -323,3 +323,6 @@ dist
 # Local project-management working files
 /PROJECT.md
 /TODO.md
+
+# scratch directories are local scratchpads, never tracked or linted
+**/scratch

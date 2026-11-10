@@ -2,10 +2,17 @@
   // Repository-specific markdownlint-cli2 options. Rules and custom rules come
   // from @dnbhq/markdownlint-config, which every lint call passes via
   // `--config`; markdownlint-cli2 merges this file on top of it. Top-level
-  // properties replace the shared ones, so `ignores` must repeat the shared
-  // `node_modules` entry.
+  // properties such as `ignores` replace the shared ones, so `ignores` must
+  // repeat the shared `node_modules` entry. `config` merges rule by rule, so it
+  // lists only the rules this repository changes.
+  "config": {
+    // heading letter case is not enforced in this repository
+    "dnb-title-case-style": false
+  },
   "ignores": [
     "**/node_modules",
+    // scratch directories are local scratchpads, never linted
+    "**/scratch",
     "CHANGELOG.md",
     // third-party skills restored by configs/agents/install-skills.sh
     "configs/agents/.agents",
@@ -14,9 +21,6 @@
     "configs/session/sublime-text/Packages/Dracula Color Scheme",
     "containers",
     "logs",
-    "protected",
-    "scratch",
-    "configs/session/conky/scratch",
-    "configs/session/polybar/scratch"
+    "protected"
   ]
 }

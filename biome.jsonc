@@ -13,6 +13,7 @@
       "!containers",
       "!logs",
       "!protected",
+      "!**/scratch",
       "!**/*.md"
     ]
   },

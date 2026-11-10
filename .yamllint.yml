@@ -23,6 +23,8 @@ ignore:
   - configs/session/vale/styles/.vale-config/styles/write-good/
   - node_modules
   - modules
+  # Scratch directories are local scratchpads, never linted.
+  - scratch/
 
 rules:
   # anchors: enable
