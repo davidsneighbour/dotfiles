@@ -1,5 +1,20 @@
 # Changelog
 
+## [2.34.2](https://github.com/davidsneighbour/dotfiles/compare/v2.34.1...v2.34.2) (2026-11-10)
+
+### Fix
+
+* **tools:** stop echoing non-Error values in storage server responses ([fbbc76f](https://github.com/davidsneighbour/dotfiles/commit/fbbc76f14fbb94bdb1367759a5c391441cf4251a))
+
+### Build
+
+* **deps:** fix vulnerable dependencies via updates and overrides ([e186444](https://github.com/davidsneighbour/dotfiles/commit/e18644497f043e06a643d6f7c3b92f3adb779929))
+* **deps:** remove unused deepmerge ([02c4af4](https://github.com/davidsneighbour/dotfiles/commit/02c4af42269d875b483fc1bcb48af326c5d77214))
+
+### Chore
+
+* **configs:** disable heading case lint and skip scratch directories ([8b4568f](https://github.com/davidsneighbour/dotfiles/commit/8b4568f29afc3c28dd89603d4b1324b7ca0a52de))
+
 ## [2.34.1](https://github.com/davidsneighbour/dotfiles/compare/v2.34.0...v2.34.1) (2026-11-10)
 
 ### Fix
