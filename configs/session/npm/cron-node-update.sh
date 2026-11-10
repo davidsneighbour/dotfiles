@@ -15,9 +15,9 @@ print_help() {
 Usage:
   ${SCRIPT_NAME} [--dry-run] [--lts] [--verbose] [--help]
 
-Updates NVM's "node" release to the latest available Node.js version, migrates
-globally installed npm packages from the active version, and sets it as the
-default. If the resolved default version changes, install the default global npm
+Installs the latest stable Node.js release through NVM, migrates globally
+installed npm packages from the active version, and sets it as the default.
+Pre-releases (alpha, beta, rc, nightly) are skipped. If the resolved default version changes, install the default global npm
 packages from configs/session/npm/default-packages.
 
 Default global packages are installed only on hosts that opt in through the
@@ -134,8 +134,50 @@ run_command() {
   "$@"
 }
 
-install_latest_node() {
-  local previous_active_version="${1}"
+# Print the newest stable Node.js release known to NVM.
+# The "node" alias follows the top of the Node.js release index, which now also
+# carries pre-releases such as v27.0.0-alpha.0.0.0. Only plain vX.Y.Z versions
+# qualify here, so alpha, beta, rc, and nightly builds are never selected.
+latest_stable_node_version() {
+  local listing=""
+  local version=""
+  local status=0
+
+  # nvm ls-remote reads unset variables and exits with status 3 under set -u.
+  set +u
+  listing="$(nvm ls-remote --no-colors 2>/dev/null)" || status=$?
+  set -u
+
+  if ((status != 0)); then
+    return 1
+  fi
+
+  version="$(printf '%s\n' "${listing}" | awk '
+    {
+      for (i = 1; i <= NF; i++) {
+        if ($i ~ /^v[0-9]+\.[0-9]+\.[0-9]+$/) {
+          latest = $i
+          break
+        }
+      }
+    }
+    END {
+      if (latest != "") {
+        print latest
+      }
+    }
+  ')"
+
+  if [[ -z "${version}" ]]; then
+    return 1
+  fi
+
+  printf '%s\n' "${version}"
+}
+
+install_node_version() {
+  local target_version="${1}"
+  local previous_active_version="${2}"
   local install_args
 
   install_args=(install --latest-npm)
@@ -144,7 +186,7 @@ install_latest_node() {
     install_args+=(--reinstall-packages-from=current)
   fi
 
-  install_args+=(node)
+  install_args+=("${target_version}")
 
   run_command nvm "${install_args[@]}"
 }
@@ -184,10 +226,16 @@ main() {
   log_info "Node.js update started: $(date --iso-8601=seconds)"
   log_info "Current Node.js: ${previous_active_version}"
   log_info "Current NVM default: ${previous_default_version}"
-  log_info "Checking for latest Current Node.js release."
+  log_info "Checking for latest stable Current Node.js release."
 
-  install_latest_node "${previous_active_version}"
-  run_command nvm alias default node
+  local target_version
+  if ! target_version="$(latest_stable_node_version)"; then
+    die "Could not resolve the latest stable Node.js release from nvm ls-remote."
+  fi
+  log_info "Latest stable Current Node.js: ${target_version}"
+
+  install_node_version "${target_version}" "${previous_active_version}"
+  run_command nvm alias default "${target_version}"
   run_command nvm use default
 
   if [[ "${DRY_RUN}" == "true" ]]; then
