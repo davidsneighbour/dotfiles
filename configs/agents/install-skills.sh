@@ -223,7 +223,7 @@ cleanup() {
   fi
 }
 
-# Find node and npx. PATH comes first (mise, nvm, or system Node). The stable
+# Find node and npx. PATH comes first (nvm or system Node). The stable
 # ~/.local/bin/node-cron runtime from scripts/node-cron.sh is the fallback for
 # shells without Node in PATH.
 require_runtime() {
@@ -246,7 +246,7 @@ require_runtime() {
 
   if [[ -z "${NODE_BIN}" || -z "${NPX_BIN}" ]]; then
     dnb_ui_error "Node.js and npx are required, but were not found in PATH or through ${cron_node}."
-    dnb_ui_error "Install Node.js (mise or NVM), or run: /bin/bash ${DOTFILES_DIR}/scripts/node-cron.sh --refresh"
+    dnb_ui_error "Install Node.js with NVM, or run: /bin/bash ${DOTFILES_DIR}/scripts/node-cron.sh --refresh"
     exit "${EXIT_DEPENDENCY}"
   fi
   verbose "node: ${NODE_BIN} ($("${NODE_BIN}" --version))"
