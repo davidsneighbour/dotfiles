@@ -21,6 +21,7 @@ crosspost
 dailynote
 dasel
 davidsneighbour
+deepmerge
 Devilspie
 dialog
 dialogs
@@ -90,6 +91,7 @@ locutus
 LOGLEVEL
 lucide
 mainbox
+minimatch
 mkcert
 mktemp
 Monaspace
@@ -98,6 +100,7 @@ msgvault
 nagbar
 ncurc
 newwindow
+nodemon
 nofork
 nohup
 nonexistent
