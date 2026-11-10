@@ -1,5 +1,22 @@
 # Changelog
 
+## [2.34.1](https://github.com/davidsneighbour/dotfiles/compare/v2.34.0...v2.34.1) (2026-11-10)
+
+### Fix
+
+* **bashrc:** guard missing state entries in OpenRouter helper ([88310da](https://github.com/davidsneighbour/dotfiles/commit/88310da940a44bd953188da522dee5a451adec3a))
+* **configs:** skip Node.js pre-releases in the Current update job ([eb69afb](https://github.com/davidsneighbour/dotfiles/commit/eb69afb4b218fa1b47df06a8ab1692fcd20c60f1))
+
+### Chore
+
+* **configs:** remove mise and use nvm as the only Node manager ([fd27256](https://github.com/davidsneighbour/dotfiles/commit/fd27256ae0427ac563a363302e451f15a8eb9bb8))
+* **deps:** update caddy:2 docker digest to ce773ec ([#610](https://github.com/davidsneighbour/dotfiles/issues/610)) ([b6be16e](https://github.com/davidsneighbour/dotfiles/commit/b6be16e280b04dab9b64d3cce329d4f5179f04dc))
+* **deps:** update docker.io/library/redis:8 docker digest to 1f88291 ([#614](https://github.com/davidsneighbour/dotfiles/issues/614)) ([6a2172f](https://github.com/davidsneighbour/dotfiles/commit/6a2172fe5200d49f273291bc9e17e8f06a4fbe31))
+* **deps:** update ghcr.io/alexta69/metube:latest docker digest to 96dfbf0 ([#611](https://github.com/davidsneighbour/dotfiles/issues/611)) ([4d1faba](https://github.com/davidsneighbour/dotfiles/commit/4d1faba94e7cc72cc3dfd54a2ccc264134ae704f))
+* **deps:** update ghcr.io/dgtlmoon/changedetection.io:latest docker digest to 47b1e9c ([#612](https://github.com/davidsneighbour/dotfiles/issues/612)) ([8dc5b38](https://github.com/davidsneighbour/dotfiles/commit/8dc5b384f0eb6a8917b829285a18b5d831abfcaf))
+* **deps:** update ghcr.io/paperless-ngx/paperless-ngx:latest docker digest to d704e84 ([#613](https://github.com/davidsneighbour/dotfiles/issues/613)) ([d29b14a](https://github.com/davidsneighbour/dotfiles/commit/d29b14a13a151f50dc2b675648cea3d3bac4b0ef))
+* **deps:** update louislam/uptime-kuma:2 docker digest to e88415a ([#615](https://github.com/davidsneighbour/dotfiles/issues/615)) ([d35c749](https://github.com/davidsneighbour/dotfiles/commit/d35c74998668f68e4cc481e95ee74e203e07c16f))
+
 ## [2.34.0](https://github.com/davidsneighbour/dotfiles/compare/v2.33.1...v2.34.0) (2026-11-09)
 
 ### Feat
