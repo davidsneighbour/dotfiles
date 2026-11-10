@@ -876,7 +876,7 @@ async function main() {
       hdr = true;
       for (const m of d.unfree) {
         note();
-        const e = allMap ||
+        const e = allMap[m] ||
           allMap[m.replace(/:free$/, "")] || { prompt: "", completion: "" };
         console.log(
           `  ${B}${m}${RST}  $${perm(e.prompt)}/M in · $${perm(e.completion)}/M out  (free preview over)`,
@@ -889,7 +889,7 @@ async function main() {
       hdr = true;
       for (const m of d.gone) {
         note();
-        const was = (prevFree && prevFree[m].name) || "";
+        const was = (prevFree[m] && prevFree[m].name) || "";
         console.log(`  ${m}${was ? `  (${was})` : ""}`);
       }
     }
@@ -916,7 +916,7 @@ async function main() {
     for (const [k, v] of Object.entries(cur)) {
       out[k] = {
         ...v,
-        first_seen: (prev && prev && prev[k].first_seen) || TODAY,
+        first_seen: (prev && prev[k] && prev[k].first_seen) || TODAY,
       };
     }
     return out;
