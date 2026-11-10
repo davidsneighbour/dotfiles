@@ -52,3 +52,5 @@ export VALE_STYLES_PATH
 # reused over several tools, disable telemetry
 DISABLE_TELEMETRY=1
 export DISABLE_TELEMETRY
+DO_NOT_TRACK=1
+export DO_NOT_TRACK
