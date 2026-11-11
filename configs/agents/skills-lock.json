@@ -175,6 +175,12 @@
       "skillPath": "plugins/llm-finetuning/skills/checkpoint-promotion/SKILL.md",
       "computedHash": "815f472a3b9d03318ca91621817e343810a1760c3052d3c770719bf2b45864cd"
     },
+    "chrome-extensions": {
+      "source": "googlechrome/modern-web-guidance",
+      "sourceType": "github",
+      "skillPath": "skills/chrome-extensions/SKILL.md",
+      "computedHash": "1e8525bb49647008dcd3a6b7e5d3c3207345f086e7a64d7e6d5bcc67dbba7a71"
+    },
     "ci-cd-and-automation": {
       "source": "addyosmani/agent-skills",
       "sourceType": "github",
@@ -750,6 +756,12 @@
       "sourceType": "github",
       "skillPath": "plugins/javascript-typescript/skills/modern-javascript-patterns/SKILL.md",
       "computedHash": "353c864ce983d7580a71fe80212c7da32d4bce5914874f1b39a76f9e04d37c31"
+    },
+    "modern-web-guidance": {
+      "source": "googlechrome/modern-web-guidance",
+      "sourceType": "github",
+      "skillPath": "skills/modern-web-guidance/SKILL.md",
+      "computedHash": "8ea2818acb8fc266fd58123427700e9fe424e03f9913089ee4f3d1b041d72841"
     },
     "monorepo-management": {
       "source": "wshobson/agents",
