@@ -3,5 +3,5 @@
 
 Some quick adaption of the login screen.
 
-* add background image from i3 (lockscreen.png)
+* add background image from i3 (lockscreen.jpg)
 * move login box to the bottom right corner
