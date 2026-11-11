@@ -1,5 +1,23 @@
 # Changelog
 
+## [2.35.0](https://github.com/davidsneighbour/dotfiles/compare/v2.34.2...v2.35.0) (2026-11-11)
+
+### Feat
+
+* **session:** configure wallpaper and lock screen images centrally ([ef9087d](https://github.com/davidsneighbour/dotfiles/commit/ef9087d77db8b3516b3899b6556a4bf15d2d0380))
+
+### Fix
+
+* add DO_NOT_TRACK env variable ([523a76a](https://github.com/davidsneighbour/dotfiles/commit/523a76ac8ddf84de492e9b9ee530df3554bd796c))
+* **ai:** update global skills ([1452020](https://github.com/davidsneighbour/dotfiles/commit/1452020f4b1c977a2aab0585996cf169ae257337))
+* **session:** scale lock screen image to cover each screen ([fe35a6c](https://github.com/davidsneighbour/dotfiles/commit/fe35a6c18e912f131f39da958818fb5fdd3b2d27))
+* **session:** use the JPEG lock screen image as LightDM background ([36e7df8](https://github.com/davidsneighbour/dotfiles/commit/36e7df88fa1b7e43a2bcf2e256b3f2a17373755e))
+* update lockscreen and background wallpaper ([a015f3a](https://github.com/davidsneighbour/dotfiles/commit/a015f3a2aded1f90ed6d916f3af4f305460eaa05))
+
+### Chore
+
+* **session:** resize wallpaper and lock screen images to 2000px ([5035f02](https://github.com/davidsneighbour/dotfiles/commit/5035f026191634ed50288661e470960249ea78de))
+
 ## [2.34.2](https://github.com/davidsneighbour/dotfiles/compare/v2.34.1...v2.34.2) (2026-11-10)
 
 ### Fix
