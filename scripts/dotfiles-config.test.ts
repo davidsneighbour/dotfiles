@@ -33,6 +33,21 @@ test("configuration CLI validates and preserves files on failure", () => {
       ["--action", "set", "--pointer", "/schemaVersion", "--value", "2"],
       ["--action", "set", "--pointer", "/dotfiles/unknown", "--value", "true"],
       ["--action", "set", "--pointer", "/dotfiles", "--value", "invalid"],
+      ["--action", "validate", "--raw"],
+      ["--action", "get", "--raw", "--pointer", "/schemaVersion"],
+      ...[
+        '{"session":{"unknown":"x"}}',
+        '{"session":{"wallpaperImage":""}}',
+        '{"session":{"lockScreenImage":"~/lock.jpg"}}',
+        '{"session":{"wallpaperImage":1}}',
+      ].map((value) => [
+        "--action",
+        "set",
+        "--pointer",
+        "/dotfiles",
+        "--value",
+        value,
+      ]),
     ]) {
       const result = run(...args);
       assert.equal(result.status, 1, JSON.stringify(args));
@@ -47,6 +62,31 @@ test("configuration CLI validates and preserves files on failure", () => {
     assert.deepEqual(
       JSON.parse(readFileSync(config, "utf8")),
       JSON.parse(initial),
+    );
+    const session = {
+      wallpaperImage: "configs/session/i3/wallpaper.jpg",
+      lockScreenImage: "/usr/share/backgrounds/lock screen.png",
+    };
+    assert.equal(
+      run(
+        "--action",
+        "set",
+        "--pointer",
+        "/dotfiles",
+        "--value",
+        JSON.stringify({ session }),
+      ).status,
+      0,
+    );
+    for (const [key, expected] of Object.entries(session))
+      assert.equal(
+        run("--action", "get", "--raw", "--pointer", `/dotfiles/session/${key}`)
+          .stdout,
+        `${expected}\n`,
+      );
+    assert.equal(
+      run("--action", "get", "--raw", "--pointer", "/dotfiles/session").status,
+      1,
     );
     assert.equal(run("--help").status, 0);
     writeFileSync(config, "{");

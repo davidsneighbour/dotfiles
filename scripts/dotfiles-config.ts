@@ -11,11 +11,13 @@ const help = `Usage: node scripts/dotfiles-config.ts --action validate|get|set [
   --schema PATH   Schema (default: DOTFILES_SCHEMA or repository schema)
   --pointer PATH  JSON Pointer for get/set; empty string selects the document
   --value JSON    JSON value for set (strings must be JSON-quoted)
+  --raw           For get: print a string value without JSON quotes
   --verbose      Print selected paths to stderr
   --help         Show help
 Examples:
   bash scripts/dotfiles-config.sh --action validate
   node scripts/dotfiles-config.ts --action get --pointer /schemaVersion
+  node scripts/dotfiles-config.ts --action get --raw --pointer /dotfiles/session/wallpaperImage
   node scripts/dotfiles-config.ts --action set --pointer /dotfiles --value '{}'
 Exit codes: 0 success, 1 invalid input, validation failure, or I/O failure.
 `;
@@ -64,6 +66,7 @@ async function main(): Promise<void> {
       schema: { type: "string" },
       pointer: { type: "string" },
       value: { type: "string" },
+      raw: { type: "boolean" },
       verbose: { type: "boolean" },
       help: { type: "boolean" },
     },
@@ -81,6 +84,8 @@ async function main(): Promise<void> {
     throw new Error("validate does not accept --pointer or --value.");
   if (values.action === "get" && values.value !== undefined)
     throw new Error("get does not accept --value.");
+  if (values.raw && values.action !== "get")
+    throw new Error("--raw is only valid with --action get.");
   if (
     values.action === "set" &&
     (values.pointer === undefined || values.value === undefined)
@@ -112,8 +117,11 @@ async function main(): Promise<void> {
   };
   check(document);
   if (values.action === "get") {
+    const result = lookup(document, tokens(values.pointer ?? ""));
+    if (values.raw && typeof result !== "string")
+      throw new Error("--raw requires the pointer to select a string value.");
     process.stdout.write(
-      `${JSON.stringify(lookup(document, tokens(values.pointer ?? "")), null, 2)}\n`,
+      `${values.raw ? result : JSON.stringify(result, null, 2)}\n`,
     );
   } else if (values.action === "set") {
     const parts = tokens(values.pointer ?? "");

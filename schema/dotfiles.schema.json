@@ -20,8 +20,56 @@
       "description": "Repository-owned orchestration settings. Add named functional domains here as consumers are introduced.",
       "default": {},
       "additionalProperties": false,
-      "properties": {}
+      "properties": {
+        "session": {
+          "type": "object",
+          "description": "Graphical desktop session settings (see SESSION.md). Read through configs/session/i3/session-image.sh.",
+          "additionalProperties": false,
+          "properties": {
+            "wallpaperImage": {
+              "$ref": "#/$defs/imagePath",
+              "description": "Desktop wallpaper image. i3 sets it at every start and restart with `feh --bg-fill` (configs/session/i3/configs/session-starts.conf). If the value is missing or the file does not exist, no wallpaper is set and the error goes to stderr. Relative paths resolve from the repository root."
+            },
+            "lockScreenImage": {
+              "$ref": "#/$defs/imagePath",
+              "description": "Lock screen image, independent of wallpaperImage. configs/session/i3/lock.sh shows it with `i3lock-color --fill`, and configs/session/lightdm/setup.sh copies it as the LightDM greeter background. If the value is missing or the file does not exist, lock.sh locks with a solid colour and writes a warning to stderr. Relative paths resolve from the repository root."
+            }
+          },
+          "examples": [
+            {
+              "wallpaperImage": "configs/session/i3/wallpaper.jpg",
+              "lockScreenImage": "configs/session/i3/wallpaper.jpg"
+            }
+          ]
+        }
+      }
     }
   },
-  "examples": [{ "schemaVersion": 1, "dotfiles": {} }]
+  "$defs": {
+    "imagePath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[^~]",
+      "description": "Image file path. A relative path resolves from the repository root; an absolute path is used as is. No tilde or environment-variable expansion occurs.",
+      "examples": [
+        "configs/session/i3/wallpaper.jpg",
+        "/usr/share/backgrounds/warty-final-ubuntu.png"
+      ]
+    }
+  },
+  "examples": [
+    {
+      "schemaVersion": 1,
+      "dotfiles": {}
+    },
+    {
+      "schemaVersion": 1,
+      "dotfiles": {
+        "session": {
+          "wallpaperImage": "configs/session/i3/wallpaper.jpg",
+          "lockScreenImage": "configs/session/i3/wallpaper.jpg"
+        }
+      }
+    }
+  ]
 }

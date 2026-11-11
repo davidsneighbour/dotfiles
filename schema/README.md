@@ -1,8 +1,17 @@
 # Dotfiles configuration
 
-[configs/dotfiles.json](../configs/dotfiles.json) is the canonical, non-secret configuration for repository-owned orchestration. [dotfiles.schema.json](dotfiles.schema.json) defines its format. This foundation does not migrate settings or change workstation behaviour. The empty `dotfiles` object is deliberate: add settings together with their first consumer.
+[configs/dotfiles.json](../configs/dotfiles.json) is the canonical, non-secret configuration for repository-owned orchestration. [dotfiles.schema.json](dotfiles.schema.json) defines its format. Add settings together with their first consumer.
 
 VS Code reads the local `$schema` reference and the workspace association for hover descriptions, completion, and validation. No published schema URL or network access is required. Schema defaults are editor hints; the CLI does not insert defaults, coerce values, or remove unknown properties.
+
+## Settings
+
+| Setting | Consumer | Behaviour |
+| --- | --- | --- |
+| `dotfiles.session.wallpaperImage` | [`configs/session/i3/session-image.sh`](../configs/session/i3/session-image.sh) `wallpaper`, called by the wallpaper line in `configs/session/i3/configs/session-starts.conf` | Image that `feh --bg-fill` sets at every i3 start and restart. If it cannot be resolved, no wallpaper is set. |
+| `dotfiles.session.lockScreenImage` | `session-image.sh lockscreen`, called by `configs/session/i3/lock.sh` and `configs/session/lightdm/setup.sh` | Lock screen image and LightDM greeter background, independent of the wallpaper. If it cannot be resolved, the screen locks with a solid colour. |
+
+Image paths are strings. A relative path resolves from the repository root, and an absolute path is used as is. A leading `~` is rejected, because no tilde expansion occurs. Both settings are optional. See "Background" and "Screen lock" in [SESSION.md](../SESSION.md).
 
 ## Ownership decision
 
@@ -33,6 +42,7 @@ Requires Node.js 24 or newer and the repository npm dependencies. Both entry poi
 ```bash
 npm run config:validate
 bash scripts/dotfiles-config.sh --action get --pointer /schemaVersion
+bash scripts/dotfiles-config.sh --action get --raw --pointer /dotfiles/session/wallpaperImage
 node scripts/dotfiles-config.ts --action get --pointer /dotfiles
 node scripts/dotfiles-config.ts --action set --pointer /dotfiles --value '{}'
 node scripts/dotfiles-config.ts --action validate --config /path/to/dotfiles.json --schema /path/to/schema.json
@@ -40,6 +50,6 @@ node scripts/dotfiles-config.ts --action validate --config /path/to/dotfiles.jso
 
 Flags override `DOTFILES_CONFIG` and `DOTFILES_SCHEMA`, which override repository-relative defaults. Explicit relative paths resolve from the current directory; defaults resolve from the script location. No environment-variable or tilde expansion occurs inside JSON values. `--schema` selects a trusted local JSON Schema; external references are not downloaded. The document's `$schema` is only an editor hint.
 
-`get` returns JSON, including quotes for strings, and defaults to the complete document. JSON Pointer uses `/` to separate keys, `~1` for a literal slash, and `~0` for a tilde. `set` requires a JSON value and an explicit pointer; an empty pointer replaces the whole document. Parents must already exist and be objects. Array values can be replaced as a whole; array element traversal and unsafe prototype segments are rejected. There is no implicit file creation, deletion, merge, or repair of invalid input.
+`get` returns JSON, including quotes for strings, and defaults to the complete document. With `--raw`, `get` prints a string value without JSON quotes, for use in shell scripts; a non-string value is an error. JSON Pointer uses `/` to separate keys, `~1` for a literal slash, and `~0` for a tilde. `set` requires a JSON value and an explicit pointer; an empty pointer replaces the whole document. Parents must already exist and be objects. Array values can be replaced as a whole; array element traversal and unsafe prototype segments are rejected. There is no implicit file creation, deletion, merge, or repair of invalid input.
 
 Every action validates the input. Updates also validate the result before replacing the file atomically in the same directory, retain permission bits, and detect changes observed before replacement. Concurrent writers are not supported: serialise writes externally. JSON formatting becomes two-space indentation on write. Updates reject symbolic links and other non-regular files. Configuration directories must be writable. Results and help go to stdout; errors and `--verbose` path diagnostics go to stderr. Validation and successful writes produce no stdout. Exit status is 0 for success and 1 for invalid arguments, invalid JSON, schema failures, or file errors. `--help` lists options.

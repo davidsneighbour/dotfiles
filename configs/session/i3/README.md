@@ -19,6 +19,8 @@ at the repo root. This file only documents what lives in this folder.
 | `rofi.rasi` | Small standalone Rofi override used by the launcher bindings — see "Rofi" below. |
 | `layouts/` | Saved workspace layouts (JSON, tracked in git) — see "Workspace layouts" below. |
 | `workspaces/layouts.py` | Saves, applies, deletes, and edits workspace layouts — see "Workspace layouts" below. |
+| `session-image.sh` | Prints the absolute path of the wallpaper or lock screen image that `dotfiles.session` in [`configs/dotfiles.json`](../../dotfiles.json) defines. Used by the wallpaper line in `configs/session-starts.conf`, by `lock.sh`, and by `../lightdm/setup.sh`. |
+| `wallpaper.jpg` | Default wallpaper and lock screen image (2000 px on the longest side). |
 | `window-inspector.sh` | Click a window, see its WM_CLASS/role/title/PID/geometry in a floating terminal — see "Window rules" below. Bound to `Ctrl+Shift+Alt+I`. |
 
 ## Startup

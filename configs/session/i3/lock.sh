@@ -1,7 +1,11 @@
 #!/bin/bash
 #
-# Lock the i3 session with i3lock, using this directory's lockscreen image
-# and the Dracula Pro Nosferatu i3lock-colour theme when the local binary supports it.
+# Lock the i3 session with i3lock, using the lock screen image from the
+# central configuration (`dotfiles.session.lockScreenImage` in
+# configs/dotfiles.json, resolved by session-image.sh) and the Dracula Pro
+# Nosferatu i3lock-colour theme when the local binary supports it. If the
+# image cannot be resolved, the screen still locks, with a solid colour: a
+# configuration error must never leave the session unlocked before suspend.
 #
 # Prefers `i3lock-color` (installed under that name in /usr/local/bin, see
 # SESSION.md, "Screen lock") and falls back to the apt `i3lock`. The theme
@@ -36,7 +40,6 @@
 set -Eeuo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-LOCKSCREEN_IMAGE="${SCRIPT_DIR}/lockscreen.jpg"
 
 select_locker() {
   local candidate
@@ -66,8 +69,9 @@ print_help() {
 Usage: $(basename "${0}") [--help]
 
 Lock the screen via 'i3lock-color --nofork' (or 'i3lock --nofork' when
-i3lock-color is not installed), using:
-  ${LOCKSCREEN_IMAGE}
+i3lock-color is not installed), using the image that
+dotfiles.session.lockScreenImage in configs/dotfiles.json defines (see
+session-image.sh). Without a valid image, it locks with a solid colour.
 
 The Dracula theme, clock, indicator, and cover-fit image scaling (--fill)
 need i3lock-color; plain i3lock shows only the unscaled image.
@@ -99,15 +103,17 @@ if ! locker="$(select_locker)"; then
   exit 1
 fi
 
-if [[ ! -f "${LOCKSCREEN_IMAGE}" ]]; then
-  printf 'lock.sh: lockscreen image not found: %s\n' "${LOCKSCREEN_IMAGE}" >&2
-  exit 1
-fi
-
 args=(
   --nofork
-  -i "${LOCKSCREEN_IMAGE}"
 )
+
+# session-image.sh reports its own error on stderr (the xss-lock unit's
+# journal).
+if lockscreen_image="$("${SCRIPT_DIR}/session-image.sh" lockscreen)"; then
+  args+=(-i "${lockscreen_image}")
+else
+  printf 'lock.sh: locking without an image\n' >&2
+fi
 
 if theme_supported; then
   alpha='dd'

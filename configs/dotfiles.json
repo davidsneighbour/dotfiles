@@ -1,5 +1,10 @@
 {
   "$schema": "../schema/dotfiles.schema.json",
   "schemaVersion": 1,
-  "dotfiles": {}
+  "dotfiles": {
+    "session": {
+      "wallpaperImage": "configs/session/i3/wallpaper.jpg",
+      "lockScreenImage": "configs/session/i3/wallpaper.jpg"
+    }
+  }
 }
