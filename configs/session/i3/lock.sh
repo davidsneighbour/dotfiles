@@ -36,7 +36,7 @@
 set -Eeuo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-LOCKSCREEN_IMAGE="${SCRIPT_DIR}/lockscreen.png"
+LOCKSCREEN_IMAGE="${SCRIPT_DIR}/lockscreen.jpg"
 
 select_locker() {
   local candidate
@@ -69,8 +69,8 @@ Lock the screen via 'i3lock-color --nofork' (or 'i3lock --nofork' when
 i3lock-color is not installed), using:
   ${LOCKSCREEN_IMAGE}
 
-The Dracula theme, clock, and indicator need i3lock-color; plain i3lock
-shows only the image.
+The Dracula theme, clock, indicator, and cover-fit image scaling (--fill)
+need i3lock-color; plain i3lock shows only the unscaled image.
 
 Restarts Polybar (via ../polybar/launch.sh) once the screen is unlocked.
 
@@ -121,6 +121,10 @@ if theme_supported; then
   orange='#C9A273'
 
   args+=(
+    # Scale the image to cover each screen, cropping the overflowing side
+    # (CSS `object-fit: cover`). Without it, i3lock draws the image at its
+    # native size from the top-left corner.
+    --fill
     --insidever-color="${selection}${alpha}"
     --insidewrong-color="${selection}${alpha}"
     --inside-color="${selection}${alpha}"
