@@ -83,3 +83,15 @@
       cron: "0 */6 * * *"
       comment: "system checkup every 6 hours (report for Polybar)"
       command: ${HOME}/.dotfiles/tools/system-checkup/system-checkup --quiet
+
+# Local CLI packages: one shell entry per repository. Uses the caller's active
+# Node/npm from PATH; never selects a runtime or runs during shell startup.
+- shell:
+    - description: Link dmarc from the local dmarcery repository (Node version and npm prefix shown first)
+      command: >-
+        cd "${HOME}/github.com/davidsneighbour/dmarcery" &&
+        node --version >&2 &&
+        npm prefix --global >&2 &&
+        npm link
+      stdout: true
+      stderr: true

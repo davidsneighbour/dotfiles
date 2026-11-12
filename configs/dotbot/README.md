@@ -174,3 +174,22 @@ npm run lint:shell
 The `host-locutus` Git catalogue jobs refresh the installed LTS runtime through `scripts/node-cron.sh --refresh --exec` before running Node. This prevents startup races and removes version-specific runtime paths. The `node-cron-lts-weekly` job runs `scripts/node-cron.sh --update` on Sundays at 04:45 in the cron daemon’s local timezone. Reapply this profile to replace the two managed jobs and install the weekly LTS update. See [Node runtime maintenance](../../docs/node-runtime.md) for the stable symlink, offline refresh, and explicit `--lts` update operation.
 
 The hourly log cleanup jobs in `host-locutus` and `host-dionysus` use the same offline runtime refresh and create the cron log directory before redirecting output. Reapply the relevant host profile to replace the old direct script call with the stable `cleanup-logs-hourly` job. The profiles explicitly remove the old managed entry to prevent duplicate runs.
+
+## Local npm CLI links
+
+The `host-locutus` profile has one `shell` entry per local npm CLI repository. The initial entry links `dmarc` from `${HOME}/github.com/davidsneighbour/dmarcery`. It prints the active Node version and npm global prefix before running `npm link` inside the repository. Missing repositories and failed commands make the task fail visibly.
+
+Select the required runtime first, then apply the host profile:
+
+```bash
+nvm use 24
+dotfiles host-locutus
+```
+
+This runs all host-profile tasks, including local CLI linking. It uses Node and npm inherited through `PATH`; it does not load nvm, switch versions, or apply the package's `.nvmrc`. Repeat after installing or switching to a Node version that needs these commands. The dmarcery package currently requires Node 24 or later.
+
+To add another package, copy one shell entry in `config.host-locutus.yaml`, change its description and repository path, and retain the runtime reporting and `&&` failure handling. Use the repository path, not the executable name: npm reads command names from the package's `bin` field. Keep package preparation (dependencies and any required build) in that repository's documented workflow. For dmarcery, `dmarc` points to `dist/cli.js`, so its build must exist before the command can be used.
+
+Reapplying the profile reruns `npm link` for the selected npm prefix. npm can run package lifecycle scripts; this is an explicit setup operation, with npm's normal behaviour and failure reporting. It does not run on shell startup or on `nvm use`, and it does not replace the host's `default-packages` list. Do not add `sudo`, `--force`, or automatic runtime switching to these entries.
+
+Completion is registered separately in `bashrc/partials/_completions/commands.sh`; linking makes the executable available to that completion engine.

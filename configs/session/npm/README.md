@@ -7,3 +7,5 @@ Global default packages are opt-in per host. The `host-locutus` Dotbot profile l
 The `--lts` operation delegates to `scripts/node-cron.sh --update`, which resolves the latest published LTS online before installation. The `host-locutus` cron profile runs this helper every Sunday at 04:45.
 
 The shared refresh helper is `scripts/node-cron.sh`. Service startup runs refresh only, never installation. See [Node runtime maintenance](../../../docs/node-runtime.md) for commands, failure behaviour, and cron integration.
+
+Local repository CLIs use explicit `npm link` tasks in the `host-locutus` Dotbot profile, once per repository. Reapply that profile with the desired Node version active. See [local npm CLI links](../../dotbot/README.md#local-npm-cli-links) for the entry pattern, runtime selection, and build requirements.
