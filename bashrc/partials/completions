@@ -1,7 +1,12 @@
 # shellcheck shell=bash
 # Bashrc partial (sourced by ~/.bashrc)
 
-dnb_auto_source "${BASHRC_PATH}"/partials/_completions/
+# Documentation lives beside completion definitions; only source code files.
+for _dnb_completion_file in "${BASHRC_PATH}"/partials/_completions/*; do
+  [[ ${_dnb_completion_file} == *.md || ${_dnb_completion_file} == test-* ]] && continue
+  dnb_auto_source "${_dnb_completion_file}"
+done
+unset _dnb_completion_file
 
 # codex completion
 eval "$(codex completion bash)"

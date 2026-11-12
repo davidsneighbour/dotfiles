@@ -7,13 +7,14 @@ searchfor() {
   local locations_only=0
 
   # help
-  if [[ $# -eq 0 ]]; then
+  if [[ $# -eq 0 || ${1-} == --help ]]; then
     echo "Usage: ${FUNCNAME[0]} <SEARCHTERM> [--path <path>] [--locations-only] [--help]"
     echo
     echo "Options:"
     echo "  --path <path>      Override search base path (default: ${HOME}/github.com/davidsneighbour)"
     echo "  --locations-only   Show only file:line of each match, not the matched code"
     echo "  --help             Show this help message"
+    [[ $# -gt 0 ]] && return 0
     return 1
   fi
 

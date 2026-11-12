@@ -51,3 +51,7 @@ The i3 session maintains the dark preference, with isolated compatibility settin
 ## Central configuration
 
 See [the configuration foundation](schema/README.md) for the canonical file, schema, CLI, and ownership rules.
+
+## Bash command completion
+
+See [help-driven completion](bashrc/partials/_completions/README.md) for the mandatory CLI help format, command registration, caching, and refresh instructions.

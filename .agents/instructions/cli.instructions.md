@@ -20,3 +20,7 @@ For Bash helper commands, also print help when invoked with no arguments, even w
 * Help text must be accurate
 * Function-level help should use `${FUNCNAME[0]}` where applicable
 * Usage examples are encouraged
+
+## Bash completion
+
+All new or changed user-facing CLIs and sourced Bash functions must follow the [standardised safe help contract](../../bashrc/partials/_completions/README.md). Handle `--help` before side effects, configuration, credentials, dependency checks, or prompts. List every option under `Options:` and subcommands under `Commands:`; each subcommand must provide its own safe `--help`. Share parsing and help definitions where practical. Register the command name once using `dnb_register_completion COMMAND` in `bashrc/partials/_completions/commands.sh`. Never maintain a second option list for completion.

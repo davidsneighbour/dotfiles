@@ -53,7 +53,7 @@
   },
   "scripts": {
     "biome:postinstall": "npx @biomejs/biome migrate --write",
-    "check": "npm run config:validate && npm run test:dotfiles-config && npm run lint:terminal-theme && npm run lint:terminal-ui && npm run test:ui && npm run test:backup-runner && npm run test:ai-usage && npm run test:dotbot-crontab && npm run lint:log-filenames && npm run test:shell && npm run lint:config && npm run typecheck && npm run lint:markdown && npm run lint:shell",
+    "check": "npm run test:completions && npm run config:validate && npm run test:dotfiles-config && npm run lint:terminal-theme && npm run lint:terminal-ui && npm run test:ui && npm run test:backup-runner && npm run test:ai-usage && npm run test:dotbot-crontab && npm run lint:log-filenames && npm run test:shell && npm run lint:config && npm run typecheck && npm run lint:markdown && npm run lint:shell",
     "build:terminal-theme": "node --experimental-strip-types scripts/build-terminal-theme.ts",
     "lint:terminal-theme": "node --experimental-strip-types scripts/build-terminal-theme.ts --check",
     "lint:terminal-ui": "node --experimental-strip-types scripts/lint-terminal-ui.ts",
@@ -94,7 +94,8 @@
     "typecheck:scripts": "tsc --project tsconfig.scripts.json --noEmit",
     "update:node-engines": "node --experimental-strip-types scripts/update-node-engines.ts",
     "config:validate": "node scripts/dotfiles-config.ts --action validate",
-    "test:dotfiles-config": "node --test scripts/dotfiles-config.test.ts"
+    "test:dotfiles-config": "node --test scripts/dotfiles-config.test.ts",
+    "test:completions": "bash bashrc/partials/_completions/test-completions.sh"
   },
   "wireit": {
     "postinstall": {
