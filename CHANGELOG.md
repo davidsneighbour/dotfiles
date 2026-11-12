@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.35.1](https://github.com/davidsneighbour/dotfiles/compare/v2.35.0...v2.35.1) (2026-11-12)
+
+### Fix
+
+* **ai:** update humanizer skill hash in skills lockfile ([2e2208d](https://github.com/davidsneighbour/dotfiles/commit/2e2208dfcfd7ca59c554e1e0ceb4137313b0d546))
+* **session:** use the documented green in polybar colours ([e6e56a1](https://github.com/davidsneighbour/dotfiles/commit/e6e56a1960d8100d4494b8039373ef038ff4481e)), references [#7C8C6A](https://github.com/davidsneighbour/dotfiles/issues/7C8C6A) [#9BAF84](https://github.com/davidsneighbour/dotfiles/issues/9BAF84)
+
+### Docs
+
+* **ai:** write "front matter" in global agent instructions ([62d6c74](https://github.com/davidsneighbour/dotfiles/commit/62d6c749246aca00c8a760dcde9d94a5b2837d40))
+* remove pre-2.0.0 releases from changelog ([677941e](https://github.com/davidsneighbour/dotfiles/commit/677941eb3bf34f7c2a359ba89e5578b68440105d))
+
 ## [2.35.0](https://github.com/davidsneighbour/dotfiles/compare/v2.34.2...v2.35.0) (2026-11-11)
 
 ### Feat
