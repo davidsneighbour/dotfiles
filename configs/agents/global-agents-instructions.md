@@ -33,7 +33,7 @@ Manual line breaks are appropriate only when they are semantically required or i
 * blockquotes
 * tables
 * code blocks
-* frontmatter
+* front matter
 * intentionally line-oriented formats
 * content where a line break has semantic meaning
 
