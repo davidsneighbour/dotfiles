@@ -7,6 +7,12 @@
       "skillPath": "plugins/ui-design/skills/accessibility-compliance/SKILL.md",
       "computedHash": "e76877abeed83f3751d1e18c8205f02c8b5d3e7cc2e060670805b449f6faefdb"
     },
+    "agentic-workflows": {
+      "source": "cli/cli",
+      "sourceType": "github",
+      "skillPath": ".github/skills/agentic-workflows/SKILL.md",
+      "computedHash": "1bd2f2b3a428e3cd22c90041f94bbd67c8cf3cd2be925ad92c41e28e543ea849"
+    },
     "ai-debt-detector": {
       "source": "wshobson/agents",
       "sourceType": "github",
@@ -187,6 +193,18 @@
       "skillPath": "skills/ci-cd-and-automation/SKILL.md",
       "computedHash": "f655c44b80ec36532fa058f7b94e7463330b8ccacda35eba05d85c677a4f6a7d"
     },
+    "cli-exercise": {
+      "source": "cli/cli",
+      "sourceType": "github",
+      "skillPath": ".github/skills/cli-exercise/SKILL.md",
+      "computedHash": "7ef085ca95395c08bdf2de241c896c3ac53895f8f8ae70e5aad46d1c60a03751"
+    },
+    "code-review": {
+      "source": "cli/cli",
+      "sourceType": "github",
+      "skillPath": ".github/skills/code-review/SKILL.md",
+      "computedHash": "6c8725192dcc495a2919753b0b614fb033206f5ac4506e994144499f7b44badc"
+    },
     "code-review-and-quality": {
       "source": "addyosmani/agent-skills",
       "sourceType": "github",
@@ -294,6 +312,12 @@
       "sourceType": "github",
       "skillPath": "plugins/blockchain-web3/skills/defi-protocol-templates/SKILL.md",
       "computedHash": "a02691298f109eb13cf3bd28540849fb55f49074fda5545cdca36716e0ff3c2d"
+    },
+    "dependabot-triager": {
+      "source": "cli/cli",
+      "sourceType": "github",
+      "skillPath": ".github/skills/dependabot-triager/SKILL.md",
+      "computedHash": "646281f53ce96b044a1f57cfecd84597136264640f1ed32e502eb88e732ae388"
     },
     "dependency-upgrade": {
       "source": "wshobson/agents",
@@ -432,6 +456,24 @@
       "sourceType": "github",
       "skillPath": "plugins/hr-legal-compliance/skills/gdpr-data-handling/SKILL.md",
       "computedHash": "53afd76f2b23fdec92034bf4d4df209a3fe7d7bf187e27dbbf051d08635c612c"
+    },
+    "gh": {
+      "source": "cli/cli",
+      "sourceType": "github",
+      "skillPath": "skills/gh/SKILL.md",
+      "computedHash": "79aa63cc988ba7de21886fd25377656a5b671a01ee107db9a4ca5b951550074b"
+    },
+    "gh-skill": {
+      "source": "cli/cli",
+      "sourceType": "github",
+      "skillPath": "skills/gh-skill/SKILL.md",
+      "computedHash": "5b71623f49c33c842c1c81d9dc2818d72a1577647387e5b96f63868a23482555"
+    },
+    "ghmock": {
+      "source": "cli/cli",
+      "sourceType": "github",
+      "skillPath": ".github/skills/ghmock/SKILL.md",
+      "computedHash": "3628c408014f22124a3351b640827a2227d23b9874619dfd063dc787b3d57fcb"
     },
     "git-advanced-workflows": {
       "source": "wshobson/agents",
@@ -1309,6 +1351,12 @@
       "skillPath": "plugins/agent-teams/skills/team-composition-patterns/SKILL.md",
       "computedHash": "46e2f89dc7d72b55301f69a3b3e5474a33e7e59859c1649b031f83bbf553cd5a"
     },
+    "tech-debt-burndown": {
+      "source": "cli/cli",
+      "sourceType": "github",
+      "skillPath": ".github/skills/tech-debt-burndown/SKILL.md",
+      "computedHash": "35d678f00f2c5cdfb540f5b564ac07b52482328607aea8c2f3e058434f2407be"
+    },
     "temporal-python-testing": {
       "source": "wshobson/agents",
       "sourceType": "github",
@@ -1393,6 +1441,12 @@
       "skillPath": "plugins/llm-application-dev/skills/vector-index-tuning/SKILL.md",
       "computedHash": "54304fb341e648a840165a38104c5a6f317e4d3dc519d66b2748d5503943e325"
     },
+    "vhs-demo": {
+      "source": "cli/cli",
+      "sourceType": "github",
+      "skillPath": ".github/skills/vhs-demo/SKILL.md",
+      "computedHash": "e82a6e3a6248fc69600385f70ddcfbd816dede2015bb09fcba13492ba10a54c6"
+    },
     "vision-sft": {
       "source": "wshobson/agents",
       "sourceType": "github",
@@ -1440,6 +1494,12 @@
       "sourceType": "github",
       "skillPath": "plugins/conductor/skills/workflow-patterns/SKILL.md",
       "computedHash": "f747ce085de372fe5f01be75062f1eabf48b7d70bac59f386163f0f9ee9a3274"
+    },
+    "writing-acceptance-tests": {
+      "source": "cli/cli",
+      "sourceType": "github",
+      "skillPath": ".github/skills/writing-acceptance-tests/SKILL.md",
+      "computedHash": "b70a894bb4501a66d728d410667a9d99afab9c6988383ac924360d698a4960af"
     }
   }
 }
