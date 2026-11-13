@@ -13,7 +13,9 @@
   `window.__CLOCKIFY_CONTEXT__ = {...}` before `</head>`. `App.tsx` reads that global directly — no
   `fetch()` on load. Any new data the form needs on first paint should extend `FormPageContext` /
   `FormSubmitPayload` and flow through this same injection, not a new endpoint, unless the data must
-  be re-fetched after an in-page mutation (see below).
+  be re-fetched after an in-page mutation (see below). If loading the context fails, `serveErrorPage()`
+  injects `window.__CLOCKIFY_ERROR__ = { message, details }` instead, and `main.tsx` renders
+  `ErrorView`. `UserError.details` carries the Clockify response body; keep it free of stack traces.
 * **The form server is one-shot today**: `commandForm()` starts an HTTP server bound to
   `127.0.0.1:<formPort>` and calls `server.close()` immediately after a successful `/api/submit`. Any
   feature that needs multiple round trips before the final submit (e.g. creating a client or project

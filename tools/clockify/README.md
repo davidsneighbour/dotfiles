@@ -149,6 +149,8 @@ These measures keep the request count low:
 * Optional requests keep 5 requests in reserve for entry changes. The focus check and the list refresh are optional. If the lists cache is stale and the budget is low, the form uses the stale lists.
 * If a running check is refused, the form uses the local state and shows a notice.
 
+If the form cannot load its data, for example because of a rate limit, the window shows an error page in the form design. The page shows the error message and the formatted details: the Clockify response body or the local budget values. **Open Clockify website and close** opens `https://app.clockify.me/tracker` in the default browser, closes the window, and stops the form server. The CLI prints the same details below the error message, and `--json` output includes them as `details`.
+
 Opening the form normally costs one request. A submit costs one more, plus the list refresh once per `listCacheSeconds` (4 requests).
 
 Configurable settings live under `settings` in `~/.config/dnb-clockify/config.json`:

@@ -14,6 +14,7 @@ import { dirname, extname, join, resolve as resolvePath, sep } from "node:path";
 import { suggestedTags, tagClass, tagClasses } from "./tag-classes.ts";
 
 const apiBase = "https://api.clockify.me/api/v1";
+const clockifyWebsiteUrl = "https://app.clockify.me/tracker";
 const configPath = join(homedir(), ".config", "dnb-clockify", "config.json");
 const cacheDir = join(homedir(), ".cache", "dnb-clockify");
 const nudgePath = join(cacheDir, "nudge.json");
@@ -208,16 +209,20 @@ type RateLimitState = {
   blockedUntil: number | null;
 };
 
+// details holds the Clockify response body (or local budget facts). The
+// form error page and the CLI show it formatted below the message.
 class UserError extends Error {
-  constructor(message: string) {
+  readonly details: unknown;
+  constructor(message: string, details?: unknown) {
     super(message);
     this.name = "UserError";
+    this.details = details;
   }
 }
 
 class RateLimitError extends UserError {
-  constructor(message: string) {
-    super(message);
+  constructor(message: string, details?: unknown) {
+    super(message, details);
     this.name = "RateLimitError";
   }
 }
@@ -467,12 +472,23 @@ async function reserveApiRequest(): Promise<void> {
   if (state.blockedUntil !== null) {
     throw new RateLimitError(
       `Clockify rate limit reached. Requests resume at ${clockTime(state.blockedUntil)}.`,
+      {
+        source: "local request budget",
+        reason: "Clockify answered with HTTP 429 earlier.",
+        blockedUntil: new Date(state.blockedUntil).toISOString(),
+      },
     );
   }
   if (state.requests.length >= settings.apiRequestsPerHour) {
     const next = (state.requests[0] ?? now) + rateWindowMs;
     throw new RateLimitError(
       `Clockify request budget (${settings.apiRequestsPerHour} per hour) is used up. Next request possible at ${clockTime(next)}.`,
+      {
+        source: "local request budget",
+        limitPerHour: settings.apiRequestsPerHour,
+        requestsInLastHour: state.requests.length,
+        nextRequestAt: new Date(next).toISOString(),
+      },
     );
   }
   state.requests.push(now);
@@ -486,6 +502,17 @@ async function blockApiRequests(): Promise<void> {
     ...state,
     blockedUntil: now + rateWindowMs,
   } satisfies RateLimitState);
+}
+
+// Returns the error body as parsed JSON when possible, else as text.
+async function responseDetails(response: Response): Promise<unknown> {
+  const body = await response.text();
+  if (body.trim() === "") return undefined;
+  try {
+    return JSON.parse(body) as unknown;
+  } catch {
+    return body;
+  }
 }
 
 async function apiRequest<T>(
@@ -507,12 +534,13 @@ async function apiRequest<T>(
     await blockApiRequests();
     throw new RateLimitError(
       `Clockify rate limit reached. Requests resume at ${clockTime(Date.now() + rateWindowMs)}.`,
+      await responseDetails(response),
     );
   }
   if (!response.ok) {
-    const body = await response.text();
     throw new UserError(
-      `Clockify API request failed (${response.status}): ${body || response.statusText}`,
+      `Clockify API request failed (${response.status} ${response.statusText}).`,
+      await responseDetails(response),
     );
   }
   if (response.status === 204) {
@@ -1072,13 +1100,19 @@ function errorMessage(error: unknown, fallback: string): string {
 
 function printError(command: string, error: unknown, mode: OutputMode): void {
   const message = errorMessage(error, "Clockify command failed.");
+  const details = error instanceof UserError ? error.details : undefined;
   if (mode === "json") {
     console.log(
-      JSON.stringify({ ok: false, command, error: message }, null, 2),
+      JSON.stringify({ ok: false, command, error: message, details }, null, 2),
     );
     return;
   }
   console.error(`Error: ${message}`);
+  if (details !== undefined) {
+    console.error(
+      typeof details === "string" ? details : JSON.stringify(details, null, 2),
+    );
+  }
 }
 
 async function commandProjects(
@@ -2118,6 +2152,14 @@ async function commandForm(args: string[], options: CliOptions): Promise<void> {
         sendJson(response, { ok: true, tags: visibleTags(formContext) });
         return;
       }
+      if (request.method === "POST" && url.pathname === "/api/open-clockify") {
+        // Error page action: continue in the Clockify web app and end this
+        // form server, so the next click starts a fresh one.
+        openClockifyWebsite();
+        sendJson(response, { ok: true });
+        server.close();
+        return;
+      }
       if (request.method === "GET" && url.pathname === "/") {
         // Each window opening checks for a running timer (rate limited by
         // runningCheckSeconds), so a reopened form is never stale.
@@ -2164,7 +2206,10 @@ async function commandForm(args: string[], options: CliOptions): Promise<void> {
         return;
       }
       response.statusCode = 500;
-      sendHtml(response, `<h1>Error</h1><p>${escapeHtml(message)}</p>`);
+      await serveErrorPage(response, {
+        message,
+        details: error instanceof UserError ? (error.details ?? null) : null,
+      });
     }
   });
   const configuredUrl = `http://127.0.0.1:${config.settings.formPort}/`;
@@ -2196,7 +2241,18 @@ async function commandForm(args: string[], options: CliOptions): Promise<void> {
       ? address.port
       : config.settings.formPort;
   const url = `http://127.0.0.1:${port}/`;
-  const formContext = await getFormContext();
+  let formContext: FormContext;
+  try {
+    formContext = await getFormContext();
+  } catch (error) {
+    // Keep the server up and still open the window: the page then shows the
+    // error with its details and a way to continue on the Clockify website.
+    if (hasFlag(args, "--open")) {
+      openUrl(url);
+    }
+    printError("form", error, options.json ? "json" : "text");
+    return;
+  }
   const running = formContext.running !== undefined;
   if (hasFlag(args, "--open")) {
     openUrl(url);
@@ -2358,6 +2414,28 @@ async function serveFormPage(
   sendHtml(response, injected);
 }
 
+// Renders the error view of the form app with the message and details.
+async function serveErrorPage(
+  response: ServerResponse,
+  error: { message: string; details: unknown },
+): Promise<void> {
+  const html = await readFile(join(distWebDir, "index.html"), "utf8");
+  const injected = html.replace(
+    "</head>",
+    `<script>window.__CLOCKIFY_ERROR__ = ${toInlineJson(error)};</script></head>`,
+  );
+  sendHtml(response, injected);
+}
+
+function openClockifyWebsite(): void {
+  // The default browser holds the Clockify login, not the form profile.
+  spawn("xdg-open", [clockifyWebsiteUrl], { detached: true, stdio: "ignore" })
+    .on("error", (error) => {
+      console.error("Clockify: could not open the Clockify website.", error);
+    })
+    .unref();
+}
+
 function toInlineJson(value: unknown): string {
   return JSON.stringify(value)
     .replaceAll("<", "\\u003c")
@@ -2394,14 +2472,6 @@ async function serveStaticFile(
 function sendHtml(response: ServerResponse, html: string): void {
   response.setHeader("content-type", "text/html; charset=utf-8");
   response.end(html);
-}
-
-function escapeHtml(value: string): string {
-  return value
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;");
 }
 
 async function main(): Promise<void> {
