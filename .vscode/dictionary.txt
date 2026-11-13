@@ -25,6 +25,7 @@ deepmerge
 Devilspie
 dialog
 dialogs
+dmarc
 dmenu
 dnbhq
 dotbot
