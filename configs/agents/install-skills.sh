@@ -50,6 +50,7 @@ GLOBAL_LOCKFILE="${HOME}/.agents/.skill-lock.json"
 # directory, for example one that the skills CLI created for another agent.
 PROJECT_SUBDIRS=(
   .agents
+  instructions
   tests
 )
 

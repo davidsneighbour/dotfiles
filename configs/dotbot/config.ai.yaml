@@ -34,6 +34,12 @@
       path: configs/agents/global-agents-instructions.md
     ~/.codex/AGENTS.md:
       path: configs/agents/global-agents-instructions.md
+    # Topic-specific global instructions, read on demand through the router
+    # table in global-agents-instructions.md. force: false keeps a real
+    # folder at this path; Dotbot then reports an error instead of deleting it.
+    ~/.config/agents/instructions:
+      path: configs/agents/instructions
+      force: false
 
 # Third-party agent skills: restore the skills recorded in
 # configs/agents/skills-lock.json (never updates them) and link them into

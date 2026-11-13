@@ -7,39 +7,11 @@
 * Use sentence case for headings.
 * Always use the Oxford comma.
 
-## Development
-
-* Prefer npm.
-* Use Bash and Node.js for scripting and automation.
-* Use ESM.
-* Use strict TypeScript.
-* Do not use Snap packages when suggesting Linux installations if there are other formats available.
-
 ## Working style
 
 * Inspect existing conventions before changing files.
 * Do not duplicate functionality unnecessarily.
 * Prefer small, maintainable changes.
-
-## Markdown and prose formatting
-
-Do not hard-wrap prose or other block text to a fixed line length.
-
-Write paragraphs as single logical lines and allow the editor to perform visual line wrapping. Do not insert manual line breaks at 80 characters, 100 characters, or any other arbitrary column width.
-
-Manual line breaks are appropriate only when they are semantically required or improve the structure of the source, for example:
-
-* list items
-* blockquotes
-* tables
-* code blocks
-* front matter
-* intentionally line-oriented formats
-* content where a line break has semantic meaning
-
-For ordinary Markdown paragraphs, documentation, instructions, explanations, and similar prose, use one source line per paragraph regardless of line length.
-
-Never reflow existing prose solely to satisfy a maximum line length.
 
 ## Project root convention
 
@@ -120,6 +92,19 @@ Prefer analytical language such as:
 Avoid anthropomorphic justification such as "I feel", "I like", or "I want" when an objective or comparative explanation is available.
 
 The goal is not agreement with the user. The goal is to make the basis for accepting, rejecting, or qualifying a proposed change explicit.
+
+## Topic-specific instructions
+
+More global instructions are in `~/.config/agents/instructions/`. This is an absolute path below your home folder. Do not resolve it against the current working directory, the project root, or the location of this file.
+
+Before you start a task, find the topics below that apply to it and read those files. Read only the files that apply. More than one file can apply to the same task. Do not read the whole folder.
+
+| File | Read it when the task |
+| --- | --- |
+| `~/.config/agents/instructions/coding/development.instructions.md` | writes or changes code or scripts, selects a package manager or dependencies, or suggests how to install software on Linux. |
+| `~/.config/agents/instructions/documentation/markdown-prose.instructions.md` | writes or changes Markdown, documentation, instructions, or other prose that is saved or published, for example in files, issues, pull requests, or comments. |
+
+If project-specific instructions conflict with these files, the project-specific instructions take precedence, unless a higher-priority instruction requires otherwise.
 
 ## Other instructions
 

@@ -1,12 +1,53 @@
 # Agent configuration
 
-This folder holds the shared configuration for Claude Code and Codex: the global instructions and the third-party skills.
+This folder holds the shared configuration for Claude Code and Codex: the global instructions, the topic-specific instructions, and the third-party skills.
 
 ## Global agent instructions
 
 [global-agents-instructions.md](global-agents-instructions.md) contains the user-wide instructions loaded by Claude Code and Codex in every session. It is not a repository instruction file. Its source filename avoids automatic discovery as a local `AGENTS.md` or `CLAUDE.md`.
 
 The [Dotbot AI profile](../dotbot/config.ai.yaml) links this source to `~/.claude/CLAUDE.md` and `~/.codex/AGENTS.md`. Edit the source here to update the shared instructions.
+
+### Topic-specific instructions
+
+The global file holds only the rules that apply to every session. Rules for one topic are in separate files in [instructions/](instructions/). The agents read them only when a task needs them, so a session does not load rules that it does not use.
+
+The Dotbot AI profile links `~/.config/agents/instructions` to `configs/agents/instructions`. Claude Code and Codex use the same folder. Nothing is copied into `~/.claude/` or `~/.codex/`. The link has `force: false`: if a real folder is at that path, Dotbot reports an error and does not delete it. A missing or wrong link is repaired by the next `dotfiles ai` run.
+
+The agents do not load these files automatically. The section "Topic-specific instructions" in the global file is a router table: it lists each file with its absolute path below `~/.config/agents/instructions/` and the condition for reading it. The agent reads the table and then reads the files that apply to the task. Do not replace the table with an import of all files (for example the `@path` import of Claude Code), because that loads every file in every session.
+
+| File | Topic |
+| --- | --- |
+| [instructions/coding/development.instructions.md](instructions/coding/development.instructions.md) | Package manager, scripting languages, ESM, strict TypeScript, and Linux installation suggestions. |
+| [instructions/documentation/markdown-prose.instructions.md](instructions/documentation/markdown-prose.instructions.md) | Line breaks in Markdown, documentation, and other prose. |
+
+Each file covers one topic, uses the `.instructions.md` extension, and starts with YAML front matter that has a `description`. An `applyTo` field is optional metadata for tools that support it. Claude Code and Codex do not load a file because of it.
+
+#### Add a topic
+
+1. Create `instructions/<category>/<topic>.instructions.md` with a `description` in the front matter. Write rules that an agent can act on. Do not repeat rules from the global file or from other topic files.
+2. Add a row to the router table in [global-agents-instructions.md](global-agents-instructions.md): the absolute path (`~/.config/agents/instructions/...`) and the condition for reading the file.
+3. Add the file to the table above.
+
+A rule that applies to every session stays in the global file. A file without a router row is never read.
+
+#### Conflicting rules
+
+Keep each rule in one place. If two global files conflict, change one of them so that only one rule remains. Project instructions (`AGENTS.md`, `CLAUDE.md`, and their scoped files) take precedence over the global topic files, as the router section states.
+
+#### Test the loading
+
+Start each agent in a folder outside this repository, for example `cd /tmp && claude` and `cd /tmp && codex`, and check these cases:
+
+| Task | Expected result |
+| --- | --- |
+| A question without a matching topic | The agent reads no topic file. |
+| A code or script change | The agent reads `coding/development.instructions.md`. |
+| A documentation change | The agent reads `documentation/markdown-prose.instructions.md`. |
+| A task with both topics | The agent reads both files. |
+| A repository with its own instructions | Project rules take precedence over topic rules. |
+
+The agent must read the files from `~/.config/agents/instructions/`, not from a path below the current folder or below `~/.claude/` or `~/.codex/`. Check the link with `readlink -f ~/.config/agents/instructions`.
 
 ## Third-party skills
 
@@ -24,6 +65,7 @@ Your own skills do not belong here. They stay under version control in their sou
 | `tests/install-skills-test.sh` | Offline tests for the manager (part of `npm run test:shell`). |
 | `.gitignore` | Ignores `.agents/` (the restored skills) and the per-agent folders that the skills CLI can create here (`.claude/`, `agent/`). |
 | `.agents/skills/<name>/` | The restored skills (canonical copies). Ignored by Git. |
+| `instructions/` | The topic-specific global instructions (see [Topic-specific instructions](#topic-specific-instructions)). Not part of the skills project; `--check` accepts this folder. |
 
 ### How it works
 
