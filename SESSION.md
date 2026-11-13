@@ -344,3 +344,5 @@ Dotbot links `bashrc/helpers/chrome-app` to `~/.local/bin/chrome-app` and the ap
 The WhatsApp launcher icon is supplied by the DNB theme and linked into the local hicolor fallback theme by Dotbot. `window_icons.rules` in `configs/session/i3/workspaces/workspaces.yaml` maps `dnb-whatsapp` to the Lucide messages-square glyph (`U+E40D`) for dynamic workspaces.
 
 WhatsApp enables `APP_SINGLE_INSTANCE="true"` in its Chrome app definition. Repeated launches activate the first existing `dnb-whatsapp` window through `wmctrl -ia`, switching to its workspace. The Rofi workspace launcher may briefly create an empty workspace, which i3 removes when focus returns to WhatsApp. Existing duplicate windows are not closed automatically.
+
+The Polybar integration enables `status --remind` and polls every 60 seconds for full-hour Dunst reminders after an hour without tracking. Running timers, recent entry end times, and successful local entry changes suppress reminders. See [Clockify session integration](configs/session/clockify/README.md) for timing, idle behaviour, and cache details.

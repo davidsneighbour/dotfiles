@@ -17,6 +17,8 @@ const configPath = join(homedir(), ".config", "dnb-clockify", "config.json");
 const cacheDir = join(homedir(), ".cache", "dnb-clockify");
 const statusCachePath = join(cacheDir, "status.json");
 const nudgePath = join(cacheDir, "nudge.json");
+const reminderPath = join(cacheDir, "reminder.json");
+const trackingActivityPath = join(cacheDir, "tracking-activity.json");
 const lastEntryPath = join(cacheDir, "last-entry.json");
 const packageRoot = join(import.meta.dirname, "..");
 const distWebDir = join(packageRoot, "dist", "web");
@@ -191,7 +193,7 @@ function printHelp(): void {
   console.log(`Usage: dnb-clockify <command> [options]
 
 Commands:
-  status [--json]                         Show current tracking state.
+  status [--json] [--remind]              Show current tracking state.
   projects [--unmapped] [--json]          List Clockify projects.
   projects add --name <n> --client <c> [--color <hex>]
                                            Create a project.
@@ -216,6 +218,7 @@ Commands:
   alias configure                          Configure aliases interactively.
 
 Global options:
+  --remind     With status, send a tracking reminder at the full hour.
   --json       Print machine-readable JSON.
   --verbose    Print more details where useful.
   --quiet      Suppress optional details.
@@ -1076,6 +1079,49 @@ function readIdleSeconds(): number | undefined {
   return Number.isFinite(idleMs) ? Math.floor(idleMs / 1000) : undefined;
 }
 
+async function remindTracking(): Promise<void> {
+  const now = new Date();
+  // The minute poll delivers only during the full-hour minute; never catch up.
+  if (now.getMinutes() !== 0) return;
+  const hour = Math.floor(now.getTime() / 3_600_000);
+  const previous = await readJsonFile<{ hour: number }>(reminderPath);
+  if (previous?.hour === hour) return;
+  const activity = await readJsonFile<{ updatedAt: number }>(
+    trackingActivityPath,
+  );
+  const cutoff = now.getTime() - 3_600_000;
+  if (activity !== undefined && activity.updatedAt > cutoff) return;
+  const token = await readEnvToken();
+  const config = await loadConfig();
+  const user = await getUser(token);
+  const workspaceId = await getWorkspaceId(token, config);
+  if (await getRunningEntry(token, workspaceId, user.id)) return;
+  const entries = await getRecentEntries(token, workspaceId, user.id, 1);
+  if (
+    entries.some((entry) => {
+      const end = entry.timeInterval.end;
+      return end != null && Date.parse(end) > cutoff;
+    })
+  )
+    return;
+  const result = spawnSync(
+    "notify-send",
+    [
+      "--app-name=Clockify",
+      "--urgency=normal",
+      "--hint=string:x-dunst-stack-tag:clockify-tracking",
+      "Add your time tracking",
+      "No tracking in the past hour. Add an entry or start a timer from the Polybar indicator.",
+    ],
+    { encoding: "utf8", timeout: 10_000 },
+  );
+  if (result.status !== 0) {
+    console.error("Clockify: tracking reminder could not be sent.");
+    return;
+  }
+  await writeJsonFile(reminderPath, { hour });
+}
+
 async function commandStatus(options: CliOptions): Promise<void> {
   try {
     const data = await computeStatus(true);
@@ -1237,6 +1283,7 @@ async function commandEdit(args: string[], options: CliOptions): Promise<void> {
 }
 
 async function clearStatusCache(): Promise<void> {
+  await writeJsonFile(trackingActivityPath, { updatedAt: Date.now() });
   await writeJsonFile(nudgePath, {
     lastCheckedAt: Date.now(),
     activeSeconds: 0,
@@ -2094,6 +2141,7 @@ async function main(): Promise<void> {
     }
     if (parsed.command === "status") {
       await commandStatus(parsed.options);
+      if (hasFlag(parsed.rest, "--remind")) await remindTracking();
     } else if (parsed.command === "projects") {
       await commandProjects(parsed.rest, parsed.options);
     } else if (parsed.command === "start") {

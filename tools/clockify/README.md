@@ -158,3 +158,5 @@ Status states:
 ## V1 limits
 
 This first version intentionally skips billing controls, reports, project inference, and a database. Clockify remains the source of truth.
+
+The Polybar integration enables `status --remind` and polls every 60 seconds for full-hour Dunst reminders after an hour without tracking. Running timers, recent entry end times, and successful local entry changes suppress reminders. See [Clockify session integration](../../configs/session/clockify/README.md) for timing, idle behaviour, and cache details.

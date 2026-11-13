@@ -115,7 +115,7 @@ fi
 
 case "${command}" in
 status)
-  status_json="$("${NODE_BIN}" --experimental-strip-types "${CLOCKIFY_TOOL}" status --json 2>/dev/null || true)"
+  status_json="$("${NODE_BIN}" --experimental-strip-types "${CLOCKIFY_TOOL}" status --json --remind || true)"
   state="$(printf '%s' "${status_json}" | "${NODE_BIN}" -e "let data='';process.stdin.on('data',c=>data+=c);process.stdin.on('end',()=>{try{const parsed=JSON.parse(data);process.stdout.write(parsed.data?.state ?? 'error')}catch{process.stdout.write('error')}})")"
   case "${state}" in
   healthy)
