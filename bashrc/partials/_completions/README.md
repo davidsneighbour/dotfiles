@@ -2,6 +2,8 @@
 
 The shared engine reads each registered command's `--help`. It supports executables in any language and sourced Bash functions. Register a command once in `commands.sh` with `dnb_register_completion command`. Do not list options there. Existing third-party completions retain their own definitions; migrate repository commands as their help is made compliant. `searchfor` is the first migrated function.
 
+The loader in `partials/completions` sources `_help_completion.sh` before all other files, because glob order depends on the locale. It skips `*.md` and `test-*` files.
+
 ## Mandatory help contract
 
 Handle `--help` before configuration, credentials, dependency checks, network calls, prompts, or work. Help must terminate promptly, return zero, and print plain text on stdout. It must be safe in a non-interactive subshell. Registration is a trust boundary: only register tools whose help satisfies this contract. The engine does not enforce a time limit on sourced functions.

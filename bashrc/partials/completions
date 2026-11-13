@@ -1,9 +1,16 @@
 # shellcheck shell=bash
 # Bashrc partial (sourced by ~/.bashrc)
 
-# Documentation lives beside completion definitions; only source code files.
+# Load the help-driven engine first. Glob order depends on the locale (in
+# en_GB.UTF-8, `_help_completion.sh` sorts after `commands.sh`), and
+# registration files need `dnb_register_completion`.
+dnb_auto_source "${BASHRC_PATH}/partials/_completions/_help_completion.sh"
+
+# Documentation and tests live beside completion definitions; only source code files.
 for _dnb_completion_file in "${BASHRC_PATH}"/partials/_completions/*; do
-  [[ ${_dnb_completion_file} == *.md || ${_dnb_completion_file} == test-* ]] && continue
+  case "${_dnb_completion_file##*/}" in
+  *.md | test-* | _help_completion.sh) continue ;;
+  esac
   dnb_auto_source "${_dnb_completion_file}"
 done
 unset _dnb_completion_file

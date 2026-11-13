@@ -87,8 +87,17 @@ while IFS= read -r line; do
   printf '%s\n' "${line}"
 done <"${root}/partials/completions" >"${work}/loader"
 BASHRC_PATH="${root}"
+# The loader must load the engine itself, whatever the locale's glob order.
+# UTF-8 locales sort `_help_completion.sh` after `commands.sh`; use one if installed.
+unset -f dnb_register_completion
+collate=C
+if locale -a 2>/dev/null | grep -qx 'en_US.utf8'; then collate=en_US.UTF-8; fi
 # shellcheck source=/dev/null
-source "${work}/loader"
+LC_COLLATE="${collate}" source "${work}/loader" 2>"${work}/loader.err"
+[[ ! -s "${work}/loader.err" ]] || {
+  cat -- "${work}/loader.err" >&2
+  exit 1
+}
 [[ $(complete -p searchfor) == *'_dnb_help_complete'* ]]
 COMP_WORDS=(searchfor --l)
 COMP_CWORD=1
