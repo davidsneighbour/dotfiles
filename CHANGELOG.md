@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.36.1](https://github.com/davidsneighbour/dotfiles/compare/v2.36.0...v2.36.1) (2026-11-13)
+
+### Build
+
+* **deps:** update caddy:2 docker digest to 9c1b76f ([#616](https://github.com/davidsneighbour/dotfiles/issues/616)) ([efaf3c2](https://github.com/davidsneighbour/dotfiles/commit/efaf3c2222bd26f19e33ff9e21fdddf6422f1204))
+* **deps:** update dgtlmoon/sockpuppetbrowser:latest docker digest to 453381b ([#617](https://github.com/davidsneighbour/dotfiles/issues/617)) ([4ceccf7](https://github.com/davidsneighbour/dotfiles/commit/4ceccf7067a7bd71ae3697752b8eb242263946cf))
+
 ## [2.36.0](https://github.com/davidsneighbour/dotfiles/compare/v2.35.1...v2.36.0) (2026-11-13)
 
 ### Feat
