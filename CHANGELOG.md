@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.37.0](https://github.com/davidsneighbour/dotfiles/compare/v2.36.1...v2.37.0) (2026-11-13)
+
+### Feat
+
+* **clockify:** show form load errors in the app design ([25ac6ed](https://github.com/davidsneighbour/dotfiles/commit/25ac6edd21c298d36ea1bbb6e9d95b3cd9c553a6))
+* **containers:** add on-demand Android emulator for mobile browser tests ([0d76c53](https://github.com/davidsneighbour/dotfiles/commit/0d76c53fc1e787292e0a48bdf4cc5e07d72421e3))
+* **containers:** tile the Android emulator window at the right edge ([c776fd5](https://github.com/davidsneighbour/dotfiles/commit/c776fd565b51a2ee937c7cab2570772364053f0b))
+
+### Fix
+
+* **bashrc:** load the completion engine before registrations ([b4befa3](https://github.com/davidsneighbour/dotfiles/commit/b4befa3af9eb46c8f4f5b79e90706c15c369a2e5))
+* **clockify:** keep status and reminders local to respect the API rate limit ([0c79b67](https://github.com/davidsneighbour/dotfiles/commit/0c79b67b572c56f45220c77999e172175dcf1347))
+
 ## [2.36.1](https://github.com/davidsneighbour/dotfiles/compare/v2.36.0...v2.36.1) (2026-11-13)
 
 ### Build
