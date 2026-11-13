@@ -20,6 +20,7 @@ The agents do not load these files automatically. The section "Topic-specific in
 | --- | --- |
 | [instructions/coding/development.instructions.md](instructions/coding/development.instructions.md) | Package manager, scripting languages, ESM, strict TypeScript, and Linux installation suggestions. |
 | [instructions/documentation/markdown-prose.instructions.md](instructions/documentation/markdown-prose.instructions.md) | Line breaks in Markdown, documentation, and other prose. |
+| [instructions/communication/decision-adjudication.instructions.md](instructions/communication/decision-adjudication.instructions.md) | How to evaluate a correction or alternative that the user gives in response to a recommendation. |
 
 Each file covers one topic, uses the `.instructions.md` extension, and starts with YAML front matter that has a `description`. An `applyTo` field is optional metadata for tools that support it. Claude Code and Codex do not load a file because of it.
 
