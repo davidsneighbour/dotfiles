@@ -1,0 +1,66 @@
+---
+# Android emulator for testing mobile browsers and website views.
+# Start it with `android-start` and stop it with `android-stop` (see README.md).
+# It is not meant to run all the time, so it has no restart policy.
+services:
+  # One-shot helper: Docker creates a new named volume for a path that does
+  # not exist in the image as root:root. The emulator runs as androidusr
+  # (1300:1301) and must be able to write its AVD there.
+  android-volume-init:
+    # secretlint-disable-next-line @secretlint/secretlint-rule-secp256k1-privatekey
+    image: budtmo/docker-android:emulator_14.0@sha256:5e4011a46f05010456ecf19dd97fb75c2dff84f95f4c84fdabb0f8555d5a4f43
+    container_name: android-emulator-volume-init
+    user: "0:0"
+    entrypoint: ["chown", "1300:1301", "/home/androidusr/emulator"]
+    command: []
+    restart: "no"
+    volumes:
+      - android-avd:/home/androidusr/emulator
+
+  android:
+    # secretlint-disable-next-line @secretlint/secretlint-rule-secp256k1-privatekey
+    image: budtmo/docker-android:emulator_14.0@sha256:5e4011a46f05010456ecf19dd97fb75c2dff84f95f4c84fdabb0f8555d5a4f43
+    container_name: android-emulator
+    hostname: android-emulator
+    restart: "no"
+    # The image runs `sh -c` as PID 1, which ignores SIGTERM, so every stop
+    # waited for the grace period. An init process forwards the signal.
+    # android-stop shuts the emulator down cleanly before this happens.
+    init: true
+    stop_grace_period: 30s
+
+    devices:
+      - /dev/kvm
+
+    # ADB and noVNC have no authentication, so both listen on localhost only.
+    ports:
+      - "127.0.0.1:5600:5555"
+      - "127.0.0.1:3080:6080"
+
+    volumes:
+      # Only the AVD (disk images and config) and the Android user folder are
+      # persistent. Do not mount all of /home/androidusr: it also holds the
+      # image's own app code, which would then not update with the image.
+      - android-avd:/home/androidusr/emulator
+      - android-home:/home/androidusr/.android
+      - ./emulator-override.ini:/opt/dnb/emulator-override.ini:ro
+
+    environment:
+      TZ: Asia/Bangkok
+      # Newest device profile in the free image. The screen is replaced with
+      # Galaxy S26 values from emulator-override.ini; the skin is not used.
+      EMULATOR_DEVICE: "Samsung Galaxy S10"
+      EMULATOR_NAME: galaxy-s26-screen
+      EMULATOR_NO_SKIN: "true"
+      EMULATOR_DATA_PARTITION: 4g
+      EMULATOR_CONFIG_PATH: /opt/dnb/emulator-override.ini
+      EMULATOR_ADDITIONAL_ARGS: "-no-boot-anim -no-audio"
+      WEB_VNC: "true"
+
+    depends_on:
+      android-volume-init:
+        condition: service_completed_successfully
+
+volumes:
+  android-avd:
+  android-home:

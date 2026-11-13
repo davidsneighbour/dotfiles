@@ -10,6 +10,7 @@ bindsym
 biomejs
 bordercolor
 bspwm
+budtmo
 codepoint
 codepoints
 color
@@ -137,6 +138,7 @@ roleplay
 rustup
 scratchpad
 scratchpads
+scrcpy
 SECKEY
 secp
 secretapikey

@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -Eeuo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DOTFILES_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+TARGET="${DOTFILES_ROOT}/containers/locutus/android/android-device.sh"
+
+if [[ ${#} -eq 0 ]]; then
+  set -- --help
+fi
+
+if [[ ! -f "${TARGET}" || ! -r "${TARGET}" ]]; then
+  printf 'Error: target script is missing or unreadable: %s\n' "${TARGET}" >&2
+  printf 'Usage: %s [options]\nRun with --help after restoring the target script.\n' "${0##*/}" >&2
+  exit 1
+fi
+
+exec /bin/bash "${TARGET}" start "$@"

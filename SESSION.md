@@ -111,6 +111,7 @@ bindsym --release Super_L exec --no-startup-id $rofi_new_workspace
 | `window_role="scratch-terminal"` | mark `scratch-terminal`, float, move to scratchpad | Scratch terminal (see "Scratch terminal") |
 | `class="dnb-clockify-form"` | float, `700x760`, centred, focus | Clockify form (see "Clockify form window") |
 | `class="dnb-tasks"` | float, `50ppt x 80ppt`, centred, focus | Tasks app (`Ctrl+Shift+Alt+P`, `configs/session/tasks/tasks-window`) |
+| `class="scrcpy" title="^Android emulator$"` | float, centred | Android emulator screen from `android-start` (see `containers/locutus/android/README.md`) |
 | `class="obsidian"` | `assign` to `$ws5` | Obsidian always opens on workspace 5 |
 | `class="Enpass" instance="Enpass"` | width `33ppt` | Enpass main window |
 | `class="Google-chrome"` with `window_type` `dropdown_menu` or `popup_menu` | float, no border | Chrome dropdown and popup menus |
