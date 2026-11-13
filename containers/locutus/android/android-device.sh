@@ -67,6 +67,7 @@ Description:
 
 Options:
   --viewer <name>      Viewer to open: scrcpy, web, or none. Default: scrcpy
+  --layout <name>      i3 placement of the scrcpy window: right or fullscreen. Default: right
   --timeout <seconds>  Maximum time to wait for the boot. Default: ${DEFAULT_TIMEOUT}
   --verbose            Show Docker, ADB, and scrcpy output
   --quiet              Show errors only (overrides --verbose and DNB_VERBOSE)
@@ -77,11 +78,17 @@ Viewers:
   web     noVNC in the browser (${WEB_URL})
   none    Start the container only
 
+Layouts (scrcpy window in i3; the phone screen size does not change):
+  right       Tiled at the right edge of the current workspace, full height,
+              1/3 of the width. Alone on the workspace, it fills the workspace
+  fullscreen  Fullscreen window
+
 Logs:
   ${LOG_DIR}/YYYYMMDD-HHMMSS.log
 
 Examples:
   android-start --viewer scrcpy
+  android-start --viewer scrcpy --layout fullscreen
   android-start --viewer web
   android-start --viewer none --verbose
 EOF
@@ -244,6 +251,7 @@ android_scrcpy_pids() {
 }
 
 android_open_scrcpy() {
+  local layout="${1}"
   local pid=''
 
   if android_scrcpy_pids >/dev/null; then
@@ -265,6 +273,119 @@ android_open_scrcpy() {
     android_fail "scrcpy exited at once. Try: android-start --viewer web"
   fi
   dnb_ui_success "Opened the device window (scrcpy, ${ADB_SERIAL})."
+  android_place_window "${layout}"
+}
+
+# jq program: for the i3 container with id $id, print one tab-separated line:
+# the parent type, parent layout, whether the container is the parent's last
+# child, the number of siblings (including itself), "floating" or "tiling",
+# and the workspace name.
+# shellcheck disable=SC2016 # $id and $p are jq variables, not shell variables.
+ANDROID_I3_INFO_JQ='
+  . as $root
+  | first(paths(type == "object" and .id? == $id)) as $p
+  | getpath($p[:-2]) as $parent
+  | [range(0; $p | length) as $i | $root | getpath($p[:$i]) | select(type == "object" and .type? == "workspace")] as $workspaces
+  | [$parent.type, $parent.layout, ($parent.nodes[-1].id == $id),
+     ($parent.nodes | length), (if $parent.type == "floating_con" then "floating" else "tiling" end),
+     ($workspaces | last | .name)]
+  | @tsv'
+
+android_i3_cmd() {
+  local result=''
+
+  android_verbose "i3-msg: ${1}"
+  if ! result="$(i3-msg "${1}" 2>&1)" || ! printf '%s' "${result}" | jq -e 'all(.[]; .success)' >/dev/null 2>&1; then
+    dnb_log warn "i3-msg command failed: ${1} (${result})"
+    return 1
+  fi
+}
+
+android_i3_window_id() {
+  i3-msg -t get_tree | jq -r --arg title "${WINDOW_TITLE}" \
+    'first(.. | objects | select(.window_properties?.class == "scrcpy" and .name == $title) | .id) // empty'
+}
+
+android_i3_window_info() {
+  i3-msg -t get_tree | jq -r --argjson id "${1}" "${ANDROID_I3_INFO_JQ}"
+}
+
+# android_place_window LAYOUT
+#
+# right:      tile the window at the right edge of the current workspace,
+#             full height and 1/3 of the width. Alone on the workspace, it
+#             fills the workspace.
+# fullscreen: make the window fullscreen.
+# The phone screen itself does not change; scrcpy scales it into the window.
+android_place_window() {
+  local layout="${1}"
+  local con_id=''
+  local info=''
+  local parent_type='' parent_layout='' is_last='' siblings='' mode='' workspace=''
+  local start_workspace=''
+  local attempt=0
+
+  if ! command -v i3-msg >/dev/null 2>&1 || ! i3-msg -t get_version >/dev/null 2>&1; then
+    android_verbose 'i3 is not running; the window is not placed.'
+    return 0
+  fi
+  if ! command -v jq >/dev/null 2>&1; then
+    dnb_ui_warning 'jq not found; the window is not placed.'
+    return 0
+  fi
+
+  for attempt in 1 2 3 4 5 6 7 8 9 10; do
+    con_id="$(android_i3_window_id)"
+    [[ -n "${con_id}" ]] && break
+    android_verbose "Waiting for the scrcpy window in i3 (attempt ${attempt})"
+    sleep 0.5
+  done
+  if [[ -z "${con_id}" ]]; then
+    dnb_ui_warning 'The scrcpy window was not found in i3; it is not placed.'
+    return 0
+  fi
+
+  if [[ "${layout}" == 'fullscreen' ]]; then
+    android_i3_cmd "[con_id=${con_id}] fullscreen enable" ||
+      dnb_ui_warning 'Could not make the window fullscreen.'
+    return 0
+  fi
+
+  for attempt in 1 2 3 4 5 6 7 8 9 10; do
+    if ! info="$(android_i3_window_info "${con_id}" 2>>"${DNB_SETUP_LOG_FILE}")" || [[ -z "${info}" ]]; then
+      dnb_ui_warning 'Could not read the i3 tree; the window is not placed.'
+      return 0
+    fi
+    IFS=$'\t' read -r parent_type parent_layout is_last siblings mode workspace <<<"${info}"
+    start_workspace="${start_workspace:-${workspace}}"
+    android_verbose "Window: parent=${parent_type}/${parent_layout} last=${is_last} siblings=${siblings} mode=${mode} workspace=${workspace}"
+
+    if [[ "${workspace}" != "${start_workspace}" ]]; then
+      # i3 moves a window to the next output when it is already at the
+      # right edge. Undo that and stop.
+      android_i3_cmd "[con_id=${con_id}] move container to workspace ${start_workspace}, focus" ||
+        dnb_ui_warning "The window moved to workspace ${workspace}."
+      dnb_ui_warning 'Could not place the window at the right edge.'
+      return 0
+    fi
+    if [[ "${mode}" == 'floating' ]]; then
+      android_i3_cmd "[con_id=${con_id}] floating disable" || return 0
+      continue
+    fi
+    if [[ "${parent_type}" == 'workspace' && "${siblings}" == '1' ]]; then
+      android_verbose 'The window is alone on the workspace and fills it.'
+      return 0
+    fi
+    if [[ "${parent_type}" == 'workspace' && "${parent_layout}" == 'splith' && "${is_last}" == 'true' ]]; then
+      android_i3_cmd "[con_id=${con_id}] resize set width 33 ppt" ||
+        dnb_ui_warning 'Could not resize the window.'
+      return 0
+    fi
+    # Each step moves the window one level out of its containers. At
+    # workspace level, i3 makes the workspace a horizontal split first.
+    android_i3_cmd "[con_id=${con_id}] move right" || return 0
+  done
+  dnb_ui_warning 'Could not place the window at the right edge after 10 steps.'
 }
 
 android_open_web() {
@@ -280,6 +401,7 @@ android_open_web() {
 
 android_cmd_start() {
   local viewer=''
+  local layout=''
   local timeout="${DEFAULT_TIMEOUT}"
   local quiet='false'
 
@@ -300,6 +422,15 @@ android_cmd_start() {
       ;;
     --viewer=*)
       viewer="${1#*=}"
+      shift
+      ;;
+    --layout)
+      [[ "$#" -ge 2 ]] || android_usage_error android_usage_start '--layout needs a value'
+      layout="${2}"
+      shift 2
+      ;;
+    --layout=*)
+      layout="${1#*=}"
       shift
       ;;
     --timeout)
@@ -330,6 +461,11 @@ android_cmd_start() {
   scrcpy | web | none) ;;
   *) android_usage_error android_usage_start "--viewer must be scrcpy, web, or none (got: ${viewer})" ;;
   esac
+  layout="${layout:-right}"
+  case "${layout}" in
+  right | fullscreen) ;;
+  *) android_usage_error android_usage_start "--layout must be right or fullscreen (got: ${layout})" ;;
+  esac
   if [[ ! "${timeout}" =~ ^[1-9][0-9]*$ ]]; then
     android_usage_error android_usage_start "--timeout must be a positive number of seconds (got: ${timeout})"
   fi
@@ -359,7 +495,7 @@ android_cmd_start() {
   dnb_ui_success "Android is ready. ADB: ${ADB_SERIAL}"
 
   case "${viewer}" in
-  scrcpy) android_open_scrcpy ;;
+  scrcpy) android_open_scrcpy "${layout}" ;;
   web) android_open_web ;;
   none) dnb_ui_info "No viewer opened. Web view: ${WEB_URL}" ;;
   *) android_fail "Unknown viewer: ${viewer}" ;;

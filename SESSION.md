@@ -111,10 +111,13 @@ bindsym --release Super_L exec --no-startup-id $rofi_new_workspace
 | `window_role="scratch-terminal"` | mark `scratch-terminal`, float, move to scratchpad | Scratch terminal (see "Scratch terminal") |
 | `class="dnb-clockify-form"` | float, `700x760`, centred, focus | Clockify form (see "Clockify form window") |
 | `class="dnb-tasks"` | float, `50ppt x 80ppt`, centred, focus | Tasks app (`Ctrl+Shift+Alt+P`, `configs/session/tasks/tasks-window`) |
-| `class="scrcpy" title="^Android emulator$"` | float, centred | Android emulator screen from `android-start` (see `containers/locutus/android/README.md`) |
 | `class="obsidian"` | `assign` to `$ws5` | Obsidian always opens on workspace 5 |
 | `class="Enpass" instance="Enpass"` | width `33ppt` | Enpass main window |
 | `class="Google-chrome"` with `window_type` `dropdown_menu` or `popup_menu` | float, no border | Chrome dropdown and popup menus |
+
+### Android emulator window
+
+The scrcpy window of `android-start` (see `containers/locutus/android/README.md`) has no `for_window` rule. A rule cannot find the right edge of the workspace, so `containers/locutus/android/android-device.sh` places the window through `i3-msg` after it opens. With `--layout right` (the default), it repeats `move right` until the window is the last child of a horizontally split workspace, then sets its width to `33 ppt`. It stops if the window moves to another workspace (i3 moves a window to the next output at the right edge) and moves it back. Alone on a workspace, the window fills it. With `--layout fullscreen`, it runs `fullscreen enable`. The phone screen size does not change; scrcpy scales it into the window.
 
 ### Window inspector
 

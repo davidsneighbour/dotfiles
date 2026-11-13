@@ -15,7 +15,8 @@ The free image stops at Android 14. Android 15 to 17 are only in the paid `docke
 
 | Command | Effect |
 | --- | --- |
-| `android-start --viewer scrcpy` | Start the container, wait for the boot, and show the device in a scrcpy window. |
+| `android-start --viewer scrcpy` | Start the container, wait for the boot, and show the device in a scrcpy window at the right edge of the current workspace. |
+| `android-start --viewer scrcpy --layout fullscreen` | Same, but as a fullscreen window. |
 | `android-start --viewer web` | Same, but open the noVNC web view in the browser. |
 | `android-start --viewer none` | Start the container only. |
 | `android-stop --keep-data` | Close the window, shut Android down cleanly, and remove the container. The device data stays. |
@@ -67,7 +68,14 @@ The image applies `emulator-override.ini` and the device profile only when it cr
 
 ## Window
 
-scrcpy opens a window with the class `scrcpy` and the title `Android emulator`. An i3 rule floats and centres it (see "Window rules" in [`SESSION.md`](../../../SESSION.md)). Reload i3 after you change the rule.
+scrcpy opens a window with the class `scrcpy` and the title `Android emulator`. The phone screen always stays 1080×2340 (CSS viewport 360×780); scrcpy scales it into the window and keeps the aspect ratio.
+
+In i3, `android-start` places the window after it opens:
+
+* `--layout right` (default): tiled at the right edge of the current workspace, full height, and 1/3 of the width. Alone on a workspace, the window fills it.
+* `--layout fullscreen`: a fullscreen window.
+
+If the window is already open, `android-start` does not move it. See "Android emulator window" in [`SESSION.md`](../../../SESSION.md) for how the placement works.
 
 ## Update
 
