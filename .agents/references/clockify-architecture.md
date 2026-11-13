@@ -29,8 +29,16 @@
   `restartFormDetached()` too, since it deliberately doesn't call `commandForm` recursively.
 * Clockify is the only source of truth. There is no local database; local files
   (`~/.config/dnb-clockify/config.json`, `~/.cache/dnb-clockify/*.json`) hold only aliases, settings,
-  and short-lived caches (status, nudge counter, last-entry-end). Don't cache anything that would let
-  the local tool disagree with Clockify about what a client/project/entry actually is.
+  and caches (tracking state, identity, lists, rate-limit ledger, nudge counter, reminder hour). Don't
+  cache anything that would let the local tool disagree with Clockify about what a client/project/entry
+  actually is.
+* **API budget**: the Free plan allows 30 requests per hour per workspace. `status` and the reminder
+  run every minute from Polybar and must never call the API; they read `tracking-state.json`. Online
+  running checks happen only on form open/activation (`refreshFormRunning`), form submit, `stop`,
+  `prompt`, `form --restart`, and `status --sync`, and `syncRunning` debounces them. Every local entry
+  change goes through `recordEntryChange()`. `apiRequest()` counts each request in
+  `rate-limit.json` and blocks for an hour after a 429; optional refreshes keep a reserve for entry
+  changes. Use the cached identity (`getIdentity`) and lists (`loadLists`) instead of new lookups.
 * Config/cache I/O always goes through `readJsonFile` / `writeJsonFile` (atomic write via a `.tmp`
   file + rename). Reuse these, don't add ad hoc `fs` calls.
 * `apiRequest<T>()` is the single fetch wrapper (base URL, `X-Api-Key` header, error handling). Every

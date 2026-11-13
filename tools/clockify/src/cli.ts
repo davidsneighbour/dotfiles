@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { type ChildProcess, spawn, spawnSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import { existsSync } from "node:fs";
 import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import {
@@ -15,11 +16,17 @@ import { suggestedTags, tagClass, tagClasses } from "./tag-classes.ts";
 const apiBase = "https://api.clockify.me/api/v1";
 const configPath = join(homedir(), ".config", "dnb-clockify", "config.json");
 const cacheDir = join(homedir(), ".cache", "dnb-clockify");
-const statusCachePath = join(cacheDir, "status.json");
 const nudgePath = join(cacheDir, "nudge.json");
 const reminderPath = join(cacheDir, "reminder.json");
-const trackingActivityPath = join(cacheDir, "tracking-activity.json");
-const lastEntryPath = join(cacheDir, "last-entry.json");
+const trackingStatePath = join(cacheDir, "tracking-state.json");
+const identityPath = join(cacheDir, "identity.json");
+const listsCachePath = join(cacheDir, "lists.json");
+const rateLimitPath = join(cacheDir, "rate-limit.json");
+const rateWindowMs = 3_600_000;
+// Requests kept back for entry changes; optional refreshes never use them.
+const rateReserve = 5;
+// Projects, clients, tags, and recent entries: one call each.
+const listRefreshRequests = 4;
 const packageRoot = join(import.meta.dirname, "..");
 const distWebDir = join(packageRoot, "dist", "web");
 const staticContentTypes: Record<string, string> = {
@@ -52,11 +59,12 @@ type Config = {
 };
 
 type Settings = {
-  cacheSeconds: number;
   nudgeMinutes: number;
   idleSeconds: number;
   formPort: number;
-  lastEntryCacheSeconds: number;
+  apiRequestsPerHour: number;
+  listCacheSeconds: number;
+  runningCheckSeconds: number;
 };
 
 type ProjectAlias = {
@@ -107,6 +115,7 @@ type ClockifyTag = {
 type FormContext = {
   token: string;
   workspaceId: string;
+  identity: Identity;
   config: Config;
   projects: ClockifyProject[];
   clients: ClockifyClient[];
@@ -114,6 +123,7 @@ type FormContext = {
   running: ClockifyTimeEntry | undefined;
   lastEntryEnd: string | null;
   recentEntries: RecentEntry[];
+  notice: string | null;
 };
 
 type RecentEntry = {
@@ -137,6 +147,8 @@ type FormPageContext = {
   end: string;
   lastEntryEnd: string | null;
   recentEntries: RecentEntry[];
+  runningEntryId: string | null;
+  notice: string | null;
 };
 
 type FormSubmitPayload = {
@@ -145,6 +157,7 @@ type FormSubmitPayload = {
   start: string;
   end: string;
   tagIds: string[];
+  runningEntryId: string | null;
 };
 
 type StatusState = "healthy" | "running" | "nudge" | "error";
@@ -155,13 +168,10 @@ type StatusData = {
   colour: string;
   entry?: ClockifyTimeEntry;
   nudgeActiveSeconds: number;
+  // Status is computed from local state; syncedAt is the last online check.
   cached: boolean;
+  syncedAt: number | null;
   error?: string;
-};
-
-type StatusCache = {
-  createdAt: number;
-  data: StatusData;
 };
 
 type NudgeState = {
@@ -169,9 +179,33 @@ type NudgeState = {
   activeSeconds: number;
 };
 
-type LastEntryCache = {
+// Locally known tracking state. Updated by local entry changes and by
+// online running checks; read by the Polybar status and the reminder.
+type TrackingState = {
+  running: ClockifyTimeEntry | null;
+  lastEntryEnd: string | null;
+  syncedAt: number | null;
+  changedAt: number | null;
+};
+
+type Identity = {
+  tokenHash: string;
+  userId: string;
+  workspaceId: string;
+};
+
+type ListsCache = {
   createdAt: number;
-  end: string | null;
+  workspaceId: string;
+  projects: ClockifyProject[];
+  clients: ClockifyClient[];
+  tags: ClockifyTag[];
+  recentEntries: RecentEntry[];
+};
+
+type RateLimitState = {
+  requests: number[];
+  blockedUntil: number | null;
 };
 
 class UserError extends Error {
@@ -181,19 +215,28 @@ class UserError extends Error {
   }
 }
 
+class RateLimitError extends UserError {
+  constructor(message: string) {
+    super(message);
+    this.name = "RateLimitError";
+  }
+}
+
 const defaultSettings: Settings = {
-  cacheSeconds: 30,
   nudgeMinutes: 60,
   idleSeconds: 300,
   formPort: 39241,
-  lastEntryCacheSeconds: 3600,
+  // Clockify Free plan limit for API keys, counted per workspace.
+  apiRequestsPerHour: 30,
+  listCacheSeconds: 3600,
+  runningCheckSeconds: 60,
 };
 
 function printHelp(): void {
   console.log(`Usage: dnb-clockify <command> [options]
 
 Commands:
-  status [--json] [--remind]              Show current tracking state.
+  status [--json] [--remind] [--sync]     Show locally known tracking state.
   projects [--unmapped] [--json]          List Clockify projects.
   projects add --name <n> --client <c> [--color <hex>]
                                            Create a project.
@@ -219,6 +262,7 @@ Commands:
 
 Global options:
   --remind     With status, send a tracking reminder at the full hour.
+  --sync       With status, check Clockify for a running timer (1 request).
   --json       Print machine-readable JSON.
   --verbose    Print more details where useful.
   --quiet      Suppress optional details.
@@ -388,11 +432,68 @@ async function readEnvToken(): Promise<string> {
   );
 }
 
+function clockTime(ms: number): string {
+  return new Date(ms).toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
+async function readRateLimit(now: number): Promise<RateLimitState> {
+  const stored = await readJsonFile<Partial<RateLimitState>>(rateLimitPath);
+  return {
+    requests: (stored?.requests ?? [])
+      .filter((time) => typeof time === "number" && now - time < rateWindowMs)
+      .sort((a, b) => a - b),
+    blockedUntil:
+      typeof stored?.blockedUntil === "number" && stored.blockedUntil > now
+        ? stored.blockedUntil
+        : null,
+  };
+}
+
+// Requests still allowed in the rolling one-hour window, by the local ledger.
+async function remainingApiRequests(): Promise<number> {
+  const { settings } = await loadConfig();
+  const state = await readRateLimit(Date.now());
+  if (state.blockedUntil !== null) return 0;
+  return Math.max(0, settings.apiRequestsPerHour - state.requests.length);
+}
+
+async function reserveApiRequest(): Promise<void> {
+  const now = Date.now();
+  const { settings } = await loadConfig();
+  const state = await readRateLimit(now);
+  if (state.blockedUntil !== null) {
+    throw new RateLimitError(
+      `Clockify rate limit reached. Requests resume at ${clockTime(state.blockedUntil)}.`,
+    );
+  }
+  if (state.requests.length >= settings.apiRequestsPerHour) {
+    const next = (state.requests[0] ?? now) + rateWindowMs;
+    throw new RateLimitError(
+      `Clockify request budget (${settings.apiRequestsPerHour} per hour) is used up. Next request possible at ${clockTime(next)}.`,
+    );
+  }
+  state.requests.push(now);
+  await writeJsonFile(rateLimitPath, state);
+}
+
+async function blockApiRequests(): Promise<void> {
+  const now = Date.now();
+  const state = await readRateLimit(now);
+  await writeJsonFile(rateLimitPath, {
+    ...state,
+    blockedUntil: now + rateWindowMs,
+  } satisfies RateLimitState);
+}
+
 async function apiRequest<T>(
   token: string,
   path: string,
   init: RequestInit = {},
 ): Promise<T> {
+  await reserveApiRequest();
   const response = await fetch(`${apiBase}${path}`, {
     ...init,
     headers: {
@@ -401,6 +502,13 @@ async function apiRequest<T>(
       ...(init.headers ?? {}),
     },
   });
+  if (response.status === 429) {
+    // Clockify asks to wait one hour; stop all requests until then.
+    await blockApiRequests();
+    throw new RateLimitError(
+      `Clockify rate limit reached. Requests resume at ${clockTime(Date.now() + rateWindowMs)}.`,
+    );
+  }
   if (!response.ok) {
     const body = await response.text();
     throw new UserError(
@@ -417,18 +525,38 @@ async function getUser(token: string): Promise<ClockifyUser> {
   return apiRequest<ClockifyUser>(token, "/user");
 }
 
-async function getWorkspaceId(token: string, config: Config): Promise<string> {
-  if (config.workspaceId !== undefined && config.workspaceId.trim() !== "") {
-    return config.workspaceId;
+// User and workspace IDs do not change for a token, so they are fetched once
+// and reused. A token change or a configured workspace change refetches them.
+async function getIdentity(token: string, config: Config): Promise<Identity> {
+  const tokenHash = createHash("sha256")
+    .update(token)
+    .digest("hex")
+    .slice(0, 16);
+  const configured = config.workspaceId?.trim() || undefined;
+  const cached = await readJsonFile<Identity>(identityPath);
+  if (
+    cached?.tokenHash === tokenHash &&
+    cached.userId !== "" &&
+    cached.workspaceId !== "" &&
+    (configured === undefined || cached.workspaceId === configured)
+  ) {
+    return cached;
   }
   const user = await getUser(token);
-  const workspaceId = user.activeWorkspace ?? user.defaultWorkspace;
+  const workspaceId =
+    configured ?? user.activeWorkspace ?? user.defaultWorkspace;
   if (workspaceId === undefined) {
     throw new UserError(
       "Clockify did not return an active workspace. Set workspaceId in the config file.",
     );
   }
-  return workspaceId;
+  const identity = { tokenHash, userId: user.id, workspaceId };
+  await writeJsonFile(identityPath, identity);
+  return identity;
+}
+
+async function getWorkspaceId(token: string, config: Config): Promise<string> {
+  return (await getIdentity(token, config)).workspaceId;
 }
 
 async function getProjects(
@@ -647,32 +775,141 @@ function buildRecentEntries(
   return result;
 }
 
-async function getCachedLastEntryEnd(
-  token: string,
-  workspaceId: string,
-  userId: string,
-  config: Config,
-): Promise<string | null> {
-  const cached = await readJsonFile<LastEntryCache>(lastEntryPath);
-  const maxAgeMs = config.settings.lastEntryCacheSeconds * 1000;
-  if (cached !== undefined && Date.now() - cached.createdAt <= maxAgeMs) {
-    return cached.end;
-  }
-  const entries = await getRecentEntries(token, workspaceId, userId, 5);
-  const lastCompleted = entries.find(
-    (entry) =>
-      entry.timeInterval.end !== undefined && entry.timeInterval.end !== null,
-  );
-  const end = lastCompleted?.timeInterval.end ?? null;
-  await recordLastEntryEnd(end);
-  return end;
+async function readTrackingState(): Promise<TrackingState> {
+  const stored = await readJsonFile<Partial<TrackingState>>(trackingStatePath);
+  return {
+    running: stored?.running ?? null,
+    lastEntryEnd: stored?.lastEntryEnd ?? null,
+    syncedAt: stored?.syncedAt ?? null,
+    changedAt: stored?.changedAt ?? null,
+  };
 }
 
-async function recordLastEntryEnd(end: string | null): Promise<void> {
-  await writeJsonFile(lastEntryPath, {
-    createdAt: Date.now(),
-    end,
-  } satisfies LastEntryCache);
+async function writeTrackingState(
+  update: Partial<TrackingState>,
+): Promise<TrackingState> {
+  const next = { ...(await readTrackingState()), ...update };
+  await writeJsonFile(trackingStatePath, next);
+  return next;
+}
+
+function laterEnd(current: string | null, candidate: string): string {
+  if (current === null) return candidate;
+  return Date.parse(candidate) > Date.parse(current) ? candidate : current;
+}
+
+// Records a successful local entry change so the status, the nudge counter,
+// and the reminder follow it without asking Clockify.
+async function recordEntryChange(entry: ClockifyTimeEntry): Promise<void> {
+  const state = await readTrackingState();
+  const end = entry.timeInterval.end ?? null;
+  const running =
+    end === null
+      ? entry
+      : state.running?.id === entry.id
+        ? null
+        : state.running;
+  await writeTrackingState({
+    running,
+    lastEntryEnd:
+      end === null ? state.lastEntryEnd : laterEnd(state.lastEntryEnd, end),
+    changedAt: Date.now(),
+  });
+  await writeJsonFile(nudgePath, {
+    lastCheckedAt: Date.now(),
+    activeSeconds: 0,
+  } satisfies NudgeState);
+  refreshClockifyPolybar();
+}
+
+// Asks Clockify whether a timer is running (one request). Skips the request
+// when the last check is younger than runningCheckSeconds. With optional,
+// it also skips when only the reserved budget is left.
+async function syncRunning(
+  token: string,
+  identity: Identity,
+  settings: Settings,
+  mode: { force?: boolean; optional?: boolean } = {},
+): Promise<TrackingState> {
+  const state = await readTrackingState();
+  const fresh =
+    state.syncedAt !== null &&
+    Date.now() - state.syncedAt < settings.runningCheckSeconds * 1000;
+  if (mode.force !== true && fresh) return state;
+  if (mode.optional === true && (await remainingApiRequests()) <= rateReserve) {
+    return state;
+  }
+  const running = await getRunningEntry(
+    token,
+    identity.workspaceId,
+    identity.userId,
+  );
+  return writeTrackingState({ running: running ?? null, syncedAt: Date.now() });
+}
+
+async function readFreshLists(
+  workspaceId: string,
+  settings: Settings,
+): Promise<ListsCache | undefined> {
+  const cached = await readJsonFile<ListsCache>(listsCachePath);
+  if (cached?.workspaceId !== workspaceId) return undefined;
+  return Date.now() - cached.createdAt < settings.listCacheSeconds * 1000
+    ? cached
+    : undefined;
+}
+
+// Projects, clients, tags, and recent entries change rarely. They are cached
+// for listCacheSeconds; a stale cache is reused when the budget is low.
+async function loadLists(
+  token: string,
+  identity: Identity,
+  settings: Settings,
+): Promise<ListsCache> {
+  const cached = await readJsonFile<ListsCache>(listsCachePath);
+  const usable = cached?.workspaceId === identity.workspaceId ? cached : null;
+  if (usable !== null) {
+    const age = Date.now() - usable.createdAt;
+    if (age < settings.listCacheSeconds * 1000) return usable;
+    if ((await remainingApiRequests()) < listRefreshRequests + rateReserve) {
+      return usable;
+    }
+  }
+  try {
+    const { workspaceId, userId } = identity;
+    const projects = await getProjects(token, workspaceId);
+    const clients = await getClients(token, workspaceId);
+    const tags = await getTags(token, workspaceId);
+    const entries = await getRecentEntries(token, workspaceId, userId, 200);
+    const lists: ListsCache = {
+      createdAt: Date.now(),
+      workspaceId,
+      projects,
+      clients,
+      tags,
+      recentEntries: buildRecentEntries(entries, 100),
+    };
+    await writeJsonFile(listsCachePath, lists);
+    // The latest completed entry comes straight from Clockify here.
+    const lastEnd = entries.find((entry) => entry.timeInterval.end != null)
+      ?.timeInterval.end;
+    await writeTrackingState({ lastEntryEnd: lastEnd ?? null });
+    return lists;
+  } catch (error) {
+    if (usable !== null && error instanceof RateLimitError) return usable;
+    throw error;
+  }
+}
+
+async function saveFormLists(formContext: FormContext): Promise<void> {
+  const cached = await readJsonFile<ListsCache>(listsCachePath);
+  await writeJsonFile(listsCachePath, {
+    createdAt: cached?.createdAt ?? Date.now(),
+    workspaceId: formContext.workspaceId,
+    projects: formContext.projects,
+    clients: formContext.clients,
+    tags: formContext.tags,
+    recentEntries: formContext.recentEntries,
+  } satisfies ListsCache);
 }
 
 function normaliseName(value: string): string {
@@ -692,7 +929,22 @@ async function resolveProject(
   config: Config,
   value: string,
 ): Promise<ClockifyProject> {
-  const projects = await getProjects(token, workspaceId);
+  const cached = await readFreshLists(workspaceId, config.settings);
+  if (cached !== undefined) {
+    try {
+      return findProject(cached.projects, config, value);
+    } catch (error) {
+      if (!(error instanceof UserError)) throw error;
+    }
+  }
+  return findProject(await getProjects(token, workspaceId), config, value);
+}
+
+function findProject(
+  projects: ClockifyProject[],
+  config: Config,
+  value: string,
+): ClockifyProject {
   const trimmed = value.trim();
   const alias = config.aliases[trimmed];
   if (alias !== undefined) {
@@ -984,57 +1236,57 @@ async function commandClient(
   }
 }
 
-async function computeStatus(useCache: boolean): Promise<StatusData> {
+// Computes the status from local state only. With sync, it first asks
+// Clockify whether a timer is running (one request, subject to the budget).
+async function computeStatus(sync: boolean): Promise<StatusData> {
   const token = await readEnvToken();
   const config = await loadConfig();
-  if (useCache) {
-    const cached = await readJsonFile<StatusCache>(statusCachePath);
-    const maxAgeMs = config.settings.cacheSeconds * 1000;
-    if (cached !== undefined && Date.now() - cached.createdAt <= maxAgeMs) {
-      return { ...cached.data, cached: true };
-    }
-  }
-  const user = await getUser(token);
-  const workspaceId = await getWorkspaceId(token, config);
-  const entry = await getRunningEntry(token, workspaceId, user.id);
+  const state = sync
+    ? await syncRunning(
+        token,
+        await getIdentity(token, config),
+        config.settings,
+        { force: true },
+      )
+    : await readTrackingState();
+  const entry = state.running ?? undefined;
+  const syncedAt = state.syncedAt;
   const nudgeActiveSeconds = await updateNudge(
     entry === undefined,
     config.settings,
   );
   const thresholdSeconds = config.settings.nudgeMinutes * 60;
-  const data: StatusData =
-    entry === undefined
-      ? nudgeActiveSeconds >= thresholdSeconds
-        ? {
-            state: "nudge",
-            label: "tracking nudge",
-            colour: "#f1fa8c",
-            nudgeActiveSeconds,
-            cached: false,
-          }
-        : {
-            state: "healthy",
-            label: "not tracking",
-            colour: "#50fa7b",
-            nudgeActiveSeconds,
-            cached: false,
-          }
+  const cached = !sync;
+  return entry === undefined
+    ? nudgeActiveSeconds >= thresholdSeconds
+      ? {
+          state: "nudge",
+          label: "tracking nudge",
+          colour: "#f1fa8c",
+          nudgeActiveSeconds,
+          cached,
+          syncedAt,
+        }
       : {
-          state: "running",
-          label:
-            entry.description === undefined || entry.description === ""
-              ? "tracking"
-              : entry.description,
-          colour: "#ff5555",
-          entry,
-          nudgeActiveSeconds: 0,
-          cached: false,
-        };
-  await writeJsonFile(statusCachePath, {
-    createdAt: Date.now(),
-    data,
-  } satisfies StatusCache);
-  return data;
+          state: "healthy",
+          label: "not tracking",
+          colour: "#50fa7b",
+          nudgeActiveSeconds,
+          cached,
+          syncedAt,
+        }
+    : {
+        state: "running",
+        label:
+          entry.description === undefined || entry.description === ""
+            ? "tracking"
+            : entry.description,
+        colour: "#ff5555",
+        entry,
+        nudgeActiveSeconds: 0,
+        cached,
+        syncedAt,
+      };
 }
 
 async function updateNudge(
@@ -1086,24 +1338,14 @@ async function remindTracking(): Promise<void> {
   const hour = Math.floor(now.getTime() / 3_600_000);
   const previous = await readJsonFile<{ hour: number }>(reminderPath);
   if (previous?.hour === hour) return;
-  const activity = await readJsonFile<{ updatedAt: number }>(
-    trackingActivityPath,
-  );
+  // Local state only: never spend API requests on the minute poll.
+  const state = await readTrackingState();
+  if (state.running !== null) return;
   const cutoff = now.getTime() - 3_600_000;
-  if (activity !== undefined && activity.updatedAt > cutoff) return;
-  const token = await readEnvToken();
-  const config = await loadConfig();
-  const user = await getUser(token);
-  const workspaceId = await getWorkspaceId(token, config);
-  if (await getRunningEntry(token, workspaceId, user.id)) return;
-  const entries = await getRecentEntries(token, workspaceId, user.id, 1);
-  if (
-    entries.some((entry) => {
-      const end = entry.timeInterval.end;
-      return end != null && Date.parse(end) > cutoff;
-    })
-  )
+  if (state.changedAt !== null && state.changedAt > cutoff) return;
+  if (state.lastEntryEnd !== null && Date.parse(state.lastEntryEnd) > cutoff) {
     return;
+  }
   const result = spawnSync(
     "notify-send",
     [
@@ -1122,9 +1364,12 @@ async function remindTracking(): Promise<void> {
   await writeJsonFile(reminderPath, { hour });
 }
 
-async function commandStatus(options: CliOptions): Promise<void> {
+async function commandStatus(
+  args: string[],
+  options: CliOptions,
+): Promise<void> {
   try {
-    const data = await computeStatus(true);
+    const data = await computeStatus(hasFlag(args, "--sync"));
     if (options.json) {
       success("status", data, "json");
       return;
@@ -1143,12 +1388,9 @@ async function commandStatus(options: CliOptions): Promise<void> {
       colour: "#bd93f9",
       nudgeActiveSeconds: 0,
       cached: false,
+      syncedAt: null,
       error: error instanceof Error ? error.message : String(error),
     };
-    await writeJsonFile(statusCachePath, {
-      createdAt: Date.now(),
-      data,
-    } satisfies StatusCache);
     if (options.json) {
       success("status", data, "json");
       return;
@@ -1178,7 +1420,7 @@ async function commandStart(
     title,
     new Date().toISOString(),
   );
-  await clearStatusCache();
+  await recordEntryChange(entry);
   if (options.json) {
     success("start", entry, "json");
     return;
@@ -1189,10 +1431,13 @@ async function commandStart(
 async function commandStop(args: string[], options: CliOptions): Promise<void> {
   const token = await readEnvToken();
   const config = await loadConfig();
-  const user = await getUser(token);
-  const workspaceId = await getWorkspaceId(token, config);
-  const running = await getRunningEntry(token, workspaceId, user.id);
-  if (running === undefined) {
+  const identity = await getIdentity(token, config);
+  const { workspaceId } = identity;
+  const state = await syncRunning(token, identity, config.settings, {
+    force: true,
+  });
+  const running = state.running;
+  if (running === null) {
     throw new UserError("No running Clockify timer found.");
   }
   const title = getFlag(args, "--title");
@@ -1215,7 +1460,7 @@ async function commandStop(args: string[], options: CliOptions): Promise<void> {
     running,
     new Date().toISOString(),
   );
-  await clearStatusCache();
+  await recordEntryChange(entry);
   if (options.json) {
     success("stop", entry, "json");
     return;
@@ -1244,7 +1489,7 @@ async function commandAdd(args: string[], options: CliOptions): Promise<void> {
     start,
     end,
   );
-  await clearStatusCache();
+  await recordEntryChange(entry);
   if (options.json) {
     success("add", entry, "json");
     return;
@@ -1274,30 +1519,12 @@ async function commandEdit(args: string[], options: CliOptions): Promise<void> {
         ? undefined
         : parseTimeInput(requireFlag(args, "--end")),
   });
-  await clearStatusCache();
+  await recordEntryChange(entry);
   if (options.json) {
     success("edit", entry, "json");
     return;
   }
   console.log(`Updated entry: ${entry.id}`);
-}
-
-async function clearStatusCache(): Promise<void> {
-  await writeJsonFile(trackingActivityPath, { updatedAt: Date.now() });
-  await writeJsonFile(nudgePath, {
-    lastCheckedAt: Date.now(),
-    activeSeconds: 0,
-  } satisfies NudgeState);
-  await writeJsonFile(statusCachePath, {
-    createdAt: 0,
-    data: {
-      state: "healthy",
-      label: "expired",
-      colour: "#50fa7b",
-      nudgeActiveSeconds: 0,
-      cached: true,
-    },
-  });
 }
 
 function staleAliases(
@@ -1403,7 +1630,7 @@ async function commandAliasConfigure(options: CliOptions): Promise<void> {
 }
 
 async function commandPrompt(options: CliOptions): Promise<void> {
-  const status = await computeStatus(false);
+  const status = await computeStatus(true);
   const mode = await choose(
     ["start", "stop", "add"],
     status.state === "running" ? "stop" : "start",
@@ -1430,7 +1657,7 @@ async function commandPrompt(options: CliOptions): Promise<void> {
       parseTimeInput(start),
       parseTimeInput(end),
     );
-    await clearStatusCache();
+    await recordEntryChange(entry);
     if (options.json) {
       success("prompt", entry, "json");
       return;
@@ -1445,7 +1672,7 @@ async function commandPrompt(options: CliOptions): Promise<void> {
     title,
     new Date().toISOString(),
   );
-  await clearStatusCache();
+  await recordEntryChange(entry);
   if (options.json) {
     success("prompt", entry, "json");
     return;
@@ -1539,37 +1766,58 @@ async function collectChildOutput(child: ChildProcess): Promise<string> {
 
 async function loadFormContext(config: Config): Promise<FormContext> {
   const token = await readEnvToken();
-  const user = await getUser(token);
-  const workspaceId = await getWorkspaceId(token, config);
-  const projects = await getProjects(token, workspaceId);
-  const clients = await getClients(token, workspaceId);
-  const tags = await getTags(token, workspaceId);
-  const running = await getRunningEntry(token, workspaceId, user.id);
-  const lastEntryEnd = await getCachedLastEntryEnd(
+  const identity = await getIdentity(token, config);
+  const formContext: FormContext = {
     token,
-    workspaceId,
-    user.id,
+    workspaceId: identity.workspaceId,
+    identity,
     config,
-  );
-  const recentTimeEntries = await getRecentEntries(
-    token,
-    workspaceId,
-    user.id,
-    200,
-  );
-  const recentEntries = buildRecentEntries(recentTimeEntries, 100);
-
-  return {
-    token,
-    workspaceId,
-    config,
-    projects,
-    clients,
-    tags,
-    running,
-    lastEntryEnd,
-    recentEntries,
+    projects: [],
+    clients: [],
+    tags: [],
+    running: undefined,
+    lastEntryEnd: null,
+    recentEntries: [],
+    notice: null,
   };
+  // The running check comes first: it matters most when the budget is low.
+  await refreshFormRunning(formContext, false);
+  const lists = await loadLists(token, identity, config.settings);
+  formContext.projects = lists.projects;
+  formContext.clients = lists.clients;
+  formContext.tags = lists.tags;
+  formContext.recentEntries = lists.recentEntries;
+  formContext.lastEntryEnd = (await readTrackingState()).lastEntryEnd;
+  return formContext;
+}
+
+// Checks Clockify for a running timer when the form opens or regains focus.
+// Rate limits fall back to the locally known state with a notice.
+async function refreshFormRunning(
+  formContext: FormContext,
+  optional: boolean,
+): Promise<void> {
+  let state: TrackingState;
+  try {
+    state = await syncRunning(
+      formContext.token,
+      formContext.identity,
+      formContext.config.settings,
+      { optional },
+    );
+    const checkMs = formContext.config.settings.runningCheckSeconds * 1000;
+    const confirmed =
+      state.syncedAt !== null && Date.now() - state.syncedAt < checkMs;
+    formContext.notice = confirmed
+      ? null
+      : "Clockify request budget is low. The running timer shown is the locally known state.";
+  } catch (error) {
+    if (!(error instanceof RateLimitError)) throw error;
+    state = await readTrackingState();
+    formContext.notice = `${error.message} The running timer shown is the locally known state.`;
+  }
+  formContext.running = state.running ?? undefined;
+  formContext.lastEntryEnd = state.lastEntryEnd;
 }
 
 async function refreshFormLists(formContext: FormContext): Promise<void> {
@@ -1581,6 +1829,7 @@ async function refreshFormLists(formContext: FormContext): Promise<void> {
     formContext.token,
     formContext.workspaceId,
   );
+  await saveFormLists(formContext);
 }
 
 function sendJson(response: ServerResponse, data: unknown): void {
@@ -1725,6 +1974,21 @@ async function handleTagCreate(
     );
     formContext.tags = [...formContext.tags, created];
   }
+  await saveFormLists(formContext);
+}
+
+// Uses the via:form tag from the loaded tag list; asks Clockify only when it
+// is missing there.
+async function ensureViaFormTagId(formContext: FormContext): Promise<string> {
+  const known = formContext.tags.find((tag) => tag.name === viaFormTagName);
+  if (known !== undefined) return known.id;
+  const id = await resolveViaFormTagId(
+    formContext.token,
+    formContext.workspaceId,
+  );
+  formContext.tags = [...formContext.tags, { id, name: viaFormTagName }];
+  await saveFormLists(formContext);
+  return id;
 }
 
 function visibleTags(formContext: FormContext): ClockifyTag[] {
@@ -1749,9 +2013,9 @@ async function restartFormDetached(
 
   const url = `http://127.0.0.1:${config.settings.formPort}/`;
   const token = await readEnvToken();
-  const user = await getUser(token);
-  const workspaceId = await getWorkspaceId(token, config);
-  const running = await getRunningEntry(token, workspaceId, user.id);
+  const identity = await getIdentity(token, config);
+  const state = await syncRunning(token, identity, config.settings);
+  const running = state.running ?? undefined;
   if (options.json) {
     success("form", { url, running: running !== undefined }, "json");
     return;
@@ -1781,7 +2045,11 @@ async function commandForm(args: string[], options: CliOptions): Promise<void> {
   }
   let context: Promise<FormContext> | undefined;
   const getFormContext = (): Promise<FormContext> => {
-    context ??= loadFormContext(config);
+    // A failed load (for example, a rate limit) is retried on the next request.
+    context ??= loadFormContext(config).catch((error: unknown) => {
+      context = undefined;
+      throw error;
+    });
     return context;
   };
   const server = createServer(async (request, response) => {
@@ -1851,8 +2119,22 @@ async function commandForm(args: string[], options: CliOptions): Promise<void> {
         return;
       }
       if (request.method === "GET" && url.pathname === "/") {
+        // Each window opening checks for a running timer (rate limited by
+        // runningCheckSeconds), so a reopened form is never stale.
         const formContext = await getFormContext();
+        await refreshFormRunning(formContext, false);
         await serveFormPage(response, formContext);
+        return;
+      }
+      if (request.method === "GET" && url.pathname === "/api/running") {
+        // Window activation check; skipped when only the reserve is left.
+        const formContext = await getFormContext();
+        await refreshFormRunning(formContext, true);
+        sendJson(response, {
+          ok: true,
+          runningEntryId: formContext.running?.id ?? null,
+          notice: formContext.notice,
+        });
         return;
       }
       if (
@@ -1935,12 +2217,21 @@ async function submitFormEntry(
   request: IncomingMessage,
   formContext: FormContext,
 ): Promise<void> {
-  const { token, workspaceId, running, config } = formContext;
   const body = await readRequestBody(request);
   const payload = JSON.parse(body) as Partial<FormSubmitPayload>;
-  const project = await resolveProject(
-    token,
-    workspaceId,
+  // Confirm the timer state the page was built with before writing.
+  await refreshFormRunning(formContext, false);
+  const { token, workspaceId, running, config } = formContext;
+  if (
+    payload.runningEntryId !== undefined &&
+    payload.runningEntryId !== (running?.id ?? null)
+  ) {
+    throw new UserError(
+      "The running timer changed since this form opened. Reload the form.",
+    );
+  }
+  const project = findProject(
+    formContext.projects,
     config,
     payload.projectId ?? "",
   );
@@ -1982,11 +2273,12 @@ async function submitFormEntry(
       chosenTagIds.push(tag.id);
     }
   }
+  const tagId = await ensureViaFormTagId(formContext);
+  const tagIds = [...new Set([...chosenTagIds, tagId])];
+  let entry: ClockifyTimeEntry;
   if (running === undefined) {
     const end = endValue.trim() === "" ? undefined : parseTimeInput(endValue);
-    const tagId = await resolveViaFormTagId(token, workspaceId);
-    const tagIds = [...new Set([...chosenTagIds, tagId])];
-    await createEntry(
+    entry = await createEntry(
       token,
       workspaceId,
       project.id,
@@ -1995,34 +2287,17 @@ async function submitFormEntry(
       end,
       tagIds,
     );
-    if (end !== undefined) {
-      await recordLastEntryEnd(end);
-    }
-  } else if (endValue.trim() === "") {
-    const tagId = await resolveViaFormTagId(token, workspaceId);
-    const tagIds = [...new Set([...chosenTagIds, tagId])];
-    await updateEntry(token, workspaceId, running.id, {
-      projectId: project.id,
-      title,
-      start,
-      end: null,
-      tagIds,
-    });
   } else {
-    const end = parseTimeInput(endValue);
-    const tagId = await resolveViaFormTagId(token, workspaceId);
-    const tagIds = [...new Set([...chosenTagIds, tagId])];
-    await updateEntry(token, workspaceId, running.id, {
+    entry = await updateEntry(token, workspaceId, running.id, {
       projectId: project.id,
       title,
       start,
-      end,
+      end: endValue.trim() === "" ? null : parseTimeInput(endValue),
       tagIds,
     });
-    await recordLastEntryEnd(end);
   }
-  await clearStatusCache();
-  refreshClockifyPolybar();
+  await recordEntryChange(entry);
+  formContext.running = entry.timeInterval.end == null ? entry : undefined;
 }
 
 async function readRequestBody(request: IncomingMessage): Promise<string> {
@@ -2065,6 +2340,8 @@ function buildFormPageContext(formContext: FormContext): FormPageContext {
     end,
     lastEntryEnd,
     recentEntries,
+    runningEntryId: running?.id ?? null,
+    notice: formContext.notice,
   };
 }
 
@@ -2140,7 +2417,7 @@ async function main(): Promise<void> {
       return;
     }
     if (parsed.command === "status") {
-      await commandStatus(parsed.options);
+      await commandStatus(parsed.rest, parsed.options);
       if (hasFlag(parsed.rest, "--remind")) await remindTracking();
     } else if (parsed.command === "projects") {
       await commandProjects(parsed.rest, parsed.options);

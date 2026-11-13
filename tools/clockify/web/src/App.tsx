@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ClientManagerDialog } from "@/components/client-manager";
 import { ProjectManagerDialog } from "@/components/project-manager";
 import { Button } from "@/components/ui/button";
@@ -32,6 +32,8 @@ type FormPageContext = {
   end: string;
   lastEntryEnd: string | null;
   recentEntries: RecentEntry[];
+  runningEntryId: string | null;
+  notice: string | null;
 };
 
 declare global {
@@ -46,6 +48,9 @@ const RECENT_PROJECT_LIMIT = 8;
 const TITLE_SUGGESTION_LIMIT = 6;
 
 type SubmitResponse = { ok: true } | { ok: false; error: string };
+type RunningResponse =
+  | { ok: true; runningEntryId: string | null; notice: string | null }
+  | { ok: false; error: string };
 type TagCreateResponse =
   | { ok: true; tags: TagItem[] }
   | { ok: false; error: string };
@@ -86,6 +91,36 @@ export function App() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
   const [saved, setSaved] = useState(false);
+  const [notice, setNotice] = useState(context.notice);
+  const [runningChanged, setRunningChanged] = useState(false);
+
+  // On window activation, ask the local server whether the running timer
+  // changed. The server limits how often it asks Clockify.
+  useEffect(() => {
+    let checking = false;
+    const check = async () => {
+      if (checking || document.visibilityState !== "visible") return;
+      checking = true;
+      try {
+        const response = await fetch("/api/running");
+        const result = (await response.json()) as RunningResponse;
+        if (!result.ok) return;
+        setNotice(result.notice);
+        setRunningChanged(result.runningEntryId !== context.runningEntryId);
+      } catch (error) {
+        console.error("Checking the running timer failed", error);
+      } finally {
+        checking = false;
+      }
+    };
+    const onFocus = () => void check();
+    window.addEventListener("focus", onFocus);
+    document.addEventListener("visibilitychange", onFocus);
+    return () => {
+      window.removeEventListener("focus", onFocus);
+      document.removeEventListener("visibilitychange", onFocus);
+    };
+  }, []);
 
   const recentProjectIds = useMemo(() => {
     const seen = new Set<string>();
@@ -217,7 +252,14 @@ export function App() {
       const response = await fetch("/api/submit", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ projectId, title, start, end, tagIds }),
+        body: JSON.stringify({
+          projectId,
+          title,
+          start,
+          end,
+          tagIds,
+          runningEntryId: context.runningEntryId,
+        }),
       });
       const result = (await response.json()) as SubmitResponse;
       if (!result.ok) {
@@ -247,6 +289,21 @@ export function App() {
   return (
     <main className="mx-auto max-w-md p-8">
       <h1 className="text-lg font-semibold">Clockify</h1>
+      {runningChanged && (
+        <div className="mt-4 flex items-center justify-between gap-3 rounded-md border border-destructive p-3 text-sm">
+          <p>The running timer changed in Clockify.</p>
+          <Button
+            type="button"
+            size="sm"
+            onClick={() => window.location.reload()}
+          >
+            Reload
+          </Button>
+        </div>
+      )}
+      {notice !== null && (
+        <p className="mt-4 text-sm text-muted-foreground">{notice}</p>
+      )}
       <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
         <div className="space-y-1.5">
           <div className="flex items-center justify-between">

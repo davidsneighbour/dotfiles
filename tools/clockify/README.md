@@ -106,7 +106,7 @@ With no running timer, the form pre-fills `start` with the current time and leav
 
 With a running timer, the form pre-fills the current title, project, and start time, and sets `end` to now. Submitting with `end` set updates and stops the timer. Clearing `end` updates the running entry and keeps it running.
 
-Two quick-fill links sit next to the `start` field: "From last entry" sets `start` to the end of the most recent completed entry, and "Now" sets it to the current time. The last-entry lookup is cached for `lastEntryCacheSeconds` (default one hour) and is also refreshed immediately, without an extra API call, whenever a form submission completes or stops an entry.
+Two quick-fill links sit next to the `start` field: "From last entry" sets `start` to the end of the most recent completed entry, and "Now" sets it to the current time. The last-entry end comes from the local tracking state. Clockify updates it when the lists are refreshed, and local entry changes update it without an API call.
 
 Two links next to the "Project" field, "Clients" and "Projects", open small dialogs to add, rename,
 or archive ("Delete") clients and projects without leaving the form. Creating a project requires
@@ -127,20 +127,41 @@ Suggested tags are created in Clockify only when submitted. **New tag** accepts 
 
 ## Nudge and status
 
-`status` queries Clockify and uses a short cache, defaulting to 30 seconds, so Polybar can call it often without hammering the API. It also tracks active desktop time while no timer is running. Idle time is ignored when `xprintidle` is available.
+`status` reads only the local tracking state in `~/.cache/dnb-clockify/tracking-state.json`. It sends no API requests, so Polybar can call it every minute. It also tracks active desktop time while no timer is running. Idle time is ignored when `xprintidle` is available. `status --sync` first asks Clockify for a running timer (one request), then prints the status.
 
-Successful time-entry changes reset both the short status cache and the local nudge counter. This means a yellow `nudge` state returns to `healthy` after you submit a completed manual entry, unless Clockify reports a running timer or an error.
+The local tracking state holds the running timer, the end of the latest completed entry, the time of the last online check, and the time of the last local entry change. These events update it:
+
+* `start`, `stop`, `add`, `edit`, `prompt`, and form submits record the entry that Clockify returns. They also reset the local nudge counter and refresh Polybar.
+* Opening the form, a form submit, `stop`, `prompt`, `form --restart`, and `status --sync` ask Clockify for the running timer.
+* When the form window gets focus again, the form asks the local server for the running timer. If the timer changed, the form shows a **Reload** prompt. A submit is refused when the timer changed after the form opened.
+
+A timer started or stopped in another Clockify client is visible only after the next online check, for example the next time you open the form.
+
+## API rate limits
+
+The Clockify Free plan allows 30 API requests per hour per workspace. The tool counts every request in a rolling one-hour ledger in `~/.cache/dnb-clockify/rate-limit.json` and refuses requests that exceed `apiRequestsPerHour`. If Clockify still answers with HTTP 429, all requests stop for one hour. A refused request reports when the next request is possible.
+
+These measures keep the request count low:
+
+* The user and workspace IDs are cached in `identity.json`. They are fetched again only if the token or the configured `workspaceId` changes.
+* Projects, clients, tags, and recent entries are cached in `lists.json` for `listCacheSeconds`. Form changes to clients, projects, and tags update this cache. CLI commands resolve projects from a fresh cache before they ask Clockify.
+* Running checks are skipped when the last check is younger than `runningCheckSeconds`.
+* Optional requests keep 5 requests in reserve for entry changes. The focus check and the list refresh are optional. If the lists cache is stale and the budget is low, the form uses the stale lists.
+* If a running check is refused, the form uses the local state and shows a notice.
+
+Opening the form normally costs one request. A submit costs one more, plus the list refresh once per `listCacheSeconds` (4 requests).
 
 Configurable settings live under `settings` in `~/.config/dnb-clockify/config.json`:
 
 ```json
 {
   "settings": {
-    "cacheSeconds": 30,
     "nudgeMinutes": 60,
     "idleSeconds": 300,
     "formPort": 39241,
-    "lastEntryCacheSeconds": 3600
+    "apiRequestsPerHour": 30,
+    "listCacheSeconds": 3600,
+    "runningCheckSeconds": 60
   },
   "aliases": {}
 }
@@ -150,13 +171,15 @@ Status states:
 
 | State | Meaning |
 | --- | --- |
-| `healthy` | Clockify is reachable, and no timer is running. |
-| `running` | A Clockify timer is running. |
+| `healthy` | No timer is running, by the local tracking state. |
+| `running` | A Clockify timer is running, by the local tracking state. |
 | `nudge` | No timer is running, and active desktop time exceeded the nudge threshold. |
-| `error` | Token, network, or API problem. |
+| `error` | Missing token, or a failed `status --sync` request. |
+
+Use a higher `apiRequestsPerHour` only if the workspace has a paid plan.
 
 ## V1 limits
 
 This first version intentionally skips billing controls, reports, project inference, and a database. Clockify remains the source of truth.
 
-The Polybar integration enables `status --remind` and polls every 60 seconds for full-hour Dunst reminders after an hour without tracking. Running timers, recent entry end times, and successful local entry changes suppress reminders. See [Clockify session integration](../../configs/session/clockify/README.md) for timing, idle behaviour, and cache details.
+The Polybar integration enables `status --remind` and polls every 60 seconds for full-hour Dunst reminders after an hour without tracking. The reminder reads only the local tracking state. A running timer, an entry that ended in the past hour, or a local entry change in the past hour suppresses it. See [Clockify session integration](../../configs/session/clockify/README.md) for timing, idle behaviour, and cache details.
