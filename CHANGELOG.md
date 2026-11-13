@@ -1,5 +1,23 @@
 # Changelog
 
+## [2.36.0](https://github.com/davidsneighbour/dotfiles/compare/v2.35.1...v2.36.0) (2026-11-13)
+
+### Feat
+
+* add hourly tracking reminders ([77deef4](https://github.com/davidsneighbour/dotfiles/commit/77deef47fb4869d5b66351b7276d86b80e541bde))
+* **bashrc:** add help-driven command completion ([5fdb0dd](https://github.com/davidsneighbour/dotfiles/commit/5fdb0dd94f13510de6385d1acd0fcc1e013447ed))
+* **bashrc:** register help-driven completion for dmarc ([b951d87](https://github.com/davidsneighbour/dotfiles/commit/b951d87f628e9708c8b2202e97053c3d147986c1))
+* **configs:** establish local npm CLI linking ([75e5cff](https://github.com/davidsneighbour/dotfiles/commit/75e5cff046543cee3ade34914efdc3edeb006950))
+
+### Refactor
+
+* **ai:** modularise global agent instructions ([088e066](https://github.com/davidsneighbour/dotfiles/commit/088e0668a77d2a2825783b4283daad07cec5ab3d))
+* **ai:** move decision adjudication rules to a topic file ([70edb0e](https://github.com/davidsneighbour/dotfiles/commit/70edb0e1271d25007a1a7893260750d4949bd7d7))
+
+### Build
+
+* **skills:** add gh skills ([a999ff6](https://github.com/davidsneighbour/dotfiles/commit/a999ff6c82f07cda55319c26b8c89f4969e2aa71))
+
 ## [2.35.1](https://github.com/davidsneighbour/dotfiles/compare/v2.35.0...v2.35.1) (2026-11-12)
 
 ### Fix
