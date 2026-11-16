@@ -91,6 +91,8 @@ declare -A GLOBAL_ADD_SOURCE=()
 declare -a ADD_SOURCES=()
 declare -A ADD_SKILLS=()
 declare -a REQUESTED_NAMES=()
+# Broken unmanaged links that block --add or --adopt (see preflight_name).
+declare -a STALE_LINKS=()
 
 print_help() {
   cat <<EOF
@@ -479,7 +481,13 @@ conflict_message() {
   local state="${2}"
 
   case "${state}" in
-    foreign-link) printf '%s is an unmanaged link to %s' "${path}" "$(readlink -- "${path}")" ;;
+    foreign-link)
+      if [[ -e "${path}" ]]; then
+        printf '%s is an unmanaged link to %s' "${path}" "$(readlink -- "${path}")"
+      else
+        printf '%s is a broken link to %s (the target does not exist)' "${path}" "$(readlink -- "${path}")"
+      fi
+      ;;
     foreign-dir) printf '%s is an unmanaged directory' "${path}" ;;
     *) printf '%s is an unmanaged file' "${path}" ;;
   esac
@@ -964,6 +972,7 @@ preflight_name() {
         if [[ "${removes_global}" == 'true' ]] && is_global_cli_link "${root}" "${name}"; then
           continue
         fi
+        [[ -e "${root}/${name}" ]] || STALE_LINKS+=("${root}/${name}")
         report_error "Conflict: $(conflict_message "${root}/${name}" "${state}")."
         ;;
       *) report_error "Conflict: $(conflict_message "${root}/${name}" "${state}")." ;;
@@ -975,6 +984,13 @@ preflight_name() {
     [[ -e "${path}" || -L "${path}" ]] || continue
     is_managed_link "${root}" "${name}" && continue
     if [[ "${removes_global}" == 'true' && "${root}" == "${GLOBAL_SKILLS_DIR}" && -d "${path}" && ! -L "${path}" ]]; then
+      continue
+    fi
+    # A broken link is not a skill: it is left over from a skill source that
+    # was moved or deleted, and the summary in apply_add says how to remove it.
+    if [[ -L "${path}" && ! -e "${path}" ]]; then
+      STALE_LINKS+=("${path}")
+      report_error "Conflict: $(conflict_message "${path}" 'foreign-link')."
       continue
     fi
     report_error "Conflict: $(conflict_message "${path}" "$(link_state "${root}" "${name}")"), and it is not a global skills CLI install (for example a skillz link to one of your own skills)."
@@ -990,7 +1006,7 @@ preflight_name() {
 #      install the new skills, replace the lockfile, and link.
 # Nothing changes before step 4. Errors are counted in ERRORS.
 apply_add() {
-  local stage='' source='' name='' kind='' status=0 output='' verb='Add' remove_verb='Remove'
+  local stage='' source='' name='' kind='' status=0 output='' verb='Add' remove_verb='Remove' remove_command=''
   local relative="${LOCKFILE#"${DOTFILES_DIR}/"}"
   local -a skills=() added=() remove_global=()
   local -A added_source=() planned=() requested=()
@@ -1068,7 +1084,15 @@ apply_add() {
   done
   if ((ERRORS > 0)); then
     dnb_ui_error 'Resolve the conflicts above, then run the command again. Nothing was changed.'
-    dnb_ui_error "For a skillz link to one of your own skills: remove that skill from its source repository and run skillz, or keep your own skill and remove only the global install (npx ${SKILLS_CLI_PACKAGE} remove -g <name>, then run skillz)."
+    if ((${#STALE_LINKS[@]} > 0)); then
+      # Deleting a broken link loses nothing: its target does not exist.
+      remove_command="$(printf '%q ' "${STALE_LINKS[@]}")"
+      dnb_ui_error "${#STALE_LINKS[@]} conflict(s) are broken links. They are left over from a skill source that was moved or deleted (for example an old skillz source), so it is safe to delete them. Delete them, then run the command again:"
+      dnb_ui_error "  rm -- ${remove_command% }"
+    fi
+    if ((ERRORS > ${#STALE_LINKS[@]})); then
+      dnb_ui_error "For a skillz link to one of your own skills: remove that skill from its source repository and run skillz, or keep your own skill and remove only the global install (npx ${SKILLS_CLI_PACKAGE} remove -g <name>, then run skillz)."
+    fi
     return 0
   fi
 

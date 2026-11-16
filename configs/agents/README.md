@@ -151,6 +151,8 @@ To move global installs here, run `agent-skills --adopt` (all of them) or `agent
 
 `skills remove -g` also deletes `~/.claude/skills/<name>` when that is a link to somewhere else. For this reason, the manager accepts only the links that the CLI created itself (links to `~/.agents/skills/<name>`) and managed links. Any other entry with the same name, for example a `skillz` link to one of your own skills, is a conflict, and nothing is changed. Remove the skill from its source repository and run `skillz`, or keep your own skill and remove only the global install.
 
+A broken link with the same name is a conflict too. It is usually left over from a skill source that was moved or deleted, for example an old `skillz` source. The manager says that the link is broken and prints an `rm` command for all broken links. Deleting a broken link loses nothing, because its target does not exist. `skillz` also removes broken links into the skill repositories when it runs.
+
 The content of an adopted skill is downloaded again. It can be newer than the global copy, because the global lockfile records a Git tree hash, not the content hash of the project lockfile. A global skill from a local path is skipped, because other workstations cannot restore it.
 
 ### Remove a skill

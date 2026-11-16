@@ -364,6 +364,15 @@ expect_output "Conflict: ${CLAUDE}/delta is an unmanaged link"
 rm -- "${CLAUDE}/delta"
 ln -s ../../.agents/skills/delta "${CLAUDE}/delta"
 
+# A broken link (left over from a deleted skill source) is a conflict too,
+# and the error tells how to remove it.
+ln -s "${TMP_ROOT}/deleted-repository/skills/delta" "${CODEX}/delta"
+expect_status 1 --adopt --skill delta --yes
+expect_output "Conflict: ${CODEX}/delta is a broken link to ${TMP_ROOT}/deleted-repository/skills/delta (the target does not exist)"
+expect_output "rm -- ${CODEX}/delta"
+[[ -L "${CODEX}/delta" ]] || fail 'a refused adopt removed a broken link'
+rm -- "${CODEX}/delta"
+
 # --adopt with --skill moves only that global install; unknown names fail.
 global_install test/epsilon epsilon
 expect_status 1 --adopt --skill nope --yes
