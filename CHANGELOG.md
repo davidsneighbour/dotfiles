@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.37.1](https://github.com/davidsneighbour/dotfiles/compare/v2.37.0...v2.37.1) (2026-11-16)
+
+### Build
+
+* **deps:** update budtmo/docker-android:emulator_14.0 docker digest to 8ee678c ([#618](https://github.com/davidsneighbour/dotfiles/issues/618)) ([673df80](https://github.com/davidsneighbour/dotfiles/commit/673df802565b8a5ddaf220e7f2517dbd18bc1fb1))
+* **deps:** update caddy:2 docker digest to 4e2425f ([#619](https://github.com/davidsneighbour/dotfiles/issues/619)) ([fecfed4](https://github.com/davidsneighbour/dotfiles/commit/fecfed4438665c795615deb5150be552b0d7f1f9))
+* **deps:** update dependencies ([8297f29](https://github.com/davidsneighbour/dotfiles/commit/8297f29158e6d72325cae3a6e9824f3809c41eac))
+
 ## [2.37.0](https://github.com/davidsneighbour/dotfiles/compare/v2.36.1...v2.37.0) (2026-11-13)
 
 ### Feat
