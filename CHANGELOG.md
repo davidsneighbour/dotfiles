@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.37.2](https://github.com/davidsneighbour/dotfiles/compare/v2.37.1...v2.37.2) (2026-11-16)
+
+### Fix
+
+* **agents:** explain broken-link conflicts and how to remove them ([bf207ff](https://github.com/davidsneighbour/dotfiles/commit/bf207ff7f5e545142ffb78aee7acee1eb15e20ca))
+* **bashrc:** remove skillz links into deleted skill repositories ([8d69912](https://github.com/davidsneighbour/dotfiles/commit/8d699127b9e53b84c0e56cc1c6811d953c171ebe))
+
+### Chore
+
+* **agents:** track the hallmark skill in the skills lockfile ([32bc079](https://github.com/davidsneighbour/dotfiles/commit/32bc079f7f45b0ebd8599b5e9bd6203952d61c65))
+* **bashrc:** stop linking the removed skills repository through skillz ([0114a8b](https://github.com/davidsneighbour/dotfiles/commit/0114a8b4d4e77955fa7f912a9290d44e930b79d7))
+
 ## [2.37.1](https://github.com/davidsneighbour/dotfiles/compare/v2.37.0...v2.37.1) (2026-11-16)
 
 ### Build
