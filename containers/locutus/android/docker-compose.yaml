@@ -8,7 +8,7 @@ services:
   # (1300:1301) and must be able to write its AVD there.
   android-volume-init:
     # secretlint-disable-next-line @secretlint/secretlint-rule-secp256k1-privatekey
-    image: budtmo/docker-android:emulator_14.0@sha256:5e4011a46f05010456ecf19dd97fb75c2dff84f95f4c84fdabb0f8555d5a4f43
+    image: budtmo/docker-android:emulator_14.0@sha256:8ee678cf831fdf7c03fb391ca036922f3b78b89fdc992be3b815e1c70b372d2a
     container_name: android-emulator-volume-init
     user: "0:0"
     entrypoint: ["chown", "1300:1301", "/home/androidusr/emulator"]
@@ -19,7 +19,7 @@ services:
 
   android:
     # secretlint-disable-next-line @secretlint/secretlint-rule-secp256k1-privatekey
-    image: budtmo/docker-android:emulator_14.0@sha256:5e4011a46f05010456ecf19dd97fb75c2dff84f95f4c84fdabb0f8555d5a4f43
+    image: budtmo/docker-android:emulator_14.0@sha256:8ee678cf831fdf7c03fb391ca036922f3b78b89fdc992be3b815e1c70b372d2a
     container_name: android-emulator
     hostname: android-emulator
     restart: "no"
