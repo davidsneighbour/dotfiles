@@ -265,8 +265,11 @@ write_dotbot_config() {
     printf '        for dir in %s; do\n' "${AGENT_SKILL_ROOTS[*]}"
     printf '          expanded="${dir/#\\~/$HOME}"\n'
     printf '\n'
+    # readlink -m, not -f: -f fails when folders of the target are missing, so
+    # a link into a deleted skill repository resolved to "" and stayed behind.
+    # Only a symlink loop still fails; "|| true" keeps such a link (untrusted).
     printf '          if [ -L "${expanded}" ]; then\n'
-    printf '            resolved="$(readlink -f "${expanded}" 2>/dev/null || true)"\n'
+    printf '            resolved="$(readlink -m "${expanded}" 2>/dev/null || true)"\n'
     printf '            if is_trusted "${resolved}"; then\n'
     printf '              rm "${expanded}"\n'
     printf '            else\n'
@@ -279,7 +282,7 @@ write_dotbot_config() {
     printf '\n'
     printf '          for entry in "${expanded}"/*; do\n'
     printf '            [ -L "${entry}" ] || continue\n'
-    printf '            resolved="$(readlink -f "${entry}" 2>/dev/null || true)"\n'
+    printf '            resolved="$(readlink -m "${entry}" 2>/dev/null || true)"\n'
     # An if statement, not "is_trusted && rm": the && list returns 1 for an
     # untrusted entry, and as the last command of the step it made the whole
     # Dotbot shell step fail (for example when the last entry in a skill root
