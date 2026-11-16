@@ -631,6 +631,12 @@
       "skillPath": "plugins/documentation-standards/skills/hads/SKILL.md",
       "computedHash": "dc14487eda021214fc836c3897b810e3f8206f8bada872a964e7a6a3e9a4200f"
     },
+    "hallmark": {
+      "source": "nutlope/hallmark",
+      "sourceType": "github",
+      "skillPath": "skills/hallmark/SKILL.md",
+      "computedHash": "fc2c1acfe7c57734c16f1565f24e8074db2898616723a9f7b75b99fe0e51067c"
+    },
     "helm-chart-scaffolding": {
       "source": "wshobson/agents",
       "sourceType": "github",
