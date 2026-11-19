@@ -44,7 +44,7 @@ dynamic:
       - /usr/bin/chatgpt
   claude:
     icon: "\uE1BB"
-    workspace_prefix: chatgpt
+    workspace_prefix: claude
     command:
       - /usr/bin/claude-desktop
 
