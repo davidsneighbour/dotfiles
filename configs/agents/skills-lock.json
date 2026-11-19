@@ -751,6 +751,12 @@
       "skillPath": "plugins/llm-application-dev/skills/llm-evaluation/SKILL.md",
       "computedHash": "af89a6013eacc5db7afe102b4a2af95ad8dcad4721e35700cba24b1ebd35c94f"
     },
+    "logo-design": {
+      "source": "kaankiziltug/logo-design-skill",
+      "sourceType": "github",
+      "skillPath": "skills/logo-design/SKILL.md",
+      "computedHash": "232896e5f973a42f1a3e57db6335c1d3a0d4e7c84b1cde0d69e22d946c917030"
+    },
     "lora-qlora-recipes": {
       "source": "wshobson/agents",
       "sourceType": "github",
