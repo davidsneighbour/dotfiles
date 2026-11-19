@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.37.3](https://github.com/davidsneighbour/dotfiles/compare/v2.37.2...v2.37.3) (2026-11-19)
+
+### Fix
+
+* **i3:** correct Claude workspace prefix ([bfa9331](https://github.com/davidsneighbour/dotfiles/commit/bfa93310fcf8810dab61c8967f8a07f1c0b65aaa))
+* **i3:** restore Claude robot workspace icon ([6288dee](https://github.com/davidsneighbour/dotfiles/commit/6288dee879d44b83d005c038d809ebfb15c04aec))
+
+### Build
+
+* **deps:** update dependencies ([5c9d691](https://github.com/davidsneighbour/dotfiles/commit/5c9d6914073d0018f7724992c1932c260031d658))
+
+### Chore
+
+* **agents:** record logo-design skill ([15642cf](https://github.com/davidsneighbour/dotfiles/commit/15642cf5109a61ce865098254efb64c087efb8f2))
+* **session:** update VoiceStudio launcher ([a2433d2](https://github.com/davidsneighbour/dotfiles/commit/a2433d246d8a1586cbb02eda308848a767769586))
+
 ## [2.37.2](https://github.com/davidsneighbour/dotfiles/compare/v2.37.1...v2.37.2) (2026-11-16)
 
 ### Fix
