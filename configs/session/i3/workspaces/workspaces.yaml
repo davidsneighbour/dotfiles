@@ -88,6 +88,10 @@ window_icons:
     - class: Chatgpt
       slug: chatgpt
       icon: ""
+    # Claude desktop uses the same robot as its dynamic launcher.
+    - class: com.anthropic.Claude
+      slug: claude
+      icon: "\uE1BB"
     - class: Enpass
       slug: enpass
       icon: "\uE731"

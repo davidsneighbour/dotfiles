@@ -104,6 +104,8 @@ Programs started on a new workspace (bare `Super`, `Super+Shift+D`, or `Ctrl+Shi
 
 WhatsApp uses class `dnb-whatsapp`, slug `whatsapp`, and the Lucide messages-square icon (`U+E40D`).
 
+Claude uses class `com.anthropic.Claude`, slug `claude`, and the robot icon (`U+E1BB`) from its dynamic launcher.
+
 You do not need to reload i3. `workspaces.py` reads `workspaces.yaml` each time it runs, so the rule applies from the next launch. The first rule that matches wins.
 
 ## Workspace layouts
