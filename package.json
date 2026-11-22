@@ -145,7 +145,7 @@
       "smol-toml": "1.9.1"
     },
     "get-uri": {
-      "basic-ftp": "^6.2.1"
+      "basic-ftp": "6.2.4"
     },
     "katex": "0.18.11",
     "nodemon": {
