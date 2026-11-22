@@ -4,15 +4,15 @@ The shell adds this directory to `PATH`. Executable helpers run as separate proc
 
 ## Rebase and publish a branch
 
-`git-rebase-push` fetches the selected base and working branches, rebases the local working branch onto the remote base, runs your check command from the repository root, and pushes with an explicit `--force-with-lease`. Defaults are `main`, `origin`, and the current branch. The local base branch stays unchanged.
+`git-rebase-push` fetches the selected base and working branches, rebases the local working branch onto the remote base, runs `npm run check` from the repository root, and pushes with an explicit `--force-with-lease`. Defaults are `main`, `origin`, and the current branch. The local base branch stays unchanged.
 
 ```bash
-git-rebase-push -- npm run check
-git-rebase-push --base development -- npm run check
+git-rebase-push
+git-rebase-push --base development
 git-rebase-push --base main --remote origin --branch rework/header -- make test
 ```
 
-Supply the relevant check command after `--`; it runs directly as an argument array. For several checks, use an existing repository check script. Use `--help` for all options and `--verbose` for progress.
+To override `npm run check`, supply a check command after `--`; it runs directly as an argument array. For several checks, use an existing repository check script. Use `--help` for all options and `--verbose` for progress. Running the helper without arguments uses all defaults and starts the workflow.
 
 Both remote branches and the local working branch must exist. The helper requires a clean worktree and refuses active Git operations or remote working-branch commits missing locally. Selecting `--branch` switches to that branch and leaves it checked out. The push updates only that branch, and the lease rejects a remote branch changed since the fetch.
 

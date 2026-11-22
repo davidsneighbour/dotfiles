@@ -1,5 +1,6 @@
 """Exercise rebase and publication against isolated local Git repositories."""
 
+import json
 import os
 from pathlib import Path
 import subprocess
@@ -66,6 +67,21 @@ class RebasePushTest(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertEqual(self.remote_tip(), self.old_remote)
 
+    def test_default_npm_checks(self):
+        self.commit("package.json", json.dumps({"scripts": {
+            "check": "git merge-base --is-ancestor main HEAD"}}))
+        result = self.invoke()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("git merge-base --is-ancestor main HEAD", result.stderr)
+        self.assertEqual(self.remote_tip(), self.git("rev-parse", "HEAD").stdout.strip())
+
+    def test_default_npm_check_failure_with_options_does_not_push(self):
+        self.commit("package.json", json.dumps({"scripts": {"check": "exit 1"}}))
+        result = self.invoke("--base", "main")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("npm failed", result.stderr)
+        self.assertEqual(self.remote_tip(), self.old_remote)
+
     def test_conflict_does_not_run_checks_or_push(self):
         self.git("switch", "main")
         self.commit("base", "main change")
@@ -115,12 +131,12 @@ class RebasePushTest(unittest.TestCase):
         self.assertIn("commits missing locally", result.stderr)
         self.assertEqual(self.git("rev-parse", "HEAD").stdout.strip(), self.old_remote)
 
-    def test_help_and_missing_checks_have_no_git_effects(self):
+    def test_help_and_empty_override_have_no_git_effects(self):
         result = self.command(str(HELPER), "--help", cwd=self.root, check=False)
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertIn("Options:", result.stdout)
         self.assertFalse((self.root / ".logs").exists())
-        result = self.invoke("--base", "main")
+        result = self.invoke("--base", "main", "--")
         self.assertNotEqual(result.returncode, 0)
         self.assertEqual(self.remote_tip(), self.old_remote)
 

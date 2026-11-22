@@ -1,11 +1,11 @@
 #!/bin/bash
-# Fetch, rebase a local branch, run explicit checks, and publish with a lease.
+# Fetch, rebase a local branch, run checks, and publish with a lease.
 set -euo pipefail
 
 # Print safe help without loading libraries or accessing the repository.
 print_help() {
   cat <<'EOF'
-Usage: git-rebase-push [options] -- <check-command> [check-arguments...]
+Usage: git-rebase-push [options] [-- <check-command> [check-arguments...]]
 
 Rebase a local branch onto a remote base, run checks from the repository root,
 and push the branch with an explicit force-with-lease. The local base is unchanged.
@@ -18,22 +18,19 @@ Options:
   --quiet               Disable verbose output (overrides --verbose)
   -h, --help            Show help without side effects
 
-The check command after -- is required and runs directly, without shell parsing.
+Run npm run check by default. Override it with a command after --;
+the command runs directly, without shell parsing.
 An explicit branch is checked out and remains checked out. Both branches must
 exist on the remote. Refuse dirty worktrees, active Git operations, and remote
 branch commits missing locally. Stop on any failure; never push after failed checks.
 
 Examples:
-  git-rebase-push -- npm run check
-  git-rebase-push --base development -- npm run check
+  git-rebase-push
+  git-rebase-push --base development
   git-rebase-push --base main --remote upstream --branch rework/header -- make test
 EOF
 }
 
-if [[ "$#" -eq 0 ]]; then
-  print_help
-  exit 0
-fi
 for argument in "$@"; do
   [[ "${argument}" == -- ]] && break
   if [[ "${argument}" == --help || "${argument}" == -h ]]; then
@@ -57,7 +54,7 @@ die() {
   exit 1
 }
 
-base=main remote=origin branch='' quiet=false
+base=main remote=origin branch='' quiet=false custom_check=false
 while [[ "$#" -gt 0 ]]; do
   case "${1}" in
   --base | --remote | --branch)
@@ -82,6 +79,7 @@ while [[ "$#" -gt 0 ]]; do
     shift
     ;;
   --)
+    custom_check=true
     shift
     break
     ;;
@@ -96,8 +94,11 @@ if [[ "${DNB_VERBOSE:-}" == 1 ]]; then
   dnb_log_init >/dev/null
 fi
 if [[ "$#" -eq 0 ]]; then
-  print_help >&2
-  die 'Supply the relevant check command after --.'
+  if [[ "${custom_check}" == true ]]; then
+    print_help >&2
+    die 'Supply a check command after --, or omit -- to run npm run check.'
+  fi
+  set -- npm run check
 fi
 
 # Execute an argument array, retaining diagnostics and stopping on failure.
