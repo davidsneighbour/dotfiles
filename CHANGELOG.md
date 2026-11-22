@@ -1,5 +1,26 @@
 # Changelog
 
+## [2.38.0](https://github.com/davidsneighbour/dotfiles/compare/v2.37.3...v2.38.0) (2026-11-22)
+
+### Feat
+
+* **bashrc:** add checked rebase and push helper ([9506ad6](https://github.com/davidsneighbour/dotfiles/commit/9506ad6c87a38f30e079e4afffbd9e6974d316a5))
+* **bashrc:** default rebase checks to npm ([bcab059](https://github.com/davidsneighbour/dotfiles/commit/bcab059759b423807c4ff785dfe2552a71441b21))
+
+### Fix
+
+* **deps:** patch FTP listing denial of service ([d94db09](https://github.com/davidsneighbour/dotfiles/commit/d94db099b1c23ca3573ede033edbb9b30b269602))
+
+### Build
+
+* **deps:** update binwiederhier/ntfy:latest docker digest to 038da2b ([#620](https://github.com/davidsneighbour/dotfiles/issues/620)) ([ab363e8](https://github.com/davidsneighbour/dotfiles/commit/ab363e8bd461e4f409ec709b6181c03c00dd1f31))
+* **deps:** update caddy:2 docker digest to 4851e54 ([#621](https://github.com/davidsneighbour/dotfiles/issues/621)) ([1e59fef](https://github.com/davidsneighbour/dotfiles/commit/1e59fef8c87879f2d798f67daf1b952b0038a800))
+* **deps:** update dependencies ([ab2293e](https://github.com/davidsneighbour/dotfiles/commit/ab2293ead51fea8a1d57bbecdb6f3d5f4d5be7e2))
+* **deps:** update dgtlmoon/sockpuppetbrowser:latest docker digest to 6f681d4 ([#622](https://github.com/davidsneighbour/dotfiles/issues/622)) ([6ad7b00](https://github.com/davidsneighbour/dotfiles/commit/6ad7b00667ef0834cc385e2671b4e795fceb5dd3))
+* **deps:** update docker.io/apache/tika:latest docker digest to 0f0fbd7 ([#623](https://github.com/davidsneighbour/dotfiles/issues/623)) ([240d360](https://github.com/davidsneighbour/dotfiles/commit/240d360d9e34ad95241fa76a92cd4a5b18b7f7d0))
+* **deps:** update ghcr.io/alexta69/metube:latest docker digest to be802df ([#624](https://github.com/davidsneighbour/dotfiles/issues/624)) ([6a5392b](https://github.com/davidsneighbour/dotfiles/commit/6a5392b7e640f961b73de571b5d410ab6240a7e3))
+* **deps:** update ghcr.io/dgtlmoon/changedetection.io:latest docker digest to b6aae25 ([#625](https://github.com/davidsneighbour/dotfiles/issues/625)) ([a69f912](https://github.com/davidsneighbour/dotfiles/commit/a69f912b520df42734e200380af17e61c98e03bb))
+
 ## [2.37.3](https://github.com/davidsneighbour/dotfiles/compare/v2.37.2...v2.37.3) (2026-11-19)
 
 ### Fix
