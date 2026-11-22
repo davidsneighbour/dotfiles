@@ -4,3 +4,4 @@ dnb_register_completion searchfor
 dnb_register_completion dmarc
 dnb_register_completion android-start
 dnb_register_completion android-stop
+dnb_register_completion git-rebase-push

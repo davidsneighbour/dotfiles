@@ -1,0 +1,150 @@
+#!/bin/bash
+# Fetch, rebase a local branch, run explicit checks, and publish with a lease.
+set -euo pipefail
+
+# Print safe help without loading libraries or accessing the repository.
+print_help() {
+  cat <<'EOF'
+Usage: git-rebase-push [options] -- <check-command> [check-arguments...]
+
+Rebase a local branch onto a remote base, run checks from the repository root,
+and push the branch with an explicit force-with-lease. The local base is unchanged.
+
+Options:
+  --base <name>         Base branch on the remote (default: main)
+  --remote <name>       Configured remote (default: origin)
+  --branch <name>       Local branch to rebase (default: current branch)
+  --verbose             Show progress and enable DNB_VERBOSE
+  --quiet               Disable verbose output (overrides --verbose)
+  -h, --help            Show help without side effects
+
+The check command after -- is required and runs directly, without shell parsing.
+An explicit branch is checked out and remains checked out. Both branches must
+exist on the remote. Refuse dirty worktrees, active Git operations, and remote
+branch commits missing locally. Stop on any failure; never push after failed checks.
+
+Examples:
+  git-rebase-push -- npm run check
+  git-rebase-push --base development -- npm run check
+  git-rebase-push --base main --remote upstream --branch rework/header -- make test
+EOF
+}
+
+if [[ "$#" -eq 0 ]]; then
+  print_help
+  exit 0
+fi
+for argument in "$@"; do
+  [[ "${argument}" == -- ]] && break
+  if [[ "${argument}" == --help || "${argument}" == -h ]]; then
+    print_help
+    exit 0
+  fi
+done
+
+SCRIPT_DIR="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
+for library in dnb-core-colors dnb-core-log dnb-core-ui-theme dnb-core-ui; do
+  # shellcheck disable=SC1090
+  source "${SCRIPT_DIR}/../lib/00-core/${library}.bash"
+done
+DNB_SETUP_LOG_FILE="${HOME}/.logs/git/$(date +%Y%m%d-%H%M%S).log"
+export DNB_SETUP_LOG_FILE
+unset __LOGFILE
+
+# Report an actionable error and stop before the next workflow step.
+die() {
+  dnb_ui_error "$*"
+  exit 1
+}
+
+base=main remote=origin branch='' quiet=false
+while [[ "$#" -gt 0 ]]; do
+  case "${1}" in
+  --base | --remote | --branch)
+    if [[ "$#" -lt 2 || -z "${2}" || "${2}" == -* ]]; then
+      print_help >&2
+      die "${1} requires a value."
+    fi
+    case "${1}" in
+    --base) base="${2}" ;;
+    --remote) remote="${2}" ;;
+    --branch) branch="${2}" ;;
+    *) die 'Invalid option state.' ;;
+    esac
+    shift 2
+    ;;
+  --verbose)
+    export DNB_VERBOSE=1
+    shift
+    ;;
+  --quiet)
+    quiet=true
+    shift
+    ;;
+  --)
+    shift
+    break
+    ;;
+  *)
+    print_help >&2
+    die "Unknown option: ${1}. Use -- before the check command."
+    ;;
+  esac
+done
+[[ "${quiet}" == false ]] || unset DNB_VERBOSE
+if [[ "${DNB_VERBOSE:-}" == 1 ]]; then
+  dnb_log_init >/dev/null
+fi
+if [[ "$#" -eq 0 ]]; then
+  print_help >&2
+  die 'Supply the relevant check command after --.'
+fi
+
+# Execute an argument array, retaining diagnostics and stopping on failure.
+run() {
+  if [[ "${DNB_VERBOSE:-}" == 1 ]]; then
+    dnb_ui_info "Running: ${1}"
+  fi
+  local status=0
+  "$@" >&2 || status="$?"
+  [[ "${status}" -eq 0 ]] || die "${1} failed (exit ${status}); no further steps were run."
+}
+
+command -v git >/dev/null || die 'Git is required.'
+root="$(git rev-parse --show-toplevel)" || die 'Run inside a Git worktree.'
+cd "${root}"
+[[ -z "$(git status --porcelain)" ]] || die 'Commit or stash worktree changes first, including untracked files.'
+for operation in rebase-merge rebase-apply MERGE_HEAD CHERRY_PICK_HEAD REVERT_HEAD sequencer BISECT_START; do
+  [[ ! -e "$(git rev-parse --git-path "${operation}")" ]] || die "Finish the active Git operation (${operation}) first."
+done
+if [[ -z "${branch}" ]]; then
+  branch="$(git symbolic-ref --quiet --short HEAD)" || die 'Detached HEAD: select a local branch with --branch.'
+fi
+git check-ref-format "refs/heads/${base}" >/dev/null || die 'Invalid base branch name.'
+git check-ref-format "refs/heads/${branch}" >/dev/null || die 'Invalid working branch name.'
+[[ "${branch}" != -* && "${branch}" != "${base}" ]] || die 'Select a working branch different from the base.'
+git show-ref --verify --quiet "refs/heads/${branch}" || die "Local branch ${branch} does not exist."
+[[ "${remote}" != -* ]] || die 'Invalid remote name.'
+git remote get-url "${remote}" >/dev/null || die "Configure remote ${remote} first."
+
+# Fetch the exact refs, including for repositories with a narrow fetch refspec.
+run git fetch --no-tags "${remote}" \
+  "+refs/heads/${base}:refs/remotes/${remote}/${base}" \
+  "+refs/heads/${branch}:refs/remotes/${remote}/${branch}"
+base_tip="$(git rev-parse --verify "refs/remotes/${remote}/${base}^{commit}")"
+remote_tip="$(git rev-parse --verify "refs/remotes/${remote}/${branch}^{commit}")"
+git merge-base --is-ancestor "${remote_tip}" "refs/heads/${branch}" ||
+  die "Remote ${remote}/${branch} has commits missing locally. Review and reconcile them before retrying."
+run git switch --no-guess "${branch}"
+if ! git -c rebase.autoStash=false -c rebase.updateRefs=false rebase "${base_tip}" >&2; then
+  die 'Rebase stopped. Resolve conflicts and run git rebase --continue, or use git rebase --abort. No checks or push ran.'
+fi
+rebased_tip="$(git rev-parse HEAD)"
+run "$@"
+[[ "$(git symbolic-ref --quiet --short HEAD)" == "${branch}" && "$(git rev-parse HEAD)" == "${rebased_tip}" ]] ||
+  die 'Checks changed the branch or HEAD. Review the repository before pushing.'
+[[ -z "$(git status --porcelain)" ]] || die 'Checks left worktree changes. Review them before pushing.'
+run git -c push.followTags=false push \
+  "--force-with-lease=refs/heads/${branch}:${remote_tip}" \
+  "${remote}" "refs/heads/${branch}:refs/heads/${branch}"
+dnb_ui_success "Rebased, checked, and pushed ${branch} onto ${remote}/${base}."
