@@ -89,6 +89,7 @@
     "typecheck:bash-helpers": "tsc --project tsconfig.bash-helpers.json --noEmit",
     "typecheck:config": "tsc --project tsconfig.config.json --noEmit",
     "typecheck:scripts": "tsc --project tsconfig.scripts.json --noEmit",
+    "vale:postinstall": "if command -v vale >/dev/null 2>&1; then vale sync || echo 'vale:postinstall: vale sync failed; run it again later'; else echo 'vale:postinstall: vale is not installed; skipping vale sync'; fi",
     "update:node-engines": "node --experimental-strip-types scripts/update-node-engines.ts",
     "config:validate": "node scripts/dotfiles-config.ts --action validate",
     "test:dotfiles-config": "node --test scripts/dotfiles-config.test.ts",
@@ -98,7 +99,8 @@
     "postinstall": {
       "dependencies": [
         "biome:postinstall",
-        "lint:postinstall"
+        "lint:postinstall",
+        "vale:postinstall"
       ]
     }
   },
