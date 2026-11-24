@@ -93,6 +93,7 @@
     # content quality
     ~/.remarkrc.js: configs/content/.remarkrc.js
     ~/.remarkignore: configs/content/.remarkignore
+    ~/.config/vale/.vale.ini: configs/session/vale.ini
 
     # fonts
     ~/.fonts: configs/fonts
