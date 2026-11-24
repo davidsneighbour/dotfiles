@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.39.0](https://github.com/davidsneighbour/dotfiles/compare/v2.38.0...v2.39.0) (2026-11-24)
+
+### Feat
+
+* add copy file path command to thunar right click menu ([c5d449b](https://github.com/davidsneighbour/dotfiles/commit/c5d449bb32a25a15d090a8a5d390ecea297f63cc))
+* **session:** add global Vale configuration ([d8f73af](https://github.com/davidsneighbour/dotfiles/commit/d8f73af275e23f3c7299ecb249eb615307d2f4b2))
+* **session:** follow the latest vale-config release ([858ffdd](https://github.com/davidsneighbour/dotfiles/commit/858ffdd8b5bc6cab1076375894fdcb896058c372))
+* **session:** sync Vale packages on npm install ([90e702e](https://github.com/davidsneighbour/dotfiles/commit/90e702ed028aab2005c3f1ef6f2783d48cf384da))
+
+### Build
+
+* **deps:** update dependencies ([a2c3398](https://github.com/davidsneighbour/dotfiles/commit/a2c339881f0d1873eadd4b7bc3a1690a9a961de2))
+
 ## [2.38.0](https://github.com/davidsneighbour/dotfiles/compare/v2.37.3...v2.38.0) (2026-11-22)
 
 ### Feat
