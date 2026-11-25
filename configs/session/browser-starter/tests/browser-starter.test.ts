@@ -125,7 +125,7 @@ test("the primary monitor is preferred", () => {
   assert.equal(parseMonitors("no monitors"), null);
 });
 
-test("bars stack from the top offset, the close bar is at the bottom", () => {
+test("each profile is an icon bar and a label bar, the close bar is at the bottom", () => {
   const config = parseStarterConfig(
     { profiles: [profile(), profile({ directory: "Profile 1" })] },
     palette,
@@ -134,10 +134,12 @@ test("bars stack from the top offset, the close bar is at the bottom", () => {
   assert.deepEqual(
     bars.map((bar) => [bar.kind, bar.offsetY, bar.height]),
     [
-      ["profile", 30, 72],
-      ["profile", 102, 72],
-      ["filler", 174, 834],
-      ["close", 1008, 72],
+      ["icon", 30, 76],
+      ["label", 106, 20],
+      ["icon", 126, 76],
+      ["label", 202, 20],
+      ["filler", 222, 782],
+      ["close", 1004, 76],
     ],
   );
 });
@@ -150,7 +152,7 @@ test("too many profiles for the monitor height are rejected", () => {
   assert.throws(() => layoutBars(config, monitor), /do not fit/);
 });
 
-test("the generated Polybar config uses pixel padding and quoted click commands", () => {
+test("the generated Polybar config has an icon and a label bar with click commands", () => {
   const config = parseStarterConfig(
     { profiles: [profile({ directory: "Profile 1" })] },
     palette,
@@ -161,13 +163,28 @@ test("the generated Polybar config uses pixel padding and quoted click commands"
     theme,
     "'node' 'starter.ts'",
   );
-  assert.match(ini, /^padding-left = 12px$/m);
   assert.match(ini, /^override-redirect = true$/m);
-  assert.match(ini, /^click-left = 'node' 'starter.ts' --launch 'Profile 1'$/m);
+  assert.doesNotMatch(ini, /^modules-left/m);
+  assert.match(ini, /^\[bar\/browser-starter-p0\]$/m);
+  assert.match(ini, /^\[bar\/browser-starter-p0-label\]$/m);
+  assert.match(ini, /^label = "%\{T2\}%\{F#8FA9B4\}\uE19F%\{F-\}%\{T-\}"$/m);
+  assert.match(ini, /^label = "%\{T1\}Main%\{T-\}"$/m);
+  assert.equal(
+    ini.match(/^click-left = 'node' 'starter.ts' --launch 'Profile 1'$/gm)
+      ?.length,
+    2,
+  );
   assert.match(ini, /^click-left = 'node' 'starter.ts' --close$/m);
-  assert.match(
-    ini,
-    /%\{T2\}%\{F#8FA9B4\}\uE19F%\{F-\}%\{T-\}%\{O4\}%\{T1\}Main%\{T-\}/,
+});
+
+test("without labels there are no label bars", () => {
+  const config = parseStarterConfig(
+    { bar: { show_labels: false }, profiles: [profile()] },
+    palette,
+  );
+  assert.deepEqual(
+    layoutBars(config, monitor).map((bar) => bar.kind),
+    ["icon", "filler", "close"],
   );
 });
 

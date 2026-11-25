@@ -80,7 +80,9 @@ export interface BarSettings {
   iconPixels: number;
   iconOffsetPixels: number;
   labelPixels: number;
-  itemHeightPixels: number;
+  iconRowPixels: number;
+  labelRowPixels: number;
+  itemSpacingPixels: number;
   widthPixels: number;
   topOffsetPixels: number;
   showLabels: boolean;
@@ -414,7 +416,9 @@ export function parseStarterConfig(
       "icon_pixels",
       "icon_offset_pixels",
       "label_pixels",
-      "item_height_pixels",
+      "icon_row_pixels",
+      "label_row_pixels",
+      "item_spacing_pixels",
       "width_pixels",
       "top_offset_pixels",
       "show_labels",
@@ -440,15 +444,24 @@ export function parseStarterConfig(
       64,
     ),
     labelPixels: readInteger(barTable, "label_pixels", "bar", 14, 6, 64),
-    itemHeightPixels: readInteger(
+    iconRowPixels: readInteger(barTable, "icon_row_pixels", "bar", 60, 8, 512),
+    labelRowPixels: readInteger(
       barTable,
-      "item_height_pixels",
+      "label_row_pixels",
       "bar",
-      72,
-      16,
-      512,
+      20,
+      6,
+      128,
     ),
-    widthPixels: readInteger(barTable, "width_pixels", "bar", 152, 16, 1024),
+    itemSpacingPixels: readInteger(
+      barTable,
+      "item_spacing_pixels",
+      "bar",
+      16,
+      0,
+      256,
+    ),
+    widthPixels: readInteger(barTable, "width_pixels", "bar", 88, 16, 1024),
     topOffsetPixels: readInteger(
       barTable,
       "top_offset_pixels",
@@ -459,9 +472,9 @@ export function parseStarterConfig(
     ),
     showLabels: readBoolean(barTable, "show_labels", "bar", true),
   };
-  if (bar.iconPixels > bar.itemHeightPixels) {
+  if (bar.iconPixels > bar.iconRowPixels) {
     throw new ConfigError(
-      "bar.icon_pixels must not be larger than bar.item_height_pixels",
+      "bar.icon_pixels must not be larger than bar.icon_row_pixels",
     );
   }
 
@@ -607,7 +620,14 @@ function loadTheme(config: StarterConfig, palette: Map<string, string>): Theme {
     }
     return name === "text"
       ? scaleFont(value, config.bar.labelPixels, 0)
-      : scaleFont(value, config.bar.iconPixels, config.bar.iconOffsetPixels);
+      : scaleFont(
+          value,
+          config.bar.iconPixels,
+          // Icon bars carry the item spacing at their top (see layoutBars):
+          // move the icons down by half of it to centre them below it.
+          config.bar.iconOffsetPixels +
+            Math.round(config.bar.itemSpacingPixels / 2),
+        );
   };
   return {
     background: palette.get("background") ?? "#17191B",
@@ -694,30 +714,57 @@ export interface BarLayout {
   name: string;
   offsetY: number;
   height: number;
-  kind: "profile" | "filler" | "close";
+  kind: "icon" | "label" | "filler" | "close";
   profile?: ProfileSpec;
 }
 
-/** Profiles from the top, the close button at the bottom, a filler between. */
+/**
+ * Profiles from the top, the close button at the bottom, a filler between.
+ * Polybar draws one line of text for each bar, so a profile is an icon bar
+ * with a label bar below it. Each icon bar and the close bar begin with
+ * bar.item_spacing_pixels of empty space; that is the gap between items.
+ */
 export function layoutBars(
   config: StarterConfig,
   monitor: Monitor,
 ): BarLayout[] {
-  const { itemHeightPixels: height, topOffsetPixels: top } = config.bar;
-  const closeY = monitor.height - height;
-  const fillerY = top + config.profiles.length * height;
+  const {
+    iconRowPixels,
+    labelRowPixels,
+    itemSpacingPixels,
+    showLabels,
+    topOffsetPixels: top,
+  } = config.bar;
+  const iconHeight = itemSpacingPixels + iconRowPixels;
+  const labelHeight = showLabels ? labelRowPixels : 0;
+  const stride = iconHeight + labelHeight;
+  const closeY = monitor.height - iconHeight;
+  const fillerY = top + config.profiles.length * stride;
   if (fillerY > closeY) {
     throw new ConfigError(
-      `${String(config.profiles.length)} profiles do not fit on ${monitor.name} (${String(monitor.height)} pixels high); reduce bar.item_height_pixels or the number of profiles`,
+      `${String(config.profiles.length)} profiles do not fit on ${monitor.name} (${String(monitor.height)} pixels high); reduce the row sizes, bar.item_spacing_pixels, or the number of profiles`,
     );
   }
-  const bars: BarLayout[] = config.profiles.map((profile, index) => ({
-    name: `${BAR_PREFIX}-p${String(index)}`,
-    offsetY: top + index * height,
-    height,
-    kind: "profile",
-    profile,
-  }));
+  const bars: BarLayout[] = [];
+  config.profiles.forEach((profile, index) => {
+    const offsetY = top + index * stride;
+    bars.push({
+      name: `${BAR_PREFIX}-p${String(index)}`,
+      offsetY,
+      height: iconHeight,
+      kind: "icon",
+      profile,
+    });
+    if (showLabels) {
+      bars.push({
+        name: `${BAR_PREFIX}-p${String(index)}-label`,
+        offsetY: offsetY + iconHeight,
+        height: labelHeight,
+        kind: "label",
+        profile,
+      });
+    }
+  });
   if (closeY > fillerY) {
     bars.push({
       name: `${BAR_PREFIX}-filler`,
@@ -729,7 +776,7 @@ export function layoutBars(
   bars.push({
     name: `${BAR_PREFIX}-close`,
     offsetY: closeY,
-    height,
+    height: iconHeight,
     kind: "close",
   });
   return bars;
@@ -773,24 +820,15 @@ export function renderPolybarConfig(
     `font-3 = "${theme.fonts.brands}"`,
   ];
 
-  // Lucide glyphs have about 1/4 icon size of empty space on each side, so
-  // the visible gap between icon and label is larger than this offset.
-  const gap = Math.round(config.bar.labelPixels * 0.3);
-
   for (const bar of layoutBars(config, monitor)) {
-    const centred = bar.kind !== "profile" || !config.bar.showLabels;
     lines.push(
       "",
       `[bar/${bar.name}]`,
       `inherit = bar/${BAR_PREFIX}-base`,
       `height = ${String(bar.height)}`,
       `offset-y = ${String(bar.offsetY)}`,
-      `${centred ? "modules-center" : "modules-left"} = ${bar.name}`,
+      `modules-center = ${bar.name}`,
     );
-    if (!centred) {
-      // Polybar 3.7 reads a plain number as a count of spaces: use "px".
-      lines.push("padding-left = 12px");
-    }
     if (bar.kind === "close") {
       lines.push("border-top-size = 1", `border-top-color = ${theme.border}`);
     }
@@ -801,11 +839,15 @@ export function renderPolybarConfig(
       "type = custom/text",
       "format = <label>",
     );
-    if (bar.kind === "profile" && bar.profile !== undefined) {
+    if (
+      (bar.kind === "icon" || bar.kind === "label") &&
+      bar.profile !== undefined
+    ) {
       const profile = bar.profile;
-      const label = config.bar.showLabels
-        ? `${iconMarkup(profile)}%{O${String(gap)}}%{T${String(FONT_TAGS.text)}}${profile.label}%{T-}`
-        : iconMarkup(profile);
+      const label =
+        bar.kind === "icon"
+          ? iconMarkup(profile)
+          : `%{T${String(FONT_TAGS.text)}}${profile.label}%{T-}`;
       lines.push(
         `label = "${label}"`,
         `click-left = ${command} --launch ${shellQuote(profile.directory)}`,

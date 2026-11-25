@@ -16,10 +16,12 @@ timeout_seconds = 30     # close the bar automatically after this time
 icon_pixels = 48         # icon size
 icon_offset_pixels = 8   # move icons down; Lucide glyphs sit high
 label_pixels = 14        # label text size
-item_height_pixels = 72  # height of one button
-width_pixels = 152       # bar width; about item_height_pixels without labels
+icon_row_pixels = 60     # height of the icon row of a button
+label_row_pixels = 20    # height of the label row below the icon
+item_spacing_pixels = 16 # empty space above each button
+width_pixels = 88        # bar width
 top_offset_pixels = 30   # keep the top bar (height 30) visible
-show_labels = true       # show the label right of the icon
+show_labels = true       # show the label below the icon
 
 [close]
 icon = "\uE1B2"          # Lucide "x"

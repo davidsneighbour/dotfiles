@@ -36,7 +36,7 @@ Each `[[profiles]]` entry has these keys:
 
 | Key | Required | Value |
 | --- | --- | --- |
-| `label` | yes | Text right of the icon, 1 to 6 characters. |
+| `label` | yes | Text below the icon, 1 to 6 characters. |
 | `directory` | yes | Chrome profile folder name. |
 | `icon` | yes | One icon character, written as an escape such as `"\uE19F"`. |
 | `font` | no | `lucide` (default), `nerd`, or `brands`. |
@@ -44,11 +44,11 @@ Each `[[profiles]]` entry has these keys:
 
 Lucide codepoints are in `~/.fonts/System/lucide/codepoints.json`. For example, `"user": 57759` is `\uE19F` (57759 in hexadecimal is E19F).
 
-The `[bar]` section sets `timeout_seconds`, `icon_pixels`, `icon_offset_pixels`, `label_pixels`, `item_height_pixels`, `width_pixels`, `top_offset_pixels`, and `show_labels`. The comments in `browser-starter.toml` explain each one. With `show_labels = false`, the icons are centred; set `width_pixels` to about `item_height_pixels`.
+The `[bar]` section sets `timeout_seconds`, `icon_pixels`, `icon_offset_pixels`, `label_pixels`, `icon_row_pixels`, `label_row_pixels`, `item_spacing_pixels`, `width_pixels`, `top_offset_pixels`, and `show_labels`. The comments in `browser-starter.toml` explain each one. A button is `item_spacing_pixels` of empty space, then the icon row, then the label row. With `show_labels = false`, there is no label row.
 
 ## How it works
 
-Polybar 3.7 draws only horizontal bars. The side bar is therefore a stack of small Polybar bars on the left edge: one bar for each profile, one filler bar, and one close bar. Each time the side bar opens, the controller:
+Polybar 3.7 draws only horizontal bars. The side bar is therefore a stack of small Polybar bars on the left edge: for each profile an icon bar and a label bar below it (Polybar draws one line of text for each bar), one filler bar, and one close bar. The empty space between buttons is the top part of each icon bar; the icon font offset moves the icons down by half of it. Each time the side bar opens, the controller:
 
 1. Reads the configuration, the colours from `configs/session/polybar/configs/01-colours.ini`, and the font families from `01-fonts.ini`. The side bar thus uses the same design as the top bar, with larger font sizes.
 2. Gets the primary monitor from `polybar --list-monitors` and writes the bar configuration to `${XDG_RUNTIME_DIR}/dnb-browser-starter/bars-<token>.ini`.
