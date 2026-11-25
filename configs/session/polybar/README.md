@@ -33,6 +33,8 @@ Static workspace definitions live in `configs/session/i3/workspaces/workspaces.y
 
 `launch.sh` matches processes with `pgrep -x polybar` / `pkill -u "$UID" -x polybar`. This stops every Polybar process of the user on every display, so do not run a second Polybar instance (for example in Xephyr) at the same time as the session bar.
 
+The [browser starter](../browser-starter/README.md) (`Ctrl+Shift+Alt+B`) runs temporary Polybar bars with a generated configuration. `launch.sh` also stops these; the browser starter itself stops only its own bars.
+
 ## Validating changes
 
 Safe config-value checks. These commands only dump configured values and exit; they do not open, reload, or validate the rendered bar:

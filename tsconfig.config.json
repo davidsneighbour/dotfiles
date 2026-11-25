@@ -4,6 +4,7 @@
     ".commitlintrc.ts",
     ".release-it.ts",
     "configs/agents/skills-state.ts",
+    "configs/session/browser-starter/**/*.ts",
     "configs/session/npm/**/*.ts",
     "lint-staged.config.ts"
   ],

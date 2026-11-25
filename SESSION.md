@@ -85,6 +85,7 @@ User-triggered programs:
 | --- | --- | --- |
 | Rofi launcher | bare `Super_L` release, `$mod+Shift+d`, `$mod+d` | `rofi -show drun -config configs/session/i3/rofi.rasi` (see "Rofi") |
 | Terminal | `$mod+Return` | `$terminal` (`terminator`) |
+| Browser starter | `Ctrl+Shift+Alt+B` | `configs/session/browser-starter/browser-starter.ts --toggle` (see "Browser starter") |
 
 ## Keybinding architecture
 
@@ -185,7 +186,20 @@ Signal windows with class `signal` receive the Lucide messages-square workspace 
   * right: `tray`, `pulseaudio`, `date`
 * Started by `configs/session/polybar/launch.sh`, which logs to `~/.logs/polybar-i3/bar-YYYYMMDD.log`. See [`configs/session/polybar/README.md`](configs/session/polybar/README.md) for the file-by-file breakdown.
 * `launch.sh` runs `pkill -u "$UID" -x polybar` before it starts the bar, so `i3-msg restart` never leaves duplicate bars. This kills every Polybar process of the user on every display; do not run a second Polybar instance (for example in Xephyr) at the same time.
+* The browser starter (`Ctrl+Shift+Alt+B`) runs extra, temporary Polybar processes with a generated configuration in `${XDG_RUNTIME_DIR}/dnb-browser-starter/`. They are not docks and do not affect `bar/i3bar`; `launch.sh` stops them together with the top bar. See "Browser starter".
 * Safe non-rendering checks: `polybar -c configs/session/polybar/config.ini --list-monitors`, `polybar -c configs/session/polybar/config.ini -d modules-left i3bar`, and `polybar -c configs/session/polybar/config.ini -d modules-right i3bar`. The `-d` commands only dump configured values and exit. Use `configs/session/polybar/launch.sh` inside the i3 session to start or restart the real bar.
+
+## Browser starter
+
+`Ctrl+Shift+Alt+B` runs `configs/session/browser-starter/browser-starter.ts --toggle`. It shows a temporary side bar on the left edge, below the top bar, with one button for each Chrome profile in `configs/session/browser-starter/browser-starter.toml` and a close button at the bottom. A profile button runs `google-chrome-stable --profile-directory=<folder>` with Chrome's normal user data folder (`~/.config/google-chrome`), so it uses the existing profiles; Chrome creates a missing profile folder on first start. The bar closes after a click, after 30 seconds (`bar.timeout_seconds`), or on the next `Ctrl+Shift+Alt+B`.
+
+* Polybar 3.7 has no vertical bars, so the side bar is a stack of small `override-redirect` Polybar bars: one for each profile, one filler, and one close bar. i3 does not manage them, reserve space for them, or show them in the window switcher; they cover the windows below them.
+* Colours and font families come from `configs/session/polybar/configs/01-colours.ini` and `01-fonts.ini`, so the side bar matches the top bar.
+* State (process IDs, timer, session token) is in `${XDG_RUNTIME_DIR}/dnb-browser-starter/state.json`. `--close` stops only the Polybar processes of its own generated configuration, never `bar/i3bar`.
+* Logs: `~/.logs/browser-starter/YYYYMMDD-HHMMSS.log`, one file for each opened bar. Errors also show as a dunst notification.
+* Validate without opening a window: `configs/session/browser-starter/browser-starter.ts --check` and `npm run test:browser-starter`.
+
+Full description: [`configs/session/browser-starter/README.md`](configs/session/browser-starter/README.md).
 
 ## Background
 
@@ -281,6 +295,7 @@ shellcheck  dev-only             (lints the session scripts)
 
 ```text
 ~/.logs/polybar-i3/   Polybar (configs/session/polybar/launch.sh)
+~/.logs/browser-starter/  Browser starter side bar (configs/session/browser-starter/)
 ~/.xsession-errors    General X session stderr
 ```
 

@@ -1,0 +1,70 @@
+# Browser starter (Ctrl+Shift+Alt+B): profile buttons on a temporary side bar.
+# See README.md in this folder. Check changes with:
+#   configs/session/browser-starter/browser-starter.ts --check
+#
+# Colours are hex values (#RRGGBB) or names from the [colours] section of
+# configs/session/polybar/configs/01-colours.ini (cyan, green, orange, pink,
+# purple, red, yellow, foreground, comment, ...).
+#
+# Icons are one character from an icon font. Write them as escapes:
+#   font = "lucide"  codepoints: ~/.fonts/System/lucide/codepoints.json
+#   font = "nerd"    https://www.nerdfonts.com/cheat-sheet
+#   font = "brands"  https://fontawesome.com/search?ip=brands
+
+[bar]
+timeout_seconds = 30     # close the bar automatically after this time
+icon_pixels = 48         # icon size
+icon_offset_pixels = 8   # move icons down; Lucide glyphs sit high
+label_pixels = 14        # label text size
+item_height_pixels = 72  # height of one button
+width_pixels = 152       # bar width; about item_height_pixels without labels
+top_offset_pixels = 30   # keep the top bar (height 30) visible
+show_labels = true       # show the label right of the icon
+
+[close]
+icon = "\uE1B2"          # Lucide "x"
+font = "lucide"
+colour = "red"
+
+# One [[profiles]] entry per button, from the top down.
+# directory: the Chrome profile folder in ~/.config/google-chrome. Run
+#   browser-starter.ts --list-profiles
+# to see the folders and their names in Chrome. If a folder does not exist,
+# Chrome creates a new, empty profile with that folder name.
+# label: 1 to 6 characters.
+
+[[profiles]]
+label = "Main"
+directory = "Default"    # Patrick
+icon = "\uE19F"          # Lucide "user"
+colour = "cyan"
+
+[[profiles]]
+label = "Social"
+directory = "Profile 1"  # Social Media DNB
+icon = "\uE235"          # Lucide "megaphone"
+colour = "pink"
+
+[[profiles]]
+label = "Debug"
+directory = "Profile 3"  # Debugging
+icon = "\uE20C"          # Lucide "bug"
+colour = "red"
+
+[[profiles]]
+label = "Poster"
+directory = "Profile 5"  # Posterboy Testing
+icon = "\uE0D5"          # Lucide "flask-conical"
+colour = "green"
+
+[[profiles]]
+label = "APS"
+directory = "Profile 6"  # Asia Pacific Superyachts
+icon = "\uE3BA"          # Lucide "ship"
+colour = "yellow"
+
+[[profiles]]
+label = "Ananke"
+directory = "Profile 8"  # Ananke
+icon = "\uE207"          # Lucide "layout-template"
+colour = "purple"
