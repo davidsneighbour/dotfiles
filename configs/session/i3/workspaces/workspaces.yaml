@@ -59,6 +59,10 @@ window_icons:
     - class: dnb-whatsapp
       slug: whatsapp
       icon: "\uE40D"
+    # Signal (Lucide messages-square).
+    - class: signal
+      slug: signal
+      icon: "\uE40D"
     - class: Code
       slug: code
       icon: "\uE093"
