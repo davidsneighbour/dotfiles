@@ -5,6 +5,7 @@ but do not justify separate repositories.
 
 * `clockify/` — Track Clockify time entries from the CLI, Polybar, and a local HTML form.
 * `git-collection/` — Collect Git commit information in a database.
+* `google-alerts-manager/` — Import Google Alerts from Google Takeout and plan alert changes offline; private data stays in its ignored `data/` folder.
 * `msgvault/` — Sync, back up, and show Polybar status for a msgvault mailbox archive.
 * `packages/` — Inspect the APT/dpkg package state: manual and automatic packages, and why a package is installed.
 * `storage/` — Index external storage with SHA-256 hashes and search every file or folder occurrence locally.

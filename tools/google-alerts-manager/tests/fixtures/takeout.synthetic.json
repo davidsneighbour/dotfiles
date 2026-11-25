@@ -1,0 +1,148 @@
+{
+  "subscriptions": [
+    {
+      "query": "\"Example Tools\" OR \"sample maker\"",
+      "language": "en",
+      "country": "US",
+      "applyLanguageRestrict": true,
+      "applyRegionRestrict": false,
+      "quality": "HIGH",
+      "deliveryMethod": "EMAIL",
+      "deliveryFrequency": "DAILY",
+      "deliveryTime": {
+        "timezoneCode": "Etc/GMT",
+        "hourOfDay": -3,
+        "dayOfWeek": 0
+      },
+      "emailAddress": "recipient@example.invalid"
+    },
+    {
+      "query": "\"Time App\" discount",
+      "language": "en",
+      "country": "US",
+      "applyLanguageRestrict": true,
+      "applyRegionRestrict": false,
+      "quality": "HIGH",
+      "deliveryMethod": "EMAIL",
+      "deliveryFrequency": "DAILY",
+      "deliveryTime": {
+        "timezoneCode": "Etc/GMT",
+        "hourOfDay": -3,
+        "dayOfWeek": 0
+      },
+      "emailAddress": "recipient@example.invalid"
+    },
+    {
+      "query": "\"Browser Lab\" lifetime",
+      "language": "en",
+      "country": "US",
+      "applyLanguageRestrict": true,
+      "applyRegionRestrict": false,
+      "quality": "HIGH",
+      "deliveryMethod": "EMAIL",
+      "deliveryFrequency": "DAILY",
+      "deliveryTime": {
+        "timezoneCode": "Etc/GMT",
+        "hourOfDay": -3,
+        "dayOfWeek": 0
+      },
+      "emailAddress": "recipient@example.invalid"
+    },
+    {
+      "query": "\"Panel Tool\" lifetime",
+      "language": "en",
+      "country": "US",
+      "applyLanguageRestrict": true,
+      "applyRegionRestrict": false,
+      "quality": "HIGH",
+      "deliveryMethod": "EMAIL",
+      "deliveryFrequency": "DAILY",
+      "deliveryTime": {
+        "timezoneCode": "Etc/GMT",
+        "hourOfDay": 5,
+        "dayOfWeek": 0
+      },
+      "emailAddress": "recipient@example.invalid"
+    },
+    {
+      "query": "\"Example Person\"",
+      "language": "en",
+      "country": "US",
+      "applyLanguageRestrict": true,
+      "applyRegionRestrict": false,
+      "quality": "LOW",
+      "deliveryMethod": "EMAIL",
+      "deliveryFrequency": "HOURLY",
+      "deliveryTime": {
+        "timezoneCode": "Etc/GMT",
+        "hourOfDay": 0,
+        "dayOfWeek": 0
+      },
+      "emailAddress": "recipient@example.invalid"
+    },
+    {
+      "query": "\"Example Person\" OR \"Example Alias\"",
+      "language": "en",
+      "country": "US",
+      "applyLanguageRestrict": true,
+      "applyRegionRestrict": false,
+      "quality": "HIGH",
+      "deliveryMethod": "EMAIL",
+      "deliveryFrequency": "DAILY",
+      "deliveryTime": {
+        "timezoneCode": "Etc/GMT",
+        "hourOfDay": -3,
+        "dayOfWeek": 0
+      },
+      "emailAddress": "recipient@example.invalid"
+    },
+    {
+      "query": "\"Panel Tool\" \"lifetime deal\"",
+      "language": "en",
+      "country": "US",
+      "applyLanguageRestrict": true,
+      "applyRegionRestrict": false,
+      "quality": "HIGH",
+      "deliveryMethod": "EMAIL",
+      "deliveryFrequency": "DAILY",
+      "deliveryTime": {
+        "timezoneCode": "Etc/GMT",
+        "hourOfDay": 5,
+        "dayOfWeek": 0
+      },
+      "emailAddress": "recipient@example.invalid"
+    },
+    {
+      "query": "\"example.person@example.invalid\"",
+      "language": "en",
+      "country": "US",
+      "applyLanguageRestrict": true,
+      "applyRegionRestrict": false,
+      "quality": "HIGH",
+      "deliveryMethod": "EMAIL",
+      "deliveryFrequency": "DAILY",
+      "deliveryTime": {
+        "timezoneCode": "Etc/GMT",
+        "hourOfDay": -3,
+        "dayOfWeek": 0
+      },
+      "emailAddress": "recipient@example.invalid"
+    },
+    {
+      "query": "\"Sample Island\" OR \"Sample Isle\"",
+      "language": "en",
+      "country": "US",
+      "applyLanguageRestrict": true,
+      "applyRegionRestrict": false,
+      "quality": "HIGH",
+      "deliveryMethod": "EMAIL",
+      "deliveryFrequency": "DAILY",
+      "deliveryTime": {
+        "timezoneCode": "Etc/GMT",
+        "hourOfDay": -3,
+        "dayOfWeek": 0
+      },
+      "emailAddress": "recipient@example.invalid"
+    }
+  ]
+}

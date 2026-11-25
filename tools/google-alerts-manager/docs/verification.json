@@ -1,0 +1,27 @@
+{
+  "date": "2026-11-23",
+  "typecheck": "passed",
+  "tests": {
+    "passed": 18,
+    "failed": 0,
+    "runtimes": ["24.22.1", "26.13.1"]
+  },
+  "actualArchive": {
+    "subscriptions": 9,
+    "recordsExact": true,
+    "resolvedYamlExact": true,
+    "snapshotBytesExact": true,
+    "reimportChanged": false
+  },
+  "actualOwnership": {
+    "proposed": 9,
+    "approved": 0
+  },
+  "skillValidation": "passed",
+  "exampleConfigValidation": "passed",
+  "productionAuditKnownVulnerabilities": 0,
+  "liveBrowserRun": false,
+  "liveChanges": 0,
+  "syncApply": "disabled",
+  "cleanSourceInstall": "passed"
+}

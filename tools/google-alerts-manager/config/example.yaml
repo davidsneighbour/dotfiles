@@ -1,0 +1,22 @@
+schemaVersion: 1
+defaults:
+  language: en
+  applyLanguageRestrict: true
+  applyRegionRestrict: false
+  deliveryMethod: EMAIL
+  deliveryFrequency: DAILY
+  emailAddress: recipient@example.invalid
+topics:
+  - id: example-tool
+    name: Example tool releases
+    intent: Monitor release announcements for the example tool.
+    research:
+      entities: [Example Tool]
+      exclusions: []
+      sources: []
+      notes: Synthetic illustration; no research has been done.
+    queries:
+      - id: releases
+        status: draft
+        expression: '"Example Tool" release'
+        rationale: Candidate query awaiting manual review.

@@ -162,6 +162,7 @@ thailandiatour
 thailandiaviaggi
 thaitour
 thaiviaggi
+Takeout
 thunar
 Thunar
 timezone

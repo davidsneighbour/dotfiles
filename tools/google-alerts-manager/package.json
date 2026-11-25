@@ -1,0 +1,28 @@
+{
+  "name": "google-alerts-manager",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "alerts": "node src/cli.ts",
+    "test": "node --test tests/*.test.ts",
+    "typecheck": "tsc --noEmit",
+    "check": "npm run typecheck && npm test"
+  },
+  "dependencies": {
+    "playwright": "1.65.1",
+    "yaml": "2.9.1",
+    "yauzl": "3.4.0",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "26.6.6",
+    "@types/yauzl": "3.4.0",
+    "@types/yazl": "3.3.1",
+    "typescript": "7.0.2",
+    "yazl": "3.3.1"
+  }
+}

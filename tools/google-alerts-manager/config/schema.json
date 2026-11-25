@@ -1,0 +1,328 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "number",
+      "const": 1
+    },
+    "defaults": {
+      "default": {},
+      "type": "object",
+      "properties": {
+        "language": {
+          "type": "string",
+          "minLength": 1
+        },
+        "country": {
+          "type": "string",
+          "minLength": 1
+        },
+        "applyLanguageRestrict": {
+          "type": "boolean"
+        },
+        "applyRegionRestrict": {
+          "type": "boolean"
+        },
+        "source": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["NEWS", "WEB"]
+          }
+        },
+        "quality": {
+          "type": "string",
+          "enum": ["LOW", "HIGH"]
+        },
+        "deliveryMethod": {
+          "type": "string",
+          "enum": ["EMAIL", "RSS"]
+        },
+        "deliveryFrequency": {
+          "type": "string",
+          "enum": ["HOURLY", "DAILY", "WEEKLY"]
+        },
+        "emailAddress": {
+          "type": "string",
+          "format": "email",
+          "pattern": "^(?:[A-Za-z0-9_'+\\-]+\\.)*[A-Za-z0-9_'+\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+        },
+        "deliveryTime": {
+          "type": "object",
+          "properties": {
+            "timezoneCode": {
+              "type": "string",
+              "minLength": 1
+            },
+            "hourOfDay": {
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            },
+            "dayOfWeek": {
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            }
+          },
+          "required": ["timezoneCode", "hourOfDay", "dayOfWeek"],
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "topics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]{0,100}$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "intent": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "default": "active",
+            "type": "string",
+            "enum": ["active", "archived"]
+          },
+          "research": {
+            "type": "object",
+            "properties": {
+              "entities": {
+                "default": [],
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "exclusions": {
+                "default": [],
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "sources": {
+                "default": [],
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "format": "uri"
+                }
+              },
+              "notes": {
+                "default": "",
+                "type": "string"
+              }
+            },
+            "required": ["entities", "exclusions", "sources", "notes"],
+            "additionalProperties": false
+          },
+          "settings": {
+            "default": {},
+            "type": "object",
+            "properties": {
+              "language": {
+                "type": "string",
+                "minLength": 1
+              },
+              "country": {
+                "type": "string",
+                "minLength": 1
+              },
+              "applyLanguageRestrict": {
+                "type": "boolean"
+              },
+              "applyRegionRestrict": {
+                "type": "boolean"
+              },
+              "source": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": ["NEWS", "WEB"]
+                }
+              },
+              "quality": {
+                "type": "string",
+                "enum": ["LOW", "HIGH"]
+              },
+              "deliveryMethod": {
+                "type": "string",
+                "enum": ["EMAIL", "RSS"]
+              },
+              "deliveryFrequency": {
+                "type": "string",
+                "enum": ["HOURLY", "DAILY", "WEEKLY"]
+              },
+              "emailAddress": {
+                "type": "string",
+                "format": "email",
+                "pattern": "^(?:[A-Za-z0-9_'+\\-]+\\.)*[A-Za-z0-9_'+\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+              },
+              "deliveryTime": {
+                "type": "object",
+                "properties": {
+                  "timezoneCode": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "hourOfDay": {
+                    "type": "integer",
+                    "minimum": -9007199254740991,
+                    "maximum": 9007199254740991
+                  },
+                  "dayOfWeek": {
+                    "type": "integer",
+                    "minimum": -9007199254740991,
+                    "maximum": 9007199254740991
+                  }
+                },
+                "required": ["timezoneCode", "hourOfDay", "dayOfWeek"],
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
+          },
+          "queries": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9][a-z0-9-]{0,100}$"
+                },
+                "expression": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 10000
+                },
+                "status": {
+                  "default": "draft",
+                  "type": "string",
+                  "enum": ["draft", "active", "paused"]
+                },
+                "inherit": {
+                  "type": "string",
+                  "pattern": "^import-[a-f0-9]{64}-[1-9][0-9]*$"
+                },
+                "settings": {
+                  "default": {},
+                  "type": "object",
+                  "properties": {
+                    "language": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "country": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "applyLanguageRestrict": {
+                      "type": "boolean"
+                    },
+                    "applyRegionRestrict": {
+                      "type": "boolean"
+                    },
+                    "source": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "enum": ["NEWS", "WEB"]
+                      }
+                    },
+                    "quality": {
+                      "type": "string",
+                      "enum": ["LOW", "HIGH"]
+                    },
+                    "deliveryMethod": {
+                      "type": "string",
+                      "enum": ["EMAIL", "RSS"]
+                    },
+                    "deliveryFrequency": {
+                      "type": "string",
+                      "enum": ["HOURLY", "DAILY", "WEEKLY"]
+                    },
+                    "emailAddress": {
+                      "type": "string",
+                      "format": "email",
+                      "pattern": "^(?:[A-Za-z0-9_'+\\-]+\\.)*[A-Za-z0-9_'+\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+                    },
+                    "deliveryTime": {
+                      "type": "object",
+                      "properties": {
+                        "timezoneCode": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "hourOfDay": {
+                          "type": "integer",
+                          "minimum": -9007199254740991,
+                          "maximum": 9007199254740991
+                        },
+                        "dayOfWeek": {
+                          "type": "integer",
+                          "minimum": -9007199254740991,
+                          "maximum": 9007199254740991
+                        }
+                      },
+                      "required": ["timezoneCode", "hourOfDay", "dayOfWeek"],
+                      "additionalProperties": false
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "rationale": {
+                  "default": "",
+                  "type": "string"
+                },
+                "review": {
+                  "type": "object",
+                  "properties": {
+                    "approved": {
+                      "type": "boolean"
+                    },
+                    "reviewer": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "at": {
+                      "type": "string",
+                      "format": "date-time",
+                      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+                    }
+                  },
+                  "required": ["approved", "reviewer", "at"],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "id",
+                "expression",
+                "status",
+                "settings",
+                "rationale"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": ["id", "name", "intent", "status", "settings", "queries"],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": ["schemaVersion", "defaults", "topics"],
+  "additionalProperties": false
+}
