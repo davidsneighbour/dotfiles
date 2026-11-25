@@ -102,6 +102,8 @@ Programs started on a new workspace (bare `Super`, `Super+Shift+D`, or `Ctrl+Shi
    "
    ```
 
+Agents use the internal skill [`workspace-window-icon`](../../../.agents/skills/workspace-window-icon/SKILL.md) for these steps. Its helper reads the inspector output and a Lucide icon name, and prints the rule with the `\uXXXX` escape.
+
 WhatsApp uses class `dnb-whatsapp`, slug `whatsapp`, and the Lucide messages-square icon (`U+E40D`).
 
 Claude uses class `com.anthropic.Claude`, slug `claude`, and the robot icon (`U+E1BB`) from its dynamic launcher.
