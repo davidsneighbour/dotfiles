@@ -12,7 +12,7 @@
 #   font = "brands"  https://fontawesome.com/search?ip=brands
 
 [bar]
-timeout_seconds = 30     # close the bar automatically after this time
+timeout_seconds = 15     # close the bar automatically after this time
 icon_pixels = 48         # icon size
 icon_offset_pixels = 8   # move icons down; Lucide glyphs sit high
 label_pixels = 14        # label text size
