@@ -87,7 +87,7 @@ window_icons:
     # ChatGPT/Codex desktop app (Lucide bot-message-square).
     - class: Chatgpt
       slug: chatgpt
-      icon: ""
+      icon: "\uE5CE"
     # Claude desktop uses the same robot as its dynamic launcher.
     - class: com.anthropic.Claude
       slug: claude
