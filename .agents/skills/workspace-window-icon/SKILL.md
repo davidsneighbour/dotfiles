@@ -1,6 +1,6 @@
 ---
 name: workspace-window-icon
-description: Add a workspace icon for a program to the i3 window_icons rules in this dotfiles repository. Use when the user pastes window-inspector.sh output (the Ctrl+Shift+Alt+I report with WM_CLASS, xprop, wmctrl, and "suggested i3 match" sections) and wants that window or program to get a Lucide workspace icon and name.
+description: Add a workspace icon for a program to the i3 window_icons rules in this dotfiles repository. Use when the user pastes window-inspector.sh output (the Ctrl+Shift+Alt+I report with WM_CLASS, xprop, wmctrl, and "suggested i3 match" sections) and wants that window or program to get a Lucide workspace icon and name. For VS Code windows, it first offers the per-project icon in .github/config.toml.
 ---
 
 # Workspace window icon
@@ -8,6 +8,27 @@ description: Add a workspace icon for a program to the i3 window_icons rules in 
 This skill turns the output of `configs/session/i3/window-inspector.sh` (`Ctrl+Shift+Alt+I`) into one rule under `window_icons.rules` in `configs/session/i3/workspaces/workspaces.yaml`. The rule gives every matching window a Lucide workspace icon, written as a `\uXXXX` escape, and a name (`slug`).
 
 Before you edit, read `SESSION.md` and the section "Add an icon for a program" in `configs/session/i3/README.md`. This skill covers only `window_icons.rules`. For a `dynamic:` launcher or a numbered workspace, follow `.agents/references/dynamic-workspace-launcher.md` instead.
+
+## VS Code windows: ask first
+
+If the class is `Code` or `com.microsoft.VSCode`, stop and ask the user before you continue:
+
+* An icon for one project or one VS Code workspace: use the per-project file below. This is usually easier, and it does not change `workspaces.yaml`.
+* An icon for all VS Code windows: continue with this skill. A `Code` rule already exists, so change it in place.
+
+The per-project icon:
+
+* Put it in `.github/config.toml` in the project root, not in `.vscode/`. The dotfiles repository has one, for example.
+
+  ```toml
+  [workspace]
+  icon = ""
+  ```
+
+* The loader accepts the `\uXXXX` escape and the literal glyph, and both give the same icon. Write the escape, as in `workspaces.yaml`, because editors can change a pasted private-use glyph. Use double quotes: in single quotes TOML does not decode the escape, and the workspace shows the six characters ``. Run the helper with `--search TERM` to find the Lucide name and its escape.
+* `project_workspace_icon` in `workspaces.py` looks for the file in the opened folder and in its parent folders. For a `.code-workspace` file, it also looks in each folder that the file lists. The first non-empty icon wins. A file with invalid TOML is skipped, with a message on stderr.
+* It applies only when the project opens through the VS Code workspace picker (`Ctrl+Shift+W`, `workspaces.sh --dynamic-workspace code`). A VS Code window that you move with `Ctrl+Shift+Alt+N`, or start from the Rofi new-workspace prompt, gets its icon from the `Code` rule in `window_icons.rules`.
+* i3 does not need a reload. The icon shows the next time you open the project with `Ctrl+Shift+W`.
 
 ## Inputs
 
