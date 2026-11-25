@@ -1,5 +1,5 @@
 [workspace]
-icon = ""
+icon = "\uE345"
 
 [lpack]
 exclude = [
